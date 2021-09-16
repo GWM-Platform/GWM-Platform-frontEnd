@@ -1,0 +1,15 @@
+.navBarSections {
+    background-color: #22432C
+}
+
+.navBarSections .nav-link {
+    padding: 0.5em;
+}
+
+.navbar-dark .navbar-nav .nav-link.active, .navbar-dark .navbar-nav .show>.nav-link {
+    border-bottom: 5px solid;
+    border-color: red;
+}
+.bottomInnerBorder{
+    box-shadow: inset 0px -13px 0px -8px forestgreen;
+}

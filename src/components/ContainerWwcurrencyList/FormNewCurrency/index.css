@@ -1,0 +1,12 @@
+
+.block{
+    display: block;
+    width: 100%;
+}
+.forgot{
+    padding: 0;
+    float: right;
+}
+.f-left{
+    float: left;
+}

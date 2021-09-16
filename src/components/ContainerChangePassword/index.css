@@ -1,0 +1,20 @@
+
+.block{
+    display: block;
+    width: 100%;
+}
+.forgot{
+    padding: 0;
+    float: right;
+}.validation {
+    text-align: left;
+}.textRed{
+    color: rgb(201, 44, 44);
+}.textGreen{
+    color: rgb(0,114,25);
+}.error{
+    color: rgb(145, 85, 85);
+    font-size: 16px;
+    padding-bottom: 0rem;
+    font-weight: bolder;
+}

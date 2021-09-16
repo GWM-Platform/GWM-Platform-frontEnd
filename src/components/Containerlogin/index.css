@@ -1,0 +1,39 @@
+.login {
+    background-color: #009E4C
+}
+.login .forgotPass{
+    text-align: center;
+    background-color: transparent!important;
+    border:none
+}
+.login .form-check-input:checked{
+    background-color: rgb(0,114,25);
+    border-color: rgb(0,80,25);;
+}
+.login .error{
+    color: rgb(145, 85, 85);
+    font-size: 16px;
+    padding-bottom: 2rem;
+    font-weight: bolder;
+}
+.login .button{
+    text-transform: uppercase;
+    border-radius: 3%;
+}
+
+.login .image{
+    display: block;
+    width: 100%;
+}
+
+.login .reduced{
+    width: 70%;
+}
+
+.login .input-group-text{
+    background-color: white;
+    border-right: none;
+}
+.login .form-control{
+    border-left: none;
+}

@@ -1,0 +1,60 @@
+{
+  "name": "n-banking",
+  "version": "0.1.0",
+  "homepage": "http://nbanking2.wadiahcapital.com/",
+  "private": true,
+  "dependencies": {
+    "@coreui/coreui": "^4.0.0-rc.3",
+    "@coreui/icons": "^2.0.1",
+    "@coreui/icons-react": "^1.1.0",
+    "@coreui/react": "^4.0.0-alpha.3",
+    "@fortawesome/fontawesome-svg-core": "^1.2.35",
+    "@fortawesome/free-solid-svg-icons": "^5.15.3",
+    "@fortawesome/react-fontawesome": "^0.1.14",
+    "@testing-library/jest-dom": "^5.13.0",
+    "@testing-library/react": "^11.2.7",
+    "@testing-library/user-event": "^12.8.3",
+    "@trendmicro/react-sidenav": "^0.5.0",
+    "bootstrap": "^5.0.2",
+    "chokidar": "^3.5.2",
+    "flag-icon-css": "^3.5.0",
+    "html2canvas": "^1.0.0",
+    "i18next": "^20.3.2",
+    "i18next-browser-languagedetector": "^6.1.2",
+    "i18next-http-backend": "^1.2.6",
+    "jspdf": "^2.3.1",
+    "moment": "^2.29.1",
+    "react": "^17.0.2",
+    "react-bootstrap": "^2.0.0-beta.4",
+    "react-csv-downloader": "^2.6.0",
+    "react-dom": "^17.0.2",
+    "react-i18next": "^11.11.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.3",
+    "web-vitals": "^1.1.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
