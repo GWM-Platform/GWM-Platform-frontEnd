@@ -1,15 +1,34 @@
 .navBarSections {
-    background-color: #22432C
+    background-color: var(--main-bg-nav-color)
 }
 
 .navBarSections .nav-link {
     padding: 0.5em;
 }
 
+.navbar-dark .navbar-nav .nav-link{
+    border-bottom: 5px solid;
+    border-color: transparent;
+}
+
 .navbar-dark .navbar-nav .nav-link.active, .navbar-dark .navbar-nav .show>.nav-link {
     border-bottom: 5px solid;
-    border-color: red;
+    border-color: var(--selected-underline-section-color);
 }
+
+
 .bottomInnerBorder{
-    box-shadow: inset 0px -13px 0px -8px forestgreen;
+    box-shadow: inset 0px -13px 0px -8px var(--default-underline-section-color);
+}
+
+.transactionDropdown > .dropdown-toggle{
+    padding-right: .5rem!important;
+    padding-left: .5rem!important;
+}
+
+@media (min-width: 992px){
+    .transactionDropdown > .dropdown-toggle{
+        padding-right: 1.5rem!important;
+        padding-left: 1.5rem!important;
+    }
 }

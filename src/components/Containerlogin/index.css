@@ -7,11 +7,11 @@
     border:none
 }
 .login .form-check-input:checked{
-    background-color: rgb(0,114,25);
-    border-color: rgb(0,80,25);;
+    background-color: var(--main-color);
+    border-color: var(--secondary-color);;
 }
 .login .error{
-    color: rgb(145, 85, 85);
+    color: var(--error);
     font-size: 16px;
     padding-bottom: 2rem;
     font-weight: bolder;

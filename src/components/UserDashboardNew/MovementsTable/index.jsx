@@ -51,8 +51,8 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfAccounts, setNumber
                         ?
                         <Container fluid>
                             <Row className="d-flex justify-content-center align-items-center">
-                                <Col style={{ height: "calc(100vh - 64px)" }} className="d-flex justify-content-center align-items-center">
-                                    <Spinner className="me-2" animation="border" variant="success" />
+                                <Col style={{ height: "calc(100vh - 85px)" }} className="d-flex justify-content-center align-items-center">
+                                    <Spinner className="me-2" animation="border" variant="danger" />
                                     <span className="loadingText">{t(error)}</span>
                                 </Col>
                             </Row>

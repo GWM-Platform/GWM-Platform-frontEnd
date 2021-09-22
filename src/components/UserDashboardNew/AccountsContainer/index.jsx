@@ -46,14 +46,14 @@ const AccountsContainer = ({ isMobile, setItemSelected, numberOfAccounts, setNum
 
     return (
         <div>
-            <Container fluid className="mt-2">
+            <Container fluid className="mt-2" style={{minHeight:"calc( 100vh - 80px)"}}>
                 {
                     account.length === 0
                         ?
                         <Container fluid>
                             <Row className="d-flex justify-content-center align-items-center">
                                 <Col style={{ height: "calc(100vh - 64px)" }} className="d-flex justify-content-center align-items-center">
-                                    <Spinner className="me-2" animation="border" variant="success" />
+                                    <Spinner className="me-2" animation="border" variant="danger" />
                                     <span className="loadingText">{t(error)}</span>
                                 </Col>
                             </Row>

@@ -8,12 +8,12 @@
     float: right;
 }
 .error{
-    color: rgb(145, 85, 85);
+    color: var(--error);
     font-size: 16px;
     font-weight: bolder;
 }
 .message{
-    color: rgb(69, 151, 83);
+    color: var(--message);
     font-size: 16px;
     font-weight: bolder;
 }

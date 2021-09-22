@@ -8,9 +8,12 @@ import { useRouteMatch, useHistory } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
+
 import { useTranslation } from "react-i18next";
 
-const NavBarDashBoard = ({ setItemSelected, setTransactionInfo, itemSelected }) => {
+const NavBarDashBoard = ({ setItemSelected, setTransactionInfo, itemSelected, haveInternal }) => {
+    const { t } = useTranslation();
+
     const { url } = useRouteMatch()
     let history = useHistory();
 
@@ -18,7 +21,6 @@ const NavBarDashBoard = ({ setItemSelected, setTransactionInfo, itemSelected }) 
         sessionStorage.clear();
         history.push(`/`);
     }
-
     const toAccounts = () => {
         history.push(`${url}/accounts`);
     }
@@ -32,19 +34,18 @@ const NavBarDashBoard = ({ setItemSelected, setTransactionInfo, itemSelected }) 
         history.push(`${url}/transactionRequest/0/${type}`);
     }
 
-    const { t } = useTranslation();
-
     return (
 
-        <Navbar sticky="top" className="py-0 navBarSections" collapseOnSelect expand="sm" variant="dark">
-            <Container fluid className="bottomInnerBorder">
-                <Row className="w-100 d-flex justify-content-between align-items-center">
-                    <Col className="offset-md-1 offset-lg-2" sm="auto">
+        <Navbar sticky="top" className="py-0 mb-0 navBarSections" collapseOnSelect expand="sm" variant="dark">
+            <Container fluid className="bottomInnerBorder px-0">
+                <Row className="w-100 d-flex justify-content-between align-items-center mx-0">
+                    <Col className="offset-md-1 offset-lg-2 px-0" sm="auto">
                         <Nav>
-                            <Nav.Link active={itemSelected === "accounts" || itemSelected === "Accounts"} eventKey={2} onClick={() => { toAccounts(); setItemSelected("accounts"); setTransactionInfo("notDoneYet") }}>Accounts</Nav.Link>
-                            <Nav.Link active={itemSelected === "movementsTable"} eventKey={5} onClick={() => { toMovements(); setItemSelected("movementsTable"); setTransactionInfo("notDoneYet") }}>Movements table</Nav.Link>
-                            <NavDropdown active={itemSelected === "internalTransaction" || itemSelected === "otherTransaction"} title="Transactions" id="collasible-nav-dropdown">
+                            <Nav.Link className="px-2" active={itemSelected === "accounts" || itemSelected === "Accounts"} eventKey={1} onClick={() => { toAccounts(); setItemSelected("accounts"); setTransactionInfo("notDoneYet") }}>Accounts</Nav.Link>
+                            <Nav.Link className="px-2 px-lg-4" active={itemSelected === "movementsTable"} eventKey={2} onClick={() => { toMovements(); setItemSelected("movementsTable"); setTransactionInfo("notDoneYet") }}>{t("History")}</Nav.Link>
+                            <NavDropdown className="px-0 transactionDropdown" active={itemSelected === "internalTransaction" || itemSelected === "otherTransaction"} title="Transactions" id="collasible-nav-dropdown">
                                 <NavDropdown.Item
+                                    className={haveInternal ? "d-block" : "d-none"}
                                     active={itemSelected === "internalTransaction"}
                                     eventKey={3}
                                     onClick={() => {
@@ -65,11 +66,19 @@ const NavBarDashBoard = ({ setItemSelected, setTransactionInfo, itemSelected }) 
                                     Other Transaction
                                 </NavDropdown.Item>
                             </NavDropdown>
+                            <Nav.Link className="px-2 px-lg-4" active={itemSelected === "Contact"} eventKey={5} onClick={() => { setItemSelected("Contact"); setTransactionInfo("notDoneYet") }}>Contact</Nav.Link>
+
+                            <Nav.Link className="px-2 px-lg-4" active={itemSelected === "Security"} eventKey={6} onClick={() => { setItemSelected("Security"); setTransactionInfo("notDoneYet") }}>Security</Nav.Link>
+
+                            <Nav.Link className="px-2 px-lg-4" active={itemSelected === "Profile"} eventKey={7} onClick={() => { setItemSelected("Profile"); setTransactionInfo("notDoneYet") }}>Profile</Nav.Link>
+
                         </Nav>
                     </Col>
                     <Col sm="auto">
-                        <Nav className="d-flex align-items-center">
-                            <LanguageSelector />
+                        <Nav className="d-flex align-items-center justify-content-end">
+                            <div style={{ paddingBottom: "5px" }}>
+                                <LanguageSelector />
+                            </div>
                             <Nav.Link eventKey={6} onClick={() => logOut()}>
                                 LogOut{" "}
                                 <FontAwesomeIcon icon={faSignOutAlt} />

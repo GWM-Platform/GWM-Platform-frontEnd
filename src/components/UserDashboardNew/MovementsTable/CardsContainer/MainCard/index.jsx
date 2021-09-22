@@ -54,7 +54,7 @@ const MainCard = ({ isMobile, account, accounts }) => {
 
     return (
         <div>
-            <Card border="success">
+            <Card border="danger">
                 <Card.Header >
                     <Container fluid className="px-3">
                         <Row className="d-flex justify-content-start align-items-center">

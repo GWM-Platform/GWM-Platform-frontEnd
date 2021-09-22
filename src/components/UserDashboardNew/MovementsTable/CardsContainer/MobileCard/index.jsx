@@ -79,7 +79,7 @@ const MobileCard = ({ setItemSelected,isMobile, className, account, categorySele
 
     return (
         <div>
-            <Card border="success" className="mb-2">
+            <Card border="danger" className="mb-2">
                 <Card.Header >
                     <Container fluid className="px-3">
                         <Row className="d-flex justify-content-end align-items-center">
@@ -96,7 +96,7 @@ const MobileCard = ({ setItemSelected,isMobile, className, account, categorySele
                                         </Popover.Body>
                                     </Popover>
                                 } popperConfig={account}>
-                                    <Button onClick={(e) => { e.target.focus() }} className="mainColor overlayTrigger" variant="success" >☰</Button>
+                                    <Button onClick={(e) => { e.target.focus() }} className="mainColor overlayTrigger" variant="danger" >☰</Button>
                                 </OverlayTrigger>
                             </Col>
                         </Row>

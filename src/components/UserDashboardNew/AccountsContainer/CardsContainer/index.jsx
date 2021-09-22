@@ -23,8 +23,8 @@ const CardsContainer = ({ setItemSelected, accounts }) => {
     }, [accounts])
 
     return (
-        <Row>
-            <Container className="py-5" style={{ width: "70%" }}>
+        <Row className="d-flex align-items-center" style={{minHeight:"calc( 100vh - 80px)"}}>
+            <Container style={{ width: "70%" }}>
                 <Row className="d-flex align-items-center g-5" style={{ minHeight: "70vh" }}>
                     {
                         accounts.map((j, k) => {

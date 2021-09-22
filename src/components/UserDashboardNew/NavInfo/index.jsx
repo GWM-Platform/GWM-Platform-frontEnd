@@ -13,11 +13,11 @@ const NavBarInfo = ({ userData }) => {
                     <Col  md="1" lg="2">
                         <Navbar.Brand href="" >
                             <img
+
                                 alt=""
-                                src="/logo192.png"
-                                width="80"
-                                height="80"
-                                className="d-inline-block align-top"
+                                src={process.env.PUBLIC_URL + '/images/logo/logo.png'}
+                                height="70"
+                                className="d-inline-block align-top my-2"
                             />
                         </Navbar.Brand>
                     </Col>
@@ -34,12 +34,12 @@ const NavBarInfo = ({ userData }) => {
                         </div>
 
                     </Col>
-                    <Col className="ms-auto image d-flex justify-content-center">
+                    {/*<Col className="ms-auto image d-flex justify-content-center">
                         <img
                             height="80"
-                            src={process.env.PUBLIC_URL + '/images/logo navinfo.png'}
+                            src={process.env.PUBLIC_URL + '/images/logo/GWM.png'}
                             alt="" />
-                    </Col>
+                    </Col>*/}
                 </Row>
             </Container>
 

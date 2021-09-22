@@ -50,7 +50,7 @@ const FormNewCurrency = ({toggleForm,disabled,placeholder,placeholderName,placeh
   return (
     <div>
       <Col md="2">
-        <CButton color="success" className="mainColor my-4 block" onClick={toggleForm} >
+        <CButton color="danger" className="mainColor my-4 block" onClick={toggleForm} >
         <FontAwesomeIcon icon={faChevronLeft} className="me-2" />
         {t("Return")}
         </CButton> 
@@ -70,7 +70,7 @@ const FormNewCurrency = ({toggleForm,disabled,placeholder,placeholderName,placeh
             <Form.Label className="f-left">{t("Currency Symbol")}</Form.Label>
             <Form.Control required onChange={handleChange} defaultValue={placeholderSymbol}/>
           </Form.Group>
-          <CButton color="success"  type="submit"className="mainColor mt-4">
+          <CButton color="danger"  type="submit"className="mainColor mt-4">
             {t("Submit")}
           </CButton>          
         </Form>

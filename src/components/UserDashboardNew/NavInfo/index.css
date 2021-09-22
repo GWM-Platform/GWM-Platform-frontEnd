@@ -1,6 +1,6 @@
 .navBarInfo {
-    background: rgb(0, 167, 75);
-    background: linear-gradient(90deg, rgba(0, 167, 75, 1) 0%, rgba(22, 117, 59, 1) 83%, rgba(33, 91, 50, 1) 100%);
+    background: var(--nav-info-gradient1);
+    background: linear-gradient(90deg, var(--nav-info-gradient1) 0%,var(--nav-info-gradient2)  83%,var(--nav-info-gradient3)  100%);
 }
 .navBarInfo .greeting{
     margin:0;
@@ -8,7 +8,7 @@
     font-weight: bolder;
 }
 .navBarInfo .lastConnection{
-    color:lightgreen;
+    color: darkseagreen;
     font-weight: lighter;
 }
 .navBarInfo .image{

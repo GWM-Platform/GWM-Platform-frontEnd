@@ -420,7 +420,7 @@ const TransactionRequest = ({ setItemSelected, type, setHaveInternal, transactio
             <Container
                 fluid
                 style={{
-                    height: data.transactionType === "1" ? "calc( 100vh - 60px)" : "auto",
+                    minHeight: data.transactionType === "1" ? "calc( 100vh - 60px)" : "auto",
                 }}
             >
                 {accounts.length === 0 ? (
@@ -428,7 +428,7 @@ const TransactionRequest = ({ setItemSelected, type, setHaveInternal, transactio
                         <Col
                             className="freeSpace d-flex justify-content-center align-items-center"
                         >
-                            <Spinner className="me-2" animation="border" variant="success" />
+                            <Spinner className="me-2" animation="border" variant="danger" />
                             <span className="loadingText">{t("Loading")}</span>
                         </Col>
                     </Row>
@@ -733,7 +733,7 @@ const TransactionRequest = ({ setItemSelected, type, setHaveInternal, transactio
                                                         className={`${fetchingBD ? "d-block" : "d-none"} bgWhite borderXNone`}
                                                     >
                                                         <Spinner
-                                                            variant="success"
+                                                            variant="danger"
                                                             as="span"
                                                             animation="border"
                                                             size="sm"
@@ -742,7 +742,7 @@ const TransactionRequest = ({ setItemSelected, type, setHaveInternal, transactio
                                                         />
                                                     </InputGroup.Text>
                                                     <Button
-                                                        variant="success"
+                                                        variant="danger"
                                                         className="mainColor:validated"
                                                         id="button-addon2"
                                                         disabled={fetchingBD}
@@ -877,7 +877,7 @@ const TransactionRequest = ({ setItemSelected, type, setHaveInternal, transactio
                                                                 }`}
                                                         >
                                                             <Spinner
-                                                                variant="success"
+                                                                variant="danger"
                                                                 as="span"
                                                                 animation="border"
                                                                 size="sm"
@@ -886,7 +886,7 @@ const TransactionRequest = ({ setItemSelected, type, setHaveInternal, transactio
                                                             />
                                                         </InputGroup.Text>
                                                         <Button
-                                                            variant="success"
+                                                            variant="danger"
                                                             disabled={verify}
                                                             className="mainColor:validated"
                                                             id="button-addon2"
@@ -1254,7 +1254,7 @@ const TransactionRequest = ({ setItemSelected, type, setHaveInternal, transactio
                                                     data.movementAmount || transacctionInProgress
                                                 }
                                                 type="submit"
-                                                variant="success"
+                                                variant="danger"
                                                 className="mainColor mb-5"
                                             >   <span>
                                                     <Spinner
@@ -1279,7 +1279,7 @@ const TransactionRequest = ({ setItemSelected, type, setHaveInternal, transactio
                                         onClick={() => {
                                             getUserRecents(token);
                                         }}
-                                        variant="success"
+                                        variant="danger"
                                         className="mainColor me-3"
                                     >
                                         get recent
@@ -1288,7 +1288,7 @@ const TransactionRequest = ({ setItemSelected, type, setHaveInternal, transactio
                                         onClick={() => {
                                             getUserSavedContacts(token);
                                         }}
-                                        variant="success"
+                                        variant="danger"
                                         className="mainColor me-3"
                                     >
                                         get saved
@@ -1297,7 +1297,7 @@ const TransactionRequest = ({ setItemSelected, type, setHaveInternal, transactio
                                         onClick={() => {
                                             deleteAccount(token, 30);
                                         }}
-                                        variant="success"
+                                        variant="danger"
                                         className="mainColor"
                                     >
                                         Delete saved

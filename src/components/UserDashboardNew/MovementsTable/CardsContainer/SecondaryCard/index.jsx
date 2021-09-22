@@ -29,7 +29,7 @@ const SecondaryCard = ({ setItemSelected,account,accounts, setCategorySelected, 
     return (
         <Collapse in={display} className="pt-0 pb-2">
             <div>
-                <Card className="cardText" border="success">
+                <Card className="cardText" border="danger">
                     <Card.Header >
                         <Container fluid className="px-3">
                             <Row className="d-flex justify-content-start align-items-center">

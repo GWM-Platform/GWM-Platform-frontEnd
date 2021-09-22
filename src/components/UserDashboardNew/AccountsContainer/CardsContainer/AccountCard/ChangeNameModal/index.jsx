@@ -25,7 +25,7 @@ const ChangeNameModal = ({ show, handleClose }) => {
                 <Button variant="outline-secondary" onClick={handleClose}>
                     Cancel
                 </Button>
-                <Button variant="outline-success" onClick={handleClose}>
+                <Button variant="outline-danger" onClick={handleClose}>
                     Save Changes
                 </Button>
             </Modal.Footer>

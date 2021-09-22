@@ -1,5 +1,5 @@
 .dropdown-item.active, .dropdown-item:active{
-    background-color: rgb(0,114,25);
+    background-color: var(--main-color);
 }
 .dropdown{
     float:left

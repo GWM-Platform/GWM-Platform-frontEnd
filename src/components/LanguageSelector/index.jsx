@@ -32,7 +32,7 @@ const LanguageSelector = () => {
     return (
         <Dropdown >
             <Dropdown.Toggle
-                variant="success btn-sm"
+                variant="danger btn-sm"
                 className="mainColor"
                 id="dropdown-basic">
                 {selected===0 ?  <span className={`flag-icon flag-icon-${languages[0].code}`}></span> : <img src="https://raw.githubusercontent.com/MarcosParengo/assetsNbanking/master/2.png" alt="en" height="16px" style={{verticalAlign:"sub"}}/>}  {t(languages[selected].name)}

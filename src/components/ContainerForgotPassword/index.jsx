@@ -94,7 +94,7 @@ const ContainerForgotPassword = () => {
                         onChange={handleChange}
                       />
                     </CInputGroup>
-                    <CButton color="success" className="mainColor" type="submit" disabled={buttonDisabled}>
+                    <CButton color="danger" className="mainColor" type="submit" disabled={buttonDisabled}>
                       {t("Send password reset email")}
                     </CButton>
                   </CForm>

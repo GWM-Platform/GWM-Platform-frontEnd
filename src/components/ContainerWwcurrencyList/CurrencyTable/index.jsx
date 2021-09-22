@@ -35,7 +35,7 @@ const CurrencyTable = ({ list, toggleForm, setPlaceHolderAndDisabled, deleteItem
           onChange={handleChange}
         />
         <InputGroup.Append>
-          <Button variant="success" className="mainColor" style={{ borderTopLeftRadius: "0", borderBottomLeftRadius: "0" }}>
+          <Button variant="danger" className="mainColor" style={{ borderTopLeftRadius: "0", borderBottomLeftRadius: "0" }}>
             <FontAwesomeIcon icon={faSearch} className="icon" />
           </Button>
         </InputGroup.Append>

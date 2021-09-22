@@ -59,7 +59,7 @@ const ContainerWwcurrencyList = () => {
       <Row className="mt-5">
         <h1>{t("Currencies")}</h1>
         {!showForm && <Col md="2">
-          <CButton color="success" className="mainColor block my-4" onClick={toggleForm}>
+          <CButton color="danger" className="mainColor block my-4" onClick={toggleForm}>
             {t("Add New")}
           </CButton>
         </Col>}

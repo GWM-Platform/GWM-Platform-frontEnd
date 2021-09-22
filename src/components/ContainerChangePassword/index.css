@@ -9,11 +9,11 @@
 }.validation {
     text-align: left;
 }.textRed{
-    color: rgb(201, 44, 44);
+    color: var(--red);
 }.textGreen{
-    color: rgb(0,114,25);
+    color: var(--main-color)
 }.error{
-    color: rgb(145, 85, 85);
+    color: var(--error);
     font-size: 16px;
     padding-bottom: 0rem;
     font-weight: bolder;

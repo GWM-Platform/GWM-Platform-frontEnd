@@ -231,7 +231,7 @@ const ContainerForgotPassword = () => {
                     <CFormText className="mb-4 text-muted formText" style={{ "display": match }}>
                       <p className="textRed validation">{t("The fields \"password\" and \"confirm password\" don't match")}</p>
                     </CFormText>
-                    <CButton color="success" type="submit" className='mainColor mt-4' disabled={buttonStatus} >
+                    <CButton color="danger" type="submit" className='mainColor mt-4' disabled={buttonStatus} >
                       {t("Change password")}
                     </CButton>
                   </CForm>
