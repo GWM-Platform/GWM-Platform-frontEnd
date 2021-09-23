@@ -1,7 +1,7 @@
 {
-  "name": "n-banking",
+  "name": "gwm",
   "version": "0.1.0",
-  "homepage": "http://nbanking2.wadiahcapital.com/",
+  "homepage": "https://gwm-platform.github.io/GWM-Platform-frontEnd/",
   "private": true,
   "dependencies": {
     "@coreui/coreui": "^4.0.0-rc.3",
