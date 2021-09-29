@@ -251,6 +251,10 @@ const TransactionRequest = ({ setItemSelected, type, setHaveInternal, transactio
                                 amount: parseFloat(data.movementAmount),//Amount
                                 description: data.transactionRequestDescription,//Description
                             }
+                        default:
+                            return{
+                                invalidType:true
+                            }
                     }
                 }
 
@@ -279,20 +283,20 @@ const TransactionRequest = ({ setItemSelected, type, setHaveInternal, transactio
                         data.savedAccountId
                     );
                 }
-                sendTransactionRequest(
-                    transactionObject(data.transactionType),
-                    token,
-                    transactionInfo,
-                    setTransactionInfo,
-                    accounts,
-                    data,
-                    setItemSelected,
-                    history,
-                    setTransactionInProgress,
-                    urlPrefix
-                )
-
-
+                if(transactionObject(data.transactionType).invalidType===undefined){
+                    sendTransactionRequest(
+                        transactionObject(data.transactionType),
+                        token,
+                        transactionInfo,
+                        setTransactionInfo,
+                        accounts,
+                        data,
+                        setItemSelected,
+                        history,
+                        setTransactionInProgress,
+                        urlPrefix
+                    )
+                }
             }
         }
         setValidated(true);
@@ -412,6 +416,7 @@ const TransactionRequest = ({ setItemSelected, type, setHaveInternal, transactio
             setSome(!some);
         }
         return () => { };
+        // eslint-disable-next-line
     }, [data, some, type]);
     //-----------------------------------------------------------------------------------------------
 

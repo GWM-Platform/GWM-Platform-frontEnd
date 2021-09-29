@@ -4,3 +4,8 @@
 .dropdown{
     float:left
 }
+
+.languageSelector .bg-none{
+    background-color: transparent;
+    border-color: transparent;
+}

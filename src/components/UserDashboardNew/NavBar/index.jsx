@@ -21,13 +21,14 @@ const NavBarDashBoard = ({ setItemSelected, setTransactionInfo, itemSelected, ha
         sessionStorage.clear();
         history.push(`/`);
     }
+
     const toAccounts = () => {
         history.push(`${url}/accounts`);
     }
 
 
     const toMovements = () => {
-        history.push(`${url}/movementsTable`);
+        history.push(`${url}/history`);
     }
 
     const toTransaction = (type) => {
@@ -36,14 +37,14 @@ const NavBarDashBoard = ({ setItemSelected, setTransactionInfo, itemSelected, ha
 
     return (
 
-        <Navbar sticky="top" className="py-0 mb-0 navBarSections" collapseOnSelect expand="sm" variant="dark">
-            <Container fluid className="bottomInnerBorder px-0">
+        <Navbar sticky="top" className="py-0 mb-0 navBarDesktop" collapseOnSelect expand="sm" variant="dark" >
+            <Container fluid className="bottomInnerBorder px-0 d-none d-sm-none d-md-block">
                 <Row className="w-100 d-flex justify-content-between align-items-center mx-0">
                     <Col className="offset-md-1 offset-lg-2 px-0" sm="auto">
-                        <Nav>
+                        <Nav >
                             <Nav.Link className="px-2" active={itemSelected === "accounts" || itemSelected === "Accounts"} eventKey={1} onClick={() => { toAccounts(); setItemSelected("accounts"); setTransactionInfo("notDoneYet") }}>Accounts</Nav.Link>
-                            <Nav.Link className="px-2 px-lg-4" active={itemSelected === "movementsTable"} eventKey={2} onClick={() => { toMovements(); setItemSelected("movementsTable"); setTransactionInfo("notDoneYet") }}>{t("History")}</Nav.Link>
-                            <NavDropdown className="px-0 transactionDropdown" active={itemSelected === "internalTransaction" || itemSelected === "otherTransaction"} title="Transactions" id="collasible-nav-dropdown">
+                            <Nav.Link className="px-2 px-lg-4" active={itemSelected === "history"} eventKey={2} onClick={() => { toMovements(); setItemSelected("history"); setTransactionInfo("notDoneYet") }}>{t("History")}</Nav.Link>
+                            <NavDropdown className="px-0 transactionDropdown" active={itemSelected === "internalTransaction" || itemSelected === "bankTransfer"} title="Transactions" id="collasible-nav-dropdown">
                                 <NavDropdown.Item
                                     className={haveInternal ? "d-block" : "d-none"}
                                     active={itemSelected === "internalTransaction"}
@@ -56,14 +57,14 @@ const NavBarDashBoard = ({ setItemSelected, setTransactionInfo, itemSelected, ha
                                     Internal Transaction
                                 </NavDropdown.Item>
                                 <NavDropdown.Item
-                                    active={itemSelected === "otherTransaction"}
+                                    active={itemSelected === "bankTransfer"}
                                     eventKey={4}
                                     onClick={() => {
                                         toTransaction(4);
-                                        setItemSelected("otherTransaction");
+                                        setItemSelected("bankTransfer");
                                         setTransactionInfo("notDoneYet")
                                     }}>
-                                    Other Transaction
+                                    Bank Transfer
                                 </NavDropdown.Item>
                             </NavDropdown>
                             <Nav.Link className="px-2 px-lg-4" active={itemSelected === "Contact"} eventKey={5} onClick={() => { setItemSelected("Contact"); setTransactionInfo("notDoneYet") }}>Contact</Nav.Link>
@@ -90,11 +91,76 @@ const NavBarDashBoard = ({ setItemSelected, setTransactionInfo, itemSelected, ha
             <Navbar.Toggle style={{ borderColor: "rgba(0,0,0,0)" }} className="ps-2 ms-2 d-none" aria-controls="responsive-navbar-nav" />
 
             <NavDropdown rootCloseEvent="click" title="☰" className="d-block d-sm-block d-md-none d-lg-none ms-2" id="navbarScrollingDropdown">
-                <Nav.Link eventKey={1} onClick={() => { toAccounts(); setItemSelected("accounts"); setTransactionInfo("notDoneYet") }}>Accounts</Nav.Link>
-                <Nav.Link eventKey={1} onClick={() => { toTransaction(1); setItemSelected("internalTransaction"); setTransactionInfo("notDoneYet") }}>Internal Transaction</Nav.Link>
-                <Nav.Link eventKey={1} onClick={() => { toTransaction(4); setItemSelected("otherTransaction"); setTransactionInfo("notDoneYet") }}>Other Transaction</Nav.Link>
+                <Nav.Link
+                    eventKey={0}
+                    onClick={() => {
+                        toAccounts();
+                        setItemSelected("accounts");
+                        setTransactionInfo("notDoneYet")
+                    }}>
+                    Accounts
+                </Nav.Link>
+                <Nav.Link
+                    eventKey={1}
+                    className="px-2 px-lg-4"
+                    active={itemSelected === "history"}
+                    onClick={() => {
+                        toMovements();
+                        setItemSelected("history");
+                        setTransactionInfo("notDoneYet")
+                    }}>
+                    {t("History")}
+                </Nav.Link>
+                <Nav.Link
+                    eventKey={2}
+                    onClick={() => {
+                        toTransaction(1);
+                        setItemSelected("internalTransaction");
+                        setTransactionInfo("notDoneYet")
+                    }}>
+                    Internal Transaction
+                </Nav.Link>
+                <Nav.Link
+                    eventKey={3}
+                    onClick={() => {
+                        toTransaction(4);
+                        setItemSelected("bankTransfer");
+                        setTransactionInfo("notDoneYet")
+                    }}>
+                    Bank Transfer
+                </Nav.Link>
+                <Nav.Link
+                    eventKey={4}
+                    className="px-2 px-lg-4"
+                    active={itemSelected === "Contact"}
+                    onClick={() => {
+                        setItemSelected("Contact");
+                        setTransactionInfo("notDoneYet")
+                    }}>
+                    Contact
+                </Nav.Link>
+                <Nav.Link
+                    eventKey={5}
+                    className="px-2 px-lg-4"
+                    active={itemSelected === "Security"}
+                    onClick={() => {
+                        setItemSelected("Security");
+                        setTransactionInfo("notDoneYet")
+                    }}>
+                    Security
+                </Nav.Link>
+                <Nav.Link
+                    eventKey={6}
+                    className="px-2 px-lg-4"
+                    active={itemSelected === "Profile"}
+                    onClick={() => {
+                        setItemSelected("Profile");
+                        setTransactionInfo("notDoneYet")
+                    }}>
+                    Profile
+                </Nav.Link>
                 <NavDropdown.Divider />
-                <Nav.Link eventKey={1} onClick={() => logOut()}>LogOut</Nav.Link>
+                <Nav.Link eventKey={7} onClick={() => logOut()}>LogOut</Nav.Link>
             </NavDropdown>
         </Navbar>
     )

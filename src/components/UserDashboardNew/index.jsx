@@ -86,7 +86,7 @@ const UserDashboard = () => {
             <Route path={`${path}/TransactionResult`}>
                 <TransactionResult transactionInfo={transactionInfo} setItemSelected={setItemSelected} />
             </Route>
-            <Route path={`${path}/movementsTable`}>
+            <Route path={`${path}/history`}>
                 <MovementsTable
                     isMobile={isMobile}
                     setItemSelected={setItemSelected}

@@ -1,6 +1,6 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Table, Col, Row, Container, Pagination } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
 import Movement from './Movement';
 import { useTranslation } from "react-i18next";
 

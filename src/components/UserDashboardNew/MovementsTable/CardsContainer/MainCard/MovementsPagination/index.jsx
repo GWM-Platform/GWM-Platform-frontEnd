@@ -1,11 +1,8 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Pagination } from 'react-bootstrap';
-import { useTranslation } from "react-i18next";
 
 const MovementsPagination = ({ page, setPage, movsShown, movementsCount }) => {
-    const { t } = useTranslation();
-
     return (
         <div className={`w-100 ${movementsCount<=movsShown ? "d-none" : "d-block"}`}>
             <Pagination className="mb-0 mt-2 d-flex justify-content-center">

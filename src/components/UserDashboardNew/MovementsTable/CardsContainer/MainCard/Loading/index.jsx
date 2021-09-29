@@ -3,7 +3,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {
   Col,
   Row,
-  Container,
   Spinner,
 } from "react-bootstrap";
 import { useTranslation } from "react-i18next";

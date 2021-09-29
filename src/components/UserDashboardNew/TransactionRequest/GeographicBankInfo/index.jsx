@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { useEffect } from 'react';
-import { Col, Form, Row, Popover, OverlayTrigger, Collapse, Accordion, Container, FloatingLabel } from 'react-bootstrap';
+import { Col, Form, Row, Popover, OverlayTrigger, Accordion, Container, FloatingLabel } from 'react-bootstrap';
 import { useState } from 'react';
 import { useTranslation } from "react-i18next";
 import { urlContext } from '../../../../context/urlContext';
@@ -14,7 +14,6 @@ function GeographicBankInfo({ geoBankInfoActive, setGeoBankInfoActive, bankDataF
     const [subDivisions, setsubDivisions] = useState([])
     const [cities, setCities] = useState([])
     const [citiesCopy, setCitiesCopy] = useState([])
-    const [fetchingCities, setFetchingCities] = useState(false)
     const [active, setActive] = useState("")
 
     const [countryISO, setCountryISO] = useState("")
@@ -63,7 +62,6 @@ function GeographicBankInfo({ geoBankInfoActive, setGeoBankInfoActive, bankDataF
     }
 
     const getCities = (subdivISO) => {
-        setFetchingCities(true)
         var url = `${urlPrefix}/cities?` + new URLSearchParams({
             countryCode: countryISO,
             stateCode: subdivISO,
@@ -82,7 +80,6 @@ function GeographicBankInfo({ geoBankInfoActive, setGeoBankInfoActive, bankDataF
                     setCities(response)
                     setCitiesCopy(response)
                 }
-                setFetchingCities(false)
             });
     }
 

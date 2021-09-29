@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Card, Container, Col, Row, Form, FloatingLabel } from 'react-bootstrap';
+import { Card, Container, Col, Row, Form } from 'react-bootstrap';
 import TableLastMovements from './TableLastMovements';
 import Loading from './Loading';
 

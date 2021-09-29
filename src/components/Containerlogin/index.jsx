@@ -18,7 +18,6 @@
   import { useHistory } from 'react-router-dom';
   import { useTranslation } from "react-i18next";
   import { Col, Row, Container,Spinner } from 'react-bootstrap'
-  import LanguageSelector from '../LanguageSelector';
   import { useState } from 'react';
   
   const ContainerLogin = () => {
@@ -65,8 +64,7 @@
     return (
       <div className="bg-light">
         <Container fluid>
-          <Row className="d-flex min-vh-100  justify-content-center pt-3">
-            <LanguageSelector className="d-none d-sm-none d-md-none d-lg-block d-xl-block ml-auto" />
+          <Row className="d-flex min-vh-100  justify-content-center align-items-center pt-3">
             <Col xs="12" sm="8" md="6" lg="5" xl="3">
               <CCardGroup>
                 <CCard className="loginCard p-4">

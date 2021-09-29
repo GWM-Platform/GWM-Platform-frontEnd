@@ -1,33 +1,39 @@
-.navBarSections {
+.navBarDesktop  {
     background-color: var(--main-bg-nav-color)
 }
 
-.navBarSections .nav-link {
+.navBarDesktop .nav-link {
     padding: 0.5em;
 }
 
-.navbar-dark .navbar-nav .nav-link{
+.navBarDesktop .nav-link{
     border-bottom: 5px solid;
     border-color: transparent;
 }
 
-.navbar-dark .navbar-nav .nav-link.active, .navbar-dark .navbar-nav .show>.nav-link {
+.navBarDesktop .nav-link:hover{
+    border-color: lightgrey!important;
+}
+
+.navBarDesktop .nav-link.active {
     border-bottom: 5px solid;
     border-color: var(--selected-underline-section-color);
 }
+.navBarDesktop .nav-link.active:hover {
+    border-color: var(--selected-underline-section-color)!important;
+}
 
-
-.bottomInnerBorder{
+.navBarDesktop .bottomInnerBorder{
     box-shadow: inset 0px -13px 0px -8px var(--default-underline-section-color);
 }
 
-.transactionDropdown > .dropdown-toggle{
+.navBarDesktop .transactionDropdown > .dropdown-toggle{
     padding-right: .5rem!important;
     padding-left: .5rem!important;
 }
 
 @media (min-width: 992px){
-    .transactionDropdown > .dropdown-toggle{
+    .navBarDesktop .transactionDropdown > .dropdown-toggle{
         padding-right: 1.5rem!important;
         padding-left: 1.5rem!important;
     }

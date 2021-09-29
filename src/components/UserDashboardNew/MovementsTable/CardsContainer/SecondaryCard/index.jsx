@@ -1,6 +1,6 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Collapse, Card, Container, Col, Row, Popover, OverlayTrigger, Button } from 'react-bootstrap';
+import { Collapse, Card, Container, Col, Row } from 'react-bootstrap';
 import { useTranslation } from "react-i18next";
 import {  useRef } from 'react'
 import { useHistory } from 'react-router-dom'
