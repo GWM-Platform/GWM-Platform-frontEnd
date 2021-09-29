@@ -1,0 +1,82 @@
+.history-tabs {
+    border: transparent;
+    background-color: rgb(243, 244, 246);
+    color: rgb(111, 111, 111)
+}
+
+.history-tabs .nav-item>.active {
+    border-radius: 0;
+    border: transparent;
+    border-top: rgb(250, 70, 70) 3px solid;
+}
+
+.nav-item:hover {
+    color: black
+}
+
+.nav-link:hover {
+    border-color: transparent!important;
+    color: black;
+}
+
+.filter .form-control {
+    border-radius: 20px;
+}
+
+.details .title {
+    text-transform: capitalize;
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--main-color)
+}
+
+.details .text {
+    text-transform: capitalize;
+    font-size: 17px;
+    font-weight: 200;
+    width: 100%;
+    border-bottom: var(--main-color) 1px solid;
+}
+
+.details .text>.amount {
+    text-transform: capitalize;
+    text-align: end;
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--main-color)
+}
+
+.border-bottom-main {
+    border-bottom: var(--main-color) 1px solid;
+}
+
+.border-bottom-none {
+    border-bottom: none!important;
+}
+
+.info .left {
+    text-transform: capitalize;
+    font-size: 17px;
+    font-weight: 200;
+}
+
+.info .title {
+    text-transform: uppercase;
+    color: var(--main-color);
+    font-weight: 600;
+    font-size: 23px;
+}
+
+.info .edit {
+    text-transform: capitalize;
+    color: black;
+    font-weight: 400;
+    font-size: 16px;
+}
+
+.info .content {
+    text-transform: capitalize;
+    color: var(--main-color);
+    font-weight: 400;
+    font-size: 16px;
+}

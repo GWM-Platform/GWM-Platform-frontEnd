@@ -31,6 +31,7 @@ const TransactionRequest = ({ setItemSelected, type, setHaveInternal, transactio
     const [token] = useState(sessionStorage.getItem("access_token"));
 
     //Go to login page (used in cases that the token is expired or not valid)
+    // eslint-disable-next-line 
     const toLogin = () => {
         sessionStorage.clear();
         history.push(`/login`);
@@ -95,7 +96,8 @@ const TransactionRequest = ({ setItemSelected, type, setHaveInternal, transactio
     ];
 
     //Context variable
-    const { urlPrefix } = useContext(urlContext)
+// eslint-disable-next-line 
+        const { urlPrefix } = useContext(urlContext)
 
     //--------------------------------------------Functions--------------------------------------------
 

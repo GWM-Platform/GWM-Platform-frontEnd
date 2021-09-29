@@ -14,6 +14,7 @@ const AccountsContainer = ({ isMobile, setItemSelected, numberOfAccounts, setNum
 
     let history = useHistory();
 
+    // eslint-disable-next-line 
     const toLogin = () => {
         sessionStorage.clear();
         history.push(`/login`);

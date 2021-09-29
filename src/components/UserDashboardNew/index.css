@@ -1,7 +1,9 @@
 .secondaryColor {
     background-color: var(--secondary-color);
 }
-
+.dashboard{
+    background-color:var(--main-dashboard-bg)
+}
 .toggler-mobile:after {
     display: inline-block;
     margin-left: .2125em;
@@ -228,6 +230,9 @@ No hace falta media-query porque será nuestro diseño por defecto*/
     .tableAmount {
         font-size: 14px;
         width: 20%;
+    }
+    .accountsContainerWidth{
+        width: 75%;
     }
 }
 /*Pantallas grandes (desktops de menos de 1200px) lg 1200px>X≥992px*/

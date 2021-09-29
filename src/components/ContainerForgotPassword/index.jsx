@@ -29,7 +29,8 @@ const ContainerForgotPassword = () => {
   const { t } = useTranslation();
   let history = useHistory();
 
-  const toLogin = () => {
+  // eslint-disable-next-line 
+    const toLogin = () => {
     history.push(`/login`);
   }
 

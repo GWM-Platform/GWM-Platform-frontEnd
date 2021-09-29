@@ -1,0 +1,10 @@
+.filter .form-control{
+    border-radius: 20px;
+    border-color:var(--main-color)
+}
+
+.filter .button{
+    border-radius: 20px;
+}
+
+.filter .right{border-left: 1px solid white;}

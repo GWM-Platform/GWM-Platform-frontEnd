@@ -1,8 +1,6 @@
 import React, { useContext } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Card, Container, Col, Row, Form } from 'react-bootstrap';
-import TableLastMovements from './TableLastMovements';
-import Loading from './Loading';
+import { Container, Col, Row, Nav } from 'react-bootstrap';
 
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from 'react';
@@ -10,142 +8,142 @@ import { useHistory } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 import { urlContext } from '../../../../../context/urlContext';
-import MovementsPagination from './MovementsPagination';
 
-const MainCard = ({ isMobile, account, accounts }) => {
+import moment from 'moment';
+import './index.css'
+import MovementsTab from './MovementsTab';
+
+
+const MainCard = ({ IsMobile, account, accounts }) => {
+    const [SelectedTabs, setSelectedTabs] = useState("0")
+    // eslint-disable-next-line 
     const { urlPrefix } = useContext(urlContext)
     const [Hide, setHide] = useState(true)
-    const [movements, setMovements] = useState([])
-    const [fetchingMovements, setFetchingMovements] = useState(false)
 
-    const [movsShown, setMovsShown] = useState(15)
-    const [movsShownWanted, setMovsShownWanted] = useState(15)
-    const [page, setPage] = useState(0)
-
-    const handleChange = (e) => {
-        setMovsShownWanted(e.target.value)
-    }
 
     const { t } = useTranslation();
     let history = useHistory();
 
+    // eslint-disable-next-line 
     const toLogin = () => {
-        sessionStorage.clear();        history.push(`/login`);
+        sessionStorage.clear();
+        history.push(`/login`);
     }
-
-    const getMovements = () => {
-        setMovements([{"date":"2021-09-08T13:07:28.000Z","number":"TR-00000313","description":"Descripcion 33","amount":-1},{"date":"2021-09-07T16:09:28.000Z","number":"TR-00000312","description":"Transferencia de algo","amount":-1},{"date":"2021-09-07T16:07:46.000Z","number":"TR-00000311","description":"descripcion","amount":-1},{"date":"2021-09-07T15:59:28.000Z","number":"TR-00000310","description":"Transferencia de algo","amount":-1},{"date":"2021-09-07T15:56:50.000Z","number":"TR-00000309","description":"Transferencia de algo","amount":-12},{"date":"2021-09-07T15:44:28.000Z","number":"TR-00000308","description":"Transferencia de algo","amount":-1},{"date":"2021-09-07T15:43:01.000Z","number":"TR-00000307","description":"descripcion","amount":-123},{"date":"2021-09-07T15:42:21.000Z","number":"TR-00000306","description":"descripcion","amount":-15},{"date":"2021-09-07T15:33:10.000Z","number":"TR-00000305","description":"descripcion","amount":-15},{"date":"2021-09-07T15:23:43.000Z","number":"TR-00000304","description":"Transferencia de algo","amount":-1},{"date":"2021-09-07T14:44:25.000Z","number":"TR-00000302","description":"000","amount":388},{"date":"2021-09-07T14:43:58.000Z","number":"TR-00000301","description":"Transferencia de algo","amount":-388},{"date":"2021-09-07T14:43:00.000Z","number":"TR-00000300","description":"descripcion","amount":-388},{"date":"2021-09-07T14:41:42.000Z","number":"TR-00000299","description":"Transferencia de algo","amount":-5000},{"date":"2021-09-07T14:31:58.000Z","number":"TR-00000298","description":"Transferencia de algo","amount":71.7}])            
-    }
-
-     
-
-    useEffect(() => {
-        getMovements();
-        return () => {
-        }
-    }, [page])
-
-    useEffect(() => {
-        getMovements();
-        setPage(0)
-        return () => {
-        }
-    }, [ account])
 
     return (
-        <div>
-            <Card border="danger">
-                <Card.Header >
-                    <Container fluid className="px-3">
-                        <Row className="d-flex justify-content-start align-items-center">
-                            <Col className="p-0">
-                                <Card.Title className="mb-0">{t(account.description)}</Card.Title>
-                            </Col>
-                        </Row>
-                    </Container>
-                </Card.Header>
-                <Card.Body className="pb-0">
-                    <Container fluid className="p-0">
-                        <Row className="m-1">
-                            <Col xs="3" sm="2" md="1" lg="1" className="currency d-flex align-items-center justify-content-center">
-                                <h2>{account.currency.code}</h2>
-                            </Col>
-                            <Col xs="9" sm="10" md="11" lg="11">
-                                <Card.Title >
-                                    <span className="d-none d-sm-block">
-                                        <Row className="w-100 d-flex justify-content-between">
-                                            <Col>
-                                                {t("Account Number")}: {Hide ? account.externalNumber.replace(/./g, "*") : account.externalNumber}{" "}
-                                                <FontAwesomeIcon
-                                                    onClick={() => {
-                                                        setHide(!Hide)
-                                                    }}
-                                                    icon={Hide ? faEyeSlash : faEye}
-                                                />
-                                            </Col>
-                                            <Col>
-                                                <Row>
-                                                    <Form.Label column="sm" lg={4}>
-                                                        Movs per page
-                                                    </Form.Label>
-                                                    <Col>
-                                                        <Form.Control
-                                                            onChange={handleChange}
-                                                            onBlur={() => { 
-                                                                getMovements()
-                                                                setPage(0)
-                                                                if(movsShownWanted==='' || movsShownWanted<1){
-                                                                    setMovsShown(15)
-                                                                }else{
-                                                                    setMovsShown(movsShownWanted)
-                                                                } 
-                                                                }}
-                                                            size="sm"
-                                                            type="number"
-                                                            placeholder="15"
-                                                            value={movsShownWanted}
-                                                        />
-                                                    </Col>
-                                                </Row>
-                                            </Col>
-                                        </Row>
-                                    </span>
-                                </Card.Title>
-                                <Card.Text>
-                                    <span>{t("Balance")}: <span style={{ fontWeight: "bolder" }}>{account.currency.symbol}</span>{parseFloat(account.balance).toFixed(account.currency.decimals)}</span>
-                                </Card.Text>
-                            </Col>
-                            <div className="p-0 my-2">
-                                <div className="d-flex align-items-start justify-content-center flex-column movementsTableContainer">
-                                    {
-                                        fetchingMovements ?
-                                            <Loading />
-                                            :
-                                            <TableLastMovements
-                                                movementsCount={account.movementsCount}
-                                                isMobile={isMobile}
-                                                content={movements}
-                                                decimals={account.decimals}
-                                                symbol={account.currency.symbol}
-                                                movsShown={movsShown}
-                                                page={page}
-                                                setPage={setPage} />
-                                    }
-                                    <MovementsPagination
-                                        movementsCount={account.movementsCount}
-                                        isMobile={isMobile}
-                                        movsShown={movsShown}
-                                        page={page}
-                                        setPage={setPage}
+        <div className="free-area">
+            <Container fluid className="p-0 mt-4">
+                <Row className="m-0">
+                    <Container className="info ms-0 mb-4 px-0">
+                        <Col className="d-flex justify-content-between align-items-end pe-2">
+                            <h1 className="m-0 title">
+                                {t(account.description)}
+                                <span className="ps-3 edit">
+                                    Edit
+                                </span>
+                            </h1>
+                            <h2 className="m-0 left">
+                                Total balance
+                                <span className="ps-3" style={{ fontWeight: "bolder" }}>
+                                    {account.currency.symbol}{parseFloat(account.balance).toFixed(account.currency.decimals)}
+                                </span>
+                            </h2>
+                        </Col>
+                        <Col className="d-flex justify-content-between align-items-end pe-2 mb-2 pb-2 border-bottom-main">
+                            <Col className="d-flex justify-content-between" sm={3}>
+                                <Col>
+                                    {Hide ? account.externalNumber.replace(/./g, "*") : account.externalNumber}{" "}
+                                </Col>
+                                <Col sm="auto">
+                                    <FontAwesomeIcon
+                                        onClick={() => {
+                                            setHide(!Hide)
+                                        }}
+                                        icon={Hide ? faEyeSlash : faEye}
                                     />
-                                </div>
-                            </div>
-                        </Row>
+                                </Col>
+                            </Col>
+                            <h2 className="m-0 left">Available
+                                <span className="ps-3" style={{ fontWeight: "bolder" }}>
+                                    {account.currency.symbol}{parseFloat(account.balance).toFixed(account.currency.decimals)}
+                                </span>
+                            </h2>
+                        </Col>
+                        <Col className="d-flex justify-content-between align-items-end">
+                            <h1 className="m-0 left">
+                                headline:
+                                <span className="content">
+                                    {` ${account.beneficiaryName}`}
+                                </span>
+                            </h1>
+                        </Col>
+
                     </Container>
-                </Card.Body>
-            </Card>
-        </div>
-    )
+                    {/* Details */}
+                    <Col sm="6" className="ps-0 details">
+                        <div className="bg-white  p-3">
+                            <h1 className="title m-0 mb-3 p-0">
+                                Account details
+                            </h1>
+                            <h2 className="text d-flex justify-content-between ps-2 mb-2">
+                                Interest <span className="amount">{account.currency.symbol}4000</span>
+                            </h2>
+                            <h2 className="text d-flex justify-content-between ps-2 mb-2">
+                                Total balance <span className="amount">{account.currency.symbol}1005</span>
+                            </h2>
+                            <h2 className="text d-flex justify-content-between ps-2 mb-2">
+                                Available <span className="amount">{account.currency.symbol}23</span>
+                            </h2>
+                            <h2 className="text d-flex justify-content-between ps-2 mb-2 border-bottom-none">
+                                Accrued interest <span className="amount">{account.currency.symbol}1000</span>
+                            </h2>
+                        </div>
+                    </Col>
+                    <Col sm="6" className="pe-0 details">
+                        <div className="bg-white p-3">
+                            <h1 className="title m-0 mb-3 p-0">
+                                Account details
+                            </h1>
+                            <h2 className="text d-flex justify-content-between ps-2 mb-2">
+                                {(moment().subtract(3, 'months').format("MMMM"))} <span className="amount">{account.currency.symbol}4000</span>
+                            </h2>
+                            <h2 className="text d-flex justify-content-between ps-2 mb-2">
+                                {(moment().subtract(2, 'months').format("MMMM"))} <span className="amount">{account.currency.symbol}1005</span>
+                            </h2>
+                            <h2 className="text d-flex justify-content-between ps-2 mb-2">
+                                {(moment().subtract(1, 'months').format("MMMM"))} <span className="amount">{account.currency.symbol}23</span>
+                            </h2>
+                            <h2 className="text d-flex justify-content-between ps-2 mb-2 border-bottom-none">
+                                This month <span className="amount">{account.currency.symbol}1000</span>
+                            </h2>
+                        </div>
+                    </Col>
+                    {/*tabs controller*/}
+                    <Container fluid className="mt-4 px-0">
+                        <Nav className="history-tabs" variant="tabs" activeKey={SelectedTabs} onSelect={(e) => { setSelectedTabs(e) }}>
+                            <Nav.Item>
+                                <Nav.Link eventKey={"0"}>{t("Last Movements")}</Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link eventKey={"1"}>{t("Accounts State")}</Nav.Link>
+                            </Nav.Item>
+                        </Nav>
+                    </Container>
+                    {/*tabs content */}
+                    <Container fluid className="p-3 bg-white">
+                        {
+                            SelectedTabs === "0" ?
+                                <MovementsTab IsMobile={IsMobile} account={account} accounts={accounts} />
+                                :
+                                <Container>
+                                    <Row style={{ height: "55vh" }}>
+                                    </Row>
+                                </Container>
+                        }
+                    </Container>
+                </Row>
+            </Container>
+        </div>)
 }
 export default MainCard
 

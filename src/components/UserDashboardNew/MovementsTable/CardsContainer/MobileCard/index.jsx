@@ -32,50 +32,22 @@ const MobileCard = ({ setItemSelected,isMobile, className, account, categorySele
         }
     }
 
+    // eslint-disable-next-line 
     const toLogin = () => {
         sessionStorage.clear();        history.push(`/login`);
     }
 
     const [movements, setMovements] = useState([])
 
-    const getMovements = (token) => {
-        var url = `http://nbanking-staging-alb-978508132.us-east-1.elb.amazonaws.com/customers/accounts/${account.id}/movements?` + new URLSearchParams({
-            limit: movsShown,
-            offset: 0,
-        });
-        fetch(url, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-        }).then(res => res.json())
-            .catch(error => console.error('Error:', error))
-            .then(response => {
-                if (response.statusCode === undefined) {
-                    setMovements(response)
-                    if (response.statusCode === undefined) {
-                    } else {
-                        console.log("fetch to get movements :", response.statusCode)
-                    }
-                } else {
-                    console.log("the communication with the API ")
-                    toLogin()
-                }
-            });
-    }
-
-    let token = sessionStorage.getItem('access_token')
-
-    if(token===null){
-        toLogin()
+    const getMovements = () => {
+        setMovements([{"date":"2021-09-08T13:07:28.000Z","number":"TR-00000313","description":"Descripcion 33","amount":-1},{"date":"2021-09-07T16:09:28.000Z","number":"TR-00000312","description":"Transferencia de algo","amount":-1},{"date":"2021-09-07T16:07:46.000Z","number":"TR-00000311","description":"descripcion","amount":-1},{"date":"2021-09-07T15:59:28.000Z","number":"TR-00000310","description":"Transferencia de algo","amount":-1},{"date":"2021-09-07T15:56:50.000Z","number":"TR-00000309","description":"Transferencia de algo","amount":-12},{"date":"2021-09-07T15:44:28.000Z","number":"TR-00000308","description":"Transferencia de algo","amount":-1},{"date":"2021-09-07T15:43:01.000Z","number":"TR-00000307","description":"descripcion","amount":-123},{"date":"2021-09-07T15:42:21.000Z","number":"TR-00000306","description":"descripcion","amount":-15},{"date":"2021-09-07T15:33:10.000Z","number":"TR-00000305","description":"descripcion","amount":-15},{"date":"2021-09-07T15:23:43.000Z","number":"TR-00000304","description":"Transferencia de algo","amount":-1},{"date":"2021-09-07T14:44:25.000Z","number":"TR-00000302","description":"000","amount":388},{"date":"2021-09-07T14:43:58.000Z","number":"TR-00000301","description":"Transferencia de algo","amount":-388},{"date":"2021-09-07T14:43:00.000Z","number":"TR-00000300","description":"descripcion","amount":-388},{"date":"2021-09-07T14:41:42.000Z","number":"TR-00000299","description":"Transferencia de algo","amount":-5000},{"date":"2021-09-07T14:31:58.000Z","number":"TR-00000298","description":"Transferencia de algo","amount":71.7}])            
     }
 
     useEffect(() => {
-        getMovements(token);
+        getMovements();
         return () => {
         }
-    }, [token, account])
+    }, [ account])
 
     return (
         <div>
@@ -84,20 +56,7 @@ const MobileCard = ({ setItemSelected,isMobile, className, account, categorySele
                     <Container fluid className="px-3">
                         <Row className="d-flex justify-content-end align-items-center">
                             <Col className="p-0">
-                                <Card.Title className="mb-0">{t(account.description)}</Card.Title>
-                            </Col>
-                            <Col xs="auto" sm="3" className="p-0">
-                                <OverlayTrigger rootClose trigger='click' placement="left-start" overlay={
-                                    <Popover id="popover-basic" >
-                                        <Popover.Header as="h3" className="mt-0">{t("Account menu")}</Popover.Header>
-                                        <Popover.Body>
-                                            {accounts.filter((n) => n.currency.name === account.currency.name).length > 1 ? <><span className="toTransaction" onClick={() => toTransaction(1)}><strong><FontAwesomeIcon icon={faChevronRight} /></strong> {t("Internal transaction")}</span><br></br></> : <></>}
-                                            <span className="toTransaction" onClick={() => toTransaction(4)}><strong><FontAwesomeIcon icon={faChevronRight} /></strong> {t("Other transfers")}</span><br></br>
-                                        </Popover.Body>
-                                    </Popover>
-                                } popperConfig={account}>
-                                    <Button onClick={(e) => { e.target.focus() }} className="mainColor overlayTrigger" variant="danger" >☰</Button>
-                                </OverlayTrigger>
+                                <Card.Title className="mb-0 py-3">{t(account.description)}</Card.Title>
                             </Col>
                         </Row>
                     </Container>

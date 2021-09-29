@@ -6,7 +6,8 @@ import { useHistory } from 'react-router-dom'
 import { Spinner, Row, Container, Col } from 'react-bootstrap';
 import { urlContext } from '../../../context/urlContext';
 const MovementsTable = ({ isMobile, setItemSelected, numberOfAccounts, setNumberOfAccounts }) => {
-    const { urlPrefix } = useContext(urlContext)
+// eslint-disable-next-line 
+        const { urlPrefix } = useContext(urlContext)
     const { t } = useTranslation();
 
     const [account, setAccount] = useState([]);
@@ -14,6 +15,7 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfAccounts, setNumber
 
     let history = useHistory();
 
+    // eslint-disable-next-line 
     const toLogin = () => {
         sessionStorage.clear(); history.push(`/login`);
     }

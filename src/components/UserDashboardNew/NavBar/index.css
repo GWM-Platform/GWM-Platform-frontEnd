@@ -1,7 +1,12 @@
 .navBarDesktop  {
-    background-color: var(--main-bg-nav-color)
+    background-color: var(--main-bg-nav-color);
 }
-
+.scrollable{
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    flex-direction: row;
+}
 .navBarDesktop .nav-link {
     padding: 0.5em;
 }

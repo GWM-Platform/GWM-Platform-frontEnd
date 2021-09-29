@@ -116,7 +116,7 @@
                       </Row>
                       <Row className="d-flex flex-row-reverse">
                         <Col xs="12">
-                          <CButton type="submit" disabled={buttonDisabled} color="danger" className="mainColor button block px-4" /*onClick={toDashBoard}*/>
+                          <CButton type="submit" disabled={buttonDisabled} color="secondary" className="mainColor button block px-4" /*onClick={toDashBoard}*/>
                             <Spinner
                               as="span"
                               animation="border"

@@ -5,7 +5,8 @@ import { useTranslation } from "react-i18next";
 import { urlContext } from '../../context/urlContext';
 
 function Landing() {
-    const { urlPrefix } = useContext(urlContext)
+// eslint-disable-next-line 
+        const { urlPrefix } = useContext(urlContext)
 
     const { t } = useTranslation();
 
@@ -15,6 +16,7 @@ function Landing() {
 
     let history = useHistory();
 
+    // eslint-disable-next-line 
     const toLogin = () => {
         sessionStorage.clear();        history.push(`/login`);
     }

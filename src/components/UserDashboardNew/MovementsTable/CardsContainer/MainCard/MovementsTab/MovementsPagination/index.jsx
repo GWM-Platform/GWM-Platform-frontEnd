@@ -2,9 +2,10 @@ import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Pagination } from 'react-bootstrap';
 
-const MovementsPagination = ({ page, setPage, movsShown, movementsCount }) => {
+const MovementsPagination = ({ page, setPage, movsShown, movementsCount,useFilter }) => {
+
     return (
-        <div className={`w-100 ${movementsCount<=movsShown ? "d-none" : "d-block"}`}>
+        <div className={`w-100 ${movementsCount<=movsShown || useFilter ? "d-none" : "d-block"}`}>
             <Pagination className="mb-0 mt-2 d-flex justify-content-center">
                 <Pagination.First
                     className={page < 2 ? "d-none" : "d-block"}

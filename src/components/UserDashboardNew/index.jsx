@@ -15,6 +15,7 @@ import TransactionResult from './TransactionResult';
 import MovementsTable from './MovementsTable';
 
 const UserDashboard = () => {
+    // eslint-disable-next-line 
     const { urlPrefix } = useContext(urlContext)
 
     const { path } = useRouteMatch()
@@ -42,8 +43,10 @@ const UserDashboard = () => {
 
     let isMobile = (width <= 576);
 
+    // eslint-disable-next-line 
     const toLogin = () => {
-        sessionStorage.clear(); history.push(`/login`);
+        sessionStorage.clear();
+        history.push(`/login`);
     }
 
     //When the user try to open this url it checks if the user has a valid token in their session storage,
@@ -63,7 +66,7 @@ const UserDashboard = () => {
 
 
     return (
-        <div >
+        <div className="dashboard" >
             <NavInfo userData={userData} />
             <NavBar setItemSelected={setItemSelected} setTransactionInfo={setTransactionInfo} haveInternal={haveInternal} itemSelected={itemSelected} />
             <Route path={`${path}/accounts`}>

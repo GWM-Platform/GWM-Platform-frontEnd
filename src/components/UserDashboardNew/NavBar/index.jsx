@@ -38,25 +38,13 @@ const NavBarDashBoard = ({ setItemSelected, setTransactionInfo, itemSelected, ha
     return (
 
         <Navbar sticky="top" className="py-0 mb-0 navBarDesktop" collapseOnSelect expand="sm" variant="dark" >
-            <Container fluid className="bottomInnerBorder px-0 d-none d-sm-none d-md-block">
+            <Container fluid className="bottomInnerBorder px-0">
                 <Row className="w-100 d-flex justify-content-between align-items-center mx-0">
                     <Col className="offset-md-1 offset-lg-2 px-0" sm="auto">
-                        <Nav >
+                        <Nav className="scrollable" >
                             <Nav.Link className="px-2" active={itemSelected === "accounts" || itemSelected === "Accounts"} eventKey={1} onClick={() => { toAccounts(); setItemSelected("accounts"); setTransactionInfo("notDoneYet") }}>Accounts</Nav.Link>
                             <Nav.Link className="px-2 px-lg-4" active={itemSelected === "history"} eventKey={2} onClick={() => { toMovements(); setItemSelected("history"); setTransactionInfo("notDoneYet") }}>{t("History")}</Nav.Link>
-                            <NavDropdown className="px-0 transactionDropdown" active={itemSelected === "internalTransaction" || itemSelected === "bankTransfer"} title="Transactions" id="collasible-nav-dropdown">
-                                <NavDropdown.Item
-                                    className={haveInternal ? "d-block" : "d-none"}
-                                    active={itemSelected === "internalTransaction"}
-                                    eventKey={3}
-                                    onClick={() => {
-                                        toTransaction(1);
-                                        setItemSelected("internalTransaction");
-                                        setTransactionInfo("notDoneYet")
-                                    }}>
-                                    Internal Transaction
-                                </NavDropdown.Item>
-                                <NavDropdown.Item
+                            <Nav.Link
                                     active={itemSelected === "bankTransfer"}
                                     eventKey={4}
                                     onClick={() => {
@@ -65,17 +53,22 @@ const NavBarDashBoard = ({ setItemSelected, setTransactionInfo, itemSelected, ha
                                         setTransactionInfo("notDoneYet")
                                     }}>
                                     Bank Transfer
-                                </NavDropdown.Item>
-                            </NavDropdown>
+                            </Nav.Link>
+                            
                             <Nav.Link className="px-2 px-lg-4" active={itemSelected === "Contact"} eventKey={5} onClick={() => { setItemSelected("Contact"); setTransactionInfo("notDoneYet") }}>Contact</Nav.Link>
 
                             <Nav.Link className="px-2 px-lg-4" active={itemSelected === "Security"} eventKey={6} onClick={() => { setItemSelected("Security"); setTransactionInfo("notDoneYet") }}>Security</Nav.Link>
 
                             <Nav.Link className="px-2 px-lg-4" active={itemSelected === "Profile"} eventKey={7} onClick={() => { setItemSelected("Profile"); setTransactionInfo("notDoneYet") }}>Profile</Nav.Link>
+                            
+                            <Nav.Link className="d-block d-md-none"eventKey={6} onClick={() => logOut()}>
+                                LogOut{" "}
+                                <FontAwesomeIcon icon={faSignOutAlt} />
+                            </Nav.Link>
 
                         </Nav>
                     </Col>
-                    <Col sm="auto">
+                    <Col sm="auto" className="d-none d-md-block">
                         <Nav className="d-flex align-items-center justify-content-end">
                             <div style={{ paddingBottom: "5px" }}>
                                 <LanguageSelector />
@@ -90,7 +83,7 @@ const NavBarDashBoard = ({ setItemSelected, setTransactionInfo, itemSelected, ha
             </Container>
             <Navbar.Toggle style={{ borderColor: "rgba(0,0,0,0)" }} className="ps-2 ms-2 d-none" aria-controls="responsive-navbar-nav" />
 
-            <NavDropdown rootCloseEvent="click" title="☰" className="d-block d-sm-block d-md-none d-lg-none ms-2" id="navbarScrollingDropdown">
+            <NavDropdown rootCloseEvent="click" title="☰" className="d-none d-sm-none d-md-none d-lg-none ms-2" id="navbarScrollingDropdown">
                 <Nav.Link
                     eventKey={0}
                     onClick={() => {

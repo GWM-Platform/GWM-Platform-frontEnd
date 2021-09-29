@@ -14,6 +14,8 @@
   --nav-info-gradient2:rgb(22, 117, 59);
   --nav-info-gradient3:rgb(33, 91, 50);
   */
+
+
   --main-color: rgb(75, 53, 53);
   --secondary-color:   rgb(141, 141, 141);
   --error:rgb(255, 0, 0);
@@ -27,13 +29,56 @@
   --nav-info-gradient1:rgb(212, 212, 212);
   --footer-background:#464646;
 
+  --main-dashboard-bg:rgb(202,218,192);
+
+  --secondary-card-secondary:rgb(244,246,241);
+  --main-card-color: rgb(124, 124, 124);
+
   /*NavBar*/
   --main-bg-nav-color:#6b6b6b;
   --selected-underline-section-color:#b3b3b3;
   --default-underline-section-color:#383838;
   --text-nav-section-color:#E2E5EA
 }
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+  border-radius: 5px;
+}
 
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.text-green{
+  color:var(--main-color)
+}
+.text-red{
+  color:red
+}
+
+.free-area{
+  height:calc( 100vh - 100px);
+  overflow-y:auto;
+  overflow-x: hidden;
+}
+
+.min-free-area{
+  min-height:calc( 100vh - 100px);
+}
 .mainColor{
   background-color: var(--main-color)
 }

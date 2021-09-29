@@ -22,20 +22,18 @@ const CardsContainer = ({ setItemSelected, accounts }) => {
     }, [accounts])
 
     return (
-        <Row className="d-flex align-items-center" style={{minHeight:"calc( 100vh - 80px)"}}>
-            <Container style={{ width: "70%" }}>
-                <Row className="d-flex align-items-center g-5" style={{ minHeight: "70vh" }}>
-                    {
-                        accounts.map((j, k) => {
-                                return (
-                                    <AccountCard setItemSelected={setItemSelected} accounts={accounts} account={j}/>
-                                )
-                            }
-                        )
-                    }
-                </Row>
-            </Container>
-        </Row>
+        <Container className="py-5 mt-2 d-flex align-items-center justify-content-center min-free-area accountsContainerWidth">
+            <Row className="w-100 d-flex align-items-center justify-content-center g-5 h-100">
+                {
+                    accounts.map((j, k) => {
+                            return (
+                                <AccountCard key={k} setItemSelected={setItemSelected} accounts={accounts} account={j}/>
+                            )
+                        }
+                    )
+                }
+            </Row>
+        </Container>
     )
 }
 export default CardsContainer

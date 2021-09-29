@@ -3,11 +3,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {
   Col,
   Row,
-  Spinner,
 } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 
-const Loading = () => {
+const NoMovements = () => {
   //To use the translations from i18n
   const { t } = useTranslation();  
   return (
@@ -15,10 +14,9 @@ const Loading = () => {
         <Col
           className="d-flex justify-content-center align-items-center"
         >
-          <Spinner className="me-2" animation="border" variant="danger" />
-          <span className="loadingText">{t("Loading")}</span>
+          <span className="loadingText">{t("There is no movements to show")}</span>
         </Col>
       </Row>
   )
 }
-export default Loading
+export default NoMovements

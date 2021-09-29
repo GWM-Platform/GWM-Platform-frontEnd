@@ -22,6 +22,8 @@ import { urlContext } from '../../context/urlContext';
 const ContainerForgotPassword = () => {
   const { t } = useTranslation();
   let history = useHistory();
+  
+  // eslint-disable-next-line 
   const { urlPrefix } = useContext(urlContext)
 
   const { user, token } = useParams();
@@ -31,7 +33,8 @@ const ContainerForgotPassword = () => {
     username: user
   })
 
-  const toLogin = () => {
+  // eslint-disable-next-line 
+    const toLogin = () => {
     history.push(`/login`);
   }
 
