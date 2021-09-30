@@ -55,7 +55,7 @@ const NavBarDashBoard = ({ setItemSelected, setTransactionInfo, itemSelected, ha
                                     setItemSelected("accounts");
                                     setTransactionInfo("notDoneYet")
                                 }}
-                            >Accounts</Nav.Link>
+                            >{t("Accounts")}</Nav.Link>
                             
                             <Nav.Link
                                 className="px-2 px-lg-4"
@@ -66,7 +66,7 @@ const NavBarDashBoard = ({ setItemSelected, setTransactionInfo, itemSelected, ha
                                     setItemSelected("createTicket");
                                     setTransactionInfo("notDoneYet")
                                 }}
-                            >Create New Ticket</Nav.Link>
+                            >{t("Create New Ticket")}</Nav.Link>
 
                             <Nav.Link
                                 className="px-2 px-lg-4"
@@ -88,7 +88,7 @@ const NavBarDashBoard = ({ setItemSelected, setTransactionInfo, itemSelected, ha
                                     setTransactionInfo("notDoneYet")
                                 }}
                             >
-                                Bank Transfer
+                                {t("Bank Transfer")}
                             </Nav.Link>
 
                             <Nav.Link
@@ -99,7 +99,7 @@ const NavBarDashBoard = ({ setItemSelected, setTransactionInfo, itemSelected, ha
                                     setItemSelected("Contact");
                                     setTransactionInfo("notDoneYet")
                                 }}
-                            >Contact</Nav.Link>
+                            >{t("Contact")}</Nav.Link>
 
                             <Nav.Link
                                 className="px-2 px-lg-4"
@@ -109,7 +109,7 @@ const NavBarDashBoard = ({ setItemSelected, setTransactionInfo, itemSelected, ha
                                     setItemSelected("Security");
                                     setTransactionInfo("notDoneYet")
                                 }}
-                            >Security</Nav.Link>
+                            >{t("Security")}</Nav.Link>
 
                             <Nav.Link
                                 className="px-2 px-lg-4"
@@ -119,10 +119,10 @@ const NavBarDashBoard = ({ setItemSelected, setTransactionInfo, itemSelected, ha
                                     setItemSelected("Profile");
                                     setTransactionInfo("notDoneYet")
                                 }}
-                            >Profile</Nav.Link>
+                            >{t("Profile")}</Nav.Link>
 
                             <Nav.Link className="d-block d-md-none" eventKey={9} onClick={() => logOut()}>
-                                LogOut{" "}
+                            {t("LogOut")}{" "}
                                 <FontAwesomeIcon icon={faSignOutAlt} />
                             </Nav.Link>
 

@@ -30,7 +30,7 @@ const OperationFormContainer = ({ types, data, setData, some, setSome, setOpen, 
                     </div>
                     {label(data)}
                 </Form.Label>
-                <OperationForm types={types} data={data} setData={setData} some={some} setSome={setSome} />
+                <OperationForm data={data} setData={setData} some={some} setSome={setSome} />
             </Row>
         </div>
     )

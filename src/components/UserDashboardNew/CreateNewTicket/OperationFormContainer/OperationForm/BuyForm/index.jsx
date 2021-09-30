@@ -3,12 +3,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Row } from 'react-bootstrap'
 import FoundCard from './FoundCard';
 
-const BuyForm = ({ types, data, setData, some, setSome, setOpen, open }) => {
+const BuyForm = ({  data, setData, some, setSome}) => {
 
     const founds = [{
         name: "CryptoCurrency found",
         totalFeeParts: 1000,
-        feePartsAvalilable: 100,
+        feePartsAvalilable: 37,
         feePartsValue: 30,
         composition: [{
             label: 'Bitcoin USD',
@@ -84,7 +84,7 @@ const BuyForm = ({ types, data, setData, some, setSome, setOpen, open }) => {
             <Row className="flex-row flex-nowrap overflow-auto">
                 {founds.map((found, key) => {
                     return (
-                        <FoundCard found={found} />
+                        <FoundCard key={key} ownKey={key} found={found} data={data} setData={setData} some={some} setSome={setSome}/>
                     )
                 })}
             </Row>

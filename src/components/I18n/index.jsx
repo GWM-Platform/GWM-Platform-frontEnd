@@ -184,7 +184,13 @@ i18n
           "Transaction status":"Estado de la transferencia",
           "Transaction from":"Transferido desde",
           "Transaction to":"Transferido a",
-          "Summary":"Resumen"
+          "Summary":"Resumen",
+          "History":"Historial",
+          "Create New Ticket":"Crear un nuevo ticket",
+          "Contact":"Contacto",
+          "Bank Transfer":"Transaccion Bancaria",
+          "Security":"Seguridad",
+          "Profile":"Perfil"
         }
       }
     },

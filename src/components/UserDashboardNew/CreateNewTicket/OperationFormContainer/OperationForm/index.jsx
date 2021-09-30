@@ -5,11 +5,11 @@ import SellForm from './SellForm';
 import DepositForm from './DepositForm';
 import WithdrawForm from './WithdrawForm';
 
-const OperationForm = ({types,data,setData,some,setSome,setOpen,open}) => {
+const OperationForm = ({data,setData,some,setSome}) => {
     switch(data.type){
         case 0:
             return (
-                <BuyForm />
+                <BuyForm data={data} setData={setData} some={some} setSome={setSome}/>
             )
         case 1:
             return (
