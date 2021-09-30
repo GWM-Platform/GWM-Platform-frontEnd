@@ -25,6 +25,7 @@ const FoundCard = ({ found, ownKey, data, setData, some, setSome }) => {
                         className="d-block w-100"
                         legend={false}
                         data={found.composition}
+                        colors={['#FFA07A','#FA8072','#E9967A','#F08080','#CD5C5C','#DC143C','#B22222','#FFO000','#8B0000','#800000','#FF6347','#FF4500','#DB7093']}
                         height={200}
                         width={200} />
                 </Card.Body>
