@@ -53,10 +53,4 @@ const FoundCard = ({ found, ownKey, data, setData, some, setSome }) => {
     )
 }
 
-const setTypeSelected = (data, setData, ownKey, some, setSome) => {
-    let aux = data
-    aux.type = ownKey
-    setData(aux)
-    setSome(!some)
-}
 export default FoundCard

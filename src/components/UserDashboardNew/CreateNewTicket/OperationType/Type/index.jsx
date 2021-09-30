@@ -27,6 +27,9 @@ const setTypeSelected = (data, setData, ownKey, some, setSome, setOpen, open) =>
         setData(aux)
     }else{
         setOpen(!open)
+        let aux = data
+        aux.type = -1
+        setData(aux)
 
         setTimeout(() => {
         let aux = data
