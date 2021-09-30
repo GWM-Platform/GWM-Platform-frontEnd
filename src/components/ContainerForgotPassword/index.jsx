@@ -19,10 +19,13 @@ import { useHistory } from 'react-router-dom'
 import { urlContext } from '../../context/urlContext';
 
 const ContainerForgotPassword = () => {
+  // eslint-disable-next-line
   const { urlPrefix } = useContext(urlContext)
 
   const [data] = useState({});
+  // eslint-disable-next-line
   const [error, setError] = useState("")
+  // eslint-disable-next-line
   const [message, setMessage] = useState("")
   const [buttonDisabled, setButtonDisabled] = useState(false)
 

@@ -1,40 +1,26 @@
 import React, { useContext } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Popover, Button, OverlayTrigger, Card, Container, Col, Row } from 'react-bootstrap';
+import { Card, Container, Col, Row } from 'react-bootstrap';
 import TableLastMovements from './TableLastMovements';
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronRight, faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
+import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 import { urlContext } from '../../../../../context/urlContext';
 
 const MobileCard = ({ setItemSelected,isMobile, className, account, categorySelected, accounts, numberOfAccounts, ownKey }) => {
     const [Hide, setHide] = useState(true)
+     // eslint-disable-next-line
     const {urlPrefix}=useContext(urlContext)
-
-    let movsShown
-    if (isMobile) {
-        movsShown = Math.round(((window.innerHeight - 250) - 41) / (41 + 38) - 1)
-    } else {
-        movsShown = (Math.round(((window.innerHeight - 250) - 41) / 41) - 1)
-    }
 
     const { t } = useTranslation();
     let history = useHistory();
 
-    const toTransaction = (type) => {
-        history.push(`transactionRequest/${account.id}/${type}`);
-        if(type===4){
-            setItemSelected("otherTransaction")
-        }else{
-            setItemSelected("internalTransaction")
-        }
-    }
-
     // eslint-disable-next-line 
     const toLogin = () => {
-        sessionStorage.clear();        history.push(`/login`);
+        sessionStorage.clear();  
+        history.push(`/login`);
     }
 
     const [movements, setMovements] = useState([])

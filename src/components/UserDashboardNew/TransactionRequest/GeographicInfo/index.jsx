@@ -162,7 +162,7 @@ function GeographicInfo({ data, setData }) {
         getCountries()
         return () => {
         }
-    }, [])
+    })
 
     const handleBlur = () => {
         setTimeout(() => {

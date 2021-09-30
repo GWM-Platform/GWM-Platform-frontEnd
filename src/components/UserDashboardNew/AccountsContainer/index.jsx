@@ -6,6 +6,7 @@ import { useHistory } from 'react-router-dom'
 import { Spinner, Row, Container, Col } from 'react-bootstrap';
 import { urlContext } from '../../../context/urlContext';
 const AccountsContainer = ({ isMobile, setItemSelected, numberOfAccounts, setNumberOfAccounts, setHaveInternal }) => {
+    // eslint-disable-next-line
     const {urlPrefix}=useContext(urlContext)
     const { t } = useTranslation();
 
@@ -36,7 +37,7 @@ const AccountsContainer = ({ isMobile, setItemSelected, numberOfAccounts, setNum
                 }
                 setNumberOfAccounts(catchedUserData.length)
             }
-
+    // eslint-disable-next-line
         }, []);
 
     useEffect(() => {

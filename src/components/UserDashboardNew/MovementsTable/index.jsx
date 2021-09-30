@@ -36,8 +36,8 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfAccounts, setNumber
                 }
                 setNumberOfAccounts(catchedUserData.length)
             }
-
-        }, []);
+             // eslint-disable-next-line
+        }, [account]);
 
     useEffect(() => {
         getAccounts();

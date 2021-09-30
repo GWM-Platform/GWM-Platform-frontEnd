@@ -1,22 +1,24 @@
-.navBarDesktop  {
+.navBarDesktop {
     background-color: var(--main-bg-nav-color);
 }
-.scrollable{
+
+.scrollable {
     max-width: 100%;
-    overflow-x: auto;
+    overflow-x: overlay;
     white-space: nowrap;
     flex-direction: row;
 }
+
 .navBarDesktop .nav-link {
     padding: 0.5em;
 }
 
-.navBarDesktop .nav-link{
+.navBarDesktop .nav-link {
     border-bottom: 5px solid;
     border-color: transparent;
 }
 
-.navBarDesktop .nav-link:hover{
+.navBarDesktop .nav-link:hover {
     border-color: lightgrey!important;
 }
 
@@ -24,21 +26,22 @@
     border-bottom: 5px solid;
     border-color: var(--selected-underline-section-color);
 }
+
 .navBarDesktop .nav-link.active:hover {
     border-color: var(--selected-underline-section-color)!important;
 }
 
-.navBarDesktop .bottomInnerBorder{
+.navBarDesktop .bottomInnerBorder {
     box-shadow: inset 0px -13px 0px -8px var(--default-underline-section-color);
 }
 
-.navBarDesktop .transactionDropdown > .dropdown-toggle{
+.navBarDesktop .transactionDropdown>.dropdown-toggle {
     padding-right: .5rem!important;
     padding-left: .5rem!important;
 }
 
-@media (min-width: 992px){
-    .navBarDesktop .transactionDropdown > .dropdown-toggle{
+@media (min-width: 992px) {
+    .navBarDesktop .transactionDropdown>.dropdown-toggle {
         padding-right: 1.5rem!important;
         padding-left: 1.5rem!important;
     }

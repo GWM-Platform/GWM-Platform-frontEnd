@@ -148,7 +148,7 @@ function GeographicBankInfo({ geoBankInfoActive, setGeoBankInfoActive, bankDataF
         getCountries()
         return () => {
         }
-    }, [])
+    })
 
     return (
         <Accordion

@@ -42,6 +42,7 @@ const ContainerForgotPassword = () => {
   data.username = user
 
   const [buttonStatus, setbuttonStatus] = useState(true)
+  // eslint-disable-next-line
   const [error, setError] = useState("")
 
 

@@ -5,20 +5,17 @@ import { useTranslation } from "react-i18next";
 import { urlContext } from '../../context/urlContext';
 
 function Landing() {
-// eslint-disable-next-line 
-        const { urlPrefix } = useContext(urlContext)
+    // eslint-disable-next-line 
+    const { urlPrefix } = useContext(urlContext)
 
     const { t } = useTranslation();
-
-    const toDashBoard = () => {
-        history.push(`/dashboard/accounts`);
-    }
 
     let history = useHistory();
 
     // eslint-disable-next-line 
     const toLogin = () => {
-        sessionStorage.clear();        history.push(`/login`);
+        sessionStorage.clear();
+        history.push(`/login`);
     }
 
     //When the app is opened, it checks if the user has a valid token in their local storage,

@@ -10,6 +10,7 @@ import AccountsContainer from './AccountsContainer';
 import NavBar from './NavBar';
 import NavInfo from './NavInfo';
 import Footer from './Footer';
+import CreateNewTicket from './CreateNewTicket';
 
 import TransactionResult from './TransactionResult';
 import MovementsTable from './MovementsTable';
@@ -96,6 +97,9 @@ const UserDashboard = () => {
                     numberOfAccounts={numberOfAccounts}
                     setNumberOfAccounts={setNumberOfAccounts}
                 />
+            </Route>
+            <Route path={`${path}/createTicket`}>
+                <CreateNewTicket />
             </Route>
             <Footer />
         </div>

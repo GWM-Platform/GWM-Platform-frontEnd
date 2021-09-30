@@ -668,7 +668,7 @@ const TransactionRequest = ({ setItemSelected, type, setHaveInternal, transactio
                                         </Form.Label>
                                         <Col sm={9} xl={10}>
                                             <Container className="px-0" fluid>
-                                                <Row className="accountSelecto ">
+                                                <Row className="accountSelector ">
                                                     {transactionTypes.map((u, i) => {
                                                         return u === "" ? (
                                                             <></>

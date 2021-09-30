@@ -2,7 +2,6 @@ import React, { useContext } from 'react'
 import moment from 'moment';
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom'
 import { urlContext } from '../../../../../../context/urlContext';
 
 import './index.css'
@@ -11,7 +10,6 @@ import { Container, Col, Row, Form, Button, ButtonGroup } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 import TableLastMovements from './TableLastMovements';
-import Loading from './Loading';
 import MovementsPagination from './MovementsPagination';
 import NoMovements from './NoMovements';
 
@@ -21,7 +19,6 @@ const MovementsTab = ({ IsMobile, account }) => {
     const [Some, setSome] = useState(true)
 
     const [movements, setMovements] = useState([])
-    const [fetchingMovements, setFetchingMovements] = useState(false)
     const [movsShown, setMovsShown] = useState(15)
     const [movsShownWanted, setMovsShownWanted] = useState(15)
     const [page, setPage] = useState(0)
@@ -47,7 +44,6 @@ const MovementsTab = ({ IsMobile, account }) => {
     }
 
     const { t } = useTranslation();
-    let history = useHistory();
 
     const getMovements = () => {
         setMovements([{"date":"2021-09-08T13:07:28.000Z","number":"TR-00000313","description":"Descripcion 33","amount":-1},{"date":"2021-09-07T16:09:28.000Z","number":"TR-00000312","description":"Transferencia de algo","amount":-1},{"date":"2021-09-07T16:07:46.000Z","number":"TR-00000311","description":"descripcion","amount":-1},{"date":"2021-09-07T15:59:28.000Z","number":"TR-00000310","description":"Transferencia de algo","amount":-1},{"date":"2021-09-07T15:56:50.000Z","number":"TR-00000309","description":"Transferencia de algo","amount":-12},{"date":"2021-09-07T15:44:28.000Z","number":"TR-00000308","description":"Transferencia de algo","amount":-1},{"date":"2021-09-07T15:43:01.000Z","number":"TR-00000307","description":"descripcion","amount":-123},{"date":"2021-09-07T15:42:21.000Z","number":"TR-00000306","description":"descripcion","amount":-15},{"date":"2021-09-07T15:33:10.000Z","number":"TR-00000305","description":"descripcion","amount":-15},{"date":"2021-09-07T15:23:43.000Z","number":"TR-00000304","description":"Transferencia de algo","amount":-1},{"date":"2021-09-07T14:44:25.000Z","number":"TR-00000302","description":"000","amount":388},{"date":"2021-09-07T14:43:58.000Z","number":"TR-00000301","description":"Transferencia de algo","amount":-388},{"date":"2021-09-07T14:43:00.000Z","number":"TR-00000300","description":"descripcion","amount":-388},{"date":"2021-09-07T14:41:42.000Z","number":"TR-00000299","description":"Transferencia de algo","amount":-5000},{"date":"2021-09-07T14:31:58.000Z","number":"TR-00000298","description":"Transferencia de algo","amount":71.7}])            
@@ -180,9 +176,9 @@ const MovementsTab = ({ IsMobile, account }) => {
             <div className="p-0 mb-2">
                 <div className="d-flex align-items-start justify-content-center flex-column movementsTableContainer">
                     {
-                        fetchingMovements ?
+                        /*fetchingMovements ?
                             <Loading />
-                            :
+                            :*/
                             movements.length>0 ?
                             <TableLastMovements
                                 movementsCount={account.movementsCount}

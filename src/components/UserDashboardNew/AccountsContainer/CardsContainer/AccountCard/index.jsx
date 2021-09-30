@@ -4,7 +4,7 @@ import { Row, Col, Card, Button,Popover,OverlayTrigger } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEyeSlash, faEye, faIdCard, faPaperPlane,faChevronRight } from '@fortawesome/free-solid-svg-icons'
+import { faEyeSlash, faEye, faIdCard, faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import { useHistory } from 'react-router-dom'
 import './index.css'
 import ChangeNameModal from './ChangeNameModal'

@@ -1,0 +1,83 @@
+.newTicket {
+    text-transform: capitalize;
+}
+
+.newTicket .formSection {
+    padding: 2em 0em;
+    margin-bottom: 0em;
+    border-bottom: var(--main-color) 1px solid;
+}
+
+.newTicket .label {
+    font-size: 20px;
+    font-weight: 400;
+    text-transform: capitalize;
+}
+
+.newTicket .label .numberContainer {
+    border: var(--ticket-main-color) 1px solid;
+    border-radius: 50px;
+    height: 25px;
+    width: 25px;
+    font-size: 15px;
+    margin-right: 0.5em;
+}
+
+.newTicket .label .number {
+    width: 100%;
+    text-align: center;
+    font-size: 15px;
+    color: var(--ticket-main-color);
+}
+
+.newTicket .typeContainer .type {
+    background-color: transparent;
+    border: transparent;
+}
+
+.newTicket .typeContainer .typeSelected {
+    background-color: transparent;
+    border: transparent;
+}
+
+.newTicket .typeContainer .type .header {
+    text-align: center;
+    color: var(--ticket-main-color);
+    background-color: var(--ticket-secondary-color);
+    border-radius: 10px;
+}
+
+.newTicket .typeContainer .type .header:hover {
+    box-shadow: 0px 0px 5px var(--ticket-main-color);
+}
+
+.newTicket .typeContainer .typeSelected .header {
+    text-align: center;
+    background-color: var(--ticket-main-color);
+    color: var(--ticket-secondary-color);
+    border-radius: 10px;
+}
+
+.newTicket .typeContainer .type .header img {
+    display: inline-block;
+    width: 50%;
+}
+
+.newTicket .typeContainer .typeSelected .header img {
+    display: inline-block;
+    width: 50%;
+}
+
+.newTicket .typeContainer .type .footer {
+    background-color: transparent;
+    border: transparent;
+    width: 100%;
+    text-align: center;
+}
+
+.newTicket .typeContainer .typeSelected .footer {
+    background-color: transparent;
+    border: transparent;
+    width: 100%;
+    text-align: center;
+}
