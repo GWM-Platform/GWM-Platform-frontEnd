@@ -11,7 +11,7 @@ const CreatNewTicket = () => {
     const [data, setData] = useState({})
     const [some, setSome] = useState(false)
     const [open, setOpen] = useState(false)
-    const types = ["buy", "sell", "deposit", "withdraw"]
+    const types = ["buy", "sell", "deposit", "withdraww"]
 
     useEffect(() => {
 
