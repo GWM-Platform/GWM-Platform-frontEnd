@@ -1,15 +1,10 @@
 .navBarInfo {
-    background: var(--nav-info-gradient1);
-    background: linear-gradient(90deg, var(--nav-info-gradient1) 0%,var(--nav-info-gradient2)  83%,var(--nav-info-gradient3)  100%);
+    background: var(--nav-info);
 }
 .navBarInfo .greeting{
     margin:0;
-    color:white;
+    color:black;
     font-weight: bolder;
-}
-.navBarInfo .lastConnection{
-    color: rgb(73, 73, 73);
-    font-weight: lighter;
 }
 .navBarInfo .image{
     opacity:0.2;

@@ -16,35 +16,39 @@
 
 
 
-  /*NavBar*/
-    --main-bg-nav-color:#611010;
-    --selected-underline-section-color:#611010;
-    --default-underline-section-color:#ff3a3a;
-
-
-    --main-color: rgb(158, 27, 27);
+    /*General*/
+    --main-color: rgb(43, 0, 0);
     --secondary-color:   rgb(150, 90, 0);
+    /*Sections BG*/
+    --main-dashboard-bg: rgb(255, 255, 255);
+    /*Text*/
     --error:rgb(145, 85, 85);
     --red:rgb(201, 44, 45);
     --message:rgb(0,114,25);
-    --th-color:rgba(201, 74, 74, 0.295);
-    --tr-color:rgb(240, 148, 148);
-    --table-border: rgba(78, 65, 30, 0.5);
-    --nav-info-gradient1:rgb(255, 0, 0);
-    --nav-info-gradient2:rgb(168, 20, 20);
-    --nav-info-gradient3:rgb(110, 0, 0);
-    --footer-background:#611010;
-
-    --main-dashboard-bg: rgb(255, 183, 183);
-    --secondary-card-secondary: rgb(244, 246, 241);
-    --main-card-color: rgb(124, 124, 124);
+    /*Nav Info*/
+    --nav-info:lightgrey;
+    /*Footer*/
+    --footer-background:grey;
     /*NavBar*/
-    --main-bg-nav-color: #8a4949;
+    --main-bg-nav-color: grey;
     --selected-underline-section-color: #b3b3b3;
     --default-underline-section-color: #383838;
     --text-nav-section-color: #E2E5EA;
+    /*Nav Total*/
+    --navBarTotal-bg:red;
+
+    /*Founds cards colors*/
+    --secondary-card-secondary: rgb(244, 246, 241);
+    --main-card-color: rgb(124, 124, 124);
+
+    /*Create Ticket Colors*/
     --ticket-main-color: rgb(235, 56, 56);
-    --ticket-secondary-color: rgb(214, 222, 240);
+    --ticket-secondary-color:rgb(220, 157, 157);
+
+    /*Table movs colors*/
+    --table-border: rgba(78, 65, 30, 0.5);
+    --th-color:rgba(201, 74, 74, 0.295);
+    --tr-color:rgb(240, 148, 148);
 }
 
 
@@ -87,15 +91,17 @@
 }
 
 .free-area {
-    height: calc( 100vh - 100px);
+    height: calc( 100vh - 90px);
     overflow-y: auto;
     overflow-x: hidden;
 }
 
 .min-free-area {
-    min-height: calc( 100vh - 100px);
+    min-height: calc( 100vh - 90px);
 }
-
+.min-free-area-total {
+    min-height: calc( 100vh - 200px);
+}
 .mainColor {
     background-color: var(--main-color)
 }

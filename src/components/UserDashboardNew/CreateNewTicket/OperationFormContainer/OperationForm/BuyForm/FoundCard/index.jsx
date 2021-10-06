@@ -2,12 +2,14 @@ import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DonutChart from 'react-donut-chart';
 import './index.css'
-import { Col, Card, Form, FloatingLabel,Row } from 'react-bootstrap'
+import { Col, Card} from 'react-bootstrap'
 
-const FoundCard = ({ found, ownKey, data, setData, some, setSome }) => {
+const FoundCard = ({ found, ownKey, data, setData,setSome,some  }) => {
     return (
-        <Col sm="5">
-            <Card className="text-center foundCard">
+        <Col sm="3" className="py-1">
+            <Card
+                className={`text-center foundCard ${data.foundSelected===ownKey ? "foundSelected" : ""}`}
+                onClick={()=>{setFoundSelected(data, setData, ownKey,setSome,some)}}>
                 <Card.Header><strong className="title">{found.name}</strong></Card.Header>
                 <Card.Body>
                     <Card.Title>FeeParts value: <strong>${found.feePartsValue}</strong></Card.Title>
@@ -29,29 +31,16 @@ const FoundCard = ({ found, ownKey, data, setData, some, setSome }) => {
                         height={200}
                         width={200} />
                 </Card.Body>
-                <Card.Footer className="mb-0 d-flex justify-content-center">
-                    <Row>
-                        <Col sm="12" className="mb-3 d-flex justify-content-start mx-auto">
-                            <Form.Check
-                                type="checkbox"
-                                id={`default -checkbox`}
-                                label={`Buy feeparts`}
-                            />
-                        </Col>
-                        <Col sm="12">
-                            <FloatingLabel
-                                controlId="Quantity"
-                                label="Quantity"
-                                className="mb-3"
-                            >
-                                <Form.Control type="email" placeholder="name@example.com" />
-                            </FloatingLabel>
-                        </Col>
-                    </Row>
-                </Card.Footer>
             </Card>
         </Col>
     )
+}
+
+const setFoundSelected = (data, setData, ownKey,setSome,some) => {
+        let aux = data
+        aux.foundSelected = ownKey
+        setData(aux)
+        setSome(!some)
 }
 
 export default FoundCard

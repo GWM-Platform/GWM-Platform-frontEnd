@@ -10,7 +10,7 @@ import './index.css'
 import ChangeNameModal from './ChangeNameModal'
 
 const AccountCard = ({ account,accounts,setItemSelected }) => {
-    const [Hide, setHide] = useState(true)
+    const [Hide, setHide] = useState(false)
     const [show, setShow] = useState(false)
 
     const handleClose = () => setShow(false);
@@ -31,24 +31,26 @@ const AccountCard = ({ account,accounts,setItemSelected }) => {
     return (
         <Col sm="6" md="6" lg="4">
         <Card className="accountCard">
-            <Card.Header
-                className="header d-flex align-items-center justify-content-center"
-            >
-                <div className="currencyContainer d-flex align-items-center justify-content-center">
-                    <h1 className="currency" >
-                        {account.currency.symbol}
-                    </h1>
-                </div>
+            <Card.Header>
+                <h1 className="title">
+                    {t(account.description)}
+                </h1>
             </Card.Header>
             <Card.Body className="body">
                 <Card.Title >
-                    <h1 className="title">
-                        {t(account.description)}
-                    </h1>
-                    <h1 className="title">
+                   
+                    <h2  className="subTitle lighter">
+                        {t("Balance")}
+                    </h2>
+                    <h2 className="subTitle normal">
                         <Row className="d-flex justify-content-between">
                             <div style={{width:"auto"}}>
-                                {Hide ? account.externalNumber.replace(/./g, "*") : account.externalNumber}{" "}
+                                {Hide ? 
+                                    toString(parseFloat(account.balance).toFixed(account.currency.decimals)).replace(/./g, "*") 
+                                    :
+                                        account.currency.symbol+
+                                        parseFloat(account.balance).toFixed(account.currency.decimals)}
+                                {" "}
                             </div>
                             <div style={{width:"auto"}}>
                                 <FontAwesomeIcon
@@ -59,22 +61,18 @@ const AccountCard = ({ account,accounts,setItemSelected }) => {
                                 />
                             </div>
                         </Row>
-                    </h1>
+                    </h2>
+                    <h3 className="subTitle lighter">
+                        Found Performance:<span className="bolder"> %1.7</span>
+                    </h3>
+                    <h3 className="subTitle lighter">
+                        Acquired FeeParts:<span className="bolder"> 22</span>
+                    </h3>
+                    <h3 className="subTitle lighter">
+                        FeePart Price:<span className="bolder"> $15</span>
+                    </h3>
+                   
                 </Card.Title>
-                <Card.Text>
-                    <span className="balanceAmount">
-                        <span>
-                            <span className="bolder">
-                                {account.currency.symbol}
-                            </span>
-                            {parseFloat(account.balance).toFixed(account.currency.decimals)}
-                        </span>
-                    </span>
-                    <br/>
-                    <span className="balance lighter">
-                        {t("Balance")}
-                    </span>
-                </Card.Text>
             </Card.Body>
             <Card.Footer className="footer">
                 <Row className="d-flex justify-content-center">

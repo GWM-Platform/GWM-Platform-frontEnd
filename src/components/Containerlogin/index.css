@@ -1,5 +1,9 @@
 .login {
-    background-color: #009E4C
+    background-color: rgb(242, 216, 216);    
+}
+.login .card{
+    border-radius: 30px;
+    border: none;
 }
 .login .forgotPass{
     text-align: center;
@@ -12,15 +16,19 @@
 }
 .login .error{
     color: var(--error);
-    font-size: 16px;
-    padding-bottom: 2rem;
+    font-size: 14px;
     font-weight: bolder;
-}
-.login .button{
-    text-transform: uppercase;
-    border-radius: 3%;
+    text-align: end;
 }
 
+.login .button{
+    text-transform: uppercase;
+    border-radius:0 0 30px 30px;
+}
+.login .card-footer{
+    padding: 0;
+    border-radius:0 0 30px 30px;
+}
 .login .image{
     display: block;
     width: 100%;
@@ -29,11 +37,16 @@
 .login .reduced{
     width: 70%;
 }
-
+.login .card-img{
+    width: 50%;
+}
 .login .input-group-text{
     background-color: white;
     border-right: none;
+    padding-left: 1rem ;
+    border-radius: 30px;
 }
 .login .form-control{
     border-left: none;
+    border-radius: 30px;
 }

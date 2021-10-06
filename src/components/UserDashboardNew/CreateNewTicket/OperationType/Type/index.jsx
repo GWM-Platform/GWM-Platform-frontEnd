@@ -22,18 +22,17 @@ const setTypeSelected = (data, setData, ownKey, some, setSome, setOpen, open) =>
     if(data.type===undefined){
         setOpen(!open)
 
-        let aux = data
+        let aux = {}
         aux.type = ownKey
         setData(aux)
     }else{
         setOpen(!open)
         setTimeout(() => {
-        let aux = data
+        let aux = {}
         aux.type = ownKey
         setData(aux)
     }, 250);
     }
-    
 }
 
 export default Type;

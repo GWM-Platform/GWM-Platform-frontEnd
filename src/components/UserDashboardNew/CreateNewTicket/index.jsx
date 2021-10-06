@@ -23,7 +23,7 @@ const CreatNewTicket = () => {
     return (
         <Container >
             <Row className="min-free-area newTicket">
-                <Col md={12} lg={9}>
+                <Col sm="auto">
                     <OperationType data={data} setData={setData} some={some} setSome={setSome} setOpen={setOpen} open={open} types={types}/>
                     <Collapse in={open}
                         onExited={function () {
@@ -36,9 +36,9 @@ const CreatNewTicket = () => {
                         </div>
                     </Collapse>
                 </Col>
-                <Col sm={3} className="d-none d-lg-block">
+                <div>
 
-                </Col>
+                </div>
             </Row>
         </Container>
     )

@@ -7,7 +7,7 @@ import { Spinner, Row, Container, Col } from 'react-bootstrap';
 import { urlContext } from '../../../context/urlContext';
 const AccountsContainer = ({ isMobile, setItemSelected, numberOfAccounts, setNumberOfAccounts, setHaveInternal }) => {
     // eslint-disable-next-line
-    const {urlPrefix}=useContext(urlContext)
+    const { urlPrefix } = useContext(urlContext)
     const { t } = useTranslation();
 
     const [account, setAccount] = useState([]);
@@ -21,14 +21,84 @@ const AccountsContainer = ({ isMobile, setItemSelected, numberOfAccounts, setNum
         history.push(`/login`);
     }
 
-     
+
 
     const getAccounts = useCallback(
         () => {
             let catchedUserData = JSON.parse(sessionStorage.getItem('account'));//If its catched we wont fetch the 
 
             if (catchedUserData === null) {
-                setAccount([{ "id": 293, "description": "asset custody usd", "type": { "id": 111, "description": "asset custody", "productLine": { "id": 0, "description": " " } }, "externalNumber": "000000000000001", "currency": { "code": "USD", "name": "United States Dollar", "symbol": "$", "decimals": 2 }, "decimals": 0, "beneficiaryName": "Burton Gray", "balance": 24989989828.999996, "movementsCount": 124 }, { "id": 294, "description": "asset custody EUR", "type": { "id": 112, "description": "asset custody", "productLine": { "id": 0, "description": " " } }, "externalNumber": "000000000000002", "currency": { "code": "EUR", "name": "Euro", "symbol": "€", "decimals": 2 }, "decimals": 0, "beneficiaryName": "Burton Gray", "balance": 34999999985, "movementsCount": 4 }, { "id": 295, "description": "asset custody usd", "type": { "id": 111, "description": "asset custody", "productLine": { "id": 0, "description": " " } }, "externalNumber": "00000000000000003", "currency": { "code": "USD", "name": "United States Dollar", "symbol": "$", "decimals": 2 }, "decimals": 0, "beneficiaryName": "Burton Gray", "balance": 8520388, "movementsCount": 99 }])
+                setAccount([
+                    {
+                       "id":293,
+                       "description":"Nombre del Fondo",
+                       "type":{
+                          "id":111,
+                          "description":"asset custody",
+                          "productLine":{
+                             "id":0,
+                             "description":" "
+                          }
+                       },
+                       "externalNumber":"000000000000001",
+                       "currency":{
+                          "code":"USD",
+                          "name":"United States Dollar",
+                          "symbol":"$",
+                          "decimals":2
+                       },
+                       "decimals":0,
+                       "beneficiaryName":"Burton Gray",
+                       "balance":24989989828.999996,
+                       "movementsCount":124
+                    },
+                    {
+                       "id":294,
+                       "description":"asset custody EUR",
+                       "type":{
+                          "id":112,
+                          "description":"asset custody",
+                          "productLine":{
+                             "id":0,
+                             "description":" "
+                          }
+                       },
+                       "externalNumber":"000000000000002",
+                       "currency":{
+                          "code":"EUR",
+                          "name":"Euro",
+                          "symbol":"€",
+                          "decimals":2
+                       },
+                       "decimals":0,
+                       "beneficiaryName":"Burton Gray",
+                       "balance":34999999985,
+                       "movementsCount":4
+                    },
+                    {
+                       "id":295,
+                       "description":"asset custody usd",
+                       "type":{
+                          "id":111,
+                          "description":"asset custody",
+                          "productLine":{
+                             "id":0,
+                             "description":" "
+                          }
+                       },
+                       "externalNumber":"00000000000000003",
+                       "currency":{
+                          "code":"USD",
+                          "name":"United States Dollar",
+                          "symbol":"$",
+                          "decimals":2
+                       },
+                       "decimals":0,
+                       "beneficiaryName":"Burton Gray",
+                       "balance":8520388,
+                       "movementsCount":99
+                    }
+                 ])
                 setNumberOfAccounts(3)
             } else {
                 setAccount(catchedUserData)
@@ -37,18 +107,17 @@ const AccountsContainer = ({ isMobile, setItemSelected, numberOfAccounts, setNum
                 }
                 setNumberOfAccounts(catchedUserData.length)
             }
-    // eslint-disable-next-line
+            // eslint-disable-next-line
         }, []);
 
     useEffect(() => {
         getAccounts();
         return () => {
         }
-    }, [ getAccounts])
+    }, [getAccounts])
 
     return (
-        <div>
-            <Container fluid className="mt-2" style={{minHeight:"calc( 100vh - 80px)"}}>
+            <Container fluid className="mt-0 px-0 min-free-area">
                 {
                     account.length === 0
                         ?
@@ -70,7 +139,6 @@ const AccountsContainer = ({ isMobile, setItemSelected, numberOfAccounts, setNum
                 }
 
             </Container>
-        </div>
     )
 }
 export default AccountsContainer

@@ -31,10 +31,6 @@ const NavBarDashBoard = ({ setItemSelected, setTransactionInfo, itemSelected, ha
         history.push(`${url}/history`);
     }
 
-    const toTransaction = (type) => {
-        history.push(`${url}/transactionRequest/0/${type}`);
-    }
-
     const toCreateTicket = (type) => {
         history.push(`${url}/createTicket`);
     }
@@ -80,18 +76,6 @@ const NavBarDashBoard = ({ setItemSelected, setTransactionInfo, itemSelected, ha
                             >{t("History")}</Nav.Link>
 
                             <Nav.Link
-                                active={itemSelected === "bankTransfer"}
-                                eventKey={4}
-                                onClick={() => {
-                                    toTransaction(4);
-                                    setItemSelected("bankTransfer");
-                                    setTransactionInfo("notDoneYet")
-                                }}
-                            >
-                                {t("Bank Transfer")}
-                            </Nav.Link>
-
-                            <Nav.Link
                                 className="px-2 px-lg-4"
                                 active={itemSelected === "Contact"}
                                 eventKey={5}
@@ -100,16 +84,6 @@ const NavBarDashBoard = ({ setItemSelected, setTransactionInfo, itemSelected, ha
                                     setTransactionInfo("notDoneYet")
                                 }}
                             >{t("Contact")}</Nav.Link>
-
-                            <Nav.Link
-                                className="px-2 px-lg-4"
-                                active={itemSelected === "Security"}
-                                eventKey={6}
-                                onClick={() => {
-                                    setItemSelected("Security");
-                                    setTransactionInfo("notDoneYet")
-                                }}
-                            >{t("Security")}</Nav.Link>
 
                             <Nav.Link
                                 className="px-2 px-lg-4"

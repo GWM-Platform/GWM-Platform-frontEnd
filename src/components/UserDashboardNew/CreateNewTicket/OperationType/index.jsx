@@ -18,7 +18,7 @@ const OperationType = ({data,setData,some,setSome,setOpen,open,types}) => {
             </Row>
 
             <Row className="d-flex justify-content-center">
-                <Col sm={12} md={11} xl={10}>
+                <Col sm={12} md={12} lg={10} xl={8}>
                     <Container className="px-0" fluid>
                         <Row className="flex-row flex-nowrap overflow-auto align-items-center">
                             {types.map((type, key) => {

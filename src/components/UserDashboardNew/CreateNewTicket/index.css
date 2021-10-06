@@ -30,12 +30,7 @@
     color: var(--ticket-main-color);
 }
 
-.newTicket .typeContainer .type {
-    background-color: transparent;
-    border: transparent;
-}
-
-.newTicket .typeContainer .typeSelected {
+.newTicket .typeContainer .type,.newTicket .typeContainer .typeSelected {
     background-color: transparent;
     border: transparent;
 }
@@ -59,24 +54,13 @@
     box-shadow: 0px 0px 5px var(--ticket-main-color);
 }
 
-.newTicket .typeContainer .type .header img {
+.newTicket .typeContainer .type .header img,.newTicket .typeContainer .typeSelected .header img {
     display: inline-block;
     width: 50%;
 }
 
-.newTicket .typeContainer .typeSelected .header img {
-    display: inline-block;
-    width: 50%;
-}
 
-.newTicket .typeContainer .type .footer {
-    background-color: transparent;
-    border: transparent;
-    width: 100%;
-    text-align: center;
-}
-
-.newTicket .typeContainer .typeSelected .footer {
+.newTicket .typeContainer .type .footer,.newTicket .typeContainer .typeSelected .footer  {
     background-color: transparent;
     border: transparent;
     width: 100%;

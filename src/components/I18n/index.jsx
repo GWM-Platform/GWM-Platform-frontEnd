@@ -5,10 +5,11 @@ import { initReactI18next } from "react-i18next";
 
 const getLanguage = () => {
   if (localStorage.getItem("language") !== undefined) {
-    return localStorage.getItem("language")
+    localStorage.setItem("language", "es")
+    return "es"
   } else {
     localStorage.setItem("language", "gb")
-    return "gb"
+    return "es"
   }
 }
 
