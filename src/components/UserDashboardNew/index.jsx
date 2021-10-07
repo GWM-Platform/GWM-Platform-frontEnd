@@ -5,17 +5,17 @@ import { Route, useRouteMatch, useHistory } from 'react-router-dom';
 import './index.css'
 
 import { urlContext } from '../../context/urlContext';
-import TransactionRequest from './TransactionRequest';
 import AccountsContainer from './AccountsContainer';
 import NavBar from './NavBar';
 import NavInfo from './NavInfo';
 import Footer from './Footer';
 import CreateNewTicket from './CreateNewTicket';
 
-import TransactionResult from './TransactionResult';
 import MovementsTable from './MovementsTable';
+import AddAccount from './AddAccount';
 
 const UserDashboard = () => {
+    const admin = sessionStorage.getItem("admin")
     // eslint-disable-next-line 
     const { urlPrefix } = useContext(urlContext)
 
@@ -25,18 +25,15 @@ const UserDashboard = () => {
     const [userData, setUserData] = useState({});
     const [width, setWidth] = useState(window.innerWidth);
     const [numberOfAccounts, setNumberOfAccounts] = useState(0);
-    const [haveInternal, setHaveInternal] = useState(false);
-    const [transactionInfo, setTransactionInfo] = useState("notDoneYet")//Transaction result depends of its value
-
 
     const [itemSelected, setItemSelected] = useState(
         history.location.pathname === "/dashboardNew/accounts" || history.location.pathname === "/dashboardNew/Accounts" ?
             "Accounts" :
-            history.location.pathname === "/dashboardNew/transactionRequest/0/1" ?
-                "internalTransaction" :
-                history.location.pathname === "/dashboardNew/movementsTable" ?
-                    "movementsTable" :
-                    "otherTransaction");
+            history.location.pathname === "/dashboardNew/addAccount" ?
+                "addAccount" :
+                history.location.pathname === "/dashboardNew/createTicket" ?
+                    "createTicket" :
+                    "movementsTable");
 
     function handleWindowSizeChange() {
         setWidth(window.innerWidth);
@@ -69,38 +66,36 @@ const UserDashboard = () => {
     return (
         <div className="dashboard" >
             <NavInfo userData={userData} />
-            <NavBar setItemSelected={setItemSelected} setTransactionInfo={setTransactionInfo} haveInternal={haveInternal} itemSelected={itemSelected} />
-            <Route path={`${path}/accounts`}>
-                <AccountsContainer
-                    isMobile={isMobile}
-                    setItemSelected={setItemSelected}
-                    numberOfAccounts={numberOfAccounts}
-                    setNumberOfAccounts={setNumberOfAccounts}
-                    setHaveInternal={setHaveInternal}
-                />
-            </Route>
-            <Route path={`${path}/TransactionRequest/:sourceAccountId/:transactionType`}>
-                <TransactionRequest
-                    setItemSelected={setItemSelected}
-                    transactionInfo={transactionInfo}
-                    setTransactionInfo={setTransactionInfo}
-                    type={itemSelected}
-                    setHaveInternal={setHaveInternal} />
-            </Route>
-            <Route path={`${path}/TransactionResult`}>
-                <TransactionResult transactionInfo={transactionInfo} setItemSelected={setItemSelected} />
-            </Route>
-            <Route path={`${path}/history`}>
-                <MovementsTable
-                    isMobile={isMobile}
-                    setItemSelected={setItemSelected}
-                    numberOfAccounts={numberOfAccounts}
-                    setNumberOfAccounts={setNumberOfAccounts}
-                />
-            </Route>
-            <Route path={`${path}/createTicket`}>
-                <CreateNewTicket />
-            </Route>
+            <NavBar setItemSelected={setItemSelected} itemSelected={itemSelected} />
+            {admin === "true" ?
+                <>
+                    <Route path={`${path}/addAccount`}>
+                        <AddAccount />
+                    </Route>
+                </>
+                :
+                <>
+                    <Route path={`${path}/accounts`}>
+                        <AccountsContainer
+                            isMobile={isMobile}
+                            setItemSelected={setItemSelected}
+                            numberOfAccounts={numberOfAccounts}
+                            setNumberOfAccounts={setNumberOfAccounts}
+                        />
+                    </Route>
+                    <Route path={`${path}/history`}>
+                        <MovementsTable
+                            isMobile={isMobile}
+                            setItemSelected={setItemSelected}
+                            numberOfAccounts={numberOfAccounts}
+                            setNumberOfAccounts={setNumberOfAccounts}
+                        />
+                    </Route>
+                    <Route path={`${path}/createTicket`}>
+                        <CreateNewTicket />
+                    </Route>
+                </>
+            }
             <Footer />
         </div>
     )

@@ -16,13 +16,13 @@ import './index.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faKey, faLock, faUser } from '@fortawesome/free-solid-svg-icons'
 import { useTranslation } from "react-i18next";
-import { Col, Row, Container, Form } from 'react-bootstrap'
+import { Col, Row, Container } from 'react-bootstrap'
 import { urlContext } from '../../context/urlContext';
 
 const ContainerForgotPassword = () => {
   const { t } = useTranslation();
   let history = useHistory();
-  
+
   // eslint-disable-next-line 
   const { urlPrefix } = useContext(urlContext)
 
@@ -34,7 +34,7 @@ const ContainerForgotPassword = () => {
   })
 
   // eslint-disable-next-line 
-    const toLogin = () => {
+  const toLogin = () => {
     history.push(`/login`);
   }
 
@@ -60,7 +60,7 @@ const ContainerForgotPassword = () => {
   const [checkLowercase, setCheckLowercase] = useState("none")
   const [uncheckLowercase, setunCheckLowercase] = useState("")
 
-  const handleChange = (event) => {    
+  const handleChange = (event) => {
     if (event.target.id !== "passwordConfirm") {
       toAPI[event.target.id] = event.target.value
     }
@@ -153,30 +153,31 @@ const ContainerForgotPassword = () => {
               <CCard className="p-4">
                 <CCardBody>
                   <CForm onSubmit={handleSubmit}>
-                    <h1>{t("Change password")}</h1>
-                    <p className="text-medium-emphasis">{t("Change password for")} {user}</p>
+                    <h1 className="pb-2">{t("Change password")}</h1>
+                    {user !== undefined ?
+                      <p className="text-medium-emphasis">{t("Change password for")} {user}</p>
+                      :
+                      <></>}
                     <p className="error mb-1">{error}</p>
-                    <Form.Label className="f-left mb-0">{t("Username")}</Form.Label>
                     <CInputGroup className="mb-2">
                       <CInputGroupText>
                         <FontAwesomeIcon icon={faUser} />
                       </CInputGroupText>
                       <CFormControl
-                        placeholder={user}
+                        placeholder={t("username")}
+                        defaultValue={user}
                         autoComplete="username"
                         onChange={handleChange}
                         required
                         id="username"
-                        defaultValue={user}
                       />
                     </CInputGroup>
-                    <Form.Label className="f-left mb-0">{t("Token")}</Form.Label>
-                    <CInputGroup className="mb-3">
+                    <CInputGroup className="mb-2">
                       <CInputGroupText>
                         <FontAwesomeIcon icon={faKey} />
                       </CInputGroupText>
                       <CFormControl
-                        placeholder={token}
+                        placeholder="Token"
                         onChange={handleChange}
                         required
                         id="token"
@@ -199,25 +200,25 @@ const ContainerForgotPassword = () => {
                     <CFormText className="text-muted formText mb-4">
                       <p className="validation">{t("Make sure at least the new password have")}:
                         <br />
+                        {t("8 characters lenght")}
                         <span className="textGreen" style={{ "display": checkLenght }}>✓</span>
                         <span className="textRed" style={{ "display": uncheckLenght }}>✗</span>
-                        {t("8 characters lenght")}
                         <br />
+                        {t("a number")}
                         <span className="textGreen" style={{ "display": checkNumber }}>✓</span>
                         <span className="textRed" style={{ "display": uncheckNumber }}>✗</span>
-                        {t("a number")}
                         <br />
+                        {t("a lowercase letter")}
                         <span className="textGreen" style={{ "display": checkLowercase }}>✓</span>
                         <span className="textRed" style={{ "display": uncheckLowercase }}>✗</span>
-                        {t("a lowercase letter")}
                         <br />
+                        {t("a capital letter")}
                         <span className="textGreen" style={{ "display": checkCapital }}>✓</span>
                         <span className="textRed" style={{ "display": uncheckCapital }}>✗</span>
-                        {t("a capital letter")}
                         <br />
+                        {t("a symbol")}
                         <span className="textGreen" style={{ "display": checkSymbol }}>✓</span>
                         <span className="textRed" style={{ "display": uncheckSymbol }}>✗</span>
-                        {t("a symbol")}
                       </p>
                     </CFormText>
                     <CInputGroup  >

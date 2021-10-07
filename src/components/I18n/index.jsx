@@ -68,6 +68,7 @@ i18n
           "Return": "Volver",
           "Submit": "Enviar",
           //Translation for changePassword
+          "username":"Nombre de Usuario",
           "Change password": "Reestablecer contraseña",
           "Change password for": "Reestablecer la contraseña para",
           "Confirm password": "Confirmar contraseña",
@@ -76,7 +77,7 @@ i18n
           "a lowercase letter": "una letra minúscula",
           "a capital letter": "una letra mayúscula",
           "a symbol": "un símbolo",
-          "The fields \"password\" and \"confirm password\" don't match": "Los campos \"contraseña\" y \"confirmar contraseña\" no son coinciden",
+          "The fields \"password\" and \"confirm password\" don't match": "Los campos \"contraseña\" y \"confirmar contraseña\" no coinciden",
           //Translation for dashboard
           "Loading Content": "Cargando Contenido",
           "Your user don't have any account": "Su usuario no dispone de ninguna cuenta",
@@ -191,7 +192,11 @@ i18n
           "Contact":"Contacto",
           "Bank Transfer":"Transaccion Bancaria",
           "Security":"Seguridad",
-          "Profile":"Perfil"
+          "Profile":"Perfil",
+          "Not Found":"Dirección no encontrada",
+          "Initial Founds":"Fondos Iniciales",
+          "name":"nombre",
+          "surname":"apellido"
         }
       }
     },

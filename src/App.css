@@ -13,9 +13,6 @@
   --nav-info-gradient2:rgb(22, 117, 59);
   --nav-info-gradient3:rgb(33, 91, 50);
   */
-
-
-
     /*General*/
     --main-color: rgb(43, 0, 0);
     --secondary-color:   rgb(150, 90, 0);
@@ -35,7 +32,7 @@
     --default-underline-section-color: #383838;
     --text-nav-section-color: #E2E5EA;
     /*Nav Total*/
-    --navBarTotal-bg:red;
+    --navBarTotal-bg:rgb(255, 84, 84);
 
     /*Founds cards colors*/
     --secondary-card-secondary: rgb(244, 246, 241);
@@ -81,7 +78,9 @@
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
-
+.capitalize{
+    text-transform: capitalize;
+}
 .text-green {
     color: var(--main-color)
 }

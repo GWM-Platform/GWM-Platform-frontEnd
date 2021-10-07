@@ -19,8 +19,8 @@ const ContainerLogin = () => {
   const [loading, setLoading] = useState(false);
 
 
-  const toDashBoard = () => {
-    history.push(`/dashboardNew/accounts`);
+  const toDashBoard = (path) => {
+    history.push(`/dashboardNew/${path}`);
   }
 
   const handleSubmit = (event) => {
@@ -30,10 +30,14 @@ const ContainerLogin = () => {
     setLoading(true)
     setButtonContent("Loading")
     if (data.username === "admin" && data.password === "1234") {
-      toDashBoard();
+      sessionStorage.setItem("admin",true)
+      toDashBoard("addAccount");
       setError("")
-    } else {
-      console.table(data)
+    } else if(data.username === "user" && data.password === "1234"){
+      sessionStorage.setItem("admin",false)
+      toDashBoard("accounts");
+      setError("")
+    }else{
       setError("Sorry, the login failed! Please Try again")
       setButtonContent("Login")
       setButtonDisabled(false)
@@ -42,11 +46,7 @@ const ContainerLogin = () => {
   }
 
   const handleChange = (event) => {
-    if (event.target.id === "remindme") {
-      data[event.target.id] = event.target.checked
-    } else {
-      data[event.target.id] = event.target.value
-    }
+    data[event.target.id] = event.target.value  
     setButtonDisabled(((data.password !== undefined && data.password !== "") && (data.username !== undefined && data.username !== "")) ? false : true)
   }
 

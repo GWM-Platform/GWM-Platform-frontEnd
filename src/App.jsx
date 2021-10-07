@@ -4,11 +4,11 @@ import Landing from './components/Landing';
 import Containerlogin from './components/Containerlogin';
 import ContainerForgotPassword from './components/ContainerForgotPassword';
 import ContainerChangePassword from './components/ContainerChangePassword';
-import ContainerWwcurrencyList from './components/ContainerWwcurrencyList';
-import { CurrencyProvider } from './context/currencyContext.jsx'
+import ContainerVerifyAccount from './components/ContainerVerifyAccount';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import UserDashboardNew from './components/UserDashboardNew';
 import { UrlContext } from './context/urlContext';
+import NotFound from './components/NotFound';
 
 function App() {
   return (
@@ -31,13 +31,17 @@ function App() {
             <Route exact path="/changePassword">
               <ContainerChangePassword />
             </Route>
-            <Route exact path="/Wwcurrency">
-              <CurrencyProvider>
-                <ContainerWwcurrencyList />
-              </CurrencyProvider>
+            <Route exact path="/verifyAccount">
+              <ContainerVerifyAccount />
+            </Route>
+            <Route exact path="/verifyAccount/:user/:token">
+              <ContainerVerifyAccount />
             </Route>
             <Route path="/DashboardNew">
               <UserDashboardNew />
+            </Route>
+            <Route>
+              <NotFound />
             </Route>
           </Switch>
         </BrowserRouter>

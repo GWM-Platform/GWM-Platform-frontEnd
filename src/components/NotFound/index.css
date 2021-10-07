@@ -1,0 +1,12 @@
+.notFound .icon{
+    height: 100%;
+    width: 100%;
+}
+.notFound .title{
+    text-align: center;
+    font-size: 70px;
+}
+.notFound .description{
+    font-size: 30px;
+    text-align: center;
+}
