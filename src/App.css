@@ -17,7 +17,7 @@
     --main-color: rgb(43, 0, 0);
     --secondary-color:   rgb(150, 90, 0);
     /*Sections BG*/
-    --main-dashboard-bg: rgb(255, 255, 255);
+    --main-dashboard-bg: rgb(238, 238, 238);
     /*Text*/
     --error:rgb(145, 85, 85);
     --red:rgb(201, 44, 45);
@@ -107,4 +107,8 @@
 
 .secondaryColor {
     background-color: var(--secondary-color);
+}
+
+.p-relative{
+    position: relative
 }

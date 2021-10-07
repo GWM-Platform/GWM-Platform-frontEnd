@@ -66,3 +66,16 @@
     width: 100%;
     text-align: center;
 }
+.arrow{
+    font-size: 30px;
+    position:absolute;
+    width: auto;
+    transform: translateY(-50%);
+    top:50%
+}
+.right{
+    right:0;
+}
+.left{
+    left:0;
+}
