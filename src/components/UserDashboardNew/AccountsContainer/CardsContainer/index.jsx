@@ -5,18 +5,8 @@ import AccountCard from './AccountCard';
 
 const CardsContainer = ({ setItemSelected, accounts }) => {
 
-    const clasificateAccounts = (accounts) => {
-        let aux = []
-        accounts.forEach((u, i) => {
-            if (aux[u.type.productLine.description] === undefined) {
-                aux[u.type.productLine.description] = []
-            }
-            aux[u.type.productLine.description] = [...aux[u.type.productLine.description], u]
-        })
-    }
 
     useEffect(() => {
-        clasificateAccounts(accounts)
         return () => {
         }
     }, [accounts])

@@ -31,15 +31,8 @@ const AccountsContainer = ({ isMobile, setItemSelected, numberOfAccounts, setNum
                 setAccount([
                     {
                        "id":293,
-                       "description":"Nombre del Fondo",
-                       "type":{
-                          "id":111,
-                          "description":"asset custody",
-                          "productLine":{
-                             "id":0,
-                             "description":" "
-                          }
-                       },
+                       "description":"Cash",
+                       "type":"cash",
                        "externalNumber":"000000000000001",
                        "currency":{
                           "code":"USD",
@@ -54,15 +47,8 @@ const AccountsContainer = ({ isMobile, setItemSelected, numberOfAccounts, setNum
                     },
                     {
                        "id":294,
-                       "description":"asset custody EUR",
-                       "type":{
-                          "id":112,
-                          "description":"asset custody",
-                          "productLine":{
-                             "id":0,
-                             "description":" "
-                          }
-                       },
+                       "description":"Fondo de crypto",
+                       "type":"crypto",
                        "externalNumber":"000000000000002",
                        "currency":{
                           "code":"EUR",
@@ -77,15 +63,8 @@ const AccountsContainer = ({ isMobile, setItemSelected, numberOfAccounts, setNum
                     },
                     {
                        "id":295,
-                       "description":"asset custody usd",
-                       "type":{
-                          "id":111,
-                          "description":"asset custody",
-                          "productLine":{
-                             "id":0,
-                             "description":" "
-                          }
-                       },
+                       "description":"Fondo Real State",
+                       "type":"realState",
                        "externalNumber":"00000000000000003",
                        "currency":{
                           "code":"USD",

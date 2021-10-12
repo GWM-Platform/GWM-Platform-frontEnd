@@ -4,7 +4,7 @@
 
 .scrollable {
     max-width: 100%;
-    overflow-x: overlay;
+    overflow-x: auto;
     white-space: nowrap;
     flex-direction: row;
 }

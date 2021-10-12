@@ -139,9 +139,23 @@ const BuyForm = ({  data, setData, some, setSome}) => {
 
     const scrollFoundContainer=(right)=>{
         if(right){
-            foundsContainer.current.scrollLeft += 200
+            let scrollAmount = 0;
+            let slideTimer = setInterval(function(){
+                foundsContainer.current.scrollLeft += 10;
+                scrollAmount += 10;
+                if(scrollAmount >= 100){
+                    window.clearInterval(slideTimer);
+                }
+            }, 25);
         }else{
-            foundsContainer.current.scrollLeft -= 200
+            let scrollAmount = 0;
+            let slideTimer = setInterval(function(){
+                foundsContainer.current.scrollLeft -= 10;
+                scrollAmount += 10;
+                if(scrollAmount >= 100){
+                    window.clearInterval(slideTimer);
+                }
+            }, 25);
         }
     }
 

@@ -1,29 +1,59 @@
 .accountCard {
-    border: black 1px solid;
+    border: 1px transparent;
     border-radius: 30px;
-    background-color: grey;
+    background-color: transparent;
 }
-.accountCard .card-header{
-    background-color: white;
-    color: black;
+
+.accountCard .header {
     border-radius: 30px 30px 0px 0px;
+    border: 1px solid;
+    border-color: var(--main-card-color);
+    font-size: 60px;
+    background-color: var(--main-card-color)
 }
+
+.accountCard .header .currencyContainer > .currency {
+    font-size: 60px;
+    border:transparent;
+    background-color: var(--main-card-color);
+    color:white;
+    margin:0;
+    padding: 0;
+}
+
+.accountCard .header .currencyContainer {
+    font-size: 60px;
+    border: white 1px solid;
+    border-radius: 50%;
+    height: 2.7em;
+    width: 2.7em;
+    margin: .3em 0em;
+}
+
+
 .accountCard .body {
-    border-left: 1px transparent;
-    border-right: 1px transparent
+    border-left: 1px solid;
+    border-right: 1px solid;
+    border-bottom: 1px solid;
+    border-color: var(--main-card-color);
+    background-color: white;
 }
 
 .accountCard .body .title {
-    color: black;
+    color: dimgray;
     text-align: start;
     font-size: 20px;
 }
+
 .accountCard .body .subTitle {
     color: black;
     text-align: start;
     font-size: 17px;
 }
 
+.lighter {
+    font-weight: lighter
+}
 
 .accountCard .body .balanceAmount {
     padding: 0;
@@ -32,12 +62,14 @@
     color: yellowgreen
 }
 
-.bolder {
-    font-weight: bolder
+.accountCard .body .balance {
+    padding: 0;
+    float: right;
+    font-size: 17px;
 }
 
-.normal {
-    font-weight: normal
+.bolder {
+    font-weight: bolder
 }
 
 .lighter {
@@ -45,20 +77,30 @@
 }
 
 .accountCard .footer {
-    background-color: grey;
-    border: 1px transparent;
+    background-color: transparent;
+    border: none;
     border-radius: 0px 0px 30px 30px;
+    border-color: var(--main-card-color)
 }
 
 .accountCard .footer .button {
     font-size: 30px;
     background-color: white;
-    border-radius: 50%;
     border: 1px solid;
-    border-color: var(--main-color);
-    color: var(--main-color);
-    margin-bottom: -2rem
+    border-color: var(--main-card-color);
+    color: var(--main-card-color);
+    width: 100%;
 }
+
+.accountCard .footer  .left{
+    border-radius: 0px 0px 0px 30px;
+
+}
+
+.accountCard .footer .right{
+    border-radius: 0px 0px 30px 0px;
+}
+
 
 .modal .modal-content {
     background-color: transparent;
@@ -68,7 +110,7 @@
 .modal .header,
 .modal .body,
 .modal .footer {
-    background-color: var(--main-color);
+    background-color: var(--main-card-color);
     border-color: white;
 }
 

@@ -1,5 +1,5 @@
 .login {
-    background-color: rgb(242, 216, 216);    
+    background-color:lightgray;    
 }
 .login .card{
     border-radius: 30px;
@@ -24,6 +24,7 @@
 .login .button{
     text-transform: uppercase;
     border-radius:0 0 30px 30px;
+    transition: border-radius 0.5s;
 }
 .login .card-footer{
     padding: 0;
@@ -48,5 +49,25 @@
 }
 .login .form-control{
     border-left: none;
-    border-radius: 30px;
+    border-radius:0 30PX 30PX 0px
+}
+.login .mobile{
+    margin-top: 30%;
+}
+
+@media (min-width: 992px) {
+    .login .button{
+        border-radius:0 0 30px 30px;
+    }
+    .login .card-img{
+        width: 50%;
+    }
+}
+@media (max-width: 991px) {
+    .login .button{
+        border-radius:30px 30px 30px 30px;
+    }
+    .login .card-img{
+        width: 30%;
+    }
 }

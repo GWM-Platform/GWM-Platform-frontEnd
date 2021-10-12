@@ -36,8 +36,7 @@
 
     /*Founds cards colors*/
     --secondary-card-secondary: rgb(244, 246, 241);
-    --main-card-color: rgb(124, 124, 124);
-
+    --main-card-color: rgb(158,26,27);
     /*Create Ticket Colors*/
     --ticket-main-color: rgb(235, 56, 56);
     --ticket-secondary-color:rgb(220, 157, 157);

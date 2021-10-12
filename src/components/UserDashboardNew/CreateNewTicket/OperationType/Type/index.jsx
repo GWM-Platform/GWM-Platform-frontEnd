@@ -3,7 +3,7 @@ import { Col, Card } from 'react-bootstrap';
 
 const Type = ({ ownKey, type, data, setData, some, setSome, setOpen, open }) => {
     return (
-        <Col xs="auto" sm={3} style={{ cursor: "pointer" }} className="pt-1 typeContainer" onClick={() => setTypeSelected(data, setData, ownKey, some, setSome, setOpen, open)}>
+        <Col xs={5} sm={3} style={{ cursor: "pointer" }} className="pt-1 typeContainer" onClick={() => setTypeSelected(data, setData, ownKey, some, setSome, setOpen, open)}>
             <Card className={`${data.type === ownKey ? "typeSelected" : "type"} h-100`}>
                 <Card.Header className="header">
                     <img alt={type} src={process.env.PUBLIC_URL + '/images/newTicket/' + type + '.svg'} />
