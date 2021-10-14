@@ -4,7 +4,7 @@ import { Row, Col, Card, Button, Popover, OverlayTrigger } from 'react-bootstrap
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEyeSlash, faEye, faIdCard, faPaperPlane,faHome,faWallet,faCoins } from '@fortawesome/free-solid-svg-icons'
+import { faEyeSlash, faEye, faIdCard, faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import { useHistory } from 'react-router-dom'
 import './index.css'
 import ChangeNameModal from './ChangeNameModal'
@@ -35,16 +35,12 @@ const AccountCard = ({ account, accounts, setItemSelected }) => {
                     className="header d-flex align-items-center justify-content-center"
                 >
                     <div className="currencyContainer d-flex align-items-center justify-content-center">
-                        <h1 className="currency px-0 mx-0" >
-                            <FontAwesomeIcon
-                                icon={account.type==="realState" ? faHome : account.type==="cash" ? faWallet : faCoins}
-                            />
-                        </h1>
+                            <img className="currency px-0 mx-0" alt={account.type} src={process.env.PUBLIC_URL + '/images/'+account.type+'.svg'} />
                     </div>
                 </Card.Header>
                 <Card.Body className="body">
                     <Card.Title >
-                        <h1 className="title">
+                        <h1 className="title mt-0">
                             {t(account.description)}
                         </h1>
                         <h1 className="title">

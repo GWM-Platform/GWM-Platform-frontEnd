@@ -13,6 +13,10 @@ import CreateNewTicket from './CreateNewTicket';
 
 import MovementsTable from './MovementsTable';
 import AddAccount from './AddAccount';
+import BuyForm from './BuyForm';
+import SellForm from './SellForm';
+import WithdrawForm from './WithdrawForm';
+import DepositForm from './DepositForm';
 
 const UserDashboard = () => {
     const admin = sessionStorage.getItem("admin")
@@ -95,16 +99,16 @@ const UserDashboard = () => {
                         <CreateNewTicket />
                     </Route>
                     <Route path={`${path}/buy`}>
-                        <CreateNewTicket />
+                        <BuyForm />
                     </Route>
                     <Route path={`${path}/sell`}>
-                        <CreateNewTicket />
+                        <SellForm />
                     </Route>
                     <Route path={`${path}/deposit`}>
-                        <CreateNewTicket />
+                        <DepositForm />
                     </Route>
                     <Route path={`${path}/withdraw`}>
-                        <CreateNewTicket />
+                        <WithdrawForm />
                     </Route>
                 </>
             }

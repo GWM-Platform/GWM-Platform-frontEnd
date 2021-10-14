@@ -5,51 +5,10 @@ import { faLock } from '@fortawesome/free-solid-svg-icons'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { Col, Row, Spinner, Card, Form, InputGroup, FormControl, Button } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
-import { useHistory } from 'react-router-dom';
-import { useState } from 'react';
 
-const FormDesktop = ( ) => {
-    const [buttonDisabled, setButtonDisabled] = useState(true)
-    const [error, setError] = useState("");
-    const [buttonContent, setButtonContent] = useState("Login");
-    const [loading, setLoading] = useState(false);
-    const [data,setData] = useState({});
-
-    let history = useHistory();
+const FormDesktop = ({ handleChange,handleSubmit,buttonDisabled,setButtonDisabled,error, setError, buttonContent,setButtonContent,loading,setLoading, data,setData } ) => {
+    
     const { t } = useTranslation();
-
-    const toDashBoard = (path) => {
-        history.push(`/dashboardNew/${path}`);
-    }
-
-    const handleChange = (event) => {
-        let aux = data;
-        aux[event.target.id] = event.target.value;
-        setData(aux);
-        setButtonDisabled(((data.password !== undefined && data.password !== "") && (data.username !== undefined && data.username !== "")) ? false : true)
-    };
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        setButtonDisabled(true)
-        setLoading(true)
-        setButtonContent("Loading")
-        if (data.username === "admin" && data.password === "1234") {
-            sessionStorage.setItem("admin", true)
-            toDashBoard("addAccount");
-            setError("")
-        } else if (data.username === "user" && data.password === "1234") {
-            sessionStorage.setItem("admin", false)
-            toDashBoard("accounts");
-            setError("")
-        } else {
-            setError("Sorry, the login failed! Please Try again")
-            setButtonContent("Login")
-            setButtonDisabled(false)
-            setLoading(false)
-        }
-    }
 
     return (
         <Card className="loginCard d-none d-lg-block">

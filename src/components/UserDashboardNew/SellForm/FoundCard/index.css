@@ -1,0 +1,16 @@
+.foundCard .title{
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.foundCard .card-body > .card-title{
+    font-weight: 400;
+}
+
+.foundCard:hover {
+    box-shadow: 0px 0px 5px var(--ticket-main-color);
+}
+
+.foundSelected {
+    box-shadow: 0px 0px 5px var(--ticket-main-color);
+}

@@ -43,7 +43,8 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfAccounts, setNumber
         getAccounts();
         return () => {
         }
-    }, [ getAccounts])
+    // eslint-disable-next-line
+    }, [])
 
     return (
         <div>

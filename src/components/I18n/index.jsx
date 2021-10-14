@@ -200,7 +200,11 @@ i18n
           "Buy":"Comprar",
           "Sell":"Vender",
           "Deposit":"Depositar",
-          "Withdraw":"Retirar"
+          "Withdraw":"Retirar",
+          "Select Found To Sell":"Seleccione el fondo a vender",
+          "Select Found To buy":"Seleccione el fondo a comprar",
+          "Cuantity":"Cantidad",
+          "Specify the cuantity you want to buy":"Especifique la cantidad que desea comprar"
         }
       }
     },

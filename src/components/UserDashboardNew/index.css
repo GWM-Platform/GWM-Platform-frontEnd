@@ -169,9 +169,6 @@ tr {
 .card-title {
     text-transform: capitalize;
 }
-.dropdown-toggle {
-    color: white!important;
-}
 /*.dropdown-toggle{
     padding-top: 0;
     padding-bottom: 0;

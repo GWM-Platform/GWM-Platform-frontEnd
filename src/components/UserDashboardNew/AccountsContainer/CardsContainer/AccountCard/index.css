@@ -13,16 +13,17 @@
 }
 
 .accountCard .header .currencyContainer > .currency {
-    font-size: 60px;
+    font-size: 30px;
     border:transparent;
     background-color: var(--main-card-color);
     color:white;
     margin:0;
     padding: 0;
+    width: 30px;
 }
 
 .accountCard .header .currencyContainer {
-    font-size: 60px;
+    font-size: 30px;
     border: white 1px solid;
     border-radius: 50%;
     height: 2.7em;
