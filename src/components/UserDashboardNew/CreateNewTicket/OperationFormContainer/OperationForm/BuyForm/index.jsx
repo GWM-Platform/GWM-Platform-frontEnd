@@ -143,7 +143,7 @@ const BuyForm = ({  data, setData, some, setSome}) => {
             let slideTimer = setInterval(function(){
                 foundsContainer.current.scrollLeft += 10;
                 scrollAmount += 10;
-                if(scrollAmount >= 100){
+                if(scrollAmount >= 200){
                     window.clearInterval(slideTimer);
                 }
             }, 25);
@@ -152,7 +152,7 @@ const BuyForm = ({  data, setData, some, setSome}) => {
             let slideTimer = setInterval(function(){
                 foundsContainer.current.scrollLeft -= 10;
                 scrollAmount += 10;
-                if(scrollAmount >= 100){
+                if(scrollAmount >= 200){
                     window.clearInterval(slideTimer);
                 }
             }, 25);

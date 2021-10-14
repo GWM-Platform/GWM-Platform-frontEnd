@@ -94,6 +94,18 @@ const UserDashboard = () => {
                     <Route path={`${path}/createTicket`}>
                         <CreateNewTicket />
                     </Route>
+                    <Route path={`${path}/buy`}>
+                        <CreateNewTicket />
+                    </Route>
+                    <Route path={`${path}/sell`}>
+                        <CreateNewTicket />
+                    </Route>
+                    <Route path={`${path}/deposit`}>
+                        <CreateNewTicket />
+                    </Route>
+                    <Route path={`${path}/withdraw`}>
+                        <CreateNewTicket />
+                    </Route>
                 </>
             }
             <Footer />

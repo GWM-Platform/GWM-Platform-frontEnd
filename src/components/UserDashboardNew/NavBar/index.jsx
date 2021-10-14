@@ -2,7 +2,7 @@ import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css'
 
-import { Nav, Navbar, Container, Row, Col } from 'react-bootstrap'
+import { Nav, Navbar, Container, Row, Col, NavDropdown } from 'react-bootstrap'
 import LanguageSelector from '../../LanguageSelector';
 import { useRouteMatch, useHistory } from 'react-router-dom';
 
@@ -32,8 +32,20 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected }) => {
         history.push(`${url}/history`);
     }
 
-    const toCreateTicket = (type) => {
-        history.push(`${url}/createTicket`);
+    const toBuy = (type) => {
+        history.push(`${url}/buy`);
+    }
+
+    const toDeposit = (type) => {
+        history.push(`${url}/deposit`);
+    }
+
+    const toSell = (type) => {
+        history.push(`${url}/sell`);
+    }
+
+    const toWithdraw = (type) => {
+        history.push(`${url}/withdraw`);
     }
 
     const toAddAccount = () => {
@@ -48,13 +60,12 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected }) => {
             <Container fluid className="bottomInnerBorder px-0">
                 <Row className="w-100 d-flex justify-content-between align-items-center mx-0">
                     <Col className="offset-md-0 offset-lg-2 px-0" sm="auto">
-                        <Nav className="scrollable" >
+                        <Nav className="scrollable">
                             {
                                 admin === "true" ?
                                     <Nav.Link
                                         className="px-2"
                                         active={itemSelected === "addAccount"}
-                                        eventKey={0}
                                         onClick={() => {
                                             setItemSelected("addAccount");
                                             toAddAccount()
@@ -65,7 +76,6 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected }) => {
                                         <Nav.Link
                                             className="px-2"
                                             active={itemSelected === "accounts" || itemSelected === "Accounts"}
-                                            eventKey={1}
                                             onClick={() => {
                                                 toAccounts();
                                                 setItemSelected("accounts");
@@ -74,18 +84,7 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected }) => {
 
                                         <Nav.Link
                                             className="px-2 px-lg-4"
-                                            active={itemSelected === "createTicket"}
-                                            eventKey={8}
-                                            onClick={() => {
-                                                toCreateTicket();
-                                                setItemSelected("createTicket");
-                                            }}
-                                        >{t("Create New Ticket")}</Nav.Link>
-
-                                        <Nav.Link
-                                            className="px-2 px-lg-4"
                                             active={itemSelected === "history"}
-                                            eventKey={2}
                                             onClick={() => {
                                                 toMovements();
                                                 setItemSelected("history");
@@ -93,26 +92,98 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected }) => {
                                         >{t("History")}</Nav.Link>
 
                                         <Nav.Link
-                                            className="px-2 px-lg-4"
-                                            active={itemSelected === "Contact"}
-                                            eventKey={5}
+                                            className="d-block d-sm-none"
+                                            active={itemSelected === "buy"}
                                             onClick={() => {
-                                                setItemSelected("Contact");
+                                                toBuy();
+                                                setItemSelected("buy");
                                             }}
-                                        >{t("Contact")}</Nav.Link>
+                                        >
+                                            {t("Buy")}
+                                        </Nav.Link>
+
+                                        <Nav.Link
+                                            className="d-block d-sm-none"
+                                            active={itemSelected === "sell"}
+                                            onClick={() => {
+                                                toSell();
+                                                setItemSelected("sell");
+                                            }}
+                                        >
+                                            {t("Sell")}
+                                        </Nav.Link>
+
+                                        <Nav.Link
+                                            className="d-block d-sm-none"
+                                            active={itemSelected === "deposit"}
+                                            onClick={() => {
+                                                toDeposit();
+                                                setItemSelected("deposit");
+                                            }}
+                                        >{t("Deposit")}</Nav.Link>
+
+                                        <Nav.Link
+                                            className="d-block d-sm-none"
+                                            active={itemSelected === "withdraw"}
+                                            onClick={() => {
+                                                toWithdraw();
+                                                setItemSelected("withdraw");
+                                            }}
+                                        >{t("Withdraw")}</Nav.Link>
+
+                                        <NavDropdown
+                                            active={itemSelected === "buy" || itemSelected === "sell" || itemSelected === "deposit" || itemSelected === "withdraw"}
+                                            className="d-none d-sm-block d-md-block"
+                                            title={t("Create New Ticket")}
+                                            id="collasible-nav-dropdown">
+                                            <NavDropdown.Item
+                                                active={itemSelected === "buy"}
+                                                onClick={() => {
+                                                    toBuy();
+                                                    setItemSelected("buy");
+                                                }}
+                                            >
+                                                {t("Buy")}
+                                            </NavDropdown.Item>
+
+                                            <NavDropdown.Item
+                                                active={itemSelected === "sell"}
+                                                onClick={() => {
+                                                    toSell();
+                                                    setItemSelected("sell");
+                                                }}
+                                            >
+                                                {t("Sell")}
+                                            </NavDropdown.Item>
+
+                                            <NavDropdown.Item
+                                                active={itemSelected === "deposit"}
+                                                onClick={() => {
+                                                    toDeposit();
+                                                    setItemSelected("deposit");
+                                                }}
+                                            >{t("Deposit")}</NavDropdown.Item>
+
+                                            <NavDropdown.Item
+                                                active={itemSelected === "withdraw"}
+                                                onClick={() => {
+                                                    toWithdraw();
+                                                    setItemSelected("withdraw");
+                                                }}
+                                            >{t("Withdraw")}</NavDropdown.Item>
+                                        </NavDropdown>
 
                                         <Nav.Link
                                             className="px-2 px-lg-4"
                                             active={itemSelected === "Profile"}
-                                            eventKey={7}
                                             onClick={() => {
                                                 setItemSelected("Profile");
                                             }}
                                         >{t("Profile")}</Nav.Link>
                                     </>
                             }
-                            <Nav.Link className="d-block d-md-none" eventKey={9} onClick={() => logOut()}>
-                                {t("LogOut")}{" "}
+                            <Nav.Link className="d-block d-md-none" onClick={() => logOut()}>
+                                <span className="d-none d-sm-none d-md-inline-block">t("LogOut")}{" "}</span>
                                 <FontAwesomeIcon icon={faSignOutAlt} />
                             </Nav.Link>
                         </Nav>

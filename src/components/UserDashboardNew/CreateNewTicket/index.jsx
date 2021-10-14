@@ -36,9 +36,6 @@ const CreatNewTicket = () => {
                         </div>
                     </Collapse>
                 </Col>
-                <div>
-
-                </div>
             </Row>
         </Container>
     )

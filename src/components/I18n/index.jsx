@@ -196,7 +196,11 @@ i18n
           "Not Found":"Dirección no encontrada",
           "Initial Founds":"Fondos Iniciales",
           "name":"nombre",
-          "surname":"apellido"
+          "surname":"apellido",
+          "Buy":"Comprar",
+          "Sell":"Vender",
+          "Deposit":"Depositar",
+          "Withdraw":"Retirar"
         }
       }
     },
