@@ -12,11 +12,12 @@ import Footer from './Footer';
 import CreateNewTicket from './CreateNewTicket';
 
 import MovementsTable from './MovementsTable';
-import AddAccount from './AddAccount';
-import BuyForm from './BuyForm';
-import SellForm from './SellForm';
-import WithdrawForm from './WithdrawForm';
-import DepositForm from './DepositForm';
+import AddAccount from './Admin/AddAccount';
+
+import BuyForm from './User/BuyForm';
+import SellForm from './User/SellForm';
+import WithdrawForm from './User/WithdrawForm';
+import DepositForm from './User/DepositForm';
 import NavBarTotal from './NavBarTotal';
 
 const UserDashboard = () => {
@@ -47,11 +48,7 @@ const UserDashboard = () => {
     let isMobile = (width <= 576);
 
     // eslint-disable-next-line 
-    const toLogin = () => {
-        sessionStorage.clear();
-        history.push(`/login`);
-    }
-
+   
     //When the user try to open this url it checks if the user has a valid token in their session storage,
     //if it is true, it is redirected to the dashboard, if not, it is redirected to login
     const getUserData = () => {
@@ -60,19 +57,22 @@ const UserDashboard = () => {
 
 
     useEffect(() => {
+        if(admin===undefined){
+            sessionStorage.clear();
+            history.push(`/login`)
+        }
         window.addEventListener('resize', handleWindowSizeChange);
         getUserData();
         return () => {
             window.removeEventListener('resize', handleWindowSizeChange);
         }
-    }, [])
+    }, [admin,history])
 
 
     return (
         <div className="dashboard" >
             <NavInfo userData={userData} />
             <NavBar setItemSelected={setItemSelected} itemSelected={itemSelected} />
-            <NavBarTotal />
             {admin === "true" ?
                 <>
                     <Route path={`${path}/addAccount`}>
@@ -81,6 +81,7 @@ const UserDashboard = () => {
                 </>
                 :
                 <>
+                    <NavBarTotal />
                     <Route path={`${path}/accounts`}>
                         <AccountsContainer
                             isMobile={isMobile}

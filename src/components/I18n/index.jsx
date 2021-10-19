@@ -204,7 +204,12 @@ i18n
           "Select Found To Sell":"Seleccione el fondo a vender",
           "Select Found To buy":"Seleccione el fondo a comprar",
           "Cuantity":"Cantidad",
-          "Specify the cuantity you want to buy":"Especifique la cantidad que desea comprar"
+          "Specify the cuantity you want to buy":"Especifique la cantidad que desea comprar",
+          "Total Balance":"Balance Total",
+          "Add Account":"Añadir una cuenta",
+          "Last Name":"Apellido",
+          "First Name":"Nombre",
+          "Hi":"Hola"
         }
       }
     },
