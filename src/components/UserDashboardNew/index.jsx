@@ -17,6 +17,7 @@ import BuyForm from './BuyForm';
 import SellForm from './SellForm';
 import WithdrawForm from './WithdrawForm';
 import DepositForm from './DepositForm';
+import NavBarTotal from './NavBarTotal';
 
 const UserDashboard = () => {
     const admin = sessionStorage.getItem("admin")
@@ -71,6 +72,7 @@ const UserDashboard = () => {
         <div className="dashboard" >
             <NavInfo userData={userData} />
             <NavBar setItemSelected={setItemSelected} itemSelected={itemSelected} />
+            <NavBarTotal />
             {admin === "true" ?
                 <>
                     <Route path={`${path}/addAccount`}>

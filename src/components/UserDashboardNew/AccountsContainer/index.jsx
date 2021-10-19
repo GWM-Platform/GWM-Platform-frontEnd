@@ -96,7 +96,7 @@ const AccountsContainer = ({ isMobile, setItemSelected, numberOfAccounts, setNum
     }, [getAccounts])
 
     return (
-            <Container fluid className="mt-0 px-0 min-free-area">
+            <Container fluid className="mt-0 px-0 min-free-area d-flex align-items-center">
                 {
                     account.length === 0
                         ?
@@ -116,7 +116,6 @@ const AccountsContainer = ({ isMobile, setItemSelected, numberOfAccounts, setNum
                             numberOfAccounts={numberOfAccounts}
                         />
                 }
-
             </Container>
     )
 }

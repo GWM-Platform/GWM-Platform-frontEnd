@@ -1,0 +1,5 @@
+.navBarTotal{
+    position: sticky;
+    top: 45px;
+    z-index: 3;
+}
