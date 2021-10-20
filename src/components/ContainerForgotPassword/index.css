@@ -17,3 +17,38 @@
     font-size: 16px;
     font-weight: bolder;
 }
+
+.forgotPassword  {
+    background-color:lightgray;    
+}
+.forgotPassword  .card{
+    border-radius: 30px;
+    border: none;
+}
+.forgotPassword  .form-check-input:checked{
+    background-color: var(--main-color);
+    border-color: var(--secondary-color);;
+}
+.forgotPassword  .error{
+    color: var(--error);
+    font-size: 14px;
+    font-weight: bolder;
+    text-align: end;
+}
+
+.forgotPassword  .button{
+    text-transform: uppercase;
+    border-radius:20px;
+    transition: border-radius 0.5s;
+}
+.forgotPassword  .input-group-text{
+    background-color: white;
+    padding-left: 1rem ;
+    border-radius: 30px;
+}
+.forgotPassword  .form-control{
+    border-radius:30px
+}
+.forgotPassword  .mobile{
+    margin-top: 30%;
+}

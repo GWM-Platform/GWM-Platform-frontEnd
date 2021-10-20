@@ -1,22 +1,11 @@
 import React, { useContext, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {
-  CButton,
-  CCard,
-  CCardBody,
-  CCardGroup,
-  CForm,
-  CFormControl,
-  CInputGroup,
-  CInputGroupText,
-  CFormText
-} from '@coreui/react'
 import './index.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faKey, faLock, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faKey, faLock, faUser, } from '@fortawesome/free-solid-svg-icons'
 import { useTranslation } from "react-i18next";
-import { Col, Row, Container } from 'react-bootstrap'
+import { Col, Row, Container, Card, Form, Button, InputGroup } from 'react-bootstrap'
 import { urlContext } from '../../context/urlContext';
 
 const ContainerForgotPassword = () => {
@@ -27,24 +16,16 @@ const ContainerForgotPassword = () => {
   const { urlPrefix } = useContext(urlContext)
 
   const { user, token } = useParams();
-  const [data] = useState({})
-  const [toAPI] = useState({
-    token: token,
-    username: user
-  })
 
   // eslint-disable-next-line 
   const toLogin = () => {
     history.push(`/login`);
   }
 
-  data.token = token
-  data.username = user
-
-  const [buttonStatus, setbuttonStatus] = useState(true)
   // eslint-disable-next-line
   const [error, setError] = useState("")
-
+  const [formData, setFormData] = useState({  token :token,username : user})
+  const [validated, setValidated] = useState(false);
 
   const [validation] = useState({})
   const [validationFlag, setValidationFlag] = useState(false)
@@ -59,13 +40,14 @@ const ContainerForgotPassword = () => {
   const [uncheckCapital, setunCheckCapital] = useState("")
   const [checkLowercase, setCheckLowercase] = useState("none")
   const [uncheckLowercase, setunCheckLowercase] = useState("")
+  const [buttonDisabled, setButtonDisabled] = useState(false)
 
   const handleChange = (event) => {
     if (event.target.id !== "passwordConfirm") {
-      toAPI[event.target.id] = event.target.value
+      formData[event.target.id] = event.target.value
     }
-
-    data[event.target.id] = event.target.value
+    let aux = formData
+    aux[event.target.id] = event.target.value
 
     if (event.target.id === "password") {
       //Validate lenght
@@ -128,121 +110,145 @@ const ContainerForgotPassword = () => {
         setValidationFlag(false)
       }
     }
-    if (data.passwordConfirm === data.password && validationFlag && data.username !== "" && data.token !== "") {
-      setbuttonStatus(false)
+    if (formData.passwordConfirm === formData.password && validationFlag && formData.username !== "" && formData.token !== "") {
+      setButtonDisabled(false)
       setMatch("none")
     } else {
       setMatch("block")
-      setbuttonStatus(true)
-
+      setButtonDisabled(true)
     }
+    setFormData(aux)
   }
 
   const handleSubmit = (event) => {
     event.preventDefault();
     event.stopPropagation();
-    console.log("submit")
+    const form = event.currentTarget;
+    if (form.checkValidity() === true) {
+      changePassword(formData)
+    }
+    setValidated(true);
+  }
+
+  const changePassword = () => {
+    setButtonDisabled(true)
+    var url = `${urlPrefix}/users/resetPassword`;
+    console.log({token:formData.token,password:formData.password,id:parseInt(formData.id)})
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({token:formData.token,password:formData.password,id:parseInt(formData.id)}),
+      headers: {
+        Accept: "*/*",
+        'Content-Type': 'application/json'
+      }
+    }).then(res => { res.json()})
+      .then(response => {
+        console.log('Success:', response)
+        setButtonDisabled(false)
+      }).catch(error => {
+        console.error('Error:', error)
+        setButtonDisabled(false)
+      })
   }
 
   return (
-    <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
+    <div className="changePassword min-vh-100 d-flex flex-row align-items-center">
       <Container>
         <Row className="justify-content-center">
           <Col xs="12" sm="8" md="8" lg="5" xl="4">
-            <CCardGroup>
-              <CCard className="p-4">
-                <CCardBody>
-                  <CForm onSubmit={handleSubmit}>
-                    <h1 className="pb-2">{t("Change password")}</h1>
-                    {user !== undefined ?
-                      <p className="text-medium-emphasis">{t("Change password for")} {user}</p>
-                      :
-                      <></>}
-                    <p className="error mb-1">{error}</p>
-                    <CInputGroup className="mb-2">
-                      <CInputGroupText>
-                        <FontAwesomeIcon icon={faUser} />
-                      </CInputGroupText>
-                      <CFormControl
-                        placeholder={t("username")}
-                        defaultValue={user}
-                        autoComplete="username"
-                        onChange={handleChange}
-                        required
-                        id="username"
-                      />
-                    </CInputGroup>
-                    <CInputGroup className="mb-2">
-                      <CInputGroupText>
-                        <FontAwesomeIcon icon={faKey} />
-                      </CInputGroupText>
-                      <CFormControl
-                        placeholder="Token"
-                        onChange={handleChange}
-                        required
-                        id="token"
-                        defaultValue={token}
-                      />
-                    </CInputGroup>
-                    <CInputGroup className="mb-2">
-                      <CInputGroupText>
-                        <FontAwesomeIcon icon={faLock} />
-                      </CInputGroupText>
-                      <CFormControl
-                        type="password"
-                        placeholder={t("Password")}
-                        autoComplete="new-password"
-                        required
-                        onChange={handleChange}
-                        id="password"
-                      />
-                    </CInputGroup>
-                    <CFormText className="text-muted formText mb-4">
-                      <p className="validation">{t("Make sure at least the new password have")}:
-                        <br />
-                        {t("8 characters lenght")}
-                        <span className="textGreen" style={{ "display": checkLenght }}>✓</span>
-                        <span className="textRed" style={{ "display": uncheckLenght }}>✗</span>
-                        <br />
-                        {t("a number")}
-                        <span className="textGreen" style={{ "display": checkNumber }}>✓</span>
-                        <span className="textRed" style={{ "display": uncheckNumber }}>✗</span>
-                        <br />
-                        {t("a lowercase letter")}
-                        <span className="textGreen" style={{ "display": checkLowercase }}>✓</span>
-                        <span className="textRed" style={{ "display": uncheckLowercase }}>✗</span>
-                        <br />
-                        {t("a capital letter")}
-                        <span className="textGreen" style={{ "display": checkCapital }}>✓</span>
-                        <span className="textRed" style={{ "display": uncheckCapital }}>✗</span>
-                        <br />
-                        {t("a symbol")}
-                        <span className="textGreen" style={{ "display": checkSymbol }}>✓</span>
-                        <span className="textRed" style={{ "display": uncheckSymbol }}>✗</span>
-                      </p>
-                    </CFormText>
-                    <CInputGroup  >
-                      <CInputGroupText>
-                        <FontAwesomeIcon icon={faLock} />
-                      </CInputGroupText>
-                      <CFormControl
-                        type="password"
-                        placeholder={t("Confirm password")}
-                        autoComplete="new-password"
-                        required onChange={handleChange}
-                        id="passwordConfirm"
-                      />
-                    </CInputGroup>
-                    <CFormText className="mb-4 text-muted formText" style={{ "display": match }}>
-                      <p className="textRed validation">{t("The fields \"password\" and \"confirm password\" don't match")}</p>
-                    </CFormText>
-                    <CButton color="danger" type="submit" className='mainColor mt-4' disabled={buttonStatus} >
-                      {t("Change password")}
-                    </CButton>
-                  </CForm>
-                </CCardBody>
-              </CCard>
-            </CCardGroup>
+            <Card className="p-4">
+              <Card.Body>
+              <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                  <h1 className="pb-2">{t("Change password")}</h1>
+                  {user !== undefined ?
+                    <p className="text-medium-emphasis">{t("Change password for")} {user}</p>
+                    :
+                    <></>}
+                  <p className="error mb-1">{error}</p>
+                  <InputGroup className="mb-2">
+                    <InputGroup.Text>
+                      <FontAwesomeIcon icon={faUser} />
+                    </InputGroup.Text>
+                    <Form.Control
+                      placeholder={t("id")}
+                      defaultValue={user}
+                      autoComplete="id"
+                      onChange={handleChange}
+                      required
+                      id="id"
+                      type="number"
+                    />
+                  </InputGroup>
+                  <InputGroup className="mb-2">
+                    <InputGroup.Text>
+                      <FontAwesomeIcon icon={faKey} />
+                    </InputGroup.Text>
+                    <Form.Control
+                      placeholder="Token"
+                      onChange={handleChange}
+                      required
+                      id="token"
+                      defaultValue={token}
+                    />
+                  </InputGroup>
+                  <InputGroup className="mb-2">
+                    <InputGroup.Text>
+                      <FontAwesomeIcon icon={faLock} />
+                    </InputGroup.Text>
+                    <Form.Control
+                      type="password"
+                      placeholder={t("Password")}
+                      autoComplete="new-password"
+                      required
+                      onChange={handleChange}
+                      id="password"
+                    />
+                  </InputGroup>
+                  <Form.Text className="text-muted formText mb-4">
+                    <p className="validation">{t("Make sure at least the new password have")}:
+                      <br />
+                      {t("8 characters lenght")}
+                      <span className="textGreen" style={{ "display": checkLenght }}>✓</span>
+                      <span className="textRed" style={{ "display": uncheckLenght }}>✗</span>
+                      <br />
+                      {t("a number")}
+                      <span className="textGreen" style={{ "display": checkNumber }}>✓</span>
+                      <span className="textRed" style={{ "display": uncheckNumber }}>✗</span>
+                      <br />
+                      {t("a lowercase letter")}
+                      <span className="textGreen" style={{ "display": checkLowercase }}>✓</span>
+                      <span className="textRed" style={{ "display": uncheckLowercase }}>✗</span>
+                      <br />
+                      {t("a capital letter")}
+                      <span className="textGreen" style={{ "display": checkCapital }}>✓</span>
+                      <span className="textRed" style={{ "display": uncheckCapital }}>✗</span>
+                      <br />
+                      {t("a symbol")}
+                      <span className="textGreen" style={{ "display": checkSymbol }}>✓</span>
+                      <span className="textRed" style={{ "display": uncheckSymbol }}>✗</span>
+                    </p>
+                  </Form.Text>
+                  <InputGroup  >
+                    <InputGroup.Text>
+                      <FontAwesomeIcon icon={faLock} />
+                    </InputGroup.Text>
+                    <Form.Control
+                      type="password"
+                      placeholder={t("Confirm password")}
+                      autoComplete="new-password"
+                      required onChange={handleChange}
+                      id="passwordConfirm"
+                    />
+                  </InputGroup>
+                  <Form.Text className="mb-4 text-muted formText" style={{ "display": match }}>
+                    <p className="textRed validation">{t("The fields \"password\" and \"confirm password\" don't match")}</p>
+                  </Form.Text>
+                  <Button variant="danger" type="submit" className='button mainColor mt-4' disabled={buttonDisabled} >
+                    {t("Change password")}
+                  </Button>
+                </Form>
+              </Card.Body>
+            </Card>
           </Col>
         </Row>
       </Container>

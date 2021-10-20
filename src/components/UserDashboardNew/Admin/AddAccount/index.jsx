@@ -22,15 +22,14 @@ const AddAccount = () => {
         event.stopPropagation();
         const form = event.currentTarget;
         if (form.checkValidity() === true) {
-            singUp(formData)
+            signup(formData)
         }
         setValidated(true);
     }
 
-    const singUp = () => {
-
+    const signup = () => {
         setButtonDisabled(true)
-
+        console.log(JSON.stringify(formData))
         var url = `${urlPrefix}/clients/signup`;
         fetch(url, {
             method: 'POST',
@@ -39,8 +38,7 @@ const AddAccount = () => {
                 Accept: "*/*",
                 'Content-Type': 'application/json'
             }
-        }).then(res => res.json())
-            
+        }).then(res => {res.json() ;console.log(res)}) 
             .then(response => {
                 console.log('Success:', response)
                 setButtonDisabled(false)
@@ -75,7 +73,7 @@ const AddAccount = () => {
                         >
                             <Form.Control
                                 required
-                                id="firstname"
+                                id="firstName"
                                 onChange={handleChange}
                                 type="text"
                                 placeholder={t("First Name")}

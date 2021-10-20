@@ -54,8 +54,8 @@ i18n
           "Sorry, the login failed! Please Try again": "Lo sentimos, el inicio de sesión falló. Inténtalo de nuevo",
           //Translations for changePassword
           "Password Reset": "Restablecimiento de contraseña",
-          "Enter your user account's verified email address, your username and your birthdate. We will send you a password reset link.":
-            "Ingrese la dirección de correo electrónico verificada de su cuenta, el usurio y la fecha de nacimiento. Al validar estos datos le enviaremos un enlace de restablecimiento de contraseña.",
+          "Enter your user account's verified email address. We will send you a password reset link.":
+            "Ingrese la dirección de correo electrónico verificada de su cuenta. Le enviaremos un enlace de restablecimiento de contraseña.",
           "Send password reset email": "Enviar Email de restablecimiento de contraseña",
           "Sorry, the request failed! Please Try again": "Lo sentimos, la solicitud falló. Inténtalo de nuevo",
           //Translation for Currencies ABM
@@ -209,7 +209,8 @@ i18n
           "Add Account":"Añadir una cuenta",
           "Last Name":"Apellido",
           "First Name":"Nombre",
-          "Hi":"Hola"
+          "Hi":"Hola",
+          "Reset password":"Reestablecer"
         }
       }
     },

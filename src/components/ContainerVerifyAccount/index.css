@@ -1,0 +1,34 @@
+.verifyAccount {
+    background-color:lightgray;    
+}
+.verifyAccount .card{
+    border-radius: 30px;
+    border: none;
+}
+.verifyAccount .form-check-input:checked{
+    background-color: var(--main-color);
+    border-color: var(--secondary-color);;
+}
+.verifyAccount .error{
+    color: var(--error);
+    font-size: 14px;
+    font-weight: bolder;
+    text-align: end;
+}
+
+.verifyAccount .button{
+    text-transform: uppercase;
+    border-radius:20px;
+    transition: border-radius 0.5s;
+}
+.verifyAccount .input-group-text{
+    background-color: white;
+    padding-left: 1rem ;
+    border-radius: 30px;
+}
+.verifyAccount .form-control{
+    border-radius:30px
+}
+.verifyAccount .mobile{
+    margin-top: 30%;
+}

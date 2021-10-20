@@ -1,28 +1,17 @@
-import React, { useState,useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {
-  CButton,
-  CCard,
-  CCardBody,
-  CCardGroup,
-  CForm,
-  CFormControl,
-  CInputGroup,
-  CInputGroupText,
-} from '@coreui/react'
 import './index.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEnvelope, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
 import { useTranslation } from "react-i18next";
-import { Col, Row, Container } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom'
 import { urlContext } from '../../context/urlContext';
+import { Container, Row, Col, Card, Form, InputGroup, Button, CardGroup } from 'react-bootstrap'
 
 const ContainerForgotPassword = () => {
   // eslint-disable-next-line
   const { urlPrefix } = useContext(urlContext)
 
-  const [data] = useState({});
   // eslint-disable-next-line
   const [error, setError] = useState("")
   // eslint-disable-next-line
@@ -33,63 +22,93 @@ const ContainerForgotPassword = () => {
   let history = useHistory();
 
   // eslint-disable-next-line 
-    const toLogin = () => {
+  const toLogin = () => {
     history.push(`/login`);
   }
 
+  const [formData, setFormData] = useState({})
+
+  const [validated, setValidated] = useState(false);
+
   const handleChange = (event) => {
-    data[event.target.id] = event.target.value
-  }
+    let aux = formData;
+    aux[event.target.id] = event.target.value;
+    setFormData(aux);
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     event.stopPropagation();
+    const form = event.currentTarget;
+    if (form.checkValidity() === true) {
+      requestPasswordReset(formData)
+    }
+    setValidated(true);
+  }
+
+  const requestPasswordReset = () => {
     setButtonDisabled(true)
-    console.log("submit")
+    var url = `${urlPrefix}/users/requestPasswordReset`;
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(formData),
+      headers: {
+        Accept: "*/*",
+        'Content-Type': 'application/json'
+      }
+    }).then(res => { res.json(); console.log(res) })
+      .then(response => {
+        console.log('Success:', response)
+        setButtonDisabled(false)
+      }).catch(error => {
+        console.error('Error:', error)
+        setButtonDisabled(false)
+      })
   }
 
   return (
-    <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
+    <div className="forgotPassword min-vh-100 d-flex flex-row align-items-center">
       <Container>
         <Row className="justify-content-center">
           <Col md="5">
-            <CCardGroup>
-              <CCard className="p-4">
-                <CCardBody>
-                  <CForm onSubmit={handleSubmit}>
+            <CardGroup>
+              <Card className="p-4">
+                <Card.Body>
+                  <Form noValidate validated={validated} onSubmit={handleSubmit}>
                     <h1>{t("Password Reset")}</h1>
-                    <p className="text-medium-emphasis">{t(`Enter your user account's verified email address, your username and your birthdate. We will send you a password reset link.`)}</p>
+                    <p className="text-medium-emphasis">{t(`Enter your user account's verified email address. We will send you a password reset link.`)}</p>
                     <h2 className="error m-2">{error}</h2>
                     <h2 className="message m-2">{message}</h2>
-                    <CInputGroup className="mb-2">
-                      <CInputGroupText>
+                    <InputGroup className="mb-2">
+                      <InputGroup.Text>
                         <FontAwesomeIcon icon={faEnvelope} />
-                      </CInputGroupText>
-                      <CFormControl
+                      </InputGroup.Text>
+                      <Form.Control
                         placeholder="Email"
                         autoComplete="email"
                         onChange={handleChange}
                         required
                         id="email"
                       />
-                    </CInputGroup>
-                    <CInputGroup className="mb-2">
-                      <CInputGroupText>
+                    </InputGroup>
+                    {/*
+                      <InputGroup className="mb-2">
+                      <InputGroup.Text>
                         <FontAwesomeIcon icon={faUser} />
-                      </CInputGroupText>
-                      <CFormControl
+                      </InputGroup.Text>
+                      <Form.Control
                         placeholder={t('Username')}
                         autoComplete="username"
                         id="username"
                         required
                         onChange={handleChange}
                       />
-                    </CInputGroup>
-                    <CInputGroup className="mb-5">
-                      <CInputGroupText>
+                    </InputGroup>
+                    <InputGroup className="mb-5">
+                      <InputGroup.Text>
                         <FontAwesomeIcon icon={faUser} />
-                      </CInputGroupText>
-                      <CFormControl
+                      </InputGroup.Text>
+                      <Form.Control
                         placeholder={t('Birthdate')}
                         autoComplete="date"
                         id="birthdate"
@@ -97,14 +116,16 @@ const ContainerForgotPassword = () => {
                         required
                         onChange={handleChange}
                       />
-                    </CInputGroup>
-                    <CButton color="danger" className="mainColor" type="submit" disabled={buttonDisabled}>
-                      {t("Send password reset email")}
-                    </CButton>
-                  </CForm>
-                </CCardBody>
-              </CCard>
-            </CCardGroup>
+                    </InputGroup>*/
+                    }
+
+                    <Button variant="danger" className="mainColor button" type="submit" disabled={buttonDisabled}>
+                      {t("Reset password")}
+                    </Button>
+                  </Form>
+                </Card.Body>
+              </Card>
+            </CardGroup>
           </Col>
         </Row>
       </Container>

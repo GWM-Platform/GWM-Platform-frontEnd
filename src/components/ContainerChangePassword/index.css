@@ -18,3 +18,38 @@
     padding-bottom: 0rem;
     font-weight: bolder;
 }
+
+.changePassword  {
+    background-color:lightgray;    
+}
+.changePassword  .card{
+    border-radius: 30px;
+    border: none;
+}
+.changePassword  .form-check-input:checked{
+    background-color: var(--main-color);
+    border-color: var(--secondary-color);;
+}
+.changePassword  .error{
+    color: var(--error);
+    font-size: 14px;
+    font-weight: bolder;
+    text-align: end;
+}
+
+.changePassword  .button{
+    text-transform: uppercase;
+    border-radius:20px;
+    transition: border-radius 0.5s;
+}
+.changePassword  .input-group-text{
+    background-color: white;
+    padding-left: 1rem ;
+    border-radius: 30px;
+}
+.changePassword  .form-control{
+    border-radius:30px
+}
+.changePassword  .mobile{
+    margin-top: 30%;
+}

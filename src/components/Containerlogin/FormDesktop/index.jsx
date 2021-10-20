@@ -6,8 +6,8 @@ import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { Col, Row, Spinner, Card, Form, InputGroup, FormControl, Button } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
 
-const FormDesktop = ({ handleChange,handleSubmit,buttonDisabled,setButtonDisabled,error, setError, buttonContent,setButtonContent,loading,setLoading, data,setData } ) => {
-    
+const FormDesktop = ({ handleChange, handleSubmit, buttonDisabled, error, buttonContent, setButtonContent, loading, setLoading, data, setData }) => {
+
     const { t } = useTranslation();
 
     return (
@@ -23,8 +23,8 @@ const FormDesktop = ({ handleChange,handleSubmit,buttonDisabled,setButtonDisable
                         </InputGroup.Text>
                         <FormControl
                             placeholder={t('Username or Email')}
-                            autoComplete="username"
-                            id="username"
+                            autoComplete="email"
+                            id="email"
                             onChange={handleChange}
                             required
                         />
@@ -50,6 +50,9 @@ const FormDesktop = ({ handleChange,handleSubmit,buttonDisabled,setButtonDisable
                             <Button variant="link" size="sm" className="forgot" href="/forgotPassword">{t('Forgot Password?')}</Button>
                         </Col>
                     </Row>
+                    <Form.Group className="mb-3">
+                        <Form.Check onChange={handleChange} id="api" type="checkbox" label="¿Deseas Logearte con la api?" />
+                    </Form.Group>
                 </Card.Body>
                 <Card.Footer>
                     <Button type="submit" disabled={buttonDisabled} variant="danger" className="mainColor button block px-4 py-2">
