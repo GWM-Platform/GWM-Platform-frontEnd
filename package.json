@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "homepage": "https://gwm-platform.github.io/GWM-Platform-frontEnd/",
   "private": true,
+  "engines": {
+    "node": "16.x"
+  },
   "dependencies": {
     "@coreui/coreui": "^4.0.0-rc.3",
     "@coreui/icons": "^2.0.1",
