@@ -23,7 +23,7 @@ const ContainerForgotPassword = () => {
   }
 
   // eslint-disable-next-line
-  const [error, setError] = useState("")
+  const [Message, setMessage] = useState("")
   const [formData, setFormData] = useState({  token :token,username : user})
   const [validated, setValidated] = useState(false);
 
@@ -130,30 +130,37 @@ const ContainerForgotPassword = () => {
     setValidated(true);
   }
 
-  const changePassword = () => {
+  const changePassword = async () => {
     setButtonDisabled(true)
     var url = `${urlPrefix}/users/resetPassword`;
-    console.log({token:formData.token,password:formData.password,id:parseInt(formData.id)})
-    fetch(url, {
+    const response = await fetch(url, {
       method: 'POST',
       body: JSON.stringify({token:formData.token,password:formData.password,id:parseInt(formData.id)}),
       headers: {
         Accept: "*/*",
         'Content-Type': 'application/json'
       }
-    }).then(res => { res.json()})
-      .then(response => {
-        console.log('Success:', response)
-        setButtonDisabled(false)
-      }).catch(error => {
-        console.error('Error:', error)
-        setButtonDisabled(false)
-      })
+    })
+
+    if (response.status === 200) {
+      setMessage("Su contraseña se ha reestablecido correctamente")
+      setButtonDisabled(false)
+    } else {
+      setButtonDisabled(false)
+      switch (response.status) {
+        case 500:
+          setMessage("Error. Vefique los datos ingresados")
+          break;
+        default:
+          console.log(response.status)
+          setMessage("unhandled Message")
+      }
+    }
   }
 
   return (
     <div className="changePassword min-vh-100 d-flex flex-row align-items-center">
-      <Container>
+      <Container fluid>
         <Row className="justify-content-center">
           <Col xs="12" sm="8" md="8" lg="5" xl="4">
             <Card className="p-4">
@@ -164,7 +171,7 @@ const ContainerForgotPassword = () => {
                     <p className="text-medium-emphasis">{t("Change password for")} {user}</p>
                     :
                     <></>}
-                  <p className="error mb-1">{error}</p>
+                  <p className="Message mb-1">{Message}</p>
                   <InputGroup className="mb-2">
                     <InputGroup.Text>
                       <FontAwesomeIcon icon={faUser} />

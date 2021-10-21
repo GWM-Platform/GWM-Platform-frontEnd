@@ -6,10 +6,11 @@ import { useTranslation } from 'react-i18next';
 import { urlContext } from '../../context/urlContext';
 import './index.css'
 const ContainerVerifyAccount = () => {
-    const {urlPrefix} = useContext(urlContext)
+    const { urlPrefix } = useContext(urlContext)
     const { t } = useTranslation();
     const { user, token } = useParams();
 
+    const [message,setMessage]=useState("")
     const [formData, setFormData] = useState({})
     const [validated, setValidated] = useState(false);
     const [buttonDisabled, setButtonDisabled] = useState(false)
@@ -29,28 +30,36 @@ const ContainerVerifyAccount = () => {
         setValidated(true);
     }
 
-    const verifyAccount = () => {
+    const verifyAccount = async () => {
         setButtonDisabled(true)
         var url = `${urlPrefix}/users/verify/?` + new URLSearchParams({
             token: formData.token,
         });
-        fetch(url, {
+        const response = await fetch(url, {
             method: 'GET',
             headers: {
                 Accept: "*/*",
             }
-        }).then(res => res.json())
-            .then(response => {
-                console.log('Success:', response)
-                setButtonDisabled(false)
-            }).catch(error => {
-                console.error('Error:', error)
-                setButtonDisabled(false)
-            })
+        })
+
+        if (response.status === 200) {
+            setMessage("La cuenta ha sido verificada")
+            setButtonDisabled(false)
+          } else {
+              switch (response.status) {
+                  case 500:
+                    setMessage("Error. Vefique los datos ingresados")
+                    break;
+                  default:
+                    console.error(response.status)
+                    setMessage("unhandled Error")
+                }
+            setButtonDisabled(false)
+          }
     }
 
     return (
-        <Container fluid px-0 className="verifyAccount ">
+        <Container fluid className="px-0 verifyAccount ">
             <Row className="min-100vh d-flex justify-content-center align-items-center">
                 <Col sm="12" md="10" lg="6" xl="5">
                     <Card className="px-2 pb-4">
@@ -133,6 +142,7 @@ const ContainerVerifyAccount = () => {
                                         onChange={handleChange}
                                     />
                                 </FloatingLabel>
+                                <p>{message}</p>
                                 <Row className="d-flex justify-content-end">
                                     <Col xs="auto">
                                         <Button className="button" variant="danger" type="submit" disabled={buttonDisabled}>{t("Submit")}</Button>

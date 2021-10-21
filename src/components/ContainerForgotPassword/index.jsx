@@ -27,7 +27,6 @@ const ContainerForgotPassword = () => {
   }
 
   const [formData, setFormData] = useState({})
-
   const [validated, setValidated] = useState(false);
 
   const handleChange = (event) => {
@@ -46,24 +45,32 @@ const ContainerForgotPassword = () => {
     setValidated(true);
   }
 
-  const requestPasswordReset = () => {
+  const requestPasswordReset = async () => {
     setButtonDisabled(true)
     var url = `${urlPrefix}/users/requestPasswordReset`;
-    fetch(url, {
+    const response = await fetch(url, {
       method: 'POST',
       body: JSON.stringify(formData),
       headers: {
         Accept: "*/*",
         'Content-Type': 'application/json'
       }
-    }).then(res => { res.json(); console.log(res) })
-      .then(response => {
-        console.log('Success:', response)
-        setButtonDisabled(false)
-      }).catch(error => {
-        console.error('Error:', error)
-        setButtonDisabled(false)
-      })
+    })
+
+    if (response.status === 201) {
+      setMessage("Se ha enviado un mail con un link para reestablecer su contraseña")
+      setButtonDisabled(false)
+    } else {
+      setButtonDisabled(false)
+      switch (response.status) {
+        case 500:
+          setMessage("Error. Vefique el mail ingresado")
+          break;
+        default:
+          console.log(response.status)
+          setMessage("unhandled Error")
+      }
+    }
   }
 
   return (
@@ -88,6 +95,7 @@ const ContainerForgotPassword = () => {
                         autoComplete="email"
                         onChange={handleChange}
                         required
+                        type="email"
                         id="email"
                       />
                     </InputGroup>

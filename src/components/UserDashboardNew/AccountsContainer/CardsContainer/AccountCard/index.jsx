@@ -66,16 +66,10 @@ const AccountCard = ({ account, accounts, setItemSelected }) => {
                             </Row>
                         </h1>
                     </Card.Title>
-                    <Card.Text>
-                        <h3 className="subTitle lighter mt-0 mb-2">
-                            Found Performance:<span className="bolder"> %1.7</span>
-                        </h3>
-                        <h3 className="subTitle lighter mt-0 mb-2">
-                            Acquired FeeParts:<span className="bolder"> 22</span>
-                        </h3>
-                        <h3 className="subTitle lighter mt-0 mb-2">
-                            FeePart Price:<span className="bolder"> $15</span>
-                        </h3>
+                    <Card.Text className="subTitle lighter mt-0 mb-2">
+                            Found Performance:<span className="bolder"> %1.7</span><br/>
+                            Acquired FeeParts:<span className="bolder"> 22</span><br/>
+                            FeePart Price:<span className="bolder"> $15</span><br/>
                     </Card.Text>
                 </Card.Body>
                 <Card.Footer className="footer mt-2 m-0 p-0">
@@ -88,7 +82,7 @@ const AccountCard = ({ account, accounts, setItemSelected }) => {
                         <Col sm="6" className="d-flex justify-content-center p-0 m-0">
                             <OverlayTrigger rootClose trigger='click' placement="left-start" overlay={
                                 <Popover id="popover-basic" >
-                                    <Popover.Header className="mt-0" as="h3">{t("Account menu")}</Popover.Header>
+                                    <Popover.Header className="mt-0">{t("Account menu")}</Popover.Header>
                                     <Popover.Body>
                                         {accounts.filter((n) => n.currency.name === account.currency.name).length > 1 ? <><span className="toTransaction" onClick={() => toTransaction(1,account)}>{t("Internal transaction")}</span></> : <></>}
                                         <span className="toTransaction" onClick={() => toTransaction(4,account)}>{t("Bank Transfer")}</span>

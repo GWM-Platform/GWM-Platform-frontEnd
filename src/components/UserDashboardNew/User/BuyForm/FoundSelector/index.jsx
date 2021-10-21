@@ -16,21 +16,22 @@ const FoundSelector = ({ data, setData, some, setSome,founds }) => {
 
     //Scrolling Function
     const scrollFoundContainer = (right) => {
+        let cardWidth=foundsContainer.current.clientWidth/4
         if (right) {
             let scrollAmount = 0;
             let slideTimer = setInterval(function () {
-                foundsContainer.current.scrollLeft += 10;
-                scrollAmount += 10;
-                if (scrollAmount >= 200) {
+                foundsContainer.current.scrollLeft += 15;
+                scrollAmount += 15;
+                if (scrollAmount >= cardWidth) {
                     window.clearInterval(slideTimer);
                 }
             }, 25);
         } else {
             let scrollAmount = 0;
             let slideTimer = setInterval(function () {
-                foundsContainer.current.scrollLeft -= 10;
-                scrollAmount += 10;
-                if (scrollAmount >= 200) {
+                foundsContainer.current.scrollLeft -= 15;
+                scrollAmount += 15;
+                if (scrollAmount >= cardWidth) {
                     window.clearInterval(slideTimer);
                 }
             }, 25);

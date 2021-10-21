@@ -18,19 +18,31 @@ const ContainerLogin = () => {
   const [error, setError] = useState("");
   const [buttonContent, setButtonContent] = useState("Login");
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState({});
+  const [Some,setSome] = useState(false);
+
+  const [data, setData] = useState({ email: "", password: "", api: false });
 
   const handleChange = (event) => {
     let aux = data;
-
-    if (event.target.id === "api") {
-      aux[event.target.id] = event.target.checked;
-      console.log(event.target.checked)
-    } else {
-      aux[event.target.id] = event.target.value;
+    switch (event.target.id) {
+      case 'api':
+        aux[event.target.id] = event.target.checked;
+        break
+      case 'api1':
+        aux[event.target.id] = event.target.checked;
+        break
+      case 'email1':
+        aux.email = event.target.value
+        break
+      case 'password1':
+        aux.password = event.target.value
+        break
+      default:
+        aux[event.target.id] = event.target.value;
+        break
     }
-
     setData(aux);
+    setSome(!Some)
     setButtonDisabled(((data.password !== undefined && data.password !== "") && (data.email !== undefined && data.email !== "")) ? false : true)
   };
 
@@ -48,14 +60,13 @@ const ContainerLogin = () => {
 
   }
   const loginWithoutApi = () => {
-    if (data.username === "admin" && data.password === "1234") {
+    if (data.email === "admin" && data.password === "1234") {
       sessionStorage.setItem("admin", true)
       toDashBoard("addAccount");
       setError("")
-    } else if (data.username === "user" && data.password === "1234") {
+    } else if (data.email === "user" && data.password === "1234") {
       sessionStorage.setItem("admin", false)
       toDashBoard("accounts");
-      setError("")
     } else {
       setError("Sorry, the login failed! Please Try again")
       setButtonContent("Login")
@@ -64,7 +75,7 @@ const ContainerLogin = () => {
     }
   }
 
-  const loginWithApi = async() => {
+  const loginWithApi = async () => {
     var url = `${urlPrefix}/auth/login`;
     const response = await fetch(url, {
       method: 'POST',
@@ -74,25 +85,34 @@ const ContainerLogin = () => {
         'Content-Type': 'application/json'
       }
     })
-  
+
     if (response.status === 200) {
       const data = await response.json()
-      sessionStorage.setItem("access_token",data.access_token)
+      sessionStorage.setItem("access_token", data.access_token)
       sessionStorage.setItem("admin", false)
       toDashBoard("accounts");
-      setError("") 
     } else {
-      console.log(response.json()) 
-      setError("Sorry, the login failed! Please Try again")
+      switch (response.status) {
+        case 500://Unhandled (Por ahora lo tira cuando el mail no matchea con ninguno de los de la DB)
+          setError("Error. Vefique los datos ingresados")
+          break;
+        case 401://Unauthorized, deberia saltar por el mail tambien
+          setError("Error. Vefique los datos ingresados")
+          break;
+        default:
+          console.log(response.status)
+          setError("unhandled Message")
+      }
       setButtonContent("Login")
       setButtonDisabled(false)
-      setLoading(false)    }
+      setLoading(false)
+    }
   }
   return (
     <div className="login">
       <Container>
         <Row className="d-flex min-vh-100  justify-content-center align-items-start align-items-lg-center pt-3">
-          <Col xs="11" sm="8" md="6" lg="4" xl="3">
+          <Col xs="11" sm="8" md="6" lg="5" xl="4">
             <FormDesktop
               handleChange={handleChange}
               handleSubmit={handleSubmit}

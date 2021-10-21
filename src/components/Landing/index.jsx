@@ -22,12 +22,9 @@ function Landing() {
     //if it is true, it is redirected to the dashboard, if not, it is redirected to login
 
     let token = sessionStorage.getItem('access_token')
-
-
     if(token===null){
         toLogin()
     }
-
 
     return (
         <Container>

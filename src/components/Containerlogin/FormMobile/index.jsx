@@ -11,9 +11,9 @@ const FormMobile = ({ handleChange, handleSubmit, buttonDisabled, setButtonDisab
 
     return (
         <Form onSubmit={handleSubmit} className="d-block d-lg-none mobile">
-            <divz className="d-flex justify-content-center">
+            <div className="d-flex justify-content-center">
                 <Card.Img className="mb-4" src={process.env.PUBLIC_URL + '/images/logo/logo.png'} />
-            </divz>
+            </div>
             <InputGroup className="mb-3">
                 <InputGroup.Text id="basic-addon1">
                     <FontAwesomeIcon icon={faUser} />
@@ -21,7 +21,8 @@ const FormMobile = ({ handleChange, handleSubmit, buttonDisabled, setButtonDisab
                 <FormControl
                     placeholder={t('Username or Email')}
                     autoComplete="email"
-                    id="email"
+                    id="email1"
+                    value={data.email}
                     onChange={handleChange}
                     required
                 />
@@ -37,7 +38,8 @@ const FormMobile = ({ handleChange, handleSubmit, buttonDisabled, setButtonDisab
                             placeholder={t('Password')}
                             autoComplete="current-password"
                             onChange={handleChange}
-                            id="password"
+                            id="password2"
+                            value={data.password}
                             required
                         />
                     </InputGroup>
@@ -48,7 +50,12 @@ const FormMobile = ({ handleChange, handleSubmit, buttonDisabled, setButtonDisab
                 </Col>
             </Row>
             <Form.Group className="mb-3">
-                <Form.Check id="api" onChange={handleChange}type="checkbox" label="¿Deseas Logearte con la api?" />
+                <Form.Check
+                    id="api1"
+                    value={data.api}
+                    onChange={handleChange}
+                    type="checkbox"
+                    label="¿Deseas Logearte con la api?" />
             </Form.Group>
             <Button type="submit" disabled={buttonDisabled} variant="danger" className="mainColor button block px-4 py-2">
                 <Spinner

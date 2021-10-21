@@ -14,9 +14,9 @@ const FormDesktop = ({ handleChange, handleSubmit, buttonDisabled, error, button
         <Card className="loginCard d-none d-lg-block">
             <Form onSubmit={handleSubmit}>
                 <Card.Body className="p-4">
-                    <divz className="d-flex justify-content-center">
+                    <div className="d-flex justify-content-center">
                         <Card.Img className="mb-4" src={process.env.PUBLIC_URL + '/images/logo/logo.png'} />
-                    </divz>
+                    </div>
                     <InputGroup className="mb-3">
                         <InputGroup.Text id="basic-addon1">
                             <FontAwesomeIcon icon={faUser} />
@@ -25,6 +25,7 @@ const FormDesktop = ({ handleChange, handleSubmit, buttonDisabled, error, button
                             placeholder={t('Username or Email')}
                             autoComplete="email"
                             id="email"
+                            value={data.email}
                             onChange={handleChange}
                             required
                         />

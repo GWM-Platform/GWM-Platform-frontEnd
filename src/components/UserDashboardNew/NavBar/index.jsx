@@ -25,30 +25,37 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected }) => {
     }
 
     const toAccounts = () => {
+        setItemSelected("accounts");
         history.push(`${url}/accounts`);
     }
 
     const toMovements = () => {
+        setItemSelected("history");
         history.push(`${url}/history`);
     }
 
     const toBuy = (type) => {
+        setItemSelected("buy");
         history.push(`${url}/buy`);
     }
 
     const toDeposit = (type) => {
+        setItemSelected("deposit");
         history.push(`${url}/deposit`);
     }
 
     const toSell = (type) => {
+        setItemSelected("sell");
         history.push(`${url}/sell`);
     }
 
     const toWithdraw = (type) => {
+        setItemSelected("withdraw");
         history.push(`${url}/withdraw`);
     }
 
     const toAddAccount = () => {
+        setItemSelected("addAccount");
         history.push(`${url}/addAccount`);
     }
 
@@ -67,7 +74,6 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected }) => {
                                         className="px-2"
                                         active={itemSelected === "addAccount"}
                                         onClick={() => {
-                                            setItemSelected("addAccount");
                                             toAddAccount()
                                         }}
                                     >{t("Add Account")}</Nav.Link>
@@ -78,7 +84,6 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected }) => {
                                             active={itemSelected === "accounts" || itemSelected === "Accounts"}
                                             onClick={() => {
                                                 toAccounts();
-                                                setItemSelected("accounts");
                                             }}
                                         >{t("Accounts")}</Nav.Link>
 
@@ -87,7 +92,6 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected }) => {
                                             active={itemSelected === "history"}
                                             onClick={() => {
                                                 toMovements();
-                                                setItemSelected("history");
                                             }}
                                         >{t("History")}</Nav.Link>
 
@@ -96,7 +100,6 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected }) => {
                                             active={itemSelected === "buy"}
                                             onClick={() => {
                                                 toBuy();
-                                                setItemSelected("buy");
                                             }}
                                         >
                                             {t("Buy")}
@@ -107,7 +110,6 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected }) => {
                                             active={itemSelected === "sell"}
                                             onClick={() => {
                                                 toSell();
-                                                setItemSelected("sell");
                                             }}
                                         >
                                             {t("Sell")}
@@ -118,7 +120,6 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected }) => {
                                             active={itemSelected === "deposit"}
                                             onClick={() => {
                                                 toDeposit();
-                                                setItemSelected("deposit");
                                             }}
                                         >{t("Deposit")}</Nav.Link>
 
@@ -127,7 +128,6 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected }) => {
                                             active={itemSelected === "withdraw"}
                                             onClick={() => {
                                                 toWithdraw();
-                                                setItemSelected("withdraw");
                                             }}
                                         >{t("Withdraw")}</Nav.Link>
 
@@ -140,7 +140,6 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected }) => {
                                                 active={itemSelected === "buy"}
                                                 onClick={() => {
                                                     toBuy();
-                                                    setItemSelected("buy");
                                                 }}
                                             >
                                                 {t("Buy")}
@@ -150,7 +149,6 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected }) => {
                                                 active={itemSelected === "sell"}
                                                 onClick={() => {
                                                     toSell();
-                                                    setItemSelected("sell");
                                                 }}
                                             >
                                                 {t("Sell")}
@@ -160,7 +158,6 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected }) => {
                                                 active={itemSelected === "deposit"}
                                                 onClick={() => {
                                                     toDeposit();
-                                                    setItemSelected("deposit");
                                                 }}
                                             >{t("Deposit")}</NavDropdown.Item>
 

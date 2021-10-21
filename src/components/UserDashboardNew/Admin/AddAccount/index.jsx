@@ -9,6 +9,8 @@ const AddAccount = () => {
 
     const { t } = useTranslation();
     const [formData, setFormData] = useState({})
+    const [message, setMessage] = useState()
+
     const [validated, setValidated] = useState(false);
     const [buttonDisabled, setButtonDisabled] = useState(false)
     const handleChange = (event) => {
@@ -27,27 +29,34 @@ const AddAccount = () => {
         setValidated(true);
     }
 
-    const signup = () => {
+    const signup = async () => {
         setButtonDisabled(true)
-        console.log(JSON.stringify(formData))
         var url = `${urlPrefix}/clients/signup`;
-        fetch(url, {
+        
+        const response = await fetch(url, {
             method: 'POST',
             body: JSON.stringify(formData),
             headers: {
                 Accept: "*/*",
                 'Content-Type': 'application/json'
             }
-        }).then(res => {res.json() ;console.log(res)}) 
-            .then(response => {
-                console.log('Success:', response)
-                setButtonDisabled(false)
-            }).catch(error => {
-                console.error('Error:', error)
-                setButtonDisabled(false)
-            })
-    }
-
+        })
+    
+        if (response.status === 201) {
+          setMessage("La cuenta ha sido creada con exito, se enviara un link de verificacion al mail especificado")
+          setButtonDisabled(false)
+        } else {
+            switch (response.status) {
+                case 500:
+                  setMessage("Error. Vefique los datos ingresados")
+                  break;
+                default:
+                  console.error(response.status)
+                  setMessage("unhandled Error")
+              }
+          setButtonDisabled(false)
+        }
+      }
 
     return (
         <Container className="notFound">
@@ -128,6 +137,7 @@ const AddAccount = () => {
                                 placeholder={t("Initial Founds")}
                             />
                         </FloatingLabel>
+                        <p>{message}</p>
                         <Button disabled={buttonDisabled} variant="danger" type="submit">{t("Submit")}</Button>
                     </Form>
                 </Col>
