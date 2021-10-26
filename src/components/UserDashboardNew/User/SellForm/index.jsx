@@ -1,6 +1,6 @@
 import React, { useState, useEffect, createRef } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './index.css'
+import '../operationsForm.css'
 
 import { Container, Row, Col, Form } from 'react-bootstrap'
 import FoundCard from './FoundCard';

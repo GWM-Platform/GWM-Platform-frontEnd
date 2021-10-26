@@ -13,7 +13,7 @@ const NavBarInfo = ({ userData }) => {
         <Navbar className="py-0 navBarInfo d-flex justify-content-center" collapseOnSelect expand="lg" variant="dark">
             <Container fluid>
                 <Row className=" w-100 d-flex justify-content-between align-items-center">
-                    <Col className="d-flex justify-content-center" xs="3" sm="3" md="2" lg="2">
+                    <Col className="d-flex justify-content-start" xs="3" sm="3" md="2" lg="2">
                         <Navbar.Brand>
                             <img
                                 alt=""
@@ -31,7 +31,6 @@ const NavBarInfo = ({ userData }) => {
                                 ${userData.lastName === undefined ? "" : userData.lastName === "-" ? "" : userData.lastName}`}!
                                 </h1>
                         </div>
-
                     </Col>
                 </Row>
             </Container>

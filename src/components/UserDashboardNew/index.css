@@ -28,28 +28,7 @@
     background-color: grey;
 }
 
-.movementsTableAccounts {
-    max-height: calc(100vh - 250px);
-    overflow: auto;
-    display: inline-block;
-    width: 100%;
-}
 
-.movementsTableContainer {
-    height: calc( 100vh - 247px);
-    overflow: auto;
-    display: inline-block;
-    width: 100%;
-}
-.movementsTable {
-    overflow: auto;
-    width: 100%;
-    height: calc( 100vh - 247px)
-}
-
-.loadingMovements {
-    height: calc( 100vh - 195px)
-}
 .page-item.active .page-link {
     background-color: var(--main-color);
     border-color: var(--secondary-color);
@@ -105,34 +84,7 @@ h3 {
 h5 {
     font-size: 1.25rem;
 }
-.tableDescription {
-    max-width: 70px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-.tableDate {
-    font-size: 14px;
-    width: fit-content;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-.tableAmount {
-    font-size: 14px;
-    text-align: end;
-}
-.descriptionMobile {
-    max-width: 70px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-.table {
-    border-color: var(--table-border);
-    --bs-table-striped-bg: unset;
-    --bs-table-accent-bg: unset
-}
+
 .transactionInfo .icon {
     text-align: center;
     color: green;
@@ -160,12 +112,7 @@ h5 {
 .transactionInfo .accordion-body {
     padding: 0
 }
-th {
-    background-color: var(--th-color)!important;
-}
-tr {
-    background-color: var(--tr-color)!important;
-}
+
 .card-title {
     text-transform: capitalize;
 }
@@ -194,9 +141,7 @@ tr {
 .notHover {
     pointer-events: none;
 }
-.navBarTotal{
-    background-color: var(--navBarTotal-bg)!important;
-}
+
 /*Pantallas muy grandes  (desktops de más de 1200px de ancho)
 No hace falta media-query porque será nuestro diseño por defecto*/
 /*Pantallas extra grandes (desktops de mas de 1200px) xl X≥1200px*/
@@ -351,11 +296,5 @@ No hace falta media-query porque será nuestro diseño por defecto*/
     }
     .cardTextMain {
         height: calc(100vh - 130px);
-    }
-    .movementsTable {
-        max-height: auto;
-    }
-    .movementsTableAccounts {
-        max-height: auto;
     }
 }

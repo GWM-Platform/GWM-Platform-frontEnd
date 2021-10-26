@@ -1,14 +1,22 @@
 import React, { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './index.css'
+import '../operationsForm.css'
 
 import { Container, Row, Col,  } from 'react-bootstrap'
 import FoundSelector from './FoundSelector'
 import BuyData from './BuyData'
 
 const BuyForm = () => {
-    const [data, setData] = useState({})
+    const [data, setData] = useState({amount:1})
     const [some, setSome] = useState(false)
+
+    const handleChange=(event)=>{
+        let aux = data;
+        aux[event.target.id] = event.target.value;
+        setData(aux);
+        console.log(aux)
+        setSome(!some)
+    }
 
      //HardCoded data (here we should request founds that have available feeParts to sell)
      const founds = [{
@@ -143,10 +151,10 @@ const BuyForm = () => {
 
     return (
         <Container >
-            <Row className="min-free-area newTicket">
+            <Row className="min-free-area-total newTicket">
                 <Col sm="auto">
                     <FoundSelector founds={founds} data={data} some={some} setData={setData} setSome={setSome} />
-                    <BuyData founds={founds} data={data}/>
+                    <BuyData handleChange={handleChange} founds={founds} data={data}/>
                 </Col>
             </Row>
         </Container>

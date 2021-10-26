@@ -80,3 +80,26 @@
     font-weight: 400;
     font-size: 16px;
 }
+
+.movementsTableAccounts {
+    max-height: calc(100vh - 250px);
+    overflow: auto;
+    display: inline-block;
+    width: 100%;
+}
+
+.movementsTableContainer {
+    min-height: calc( 100vh - 247px);
+    overflow: auto;
+    display: inline-block;
+    width: 100%;
+}
+.movementsTable {
+    overflow: auto;
+    width: 100%;
+    min-height: calc( 100vh - 247px);
+}
+
+.loadingMovements {
+    height: calc( 100vh - 400px)
+}

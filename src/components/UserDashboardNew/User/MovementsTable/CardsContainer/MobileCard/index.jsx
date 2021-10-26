@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { useHistory } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
-import { urlContext } from '../../../../../context/urlContext';
+import { urlContext } from '../../../../../../context/urlContext';
 
 const MobileCard = ({ setItemSelected,isMobile, className, account, categorySelected, accounts, numberOfAccounts, ownKey }) => {
     const [Hide, setHide] = useState(true)

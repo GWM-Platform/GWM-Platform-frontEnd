@@ -1,46 +1,61 @@
-import React from 'react'
+import React,{useRef,useEffect,useState} from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DonutChart from 'react-donut-chart';
 import './index.css'
-import { Col, Card} from 'react-bootstrap'
+import { Col, Card,Container,Row } from 'react-bootstrap'
 
-const FoundCard = ({ found, ownKey, data, setData,setSome,some  }) => {
+const FoundCard = ({ found, ownKey, data, setData, setSome, some }) => {
+    const ref = useRef(null)
+    const [width,setWidth]=useState(0)
+
+    useEffect(() => {
+        setWidth(ref.current===null? 200 : ref.current.clientWidth-20) 
+    },[ref]);
+
     return (
-        <Col sm="3" className="py-1">
+        <Col  sm="3" className="py-1">
             <Card
-                className={`text-center foundCard ${data.foundSelected===ownKey ? "foundSelected" : ""}`}
-                onClick={()=>{setFoundSelected(data, setData, ownKey,setSome,some)}}>
+                ref={ref} 
+                className={`foundCard ${data.foundSelected === ownKey ? "foundSelected" : ""}`}
+                onClick={() => { setFoundSelected(data, setData, ownKey, setSome, some);console.log(width) }}>
                 <Card.Header><strong className="title">{found.name}</strong></Card.Header>
                 <Card.Body>
                     <Card.Title>FeeParts value: <strong>${found.feePartsValue}</strong></Card.Title>
 
-                    <Card.Text className="mb-1">
-                        <strong>{found.feePartsAvalilable}</strong> FeeParts available
-
-                    </Card.Text>
-
-                    <Card.Text className="mb-1">
-                        <strong>{found.totalFeeParts}</strong> Feeparts in total
-                    </Card.Text>
+                    <Container fluid className="px-0">
+                        <Row className="d-flex justify-content-between">
+                            <Col md="auto">
+                                <Card.Text className="mb-1 feePartsInfo">
+                                    <strong>{found.feePartsAvalilable}</strong> Available
+                                </Card.Text>
+                            </Col>
+                            <Col md="auto">
+                                <Card.Text className="mb-1 feePartsInfo">
+                                    <strong>{found.totalFeeParts}</strong> Total
+                                </Card.Text>
+                            </Col>
+                        </Row>
+                    </Container>
 
                     <DonutChart
-                        className="d-block w-100"
+                        height={width}
+                        width={width} 
+                        className="w-100 d-block"
                         legend={false}
                         data={found.composition}
-                        colors={['#FFA07A','#FA8072','#E9967A','#F08080','#CD5C5C','#DC143C','#B22222','#FFO000','#8B0000','#800000','#FF6347','#FF4500','#DB7093']}
-                        height={200}
-                        width={200} />
+                        colors={['#FFA07A', '#FA8072', '#E9967A', '#F08080', '#CD5C5C', '#DC143C', '#B22222', '#FFO000', '#8B0000', '#800000', '#FF6347', '#FF4500', '#DB7093']}
+                        />
                 </Card.Body>
             </Card>
         </Col>
     )
 }
 
-const setFoundSelected = (data, setData, ownKey,setSome,some) => {
-        let aux = data
-        aux.foundSelected = ownKey
-        setData(aux)
-        setSome(!some)
+const setFoundSelected = (data, setData, ownKey, setSome, some) => {
+    let aux = data
+    aux.foundSelected = ownKey
+    setData(aux)
+    setSome(!some)
 }
 
 export default FoundCard

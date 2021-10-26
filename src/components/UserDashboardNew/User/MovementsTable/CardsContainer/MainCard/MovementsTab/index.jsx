@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import moment from 'moment';
 import { useTranslation } from "react-i18next";
 import { useState, } from 'react';
-import { urlContext } from '../../../../../../context/urlContext';
+import { urlContext } from '../../../../../../../context/urlContext';
 
 import './index.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -51,7 +51,6 @@ const MovementsTab = ({ IsMobile, account }) => {
                     <h1 className="fs-6 mt-4 text-success">Movements</h1>
                     <Col sm="8"><form id="date">
                         <Row className="mt-2 d-flex justify-content-between align-items-end" >
-
                             <Col sm={4}>
                                 <Form.Group className="mb-3">
                                     <Form.Label className="ms-2" column="sm">
@@ -100,7 +99,7 @@ const MovementsTab = ({ IsMobile, account }) => {
                                             date.to < date.from
                                         }
                                         size="sm"
-                                        variant="success button"
+                                        variant="danger button"
                                         className="mb-3 px-2"
                                         onClick={() => { setUseFilter(true) }}
                                     >
@@ -112,7 +111,7 @@ const MovementsTab = ({ IsMobile, account }) => {
                                     <Button
                                         disabled={!useFilter}
                                         size="sm"
-                                        variant="success button right"
+                                        variant="danger button right"
                                         className="mb-3 px-2"
                                         onClick={() => { setUseFilter(false); setDate({}); setPage(0); cancelCourse() }}
                                     >

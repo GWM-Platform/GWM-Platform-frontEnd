@@ -11,7 +11,7 @@ const NotFound = () => {
 
     return (
         <Container className="notFound">
-            <Row className="free-area d-flex justify-content-center align-items-center">
+            <Row className="100vh d-flex justify-content-center align-items-center">
                 <Col sm="auto">                     
                     <FontAwesomeIcon icon={faFrown} className="icon"/>
                     <h1 className="title">Error 404</h1>

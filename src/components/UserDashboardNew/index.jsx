@@ -9,9 +9,8 @@ import AccountsContainer from './AccountsContainer';
 import NavBar from './NavBar';
 import NavInfo from './NavInfo';
 import Footer from './Footer';
-import CreateNewTicket from './CreateNewTicket';
 
-import MovementsTable from './MovementsTable';
+import MovementsTable from './User/MovementsTable';
 import AddAccount from './Admin/AddAccount';
 
 import BuyForm from './User/BuyForm';
@@ -97,9 +96,6 @@ const UserDashboard = () => {
                             numberOfAccounts={numberOfAccounts}
                             setNumberOfAccounts={setNumberOfAccounts}
                         />
-                    </Route>
-                    <Route path={`${path}/createTicket`}>
-                        <CreateNewTicket />
                     </Route>
                     <Route path={`${path}/buy`}>
                         <BuyForm />

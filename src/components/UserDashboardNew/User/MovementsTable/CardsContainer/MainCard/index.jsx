@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { useHistory } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
-import { urlContext } from '../../../../../context/urlContext';
+import { urlContext } from '../../../../../../context/urlContext';
 
 import moment from 'moment';
 import './index.css'
@@ -31,7 +31,7 @@ const MainCard = ({ IsMobile, account, accounts }) => {
     }
 
     return (
-        <div className="free-area">
+        <div className="min-free-area-total">
             <Container fluid className="p-0 mt-4">
                 <Row className="m-0">
                     <Container className="info ms-0 mb-4 px-0">

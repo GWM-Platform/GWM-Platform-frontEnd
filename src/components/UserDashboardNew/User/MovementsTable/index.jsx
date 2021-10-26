@@ -4,7 +4,7 @@ import CardsContainer from './CardsContainer';
 import { useTranslation } from "react-i18next";
 import { useHistory } from 'react-router-dom'
 import { Spinner, Row, Container, Col } from 'react-bootstrap';
-import { urlContext } from '../../../context/urlContext';
+import { urlContext } from '../../../../context/urlContext';
 const MovementsTable = ({ isMobile, setItemSelected, numberOfAccounts, setNumberOfAccounts }) => {
 // eslint-disable-next-line 
         const { urlPrefix } = useContext(urlContext)

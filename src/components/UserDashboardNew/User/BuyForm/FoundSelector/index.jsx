@@ -50,7 +50,7 @@ const FoundSelector = ({ data, setData, some, setSome,founds }) => {
                     {t("Select Found To buy")}
                 </Form.Label>
                 <div className="p-relative">
-                    <Row className="flex-row flex-nowrap overflow-auto" ref={foundsContainer}>
+                    <Row className="flex-row flex-nowrap overflow-hidden" ref={foundsContainer}>
                         {founds.map((found, key) => {
                             return (
                                 <FoundCard key={key} ownKey={key} found={found} data={data} setData={setData} some={some} setSome={setSome} />

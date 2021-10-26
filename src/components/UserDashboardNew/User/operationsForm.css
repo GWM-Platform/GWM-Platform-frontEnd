@@ -3,7 +3,7 @@
 }
 
 .newTicket .formSection {
-    padding: 2em 0em;
+    padding: 1em 0em;
     margin-bottom: 0em;
     border-bottom: var(--main-color) 1px solid;
 }
@@ -78,4 +78,7 @@
 }
 .left{
     left:0;
+}
+.currency-input{
+    padding:1rem
 }

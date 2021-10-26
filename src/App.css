@@ -1,18 +1,5 @@
 * {
-    /*  
-          nbankcolors
-  --main-color: rgb(33, 91, 50);
-  --secondary-color: var(--secondary-color);
-  --error:rgb(145, 85, 85);
-  --red:rgb(201, 44, 45);
-  --message:rgb(0,114,25);
-  --th-color:rgb(71, 179, 112);
-  --tr-color:rgb(94, 216, 159);
-  --table-border: rgba(3, 124, 78, 0.5);
-  --nav-info-gradient1:rgb(0, 167, 75);
-  --nav-info-gradient2:rgb(22, 117, 59);
-  --nav-info-gradient3:rgb(33, 91, 50);
-  */
+    
     /*General*/
     --main-color: rgb(43, 0, 0);
     --secondary-color:   rgb(150, 90, 0);
@@ -23,7 +10,9 @@
     --red:rgb(201, 44, 45);
     --message:rgb(0,114,25);
     /*Nav Info*/
-    --nav-info:lightgrey;
+    --nav-info1:rgba(211,211,211,1);
+    --nav-info2:rgba(0,0,0,1);
+
     /*Footer*/
     --footer-background:grey;
     /*NavBar*/
@@ -89,16 +78,16 @@
 }
 
 .free-area {
-    height: calc( 100vh - 90px);
+    height: calc( 100vh - 209px);
     overflow-y: auto;
     overflow-x: hidden;
 }
 
 .min-free-area {
-    min-height: calc( 100vh - 90px);
+    min-height: calc( 100vh - 209px);
 }
 .min-free-area-total {
-    min-height: calc( 100vh - 200px);
+    min-height: calc( 100vh - 209px);
 }
 .mainColor {
     background-color: var(--main-color)

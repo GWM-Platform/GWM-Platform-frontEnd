@@ -12,7 +12,7 @@ const CardsContainer = ({ setItemSelected, accounts }) => {
     }, [accounts])
 
     return (
-            <Container className="py-5 mt-2 d-flex align-items-center justify-content-center min-free-area-total accountsContainerWidth">
+            <Container className="d-flex align-items-center justify-content-center accountsContainerWidth">
                 <Row className="w-100 d-flex align-items-center justify-content-center g-5 h-100">
                     {
                         accounts.map((j, k) => {

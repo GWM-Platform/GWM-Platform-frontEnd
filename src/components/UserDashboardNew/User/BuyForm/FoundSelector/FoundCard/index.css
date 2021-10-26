@@ -1,8 +1,14 @@
+.foundCard{
+    text-align: start;
+}
 .foundCard .title{
-    font-size: 30px;
+    text-align: start;
+    font-size: 22px;
     font-weight: 600;
 }
-
+.foundCard .feePartsInfo{
+    text-align: start;
+}
 .foundCard .card-body > .card-title{
     font-weight: 400;
 }
