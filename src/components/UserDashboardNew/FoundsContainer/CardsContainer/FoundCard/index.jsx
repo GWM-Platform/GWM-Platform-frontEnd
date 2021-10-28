@@ -9,7 +9,7 @@ import { useHistory } from 'react-router-dom'
 import './index.css'
 import ChangeNameModal from './ChangeNameModal'
 
-const AccountCard = ({ account, accounts, setItemSelected }) => {
+const FoundCard = ({ found, founds, setItemSelected }) => {
     const [Hide, setHide] = useState(false)
     const [show, setShow] = useState(false)
 
@@ -19,8 +19,8 @@ const AccountCard = ({ account, accounts, setItemSelected }) => {
     const { t } = useTranslation();
     let history = useHistory();
 
-    const toTransaction = (type, account) => {
-        history.push(`transactionRequest/${account.id}/${type}`);
+    const toTransaction = (type, found) => {
+        history.push(`transactionRequest/${found.id}/${type}`);
         if (type === 4) {
             setItemSelected("otherTransaction")
         } else {
@@ -30,18 +30,18 @@ const AccountCard = ({ account, accounts, setItemSelected }) => {
 
     return (
         <Col sm="6" md="6" lg="4">
-            <Card className="accountCard">
+            <Card className="foundCard">
                 <Card.Header
                     className="header d-flex align-items-center justify-content-center"
                 >
                     <div className="currencyContainer d-flex align-items-center justify-content-center">
-                            <img className="currency px-0 mx-0" alt={account.type} src={process.env.PUBLIC_URL + '/images/'+account.type+'.svg'} />
+                            <img className="currency px-0 mx-0" alt={found.type} src={process.env.PUBLIC_URL + '/images/'+found.type+'.svg'} />
                     </div>
                 </Card.Header>
                 <Card.Body className="body">
                     <Card.Title >
                         <h1 className="title mt-0">
-                            {t(account.description)}
+                            {t(found.description)}
                         </h1>
                         <h1 className="title">
                             <Row className="d-flex justify-content-between">
@@ -49,9 +49,9 @@ const AccountCard = ({ account, accounts, setItemSelected }) => {
                                 <span className="balanceAmount">
                                     <span>
                                         <span className="bolder">
-                                            {account.currency.symbol}
+                                            {found.currency.symbol}
                                         </span>
-                                        {Hide ? parseFloat(account.balance).toFixed(account.currency.decimals).replace(/./g, "*") : parseFloat(account.balance).toFixed(account.currency.decimals)}
+                                        {Hide ? parseFloat(found.balance).toFixed(found.currency.decimals).replace(/./g, "*") : parseFloat(found.balance).toFixed(found.currency.decimals)}
                                     </span>
                                 </span>
                                 </div>
@@ -82,13 +82,13 @@ const AccountCard = ({ account, accounts, setItemSelected }) => {
                         <Col sm="6" className="d-flex justify-content-center p-0 m-0">
                             <OverlayTrigger rootClose trigger='click' placement="left-start" overlay={
                                 <Popover id="popover-basic" >
-                                    <Popover.Header className="mt-0">{t("Account menu")}</Popover.Header>
+                                    <Popover.Header className="mt-0">{t("found menu")}</Popover.Header>
                                     <Popover.Body>
-                                        {accounts.filter((n) => n.currency.name === account.currency.name).length > 1 ? <><span className="toTransaction" onClick={() => toTransaction(1,account)}>{t("Internal transaction")}</span></> : <></>}
-                                        <span className="toTransaction" onClick={() => toTransaction(4,account)}>{t("Bank Transfer")}</span>
+                                        {founds.filter((n) => n.currency.name === found.currency.name).length > 1 ? <><span className="toTransaction" onClick={() => toTransaction(1,found)}>{t("Internal transaction")}</span></> : <></>}
+                                        <span className="toTransaction" onClick={() => toTransaction(4,found)}>{t("Bank Transfer")}</span>
                                     </Popover.Body>
                                 </Popover>
-                            } popperConfig={account}>
+                            } popperConfig={found}>
                                 <Button className="ms-1 button right">
                                     <FontAwesomeIcon onClick={(e) => { e.target.focus() }} icon={faPaperPlane} />
                                 </Button>
@@ -103,4 +103,4 @@ const AccountCard = ({ account, accounts, setItemSelected }) => {
 
     )
 }
-export default AccountCard
+export default FoundCard

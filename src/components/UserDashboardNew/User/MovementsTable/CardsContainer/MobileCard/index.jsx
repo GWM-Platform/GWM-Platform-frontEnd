@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 import { urlContext } from '../../../../../../context/urlContext';
 
-const MobileCard = ({ setItemSelected,isMobile, className, account, categorySelected, accounts, numberOfAccounts, ownKey }) => {
+const MobileCard = ({ setItemSelected,isMobile, className, Found, categorySelected, Founds, numberOfFounds, ownKey }) => {
     const [Hide, setHide] = useState(true)
      // eslint-disable-next-line
     const {urlPrefix}=useContext(urlContext)
@@ -32,7 +32,7 @@ const MobileCard = ({ setItemSelected,isMobile, className, account, categorySele
                     <Container fluid className="px-3">
                         <Row className="d-flex justify-content-end align-items-center">
                             <Col className="p-0">
-                                <Card.Title className="mb-0 py-3">{t(account.description)}</Card.Title>
+                                <Card.Title className="mb-0 py-3">{t(Found.description)}</Card.Title>
                             </Col>
                         </Row>
                     </Container>
@@ -41,12 +41,12 @@ const MobileCard = ({ setItemSelected,isMobile, className, account, categorySele
                     <Container fluid className="p-0">
                         <Row className="m-1">
                             <Col xs="3" sm="2" md="1" lg="1" className="currency d-flex align-items-center justify-content-center">
-                                <h2>{account.currency.code}</h2>
+                                <h2>{Found.currency.code}</h2>
                             </Col>
                             <Col xs="9" sm="10" md="11" lg="11">
                                 <Card.Title >
                                     <span className="d-none d-sm-block">
-                                        {t("Account Number")}: {Hide ? account.externalNumber.replace(/./g, "*") : account.externalNumber}{" "}
+                                        {t("Found Number")}: {Hide ? Found.externalNumber.replace(/./g, "*") : Found.externalNumber}{" "}
                                         <FontAwesomeIcon
                                             onClick={() => {
                                                 setHide(!Hide)
@@ -56,11 +56,11 @@ const MobileCard = ({ setItemSelected,isMobile, className, account, categorySele
                                     </span>
                                 </Card.Title>
                                 <Card.Text>
-                                    <span>{t("Balance")}: <span style={{ fontWeight: "bolder" }}>{account.currency.symbol}</span>{parseFloat(account.balance).toFixed(account.currency.decimals)}</span>
+                                    <span>{t("Balance")}: <span style={{ fontWeight: "bolder" }}>{Found.currency.symbol}</span>{parseFloat(Found.balance).toFixed(Found.currency.decimals)}</span>
                                 </Card.Text>
                             </Col>
                             <TableLastMovements
-                                    isMobile={isMobile} content={movements} decimals={account.decimals} symbol={account.currency.symbol} />
+                                    isMobile={isMobile} content={movements} decimals={Found.decimals} symbol={Found.currency.symbol} />
                         </Row>
                     </Container>
                 </Card.Body>

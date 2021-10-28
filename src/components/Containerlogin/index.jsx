@@ -109,7 +109,7 @@ const ContainerLogin = () => {
     }
   }
   return (
-    <div className="login">
+    <div className="login" style={{backgroundImage:`url(${process.env.PUBLIC_URL}/images/layered-peaks-haikei.svg)`}}>
       <Container>
         <Row className="d-flex min-vh-100  justify-content-center align-items-start align-items-lg-center pt-3">
           <Col xs="11" sm="8" md="6" lg="5" xl="4">

@@ -1,10 +1,10 @@
-.accountCard {
+.cashCard {
     border: 1px transparent;
     border-radius: 30px;
     background-color: transparent;
 }
 
-.accountCard .header {
+.cashCard .header {
     border-radius: 30px 30px 0px 0px;
     border: 1px solid;
     border-color: var(--main-card-color);
@@ -12,7 +12,7 @@
     background-color: var(--main-card-color)
 }
 
-.accountCard .header .currencyContainer > .currency {
+.cashCard .header .currencyContainer > .currency {
     font-size: 30px;
     border:transparent;
     background-color: var(--main-card-color);
@@ -22,7 +22,7 @@
     width: 30px;
 }
 
-.accountCard .header .currencyContainer {
+.cashCard .header .currencyContainer {
     font-size: 30px;
     border: white 1px solid;
     border-radius: 50%;
@@ -32,7 +32,7 @@
 }
 
 
-.accountCard .body {
+.cashCard .body {
     border-left: 1px solid;
     border-right: 1px solid;
     border-bottom: 1px solid;
@@ -40,13 +40,13 @@
     background-color: white;
 }
 
-.accountCard .body .title {
+.cashCard .body .title {
     color: dimgray;
     text-align: start;
     font-size: 20px;
 }
 
-.accountCard .body .subTitle {
+.cashCard .body .subTitle {
     color: black;
     text-align: start;
     font-size: 17px;
@@ -56,14 +56,14 @@
     font-weight: lighter
 }
 
-.accountCard .body .balanceAmount {
+.cashCard .body .balanceAmount {
     padding: 0;
     text-align: end;
     font-size: 20px;
     color: dimgray
 }
 
-.accountCard .body .balance {
+.cashCard .body .balance {
     padding: 0;
     float: right;
     font-size: 17px;
@@ -77,14 +77,15 @@
     font-weight: lighter
 }
 
-.accountCard .footer {
+.cashCard .footer {
     background-color: transparent;
     border: none;
     border-radius: 0px 0px 30px 30px;
     border-color: var(--main-card-color)
 }
 
-.accountCard .footer .button {
+.cashCard .footer .button {
+    height: 2em;
     font-size: 30px;
     background-color: white;
     border: 1px solid;
@@ -92,13 +93,17 @@
     color: var(--main-card-color);
     width: 100%;
 }
+.cashCard .footer .button .label{
+    font-size: 20px;
+    
+}
 
-.accountCard .footer  .left{
+.cashCard .footer  .left{
     border-radius: 0px 0px 0px 30px;
 
 }
 
-.accountCard .footer .right{
+.cashCard .footer .right{
     border-radius: 0px 0px 30px 0px;
 }
 

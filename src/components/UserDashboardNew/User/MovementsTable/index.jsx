@@ -5,12 +5,12 @@ import { useTranslation } from "react-i18next";
 import { useHistory } from 'react-router-dom'
 import { Spinner, Row, Container, Col } from 'react-bootstrap';
 import { urlContext } from '../../../../context/urlContext';
-const MovementsTable = ({ isMobile, setItemSelected, numberOfAccounts, setNumberOfAccounts }) => {
+const MovementsTable = ({ isMobile, setItemSelected, numberOfFounds, setNumberOfFounds }) => {
 // eslint-disable-next-line 
         const { urlPrefix } = useContext(urlContext)
     const { t } = useTranslation();
 
-    const [account, setAccount] = useState([]);
+    const [Found, setFound] = useState([]);
     const [error, setError] = useState("Loading Content");
 
     let history = useHistory();
@@ -22,25 +22,25 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfAccounts, setNumber
 
 
 
-    const getAccounts = useCallback(
+    const getFounds = useCallback(
         () => {
-            let catchedUserData = JSON.parse(sessionStorage.getItem('account'));//If its catched we wont fetch the 
+            let catchedUserData = JSON.parse(sessionStorage.getItem('Found'));//If its catched we wont fetch the 
 
             if (catchedUserData === null) {
-                setAccount([{ "id": 293, "description": "asset custody usd", "type": { "id": 111, "description": "asset custody", "productLine": { "id": 0, "description": " " } }, "externalNumber": "000000000000001", "currency": { "code": "USD", "name": "United States Dollar", "symbol": "$", "decimals": 2 }, "decimals": 0, "beneficiaryName": "Burton Gray", "balance": 24989989828.999996, "movementsCount": 124 }, { "id": 294, "description": "asset custody EUR", "type": { "id": 112, "description": "asset custody", "productLine": { "id": 0, "description": " " } }, "externalNumber": "000000000000002", "currency": { "code": "EUR", "name": "Euro", "symbol": "€", "decimals": 2 }, "decimals": 0, "beneficiaryName": "Burton Gray", "balance": 34999999985, "movementsCount": 4 }, { "id": 295, "description": "asset custody usd", "type": { "id": 111, "description": "asset custody", "productLine": { "id": 0, "description": " " } }, "externalNumber": "00000000000000003", "currency": { "code": "USD", "name": "United States Dollar", "symbol": "$", "decimals": 2 }, "decimals": 0, "beneficiaryName": "Burton Gray", "balance": 8520388, "movementsCount": 99 }])
-                setNumberOfAccounts(3)
+                setFound([{ "id": 293, "description": "asset custody usd", "type": { "id": 111, "description": "asset custody", "productLine": { "id": 0, "description": " " } }, "externalNumber": "000000000000001", "currency": { "code": "USD", "name": "United States Dollar", "symbol": "$", "decimals": 2 }, "decimals": 0, "beneficiaryName": "Burton Gray", "balance": 24989989828.999996, "movementsCount": 124 }, { "id": 294, "description": "asset custody EUR", "type": { "id": 112, "description": "asset custody", "productLine": { "id": 0, "description": " " } }, "externalNumber": "000000000000002", "currency": { "code": "EUR", "name": "Euro", "symbol": "€", "decimals": 2 }, "decimals": 0, "beneficiaryName": "Burton Gray", "balance": 34999999985, "movementsCount": 4 }, { "id": 295, "description": "asset custody usd", "type": { "id": 111, "description": "asset custody", "productLine": { "id": 0, "description": " " } }, "externalNumber": "00000000000000003", "currency": { "code": "USD", "name": "United States Dollar", "symbol": "$", "decimals": 2 }, "decimals": 0, "beneficiaryName": "Burton Gray", "balance": 8520388, "movementsCount": 99 }])
+                setNumberOfFounds(3)
             } else {
-                setAccount(catchedUserData)
+                setFound(catchedUserData)
                 if (catchedUserData.length === 0) {
-                    setError("Your user don't have any account")
+                    setError("Your user don't have any Found")
                 }
-                setNumberOfAccounts(catchedUserData.length)
+                setNumberOfFounds(catchedUserData.length)
             }
              // eslint-disable-next-line
-        }, [account]);
+        }, [Found]);
 
     useEffect(() => {
-        getAccounts();
+        getFounds();
         return () => {
         }
     // eslint-disable-next-line
@@ -50,7 +50,7 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfAccounts, setNumber
         <div>
             <Container fluid className="mt-2">
                 {
-                    account.length === 0
+                    Found.length === 0
                         ?
                         <Container fluid>
                             <Row className="d-flex justify-content-center align-items-center">
@@ -64,8 +64,8 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfAccounts, setNumber
                         <CardsContainer
                             setItemSelected={setItemSelected}
                             isMobile={isMobile}
-                            accounts={account}
-                            numberOfAccounts={numberOfAccounts}
+                            Founds={Found}
+                            numberOfFounds={numberOfFounds}
                         />
                 }
 

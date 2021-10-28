@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useRef } from 'react'
 import './index.css'
 
-const SecondaryCard = ({ account, setCategorySelected, setSelected, parentKey, ownKey, display }) => {
+const SecondaryCard = ({ Found, setCategorySelected, setSelected, parentKey, ownKey, display }) => {
     const select = () => {
         setCategorySelected(parentKey)
         setSelected(ownKey)
@@ -22,22 +22,22 @@ const SecondaryCard = ({ account, setCategorySelected, setSelected, parentKey, o
                     <Col sm="4" lg="auto" className="d-none d-sm-none d-md-block currencyCol d-flex align-items-center">
                         <div className="currencyContainer d-flex align-items-center justify-content-center">
                             <h1 className="currency m-0">
-                                {account.currency.symbol}
+                                {Found.currency.symbol}
                             </h1>
                         </div>
                     </Col>
                     <Col sm="12" md="8" className="secondary d-flex align-items-start flex-column" >
                         <div className="mb-auto mt-2">
                             <h1 className="description mt-0 pt-0">
-                                {t(account.description)}
+                                {t(Found.description)}
                             </h1>
                         </div>
                         <div className="mb-2">
                             <h2 className="funds">
                                 <span style={{ fontWeight: "bolder" }}>
-                                    {account.currency.symbol}
+                                    {Found.currency.symbol}
                                 </span>
-                                {parseFloat(account.balance).toFixed(account.currency.decimals)}
+                                {parseFloat(Found.balance).toFixed(Found.currency.decimals)}
                             </h2>
                             <span className="funds-description">{t("Balance")}</span>
                         </div>

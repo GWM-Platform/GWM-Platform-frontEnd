@@ -56,8 +56,9 @@
 /* Handle */
 
 ::-webkit-scrollbar-thumb {
-    background: #888;
+    background: transparent;
     border-radius: 5px;
+    transition: background-color 2s;
 }
 
 
@@ -103,3 +104,4 @@
 .min-100vh{
     min-height: 100vh;
 }
+body{overflow-y: overlay;}

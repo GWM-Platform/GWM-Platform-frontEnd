@@ -13,7 +13,7 @@ import TableLastMovements from './TableLastMovements';
 import MovementsPagination from './MovementsPagination';
 import NoMovements from './NoMovements';
 
-const MovementsTab = ({ IsMobile, account }) => {
+const MovementsTab = ({ IsMobile, Found }) => {
 // eslint-disable-next-line 
     const { urlPrefix } = useContext(urlContext)
     const [Some, setSome] = useState(true)
@@ -159,11 +159,11 @@ const MovementsTab = ({ IsMobile, account }) => {
                             :*/
                             movements.length>0 ?
                             <TableLastMovements
-                                movementsCount={account.movementsCount}
+                                movementsCount={Found.movementsCount}
                                 IsMobile={IsMobile}
                                 content={movements}
-                                decimals={account.decimals}
-                                symbol={account.currency.symbol}
+                                decimals={Found.decimals}
+                                symbol={Found.currency.symbol}
                                 movsShown={movsShown}
                                 page={page}
                                 setPage={setPage} />
@@ -173,7 +173,7 @@ const MovementsTab = ({ IsMobile, account }) => {
                     }
                     <MovementsPagination
                         useFilter={useFilter}
-                        movementsCount={account.movementsCount}
+                        movementsCount={Found.movementsCount}
                         IsMobile={IsMobile}
                         movsShown={movsShown}
                         page={page}

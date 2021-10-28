@@ -1,22 +1,22 @@
-.foundCard{
+.newTicket .foundCard{
     text-align: start;
 }
-.foundCard .title{
+.newTicket .foundCard .title{
     text-align: start;
     font-size: 22px;
     font-weight: 600;
 }
-.foundCard .feePartsInfo{
+.newTicket .foundCard .feePartsInfo{
     text-align: start;
 }
-.foundCard .card-body > .card-title{
+.newTicket .foundCard .card-body > .card-title{
     font-weight: 400;
 }
 
-.foundCard:hover {
+.newTicket .foundCard:hover {
     box-shadow: 0px 0px 5px var(--ticket-main-color);
 }
 
-.foundSelected {
+.newTicket .foundSelected {
     box-shadow: 0px 0px 5px var(--ticket-main-color);
 }

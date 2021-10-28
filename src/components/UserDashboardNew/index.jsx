@@ -5,7 +5,7 @@ import { Route, useRouteMatch, useHistory } from 'react-router-dom';
 import './index.css'
 
 import { urlContext } from '../../context/urlContext';
-import AccountsContainer from './AccountsContainer';
+import FoundsContainer from './FoundsContainer'
 import NavBar from './NavBar';
 import NavInfo from './NavInfo';
 import Footer from './Footer';
@@ -29,7 +29,7 @@ const UserDashboard = () => {
 
     const [userData, setUserData] = useState({});
     const [width, setWidth] = useState(window.innerWidth);
-    const [numberOfAccounts, setNumberOfAccounts] = useState(0);
+    const [numberOfFounds, setNumberOfFounds] = useState(0);
 
     const [itemSelected, setItemSelected] = useState(
         history.location.pathname === "/dashboardNew/accounts" || history.location.pathname === "/dashboardNew/Accounts" ?
@@ -82,19 +82,19 @@ const UserDashboard = () => {
                 <>
                     <NavBarTotal />
                     <Route path={`${path}/accounts`}>
-                        <AccountsContainer
+                        <FoundsContainer
                             isMobile={isMobile}
                             setItemSelected={setItemSelected}
-                            numberOfAccounts={numberOfAccounts}
-                            setNumberOfAccounts={setNumberOfAccounts}
+                            numberOfFounds={numberOfFounds}
+                            setNumberOfFounds={setNumberOfFounds}
                         />
                     </Route>
                     <Route path={`${path}/history`}>
                         <MovementsTable
                             isMobile={isMobile}
                             setItemSelected={setItemSelected}
-                            numberOfAccounts={numberOfAccounts}
-                            setNumberOfAccounts={setNumberOfAccounts}
+                            numberOfFounds={numberOfFounds}
+                            setNumberOfFounds={setNumberOfFounds}
                         />
                     </Route>
                     <Route path={`${path}/buy`}>
