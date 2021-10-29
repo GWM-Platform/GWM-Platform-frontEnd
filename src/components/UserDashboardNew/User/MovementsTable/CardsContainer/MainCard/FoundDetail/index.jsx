@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 
 
 import moment from 'moment';
-import './index.css'
 import MovementsTab from './MovementsTab';
 
 
