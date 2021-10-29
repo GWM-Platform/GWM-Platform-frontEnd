@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 
 
 import moment from 'moment';
-import MovementsTab from './MovementsTab';
 
 
 const FoundDetail = () => {
