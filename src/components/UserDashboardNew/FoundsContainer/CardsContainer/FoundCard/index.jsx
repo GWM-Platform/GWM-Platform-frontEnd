@@ -9,7 +9,7 @@ import { useHistory } from 'react-router-dom'
 import './index.css'
 import ChangeNameModal from './ChangeNameModal'
 
-const FoundCard = ({ found, founds, setItemSelected }) => {
+const FoundCard = ({switchState, found, founds, setItemSelected }) => {
     const [Hide, setHide] = useState(false)
     const [show, setShow] = useState(false)
 

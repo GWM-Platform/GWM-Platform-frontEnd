@@ -209,7 +209,8 @@ i18n
           "Last Name":"Apellido",
           "First Name":"Nombre",
           "Hi":"Hola",
-          "Reset password":"Reestablecer"
+          "Reset password":"Reestablecer",
+          "API's founds (For devops)":"Fondos de la API (Para desarrolladores)"
         }
       }
     },

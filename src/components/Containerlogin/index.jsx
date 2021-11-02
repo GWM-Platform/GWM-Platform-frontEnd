@@ -18,9 +18,10 @@ const ContainerLogin = () => {
   const [error, setError] = useState("");
   const [buttonContent, setButtonContent] = useState("Login");
   const [loading, setLoading] = useState(false);
-  const [Some,setSome] = useState(false);
+  const [Some, setSome] = useState(false);
 
   const [data, setData] = useState({ email: "", password: "", api: false });
+  const [Background, setBackground] = useState("background1.png");
 
   const handleChange = (event) => {
     let aux = data;
@@ -57,8 +58,8 @@ const ContainerLogin = () => {
     } else {
       loginWithoutApi()
     }
-
   }
+
   const loginWithoutApi = () => {
     if (data.email === "admin" && data.password === "1234") {
       sessionStorage.setItem("admin", true)
@@ -108,8 +109,21 @@ const ContainerLogin = () => {
       setLoading(false)
     }
   }
+
+  const cycleBG=()=>{
+    let backgroundNumber=(Background.slice(10,-4))
+    if(backgroundNumber<=3){
+      setBackground(`background${parseInt(backgroundNumber)+1}.png`)
+    }else if(backgroundNumber<=5){
+      setBackground(`background${parseInt(backgroundNumber)+1}.svg`)
+    }else{
+      setBackground("background1.png")
+    }
+  }
   return (
-    <div className="login" style={{backgroundImage:`url(${process.env.PUBLIC_URL}/images/layered-peaks-haikei.svg)`}}>
+    <div
+      onClick={() => { cycleBG() }} className="login"
+      style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/${Background})` }}>
       <Container>
         <Row className="d-flex min-vh-100  justify-content-center align-items-start align-items-lg-center pt-3">
           <Col xs="11" sm="8" md="6" lg="5" xl="4">

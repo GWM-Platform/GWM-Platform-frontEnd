@@ -255,7 +255,7 @@ No hace falta media-query porque será nuestro diseño por defecto*/
         height: calc(100vh - 130px);
     }
     .sideToSidebar {
-        margin-left: 64pxpx;
+        margin-left: 64px;
     }
     .tableDescription {
         max-width: auto;

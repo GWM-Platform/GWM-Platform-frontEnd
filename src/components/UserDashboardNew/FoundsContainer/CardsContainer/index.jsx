@@ -6,9 +6,7 @@ import CashCard from './CashCard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 
-
-const CardsContainer = ({ setItemSelected, founds }) => {
-
+const CardsContainer = ({ setItemSelected,SwitchState,handleSwitch, founds,cash }) => {
     //For scrolling
     const foundsContainer = createRef()
     //Scrolling Function
@@ -41,15 +39,14 @@ const CardsContainer = ({ setItemSelected, founds }) => {
     }, [founds])
 
     return (
-        <Container className="d-flex justify-content-center accountsContainerWidth cardsContainer p-relative">
+        <Container className="d-flex justify-content-center accountsContainerWidth cardsContainer p-relative"> 
             <Row ref={foundsContainer}
                 className="w-100 flex-nowrap overflow-hidden d-flex align-items-stretch g-5 ">
+                <CashCard SwitchState={SwitchState} handleSwitch={handleSwitch} found={cash} /> 
                 {
                     founds.map((j, k) => {
                         return (
-                            j.type === "cash" ?
-                                <CashCard key={k} setItemSelected={setItemSelected} founds={founds} found={j} /> :
-                                <FoundCard key={k} setItemSelected={setItemSelected} founds={founds} found={j} />
+                                <FoundCard SwitchState={SwitchState} key={k} setItemSelected={setItemSelected} founds={founds} found={j} />
                         )
                     }
                     )

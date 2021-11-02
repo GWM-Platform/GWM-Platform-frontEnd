@@ -32,7 +32,7 @@ const AddAccount = () => {
     const signup = async () => {
         setButtonDisabled(true)
         var url = `${urlPrefix}/clients/signup`;
-        
+
         const response = await fetch(url, {
             method: 'POST',
             body: JSON.stringify(formData),
@@ -41,22 +41,22 @@ const AddAccount = () => {
                 'Content-Type': 'application/json'
             }
         })
-    
+
         if (response.status === 201) {
-          setMessage("La cuenta ha sido creada con exito, se enviara un link de verificacion al mail especificado")
-          setButtonDisabled(false)
+            setMessage("La cuenta ha sido creada con exito, se enviara un link de verificacion al mail especificado")
+            setButtonDisabled(false)
         } else {
             switch (response.status) {
                 case 500:
-                  setMessage("Error. Vefique los datos ingresados")
-                  break;
+                    setMessage("Error. Vefique los datos ingresados")
+                    break;
                 default:
-                  console.error(response.status)
-                  setMessage("unhandled Error")
-              }
-          setButtonDisabled(false)
+                    console.error(response.status)
+                    setMessage("unhandled Error")
+            }
+            setButtonDisabled(false)
         }
-      }
+    }
 
     return (
         <Container className="notFound">
