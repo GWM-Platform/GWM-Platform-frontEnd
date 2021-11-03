@@ -52,7 +52,7 @@ const UserDashboard = () => {
     //When the user try to open this url it checks if the user has a valid token in their session storage,
     //if it is true, it is redirected to the dashboard, if not, it is redirected to login
     const getUserData = () => {
-        setUserData({ "id": 4, "username": "Marcos", "email": "marcos.sk8.parengo@gmail.com", "externalId": "RL580035", "firstName": "Marcos", "lastName": "Giangarelli", "gender": "M", "birthdate": "2002-05-16", "customer": {} })
+        setUserData({ "id": 4, "username": "Marco", "email": "marcos.sk8.parengo@gmail.com", "externalId": "RL580035", "firstName": "Marco", "lastName": "Giangarelli", "gender": "M", "birthdate": "2002-05-16", "customer": {} })
     }
 
 
