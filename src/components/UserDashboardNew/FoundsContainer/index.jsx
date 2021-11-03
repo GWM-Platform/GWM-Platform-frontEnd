@@ -12,9 +12,9 @@ const FoundsContainer = ({ isMobile, setItemSelected, numberOfFounds, setNumberO
     const { t } = useTranslation();
     const [founds, setFounds] = useState([]);
     const [SwitchState, setSwitchState] = useState(false);
-    const [error, setError] = useState("Loading Content");
+    const [FetchingFunds, setFetchingFunds] = useState(false);
 
-    const cash={
+    const cash = {
         "id": 293,
         "description": "Cash",
         "type": "cash",
@@ -30,8 +30,9 @@ const FoundsContainer = ({ isMobile, setItemSelected, numberOfFounds, setNumberO
         "movementsCount": 124
     }
 
-    const handleSwitch = () => {
-        setSwitchState(!SwitchState)
+    const handleSwitch = (event) => {
+        console.log(event)
+        setSwitchState(event.target.checked)
     }
     // eslint-disable-next-line 
     const toLogin = () => {
@@ -39,15 +40,16 @@ const FoundsContainer = ({ isMobile, setItemSelected, numberOfFounds, setNumberO
         history.push(`/login`);
     }
 
-    const token=sessionStorage.getItem('access_token')
+    const token = sessionStorage.getItem('access_token')
 
     useEffect(() => {
         const getFounds = async () => {
             var url = `${urlPrefix}/funds/stakes`;
+            setFetchingFunds(true)
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
-                    Authorization:`Bearer ${token}`,
+                    Authorization: `Bearer ${token}`,
                     Accept: "*/*",
                     'Content-Type': 'application/json'
                 }
@@ -55,26 +57,8 @@ const FoundsContainer = ({ isMobile, setItemSelected, numberOfFounds, setNumberO
 
             if (response.status === 200) {
                 const data = await response.json()
-                let quiero=[]
-                data.forEach((fund,i)=>{
-                    quiero[fund.fundId]=data.filter((elemento)=>elemento.fundId===fund.fundId)
-                })
-                let final=quiero.map((fundConj,i)=>{
-                    var id=0
-                    var shares=0
-                    if(fundConj!==undefined){
-                        fundConj.forEach((fund)=>{
-                            id=fund.fundId
-                            shares=+fund.shares
-                        })  
-                    }
-                    
-                    return({
-                        id:id,
-                        shares:shares
-                    })
-                })
-                console.log(final)
+                setFounds(data)
+                setFetchingFunds(false)
             } else {
                 switch (response.status) {
                     case 500:
@@ -83,69 +67,63 @@ const FoundsContainer = ({ isMobile, setItemSelected, numberOfFounds, setNumberO
                     default:
                         console.error(response.status)
                 }
+                setFetchingFunds(false)
             }
         }
-        
-        const hardcodedFounds =[
+        const hardcodedFounds = [
             {
-                "id": 294,
-                "description": "Fondo de crypto",
-                "type": "crypto",
-                "externalNumber": "000000000000002",
-                "currency": {
-                    "code": "USD",
-                    "name": "United States Dollar",
-                    "symbol": "$",
-                    "decimals": 2
-                },
-                "decimals": 0,
-                "balance": 34999999985,
-                "movementsCount": 4
+                "id": 11,
+                "clientId": 1,
+                "fundId": 4,
+                "shares": 17,
+                "createdAt": "2021-11-03T14:00:19.348Z",
+                "updatedAt": "2021-11-03T14:05:00.000Z",
+                "fund": {
+                    "type":"realState",
+                    "id": 4,
+                    "name": "Fondo hardcodeado Real state",
+                    "shares": 20,
+                    "sharePrice": 2,
+                    "freeShares": 15,
+                    "createdAt": "2021-11-02T12:36:32.559Z",
+                    "updatedAt": "2021-11-03T14:05:00.000Z"
+                }
             },
             {
-                "id": 295,
-                "description": "Fondo Real State",
-                "type": "realState",
-                "externalNumber": "00000000000000003",
-                "currency": {
-                    "code": "USD",
-                    "name": "United States Dollar",
-                    "symbol": "$",
-                    "decimals": 2
-                },
-                "decimals": 0,
-                "balance": 8520388,
-                "movementsCount": 99
+                "id": 12,
+                "clientId": 1,
+                "fundId": 5,
+                "shares": 7,
+                "createdAt": "2021-11-03T14:04:16.821Z",
+                "updatedAt": "2021-11-03T14:08:11.000Z",
+                "fund": {
+                    "type":"crypto",
+                    "id": 5,
+                    "name": "Fondo hardcodeado crypto",
+                    "shares": 7,
+                    "sharePrice": 55,
+                    "freeShares": 0,
+                    "createdAt": "2021-11-02T12:36:32.562Z",
+                    "updatedAt": "2021-11-03T14:08:11.000Z"
+                }
             },
             {
-                "id": 295,
-                "description": "Fondo Crypto 2",
-                "type": "realState",
-                "externalNumber": "00000000000000003",
-                "currency": {
-                    "code": "USD",
-                    "name": "United States Dollar",
-                    "symbol": "$",
-                    "decimals": 2
-                },
-                "decimals": 0,
-                "balance": 8520388,
-                "movementsCount": 99
-            },
-            {
-                "id": 295,
-                "description": "Fondo Crypto 3",
-                "type": "realState",
-                "externalNumber": "00000000000000003",
-                "currency": {
-                    "code": "USD",
-                    "name": "United States Dollar",
-                    "symbol": "$",
-                    "decimals": 2
-                },
-                "decimals": 0,
-                "balance": 8520388,
-                "movementsCount": 99
+                "id": 12,
+                "clientId": 1,
+                "fundId": 5,
+                "shares": 7,
+                "createdAt": "2021-11-03T14:04:16.821Z",
+                "updatedAt": "2021-11-03T14:08:11.000Z",
+                "fund": {
+                    "type":"crypto",
+                    "id": 5,
+                    "name": "Fondo hardcodeado crypto",
+                    "shares": 7,
+                    "sharePrice": 55,
+                    "freeShares": 0,
+                    "createdAt": "2021-11-02T12:36:32.562Z",
+                    "updatedAt": "2021-11-03T14:08:11.000Z"
+                }
             }
         ]
 
@@ -162,13 +140,13 @@ const FoundsContainer = ({ isMobile, setItemSelected, numberOfFounds, setNumberO
     return (
         <Container fluid className="mt-0 px-0 min-free-area-total d-flex align-items-center">
             {
-                founds.length === 0
+                FetchingFunds
                     ?
                     <Container fluid>
                         <Row className="d-flex justify-content-center align-items-center">
-                            <Col style={{ height: "calc(100vh - 64px)" }} className="d-flex justify-content-center align-items-center">
+                            <Col className="min-free-area-total  d-flex justify-content-center align-items-center">
                                 <Spinner className="me-2" animation="border" variant="danger" />
-                                <span className="loadingText">{t(error)}</span>
+                                <span className="loadingText">{t("Loading Content")}</span>
                             </Col>
                         </Row>
                     </Container>

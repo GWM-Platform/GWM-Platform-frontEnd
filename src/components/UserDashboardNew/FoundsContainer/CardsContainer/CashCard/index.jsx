@@ -25,7 +25,7 @@ const CashCard = ({ handleSwitch,SwitchState,found }) => {
                 <Card.Body className="body">
                     <Form.Check
                         onChange={handleSwitch}
-                        value={SwitchState}
+                        checked={SwitchState}
                         type="switch"
                         id="foundApi"
                         label={t("API's founds (For devops)")}

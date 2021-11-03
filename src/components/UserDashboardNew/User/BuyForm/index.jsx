@@ -6,10 +6,10 @@ import { Container, Row, Col, Accordion } from 'react-bootstrap'
 import FoundSelector from './FoundSelector'
 import BuyData from './BuyData'
 import { urlContext } from '../../../../context/urlContext';
+import {  useHistory } from 'react-router-dom';
 
 const BuyForm = () => {
     //HardCoded data (here we should request founds that have available feeParts to sell)
-
     const { urlPrefix } = useContext(urlContext)
     const [data, setData] = useState({ amount: 1, foundSelected: -1 })
     const [some, setSome] = useState(false)
@@ -19,26 +19,8 @@ const BuyForm = () => {
 
     const token = sessionStorage.getItem('access_token')
 
-    const handleSwitch = () => {
-        setSwitchState(!SwitchState)
-    }
+    let history = useHistory();
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        const form = event.currentTarget;
-        if (form.checkValidity() === true) {
-            if (token === null) {
-                console.log("compra")
-            } else {
-                let success = buy()
-                if (success) {
-                    console.log("pantalla de transaccion con exito")
-                }
-            }
-        }
-        setValidated(true);
-    }
 
     const buy = async () => {
         var url = `${urlPrefix}/funds/${founds[data.foundSelected].id}/buy`;
@@ -240,6 +222,26 @@ const BuyForm = () => {
         setSome(!some)
     }
 
+    const handleSwitch = () => {
+        setSwitchState(!SwitchState)
+    }
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        const form = event.currentTarget;
+        if (form.checkValidity() === true) {
+            if (token === null) {
+                console.log("compra")
+            } else {
+                let success = buy()
+                if (success) {
+                    history.push(`/dashboardnew/operationResult`);
+                }
+            }
+        }
+        setValidated(true);
+    }
 
 
     return (
@@ -254,7 +256,6 @@ const BuyForm = () => {
                         <BuyData handleSubmit={handleSubmit} validated={validated}
                             handleChange={handleChange} founds={founds} data={data} />
                     </Accordion>
-
                 </Col>
             </Row>
         </Container>

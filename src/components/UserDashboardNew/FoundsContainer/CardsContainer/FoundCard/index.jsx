@@ -5,11 +5,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faEye, faIdCard, faPaperPlane } from '@fortawesome/free-solid-svg-icons'
-import { useHistory } from 'react-router-dom'
 import './index.css'
 import ChangeNameModal from './ChangeNameModal'
 
-const FoundCard = ({switchState, found, founds, setItemSelected }) => {
+const FoundCard = ({ switchState, found, founds, setItemSelected }) => {
     const [Hide, setHide] = useState(false)
     const [show, setShow] = useState(false)
 
@@ -17,43 +16,36 @@ const FoundCard = ({switchState, found, founds, setItemSelected }) => {
     const handleShow = () => setShow(true);
 
     const { t } = useTranslation();
-    let history = useHistory();
-
-    const toTransaction = (type, found) => {
-        history.push(`transactionRequest/${found.id}/${type}`);
-        if (type === 4) {
-            setItemSelected("otherTransaction")
-        } else {
-            setItemSelected("internalTransaction")
-        }
-    }
 
     return (
         <Col sm="6" md="6" lg="4">
-            <Card className="foundCard">
+            <Card className="foundCard h-100">
                 <Card.Header
                     className="header d-flex align-items-center justify-content-center"
                 >
                     <div className="currencyContainer d-flex align-items-center justify-content-center">
-                            <img className="currency px-0 mx-0" alt={found.type} src={process.env.PUBLIC_URL + '/images/'+found.type+'.svg'} />
+                        {
+                            found.fund.type !== undefined ?
+                                <img className="currency px-0 mx-0" alt={found.fund.type} src={process.env.PUBLIC_URL + '/images/' + found.fund.type + '.svg'} />
+                                :
+                                <img className="currency px-0 mx-0" alt="crypto" src={process.env.PUBLIC_URL + '/images/crypto.svg'} />
+                        }
                     </div>
                 </Card.Header>
                 <Card.Body className="body">
                     <Card.Title >
                         <h1 className="title mt-0">
-                            {t(found.description)}
+                            {t(found.fund.name)}
                         </h1>
                         <h1 className="title">
                             <Row className="d-flex justify-content-between">
                                 <div style={{ width: "auto" }}>
-                                <span className="balanceAmount">
-                                    <span>
-                                        <span className="bolder">
-                                            {found.currency.symbol}
+                                    <span className="balanceAmount">
+                                        <span>
+                                            <span className="bolder">$</span>
+                                            {Hide ? (found.shares * found.fund.sharePrice).toString().replace(/./g, "*") : found.shares * found.fund.sharePrice}
                                         </span>
-                                        {Hide ? parseFloat(found.balance).toFixed(found.currency.decimals).replace(/./g, "*") : parseFloat(found.balance).toFixed(found.currency.decimals)}
                                     </span>
-                                </span>
                                 </div>
                                 <div style={{ width: "auto" }}>
                                     <FontAwesomeIcon
@@ -67,15 +59,14 @@ const FoundCard = ({switchState, found, founds, setItemSelected }) => {
                         </h1>
                     </Card.Title>
                     <Card.Text className="subTitle lighter mt-0 mb-2">
-                            Found Performance:<span className="bolder"> %1.7</span><br/>
-                            Acquired FeeParts:<span className="bolder"> 22</span><br/>
-                            FeePart Price:<span className="bolder"> $15</span><br/>
+                        Acquired FeeParts:<span className="bolder"> {found.shares}<br/> {(found.shares*100/found.fund.shares).toFixed(2)}% from total</span><br />
+                        FeePart Price:<span className="bolder"> ${found.fund.sharePrice}</span><br />
                     </Card.Text>
                 </Card.Body>
                 <Card.Footer className="footer mt-2 m-0 p-0">
                     <Row className="d-flex justify-content-center m-0">
                         <Col sm="6" className="d-flex justify-content-center p-0 m-0">
-                            <Button onClick={()=>{handleShow()}}className="me-1 button left">
+                            <Button onClick={() => { handleShow() }} className="me-1 button left">
                                 <FontAwesomeIcon icon={faIdCard} />
                             </Button>
                         </Col>
@@ -84,8 +75,7 @@ const FoundCard = ({switchState, found, founds, setItemSelected }) => {
                                 <Popover id="popover-basic" >
                                     <Popover.Header className="mt-0">{t("found menu")}</Popover.Header>
                                     <Popover.Body>
-                                        {founds.filter((n) => n.currency.name === found.currency.name).length > 1 ? <><span className="toTransaction" onClick={() => toTransaction(1,found)}>{t("Internal transaction")}</span></> : <></>}
-                                        <span className="toTransaction" onClick={() => toTransaction(4,found)}>{t("Bank Transfer")}</span>
+                                        Some Action
                                     </Popover.Body>
                                 </Popover>
                             } popperConfig={found}>

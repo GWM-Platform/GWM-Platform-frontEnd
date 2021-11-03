@@ -18,6 +18,7 @@ import SellForm from './User/SellForm';
 import WithdrawForm from './User/WithdrawForm';
 import DepositForm from './User/DepositForm';
 import NavBarTotal from './NavBarTotal';
+import OperationStatus from './User/OperationStatus';
 
 const UserDashboard = () => {
     const admin = sessionStorage.getItem("admin")
@@ -32,13 +33,13 @@ const UserDashboard = () => {
     const [numberOfFounds, setNumberOfFounds] = useState(0);
 
     const [itemSelected, setItemSelected] = useState(
-        history.location.pathname === "/dashboardNew/accounts" || history.location.pathname === "/dashboardNew/Accounts" ?
-            "Accounts" :
-            history.location.pathname === "/dashboardNew/addAccount" ?
-                "addAccount" :
-                history.location.pathname === "/dashboardNew/createTicket" ?
-                    "createTicket" :
-                    "movementsTable");
+        {
+            "/dashboardNew/accounts": "Accounts",
+            "/dashboardNew/Accounts": "Accounts",
+            "/dashboardNew/addAccount": "addAccount",
+            "/dashboardNew/createTicket": "createTicket",
+            "/dashboardNew/history": "movementsTable",
+        }[history.location.pathname])
 
     function handleWindowSizeChange() {
         setWidth(window.innerWidth);
@@ -47,7 +48,7 @@ const UserDashboard = () => {
     let isMobile = (width <= 576);
 
     // eslint-disable-next-line 
-   
+
     //When the user try to open this url it checks if the user has a valid token in their session storage,
     //if it is true, it is redirected to the dashboard, if not, it is redirected to login
     const getUserData = () => {
@@ -56,7 +57,7 @@ const UserDashboard = () => {
 
 
     useEffect(() => {
-        if(admin===undefined){
+        if (admin === undefined) {
             sessionStorage.clear();
             history.push(`/login`)
         }
@@ -65,7 +66,7 @@ const UserDashboard = () => {
         return () => {
             window.removeEventListener('resize', handleWindowSizeChange);
         }
-    }, [admin,history])
+    }, [admin, history])
 
 
     return (
@@ -108,6 +109,9 @@ const UserDashboard = () => {
                     </Route>
                     <Route path={`${path}/withdraw`}>
                         <WithdrawForm />
+                    </Route>
+                    <Route path={`${path}/operationResult`}>
+                        <OperationStatus setItemSelected={setItemSelected} />
                     </Route>
                 </>
             }

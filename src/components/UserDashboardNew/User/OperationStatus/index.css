@@ -1,0 +1,11 @@
+.OperationStatus .message{
+    color:var(--navBarTotal-bg);
+    text-align: center;
+    font-size: 40px;
+
+}
+.OperationStatus .statusIcon{
+    text-align: center;
+    font-size: 100px;
+    color:var(--navBarTotal-bg)
+}
