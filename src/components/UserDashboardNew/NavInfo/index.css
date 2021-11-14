@@ -1,6 +1,8 @@
 .navBarInfo {
     background: rgb(211,211,211);
-background: linear-gradient(90deg, var(--nav-info1) 0%,  var(--nav-info1) 31%,  var(--nav-info2) 100%);
+    background: linear-gradient(90deg, var(--nav-info1) 0%,  var(--nav-info1) 31%,  var(--nav-info2) 100%);
+    transition: all 0.5s;
+    max-height: 100px;
 }
 .navBarInfo .greeting{
     margin:0;
@@ -9,4 +11,8 @@ background: linear-gradient(90deg, var(--nav-info1) 0%,  var(--nav-info1) 31%,  
 }
 .navBarInfo .image{
     opacity:0.2;
+}
+
+.navBarInfo.toggled{
+    max-height: 0;
 }

@@ -8,6 +8,7 @@ import { urlContext } from '../../context/urlContext';
 import FoundsContainer from './FoundsContainer'
 import NavBar from './NavBar';
 import NavInfo from './NavInfo';
+import NavBarMobile from './NavBarMobile';
 import Footer from './Footer';
 
 import MovementsTable from './User/MovementsTable';
@@ -28,6 +29,7 @@ const UserDashboard = () => {
     const { path } = useRouteMatch()
     let history = useHistory();
 
+    const [NavInfoToggled, setNavInfoToggled] = useState(false)
     const [userData, setUserData] = useState({});
     const [width, setWidth] = useState(window.innerWidth);
     const [numberOfFounds, setNumberOfFounds] = useState(0);
@@ -71,9 +73,10 @@ const UserDashboard = () => {
 
     return (
         <div className="dashboard" >
-            <NavInfo userData={userData} />
-            <NavBar setItemSelected={setItemSelected} itemSelected={itemSelected} />
-            {admin === "true" ?
+            <NavInfo NavInfoToggled={NavInfoToggled} userData={userData} />
+            <NavBar NavInfoToggled={NavInfoToggled} setNavInfoToggled={setNavInfoToggled}
+                setItemSelected={setItemSelected} itemSelected={itemSelected} />
+            {JSON.parse(admin) ?
                 <>
                     <Route path={`${path}/addAccount`}>
                         <AddAccount />
@@ -84,6 +87,7 @@ const UserDashboard = () => {
                     <NavBarTotal />
                     <Route path={`${path}/accounts`}>
                         <FoundsContainer
+                            NavInfoToggled={NavInfoToggled}
                             isMobile={isMobile}
                             setItemSelected={setItemSelected}
                             numberOfFounds={numberOfFounds}
@@ -96,26 +100,28 @@ const UserDashboard = () => {
                             setItemSelected={setItemSelected}
                             numberOfFounds={numberOfFounds}
                             setNumberOfFounds={setNumberOfFounds}
+                            NavInfoToggled={NavInfoToggled}
                         />
                     </Route>
                     <Route path={`${path}/buy`}>
-                        <BuyForm />
+                        <BuyForm NavInfoToggled={NavInfoToggled}/>
                     </Route>
                     <Route path={`${path}/sell`}>
-                        <SellForm />
+                        <SellForm NavInfoToggled={NavInfoToggled}/>
                     </Route>
                     <Route path={`${path}/deposit`}>
-                        <DepositForm />
+                        <DepositForm NavInfoToggled={NavInfoToggled}/>
                     </Route>
                     <Route path={`${path}/withdraw`}>
-                        <WithdrawForm />
+                        <WithdrawForm NavInfoToggled={NavInfoToggled}/>
                     </Route>
                     <Route path={`${path}/operationResult`}>
-                        <OperationStatus setItemSelected={setItemSelected} />
+                        <OperationStatus setItemSelected={setItemSelected} NavInfoToggled={NavInfoToggled} />
                     </Route>
                 </>
             }
             <Footer />
+            <NavBarMobile setItemSelected={setItemSelected} itemSelected={itemSelected} />
         </div>
     )
 }

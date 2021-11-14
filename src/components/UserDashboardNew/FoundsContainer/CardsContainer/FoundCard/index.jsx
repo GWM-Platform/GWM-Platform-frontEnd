@@ -65,12 +65,12 @@ const FoundCard = ({ switchState, found, founds, setItemSelected }) => {
                 </Card.Body>
                 <Card.Footer className="footer mt-2 m-0 p-0">
                     <Row className="d-flex justify-content-center m-0">
-                        <Col sm="6" className="d-flex justify-content-center p-0 m-0">
+                        <Col xs="6" className="d-flex justify-content-center p-0 m-0">
                             <Button onClick={() => { handleShow() }} className="me-1 button left">
                                 <FontAwesomeIcon icon={faIdCard} />
                             </Button>
                         </Col>
-                        <Col sm="6" className="d-flex justify-content-center p-0 m-0">
+                        <Col xs="6" className="d-flex justify-content-center p-0 m-0">
                             <OverlayTrigger rootClose trigger='click' placement="left-start" overlay={
                                 <Popover id="popover-basic" >
                                     <Popover.Header className="mt-0">{t("found menu")}</Popover.Header>

@@ -38,7 +38,7 @@ const FormMobile = ({ handleChange, handleSubmit, buttonDisabled, setButtonDisab
                             placeholder={t('Password')}
                             autoComplete="current-password"
                             onChange={handleChange}
-                            id="password2"
+                            id="password1"
                             value={data.password}
                             required
                         />

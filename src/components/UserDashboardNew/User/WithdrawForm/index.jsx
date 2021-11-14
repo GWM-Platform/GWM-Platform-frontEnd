@@ -5,14 +5,14 @@ import '../operationsForm.css'
 import { Container, Row, Col, Form } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
 
-const WithDrawForm = () => {
+const WithDrawForm = ({NavInfoToggled}) => {
 
     const { t } = useTranslation();
 
 
     return (
         <Container >
-            <Row className="min-free-area newTicket d-flex justify-content-center">
+            <Row className={`${NavInfoToggled? "free-area-withoutNavInfo": "free-area"} newTicket d-flex justify-content-center`}>
                 <Col sm="9">
                     <div className="formSection">
                         <Row className="d-flex justify-content-center">

@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useHistory } from 'react-router-dom'
 import { Spinner, Row, Container, Col } from 'react-bootstrap';
 import { urlContext } from '../../../../context/urlContext';
-const MovementsTable = ({ isMobile, setItemSelected, numberOfFounds, setNumberOfFounds }) => {
+const MovementsTable = ({ isMobile, setItemSelected, numberOfFounds, NavInfoToggled,setNumberOfFounds }) => {
 // eslint-disable-next-line 
         const { urlPrefix } = useContext(urlContext)
     const { t } = useTranslation();
@@ -47,14 +47,13 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFounds, setNumberOf
     }, [])
 
     return (
-        <div>
-            <Container fluid className="mt-2">
+            <Container fluid className={NavInfoToggled? "free-area-withoutNavInfo": "free-area"}>
                 {
                     Found.length === 0
                         ?
                         <Container fluid>
                             <Row className="d-flex justify-content-center align-items-center">
-                                <Col style={{ height: "calc(100vh - 85px)" }} className="d-flex justify-content-center align-items-center">
+                                <Col className="free-area d-flex justify-content-center align-items-center">
                                     <Spinner className="me-2" animation="border" variant="danger" />
                                     <span className="loadingText">{t(error)}</span>
                                 </Col>
@@ -70,7 +69,6 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFounds, setNumberOf
                 }
 
             </Container>
-        </div>
     )
 }
 export default MovementsTable

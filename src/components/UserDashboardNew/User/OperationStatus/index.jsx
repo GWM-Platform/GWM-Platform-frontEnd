@@ -7,13 +7,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
 import './index.css'
 
-const OperationStatus = ({setItemSelected}) => {
+const OperationStatus = ({setItemSelected,NavInfoToggled}) => {
     useEffect(() => {
         setItemSelected("")
     }, [setItemSelected])
     return (
         <Container className="OperationStatus">
-            <Row className="min-free-area-total d-flex align-items-center justify-content-center">
+            <Row className={`${NavInfoToggled? "free-area-withoutNavInfo": "free-area"} d-flex align-items-center justify-content-center`}>
                 <Col sm="auto">
                     <h1 className="statusIcon"><FontAwesomeIcon icon={faCheckCircle}/></h1>
                     <h1  className="message">Transaction done successfully</h1>

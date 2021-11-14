@@ -114,3 +114,13 @@
     font-size: 17px;
 
 }
+@media (max-width: 576px) {
+    .overflow-overlay{
+        overflow-y: overlay;
+    }
+}
+@media (main-width: 576px) {
+    .overflow-sm-hidden{
+        overflow-y: hidden;
+    }
+}

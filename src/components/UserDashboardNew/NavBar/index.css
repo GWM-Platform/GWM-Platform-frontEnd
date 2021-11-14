@@ -1,8 +1,6 @@
 .navBarDesktop {
     background-color: var(--main-bg-nav-color);
-}
-.scrollable {
-    white-space: nowrap;
+    transition: all 0.5s;
 }
 .navBarDesktop .nav-link {
     padding: 0.5em;
@@ -34,7 +32,59 @@
     padding-right: .5rem!important;
     padding-left: .5rem!important;
 }
+.navBarDesktop  {
+    background-color: var(--main-bg-nav-color);
+    transition:all 0.5s
+}
+.navBarDesktop  .logoNavInfoExpanded{
+    opacity:1;
+    transition:all 0.5s
+}
+.navBarDesktop  .logoNavInfoCollapsed{
+    opacity:0;
+    transition:all 0.5s
+}
+.navBarDesktop .navInfoToggler  {
+    background-color: transparent;
+    color:var(--main-color);;
+    transition: all 0.5s;
+    border:none
+}
+.navBarDesktop .navInfoToggler:focus{
+    color: none!important;
+    background-color: none!important;
+    border-color: none!important;
+    box-shadow: none!important;
+}
+.navBarDesktop .navInfoToggler.toggled  {
+    background-color: transparent;
+    color:var(--secondary-color);
+    transform: rotate(180deg);
+}
+.navBarDesktop .left,.navBarDesktop .right{
+    font-size: 1rem;
+    display: block;
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    border-bottom: 5px solid;
+    border-radius: 0;
+    border-color: transparent;
+}
+.navBarDesktop .left{
+    text-align: start;
+    padding: .5em .5em .5em 1.5rem;
 
+}.navBarDesktop .right{
+    text-align: end;
+    padding: .5em 1.5rem .5em .5em;
+
+}
+
+.navBarDesktop .left.active,.navBarDesktop .right.active{
+    border-bottom: 5px solid;
+    border-color: var(--selected-underline-section-color);
+}
 @media (min-width: 992px) {
     .navBarDesktop .transactionDropdown>.dropdown-toggle {
         padding-right: 1.5rem!important;
@@ -42,12 +92,8 @@
     }
 }
 
-@media (max-width: 575px) {
-    .scrollable {
-        max-width: 100%;
-        overflow-x: auto;
-        white-space: nowrap;
-        flex-direction: row;
+@media (min-width: 576px) {
+    .navBarDesktop{
+        position: sticky
     }
-    
 }

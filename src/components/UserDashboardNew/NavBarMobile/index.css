@@ -1,0 +1,21 @@
+.navBarMobile{
+    background-color: var(--footer-background);
+    color:rgb(206, 206, 206);
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+}
+
+
+.navBarMobile .rowNavBarMobile{
+    overflow-x: auto;
+}
+.navBarMobile .rowNavBarMobile .section-label{
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.navBarMobile .selected{
+    color: white;
+}
+

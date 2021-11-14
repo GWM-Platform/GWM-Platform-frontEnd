@@ -7,7 +7,7 @@ import { Navbar, Row, Container, Col } from 'react-bootstrap'
 const Footer = () => {
 
     return (
-        <Navbar variant="dark" className="navBarFooter mt-2">
+        <Navbar sticky="bottom" variant="dark" className="d-none d-sm-block navBarFooter">
             <Container>
                 <Row className=" w-100 d-flex justify-content-end align-items-center">
                     <Col className="d-flex justify-content-end align-items-center">

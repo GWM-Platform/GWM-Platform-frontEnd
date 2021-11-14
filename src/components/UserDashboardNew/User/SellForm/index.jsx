@@ -8,7 +8,7 @@ import SellData from './SellData'
 import { urlContext } from '../../../../context/urlContext';
 import { useHistory } from 'react-router-dom';
 
-const SellForm = () => {
+const SellForm = ({NavInfoToggled}) => {
     //HardCoded data (here we should request founds that have available feeParts to sell)
     const { urlPrefix } = useContext(urlContext)
     const [data, setData] = useState({ amount: 1, foundSelected: -1 })
@@ -295,7 +295,7 @@ const SellForm = () => {
 
     return (
         <Container >
-            <Row className="min-free-area-total newTicket">
+            <Row className={`${NavInfoToggled? "free-area-withoutNavInfo": "free-area"} newTicket`}>
                 <Col xs="12">
                     <Accordion flush defaultActiveKey="0">
                         <FoundSelector SwitchState={SwitchState} handleSwitch={handleSwitch}

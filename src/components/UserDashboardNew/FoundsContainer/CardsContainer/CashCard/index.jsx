@@ -60,12 +60,12 @@ const CashCard = ({ handleSwitch,SwitchState,found }) => {
                 </Card.Body>
                 <Card.Footer className="footer mt-2 m-0 p-0">
                     <Row className="d-flex justify-content-center m-0">
-                        <Col sm="6" className="d-flex justify-content-center p-0 m-0">
+                        <Col xs="6" className="d-flex justify-content-center p-0 m-0">
                             <Button className="me-1 button left d-flex align-items-center justify-content-center">
                                 <span className="label">Deposit</span>
                             </Button>
                         </Col>
-                        <Col sm="6" className="d-flex justify-content-center p-0 m-0">
+                        <Col xs="6" className="d-flex justify-content-center p-0 m-0">
                             <Button className="ms-1 button right d-flex align-items-center justify-content-center">
                                 <span className="label">Withdraw</span>
                             </Button>

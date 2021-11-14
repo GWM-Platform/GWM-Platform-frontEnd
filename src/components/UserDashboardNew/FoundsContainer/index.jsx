@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useHistory } from 'react-router-dom'
 import { Spinner, Row, Container, Col } from 'react-bootstrap';
 import { urlContext } from '../../../context/urlContext';
-const FoundsContainer = ({ isMobile, setItemSelected, numberOfFounds, setNumberOfFounds }) => {
+const FoundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFounds, setNumberOfFounds }) => {
     let history = useHistory();
     // eslint-disable-next-line
     const { urlPrefix } = useContext(urlContext)
@@ -31,7 +31,6 @@ const FoundsContainer = ({ isMobile, setItemSelected, numberOfFounds, setNumberO
     }
 
     const handleSwitch = (event) => {
-        console.log(event)
         setSwitchState(event.target.checked)
     }
     // eslint-disable-next-line 
@@ -79,7 +78,7 @@ const FoundsContainer = ({ isMobile, setItemSelected, numberOfFounds, setNumberO
                 "createdAt": "2021-11-03T14:00:19.348Z",
                 "updatedAt": "2021-11-03T14:05:00.000Z",
                 "fund": {
-                    "type":"realState",
+                    "type": "realState",
                     "id": 4,
                     "name": "Fondo hardcodeado Real state",
                     "shares": 20,
@@ -97,7 +96,7 @@ const FoundsContainer = ({ isMobile, setItemSelected, numberOfFounds, setNumberO
                 "createdAt": "2021-11-03T14:04:16.821Z",
                 "updatedAt": "2021-11-03T14:08:11.000Z",
                 "fund": {
-                    "type":"crypto",
+                    "type": "crypto",
                     "id": 5,
                     "name": "Fondo hardcodeado crypto",
                     "shares": 7,
@@ -115,7 +114,7 @@ const FoundsContainer = ({ isMobile, setItemSelected, numberOfFounds, setNumberO
                 "createdAt": "2021-11-03T14:04:16.821Z",
                 "updatedAt": "2021-11-03T14:08:11.000Z",
                 "fund": {
-                    "type":"crypto",
+                    "type": "crypto",
                     "id": 5,
                     "name": "Fondo hardcodeado crypto",
                     "shares": 7,
@@ -138,13 +137,13 @@ const FoundsContainer = ({ isMobile, setItemSelected, numberOfFounds, setNumberO
     }, [SwitchState, urlPrefix])
 
     return (
-        <Container fluid className="mt-0 px-0 min-free-area-total d-flex align-items-center">
-            {
+        <Container fluid
+            className={`accountParent px-0 ${NavInfoToggled ? "min-free-area-withoutNavInfo" : "min-free-area"} d-flex align-items-center`}>            {
                 FetchingFunds
                     ?
                     <Container fluid>
                         <Row className="d-flex justify-content-center align-items-center">
-                            <Col className="min-free-area-total  d-flex justify-content-center align-items-center">
+                            <Col xs="12" className="d-flex justify-content-center align-items-center">
                                 <Spinner className="me-2" animation="border" variant="danger" />
                                 <span className="loadingText">{t("Loading Content")}</span>
                             </Col>
@@ -152,6 +151,7 @@ const FoundsContainer = ({ isMobile, setItemSelected, numberOfFounds, setNumberO
                     </Container>
                     :
                     <CardsContainer
+                        NavInfoToggled={NavInfoToggled}
                         setItemSelected={setItemSelected}
                         isMobile={isMobile}
                         founds={founds}
