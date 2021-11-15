@@ -39,16 +39,16 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected, NavInfoToggled, setNav
         history.push(`${url}/buy`);
     }
 
-    const toDeposit = (type) => {
-        setItemSelected("deposit");
-        history.push(`${url}/deposit`);
-    }
-
     const toSell = (type) => {
         setItemSelected("sell");
         history.push(`${url}/sell`);
     }
-
+    
+    const toDeposit = (type) => {
+        setItemSelected("deposit");
+        history.push(`${url}/deposit`);
+    }
+    
     const toWithdraw = (type) => {
         setItemSelected("withdraw");
         history.push(`${url}/withdraw`);

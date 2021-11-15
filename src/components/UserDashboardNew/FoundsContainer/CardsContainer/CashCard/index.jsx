@@ -1,13 +1,24 @@
 import React from 'react'
-import { Row, Col, Card, Button,Form } from 'react-bootstrap';
+import { Container,Row, Col, Card, Button, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
+import {  useHistory } from 'react-router-dom';
 import './index.css'
 
-const CashCard = ({ Hide,setHide,handleSwitch,SwitchState,found }) => {
+const CashCard = ({ Hide, setHide, handleSwitch, SwitchState, found }) => {
     const { t } = useTranslation();
+
+    let history = useHistory();
+
+    const toDeposit = (type) => {
+        history.push(`/dashboardNew/deposit`);
+    }
+
+    const toWithdraw = (type) => {
+        history.push(`/dashboardNew/withdraw`);
+    }
 
     return (
         <Col sm="6" md="6" lg="4" className="fund-col">
@@ -31,39 +42,37 @@ const CashCard = ({ Hide,setHide,handleSwitch,SwitchState,found }) => {
                         <h1 className="title mt-0">
                             {t(found.description)}
                         </h1>
-                        <h1 className="title">
+                        <Container fluid className="px-0">
                             <Row className="d-flex justify-content-between">
-                                <div style={{ width: "auto" }}>
-                                    <span className="balanceAmount">
-                                        <span>
-                                            <span className="bolder">
-                                                {found.currency.symbol}
-                                            </span>
+                                <h1 className="title mt-1">
+                                    <Row className="d-flex justify-content-between">
+                                        <div className="pe-0" style={{ width: "auto" }}>
+                                            <span>$</span>
                                             {Hide ? parseFloat(found.balance).toFixed(found.currency.decimals).replace(/./g, "*") : parseFloat(found.balance).toFixed(found.currency.decimals)}
-                                        </span>
-                                    </span>
-                                </div>
-                                <div style={{ width: "auto" }}>
-                                    <FontAwesomeIcon
-                                        onClick={() => {
-                                            setHide(!Hide)
-                                        }}
-                                        icon={Hide ? faEyeSlash : faEye}
-                                    />
-                                </div>
+                                        </div>
+                                        <div className="ps-0" style={{ width: "auto",cursor:"pointer" }}>
+                                            <FontAwesomeIcon style={{ width: "25px" }}
+                                                onClick={() => {
+                                                    setHide(!Hide)
+                                                }}
+                                                icon={Hide ? faEyeSlash : faEye}
+                                            />
+                                        </div>
+                                    </Row>
+                                </h1>
                             </Row>
-                        </h1>
+                        </Container>
                     </Card.Title>
                 </Card.Body>
                 <Card.Footer className="footer mt-2 m-0 p-0">
                     <Row className="d-flex justify-content-center m-0">
                         <Col xs="6" className="d-flex justify-content-center p-0 m-0">
-                            <Button className="me-1 button left d-flex align-items-center justify-content-center">
+                            <Button onClick={()=>toDeposit()} className="me-1 button left d-flex align-items-center justify-content-center">
                                 <span className="label">Deposit</span>
                             </Button>
                         </Col>
                         <Col xs="6" className="d-flex justify-content-center p-0 m-0">
-                            <Button className="ms-1 button right d-flex align-items-center justify-content-center">
+                            <Button onClick={()=>toWithdraw()} className="ms-1 button right d-flex align-items-center justify-content-center">
                                 <span className="label">Withdraw</span>
                             </Button>
                         </Col>

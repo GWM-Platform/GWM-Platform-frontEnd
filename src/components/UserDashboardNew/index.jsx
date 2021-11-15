@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Route, useRouteMatch, useHistory } from 'react-router-dom';
+import { Route, useRouteMatch, useHistory,useLocation } from 'react-router-dom';
 
 import './index.css'
 
@@ -25,30 +25,36 @@ const UserDashboard = () => {
     const admin = sessionStorage.getItem("admin")
     // eslint-disable-next-line 
     const { urlPrefix } = useContext(urlContext)
+    let location = useLocation()
 
     const { path } = useRouteMatch()
     const history = useHistory();
-    const selected=history.location.pathname.split('/')[2]
     const [NavInfoToggled, setNavInfoToggled] = useState(false)
     const [userData, setUserData] = useState({});
     const [width, setWidth] = useState(window.innerWidth);
     const [numberOfFounds, setNumberOfFounds] = useState(0);
+    const [itemSelected, setItemSelected] = useState(location.pathname.split('/')[2])
 
-    const [itemSelected, setItemSelected] = useState(selected)
+
+    useEffect(
+      () => {
+        const selected=location.pathname.split('/')[2]
+        setItemSelected(selected)
+      },
+      [location]
+    )
+
     function handleWindowSizeChange() {
         setWidth(window.innerWidth);
     }
 
     let isMobile = (width <= 576);
 
-    // eslint-disable-next-line 
-
     //When the user try to open this url it checks if the user has a valid token in their session storage,
     //if it is true, it is redirected to the dashboard, if not, it is redirected to login
     const getUserData = () => {
         setUserData({ "id": 4, "username": "Marco", "email": "marcos.sk8.parengo@gmail.com", "externalId": "RL580035", "firstName": "Marco", "lastName": "Giangarelli", "gender": "M", "birthdate": "2002-05-16", "customer": {} })
     }
-
 
     useEffect(() => {
         if (admin === undefined) {

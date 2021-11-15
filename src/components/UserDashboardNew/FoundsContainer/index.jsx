@@ -26,7 +26,7 @@ const FoundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFo
             "decimals": 2
         },
         "decimals": 0,
-        "balance": 24989989828.999996,
+        "balance": 500,
         "movementsCount": 124
     }
 
