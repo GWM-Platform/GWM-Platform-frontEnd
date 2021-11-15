@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 import { useTranslation } from "react-i18next";
 
-const FoundSelector = ({ handleSwitch, SwitchState, data, setData, some, setSome, founds }) => {
+const FoundSelector = ({ handleSwitch, SwitchState, data, setData, some, setSome, founds, openAccordion }) => {
     const { t } = useTranslation();
     const [showRightChevron, setShowRightChevron] = useState(true)
     const [showLeftChevron, setShowLeftChevron] = useState(false)
@@ -67,12 +67,14 @@ const FoundSelector = ({ handleSwitch, SwitchState, data, setData, some, setSome
                 <Container>
                     <Row className="d-flex justify-content-center">
                         <Form.Label className="pt-0 label d-flex align-items-center" column sm="auto">
-                            <div className="d-inline-block numberContainer">
+                            <span>
+                            <span className="d-inline-block numberContainer">
                                 <div className="d-flex justify-content-center align-items-center h-100 w-100">
                                     <span className="number">1</span>
                                 </div>
-                            </div>
+                            </span>
                             {t("Select Found To buy")}
+                            </span>
                         </Form.Label>
                     </Row>
                 </Container>
@@ -91,7 +93,7 @@ const FoundSelector = ({ handleSwitch, SwitchState, data, setData, some, setSome
                             <Row className="flex-row flex-nowrap overflow-hidden" ref={foundsContainer}>
                                 {founds.map((found, key) => {
                                     return (
-                                        <FoundCard key={key} ownKey={key} found={found} data={data} setData={setData} some={some} setSome={setSome} />
+                                        <FoundCard openAccordion={openAccordion} key={key} ownKey={key} found={found} data={data} setData={setData} some={some} setSome={setSome} />
                                     )
                                 })}
                             </Row>

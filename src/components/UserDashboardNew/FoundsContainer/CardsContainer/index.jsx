@@ -1,4 +1,4 @@
-import React, { useEffect, createRef,useState } from 'react'
+import React, { useEffect, createRef, useState } from 'react'
 import { Row, Container } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import FoundCard from './FoundCard';
@@ -9,6 +9,8 @@ import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons
 const CardsContainer = ({ setItemSelected, SwitchState, handleSwitch, founds, cash }) => {
     const [showRightChevron, setShowRightChevron] = useState(true)
     const [showLeftChevron, setShowLeftChevron] = useState(false)
+    const [Hide, setHide] = useState(false)
+
     //For scrolling
     const foundsContainer = createRef()
 
@@ -68,11 +70,12 @@ const CardsContainer = ({ setItemSelected, SwitchState, handleSwitch, founds, ca
             <Row ref={foundsContainer}
                 className={`d-flex align-items-stretch ${founds.length < 3 ? "justify-content-center" : ""}
                 w-100 g-1 g-sm-5 pb-2 flex-wrap flex-sm-nowrap overflow-hidden `}>
-                <CashCard SwitchState={SwitchState} handleSwitch={handleSwitch} found={cash} />
+                <CashCard Hide={Hide} setHide={setHide}  SwitchState={SwitchState} handleSwitch={handleSwitch} found={cash} />
                 {
                     founds.map((j, k) => {
                         return (
-                            <FoundCard SwitchState={SwitchState} key={k} setItemSelected={setItemSelected} founds={founds} found={j} />
+                            <FoundCard Hide={Hide} setHide={setHide} SwitchState={SwitchState} key={k}
+                                setItemSelected={setItemSelected} founds={founds} found={j} />
                         )
                     }
                     )

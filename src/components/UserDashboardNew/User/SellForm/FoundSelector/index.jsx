@@ -67,12 +67,14 @@ const FoundSelector = ({ handleSwitch, SwitchState, data, setData, some, setSome
                 <Container>
                     <Row className="d-flex justify-content-center">
                         <Form.Label className="pt-0 label d-flex align-items-center" column sm="auto">
-                            <div className="d-inline-block numberContainer">
-                                <div className="d-flex justify-content-center align-items-center h-100 w-100">
-                                    <span className="number">1</span>
-                                </div>
-                            </div>
-                            {t("Select Found To sell")}
+                            <span>
+                                <span className="d-inline-block numberContainer">
+                                    <div className="d-flex justify-content-center align-items-center h-100 w-100">
+                                        <span className="number">1</span>
+                                    </div>
+                                </span>
+                                {t("Select Found To sell")}
+                            </span>
                         </Form.Label>
                     </Row>
                 </Container>

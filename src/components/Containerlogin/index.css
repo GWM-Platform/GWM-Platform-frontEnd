@@ -1,87 +1,86 @@
 .login {
-    background-color:lightgray;    
-    background-repeat: no-repeat;
-    background-size: cover;
+	background-color: lightgray;
+	background-repeat: no-repeat;
+	background-size: cover;
 }
 
-.login .card{
-    background-color: transparent;
-    border-radius: 30px;
-    border: none;
+.login .card {
+	background-color: transparent;
+	border-radius: 30px;
+	border: none;
 }
-.login .card .card-body{
-    background-color: white;
-    border-radius: 30px 30px 0 0;
-    border-bottom: white 20px solid;
-
+.login .card .card-body {
+	background-color: white;
+	border-radius: 30px 30px 0 0;
+	border-bottom: white 20px solid;
 }
-.login .forgotPass{
-    text-align: center;
-    background-color: transparent!important;
-    border:none
+.login .forgotPass {
+	text-align: center;
+	background-color: transparent !important;
+	border: none;
 }
-.login .form-check-input:checked{
-    background-color: var(--main-color);
-    border-color: var(--secondary-color);;
+.login .form-check-input:checked {
+	background-color: var(--main-color);
+	border-color: var(--secondary-color);
 }
-.login .error{
-    color: var(--error);
-    font-size: 14px;
-    font-weight: bolder;
-    text-align: end;
-}
-
-.login .button{
-    border-top:gray 3px solid;
-    text-transform: uppercase;
-    border-radius:0 0 30px 30px;
-    transition: border-radius 0.5s;
-}
-.login .card-footer{
-    padding: 0;
-    border-radius:0 0 30px 30px;
-}
-.login .image{
-    display: block;
-    width: 100%;
+.login .error {
+	color: var(--error);
+	font-size: 14px;
+	font-weight: bolder;
+	text-align: end;
 }
 
-.login .reduced{
-    width: 70%;
+.login .button {
+	border-top: gray 3px solid;
+	text-transform: uppercase;
+	border-radius: 0 0 30px 30px;
+	transition: border-radius 0.5s;
 }
-.login .card-img{
-    width: 50%;
+.login .card-footer {
+	padding: 0;
+	border-radius: 0 0 30px 30px;
 }
-.login .input-group-text{
-    background-color: white;
-    border-right: none;
-    padding-left: 1rem ;
-    border-radius: 30px;
+.login .image {
+	display: block;
+	width: 100%;
 }
-.login .form-control{
-    border-left: none;
-    border-radius:0 30PX 30PX 0px
+
+.login .reduced {
+	width: 70%;
 }
-.login .mobile{
-    margin-top: 30%;
+.login .card-img {
+	width: 20%;
+}
+.login .input-group-text {
+	background-color: white;
+	border-right: none;
+	padding-left: 1rem;
+	border-radius: 30px;
+}
+.login .form-control {
+	border-left: none;
+	border-radius: 0 30PX 30PX 0px;
+}
+.login .mobile {
+	margin-top: 30%;
 }
 @media (max-width: 991px) {
-    .login .button{
-        border-radius:30px 30px 30px 30px;
-    }
-    .login .card-img{
-        width: 30%;
-    }
-    .login{
-        background-image: none!important;
-    }
+	.login .button {
+		border-radius: 30px 30px 30px 30px;
+		border-top: none;
+	}
+	.login .card-img {
+		width: 30%;
+	}
+	.login {
+		background-image: none !important;
+	}
 }
 @media (min-width: 992px) {
-    .login .button{
-        border-radius:0 0 30px 30px;
-    }
-    .login .card-img{
-        width: 50%;
-    }
-    
+	.login .button {
+		border-radius: 0 0 30px 30px;
+	}
+	.login .card-img {
+		width: 30%;
+	}
 }

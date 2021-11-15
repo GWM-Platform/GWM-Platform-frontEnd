@@ -14,12 +14,14 @@ const SellData = ({ data, founds, handleChange, validated, handleSubmit }) => {
                 <Container>
                     <Row className="d-flex justify-content-center">
                         <Form.Label className="pt-0 label d-flex align-items-center" column sm="auto">
-                            <div className="d-inline-block numberContainer">
-                                <div className="d-flex justify-content-center align-items-center h-100 w-100">
-                                    <span className="number">2</span>
-                                </div>
-                            </div>
-                            {t("Specify amount in dollars you want to sell")}
+                            <span>
+                                <span className="d-inline-block numberContainer">
+                                    <div className="d-flex justify-content-center align-items-center h-100 w-100">
+                                        <span className="number">2</span>
+                                    </div>
+                                </span>
+                                {t("Specify amount in dollars you want to sell")}
+                            </span>
                         </Form.Label>
                     </Row>
                 </Container>

@@ -1,134 +1,141 @@
 .cardsContainer .foundCard {
-    border: 1px transparent;
-    border-radius: 30px;
-    background-color: transparent;
+	border: 1px transparent;
+	border-radius: 30px;
+	background-color: transparent;
 }
 
 .cardsContainer .foundCard .header {
-    border-radius: 30px 30px 0px 0px;
-    border: 1px solid;
-    border-color: var(--main-card-color);
-    font-size: 60px;
-    background-color: var(--main-card-color)
+	border-radius: 30px 30px 0px 0px;
+	border: 1px solid;
+	border-color: var(--main-card-color);
+	font-size: 60px;
+	background-color: var(--main-card-color);
 }
 
 .cardsContainer .foundCard .header .currencyContainer > .currency {
-    font-size: 30px;
-    border:transparent;
-    background-color: var(--main-card-color);
-    color:white;
-    margin:0;
-    padding: 0;
-    width: 30px;
+	font-size: 30px;
+	border: transparent;
+	background-color: var(--main-card-color);
+	color: white;
+	margin: 0;
+	padding: 0;
+	width: 30px;
 }
 
 .cardsContainer .foundCard .header .currencyContainer {
-    font-size: 30px;
-    border: white 1px solid;
-    border-radius: 50%;
-    height: 2.7em;
-    width: 2.7em;
-    margin: .3em 0em;
+	font-size: 30px;
+	border: white 1px solid;
+	border-radius: 50%;
+	height: 2.7em;
+	width: 2.7em;
+	margin: .3em 0em;
 }
 
-
 .cardsContainer .foundCard .body {
-    border-left: 1px solid;
-    border-right: 1px solid;
-    border-bottom: 1px solid;
-    border-color: var(--main-card-color);
-    background-color: white;
+	border-left: 1px solid;
+	border-right: 1px solid;
+	border-bottom: 1px solid;
+	border-color: var(--main-card-color);
+	background-color: white;
 }
 
 .cardsContainer .foundCard .body .title {
-    color: dimgray;
-    text-align: start;
-    font-size: 20px;
+	color: dimgray;
+	text-align: start;
+	font-size: 20px;
 }
 
 .cardsContainer .foundCard .body .subTitle {
-    color: black;
-    text-align: start;
-    font-size: 17px;
+	color: black;
+	text-align: start;
+	font-size: 17px;
 }
 
 .lighter {
-    font-weight: lighter
+	font-weight: lighter;
 }
 
 .cardsContainer .foundCard .body .balanceAmount {
-    padding: 0;
-    text-align: end;
-    font-size: 20px;
-    color: dimgray
+	padding: 0;
+	text-align: end;
+	font-size: 20px;
+	color: dimgray;
 }
 
 .cardsContainer .foundCard .body .balance {
-    padding: 0;
-    float: right;
-    font-size: 17px;
+	padding: 0;
+	float: right;
+	font-size: 17px;
 }
 
 .bolder {
-    font-weight: bolder
+	font-weight: bolder;
 }
 
 .lighter {
-    font-weight: lighter
+	font-weight: lighter;
 }
 
 .cardsContainer .foundCard .footer {
-    background-color: transparent;
-    border: none;
-    border-radius: 0px 0px 30px 30px;
-    border-color: var(--main-card-color)
+	background-color: transparent;
+	border: none;
+	border-radius: 0px 0px 30px 30px;
+	border-color: var(--main-card-color);
 }
 
 .cardsContainer .foundCard .footer .button {
-    font-size: 30px;
-    background-color: white;
-    border: 1px solid;
-    border-color: var(--main-card-color);
-    color: var(--main-card-color);
-    width: 100%;
+	font-size: 30px;
+	background-color: white;
+	border: 1px solid;
+	border-color: var(--main-card-color);
+	color: var(--main-card-color);
+	width: 100%;
 }
 
-.cardsContainer .foundCard .footer  .left{
-    border-radius: 0px 0px 0px 30px;
-
+.cardsContainer .foundCard .footer .left {
+	border-radius: 0px 0px 0px 30px;
 }
 
-.cardsContainer .foundCard .footer .right{
-    border-radius: 0px 0px 30px 0px;
+.cardsContainer .foundCard .footer .right {
+	border-radius: 0px 0px 30px 0px;
 }
-
 
 .modal .modal-content {
-    background-color: transparent;
-    border: transparent
+	background-color: transparent;
+	border: transparent;
 }
 
 .modal .header,
 .modal .body,
 .modal .footer {
-    background-color: var(--main-card-color);
-    border-color: white;
+	background-color: var(--main-card-color);
+	border-color: white;
 }
 
 .modal .header {
-    border-radius: 30px 30px 0 0;
-    border-color: white;
+	border-radius: 30px 30px 0 0;
+	border-color: white;
 }
 
 .modal .header .title {
-    color: white
+	color: white;
 }
 
 .modal .body .help {
-    color: white
+	color: white;
 }
 
 .modal .footer {
-    border-radius: 0 0 30px 30px;
-    border-color: white;
+	border-radius: 0 0 30px 30px;
+	border-color: white;
+}
+@media (max-width: 568px) {
+	.fund-col:first-of-type {
+		margin-top: 10%;
+	}
+	.fund-col {
+		padding-left: 10%;
+		padding-right: 10%;
+		margin-bottom: 10%;
+	}
 }

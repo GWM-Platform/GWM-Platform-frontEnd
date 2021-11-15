@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css'
 
 import { Nav, Navbar, Container, Row, Col, NavDropdown, Button, OverlayTrigger, Popover } from 'react-bootstrap'
-import LanguageSelector from '../../LanguageSelector';
+import LanguageSelector from '../../../LanguageSelector';
 import { useRouteMatch, useHistory } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -67,7 +67,7 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected, NavInfoToggled, setNav
 
     return (
 
-        <Navbar style={{ top: NavInfoToggled ? "0px" : "0px" }} sticky="top" className="py-0 mb-0 navBarDesktop" collapseOnSelect expand="sm" variant="dark" >
+        <Navbar  sticky="top" className="py-0 mb-0 navBarDesktop" collapseOnSelect expand="sm" variant="dark" >
             <Container fluid className="bottomInnerBorder px-0 d-none d-sm-block">
                 <Row className="w-100 d-flex align-items-center mx-0">
                     <Col md={1} lg={2} style={{ paddingBottom: "5px" }}>
@@ -162,8 +162,8 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected, NavInfoToggled, setNav
                     </Row>
                     <Row className={`w-100 justify-content-between align-items-center mx-0 px-0 ${itemSelected === "buy" || itemSelected === "sell" || itemSelected === "deposit" || itemSelected === "withdraw" ? "d-flex" : "d-none"}`}>
                         <Col xs="6" className="px-0">
-                            <OverlayTrigger trigger='focus' placement="bottom" overlay={
-                                <Popover id="popover-basic" >
+                            <OverlayTrigger  trigger='focus' placement="bottom" overlay={
+                                <Popover id="popover-funds" className="OverlayNavMobile" >
                                     <Popover.Body>
                                         <NavDropdown.Item
                                             active={itemSelected === "buy"}
@@ -185,7 +185,7 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected, NavInfoToggled, setNav
                         </Col>
                         <Col xs="6" className="px-0">
                             <OverlayTrigger trigger='focus' placement="bottom" overlay={
-                                <Popover id="popover-basic" >
+                                <Popover id="popover-cash" className="OverlayNavMobile">
                                     <Popover.Body>
                                         <NavDropdown.Item
                                             active={itemSelected === "deposit"}

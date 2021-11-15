@@ -4,7 +4,7 @@ import DonutChart from 'react-donut-chart';
 import './index.css'
 import { Col, Card, Container, Row } from 'react-bootstrap'
 
-const FoundCard = ({ found, ownKey, data, setData, setSome, some }) => {
+const FoundCard = ({ found, ownKey, data, setData, setSome, some,openAccordion }) => {
     const ref = useRef(null)
     const [width, setWidth] = useState(0)
 
@@ -20,8 +20,8 @@ const FoundCard = ({ found, ownKey, data, setData, setSome, some }) => {
             }}>
             <Card
                 ref={ref}
-                className={`foundCard ${data.foundSelected === ownKey ? "foundSelected" : ""}`}
-                onClick={() => { setFoundSelected(data, setData, ownKey, setSome, some) }}>
+                className={`foundCard h-100 ${data.foundSelected === ownKey ? "foundSelected" : ""}`}
+                onClick={() => { setFoundSelected(data, setData, ownKey, setSome, some,openAccordion) }}>
                 <Card.Header><strong className="title">{found.name}</strong></Card.Header>
                 <Card.Body>
                     <Card.Title>FeeParts value: <strong>${found.sharePrice}</strong></Card.Title>
@@ -60,11 +60,12 @@ const FoundCard = ({ found, ownKey, data, setData, setSome, some }) => {
     )
 }
 
-const setFoundSelected = (data, setData, ownKey, setSome, some) => {
+const setFoundSelected = (data, setData, ownKey, setSome, some,openAccordion) => {
     let aux = data
     aux.foundSelected = ownKey
     setData(aux)
     setSome(!some)
+    openAccordion()
 }
 
 export default FoundCard

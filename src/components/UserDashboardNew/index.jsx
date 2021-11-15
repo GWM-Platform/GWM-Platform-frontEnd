@@ -6,9 +6,10 @@ import './index.css'
 
 import { urlContext } from '../../context/urlContext';
 import FoundsContainer from './FoundsContainer'
-import NavBar from './NavBar';
-import NavInfo from './NavInfo';
-import NavBarMobile from './NavBarMobile';
+import NavBar from './NavBars/NavBar';
+import NavInfo from './NavBars/NavInfo';
+import NavBarMobile from './NavBars/NavBarMobile';
+import NavBarTotal from './NavBars/NavBarTotal';
 import Footer from './Footer';
 
 import MovementsTable from './User/MovementsTable';
@@ -18,7 +19,6 @@ import BuyForm from './User/BuyForm';
 import SellForm from './User/SellForm';
 import WithdrawForm from './User/WithdrawForm';
 import DepositForm from './User/DepositForm';
-import NavBarTotal from './NavBarTotal';
 import OperationStatus from './User/OperationStatus';
 
 const UserDashboard = () => {
@@ -27,22 +27,14 @@ const UserDashboard = () => {
     const { urlPrefix } = useContext(urlContext)
 
     const { path } = useRouteMatch()
-    let history = useHistory();
-
+    const history = useHistory();
+    const selected=history.location.pathname.split('/')[2]
     const [NavInfoToggled, setNavInfoToggled] = useState(false)
     const [userData, setUserData] = useState({});
     const [width, setWidth] = useState(window.innerWidth);
     const [numberOfFounds, setNumberOfFounds] = useState(0);
 
-    const [itemSelected, setItemSelected] = useState(
-        {
-            "/dashboardNew/accounts": "Accounts",
-            "/dashboardNew/Accounts": "Accounts",
-            "/dashboardNew/addAccount": "addAccount",
-            "/dashboardNew/createTicket": "createTicket",
-            "/dashboardNew/history": "movementsTable",
-        }[history.location.pathname])
-
+    const [itemSelected, setItemSelected] = useState(selected)
     function handleWindowSizeChange() {
         setWidth(window.innerWidth);
     }

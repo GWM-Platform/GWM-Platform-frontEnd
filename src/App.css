@@ -152,8 +152,7 @@ body{overflow-y: overlay;}
 
   @media (max-width: 576px) {
     .free-area{
-      height:auto;
-      min-height: calc( 100vh - 201px );
+      height:calc( 100vh - 135px );
       overflow-y:overlay;
       overflow-x: hidden;
     }

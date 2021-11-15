@@ -1,5 +1,4 @@
 import React from 'react'
-import { useState } from 'react';
 import { Row, Col, Card, Button,Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
@@ -7,13 +6,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 import './index.css'
 
-const CashCard = ({ handleSwitch,SwitchState,found }) => {
-    const [Hide, setHide] = useState(false)
-
+const CashCard = ({ Hide,setHide,handleSwitch,SwitchState,found }) => {
     const { t } = useTranslation();
 
     return (
-        <Col sm="6" md="6" lg="4">
+        <Col sm="6" md="6" lg="4" className="fund-col">
             <Card className="h-100 cashCard">
                 <Card.Header
                     className="header d-flex align-items-center justify-content-center"

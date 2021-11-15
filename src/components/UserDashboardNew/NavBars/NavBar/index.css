@@ -85,6 +85,33 @@
     border-bottom: 5px solid;
     border-color: var(--selected-underline-section-color);
 }
+.navBarDesktop .dropdown-menu.show {
+    margin-top:0!important
+}
+.navBarDesktop .dropdown-menu{
+    border:0;
+    min-width: 100%;
+    border-radius:0 0 0.25rem 0.25rem;
+    padding:0 
+}
+.navBarDesktop .dropdown-item:last-of-type{
+    border-radius: 0 0 0.25rem 0.25rem;
+}
+.OverlayNavMobile {
+	position: absolute;
+	inset: -.5rem auto auto 0px!important;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    width: 40%;
+    border: none;
+}
+.OverlayNavMobile .popover-arrow{
+    display: none;
+}
+.OverlayNavMobile .popover-body{
+    padding: 0;
+}
+
 @media (min-width: 992px) {
     .navBarDesktop .transactionDropdown>.dropdown-toggle {
         padding-right: 1.5rem!important;

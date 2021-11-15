@@ -16,6 +16,7 @@ const BuyForm = ({NavInfoToggled}) => {
     const [SwitchState, setSwitchState] = useState(false)
     const [founds, setFounds] = useState([])
     const [validated, setValidated] = useState(false);
+    const [CollapsedFields, setCollapsedFields] = useState(true);
 
     const token = sessionStorage.getItem('access_token')
 
@@ -243,18 +244,24 @@ const BuyForm = ({NavInfoToggled}) => {
         setValidated(true);
     }
 
-
+    const toggleAccordion=()=>{
+        setCollapsedFields(!CollapsedFields)
+    }
+    const openAccordion=()=>{
+        setCollapsedFields(false)
+    }
     return (
         <Container className={NavInfoToggled? "free-area-withoutNavInfo": "free-area"}>
             <Row className="newTicket">
                 <Col xs="12">
                     <Accordion flush defaultActiveKey="0">
-                        <FoundSelector SwitchState={SwitchState} handleSwitch={handleSwitch}
-                            founds={founds} data={data} some={some} setData={setData} setSome={setSome} />
+                        <FoundSelector SwitchState={SwitchState} handleSwitch={handleSwitch} openAccordion={openAccordion}
+                            founds={founds} data={data} some={some} setData={setData} setSome={setSome}/>
                     </Accordion>
-                    <Accordion flush >
+                    <Accordion flush activeKey={CollapsedFields ? "-1" : "0"}>
                         <BuyData handleSubmit={handleSubmit} validated={validated}
-                            handleChange={handleChange} founds={founds} data={data} />
+                            handleChange={handleChange} founds={founds} data={data} 
+                            toggleAccordion={toggleAccordion} />
                     </Accordion>
                 </Col>
             </Row>

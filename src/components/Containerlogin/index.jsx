@@ -30,7 +30,7 @@ const ContainerLogin = () => {
         aux[event.target.id] = event.target.checked;
         break
       case 'api1':
-        aux[event.target.id] = event.target.checked;
+        aux.api = event.target.checked;
         break
       case 'email1':
         aux.email = event.target.value
@@ -53,7 +53,7 @@ const ContainerLogin = () => {
     setButtonDisabled(true)
     setLoading(true)
     setButtonContent("Loading")
-    if (data.api) {
+    if (data.api ) {
       loginWithApi()
     } else {
       loginWithoutApi()
@@ -69,7 +69,7 @@ const ContainerLogin = () => {
       sessionStorage.setItem("admin", false)
       toDashBoard("accounts");
     } else {
-      setError("Sorry, the login failed! Please Try again")
+      setError("Sorry, the login failed! Pleasse Try again")
       setButtonContent("Login")
       setButtonDisabled(false)
       setLoading(false)

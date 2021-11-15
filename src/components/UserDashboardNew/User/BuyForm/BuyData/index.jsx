@@ -4,22 +4,24 @@ import { Form, InputGroup, Row, Button, Accordion, Container } from 'react-boots
 import { useTranslation } from "react-i18next";
 
 
-const BuyData = ({ data, founds, handleChange, validated, handleSubmit }) => {
+const BuyData = ({ data, founds, handleChange, validated, handleSubmit, toggleAccordion }) => {
 
     const { t } = useTranslation();
 
     return (
-        <Accordion.Item disabled eventKey="0">
-            <Accordion.Header>
+        <Accordion.Item eventKey="0">
+            <Accordion.Header onClick={() => toggleAccordion()}>
                 <Container>
                     <Row className="d-flex justify-content-center">
                         <Form.Label className="pt-0 label d-flex align-items-center" column sm="auto">
-                            <div className="d-inline-block numberContainer">
-                                <div className="d-flex justify-content-center align-items-center h-100 w-100">
-                                    <span className="number">2</span>
-                                </div>
-                            </div>
-                            {t("Specify amount in dollars you want to invest")}
+                            <span>
+                                <span className="d-inline-block numberContainer">
+                                    <div className="d-flex justify-content-center align-items-center h-100 w-100">
+                                        <span className="number">2</span>
+                                    </div>
+                                </span>
+                                {t("Specify amount in dollars you want to invest")}
+                            </span>
                         </Form.Label>
                     </Row>
                 </Container>
@@ -36,7 +38,7 @@ const BuyData = ({ data, founds, handleChange, validated, handleSubmit }) => {
                             max={data.foundSelected === -1 ?
                                 1
                                 :
-                                founds[data.foundSelected].freeShares*founds[data.foundSelected].sharePrice}
+                                founds[data.foundSelected].freeShares * founds[data.foundSelected].sharePrice}
                             id="amount"
                             type="number"
                             required
@@ -64,7 +66,7 @@ const BuyData = ({ data, founds, handleChange, validated, handleSubmit }) => {
                         </Form.Control.Feedback>
                     </InputGroup>
                     <Button disabled={
-                        data.foundSelected === -1 ? true : data.amount > founds[data.foundSelected].freeShares*founds[data.foundSelected].sharePrice}
+                        data.foundSelected === -1 ? true : data.amount > founds[data.foundSelected].freeShares * founds[data.foundSelected].sharePrice}
                         variant="danger" type="submit">{t("Submit")}</Button>
                 </Form>
             </Accordion.Body>

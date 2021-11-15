@@ -20,7 +20,7 @@ const FoundCard = ({ found, ownKey, data, setData, setSome, some }) => {
             }}>
             <Card
                 ref={ref}
-                className={`foundCard ${data.foundSelected === ownKey ? "foundSelected" : ""}`}
+                className={`foundCard h-100 ${data.foundSelected === ownKey ? "foundSelected" : ""}`}
                 onClick={() => { setFoundSelected(data, setData, ownKey, setSome, some) }}>
                 <Card.Header><strong className="title">{found.fund.name}</strong></Card.Header>
                 <Card.Body>

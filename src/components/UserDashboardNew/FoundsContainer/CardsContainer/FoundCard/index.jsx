@@ -8,8 +8,7 @@ import { faEyeSlash, faEye, faIdCard, faPaperPlane } from '@fortawesome/free-sol
 import './index.css'
 import ChangeNameModal from './ChangeNameModal'
 
-const FoundCard = ({ switchState, found, founds, setItemSelected }) => {
-    const [Hide, setHide] = useState(false)
+const FoundCard = ({ Hide,setHide,switchState, found, founds, setItemSelected }) => {
     const [show, setShow] = useState(false)
 
     const handleClose = () => setShow(false);
@@ -18,7 +17,7 @@ const FoundCard = ({ switchState, found, founds, setItemSelected }) => {
     const { t } = useTranslation();
 
     return (
-        <Col sm="6" md="6" lg="4">
+        <Col className="fund-col" sm="6" md="6" lg="4">
             <Card className="foundCard h-100">
                 <Card.Header
                     className="header d-flex align-items-center justify-content-center"
@@ -59,7 +58,7 @@ const FoundCard = ({ switchState, found, founds, setItemSelected }) => {
                         </h1>
                     </Card.Title>
                     <Card.Text className="subTitle lighter mt-0 mb-2">
-                        Acquired FeeParts:<span className="bolder"> {found.shares}<br/> {(found.shares*100/found.fund.shares).toFixed(2)}% from total</span><br />
+                        Acquired FeeParts:<span className="bolder"> {found.shares}</span><br />
                         FeePart Price:<span className="bolder"> ${found.fund.sharePrice}</span><br />
                     </Card.Text>
                 </Card.Body>
