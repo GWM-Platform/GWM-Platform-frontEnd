@@ -3,15 +3,19 @@ import React, { useState, useEffect, useCallback, useContext } from 'react';
 import CardsContainer from './CardsContainer';
 import { useTranslation } from "react-i18next";
 import { useHistory } from 'react-router-dom'
-import { Spinner, Row, Container, Col } from 'react-bootstrap';
+import { Spinner, Row, Container, Col, Form } from 'react-bootstrap';
 import { urlContext } from '../../../../context/urlContext';
-const MovementsTable = ({ isMobile, setItemSelected, numberOfFounds, NavInfoToggled,setNumberOfFounds }) => {
-// eslint-disable-next-line 
-        const { urlPrefix } = useContext(urlContext)
+const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, NavInfoToggled, setNumberOfFunds }) => {
+    // eslint-disable-next-line 
+    const { urlPrefix } = useContext(urlContext)
     const { t } = useTranslation();
 
-    const [Found, setFound] = useState([]);
+    const [Funds, setFunds] = useState([]);
+    const [FetchingFunds, setFetchingFunds] = useState(false);
     const [error, setError] = useState("Loading Content");
+    const [SwitchState, setSwitchState] = useState(false);
+
+    const token = sessionStorage.getItem('access_token')
 
     let history = useHistory();
 
@@ -20,55 +24,124 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFounds, NavInfoTogg
         sessionStorage.clear(); history.push(`/login`);
     }
 
+    const handleSwitch = (event) => {
+        setSwitchState(event.target.checked)
+    }
 
-
-    const getFounds = useCallback(
-        () => {
-            let catchedUserData = JSON.parse(sessionStorage.getItem('Found'));//If its catched we wont fetch the 
-
-            if (catchedUserData === null) {
-                setFound([{ "id": 293, "description": "asset custody usd", "type": { "id": 111, "description": "asset custody", "productLine": { "id": 0, "description": " " } }, "externalNumber": "000000000000001", "currency": { "code": "USD", "name": "United States Dollar", "symbol": "$", "decimals": 2 }, "decimals": 0, "beneficiaryName": "Burton Gray", "balance": 24989989828.999996, "movementsCount": 124 }, { "id": 294, "description": "asset custody EUR", "type": { "id": 112, "description": "asset custody", "productLine": { "id": 0, "description": " " } }, "externalNumber": "000000000000002", "currency": { "code": "EUR", "name": "Euro", "symbol": "€", "decimals": 2 }, "decimals": 0, "beneficiaryName": "Burton Gray", "balance": 34999999985, "movementsCount": 4 }, { "id": 295, "description": "asset custody usd", "type": { "id": 111, "description": "asset custody", "productLine": { "id": 0, "description": " " } }, "externalNumber": "00000000000000003", "currency": { "code": "USD", "name": "United States Dollar", "symbol": "$", "decimals": 2 }, "decimals": 0, "beneficiaryName": "Burton Gray", "balance": 8520388, "movementsCount": 99 }])
-                setNumberOfFounds(3)
-            } else {
-                setFound(catchedUserData)
-                if (catchedUserData.length === 0) {
-                    setError("Your user don't have any Found")
-                }
-                setNumberOfFounds(catchedUserData.length)
+    const getFundsWithApi = async () => {
+        var url = `${urlPrefix}/funds/stakes`;
+        setFetchingFunds(true)
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: "*/*",
+                'Content-Type': 'application/json'
             }
-             // eslint-disable-next-line
-        }, [Found]);
+        })
+
+        if (response.status === 200) {
+            const data = await response.json()
+            setFunds(data)
+            if (data.length === 0) setError("No tiene participacion en ningun fondo")
+        } else {
+            switch (response.status) {
+                case 500:
+                    console.error("Error. Vefique los datos ingresados")
+                    break;
+                default:
+                    console.error(response.status)
+            }
+            setFetchingFunds(false)
+        }
+    }
+
+    const getFunds = useCallback(
+        () => {
+            setFetchingFunds(true)
+            if (SwitchState) {
+                getFundsWithApi()
+            } else {
+                setFunds([
+                    {
+                        "id": 17,
+                        "clientId": 1,
+                        "fundId": 1,
+                        "shares": 5,
+                        "createdAt": "2021-11-03T17:30:34.014Z",
+                        "updatedAt": "2021-11-04T20:16:14.000Z",
+                        "fund": {
+                            "id": 1,
+                            "name": "Hardcoded Fund 1",
+                            "shares": 100,
+                            "sharePrice": 50,
+                            "freeShares": 30,
+                            "createdAt": "2021-11-02T12:34:38.768Z",
+                            "updatedAt": "2021-11-03T17:30:34.000Z"
+                        }
+                    },
+                    {
+                        "id": 18,
+                        "clientId": 1,
+                        "fundId": 4,
+                        "shares": 10,
+                        "createdAt": "2021-11-04T20:12:12.937Z",
+                        "updatedAt": "2021-11-04T20:12:12.937Z",
+                        "fund": {
+                            "id": 4,
+                            "name": "Hardcoded Fund 2",
+                            "shares": 20,
+                            "sharePrice": 5,
+                            "freeShares": 3.5,
+                            "createdAt": "2021-11-02T12:36:32.559Z",
+                            "updatedAt": "2021-11-04T20:12:13.000Z"
+                        }
+                    }
+                ])
+                setNumberOfFunds(3)
+            }
+            setFetchingFunds(false)
+            // eslint-disable-next-line
+        }, [SwitchState]);
 
     useEffect(() => {
-        getFounds();
+        getFunds();
         return () => {
         }
-    // eslint-disable-next-line
-    }, [])
+        // eslint-disable-next-line
+    }, [SwitchState])
 
     return (
-            <Container fluid className={NavInfoToggled? "free-area-withoutNavInfo": "free-area"}>
-                {
-                    Found.length === 0
-                        ?
-                        <Container fluid>
-                            <Row className="d-flex justify-content-center align-items-center">
-                                <Col className="free-area d-flex justify-content-center align-items-center">
-                                    <Spinner className="me-2" animation="border" variant="danger" />
-                                    <span className="loadingText">{t(error)}</span>
-                                </Col>
-                            </Row>
-                        </Container>
-                        :
-                        <CardsContainer
-                            setItemSelected={setItemSelected}
-                            isMobile={isMobile}
-                            Founds={Found}
-                            numberOfFounds={numberOfFounds}
-                        />
-                }
+        <Container fluid className={NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}>
+            <Form.Check
+                onChange={handleSwitch}
+                checked={SwitchState}
+                type="switch"
+                id="FundApi"
+                label={t("API's Funds (For devops)")}
+            />
+            {
+                FetchingFunds || Funds.length === 0
+                    ?
+                    <Container fluid>
+                        <Row className="d-flex justify-content-center align-items-center">
+                            <Col className="free-area d-flex justify-content-center align-items-center">
+                                <Spinner className="me-2" animation="border" variant="danger" />
+                                <span className="loadingText">{t(error)}</span>
+                            </Col>
+                        </Row>
+                    </Container>
+                    :
+                    <CardsContainer
+                        setItemSelected={setItemSelected}
+                        isMobile={isMobile}
+                        Funds={Funds}
+                        numberOfFunds={numberOfFunds}
+                        SwitchState={SwitchState}
+                    />
+            }
 
-            </Container>
+        </Container>
     )
 }
 export default MovementsTable

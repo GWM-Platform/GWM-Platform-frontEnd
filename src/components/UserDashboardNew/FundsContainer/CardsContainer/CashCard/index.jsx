@@ -7,7 +7,7 @@ import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 import {  useHistory } from 'react-router-dom';
 import './index.css'
 
-const CashCard = ({ Hide, setHide, handleSwitch, SwitchState, found }) => {
+const CashCard = ({ Hide, setHide, handleSwitch, SwitchState, Fund }) => {
     const { t } = useTranslation();
 
     let history = useHistory();
@@ -27,7 +27,7 @@ const CashCard = ({ Hide, setHide, handleSwitch, SwitchState, found }) => {
                     className="header d-flex align-items-center justify-content-center"
                 >
                     <div className="currencyContainer d-flex align-items-center justify-content-center">
-                        <img className="currency px-0 mx-0" alt={found.type} src={process.env.PUBLIC_URL + '/images/' + found.type + '.svg'} />
+                        <img className="currency px-0 mx-0" alt={Fund.type} src={process.env.PUBLIC_URL + '/images/' + Fund.type + '.svg'} />
                     </div>
                 </Card.Header>
                 <Card.Body className="body">
@@ -35,12 +35,12 @@ const CashCard = ({ Hide, setHide, handleSwitch, SwitchState, found }) => {
                         onChange={handleSwitch}
                         checked={SwitchState}
                         type="switch"
-                        id="foundApi"
-                        label={t("API's founds (For devops)")}
+                        id="FundApi"
+                        label={t("API's Funds (For devops)")}
                     />
                     <Card.Title >
                         <h1 className="title mt-0">
-                            {t(found.description)}
+                            {t(Fund.description)}
                         </h1>
                         <Container fluid className="px-0">
                             <Row className="d-flex justify-content-between">
@@ -48,14 +48,22 @@ const CashCard = ({ Hide, setHide, handleSwitch, SwitchState, found }) => {
                                     <Row className="d-flex justify-content-between">
                                         <div className="pe-0" style={{ width: "auto" }}>
                                             <span>$</span>
-                                            {Hide ? parseFloat(found.balance).toFixed(found.currency.decimals).replace(/./g, "*") : parseFloat(found.balance).toFixed(found.currency.decimals)}
+                                            {Hide ? parseFloat(Fund.balance).toFixed(Fund.currency.decimals).replace(/./g, "*") : parseFloat(Fund.balance).toFixed(Fund.currency.decimals)}
                                         </div>
-                                        <div className="ps-0" style={{ width: "auto",cursor:"pointer" }}>
-                                            <FontAwesomeIcon style={{ width: "25px" }}
-                                                onClick={() => {
-                                                    setHide(!Hide)
-                                                }}
-                                                icon={Hide ? faEyeSlash : faEye}
+                                        <div className="ps-0 hideInfoButton"> 
+                                            <FontAwesomeIcon 
+                                                className={`icon ${Hide ? "hidden" : "shown"}`}
+                                                onClick={() => {setHide(!Hide)}}
+                                                icon={faEye}
+                                            />
+                                            <FontAwesomeIcon 
+                                                className={`icon ${!Hide ? "hidden" : "shown"}`}
+                                                onClick={() => {setHide(!Hide)}}
+                                                icon={faEyeSlash}
+                                            />
+                                            <FontAwesomeIcon 
+                                            className="icon placeholder"
+                                                icon={faEyeSlash}
                                             />
                                         </div>
                                     </Row>

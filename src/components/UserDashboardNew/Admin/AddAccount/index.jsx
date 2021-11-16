@@ -59,7 +59,7 @@ const AddAccount = () => {
     }
 
     return (
-        <Container className="notFound">
+        <Container className="notFund">
             <Row className="min-free-area d-flex justify-content-center">
                 <Col sm="12" md="9">
                     <h1 className="pb-2">{t("Add Account")}</h1>
@@ -125,8 +125,8 @@ const AddAccount = () => {
                             />
                         </FloatingLabel>
                         <FloatingLabel
-                            id="initialFounds"
-                            label={t("Initial Founds")}
+                            id="initialFunds"
+                            label={t("Initial Funds")}
                             className="mb-3"
                         >
                             <Form.Control
@@ -134,7 +134,7 @@ const AddAccount = () => {
                                 onChange={handleChange}
                                 type="number"
                                 min="0"
-                                placeholder={t("Initial Founds")}
+                                placeholder={t("Initial Funds")}
                             />
                         </FloatingLabel>
                         <p>{message}</p>

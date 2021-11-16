@@ -3,18 +3,18 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../operationsForm.css'
 
 import { Container, Row, Col, Accordion } from 'react-bootstrap'
-import FoundSelector from './FoundSelector'
+import FundSelector from './FundSelector'
 import BuyData from './BuyData'
 import { urlContext } from '../../../../context/urlContext';
 import {  useHistory } from 'react-router-dom';
 
 const BuyForm = ({NavInfoToggled}) => {
-    //HardCoded data (here we should request founds that have available feeParts to sell)
+    //HardCoded data (here we should request Funds that have available feeParts to sell)
     const { urlPrefix } = useContext(urlContext)
-    const [data, setData] = useState({ amount: 1, foundSelected: -1 })
+    const [data, setData] = useState({ amount: 1, FundSelected: -1 })
     const [some, setSome] = useState(false)
     const [SwitchState, setSwitchState] = useState(false)
-    const [founds, setFounds] = useState([])
+    const [Funds, setFunds] = useState([])
     const [validated, setValidated] = useState(false);
     const [CollapsedFields, setCollapsedFields] = useState(true);
 
@@ -24,7 +24,7 @@ const BuyForm = ({NavInfoToggled}) => {
 
 
     const buy = async () => {
-        var url = `${urlPrefix}/funds/${founds[data.foundSelected].id}/buy`;
+        var url = `${urlPrefix}/funds/${Funds[data.FundSelected].id}/buy`;
         const response = await fetch(url, {
             method: 'POST',
             body: JSON.stringify({ amount: data.amount }),
@@ -50,7 +50,7 @@ const BuyForm = ({NavInfoToggled}) => {
     }
 
     useEffect(() => {
-        const getFounds = async () => {
+        const getFunds = async () => {
             var url = `${urlPrefix}/funds`;
             const response = await fetch(url, {
                 method: 'GET',
@@ -62,7 +62,7 @@ const BuyForm = ({NavInfoToggled}) => {
 
             if (response.status === 200) {
                 const data = await response.json()
-                setFounds(data)
+                setFunds(data)
             } else {
                 switch (response.status) {
                     case 500:
@@ -73,8 +73,8 @@ const BuyForm = ({NavInfoToggled}) => {
                 }
             }
         }
-        const hardcodedFounds = [{
-            name: "CryptoCurrency found",
+        const hardcodedFunds = [{
+            name: "CryptoCurrency Fund",
             shares: 1000,
             freeShares: 37,
             sharePrice: 30,
@@ -99,7 +99,7 @@ const BuyForm = ({NavInfoToggled}) => {
             }]
 
         }, {
-            name: "CryptoCurrency found",
+            name: "CryptoCurrency Fund",
             shares: 10000,
             freeShares: 1000,
             sharePrice: 6,
@@ -115,7 +115,7 @@ const BuyForm = ({NavInfoToggled}) => {
             }]
 
         }, {
-            name: "CryptoCurrency found",
+            name: "CryptoCurrency Fund",
             shares: 10000,
             freeShares: 1000,
             sharePrice: 6,
@@ -130,7 +130,7 @@ const BuyForm = ({NavInfoToggled}) => {
                 value: 75,
             }]
         }, {
-            name: "CryptoCurrency found",
+            name: "CryptoCurrency Fund",
             shares: 10000,
             freeShares: 1000,
             sharePrice: 6,
@@ -146,7 +146,7 @@ const BuyForm = ({NavInfoToggled}) => {
             }]
 
         }, {
-            name: "CryptoCurrency found",
+            name: "CryptoCurrency Fund",
             shares: 1000,
             freeShares: 37,
             sharePrice: 30,
@@ -171,7 +171,7 @@ const BuyForm = ({NavInfoToggled}) => {
             }]
 
         }, {
-            name: "CryptoCurrency found",
+            name: "CryptoCurrency Fund",
             shares: 10000,
             freeShares: 1000,
             sharePrice: 6,
@@ -187,7 +187,7 @@ const BuyForm = ({NavInfoToggled}) => {
             }]
 
         }, {
-            name: "CryptoCurrency found",
+            name: "CryptoCurrency Fund",
             shares: 10000,
             freeShares: 1000,
             sharePrice: 6,
@@ -204,12 +204,12 @@ const BuyForm = ({NavInfoToggled}) => {
         }]
 
         if (SwitchState) {
-            getFounds()
+            getFunds()
         } else {
-            setFounds(hardcodedFounds)
+            setFunds(hardcodedFunds)
         }
         let aux = data
-        aux.foundSelected = -1
+        aux.FundSelected = -1
         setData(aux)
         return () => {
         }
@@ -255,12 +255,12 @@ const BuyForm = ({NavInfoToggled}) => {
             <Row className="newTicket">
                 <Col xs="12">
                     <Accordion flush defaultActiveKey="0">
-                        <FoundSelector SwitchState={SwitchState} handleSwitch={handleSwitch} openAccordion={openAccordion}
-                            founds={founds} data={data} some={some} setData={setData} setSome={setSome}/>
+                        <FundSelector SwitchState={SwitchState} handleSwitch={handleSwitch} openAccordion={openAccordion}
+                            Funds={Funds} data={data} some={some} setData={setData} setSome={setSome}/>
                     </Accordion>
                     <Accordion flush activeKey={CollapsedFields ? "-1" : "0"}>
                         <BuyData handleSubmit={handleSubmit} validated={validated}
-                            handleChange={handleChange} founds={founds} data={data} 
+                            handleChange={handleChange} Funds={Funds} data={data} 
                             toggleAccordion={toggleAccordion} />
                     </Accordion>
                 </Col>

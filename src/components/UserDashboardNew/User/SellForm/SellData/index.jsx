@@ -4,7 +4,7 @@ import { Form, InputGroup, Row, Button, Accordion, Container } from 'react-boots
 import { useTranslation } from "react-i18next";
 
 
-const SellData = ({ data, founds, handleChange, validated, handleSubmit }) => {
+const SellData = ({ data, Funds, handleChange, validated, handleSubmit }) => {
 
     const { t } = useTranslation();
 
@@ -35,10 +35,10 @@ const SellData = ({ data, founds, handleChange, validated, handleSubmit }) => {
                             value={data.amount}
                             onChange={handleChange}
                             min="1"
-                            max={data.foundSelected === -1 ?
+                            max={data.FundSelected === -1 ?
                                 1
                                 :
-                                founds[data.foundSelected].shares * founds[data.foundSelected].fund.sharePrice}
+                                Funds[data.FundSelected].shares * Funds[data.FundSelected].fund.sharePrice}
                             id="amount"
                             type="number"
                             required
@@ -46,29 +46,29 @@ const SellData = ({ data, founds, handleChange, validated, handleSubmit }) => {
                         />
                         <Form.Control.Feedback type="invalid">
                             {
-                                data.foundSelected === -1 ?
-                                    "Please, select a found to Sell"
+                                data.FundSelected === -1 ?
+                                    "Please, select a Fund to Sell"
                                     :
                                     data.amount === "" ?
                                         "you should enter how much you want to invest"
                                         :
                                         `You are trying to invest $${data.amount}, with you could Sell
-                                        ${data.amount / founds[data.foundSelected].fund.sharePrice} shares, but there are only
-                                        ${founds[data.foundSelected].fund.freeShares} free.`}
+                                        ${data.amount / Funds[data.FundSelected].fund.sharePrice} shares, but there are only
+                                        ${Funds[data.FundSelected].fund.freeShares} free.`}
                         </Form.Control.Feedback>
                         <Form.Control.Feedback type="valid">
                             {
-                                data.foundSelected === -1 ?
-                                    "Please, select a found to Sell"
+                                data.FundSelected === -1 ?
+                                    "Please, select a Fund to Sell"
                                     :
-                                    `You are trying to invest $${data.amount}, with you could Sell ${data.amount / founds[data.foundSelected].sharePrice} shares.`
+                                    `You are trying to invest $${data.amount}, with you could Sell ${data.amount / Funds[data.FundSelected].sharePrice} shares.`
                             }
                         </Form.Control.Feedback>
                     </InputGroup>
-                    {data.foundSelected !== -1 ? <h2 className="sellDescription mt-0 mb-3">Selling ${data.amount} from {founds[data.foundSelected].fund.name},
-                        equivalent to {data.amount / founds[data.foundSelected].fund.sharePrice} feeParts</h2> : null}
+                    {data.FundSelected !== -1 ? <h2 className="sellDescription mt-0 mb-3">Selling ${data.amount} from {Funds[data.FundSelected].fund.name},
+                        equivalent to {data.amount / Funds[data.FundSelected].fund.sharePrice} feeParts</h2> : null}
                     <Button disabled={
-                        data.foundSelected === -1 ? true : data.amount > founds[data.foundSelected].shares * founds[data.foundSelected].fund.sharePrice}
+                        data.FundSelected === -1 ? true : data.amount > Funds[data.FundSelected].shares * Funds[data.FundSelected].fund.sharePrice}
                         variant="danger" type="submit">{t("Submit")}</Button>
                 </Form>
             </Accordion.Body>

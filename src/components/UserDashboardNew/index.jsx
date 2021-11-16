@@ -5,7 +5,7 @@ import { Route, useRouteMatch, useHistory,useLocation } from 'react-router-dom';
 import './index.css'
 
 import { urlContext } from '../../context/urlContext';
-import FoundsContainer from './FoundsContainer'
+import FundsContainer from './FundsContainer'
 import NavBar from './NavBars/NavBar';
 import NavInfo from './NavBars/NavInfo';
 import NavBarMobile from './NavBars/NavBarMobile';
@@ -32,7 +32,7 @@ const UserDashboard = () => {
     const [NavInfoToggled, setNavInfoToggled] = useState(false)
     const [userData, setUserData] = useState({});
     const [width, setWidth] = useState(window.innerWidth);
-    const [numberOfFounds, setNumberOfFounds] = useState(0);
+    const [numberOfFunds, setNumberOfFunds] = useState(0);
     const [itemSelected, setItemSelected] = useState(location.pathname.split('/')[2])
 
 
@@ -84,20 +84,20 @@ const UserDashboard = () => {
                 <>
                     <NavBarTotal />
                     <Route path={`${path}/accounts`}>
-                        <FoundsContainer
+                        <FundsContainer
                             NavInfoToggled={NavInfoToggled}
                             isMobile={isMobile}
                             setItemSelected={setItemSelected}
-                            numberOfFounds={numberOfFounds}
-                            setNumberOfFounds={setNumberOfFounds}
+                            numberOfFunds={numberOfFunds}
+                            setNumberOfFunds={setNumberOfFunds}
                         />
                     </Route>
                     <Route path={`${path}/history`}>
                         <MovementsTable
                             isMobile={isMobile}
                             setItemSelected={setItemSelected}
-                            numberOfFounds={numberOfFounds}
-                            setNumberOfFounds={setNumberOfFounds}
+                            numberOfFunds={numberOfFunds}
+                            setNumberOfFunds={setNumberOfFunds}
                             NavInfoToggled={NavInfoToggled}
                         />
                     </Route>

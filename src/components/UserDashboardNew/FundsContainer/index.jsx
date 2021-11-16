@@ -5,12 +5,12 @@ import { useTranslation } from "react-i18next";
 import { useHistory } from 'react-router-dom'
 import { Spinner, Row, Container, Col } from 'react-bootstrap';
 import { urlContext } from '../../../context/urlContext';
-const FoundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFounds, setNumberOfFounds }) => {
+const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFunds, setNumberOfFunds }) => {
     let history = useHistory();
     // eslint-disable-next-line
     const { urlPrefix } = useContext(urlContext)
     const { t } = useTranslation();
-    const [founds, setFounds] = useState([]);
+    const [Funds, setFunds] = useState([]);
     const [SwitchState, setSwitchState] = useState(false);
     const [FetchingFunds, setFetchingFunds] = useState(false);
 
@@ -42,7 +42,7 @@ const FoundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFo
     const token = sessionStorage.getItem('access_token')
 
     useEffect(() => {
-        const getFounds = async () => {
+        const getFunds = async () => {
             var url = `${urlPrefix}/funds/stakes`;
             setFetchingFunds(true)
             const response = await fetch(url, {
@@ -56,7 +56,7 @@ const FoundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFo
 
             if (response.status === 200) {
                 const data = await response.json()
-                setFounds(data)
+                setFunds(data)
                 setFetchingFunds(false)
             } else {
                 switch (response.status) {
@@ -69,7 +69,7 @@ const FoundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFo
                 setFetchingFunds(false)
             }
         }
-        const hardcodedFounds = [
+        const hardcodedFunds = [
             {
                 "id": 11,
                 "clientId": 1,
@@ -127,9 +127,9 @@ const FoundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFo
         ]
 
         if (SwitchState) {
-            getFounds()
+            getFunds()
         } else {
-            setFounds(hardcodedFounds)
+            setFunds(hardcodedFunds)
         }
         return () => {
         }
@@ -154,8 +154,8 @@ const FoundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFo
                         NavInfoToggled={NavInfoToggled}
                         setItemSelected={setItemSelected}
                         isMobile={isMobile}
-                        founds={founds}
-                        numberOfFounds={numberOfFounds}
+                        Funds={Funds}
+                        numberOfFunds={numberOfFunds}
                         cash={cash}
                         SwitchState={SwitchState}
                         handleSwitch={handleSwitch}
@@ -164,4 +164,4 @@ const FoundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFo
         </Container>
     )
 }
-export default FoundsContainer
+export default FundsContainer

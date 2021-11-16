@@ -22,7 +22,7 @@ const DepositForm = ({NavInfoToggled}) => {
                                         <span className="number">1</span>
                                     </div>
                                 </div>
-                                {t("Select Found To buy")}
+                                {t("Select Fund To buy")}
                             </Form.Label>
                             <div>
                                 <Row className="d-flex justify-content-center">

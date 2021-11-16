@@ -6,7 +6,7 @@ import MainCard from './MainCard';
 import SecondaryCard from './SecondaryCard';
 import MobileCard from './MobileCard';
 
-const CardsContainer = ({ setItemSelected,isMobile,Founds, numberOfFounds }) => {
+const CardsContainer = ({ SwitchState,setItemSelected,isMobile,Funds, numberOfFunds }) => {
     const [selected, setSelected] = useState(0)
     const [categorySelected, setCategorySelected] = useState(0)
 
@@ -14,21 +14,21 @@ const CardsContainer = ({ setItemSelected,isMobile,Founds, numberOfFounds }) => 
         <Row>
             {isMobile ?
                 <Col md="12" lg="4" xl="3" className="secondaryCardContainer ps-2 ps-sm-2 ps-md-2 ps-md-0 ps-lg-0 pe-2 pt-0">
-                    {Founds.map(
+                    {Funds.map(
                         (j, k) => {
                             ;
                             return (
                                 <MobileCard 
                                     setItemSelected={setItemSelected} 
-                                    numberOfFounds={numberOfFounds} 
+                                    numberOfFunds={numberOfFunds} 
                                     setCategorySelected={setCategorySelected} 
                                     setSelected={setSelected} 
                                     parentKey={1}
                                     ownKey={k} 
-                                    Found={j} 
+                                    Fund={j} 
                                     selected={selected} 
                                     categorySelected={categorySelected} 
-                                    Founds={Founds}
+                                    Funds={Funds}
                                     display={true}
                                 />
                             )
@@ -36,7 +36,7 @@ const CardsContainer = ({ setItemSelected,isMobile,Founds, numberOfFounds }) => 
                     )
                     }
                 </Col>
-                : (numberOfFounds <= 1 ?
+                : (numberOfFunds <= 1 ?
                     <Col className="px-2 pb-2" xs="12" xl="12" >
                         <MainCard 
                             setItemSelected={setItemSelected} 
@@ -44,28 +44,28 @@ const CardsContainer = ({ setItemSelected,isMobile,Founds, numberOfFounds }) => 
                             isMobile={isMobile} 
                             selected={selected} 
                             categorySelected={categorySelected}
-                            Founds={Founds} 
-                            Found={Founds[selected]} />
+                            Funds={Funds} 
+                            Fund={Funds[selected]} />
                     </Col>
                     :
                     <>
                         <Col  className="px-2 " md="12" lg="8" xl="9" >
-                            <MainCard setItemSelected={setItemSelected}  numberOfFounds={numberOfFounds} selected={selected} categorySelected={categorySelected} Founds={Founds} Found={Founds[selected]} />
+                            <MainCard SwitchState={SwitchState} setItemSelected={setItemSelected}  numberOfFunds={numberOfFunds} selected={selected} categorySelected={categorySelected} Funds={Funds} Fund={Funds[selected]} />
                         </Col>
                         <Col md="12" lg="4" xl="3" className="secondaryCardContainer mt-0 mt-md-2 mt-lg-0 mt-xl-0 ps-2 ps-sm-2 ps-md-2 ps-md-0 ps-lg-0 pe-2 pt-0">
-                            {Founds.map(
+                            {Funds.map(
                                 (j, k) => {
                                     ;
                                     return (
                                         <SecondaryCard 
-                                            Founds={Founds} 
+                                            Funds={Funds} 
                                             key={k} 
                                             setItemSelected={setItemSelected} 
-                                            numberOfFounds={numberOfFounds}
+                                            numberOfFunds={numberOfFunds}
                                             setCategorySelected={setCategorySelected} 
                                             setSelected={setSelected} parentKey={1}
                                             ownKey={k} 
-                                            Found={j} 
+                                            Fund={j} 
                                             selected={selected} 
                                             categorySelected={categorySelected}
                                             display={k === selected ? false : true}

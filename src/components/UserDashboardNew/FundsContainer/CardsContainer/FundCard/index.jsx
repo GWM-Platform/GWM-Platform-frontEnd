@@ -8,7 +8,7 @@ import { faEyeSlash, faEye, faIdCard, faPaperPlane } from '@fortawesome/free-sol
 import './index.css'
 import ChangeNameModal from './ChangeNameModal'
 
-const FoundCard = ({ Hide, setHide, switchState, found, founds, setItemSelected }) => {
+const FundCard = ({ Hide, setHide, switchState, Fund, Funds, setItemSelected }) => {
     const [show, setShow] = useState(false)
 
     const handleClose = () => setShow(false);
@@ -18,14 +18,14 @@ const FoundCard = ({ Hide, setHide, switchState, found, founds, setItemSelected 
 
     return (
         <Col className="fund-col" sm="6" md="6" lg="4">
-            <Card className="foundCard h-100">
+            <Card className="FundCard h-100">
                 <Card.Header
                     className="header d-flex align-items-center justify-content-center"
                 >
                     <div className="currencyContainer d-flex align-items-center justify-content-center">
                         {
-                            found.fund.type !== undefined ?
-                                <img className="currency px-0 mx-0" alt={found.fund.type} src={process.env.PUBLIC_URL + '/images/' + found.fund.type + '.svg'} />
+                            Fund.fund.type !== undefined ?
+                                <img className="currency px-0 mx-0" alt={Fund.fund.type} src={process.env.PUBLIC_URL + '/images/' + Fund.fund.type + '.svg'} />
                                 :
                                 <img className="currency px-0 mx-0" alt="crypto" src={process.env.PUBLIC_URL + '/images/crypto.svg'} />
                         }
@@ -35,7 +35,7 @@ const FoundCard = ({ Hide, setHide, switchState, found, founds, setItemSelected 
                     <Row className="h-100 align-content-between">
                         <Card.Title >
                             <h1 className="title mt-0">
-                                {t(found.fund.name)}
+                                {t(Fund.fund.name)}
                             </h1>
                         </Card.Title>
                         <Container>
@@ -44,21 +44,29 @@ const FoundCard = ({ Hide, setHide, switchState, found, founds, setItemSelected 
                                     <Row className="d-flex justify-content-between">
                                         <div className="pe-0" style={{ width: "auto" }}>
                                             <span>$</span>
-                                            {Hide ? (found.shares * found.fund.sharePrice).toString().replace(/./g, "*") : found.shares * found.fund.sharePrice}
+                                            {Hide ? (Fund.shares * Fund.fund.sharePrice).toString().replace(/./g, "*") : Fund.shares * Fund.fund.sharePrice}
                                         </div>
-                                        <div className="ps-0" style={{ width: "auto",cursor:"pointer" }}>
-                                            <FontAwesomeIcon style={{ width: "25px" }}
-                                                onClick={() => {
-                                                    setHide(!Hide)
-                                                }}
-                                                icon={Hide ? faEyeSlash : faEye}
+                                        <div className="ps-0 hideInfoButton"> 
+                                            <FontAwesomeIcon 
+                                                className={`icon ${Hide ? "hidden" : "shown"}`}
+                                                onClick={() => {setHide(!Hide)}}
+                                                icon={faEye}
+                                            />
+                                            <FontAwesomeIcon 
+                                                className={`icon ${!Hide ? "hidden" : "shown"}`}
+                                                onClick={() => {setHide(!Hide)}}
+                                                icon={faEyeSlash}
+                                            />
+                                            <FontAwesomeIcon 
+                                            className="icon placeholder"
+                                                icon={faEyeSlash}
                                             />
                                         </div>
                                     </Row>
                                 </h1>
                                 <Card.Text className="subTitle lighter mt-0 mb-2">
-                                    Acquired FeeParts:<span className="bolder"> {found.shares}</span><br />
-                                    FeePart Price:<span className="bolder"> ${found.fund.sharePrice}</span><br />
+                                    Acquired FeeParts:<span className="bolder"> {Fund.shares}</span><br />
+                                    FeePart Price (updated: Now):<span className="bolder"> ${Fund.fund.sharePrice}</span><br />
                                 </Card.Text>
                             </Row>
                         </Container>
@@ -74,12 +82,12 @@ const FoundCard = ({ Hide, setHide, switchState, found, founds, setItemSelected 
                         <Col xs="6" className="d-flex justify-content-center p-0 m-0">
                             <OverlayTrigger rootClose trigger='click' placement="left-start" overlay={
                                 <Popover id="popover-basic" >
-                                    <Popover.Header className="mt-0">{t("found menu")}</Popover.Header>
+                                    <Popover.Header className="mt-0">{t("Fund menu")}</Popover.Header>
                                     <Popover.Body>
                                         Some Action
                                     </Popover.Body>
                                 </Popover>
-                            } popperConfig={found}>
+                            } popperConfig={Fund}>
                                 <Button className="ms-1 button right">
                                     <FontAwesomeIcon onClick={(e) => { e.target.focus() }} icon={faPaperPlane} />
                                 </Button>
@@ -94,4 +102,4 @@ const FoundCard = ({ Hide, setHide, switchState, found, founds, setItemSelected 
 
     )
 }
-export default FoundCard
+export default FundCard

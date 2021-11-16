@@ -10,15 +10,15 @@ const TableLastMovements = ({ content, decimals, symbol }) => {
 
     return (
         <Col md="12" className="p-0 mt-2">
-            {content === undefined ? <h2>{t("There is no record of any movement in this Found")}</h2> :
-                content.length===0 ? <h2>{t("There is no record of any movement in this Found")}</h2> :
+            {content === undefined ? <h2>{t("There is no record of any movement in this Fund")}</h2> :
+                content.length===0 ? <h2>{t("There is no record of any movement in this Fund")}</h2> :
                 <div>
                     <Container fluid className="p-0" 
                         onClick={() => setOpen(!open)}
                         aria-expanded={open}>
                         <Row className="d-flex justify-content-end">
                             <Col>
-                                <h2 className="my-2 toggler-mobile">{t("Found last movements")}</h2>
+                                <h2 className="my-2 toggler-mobile">{t("Fund last movements")}</h2>
                             </Col>
                         </Row>
                     </Container>

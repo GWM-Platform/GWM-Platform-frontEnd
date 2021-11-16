@@ -64,7 +64,7 @@ i18n
           "Currency Code": "Codigo de la Moneda",
           "Currency Name": "Nombre de la Moneda",
           "Currency Symbol": "Simbolo de la Moneda",
-          "No search results found": "No se encontraron resultados para su busqueda",
+          "No search results Fund": "No se encontraron resultados para su busqueda",
           "Return": "Volver",
           "Submit": "Enviar",
           //Translation for changePassword
@@ -193,16 +193,16 @@ i18n
           "Bank Transfer":"Transaccion Bancaria",
           "Security":"Seguridad",
           "Profile":"Perfil",
-          "Not Found":"Dirección no encontrada",
-          "Initial Founds":"Fondos Iniciales",
+          "Not Fund":"Dirección no encontrada",
+          "Initial Funds":"Fondos Iniciales",
           "name":"nombre",
           "surname":"apellido",
           "Buy":"Comprar",
           "Sell":"Vender",
           "Deposit":"Depositar",
           "Withdraw":"Retirar",
-          "Select Found To sell":"Seleccione el fondo a vender",
-          "Select Found To buy":"Seleccione el fondo a comprar",
+          "Select Fund To sell":"Seleccione el fondo a vender",
+          "Select Fund To buy":"Seleccione el fondo a comprar",
           "Specify amount in dollars you want to invest":"Especifique el monto en dolares que desea invertir",
           "Specify amount in dollars you want to sell":"Especifique el monto en dolares que desea vender",
           "Total Balance":"Balance Total",
@@ -211,7 +211,7 @@ i18n
           "First Name":"Nombre",
           "Hi":"Hola",
           "Reset password":"Reestablecer",
-          "API's founds (For devops)":"Fondos de la API (Para desarrolladores)"
+          "API's Funds (For devops)":"Fondos de la API (Para desarrolladores)"
         }
       }
     },

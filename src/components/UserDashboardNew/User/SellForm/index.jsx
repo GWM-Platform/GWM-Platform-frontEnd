@@ -3,18 +3,18 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../operationsForm.css'
 
 import { Container, Row, Col, Accordion } from 'react-bootstrap'
-import FoundSelector from './FoundSelector'
+import FundSelector from './FundSelector'
 import SellData from './SellData'
 import { urlContext } from '../../../../context/urlContext';
 import { useHistory } from 'react-router-dom';
 
 const SellForm = ({NavInfoToggled}) => {
-    //HardCoded data (here we should request founds that have available feeParts to sell)
+    //HardCoded data (here we should request Funds that have available feeParts to sell)
     const { urlPrefix } = useContext(urlContext)
-    const [data, setData] = useState({ amount: 1, foundSelected: -1 })
+    const [data, setData] = useState({ amount: 1, FundSelected: -1 })
     const [some, setSome] = useState(false)
     const [SwitchState, setSwitchState] = useState(false)
-    const [founds, setFounds] = useState([])
+    const [Funds, setFunds] = useState([])
     const [validated, setValidated] = useState(false);
 
     const token = sessionStorage.getItem('access_token')
@@ -23,7 +23,7 @@ const SellForm = ({NavInfoToggled}) => {
 
 
     const sell = async () => {
-        var url = `${urlPrefix}/funds/${founds[data.foundSelected].fundId}/sell`;
+        var url = `${urlPrefix}/funds/${Funds[data.FundSelected].fundId}/sell`;
         const response = await fetch(url, {
             method: 'POST',
             body: JSON.stringify({ amount: data.amount }),
@@ -49,7 +49,7 @@ const SellForm = ({NavInfoToggled}) => {
     }
 
     useEffect(() => {
-        const getFounds = async () => {
+        const getFunds = async () => {
             var url = `${urlPrefix}/funds/stakes`;
             const response = await fetch(url, {
                 method: 'GET',
@@ -62,7 +62,7 @@ const SellForm = ({NavInfoToggled}) => {
 
             if (response.status === 200) {
                 const data = await response.json()
-                setFounds(data)
+                setFunds(data)
             } else {
                 switch (response.status) {
                     case 500:
@@ -73,7 +73,7 @@ const SellForm = ({NavInfoToggled}) => {
                 }
             }
         }
-        const hardcodedFounds = [
+        const hardcodedFunds = [
             {
                 id: 13,
                 clientId: 1,
@@ -83,7 +83,7 @@ const SellForm = ({NavInfoToggled}) => {
                 updatedAt: "2021-11-03T14:34:10.000Z",
                 fund: {
                     id: 4,
-                    name: "CryptoCurrency found",
+                    name: "CryptoCurrency Fund",
                     shares: 1000,
                     freeShares: 37,
                     sharePrice: 30,
@@ -118,7 +118,7 @@ const SellForm = ({NavInfoToggled}) => {
                 updatedAt: "2021-11-03T14:34:10.000Z",
                 fund: {
                     id: 4,
-                    name: "CryptoCurrency found",
+                    name: "CryptoCurrency Fund",
                     shares: 1000,
                     freeShares: 37,
                     sharePrice: 30,
@@ -152,7 +152,7 @@ const SellForm = ({NavInfoToggled}) => {
                 createdAt: "2021-11-03T14:34:01.612Z",
                 updatedAt: "2021-11-03T14:34:10.000Z",
                 fund: {
-                    name: "CryptoCurrency found",
+                    name: "CryptoCurrency Fund",
                     shares: 10000,
                     freeShares: 1000,
                     sharePrice: 6,
@@ -176,7 +176,7 @@ const SellForm = ({NavInfoToggled}) => {
                 createdAt: "2021-11-03T14:34:01.612Z",
                 updatedAt: "2021-11-03T14:34:10.000Z",
                 fund: {
-                    name: "CryptoCurrency found",
+                    name: "CryptoCurrency Fund",
                     shares: 1000,
                     freeShares: 37,
                     sharePrice: 30,
@@ -209,7 +209,7 @@ const SellForm = ({NavInfoToggled}) => {
                 createdAt: "2021-11-03T14:34:01.612Z",
                 updatedAt: "2021-11-03T14:34:10.000Z",
                 fund: {
-                    name: "CryptoCurrency found",
+                    name: "CryptoCurrency Fund",
                     shares: 10000,
                     freeShares: 1000,
                     sharePrice: 6,
@@ -233,7 +233,7 @@ const SellForm = ({NavInfoToggled}) => {
                 createdAt: "2021-11-03T14:34:01.612Z",
                 updatedAt: "2021-11-03T14:34:10.000Z",
                 fund: {
-                    name: "CryptoCurrency found",
+                    name: "CryptoCurrency Fund",
                     shares: 10000,
                     freeShares: 1000,
                     sharePrice: 6,
@@ -252,12 +252,12 @@ const SellForm = ({NavInfoToggled}) => {
         ]
 
         if (SwitchState) {
-            getFounds()
+            getFunds()
         } else {
-            setFounds(hardcodedFounds)
+            setFunds(hardcodedFunds)
         }
         let aux = data
-        aux.foundSelected = -1
+        aux.FundSelected = -1
         setData(aux)
         return () => {
         }
@@ -298,12 +298,12 @@ const SellForm = ({NavInfoToggled}) => {
             <Row className={`${NavInfoToggled? "free-area-withoutNavInfo": "free-area"} newTicket`}>
                 <Col xs="12">
                     <Accordion flush defaultActiveKey="0">
-                        <FoundSelector SwitchState={SwitchState} handleSwitch={handleSwitch}
-                            founds={founds} data={data} some={some} setData={setData} setSome={setSome} />
+                        <FundSelector SwitchState={SwitchState} handleSwitch={handleSwitch}
+                            Funds={Funds} data={data} some={some} setData={setData} setSome={setSome} />
                     </Accordion>
                     <Accordion flush >
                         <SellData handleSubmit={handleSubmit} validated={validated}
-                            handleChange={handleChange} founds={founds} data={data} />
+                            handleChange={handleChange} Funds={Funds} data={data} />
                     </Accordion>
                 </Col>
             </Row>

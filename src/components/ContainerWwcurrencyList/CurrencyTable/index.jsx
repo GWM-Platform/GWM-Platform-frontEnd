@@ -40,7 +40,7 @@ const CurrencyTable = ({ list, toggleForm, setPlaceHolderAndDisabled, deleteItem
           </Button>
         </InputGroup.Append>
       </InputGroup>
-      {result.length===0 ? <h2>{t("No search results found")}</h2> :
+      {result.length===0 ? <h2>{t("No search results Fund")}</h2> :
              <Table striped bordered hover>
              <thead>
                <tr>
