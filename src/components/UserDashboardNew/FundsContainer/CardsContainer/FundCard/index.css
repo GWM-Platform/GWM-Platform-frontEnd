@@ -129,30 +129,6 @@
 	border-radius: 0 0 30px 30px;
 	border-color: white;
 }
-.FundCard .hideInfoButton {
-	width: auto;
-	cursor: pointer;
-	position: relative;
-}
-.FundCard .hideInfoButton .icon{
-	width: 25px;
-	transition: 0s height 0.25s, transform 1s ;
-
-}
-.FundCard .hideInfoButton .icon.placeholder{
-	pointer-events: none;
-	opacity: 0;
-}
-.FundCard .hideInfoButton .icon.hidden{
-	position: absolute;
-	height: 0;
-	overflow: hidden;
-	transform: rotate3d(0,1,0,180deg);
-}
-.FundCard .hideInfoButton .icon.shown{
-	position: absolute;
-	transform: rotate3d(0,1,0,0deg);
-}
 
 @media (max-width: 568px) {
 	.fund-col:first-of-type {

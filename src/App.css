@@ -1,163 +1,190 @@
 * {
-    
-    /*General*/
-    --main-color: rgb(43, 0, 0);
-    --secondary-color:   rgb(150, 90, 0);
-    /*Sections BG*/
-    --main-dashboard-bg: rgb(238, 238, 238);
-    /*Text*/
-    --error:rgb(145, 85, 85);
-    --red:rgb(201, 44, 45);
-    --message:rgb(0,114,25);
-    /*Nav Info*/
-    --nav-info1:rgba(211,211,211,1);
-    --nav-info2:rgba(0,0,0,1);
+	/*General*/
+	--main-color: rgb(43, 0, 0);
+	--secondary-color: rgb(150, 90, 0);
+	/*Sections BG*/
+	--main-dashboard-bg: rgb(238, 238, 238);
+	/*Text*/
+	--error: rgb(145, 85, 85);
+	--red: rgb(201, 44, 45);
+	--message: rgb(0, 114, 25);
+	/*Nav Info*/
+	--nav-info1: rgba(211, 211, 211, 1);
+	--nav-info2: rgba(0, 0, 0, 1);
 
-    /*Footer*/
-    --footer-background:grey;
-    /*NavBar*/
-    --main-bg-nav-color: grey;
-    --selected-underline-section-color: #b3b3b3;
-    --default-underline-section-color: #383838;
-    --text-nav-section-color: #E2E5EA;
-    /*Nav Total*/
-    --navBarTotal-bg:rgb(255, 84, 84);
+	/*Footer*/
+	--footer-background: grey;
+	/*NavBar*/
+	--main-bg-nav-color: grey;
+	--selected-underline-section-color: #b3b3b3;
+	--default-underline-section-color: #383838;
+	--text-nav-section-color: #e2e5ea;
+	/*Nav Total*/
+	--navBarTotal-bg: rgb(255, 84, 84);
 
-    /*Funds cards colors*/
-    --secondary-card-secondary: rgb(244, 246, 241);
-    --main-card-color: rgb(158,26,27);
-    /*Create Ticket Colors*/
-    --ticket-main-color: rgb(235, 56, 56);
-    --ticket-secondary-color:rgb(220, 157, 157);
+	/*Funds cards colors*/
+	--secondary-card-secondary: rgb(244, 246, 241);
+	--main-card-color: rgb(158, 26, 27);
+	/*Create Ticket Colors*/
+	--ticket-main-color: rgb(235, 56, 56);
+	--ticket-secondary-color: rgb(220, 157, 157);
 
-    /*Table movs colors*/
-    --table-border: rgba(78, 65, 30, 0.5);
-    --th-color:rgba(201, 74, 74, 0.295);
-    --tr-color:rgb(240, 148, 148);
+	/*Table movs colors*/
+	--table-border: rgba(78, 65, 30, 0.5);
+	--th-color: rgba(201, 74, 74, 0.295);
+	--tr-color: rgb(240, 148, 148);
 }
-
 
 /* width */
 
 ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-    border-radius: 5px;
+	width: 10px;
+	height: 10px;
+	border-radius: 5px;
 }
-
 
 /* Track */
 
 ::-webkit-scrollbar-track {
-    background: transparent;
+	background: transparent;
 }
-
 
 /* Handle */
 
 ::-webkit-scrollbar-thumb {
-    opacity:0.5;  
-  background: rgb(163, 163, 163);
-    border-radius: 5px;
-    transition: background-color 2s;
+	opacity: 0.5;
+	background: rgb(163, 163, 163);
+	border-radius: 5px;
+	transition: background-color 2s;
 }
-
 
 /* Handle on hover */
 
 ::-webkit-scrollbar-thumb:hover {
-  opacity:#555;  
+	opacity: #555;
 }
-.capitalize{
-    text-transform: capitalize;
+.capitalize {
+	text-transform: capitalize;
 }
 .text-green {
-    color: var(--main-color)
+	color: green;
 }
 
 .text-red {
-    color: red
+	color: red;
 }
 
 .mainColor {
-    background-color: var(--main-color)
+	background-color: var(--main-color);
 }
 
 .secondaryColor {
-    background-color: var(--secondary-color);
+	background-color: var(--secondary-color);
 }
 
-.p-relative{
-    position: relative
+.p-relative {
+	position: relative;
 }
-.min-100vh{
-    min-height: 100vh;
+.min-100vh {
+	min-height: 100vh;
 }
-body{overflow-y: overlay;}
+body {
+	overflow-y: overlay;
+}
 
+.free-area {
+	height: calc(100vh - 201px);
+	overflow-y: overlay;
+	overflow-x: hidden;
+	transition: all 0.5s;
+}
 
-.free-area{
-    height:calc( 100vh - 201px);
-    overflow-y:overlay;
-    overflow-x: hidden;
-    transition: all 0.5s;
-  
-  }
-  
-  .free-area-withMargin{
-    height:calc( 100vh - 201px - 1rem );
-    overflow-y:overlay;
-    overflow-x: hidden;
-    transition: all 0.5s;
-  
-  }
-  
-  .min-free-area{
-    min-height:calc( 100vh - 201px );
-    transition: all 0.5s;
-  
-  }
-  
-  .min-free-area-withMargin{
-    min-height:calc( 100vh - 201px - 1rem );
-    transition: all 0.5s;
-  
-  }
-  
-  .free-area-withoutNavInfo{
-    height:calc( 100vh - 201px + 76px );
-    overflow-y:overlay;
-    overflow-x: hidden;
-    transition: all 0.5s;
-  
-  }
-  
-  .free-area-withMargin-withoutNavInfo{
-    height:calc( 100vh - 201px - 1rem + 76px );
-    overflow-y:overlay;
-    overflow-x: hidden;
-    transition: all 0.5s;
-  }
-  
-  .min-free-area-withoutNavInfo{
-    min-height:calc( 100vh - 201px + 76px );
-    transition: all 0.5s;
-  
-  }
-  
-  .min-free-area-withMargin-withoutNavInfo{
-    min-height:calc( 100vh - 201px - 1rem + 76px );
-    transition: all 0.5s;
-  }
+.free-area-withMargin {
+	height: calc(100vh - 201px - 1rem);
+	overflow-y: overlay;
+	overflow-x: hidden;
+	transition: all 0.5s;
+}
 
-  @media (max-width: 576px) {
-    .free-area{
-      height:calc( 100vh - 135px );
-      overflow-y:overlay;
-      overflow-x: hidden;
-    }
-    .min-free-area{
-      min-height:calc( 100vh - 95px );
-    }
-  }
-  
+.min-free-area {
+	min-height: calc(100vh - 201px);
+	transition: all 0.5s;
+}
+
+.min-free-area-withMargin {
+	min-height: calc(100vh - 201px - 1rem);
+	transition: all 0.5s;
+}
+
+.free-area-withoutNavInfo {
+	height: calc(100vh - 201px + 76px);
+	overflow-y: overlay;
+	overflow-x: hidden;
+	transition: all 0.5s;
+}
+
+.free-area-withMargin-withoutNavInfo {
+	height: calc(100vh - 201px - 1rem + 76px);
+	overflow-y: overlay;
+	overflow-x: hidden;
+	transition: all 0.5s;
+}
+
+.min-free-area-withoutNavInfo {
+	min-height: calc(100vh - 201px + 76px);
+	transition: all 0.5s;
+}
+
+.min-free-area-withMargin-withoutNavInfo {
+	min-height: calc(100vh - 201px - 1rem + 76px);
+	transition: all 0.5s;
+}
+
+.containerHideInfo{
+	width: auto!important;
+	position: relative;
+} 
+.hideInfoButton {
+	width: auto!important;
+	cursor: pointer;
+	position: relative;
+}
+.hideInfoButton .icon {
+	width: 25px;
+}
+.hideInfoButton .icon.placeholder,
+.containerHideInfo .info.placeholder  {
+	pointer-events: none;
+	opacity: 0;
+}
+.containerHideInfo .info.hidden {
+	position: absolute;
+	transform: rotate3d(1, 0, 0, 90deg);
+	transition: transform 0.4s ease-out;
+}
+.containerHideInfo .info.shown {
+	position: absolute;
+	transform: rotate3d(1, 0, 0, 0deg);
+	transition: 0.4s transform 0.4s;
+}
+.hideInfoButton .icon.hidden {
+	position: absolute;
+	transform: rotate3d(0, 1, 0, 90deg);
+	transition: transform 0.4s;
+}
+.hideInfoButton .icon.shown {
+	position: absolute;
+	transform: rotate3d(0, 1, 0, 0deg);
+	transition: 0.4s transform 0.4s;
+}
+
+@media (max-width: 576px) {
+	.free-area {
+		height: calc(100vh - 135px);
+		overflow-y: overlay;
+		overflow-x: hidden;
+	}
+	.min-free-area {
+		min-height: calc(100vh - 95px);
+	}
+}

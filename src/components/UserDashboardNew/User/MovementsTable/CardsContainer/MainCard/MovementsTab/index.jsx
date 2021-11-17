@@ -9,14 +9,13 @@ import NoMovements from './NoMovements';
 import Loading from './Loading';
 
 
-const MovementsTab = ({ IsMobile, Fund, SwitchState }) => {
+const MovementsTab = ({ IsMobile, Fund, SwitchState,NavInfoToggled }) => {
     // eslint-disable-next-line 
     const { urlPrefix } = useContext(urlContext)
 
     const [Movements, setMovements] = useState([])
     const [page, setPage] = useState(0)
     const [FetchingMovements, setFetchingMovements] = useState(false);
-    const [error, setError] = useState("");
 
     const token = sessionStorage.getItem('access_token')
 
@@ -35,7 +34,6 @@ const MovementsTab = ({ IsMobile, Fund, SwitchState }) => {
         if (response.status === 200) {
             const data = await response.json()
             setMovements(data.sort(function (a, b) { return (a.createdAt > b.createdAt) ? -1 : ((a.createdAt < b.createdAt) ? 1 : 0); }))
-            if (data.length === 0) setError("El fondo no tiene movimientos")
         } else {
             switch (response.status) {
                 case 500:
@@ -137,6 +135,7 @@ const MovementsTab = ({ IsMobile, Fund, SwitchState }) => {
                             :
                             Movements.length > 0 ?
                                 <TableLastMovements
+                                    NavInfoToggled={NavInfoToggled}
                                     MovementsCount={100}
                                     content={Movements}
                                     /*movsShown={movsShown}*/

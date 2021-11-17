@@ -4,13 +4,13 @@ import { Form, InputGroup, Row, Button, Accordion, Container } from 'react-boots
 import { useTranslation } from "react-i18next";
 
 
-const SellData = ({ data, Funds, handleChange, validated, handleSubmit }) => {
+const SellData = ({ data, Funds, handleChange, validated, handleSubmit,toggleAccordion }) => {
 
     const { t } = useTranslation();
 
     return (
-        <Accordion.Item disabled eventKey="0">
-            <Accordion.Header>
+        <Accordion.Item eventKey="0">
+            <Accordion.Header onClick={() => toggleAccordion()}>
                 <Container>
                     <Row className="d-flex justify-content-center">
                         <Form.Label className="pt-0 label d-flex align-items-center" column sm="auto">

@@ -93,7 +93,8 @@ const FundSelector = ({ handleSwitch, SwitchState, data, setData, some, setSome,
                             <Row className="flex-row flex-nowrap overflow-hidden" ref={FundsContainer}>
                                 {Funds.map((Fund, key) => {
                                     return (
-                                        <FundCard openAccordion={openAccordion} key={key} ownKey={key} Fund={Fund} data={data} setData={setData} some={some} setSome={setSome} />
+                                        <FundCard openAccordion={openAccordion} key={key} ownKey={key} 
+                                        Fund={Fund} data={data} setData={setData} some={some} setSome={setSome} />
                                     )
                                 })}
                             </Row>

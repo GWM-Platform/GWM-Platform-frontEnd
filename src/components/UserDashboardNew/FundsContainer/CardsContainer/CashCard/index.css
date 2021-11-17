@@ -107,31 +107,6 @@
     border-radius: 0px 0px 30px 0px;
 }
 
-.cashCard .hideInfoButton {
-	width: auto;
-	cursor: pointer;
-    position: relative;
-}
-.cashCard .hideInfoButton .icon{
-	width: 25px;
-	transition: 0s height 0.25s, transform 1s ;
-
-}
-.cashCard .hideInfoButton .icon.placeholder{
-	pointer-events: none;
-	opacity: 0;
-}
-.cashCard .hideInfoButton .icon.hidden{
-	position: absolute;
-	height: 0;
-	overflow: hidden;
-	transform: rotate3d(0,1,0,180deg);
-}
-.cashCard .hideInfoButton .icon.shown{
-	position: absolute;
-	transform: rotate3d(0,1,0,0deg);
-}
-
 .modal .modal-content {
     background-color: transparent;
     border: transparent

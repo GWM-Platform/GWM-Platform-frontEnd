@@ -14,6 +14,7 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, NavInfoToggl
     const [FetchingFunds, setFetchingFunds] = useState(false);
     const [error, setError] = useState("Loading Content");
     const [SwitchState, setSwitchState] = useState(false);
+    const [selected, setSelected] = useState(0)
 
     const token = sessionStorage.getItem('access_token')
 
@@ -43,6 +44,7 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, NavInfoToggl
         if (response.status === 200) {
             const data = await response.json()
             setFunds(data)
+            setNumberOfFunds(data.length)
             if (data.length === 0) setError("No tiene participacion en ningun fondo")
         } else {
             switch (response.status) {
@@ -105,6 +107,7 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, NavInfoToggl
         }, [SwitchState]);
 
     useEffect(() => {
+        setSelected(0)
         getFunds();
         return () => {
         }
@@ -133,6 +136,9 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, NavInfoToggl
                     </Container>
                     :
                     <CardsContainer
+                    NavInfoToggled={NavInfoToggled}
+                        selected={selected}
+                        setSelected={setSelected}
                         setItemSelected={setItemSelected}
                         isMobile={isMobile}
                         Funds={Funds}

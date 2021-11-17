@@ -4,7 +4,7 @@ import DonutChart from 'react-donut-chart';
 import './index.css'
 import { Col, Card, Container, Row } from 'react-bootstrap'
 
-const FundCard = ({ Fund, ownKey, data, setData, setSome, some }) => {
+const FundCard = ({ Fund, ownKey, data, setData, setSome, some,openAccordion }) => {
     const ref = useRef(null)
     const [width, setWidth] = useState(0)
 
@@ -21,7 +21,7 @@ const FundCard = ({ Fund, ownKey, data, setData, setSome, some }) => {
             <Card
                 ref={ref}
                 className={`FundCard h-100 ${data.FundSelected === ownKey ? "FundSelected" : ""}`}
-                onClick={() => { setFundSelected(data, setData, ownKey, setSome, some) }}>
+                onClick={() => { setFundSelected(data, setData, ownKey, setSome, some,openAccordion) }}>
                 <Card.Header><strong className="title">{Fund.fund.name}</strong></Card.Header>
                 <Card.Body>
                     <Card.Title>Obtained FeeParts in cash: <strong>${Fund.fund.sharePrice*Fund.shares}</strong></Card.Title>
@@ -60,11 +60,12 @@ const FundCard = ({ Fund, ownKey, data, setData, setSome, some }) => {
     )
 }
 
-const setFundSelected = (data, setData, ownKey, setSome, some) => {
+const setFundSelected = (data, setData, ownKey, setSome, some,openAccordion) => {
     let aux = data
     aux.FundSelected = ownKey
     setData(aux)
     setSome(!some)
+    openAccordion()
 }
 
 export default FundCard

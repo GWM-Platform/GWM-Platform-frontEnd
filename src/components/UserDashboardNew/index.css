@@ -158,13 +158,6 @@ No hace falta media-query porque será nuestro diseño por defecto*/
     .cardTextMain {
         height: calc(100vh - 130px);
     }
-    .secondaryCardContainer {
-        height: calc(100vh - 101px);
-        overflow-y: auto;
-    }
-    .sideToSidebar {
-        margin-left: 64px;
-    }
     .tableDescription {
         max-width: auto;
     }
@@ -194,10 +187,6 @@ No hace falta media-query porque será nuestro diseño por defecto*/
     .cardTextMain {
         height: calc(100vh - 130px);
     }
-    .secondaryCardContainer {
-        height: calc(100vh - 101px);
-        overflow-y: auto;
-    }
     .sideToSidebar {
         margin-left: 64px;
     }
@@ -223,10 +212,6 @@ No hace falta media-query porque será nuestro diseño por defecto*/
     }
     .cardTextMain {
         height: calc(100vh - 130px);
-    }
-    .secondaryCardContainer {
-        height: auto;
-        overflow-y: hidden
     }
     .sideToSidebar {
         margin-left: 64px;

@@ -1,10 +1,10 @@
 import React from 'react'
-import { Container,Row, Col, Card, Button, Form } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
-import {  useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import './index.css'
 
 const CashCard = ({ Hide, setHide, handleSwitch, SwitchState, Fund }) => {
@@ -46,23 +46,33 @@ const CashCard = ({ Hide, setHide, handleSwitch, SwitchState, Fund }) => {
                             <Row className="d-flex justify-content-between">
                                 <h1 className="title mt-1">
                                     <Row className="d-flex justify-content-between">
-                                        <div className="pe-0" style={{ width: "auto" }}>
+                                        <div className="pe-2 containerHideInfo">
                                             <span>$</span>
-                                            {Hide ? parseFloat(Fund.balance).toFixed(Fund.currency.decimals).replace(/./g, "*") : parseFloat(Fund.balance).toFixed(Fund.currency.decimals)}
+                                            <span className={`info ${Hide ? "shown" : "hidden"}`}>
+                                                {parseFloat(Fund.balance).toFixed(Fund.currency.decimals).toString().replace(/./g, "*")}
+                                            </span>
+
+                                            <span className={`info ${Hide ? "hidden" : "shown"}`}>
+                                                {parseFloat(Fund.balance).toFixed(Fund.currency.decimals).toString()}
+                                            </span>
+
+                                            <span className={`info placeholder`}>
+                                                {parseFloat(Fund.balance).toFixed(Fund.currency.decimals).toString()}
+                                            </span>
                                         </div>
-                                        <div className="ps-0 hideInfoButton"> 
-                                            <FontAwesomeIcon 
+                                        <div className="ps-0 hideInfoButton d-flex align-items-center">
+                                            <FontAwesomeIcon
                                                 className={`icon ${Hide ? "hidden" : "shown"}`}
-                                                onClick={() => {setHide(!Hide)}}
+                                                onClick={() => { setHide(!Hide) }}
                                                 icon={faEye}
                                             />
-                                            <FontAwesomeIcon 
+                                            <FontAwesomeIcon
                                                 className={`icon ${!Hide ? "hidden" : "shown"}`}
-                                                onClick={() => {setHide(!Hide)}}
+                                                onClick={() => { setHide(!Hide) }}
                                                 icon={faEyeSlash}
                                             />
-                                            <FontAwesomeIcon 
-                                            className="icon placeholder"
+                                            <FontAwesomeIcon
+                                                className="icon placeholder"
                                                 icon={faEyeSlash}
                                             />
                                         </div>
@@ -75,12 +85,12 @@ const CashCard = ({ Hide, setHide, handleSwitch, SwitchState, Fund }) => {
                 <Card.Footer className="footer mt-2 m-0 p-0">
                     <Row className="d-flex justify-content-center m-0">
                         <Col xs="6" className="d-flex justify-content-center p-0 m-0">
-                            <Button onClick={()=>toDeposit()} className="me-1 button left d-flex align-items-center justify-content-center">
+                            <Button onClick={() => toDeposit()} className="me-1 button left d-flex align-items-center justify-content-center">
                                 <span className="label">Deposit</span>
                             </Button>
                         </Col>
                         <Col xs="6" className="d-flex justify-content-center p-0 m-0">
-                            <Button onClick={()=>toWithdraw()} className="ms-1 button right d-flex align-items-center justify-content-center">
+                            <Button onClick={() => toWithdraw()} className="ms-1 button right d-flex align-items-center justify-content-center">
                                 <span className="label">Withdraw</span>
                             </Button>
                         </Col>

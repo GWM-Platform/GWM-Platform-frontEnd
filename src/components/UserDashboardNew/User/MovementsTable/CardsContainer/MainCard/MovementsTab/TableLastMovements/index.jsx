@@ -4,18 +4,18 @@ import { Table } from 'react-bootstrap';
 import Movement from './Movement';
 import { useTranslation } from "react-i18next";
 
-const TableLastMovements = ({ page, setPage, movsShown, movementsCount, content, decimals, symbol }) => {
+const TableLastMovements = ({ page, setPage, movsShown, movementsCount, content, decimals, symbol,NavInfoToggled }) => {
     const { t } = useTranslation();
 
     return (
-        <div className="movementsTable">
+        <div className={NavInfoToggled? "movementsTable-navInfoToggled" : "movementsTable" }>
             <Table id="tableMovements" striped bordered hover className="mb-auto m-0" >
                 <thead >
                     <tr>
                         <th className="tableHeader">{t("Date")}</th>
-                        <th className="d-none d-sm-table-cell">{t("FeePart Value")}</th>
                         <th className="d-none d-sm-table-cell">{t("in FeePars")}</th>
-                        <th className="tableAmount">{t("Amount")}</th>
+                        <th className="tableAmount">{t("In Cash")}</th>
+                        <th className="tableDescription d-none d-sm-table-cell">{t("Value of the share (at the time of the purchase / sale operation)")}</th>
                     </tr>
                 </thead>
                 <tbody>

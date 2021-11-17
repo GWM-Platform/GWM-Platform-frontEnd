@@ -42,11 +42,21 @@ const FundCard = ({ Hide, setHide, switchState, Fund, Funds, setItemSelected }) 
                             <Row className="d-flex justify-content-between">
                                 <h1 className="title mt-1">
                                     <Row className="d-flex justify-content-between">
-                                        <div className="pe-0" style={{ width: "auto" }}>
+                                        <div className="pe-2 containerHideInfo">
                                             <span>$</span>
-                                            {Hide ? (Fund.shares * Fund.fund.sharePrice).toString().replace(/./g, "*") : Fund.shares * Fund.fund.sharePrice}
+                                            <span className={`info ${Hide ? "shown" : "hidden"}`}>
+                                                {(Fund.shares * Fund.fund.sharePrice).toString().replace(/./g, "*")}
+                                            </span>
+                                        
+                                            <span className={`info ${Hide? "hidden" : "shown"}`}>
+                                                {(Fund.shares * Fund.fund.sharePrice).toString()}
+                                            </span>
+
+                                            <span className={`info placeholder`}>
+                                                {(Fund.shares * Fund.fund.sharePrice).toString()}
+                                            </span>
                                         </div>
-                                        <div className="ps-0 hideInfoButton"> 
+                                        <div className="ps-0 hideInfoButton d-flex align-items-center"> 
                                             <FontAwesomeIcon 
                                                 className={`icon ${Hide ? "hidden" : "shown"}`}
                                                 onClick={() => {setHide(!Hide)}}

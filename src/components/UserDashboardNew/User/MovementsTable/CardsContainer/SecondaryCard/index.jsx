@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useRef } from 'react'
 import './index.css'
 
-const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownKey, display }) => {
+const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownKey, display, Hide }) => {
     const select = () => {
         setCategorySelected(parentKey)
         setSelected(ownKey)
@@ -19,11 +19,14 @@ const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownK
         <Collapse in={display} className="pt-0 pb-2">
             <Container ref={ref} >
                 <Row className="secondaryCard" onClick={select}>
-                    <Col sm="4" lg="auto" className="d-none d-sm-none d-md-block currencyCol d-flex align-items-center">
+                    <Col sm="4" lg="auto" className="d-none d-sm-none d-md-flex currencyCol d-flex align-items-center">
                         <div className="currencyContainer d-flex align-items-center justify-content-center">
-                            <h1 className="currency m-0">
-                                $
-                            </h1>
+                            {
+                                Fund.fund.type !== undefined ?
+                                    <img className="currency px-0 mx-0" alt={Fund.fund.type} src={process.env.PUBLIC_URL + '/images/' + Fund.fund.type + '.svg'} />
+                                    :
+                                    <img className="currency px-0 mx-0" alt="crypto" src={process.env.PUBLIC_URL + '/images/crypto.svg'} />
+                            }
                         </div>
                     </Col>
                     <Col sm="12" md="8" className="secondary d-flex align-items-start flex-column" >
@@ -34,10 +37,22 @@ const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownK
                         </div>
                         <div className="mb-2">
                             <h2 className="funds">
-                                <span style={{ fontWeight: "bolder" }}>
-                                    $
-                                </span>
-                                {t(Fund.shares * Fund.fund.sharePrice)}
+                                <div className="containerHideInfo">
+                                    <span style={{ fontWeight: "bolder" }}>
+                                        $
+                                    </span>
+                                    <span className={`info ${Hide ? "shown" : "hidden"}`}>
+                                        {(Fund.shares * Fund.fund.sharePrice).toString().replace(/./g, "*")}
+                                    </span>
+
+                                    <span className={`info ${Hide ? "hidden" : "shown"}`}>
+                                        {(Fund.shares * Fund.fund.sharePrice).toString()}
+                                    </span>
+
+                                    <span className={`info placeholder`}>
+                                        {(Fund.shares * Fund.fund.sharePrice).toString()}
+                                    </span>
+                                </div>
                             </h2>
                             <span className="funds-description">{t("Balance")}</span>
                         </div>

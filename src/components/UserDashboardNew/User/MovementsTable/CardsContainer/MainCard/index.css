@@ -81,49 +81,6 @@
     font-size: 16px;
 }
 
-.movementsTableAccounts {
-    max-height: calc(100vh - 250px);
-    overflow: auto;
-    display: inline-block;
-    width: 100%;
-}
-
-.movementsTableContainer {
-    min-height: calc( 100vh - 247px);
-    overflow: auto;
-    display: inline-block;
-    width: 100%;
-}
-.movementsTable {
-    overflow: auto;
-    width: 100%;
-    min-height: calc( 100vh - 247px);
-}
-
 .loadingMovements {
     height: calc( 100vh - 400px)
-}
-.movementsMainCard .hideInfoButton {
-    position: relative;
-	width: auto;
-	cursor: pointer;
-}
-.movementsMainCard .hideInfoButton .icon{
-	width: 25px;
-	transition: 0s height 0.25s, transform 1s ;
-
-}
-.movementsMainCard .hideInfoButton .icon.placeholder{
-	pointer-events: none;
-	opacity: 0;
-}
-.movementsMainCard .hideInfoButton .icon.hidden{
-	position: absolute;
-	height: 0;
-	overflow: hidden;
-	transform: rotate3d(0,1,0,180deg);
-}
-.movementsMainCard .hideInfoButton .icon.shown{
-	position: absolute;
-	transform: rotate3d(0,1,0,0deg);
 }

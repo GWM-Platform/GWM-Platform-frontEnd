@@ -8,21 +8,26 @@
     background-color:var(--secondary-card-secondary);
     border-radius: 0px 30px 30px 0px;
 }
+
 .secondaryCard .currencyContainer {
-    font-size: 30px;
-    border: white 1px solid;
-    border-radius: 50%;
-    height: 2em;
-    width: 2em;
-    margin: 0.7em 0em;
-    background-color: var(--main-card-color);
+	font-size: 30px;
+	border: white 1px solid;
+	border-radius: 50%;
+	height: 2em;
+	width: 2em;
+	margin: .3em 0em;
 }
+
 .secondaryCard .currencyContainer > .currency {
-    font-size: 30px;
-    border:transparent;
-    background-color: var(--main-card-color);
-    color:white
+	font-size: 30px;
+	border: transparent;
+	background-color: var(--main-card-color);
+	color: white;
+	margin: 0;
+	padding: 0;
+	width: 30px;
 }
+
 .secondaryCard > .secondary .description{
     text-transform: capitalize;
     font-weight: 100;
