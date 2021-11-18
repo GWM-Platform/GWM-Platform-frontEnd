@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from 'moment';
 
 const Movement = ({ content, decimals, symbol }) => {
-  var momentDate = moment(content.date);
+  var momentDate = moment(content.createdAt);
 
   return (
       <tr>

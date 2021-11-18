@@ -46,6 +46,7 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, NavInfoToggl
         if (response.status === 200) {
             const data = await response.json()
             setAccounts(data)
+            if(data.length>0)sessionStorage.setItem('balance',data[0].balance)
         } else {
             switch (response.status) {
                 case 500:
@@ -71,6 +72,7 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, NavInfoToggl
                     "createdAt": "2021-11-17T21:37:32.427Z",
                     "updatedAt": "2021-11-17T21:56:10.000Z"
                 }])
+                sessionStorage.setItem('balance',5652)
             }
             setFetchingFunds(false)
             // eslint-disable-next-line

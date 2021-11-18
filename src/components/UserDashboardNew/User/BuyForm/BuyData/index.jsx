@@ -4,13 +4,13 @@ import { Form, InputGroup, Row, Button, Accordion, Container } from 'react-boots
 import { useTranslation } from "react-i18next";
 
 
-const BuyData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAccordion }) => {
+const BuyData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAccordion,Balance }) => {
 
     const { t } = useTranslation();
 
     return (
-        <Accordion.Item eventKey="0">
-            <Accordion.Header onClick={() => toggleAccordion()}>
+        <Accordion.Item eventKey="0" disabled>
+            <Accordion.Header onClick={() => {if(data.FundSelected!==-1)toggleAccordion()}}>
                 <Container>
                     <Row className="d-flex justify-content-center">
                         <Form.Label className="pt-0 label d-flex align-items-center" column sm="auto">
@@ -32,13 +32,14 @@ const BuyData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAcc
                         <InputGroup.Text>U$D</InputGroup.Text>
 
                         <Form.Control
+                            disabled={data.FundSelected===-1}
                             value={data.amount}
                             onChange={handleChange}
                             min="1"
                             max={data.FundSelected === -1 ?
                                 1
                                 :
-                                Funds[data.FundSelected].freeShares * Funds[data.FundSelected].sharePrice}
+                                Math.min(Funds[data.FundSelected].freeShares * Funds[data.FundSelected].sharePrice,Balance)}
                             id="amount"
                             type="number"
                             required
@@ -66,7 +67,7 @@ const BuyData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAcc
                         </Form.Control.Feedback>
                     </InputGroup>
                     <Button disabled={
-                        data.FundSelected === -1 ? true : data.amount > Funds[data.FundSelected].freeShares * Funds[data.FundSelected].sharePrice}
+                        data.FundSelected === -1 ? true : data.amount > Math.min(Funds[data.FundSelected].freeShares * Funds[data.FundSelected].sharePrice,Balance)}
                         variant="danger" type="submit">{t("Submit")}</Button>
                 </Form>
             </Accordion.Body>

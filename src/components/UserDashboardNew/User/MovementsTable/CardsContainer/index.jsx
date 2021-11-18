@@ -8,12 +8,14 @@ import MainCardAccount from './MainCard/MainCardAccount';
 import SecondaryCard from './SecondaryCard';
 import MobileCard from './MobileCard';
 
+import './index.css'
+
 const CardsContainer = ({ SwitchState, setItemSelected, isMobile, Funds, numberOfFunds, selected, setSelected, NavInfoToggled, Accounts }) => {
     const [categorySelected, setCategorySelected] = useState(0)
     const [Hide, setHide] = useState(false)
 
     return (
-        <Row >
+        <Row className="HistoryCardsContainer">
             {isMobile ?
                 <Col md="12" lg="4" xl="3" className="secondaryCardContainer ps-2 ps-sm-2 ps-md-2 ps-md-0 ps-lg-0 pe-2 pt-0">
                     {Funds.map(
@@ -44,22 +46,31 @@ const CardsContainer = ({ SwitchState, setItemSelected, isMobile, Funds, numberO
                         <Col className="px-2 " md="12" lg="8" xl="9" >
                             {
                                 categorySelected === 0 ?
-                                <MainCardFund
-                                    Fund={Funds[selected]}
-                                    Hide={Hide} setHide={setHide}
-                                    NavInfoToggled={NavInfoToggled} SwitchState={SwitchState}
-                                />
-                                :
-                                <MainCardAccount
-                                    Fund={Accounts[selected]}
-                                    Hide={Hide} setHide={setHide}
-                                    NavInfoToggled={NavInfoToggled} SwitchState={SwitchState}
-                                />
+                                    <MainCardFund
+                                        Fund={Funds[selected]}
+                                        Hide={Hide} setHide={setHide}
+                                        NavInfoToggled={NavInfoToggled} SwitchState={SwitchState}
+                                    />
+                                    :
+                                    <MainCardAccount
+                                        Fund={Accounts[selected]}
+                                        Hide={Hide} setHide={setHide}
+                                        NavInfoToggled={NavInfoToggled} SwitchState={SwitchState}
+                                    />
                             }
 
 
                         </Col>
-                        <Col md="12" lg="4" xl="3" className="secondaryCardContainer mt-0 mt-md-2 mt-lg-0 mt-xl-0 ps-2 ps-sm-2 ps-md-2 ps-md-0 ps-lg-0 pe-2 pt-0">
+                        <Col md="12" lg="4" xl="3" className="secondaryCardContainer mt-0 mt-md-2 mt-lg-4 mt-xl-4 ps-2 ps-sm-2 ps-md-2 ps-md-0 ps-lg-0 pe-2 pt-0">
+                            {
+                                Funds.length > 0 && (categorySelected === 0 ? Funds.length - 1 > 0 : true) ?
+                                    <div className="CategoryLabel">
+                                        <h1 className="title">Funds</h1>
+                                    </div>
+                                    :
+                                    null
+
+                            }
                             {Funds.map(
                                 (Fund, key) => {
                                     ;
@@ -74,6 +85,17 @@ const CardsContainer = ({ SwitchState, setItemSelected, isMobile, Funds, numberO
                                     )
                                 }
                             )
+                            }
+                            {
+                                Accounts.length > 0 && (categorySelected === 1 ? Accounts.length - 1 > 0 : true) ?
+                                    <div className="CategoryLabel">
+                                        <h1 className="title">Cash</h1>
+                                    </div>
+                                    :
+                                    null
+
+
+
                             }
                             {Accounts.map(
                                 (Account, key) => {
@@ -96,9 +118,9 @@ const CardsContainer = ({ SwitchState, setItemSelected, isMobile, Funds, numberO
                     (numberOfFunds === 1 ?
                         <Col className="px-2 pb-2" xs="12" xl="12" >
                             <MainCardFund
-                                 Fund={Funds[selected]}
-                                 Hide={Hide} setHide={setHide}
-                                 NavInfoToggled={NavInfoToggled} SwitchState={SwitchState}
+                                Fund={Funds[selected]}
+                                Hide={Hide} setHide={setHide}
+                                NavInfoToggled={NavInfoToggled} SwitchState={SwitchState}
                             />
                         </Col>
                         :

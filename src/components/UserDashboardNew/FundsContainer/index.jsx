@@ -67,6 +67,7 @@ const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFun
             if (response.status === 200) {
                 const data = await response.json()
                 setAccounts(data)
+                if(data.length>0)sessionStorage.setItem('balance',data[0].balance)
                 setFetchingFunds(false)
             } else {
                 switch (response.status) {
@@ -138,7 +139,7 @@ const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFun
         const hardcodedAccounts =[{
                 "id": 1,
                 "clientId": 1,
-                "balance": 4450,
+                "balance": 5652,
                 "createdAt": "2021-11-17T21:37:32.427Z",
                 "updatedAt": "2021-11-17T21:56:10.000Z"
             }]
@@ -149,6 +150,7 @@ const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFun
         } else {
             setFunds(hardcodedFunds)
             setAccounts(hardcodedAccounts)
+            sessionStorage.setItem('balance',hardcodedAccounts[0].balance)
         }
         return () => {
         }

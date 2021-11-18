@@ -5,9 +5,9 @@ import '../operationsForm.css'
 import { Container, Row, Col, Accordion } from 'react-bootstrap'
 import FundSelector from './FundSelector'
 import BuyData from './BuyData'
-import {  useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
-const BuyForm = ({NavInfoToggled}) => {
+const BuyForm = ({ NavInfoToggled }) => {
     //HardCoded data (here we should request Funds that have available feeParts to sell)
     const [data, setData] = useState({ amount: 1, FundSelected: -1 })
     const [some, setSome] = useState(false)
@@ -15,6 +15,8 @@ const BuyForm = ({NavInfoToggled}) => {
     const [Funds, setFunds] = useState([])
     const [validated, setValidated] = useState(false);
     const [CollapsedFields, setCollapsedFields] = useState(true);
+    const [Account, setAccount] = useState(0);
+
 
     const token = sessionStorage.getItem('access_token')
 
@@ -200,7 +202,47 @@ const BuyForm = ({NavInfoToggled}) => {
                 value: 75,
             }]
         }]
+        const getAccountWithApi = async () => {
+            var url = `${process.env.REACT_APP_APIURL}/accounts`;
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    Accept: "*/*",
+                    'Content-Type': 'application/json'
+                }
+            })
 
+            if (response.status === 200) {
+                const data = await response.json()
+                setAccount(data[0])
+                if(data.length>0)sessionStorage.setItem('balance',data[0].balance)
+            } else {
+                switch (response.status) {
+                    case 500:
+                        console.error("Error ", response.status, " obteniendo stakes")
+                        break;
+                    default:
+                        console.error("Error ", response.status, " obteniendo stakes")
+                }
+            }
+        }
+
+        const getAccount = () => {
+            if (SwitchState) {
+                getAccountWithApi()
+            } else {
+                setAccount({
+                    "id": 1,
+                    "clientId": 1,
+                    "balance": 50,
+                    "createdAt": "2021-11-17T21:37:32.427Z",
+                    "updatedAt": "2021-11-17T21:56:10.000Z"
+                })
+                sessionStorage.setItem('balance',5652)
+            }
+        };
+        getAccount()
         if (SwitchState) {
             getFunds()
         } else {
@@ -242,14 +284,14 @@ const BuyForm = ({NavInfoToggled}) => {
         setValidated(true);
     }
 
-    const toggleAccordion=()=>{
+    const toggleAccordion = () => {
         setCollapsedFields(!CollapsedFields)
     }
-    const openAccordion=()=>{
+    const openAccordion = () => {
         setCollapsedFields(false)
     }
     return (
-        <Container className={NavInfoToggled? "free-area-withoutNavInfo": "free-area"}>
+        <Container className={NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}>
             <Row className="newTicket">
                 <Col xs="12">
                     <Accordion flush defaultActiveKey="0">
@@ -257,9 +299,10 @@ const BuyForm = ({NavInfoToggled}) => {
                             Funds={Funds} data={data} some={some} setData={setData} setSome={setSome}/>
                     </Accordion>
                     <Accordion flush activeKey={CollapsedFields ? "-1" : "0"}>
-                        <BuyData handleSubmit={handleSubmit} validated={validated}
-                            handleChange={handleChange} Funds={Funds} data={data} 
-                            toggleAccordion={toggleAccordion} />
+                        <BuyData 
+                        handleSubmit={handleSubmit} validated={validated}
+                            handleChange={handleChange} Funds={Funds} data={data}
+                            toggleAccordion={toggleAccordion} Balance={Account.balance}/>
                     </Accordion>
                 </Col>
             </Row>
