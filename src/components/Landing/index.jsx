@@ -1,13 +1,9 @@
-import React, { useContext } from 'react'
+import React  from 'react'
 import { useHistory } from 'react-router-dom';
 import { Col, Row, Container, Spinner } from 'react-bootstrap';
 import { useTranslation } from "react-i18next";
-import { urlContext } from '../../context/urlContext';
 
 function Landing() {
-    // eslint-disable-next-line 
-    const { urlPrefix } = useContext(urlContext)
-
     const { t } = useTranslation();
 
     let history = useHistory();

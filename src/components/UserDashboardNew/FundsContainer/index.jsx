@@ -1,34 +1,18 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import CardsContainer from './CardsContainer';
 import { useTranslation } from "react-i18next";
 import { useHistory } from 'react-router-dom'
 import { Spinner, Row, Container, Col } from 'react-bootstrap';
-import { urlContext } from '../../../context/urlContext';
 const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFunds, setNumberOfFunds }) => {
     let history = useHistory();
     // eslint-disable-next-line
-    const { urlPrefix } = useContext(urlContext)
     const { t } = useTranslation();
     const [Funds, setFunds] = useState([]);
     const [SwitchState, setSwitchState] = useState(false);
     const [FetchingFunds, setFetchingFunds] = useState(false);
 
-    const cash = {
-        "id": 293,
-        "description": "Cash",
-        "type": "cash",
-        "externalNumber": "000000000000001",
-        "currency": {
-            "code": "USD",
-            "name": "United States Dollar",
-            "symbol": "$",
-            "decimals": 2
-        },
-        "decimals": 0,
-        "balance": 500,
-        "movementsCount": 124
-    }
+    const [Accounts, setAccounts] = useState([])
 
     const handleSwitch = (event) => {
         setSwitchState(event.target.checked)
@@ -40,10 +24,9 @@ const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFun
     }
 
     const token = sessionStorage.getItem('access_token')
-
     useEffect(() => {
         const getFunds = async () => {
-            var url = `${urlPrefix}/funds/stakes`;
+            var url = `${process.env.REACT_APP_APIURL}/funds/stakes`;
             setFetchingFunds(true)
             const response = await fetch(url, {
                 method: 'GET',
@@ -57,6 +40,33 @@ const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFun
             if (response.status === 200) {
                 const data = await response.json()
                 setFunds(data)
+                setFetchingFunds(false)
+            } else {
+                switch (response.status) {
+                    case 500:
+                        console.error("Error. Vefique los datos ingresados")
+                        break;
+                    default:
+                        console.error(response.status)
+                }
+                setFetchingFunds(false)
+            }
+        }
+        const getAccounts = async () => {
+            var url = `${process.env.REACT_APP_APIURL}/accounts`;
+            setFetchingFunds(true)
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    Accept: "*/*",
+                    'Content-Type': 'application/json'
+                }
+            })
+
+            if (response.status === 200) {
+                const data = await response.json()
+                setAccounts(data)
                 setFetchingFunds(false)
             } else {
                 switch (response.status) {
@@ -125,16 +135,25 @@ const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFun
                 }
             }
         ]
+        const hardcodedAccounts =[{
+                "id": 1,
+                "clientId": 1,
+                "balance": 4450,
+                "createdAt": "2021-11-17T21:37:32.427Z",
+                "updatedAt": "2021-11-17T21:56:10.000Z"
+            }]
 
         if (SwitchState) {
             getFunds()
+            getAccounts()
         } else {
             setFunds(hardcodedFunds)
+            setAccounts(hardcodedAccounts)
         }
         return () => {
         }
         // eslint-disable-next-line
-    }, [SwitchState, urlPrefix])
+    }, [SwitchState])
 
     return (
         <Container fluid
@@ -156,7 +175,7 @@ const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFun
                         isMobile={isMobile}
                         Funds={Funds}
                         numberOfFunds={numberOfFunds}
-                        cash={cash}
+                        Accounts={Accounts}
                         SwitchState={SwitchState}
                         handleSwitch={handleSwitch}
                     />

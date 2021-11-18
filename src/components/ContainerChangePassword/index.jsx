@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
@@ -6,15 +6,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faKey, faLock, faUser, } from '@fortawesome/free-solid-svg-icons'
 import { useTranslation } from "react-i18next";
 import { Col, Row, Container, Card, Form, Button, InputGroup } from 'react-bootstrap'
-import { urlContext } from '../../context/urlContext';
 
 const ContainerForgotPassword = () => {
   const { t } = useTranslation();
   let history = useHistory();
 
   // eslint-disable-next-line 
-  const { urlPrefix } = useContext(urlContext)
-
   const { user, token } = useParams();
 
   // eslint-disable-next-line 
@@ -132,7 +129,7 @@ const ContainerForgotPassword = () => {
 
   const changePassword = async () => {
     setButtonDisabled(true)
-    var url = `${urlPrefix}/users/resetPassword`;
+    var url = `${process.env.REACT_APP_APIURL}/users/resetPassword`;
     const response = await fetch(url, {
       method: 'POST',
       body: JSON.stringify({token:formData.token,password:formData.password,id:parseInt(formData.id)}),

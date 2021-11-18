@@ -1,5 +1,4 @@
-import React, { useContext, useCallback, useState, useEffect } from 'react'
-import { urlContext } from '../../../../../../../context/urlContext';
+import React, { useCallback, useState, useEffect } from 'react'
 
 import './index.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -9,9 +8,8 @@ import NoMovements from './NoMovements';
 import Loading from './Loading';
 
 
-const MovementsTab = ({ IsMobile, Fund, SwitchState,NavInfoToggled }) => {
+const MovementsTab = ({ IsMobile, Fund, SwitchState,NavInfoToggled,setPerformance }) => {
     // eslint-disable-next-line 
-    const { urlPrefix } = useContext(urlContext)
 
     const [Movements, setMovements] = useState([])
     const [page, setPage] = useState(0)
@@ -20,7 +18,7 @@ const MovementsTab = ({ IsMobile, Fund, SwitchState,NavInfoToggled }) => {
     const token = sessionStorage.getItem('access_token')
 
     const getMovementsWithApi = async () => {
-        var url = `${urlPrefix}/funds/${Fund.fundId}/transactions`;
+        var url = `${process.env.REACT_APP_APIURL}/funds/${Fund.fundId}/transactions`;
         setFetchingMovements(true)
         const response = await fetch(url, {
             method: 'GET',
@@ -135,6 +133,8 @@ const MovementsTab = ({ IsMobile, Fund, SwitchState,NavInfoToggled }) => {
                             :
                             Movements.length > 0 ?
                                 <TableLastMovements
+                                setPerformance={setPerformance}
+                                    Fund={Fund}
                                     NavInfoToggled={NavInfoToggled}
                                     MovementsCount={100}
                                     content={Movements}

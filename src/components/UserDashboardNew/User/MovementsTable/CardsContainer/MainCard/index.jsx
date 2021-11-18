@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Col, Row, Nav } from 'react-bootstrap';
 
@@ -7,16 +7,16 @@ import { useState } from 'react';
 import { useHistory } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
-import { urlContext } from '../../../../../../context/urlContext';
 
 import MovementsTab from './MovementsTab';
 import FundDetail from './FundDetail';
 import './index.css'
 
-const MainCard = ({ IsMobile, Fund, Funds, SwitchState, Hide, setHide,NavInfoToggled}) => {
+const MainCard = ({ IsMobile, Fund, Funds, SwitchState, Hide, setHide, NavInfoToggled }) => {
     const [SelectedTab, setSelectedTab] = useState("0")
+    const [Performance, setPerformance] = useState(0)
+
     // eslint-disable-next-line 
-    const { urlPrefix } = useContext(urlContext)
 
 
     const { t } = useTranslation();
@@ -27,6 +27,7 @@ const MainCard = ({ IsMobile, Fund, Funds, SwitchState, Hide, setHide,NavInfoTog
         sessionStorage.clear();
         history.push(`/login`);
     }
+
 
     return (
         <div className="movementsMainCard">
@@ -48,7 +49,7 @@ const MainCard = ({ IsMobile, Fund, Funds, SwitchState, Hide, setHide,NavInfoTog
                             <Col className="d-flex justify-content-between pe-5" sm="auto">
                                 <Col className="pe-2">
                                     <div className="containerHideInfo">
-                                        <span>$</span>
+                                        <span>Actual Value in cash of your holding: $</span>
                                         <span className={`info ${Hide ? "shown" : "hidden"}`}>
                                             {(Fund.shares * Fund.fund.sharePrice).toString().replace(/./g, "*")}
                                         </span>
@@ -79,6 +80,16 @@ const MainCard = ({ IsMobile, Fund, Funds, SwitchState, Hide, setHide,NavInfoTog
                                     />
                                 </Col>
                             </Col>
+                            <Col sm="auto" >
+                                {"Performance: "}
+                                <span
+                                    className={{
+                                        1: 'text-green',
+                                        2: 'text-red'
+                                    }[Math.sign(Performance)]}>
+                                    {Performance.toFixed(2)}%
+                                </span>
+                            </Col>
                         </Col>
 
                     </Container>
@@ -98,7 +109,7 @@ const MainCard = ({ IsMobile, Fund, Funds, SwitchState, Hide, setHide,NavInfoTog
                         {
                             {
                                 0:
-                                    <MovementsTab NavInfoToggled={NavInfoToggled} SwitchState={SwitchState}
+                                    <MovementsTab setPerformance={setPerformance} NavInfoToggled={NavInfoToggled} SwitchState={SwitchState}
                                         IsMobile={IsMobile} Fund={Fund} Funds={Funds} />,
                                 1:
                                     <FundDetail />

@@ -1,14 +1,12 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, Container, Col, Row } from 'react-bootstrap';
 import TableLastMovements from './TableLastMovements';
 import { useTranslation } from "react-i18next";
 import { useHistory } from 'react-router-dom'
-import { urlContext } from '../../../../../../context/urlContext';
 
 const MobileCard = ({ setItemSelected,isMobile, className, Fund, categorySelected, Funds, numberOfFunds, ownKey }) => {
      // eslint-disable-next-line
-    const {urlPrefix}=useContext(urlContext)
 
     const { t } = useTranslation();
     let history = useHistory();

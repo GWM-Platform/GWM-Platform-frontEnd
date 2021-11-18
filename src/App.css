@@ -99,6 +99,10 @@ body {
 	transition: all 0.5s;
 }
 
+.adminContainer.free-area {
+	min-height: calc(100vh - 201px + 39px);	
+}
+
 .free-area-withMargin {
 	height: calc(100vh - 201px - 1rem);
 	overflow-y: overlay;
@@ -122,7 +126,9 @@ body {
 	overflow-x: hidden;
 	transition: all 0.5s;
 }
-
+.adminContainer.free-area-withoutNavInfo {
+	min-height: calc(100vh - 201px + 39px + 76px);	
+}
 .free-area-withMargin-withoutNavInfo {
 	height: calc(100vh - 201px - 1rem + 76px);
 	overflow-y: overlay;

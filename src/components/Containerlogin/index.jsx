@@ -1,14 +1,12 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import FormDesktop from './FormDesktop';
 import { Col, Row, Container } from 'react-bootstrap'
 import FormMobile from './FormMobile';
 import { useHistory } from 'react-router-dom';
-import { urlContext } from '../../context/urlContext';
 
 const ContainerLogin = () => {
-  const { urlPrefix } = useContext(urlContext)
   let history = useHistory();
   const toDashBoard = (path) => {
     history.push(`/dashboardNew/${path}`);
@@ -77,7 +75,7 @@ const ContainerLogin = () => {
   }
 
   const loginWithApi = async () => {
-    var url = `${urlPrefix}/auth/login`;
+    var url = `${process.env.REACT_APP_APIURL}/auth/login`;
     const response = await fetch(url, {
       method: 'POST',
       body: JSON.stringify({ email: data.email, password: data.password }),

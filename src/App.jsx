@@ -7,13 +7,11 @@ import ContainerChangePassword from './components/ContainerChangePassword';
 import ContainerVerifyAccount from './components/ContainerVerifyAccount';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import UserDashboardNew from './components/UserDashboardNew';
-import { UrlContext } from './context/urlContext';
 import NotFound from './components/NotFound';
 
 function App() {
   return (
     <div className="App">
-      <UrlContext>
         <BrowserRouter>
           <Switch>
             <Route exact path="/">
@@ -45,7 +43,6 @@ function App() {
             </Route>
           </Switch>
         </BrowserRouter>
-      </UrlContext>
     </div>
   );
 }

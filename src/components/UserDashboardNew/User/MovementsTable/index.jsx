@@ -1,13 +1,11 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, { useState, useEffect, useCallback, useContext } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import CardsContainer from './CardsContainer';
 import { useTranslation } from "react-i18next";
 import { useHistory } from 'react-router-dom'
 import { Spinner, Row, Container, Col, Form } from 'react-bootstrap';
-import { urlContext } from '../../../../context/urlContext';
 const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, NavInfoToggled, setNumberOfFunds }) => {
     // eslint-disable-next-line 
-    const { urlPrefix } = useContext(urlContext)
     const { t } = useTranslation();
 
     const [Funds, setFunds] = useState([]);
@@ -30,7 +28,7 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, NavInfoToggl
     }
 
     const getFundsWithApi = async () => {
-        var url = `${urlPrefix}/funds/stakes`;
+        var url = `${process.env.REACT_APP_APIURL}/funds/stakes`;
         setFetchingFunds(true)
         const response = await fetch(url, {
             method: 'GET',

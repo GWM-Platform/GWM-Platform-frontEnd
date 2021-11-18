@@ -1,11 +1,9 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col, Form, FloatingLabel, Button } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next';
-import { urlContext } from '../../../../context/urlContext';
 
 const AddAccount = () => {
-    const { urlPrefix } = useContext(urlContext)
 
     const { t } = useTranslation();
     const [formData, setFormData] = useState({})
@@ -31,7 +29,7 @@ const AddAccount = () => {
 
     const signup = async () => {
         setButtonDisabled(true)
-        var url = `${urlPrefix}/clients/signup`;
+        var url = `${process.env.REACT_APP_APIURL}/clients/signup`;
 
         const response = await fetch(url, {
             method: 'POST',
@@ -59,8 +57,8 @@ const AddAccount = () => {
     }
 
     return (
-        <Container className="notFund">
-            <Row className="min-free-area d-flex justify-content-center">
+        <Container className="h-100">
+            <Row className="h-100 d-flex justify-content-center">
                 <Col sm="12" md="9">
                     <h1 className="pb-2">{t("Add Account")}</h1>
                     <Form noValidate validated={validated} onSubmit={handleSubmit}>

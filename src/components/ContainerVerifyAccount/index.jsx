@@ -1,12 +1,10 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useParams } from 'react-router-dom';
 import { Container, Row, Col, Card, Form, FloatingLabel, Button } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next';
-import { urlContext } from '../../context/urlContext';
 import './index.css'
 const ContainerVerifyAccount = () => {
-    const { urlPrefix } = useContext(urlContext)
     const { t } = useTranslation();
     const { user, token } = useParams();
 
@@ -32,7 +30,7 @@ const ContainerVerifyAccount = () => {
 
     const verifyAccount = async () => {
         setButtonDisabled(true)
-        var url = `${urlPrefix}/users/verify/?` + new URLSearchParams({
+        var url = `${process.env.REACT_APP_APIURL}/users/verify/?` + new URLSearchParams({
             token: formData.token,
         });
         const response = await fetch(url, {

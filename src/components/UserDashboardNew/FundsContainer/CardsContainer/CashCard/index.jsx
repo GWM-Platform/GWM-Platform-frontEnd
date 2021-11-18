@@ -27,7 +27,7 @@ const CashCard = ({ Hide, setHide, handleSwitch, SwitchState, Fund }) => {
                     className="header d-flex align-items-center justify-content-center"
                 >
                     <div className="currencyContainer d-flex align-items-center justify-content-center">
-                        <img className="currency px-0 mx-0" alt={Fund.type} src={process.env.PUBLIC_URL + '/images/' + Fund.type + '.svg'} />
+                        <img className="currency px-0 mx-0" alt="cash" src={process.env.PUBLIC_URL + '/images/cash.svg'} />
                     </div>
                 </Card.Header>
                 <Card.Body className="body">
@@ -40,7 +40,7 @@ const CashCard = ({ Hide, setHide, handleSwitch, SwitchState, Fund }) => {
                     />
                     <Card.Title >
                         <h1 className="title mt-0">
-                            {t(Fund.description)}
+                            {t("Cash")}
                         </h1>
                         <Container fluid className="px-0">
                             <Row className="d-flex justify-content-between">
@@ -49,15 +49,15 @@ const CashCard = ({ Hide, setHide, handleSwitch, SwitchState, Fund }) => {
                                         <div className="pe-2 containerHideInfo">
                                             <span>$</span>
                                             <span className={`info ${Hide ? "shown" : "hidden"}`}>
-                                                {parseFloat(Fund.balance).toFixed(Fund.currency.decimals).toString().replace(/./g, "*")}
+                                                {parseFloat(Fund.balance).toString().replace(/./g, "*")}
                                             </span>
 
                                             <span className={`info ${Hide ? "hidden" : "shown"}`}>
-                                                {parseFloat(Fund.balance).toFixed(Fund.currency.decimals).toString()}
+                                                {parseFloat(Fund.balance).toString()}
                                             </span>
 
                                             <span className={`info placeholder`}>
-                                                {parseFloat(Fund.balance).toFixed(Fund.currency.decimals).toString()}
+                                                {parseFloat(Fund.balance).toString()}
                                             </span>
                                         </div>
                                         <div className="ps-0 hideInfoButton d-flex align-items-center">

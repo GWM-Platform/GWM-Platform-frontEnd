@@ -1,16 +1,14 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../operationsForm.css'
 
 import { Container, Row, Col, Accordion } from 'react-bootstrap'
 import FundSelector from './FundSelector'
 import SellData from './SellData'
-import { urlContext } from '../../../../context/urlContext';
 import { useHistory } from 'react-router-dom';
 
 const SellForm = ({NavInfoToggled}) => {
     //HardCoded data (here we should request Funds that have available feeParts to sell)
-    const { urlPrefix } = useContext(urlContext)
     const [data, setData] = useState({ amount: 1, FundSelected: -1 })
     const [some, setSome] = useState(false)
     const [SwitchState, setSwitchState] = useState(false)
@@ -24,10 +22,10 @@ const SellForm = ({NavInfoToggled}) => {
 
 
     const sell = async () => {
-        var url = `${urlPrefix}/funds/${Funds[data.FundSelected].fundId}/sell`;
+        var url = `${process.env.REACT_APP_APIURL}/funds/${Funds[data.FundSelected].fundId}/sell`;
         const response = await fetch(url, {
             method: 'POST',
-            body: JSON.stringify({ amount: data.amount }),
+            body: JSON.stringify({ shares: data.shares }),
             headers: {
                 Authorization: `Bearer ${token}`,
                 Accept: "*/*",
@@ -51,7 +49,7 @@ const SellForm = ({NavInfoToggled}) => {
 
     useEffect(() => {
         const getFunds = async () => {
-            var url = `${urlPrefix}/funds/stakes`;
+            var url = `${process.env.REACT_APP_APIURL}/funds/stakes`;
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -263,7 +261,7 @@ const SellForm = ({NavInfoToggled}) => {
         return () => {
         }
         // eslint-disable-next-line
-    }, [SwitchState, urlPrefix])
+    }, [SwitchState])
 
     const handleChange = (event) => {
         let aux = data;
@@ -282,7 +280,7 @@ const SellForm = ({NavInfoToggled}) => {
         const form = event.currentTarget;
         if (form.checkValidity() === true) {
             if (token === null) {
-                console.log("compra")
+                console.log("venta")
             } else {
                 let success = sell()
                 if (success) {

@@ -3,6 +3,7 @@
     background: linear-gradient(90deg, var(--nav-info1) 0%,  var(--nav-info1) 31%,  var(--nav-info2) 100%);
     transition: all 0.5s;
     max-height: 100px;
+    overflow-y: hidden;
 }
 .navBarInfo .greeting{
     margin:0;
@@ -15,4 +16,5 @@
 
 .navBarInfo.toggled{
     max-height: 0;
+    overflow-y: hidden;
 }

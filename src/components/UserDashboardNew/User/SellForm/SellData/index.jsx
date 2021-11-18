@@ -20,7 +20,7 @@ const SellData = ({ data, Funds, handleChange, validated, handleSubmit,toggleAcc
                                         <span className="number">2</span>
                                     </div>
                                 </span>
-                                {t("Specify amount in dollars you want to sell")}
+                                {t("Specify the amount of shares you want to sell")}
                             </span>
                         </Form.Label>
                     </Row>
@@ -29,46 +29,44 @@ const SellData = ({ data, Funds, handleChange, validated, handleSubmit,toggleAcc
             <Accordion.Body>
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
                     <InputGroup className="mb-1">
-                        <InputGroup.Text>U$D</InputGroup.Text>
-
                         <Form.Control
-                            value={data.amount}
+                            value={data.shares}
                             onChange={handleChange}
                             min="1"
                             max={data.FundSelected === -1 ?
                                 1
                                 :
-                                Funds[data.FundSelected].shares * Funds[data.FundSelected].fund.sharePrice}
-                            id="amount"
+                                Funds[data.FundSelected].shares
+                            }
+                            id="shares"
                             type="number"
                             required
-                            placeholder={t("Amount")}
+                            placeholder={t("Shares")}
                         />
                         <Form.Control.Feedback type="invalid">
                             {
                                 data.FundSelected === -1 ?
                                     "Please, select a Fund to Sell"
                                     :
-                                    data.amount === "" ?
+                                    data.shares === "" ?
                                         "you should enter how much you want to invest"
                                         :
-                                        `You are trying to invest $${data.amount}, with you could Sell
-                                        ${data.amount / Funds[data.FundSelected].fund.sharePrice} shares, but there are only
-                                        ${Funds[data.FundSelected].fund.freeShares} free.`}
+                                        `You are trying to sell ${data.shares} shares, equivalent to
+                                        $${data.shares * Funds[data.FundSelected].fund.sharePrice}, but you only have ${Funds[data.FundSelected].shares} in position.`}
                         </Form.Control.Feedback>
                         <Form.Control.Feedback type="valid">
                             {
                                 data.FundSelected === -1 ?
                                     "Please, select a Fund to Sell"
                                     :
-                                    `You are trying to invest $${data.amount}, with you could Sell ${data.amount / Funds[data.FundSelected].sharePrice} shares.`
+                                    `You are trying to sell  $${data.shares}, equivalent to $${data.shares * Funds[data.FundSelected].sharePrice}.`
                             }
                         </Form.Control.Feedback>
                     </InputGroup>
-                    {data.FundSelected !== -1 ? <h2 className="sellDescription mt-0 mb-3">Selling ${data.amount} from {Funds[data.FundSelected].fund.name},
-                        equivalent to {data.amount / Funds[data.FundSelected].fund.sharePrice} feeParts</h2> : null}
+                    {data.FundSelected !== -1 ? <h2 className="sellDescription mt-0 mb-3">Selling {data.shares} feeParts from {Funds[data.FundSelected].fund.name},
+                        equivalent to ${data.shares * Funds[data.FundSelected].fund.sharePrice} </h2> : null}
                     <Button disabled={
-                        data.FundSelected === -1 ? true : data.amount > Funds[data.FundSelected].shares * Funds[data.FundSelected].fund.sharePrice}
+                        data.FundSelected === -1 ? true : data.shares > Funds[data.FundSelected].shares}
                         variant="danger" type="submit">{t("Submit")}</Button>
                 </Form>
             </Accordion.Body>

@@ -1,10 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Route, useRouteMatch, useHistory,useLocation } from 'react-router-dom';
 
 import './index.css'
 
-import { urlContext } from '../../context/urlContext';
 import FundsContainer from './FundsContainer'
 import NavBar from './NavBars/NavBar';
 import NavInfo from './NavBars/NavInfo';
@@ -24,7 +23,6 @@ import OperationStatus from './User/OperationStatus';
 const UserDashboard = () => {
     const admin = sessionStorage.getItem("admin")
     // eslint-disable-next-line 
-    const { urlPrefix } = useContext(urlContext)
     let location = useLocation()
 
     const { path } = useRouteMatch()
@@ -75,11 +73,11 @@ const UserDashboard = () => {
             <NavBar NavInfoToggled={NavInfoToggled} setNavInfoToggled={setNavInfoToggled}
                 setItemSelected={setItemSelected} itemSelected={itemSelected} />
             {JSON.parse(admin) ?
-                <>
+                <div className={`adminContainer ${NavInfoToggled ?  "free-area-withoutNavInfo" : "free-area" }`}>
                     <Route path={`${path}/addAccount`}>
                         <AddAccount />
                     </Route>
-                </>
+                </div>
                 :
                 <>
                     <NavBarTotal />

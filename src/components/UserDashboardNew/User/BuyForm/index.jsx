@@ -1,16 +1,14 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../operationsForm.css'
 
 import { Container, Row, Col, Accordion } from 'react-bootstrap'
 import FundSelector from './FundSelector'
 import BuyData from './BuyData'
-import { urlContext } from '../../../../context/urlContext';
 import {  useHistory } from 'react-router-dom';
 
 const BuyForm = ({NavInfoToggled}) => {
     //HardCoded data (here we should request Funds that have available feeParts to sell)
-    const { urlPrefix } = useContext(urlContext)
     const [data, setData] = useState({ amount: 1, FundSelected: -1 })
     const [some, setSome] = useState(false)
     const [SwitchState, setSwitchState] = useState(false)
@@ -24,7 +22,7 @@ const BuyForm = ({NavInfoToggled}) => {
 
 
     const buy = async () => {
-        var url = `${urlPrefix}/funds/${Funds[data.FundSelected].id}/buy`;
+        var url = `${process.env.REACT_APP_APIURL}/funds/${Funds[data.FundSelected].id}/buy`;
         const response = await fetch(url, {
             method: 'POST',
             body: JSON.stringify({ amount: data.amount }),
@@ -51,7 +49,7 @@ const BuyForm = ({NavInfoToggled}) => {
 
     useEffect(() => {
         const getFunds = async () => {
-            var url = `${urlPrefix}/funds`;
+            var url = `${process.env.REACT_APP_APIURL}/funds`;
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -214,7 +212,7 @@ const BuyForm = ({NavInfoToggled}) => {
         return () => {
         }
         // eslint-disable-next-line
-    }, [SwitchState, urlPrefix])
+    }, [SwitchState])
 
     const handleChange = (event) => {
         let aux = data;

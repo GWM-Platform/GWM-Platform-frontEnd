@@ -1,11 +1,20 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Table } from 'react-bootstrap';
 import Movement from './Movement';
 import { useTranslation } from "react-i18next";
 
-const TableLastMovements = ({ page, setPage, movsShown, movementsCount, content, decimals, symbol,NavInfoToggled }) => {
+const TableLastMovements = ({ page, setPage, movsShown, movementsCount, content, decimals, symbol,NavInfoToggled,Fund,setPerformance }) => {
     const { t } = useTranslation();
+
+    useEffect(() => {
+        let actualMoney= Fund.shares * Fund.fund.sharePrice
+        let moneySpent=0
+        content.forEach((a)=>{
+            moneySpent+=a.shares*a.sharePrice
+        })
+        setPerformance(actualMoney*100/moneySpent-100)
+    }, [Fund,content,setPerformance])
 
     return (
         <div className={NavInfoToggled? "movementsTable-navInfoToggled" : "movementsTable" }>
