@@ -35,11 +35,12 @@
     "react-i18next": "^11.11.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.3",
+    "recharts": "^2.1.6",
     "web-vitals": "^1.1.2"
   },
   "scripts": {
     "start": "react-scripts start",
-    "startw":"set PORT=3001&& react-scripts start",
+    "startw": "set PORT=3001&& react-scripts start",
     "startu": "PORT=3001  react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
