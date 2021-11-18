@@ -14,7 +14,7 @@ const NoMovements = () => {
         <Col
           className="d-flex justify-content-center align-items-center"
         >
-          <span className="loadingText">{t("There is no movements to show")}</span>
+          <span className="loadingText">{t("There are no movements to show")}</span>
         </Col>
       </Row>
   )

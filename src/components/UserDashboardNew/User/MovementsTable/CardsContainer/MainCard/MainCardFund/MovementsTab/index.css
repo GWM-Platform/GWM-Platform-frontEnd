@@ -1,0 +1,151 @@
+.filter .form-control{
+    border-radius: 20px;
+    border-color:var(--main-color)
+}
+
+.filter .button{
+    border-radius: 20px;
+}
+
+.filter .right{
+    border-left: 1px solid white;
+}
+
+.tableDescription {
+    font-size: 14px;
+    text-align: end;
+    max-width: 70px;
+
+}
+.tableDate {
+    font-size: 14px;
+    width: fit-content;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.tableAmount {
+    font-size: 14px;
+    text-align: end;
+}
+.movementsTableAccounts {
+    max-height: calc(100vh - 250px);
+    overflow: auto;
+    display: inline-block;
+    width: 100%;
+}
+.movementsTableContainer {
+    min-height: calc( 100vh - 412px );
+    overflow: auto;
+    display: inline-block;
+    width: 100%;
+}
+.movementsTable {
+    overflow: auto;
+    width: 100%;
+    min-height: calc( 100vh - 412px );
+}
+
+.movementsTableContainer-navInfoToggled {
+    min-height: calc( 100vh - 412px + 76px );
+    overflow: auto;
+    display: inline-block;
+    width: 100%;
+}
+.movementsTable-navInfoToggled {
+    overflow: auto;
+    width: 100%;
+    min-height: calc( 100vh - 412px + 76px );
+}
+@media (min-width: 1201px) {
+    .tableDescription {
+        max-width: auto;
+    }
+    .tableDate {
+        font-size: 14px;
+        width: 15%;
+    }
+    .tableAmount {
+        font-size: 14px;
+        width: 20%;
+    }
+    .accountsContainerWidth{
+        width: 75%;
+    }
+}
+/*Pantallas grandes (desktops de menos de 1200px) lg 1200px>X≥992px*/
+@media (max-width: 1200px) {
+   
+    .tableDescription {
+        max-width: auto;
+    }
+    .tableDate {
+        font-size: 14px;
+        width: 20%;
+    }
+    .tableAmount {
+        font-size: 14px;
+        width: 20%;
+    }
+}
+
+
+/*Pantallas medianas (tablets de menos de 992px) md 992px>X≥768px;*/
+
+@media (max-width: 992px) {
+    
+    .tableDescription {
+        max-width: auto;
+    }
+    .tableDate {
+        font-size: 14px;
+        width: 25%;
+    }
+    .tableAmount {
+        font-size: 14px;
+        width: 30%;
+    }
+}
+
+
+/*Pantallas pequeñas (móviles en landscape de menos de 768px)  sm 768px>X≥576px*/
+
+@media (max-width: 768px) {
+    .tableDescription {
+        max-width: auto;
+    }
+    .tableDate {
+        font-size: 14px;
+        width: 25%;
+    }
+    .tableAmount {
+        font-size: 14px;
+        width: 30%;
+    }
+}
+
+
+/*Pantallas muy pequeñas (móviles en portrait de menos de 576px) xs 576px>X*/
+
+@media (max-width: 576px) {
+    .tableDescription {
+        max-width: 70px;
+    }
+    .tableDate {
+        font-size: 14px;
+        width: 40%;
+    }
+    .tableAmount {
+        font-size: 14px;
+        width: 30%;
+    }
+    .cardTextMain {
+        height: calc(100vh - 130px);
+    }
+    .movementsTable {
+        max-height: auto;
+    }
+    .movementsTableAccounts {
+        max-height: auto;
+    }
+}

@@ -96,7 +96,7 @@ i18n
           "Make sure at least the new password have": "Asegurese de que contenga al menos",
           "English": "Inglés",
           "Spanish": "Español",
-          "There is no record of any movement in this account": "No hay registro de ningún movimiento en esta cuenta",
+          "There are no records of any movement in this account": "No hay registro de ningún movimiento en esta cuenta",
           //Translation for transfer request
           "Account menu": "Menú de la cuenta",
           "Account Number": "Número de cuenta",
@@ -216,7 +216,10 @@ i18n
           "in FeePars": "En cuotapartes",
           "In Cash": "En dinero",
           "Last Movements":"Ultimos Movimientos",
-          "Fund Detail":"Detalle del fondo"
+          "Fund Detail":"Detalle del fondo",
+          "There are no records of any movement in this Fund.":"No hay registros de ningún movimiento en este Fondo.",
+          "There are no movements to show":"No hay movimientos que mostrar",
+          "Operations":"Operaciones"
         }
       }
     },

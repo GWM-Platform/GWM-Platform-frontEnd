@@ -4,8 +4,8 @@ import { Collapse, Container, Col, Row } from 'react-bootstrap';
 import { useTranslation } from "react-i18next";
 import { useRef } from 'react'
 import './index.css'
-
-const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownKey, display, Hide }) => {
+//Parent key 0-> Fund;Parent key 1->Cash
+const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownKey, selected, Hide,categorySelected }) => {
     const select = () => {
         setCategorySelected(parentKey)
         setSelected(ownKey)
@@ -14,25 +14,29 @@ const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownK
     const ref = useRef(null)
 
     const { t } = useTranslation();
+    const balanceInCash=parentKey===0 ? (Fund.shares * Fund.fund.sharePrice) : Fund.balance 
 
     return (
-        <Collapse in={display} className="pt-0 pb-2">
+        <Collapse in={categorySelected!==parentKey || (selected!==ownKey && categorySelected===parentKey )} className="pt-0 pb-2">
             <Container ref={ref} >
                 <Row className="secondaryCard" onClick={select}>
                     <Col sm="4" lg="auto" className="d-none d-sm-none d-md-flex currencyCol d-flex align-items-center">
                         <div className="currencyContainer d-flex align-items-center justify-content-center">
                             {
-                                Fund.fund.type !== undefined ?
-                                    <img className="currency px-0 mx-0" alt={Fund.fund.type} src={process.env.PUBLIC_URL + '/images/' + Fund.fund.type + '.svg'} />
+                                parentKey === 0 ?
+                                    Fund.fund.type !== undefined ?
+                                        <img className="currency px-0 mx-0" alt={Fund.fund.type} src={process.env.PUBLIC_URL + '/images/' + Fund.fund.type + '.svg'} />
+                                        :
+                                        <img className="currency px-0 mx-0" alt="crypto" src={process.env.PUBLIC_URL + '/images/crypto.svg'} />
                                     :
-                                    <img className="currency px-0 mx-0" alt="crypto" src={process.env.PUBLIC_URL + '/images/crypto.svg'} />
+                                    <img className="currency px-0 mx-0" alt="crypto" src={process.env.PUBLIC_URL + '/images/cash.svg'} />
                             }
                         </div>
                     </Col>
                     <Col sm="12" md="8" className="secondary d-flex align-items-start flex-column" >
                         <div className="mb-auto mt-2">
                             <h1 className="description mt-0 pt-0">
-                                {t(Fund.fund.name)}
+                                {t(parentKey === 0 ? Fund.fund.name : "Cash")}
                             </h1>
                         </div>
                         <div className="mb-2">
@@ -42,15 +46,15 @@ const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownK
                                         $
                                     </span>
                                     <span className={`info ${Hide ? "shown" : "hidden"}`}>
-                                        {(Fund.shares * Fund.fund.sharePrice).toString().replace(/./g, "*")}
+                                        {balanceInCash.toString().replace(/./g, "*")}
                                     </span>
 
                                     <span className={`info ${Hide ? "hidden" : "shown"}`}>
-                                        {(Fund.shares * Fund.fund.sharePrice).toString()}
+                                        {balanceInCash.toString()}
                                     </span>
 
                                     <span className={`info placeholder`}>
-                                        {(Fund.shares * Fund.fund.sharePrice).toString()}
+                                        {balanceInCash.toString()}
                                     </span>
                                 </div>
                             </h2>

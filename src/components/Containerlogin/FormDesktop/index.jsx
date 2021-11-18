@@ -28,6 +28,7 @@ const FormDesktop = ({ handleChange, handleSubmit, buttonDisabled, error, button
                             value={data.email}
                             onChange={handleChange}
                             required
+                            type="email"
                         />
                     </InputGroup>
                     <Row className="d-flex flex-row-reverse">

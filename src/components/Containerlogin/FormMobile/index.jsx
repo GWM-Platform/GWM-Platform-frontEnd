@@ -21,7 +21,7 @@ const FormMobile = ({ handleChange, handleSubmit, buttonDisabled, setButtonDisab
                 <FormControl
                     placeholder={t('Username or Email')}
                     autoComplete="email"
-                    id="email1"
+                    id="email"
                     value={data.email}
                     onChange={handleChange}
                     required
@@ -38,7 +38,7 @@ const FormMobile = ({ handleChange, handleSubmit, buttonDisabled, setButtonDisab
                             placeholder={t('Password')}
                             autoComplete="current-password"
                             onChange={handleChange}
-                            id="password1"
+                            id="password"
                             value={data.password}
                             required
                         />
@@ -51,7 +51,7 @@ const FormMobile = ({ handleChange, handleSubmit, buttonDisabled, setButtonDisab
             </Row>
             <Form.Group className="mb-3">
                 <Form.Check
-                    id="api1"
+                    id="api"
                     value={data.api}
                     onChange={handleChange}
                     type="checkbox"

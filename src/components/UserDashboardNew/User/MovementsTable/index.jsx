@@ -5,11 +5,14 @@ import { useTranslation } from "react-i18next";
 import { useHistory } from 'react-router-dom'
 import { Spinner, Row, Container, Col, Form } from 'react-bootstrap';
 const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, NavInfoToggled, setNumberOfFunds }) => {
-    // eslint-disable-next-line 
+    var acumulador = 0
     const { t } = useTranslation();
 
     const [Funds, setFunds] = useState([]);
+    const [Accounts, setAccounts] = useState([]);
+
     const [FetchingFunds, setFetchingFunds] = useState(false);
+
     const [error, setError] = useState("Loading Content");
     const [SwitchState, setSwitchState] = useState(false);
     const [selected, setSelected] = useState(0)
@@ -27,6 +30,52 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, NavInfoToggl
         setSwitchState(event.target.checked)
     }
 
+
+    const getAccountsWithApi = async () => {
+        var url = `${process.env.REACT_APP_APIURL}/accounts`;
+        setFetchingFunds(true)
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: "*/*",
+                'Content-Type': 'application/json'
+            }
+        })
+
+        if (response.status === 200) {
+            const data = await response.json()
+            setAccounts(data)
+        } else {
+            switch (response.status) {
+                case 500:
+                    console.error("Error ", response.status, " obteniendo stakes")
+                    break;
+                default:
+                    console.error("Error ", response.status, " obteniendo stakes")
+            }
+        }
+        setFetchingFunds(false)
+    }
+
+    const getAccounts = useCallback(
+        (acumulador) => {
+            setFetchingFunds(true)
+            if (SwitchState) {
+                getAccountsWithApi()
+            } else {
+                setAccounts([{
+                    "id": 1,
+                    "clientId": 1,
+                    "balance": 4450,
+                    "createdAt": "2021-11-17T21:37:32.427Z",
+                    "updatedAt": "2021-11-17T21:56:10.000Z"
+                }])
+            }
+            setFetchingFunds(false)
+            // eslint-disable-next-line
+        }, [SwitchState]);
+
     const getFundsWithApi = async () => {
         var url = `${process.env.REACT_APP_APIURL}/funds/stakes`;
         setFetchingFunds(true)
@@ -42,15 +91,13 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, NavInfoToggl
         if (response.status === 200) {
             const data = await response.json()
             setFunds(data)
-            setNumberOfFunds(data.length)
-            if (data.length === 0) setError("No tiene participacion en ningun fondo")
         } else {
             switch (response.status) {
                 case 500:
-                    console.error("Error. Vefique los datos ingresados")
+                    console.error("Error. obteniendo stakes")
                     break;
                 default:
-                    console.error(response.status)
+                    console.error("Error. obteniendo stakes")
             }
             setFetchingFunds(false)
         }
@@ -60,7 +107,7 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, NavInfoToggl
         () => {
             setFetchingFunds(true)
             if (SwitchState) {
-                getFundsWithApi()
+                getFundsWithApi(acumulador)
             } else {
                 setFunds([
                     {
@@ -98,7 +145,6 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, NavInfoToggl
                         }
                     }
                 ])
-                setNumberOfFunds(3)
             }
             setFetchingFunds(false)
             // eslint-disable-next-line
@@ -107,11 +153,15 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, NavInfoToggl
     useEffect(() => {
         setSelected(0)
         getFunds();
+        getAccounts();
         return () => {
         }
         // eslint-disable-next-line
     }, [SwitchState])
-
+    useEffect(() => {
+        setNumberOfFunds(Accounts.length+Funds.length)
+        if (Accounts.length+Funds.length === 0) setError("No tiene participacion en ningun fondo")
+    }, [Accounts,Funds,setNumberOfFunds])
     return (
         <Container fluid className={NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}>
             <Form.Check
@@ -122,24 +172,25 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, NavInfoToggl
                 label={t("API's Funds (For devops)")}
             />
             {
-                FetchingFunds || Funds.length === 0
+                FetchingFunds || Funds.length + Accounts.length === 0
                     ?
                     <Container fluid>
                         <Row className="d-flex justify-content-center align-items-center">
                             <Col className="free-area d-flex justify-content-center align-items-center">
-                                <Spinner className="me-2" animation="border" variant="danger" />
+                                <Spinner className={`me-2 ${error !== "No tiene participacion en ningun fondo" ? "d-none" : ""}`} animation="border" variant="danger" />
                                 <span className="loadingText">{t(error)}</span>
                             </Col>
                         </Row>
                     </Container>
                     :
                     <CardsContainer
-                    NavInfoToggled={NavInfoToggled}
+                        NavInfoToggled={NavInfoToggled}
                         selected={selected}
                         setSelected={setSelected}
                         setItemSelected={setItemSelected}
                         isMobile={isMobile}
                         Funds={Funds}
+                        Accounts={Accounts}
                         numberOfFunds={numberOfFunds}
                         SwitchState={SwitchState}
                     />

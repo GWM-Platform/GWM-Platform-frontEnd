@@ -12,7 +12,7 @@ import MovementsTab from './MovementsTab';
 import FundDetail from './FundDetail';
 import './index.css'
 
-const MainCard = ({ IsMobile, Fund, Funds, SwitchState, Hide, setHide, NavInfoToggled }) => {
+const MainCard = ({ Fund,  Hide, setHide, NavInfoToggled,SwitchState }) => {
     const [SelectedTab, setSelectedTab] = useState("0")
     const [Performance, setPerformance] = useState(0)
 
@@ -28,14 +28,15 @@ const MainCard = ({ IsMobile, Fund, Funds, SwitchState, Hide, setHide, NavInfoTo
         history.push(`/login`);
     }
 
+    const balanceInCash=(Fund.shares * Fund.fund.sharePrice)
 
     return (
-        <div className="movementsMainCard">
+        <div className="movementsMainCardFund">
             <Container fluid className="p-0 mt-4">
                 <Row className="m-0">
-                    <Container className="info ms-0 mb-1 px-0">
+                    <Container className="bg-white info ms-0 mb-2 px-0">
                         <Col className="d-flex justify-content-between align-items-end pe-2">
-                            <h1 className="m-0 title">
+                            <h1 className="m-0 title px-2">
                                 {t(Fund.fund.name)}
                             </h1>
                             <h2 className="m-0 left">
@@ -45,21 +46,21 @@ const MainCard = ({ IsMobile, Fund, Funds, SwitchState, Hide, setHide, NavInfoTo
                                 </span>
                             </h2>
                         </Col>
-                        <Col className="d-flex justify-content-between align-items-end pe-2 mb-2 pb-2 border-bottom-main">
+                        <Col className="d-flex justify-content-between align-items-end pe-2 pb-2 border-bottom-main">
                             <Col className="d-flex justify-content-between pe-5" sm="auto">
                                 <Col className="pe-2">
-                                    <div className="containerHideInfo">
+                                    <div className="containerHideInfo px-2">
                                         <span>Actual Value in cash of your holding: $</span>
                                         <span className={`info ${Hide ? "shown" : "hidden"}`}>
-                                            {(Fund.shares * Fund.fund.sharePrice).toString().replace(/./g, "*")}
+                                            {balanceInCash.toString().replace(/./g, "*")}
                                         </span>
 
                                         <span className={`info ${Hide ? "hidden" : "shown"}`}>
-                                            {(Fund.shares * Fund.fund.sharePrice).toString()}
+                                            {balanceInCash.toString()}
                                         </span>
 
                                         <span className={`info placeholder`}>
-                                            {(Fund.shares * Fund.fund.sharePrice).toString()}
+                                            {balanceInCash.toString()}
                                         </span>
                                     </div>
                                 </Col>
@@ -84,8 +85,8 @@ const MainCard = ({ IsMobile, Fund, Funds, SwitchState, Hide, setHide, NavInfoTo
                                 {"Performance: "}
                                 <span
                                     className={{
-                                        1: 'text-green',
-                                        2: 'text-red'
+                                        '1': 'text-green',
+                                        '-1': 'text-red'
                                     }[Math.sign(Performance)]}>
                                     {Performance.toFixed(2)}%
                                 </span>
@@ -110,9 +111,9 @@ const MainCard = ({ IsMobile, Fund, Funds, SwitchState, Hide, setHide, NavInfoTo
                             {
                                 0:
                                     <MovementsTab setPerformance={setPerformance} NavInfoToggled={NavInfoToggled} SwitchState={SwitchState}
-                                        IsMobile={IsMobile} Fund={Fund} Funds={Funds} />,
+                                        Fund={Fund} />,
                                 1:
-                                    <FundDetail />
+                                    <FundDetail NavInfoToggled={NavInfoToggled} />
                             }[SelectedTab]
                         }
                     </Container>

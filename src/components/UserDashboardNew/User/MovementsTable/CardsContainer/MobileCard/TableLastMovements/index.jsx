@@ -10,8 +10,8 @@ const TableLastMovements = ({ content, decimals, symbol }) => {
 
     return (
         <Col md="12" className="p-0 mt-2">
-            {content === undefined ? <h2>{t("There is no record of any movement in this Fund")}</h2> :
-                content.length===0 ? <h2>{t("There is no record of any movement in this Fund")}</h2> :
+            {content === undefined ? <h2>{t("There are no records of any movement in this Fund")}</h2> :
+                content.length===0 ? <h2>{t("There are no records of any movement in this Fund")}</h2> :
                 <div>
                     <Container fluid className="p-0" 
                         onClick={() => setOpen(!open)}

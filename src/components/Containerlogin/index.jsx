@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import FormDesktop from './FormDesktop';
@@ -20,21 +20,13 @@ const ContainerLogin = () => {
 
   const [data, setData] = useState({ email: "", password: "", api: false });
   const [Background, setBackground] = useState("background1.png");
+  const [width, setWidth] = useState(window.innerWidth);
 
   const handleChange = (event) => {
     let aux = data;
     switch (event.target.id) {
       case 'api':
         aux[event.target.id] = event.target.checked;
-        break
-      case 'api1':
-        aux.api = event.target.checked;
-        break
-      case 'email1':
-        aux.email = event.target.value
-        break
-      case 'password1':
-        aux.password = event.target.value
         break
       default:
         aux[event.target.id] = event.target.value;
@@ -51,7 +43,7 @@ const ContainerLogin = () => {
     setButtonDisabled(true)
     setLoading(true)
     setButtonContent("Loading")
-    if (data.api ) {
+    if (data.api) {
       loginWithApi()
     } else {
       loginWithoutApi()
@@ -108,49 +100,66 @@ const ContainerLogin = () => {
     }
   }
 
-  const cycleBG=()=>{
-    let backgroundNumber=(Background.slice(10,-4))
-    if(backgroundNumber<=3){
-      setBackground(`background${parseInt(backgroundNumber)+1}.png`)
-    }else if(backgroundNumber<=5){
-      setBackground(`background${parseInt(backgroundNumber)+1}.svg`)
-    }else{
+  const cycleBG = () => {
+    let backgroundNumber = (Background.slice(10, -4))
+    if (backgroundNumber <= 3) {
+      setBackground(`background${parseInt(backgroundNumber) + 1}.png`)
+    } else if (backgroundNumber <= 5) {
+      setBackground(`background${parseInt(backgroundNumber) + 1}.svg`)
+    } else {
       setBackground("background1.png")
     }
   }
+
+  function handleWindowSizeChange() {
+    setWidth(window.innerWidth);
+  }
+
+  let isMobile = (width <= 576);
+
+  useEffect(() => {
+    window.addEventListener('resize', handleWindowSizeChange);
+    return () => {
+      window.removeEventListener('resize', handleWindowSizeChange);
+    }
+  }, [])
+
   return (
     <div
       onClick={() => { cycleBG() }} className="login"
-      style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/${Background})` }}>
+      style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/background/${Background})` }}>
       <Container>
         <Row className="d-flex min-vh-100  justify-content-center align-items-start align-items-lg-center pt-3">
           <Col xs="11" sm="8" md="6" lg="5" xl="4">
-            <FormDesktop
-              handleChange={handleChange}
-              handleSubmit={handleSubmit}
-              buttonDisabled={buttonDisabled}
-              setButtonDisabled={setButtonDisabled}
-              error={error}
-              setError={setError}
-              buttonContent={buttonContent}
-              setButtonContent={setButtonContent}
-              loading={loading}
-              setLoading={setLoading}
-              data={data}
-              setData={setData} />
-            <FormMobile
-              handleChange={handleChange}
-              handleSubmit={handleSubmit}
-              buttonDisabled={buttonDisabled}
-              setButtonDisabled={setButtonDisabled}
-              error={error}
-              setError={setError}
-              buttonContent={buttonContent}
-              setButtonContent={setButtonContent}
-              loading={loading}
-              setLoading={setLoading}
-              data={data}
-              setData={setData} />
+            {isMobile ?
+              <FormMobile
+                handleChange={handleChange}
+                handleSubmit={handleSubmit}
+                buttonDisabled={buttonDisabled}
+                setButtonDisabled={setButtonDisabled}
+                error={error}
+                setError={setError}
+                buttonContent={buttonContent}
+                setButtonContent={setButtonContent}
+                loading={loading}
+                setLoading={setLoading}
+                data={data}
+                setData={setData} />
+                :
+              <FormDesktop
+                handleChange={handleChange}
+                handleSubmit={handleSubmit}
+                buttonDisabled={buttonDisabled}
+                setButtonDisabled={setButtonDisabled}
+                error={error}
+                setError={setError}
+                buttonContent={buttonContent}
+                setButtonContent={setButtonContent}
+                loading={loading}
+                setLoading={setLoading}
+                data={data}
+                setData={setData} />
+            }
           </Col>
         </Row>
       </Container>

@@ -1,0 +1,88 @@
+.movementsMainCardFund .history-tabs {
+    border: none;
+    background-color: rgb(243, 244, 246);
+    color: rgb(111, 111, 111)
+}
+
+.movementsMainCardFund .history-tabs .nav-link {
+    border-radius: 0;
+    border: none;
+    border-top: transparent 3px solid;
+}
+
+.movementsMainCardFund .history-tabs .nav-item>.active {
+    border-radius: 0;
+    border: none;
+    border-top: rgb(250, 70, 70) 3px solid;
+}
+
+.movementsMainCardFund .nav-link:hover {
+    border-top: rgb(250, 70, 70,.3) 3px solid;
+    color: black;
+}
+
+.movementsMainCardFund .filter .form-control {
+    border-radius: 20px;
+}
+
+.movementsMainCardFund .details .title {
+    text-transform: capitalize;
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--main-color)
+}
+
+.movementsMainCardFund .details .text {
+    text-transform: capitalize;
+    font-size: 17px;
+    font-weight: 200;
+    width: 100%;
+    border-bottom: var(--main-color) 1px solid;
+}
+
+.movementsMainCardFund .details .text>.amount {
+    text-transform: capitalize;
+    text-align: end;
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--main-color)
+}
+
+.movementsMainCardFund .border-bottom-main {
+    border-bottom: var(--main-color) 1px solid;
+}
+
+.movementsMainCardFund .border-bottom-none {
+    border-bottom: none!important;
+}
+
+.movementsMainCardFund .info .left {
+    text-transform: capitalize;
+    font-size: 17px;
+    font-weight: 200;
+}
+
+.movementsMainCardFund .info .title {
+    text-transform: uppercase;
+    color: var(--main-color);
+    font-weight: 600;
+    font-size: 23px;
+}
+
+.movementsMainCardFund .info .edit {
+    text-transform: capitalize;
+    color: black;
+    font-weight: 400;
+    font-size: 16px;
+}
+
+.movementsMainCardFund .info .content {
+    text-transform: capitalize;
+    color: var(--main-color);
+    font-weight: 400;
+    font-size: 16px;
+}
+
+.movementsMainCardFund .loadingMovements {
+    height: calc( 100vh - 400px)
+}

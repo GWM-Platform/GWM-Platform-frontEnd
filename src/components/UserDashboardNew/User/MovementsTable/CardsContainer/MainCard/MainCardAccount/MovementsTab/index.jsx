@@ -8,7 +8,7 @@ import NoMovements from './NoMovements';
 import Loading from './Loading';
 
 
-const MovementsTab = ({ IsMobile, Fund, SwitchState,NavInfoToggled,setPerformance }) => {
+const MovementsTab = ({ Fund, SwitchState, NavInfoToggled }) => {
     // eslint-disable-next-line 
 
     const [Movements, setMovements] = useState([])
@@ -16,9 +16,8 @@ const MovementsTab = ({ IsMobile, Fund, SwitchState,NavInfoToggled,setPerformanc
     const [FetchingMovements, setFetchingMovements] = useState(false);
 
     const token = sessionStorage.getItem('access_token')
-
     const getMovementsWithApi = async () => {
-        var url = `${process.env.REACT_APP_APIURL}/funds/${Fund.fundId}/transactions`;
+        var url = `${process.env.REACT_APP_APIURL}/Accounts/${Fund.id}/movements`;
         setFetchingMovements(true)
         const response = await fetch(url, {
             method: 'GET',
@@ -31,14 +30,12 @@ const MovementsTab = ({ IsMobile, Fund, SwitchState,NavInfoToggled,setPerformanc
 
         if (response.status === 200) {
             const data = await response.json()
+            console.log(data)
             setMovements(data.sort(function (a, b) { return (a.createdAt > b.createdAt) ? -1 : ((a.createdAt < b.createdAt) ? 1 : 0); }))
         } else {
             switch (response.status) {
-                case 500:
-                    console.error("Error. Vefique los datos ingresados")
-                    break;
                 default:
-                    console.error(response.status)
+                    console.error("Error ", response.status, " account movements")
             }
             setFetchingMovements(false)
         }
@@ -53,60 +50,52 @@ const MovementsTab = ({ IsMobile, Fund, SwitchState,NavInfoToggled,setPerformanc
                 setMovements(
                     [
                         {
-                            "id": 3,
-                            "clientId": 1,
-                            "fundId": 2,
-                            "shares": -2,
-                            "sharePrice": 20,
-                            "createdAt": "2021-11-16T00:35:35.299Z"
+                            "id": 20,
+                            "accountId": 1,
+                            "amount": 10,
+                            "createdAt": "2021-11-18T01:00:21.698Z"
                         },
                         {
-                            "id": 1,
-                            "clientId": 1,
-                            "fundId": 2,
-                            "shares": 2.5,
-                            "sharePrice": 20,
-                            "createdAt": "2021-11-16T00:33:17.279Z"
+                            "id": 19,
+                            "accountId": 1,
+                            "amount": 100,
+                            "createdAt": "2021-11-18T00:57:06.065Z"
                         },
                         {
-                            "id": 1,
-                            "clientId": 1,
-                            "fundId": 2,
-                            "shares": 2.5,
-                            "sharePrice": 20,
-                            "createdAt": "2021-11-16T00:33:17.279Z"
+                            "id": 18,
+                            "accountId": 1,
+                            "amount": 5000,
+                            "createdAt": "2021-11-18T00:31:07.427Z"
                         },
                         {
-                            "id": 1,
-                            "clientId": 1,
-                            "fundId": 2,
-                            "shares": 2.5,
-                            "sharePrice": 20,
-                            "createdAt": "2021-11-16T00:33:17.279Z"
+                            "id": 17,
+                            "accountId": 1,
+                            "amount": -3591,
+                            "createdAt": "2021-11-18T00:29:09.752Z"
                         },
                         {
-                            "id": 1,
-                            "clientId": 1,
-                            "fundId": 2,
-                            "shares": 2.5,
-                            "sharePrice": 20,
-                            "createdAt": "2021-11-16T00:33:17.279Z"
+                            "id": 16,
+                            "accountId": 1,
+                            "amount": 500,
+                            "createdAt": "2021-11-18T00:17:09.522Z"
                         },
                         {
-                            "id": 1,
-                            "clientId": 1,
-                            "fundId": 2,
-                            "shares": 2.5,
-                            "sharePrice": 20,
-                            "createdAt": "2021-11-16T00:33:17.279Z"
+                            "id": 15,
+                            "accountId": 1,
+                            "amount": 329,
+                            "createdAt": "2021-11-18T00:07:59.001Z"
                         },
                         {
-                            "id": 1,
-                            "clientId": 1,
-                            "fundId": 2,
-                            "shares": 2.5,
-                            "sharePrice": 20,
-                            "createdAt": "2021-11-16T00:33:17.279Z"
+                            "id": 14,
+                            "accountId": 1,
+                            "amount": 500,
+                            "createdAt": "2021-11-18T00:07:23.642Z"
+                        },
+                        {
+                            "id": 13,
+                            "accountId": 1,
+                            "amount": 1500,
+                            "createdAt": "2021-11-18T00:05:16.696Z"
                         }
                     ]
                 )
@@ -133,12 +122,8 @@ const MovementsTab = ({ IsMobile, Fund, SwitchState,NavInfoToggled,setPerformanc
                             :
                             Movements.length > 0 ?
                                 <TableLastMovements
-                                setPerformance={setPerformance}
-                                    Fund={Fund}
                                     NavInfoToggled={NavInfoToggled}
-                                    MovementsCount={100}
                                     content={Movements}
-                                    /*movsShown={movsShown}*/
                                     page={page}
                                     setPage={setPage} />
                                 :

@@ -2,7 +2,9 @@
     background-color: var(--secondary-color);
 }
 .dashboard{
-    background-color:var(--main-dashboard-bg)
+    background-color:var(--main-dashboard-bg);
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 .toggler-mobile:after {
     display: inline-block;
