@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../operationsForm.css'
 
 import { Container, Row, Col, Accordion } from 'react-bootstrap'
 import FundSelector from './FundSelector'
 import SellData from './SellData'
 import { useHistory } from 'react-router-dom';
+import Loading from '../Loading';
+import NoFunds from '../NoFunds';
 
 const SellForm = ({ NavInfoToggled }) => {
     //HardCoded data (here we should request Funds that have available feeParts to sell)
-    const [data, setData] = useState({ amount: 1, FundSelected: -1 })
+    const [data, setData] = useState({ shares: 0.01, FundSelected: -1 })
     const [some, setSome] = useState(false)
     const [Funds, setFunds] = useState([])
-    const [validated, setValidated] = useState(false);
+    const [validated, setValidated] = useState(true);
     const [CollapsedFields, setCollapsedFields] = useState(true);
+    const [FetchingFunds, setFetchingFunds] = useState(true)
 
     const token = sessionStorage.getItem('access_token')
 
@@ -24,7 +26,7 @@ const SellForm = ({ NavInfoToggled }) => {
         var url = `${process.env.REACT_APP_APIURL}/funds/${Funds[data.FundSelected].fundId}/sell`;
         const response = await fetch(url, {
             method: 'POST',
-            body: JSON.stringify({ shares: data.shares }),
+            body: JSON.stringify({ shares:  parseFloat(data.shares) }),
             headers: {
                 Authorization: `Bearer ${token}`,
                 Accept: "*/*",
@@ -61,6 +63,7 @@ const SellForm = ({ NavInfoToggled }) => {
             if (response.status === 200) {
                 const data = await response.json()
                 setFunds(data)
+                setFetchingFunds(false)
             } else {
                 switch (response.status) {
                     case 500:
@@ -71,7 +74,7 @@ const SellForm = ({ NavInfoToggled }) => {
                 }
             }
         }
-    
+
         getFunds()
         let aux = data
         aux.FundSelected = -1
@@ -109,18 +112,26 @@ const SellForm = ({ NavInfoToggled }) => {
     }
 
     return (
-        <Container >
-            <Row className={`${NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"} newTicket`}>
-                <Col xs="12">
-                    <Accordion flush defaultActiveKey="0">
-                        <FundSelector openAccordion={openAccordion}
-                            Funds={Funds} data={data} some={some} setData={setData} setSome={setSome} />
-                    </Accordion>
-                    <Accordion flush activeKey={CollapsedFields ? "-1" : "0"}>
-                        <SellData toggleAccordion={toggleAccordion} handleSubmit={handleSubmit} validated={validated}
-                            handleChange={handleChange} Funds={Funds} data={data} />
-                    </Accordion>
-                </Col>
+        <Container className={NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}>
+            <Row className="newTicket h-100">
+                {
+                    FetchingFunds ?
+                        <Loading />
+                        :
+                        Funds.length > 0 ?
+                            <Col xs="12">
+                                <Accordion flush defaultActiveKey="0">
+                                    <FundSelector openAccordion={openAccordion}
+                                        Funds={Funds} data={data} some={some} setData={setData} setSome={setSome} />
+                                </Accordion>
+                                <Accordion flush activeKey={CollapsedFields ? "-1" : "0"}>
+                                    <SellData toggleAccordion={toggleAccordion} handleSubmit={handleSubmit} validated={validated}
+                                        handleChange={handleChange} Funds={Funds} data={data} />
+                                </Accordion>
+                            </Col>
+                            :
+                            <NoFunds />
+                }
             </Row>
         </Container>
     )

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -11,10 +11,16 @@ import MobileCard from './MobileCard';
 import './index.css'
 
 const CardsContainer = ({ setItemSelected, isMobile, Funds, numberOfFunds, selected, setSelected, NavInfoToggled, Accounts }) => {
-    const [categorySelected, setCategorySelected] = useState(0)
+    const [categorySelected, setCategorySelected] = useState( Accounts.length > 0 ? 0 : Funds.length > 0 ? 1 : 0 )
     const [Hide, setHide] = useState(false)
 
-    console.log(Accounts, Funds, numberOfFunds)
+    useEffect(() => {
+        if (numberOfFunds > 0) {
+            if (Accounts.length > 0) { setCategorySelected(0) } else { if (Funds.length > 0) setCategorySelected(1) }
+        }
+    }, [Accounts, Funds,numberOfFunds])
+
+    console.log(Accounts,Funds,numberOfFunds,categorySelected)
 
     return (
         <Row className="HistoryCardsContainer">
@@ -117,7 +123,6 @@ const CardsContainer = ({ setItemSelected, isMobile, Funds, numberOfFunds, selec
                     :
                     (numberOfFunds === 1 ?
                         <Col className="px-2 pb-2" xs="12" xl="12" >
-
                             {Accounts.length === 1 ?
                                 <MainCardAccount
                                     Fund={Accounts[0]}

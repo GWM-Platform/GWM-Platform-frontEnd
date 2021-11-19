@@ -23,7 +23,6 @@ const FormDesktop = ({ handleChange, handleSubmit, buttonDisabled, error, button
                         </InputGroup.Text>
                         <FormControl
                             placeholder={t('Username or Email')}
-                            autoComplete="email"
                             id="email"
                             value={data.email}
                             onChange={handleChange}
@@ -40,7 +39,6 @@ const FormDesktop = ({ handleChange, handleSubmit, buttonDisabled, error, button
                                 <FormControl
                                     type="password"
                                     placeholder={t('Password')}
-                                    autoComplete="current-password"
                                     onChange={handleChange}
                                     id="password"
                                     required

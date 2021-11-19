@@ -10,7 +10,7 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, NavInfoToggl
     const [Accounts, setAccounts] = useState([]);
     const [Funds, setFunds] = useState([]);
 
-    const [FetchingFunds, setFetchingFunds] = useState(false);
+    const [FetchingFunds, setFetchingFunds] = useState(true);
 
     const [error, setError] = useState("Loading Content");
 
@@ -73,24 +73,25 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, NavInfoToggl
                     console.error("Error. obteniendo stakes")
             }
         }
+        setFetchingFunds(false)
     }
 
 
     useEffect(() => {
         setNumberOfFunds(0)
-        setFetchingFunds(true)
         getAccounts();
         getFunds();
-        setFetchingFunds(false)
         return () => {
         }
         // eslint-disable-next-line
     }, [])
 
     useEffect(() => {
-        setNumberOfFunds(Accounts.length + Funds.length)
-        if (Accounts.length + Funds.length === 0) setError("No tiene participacion en ningun fondo")
-    }, [Accounts, Funds, setNumberOfFunds])
+        if(!FetchingFunds){
+            setNumberOfFunds(Accounts.length + Funds.length)
+            if (Accounts.length + Funds.length === 0 && !FetchingFunds) setError("No tiene participacion en ningun fondo")
+        }
+    }, [Accounts, Funds, setNumberOfFunds,FetchingFunds])
 
     return (
         <Container fluid className={NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}>
@@ -100,7 +101,7 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, NavInfoToggl
                     <Container fluid>
                         <Row className="d-flex justify-content-center align-items-center">
                             <Col className="free-area d-flex justify-content-center align-items-center">
-                                <Spinner className={`me-2 ${error !== "No tiene participacion en ningun fondo" ? "d-none" : ""}`} animation="border" variant="danger" />
+                                <Spinner className={`me-2 ${error === "No tiene participacion en ningun fondo" ? "d-none" : ""}`} animation="border" variant="danger" />
                                 <span className="loadingText">{t(error)}</span>
                             </Col>
                         </Row>

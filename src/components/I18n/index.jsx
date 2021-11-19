@@ -219,7 +219,9 @@ i18n
           "Fund Detail":"Detalle del fondo",
           "There are no records of any movement in this Fund.":"No hay registros de ningún movimiento en este Fondo.",
           "There are no movements to show":"No hay movimientos que mostrar",
-          "Operations":"Operaciones"
+          "Operations":"Operaciones",
+          "There are no funds available for the operation":
+          "No hay fondos disponibles para la operación"
         }
       }
     },

@@ -10,7 +10,7 @@ const SellData = ({ data, Funds, handleChange, validated, handleSubmit,toggleAcc
 
     return (
         <Accordion.Item eventKey="0">
-            <Accordion.Header onClick={() => toggleAccordion()}>
+            <Accordion.Header onClick={() => {if(data.FundSelected!==-1)toggleAccordion()}}>
                 <Container>
                     <Row className="d-flex justify-content-center">
                         <Form.Label className="pt-0 label d-flex align-items-center" column sm="auto">
@@ -32,7 +32,8 @@ const SellData = ({ data, Funds, handleChange, validated, handleSubmit,toggleAcc
                         <Form.Control
                             value={data.shares}
                             onChange={handleChange}
-                            min="1"
+                            min="0.01"
+                            step="0.01"
                             max={data.FundSelected === -1 ?
                                 1
                                 :
@@ -59,14 +60,13 @@ const SellData = ({ data, Funds, handleChange, validated, handleSubmit,toggleAcc
                                 data.FundSelected === -1 ?
                                     "Please, select a Fund to Sell"
                                     :
-                                    `You are trying to sell  $${data.shares}, equivalent to $${data.shares * Funds[data.FundSelected].sharePrice}.`
+                                    `Selling ${data.shares} feeParts from ${Funds[data.FundSelected].fund.name},
+                                    equivalent to $${data.shares * Funds[data.FundSelected].fund.sharePrice} `
                             }
                         </Form.Control.Feedback>
                     </InputGroup>
-                    {data.FundSelected !== -1 ? <h2 className="sellDescription mt-0 mb-3">Selling {data.shares} feeParts from {Funds[data.FundSelected].fund.name},
-                        equivalent to ${data.shares * Funds[data.FundSelected].fund.sharePrice} </h2> : null}
                     <Button disabled={
-                        data.FundSelected === -1 ? true : data.shares > Funds[data.FundSelected].shares}
+                        data.FundSelected === -1 ? true : data.shares > Funds[data.FundSelected].shares || data.shares<=0}
                         variant="danger" type="submit">{t("Submit")}</Button>
                 </Form>
             </Accordion.Body>

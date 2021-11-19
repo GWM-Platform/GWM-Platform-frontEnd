@@ -183,6 +183,9 @@ body {
 	transform: rotate3d(0, 1, 0, 0deg);
 	transition: 0.4s transform 0.4s;
 }
+.spinner-border{
+	border: 1px solid currentColor
+}
 
 @media (max-width: 576px) {
 	.free-area {

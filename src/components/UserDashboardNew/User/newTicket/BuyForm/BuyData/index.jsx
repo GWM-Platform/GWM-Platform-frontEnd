@@ -34,8 +34,9 @@ const BuyData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAcc
                         <Form.Control
                             disabled={data.FundSelected===-1}
                             value={data.amount}
+                            step=".01"
                             onChange={handleChange}
-                            min="1"
+                            min="0.01"
                             max={data.FundSelected === -1 ?
                                 1
                                 :
@@ -67,7 +68,7 @@ const BuyData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAcc
                         </Form.Control.Feedback>
                     </InputGroup>
                     <Button disabled={
-                        data.FundSelected === -1 ? true : data.amount > Math.min(Funds[data.FundSelected].freeShares * Funds[data.FundSelected].sharePrice,Balance)}
+                        data.FundSelected === -1 ? true : data.amount > Math.min(Funds[data.FundSelected].freeShares * Funds[data.FundSelected].sharePrice,Balance) && data.amount>0}
                         variant="danger" type="submit">{t("Submit")}</Button>
                 </Form>
             </Accordion.Body>

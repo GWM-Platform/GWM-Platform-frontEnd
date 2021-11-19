@@ -6,16 +6,21 @@ import TableLastMovements from './TableLastMovements';
 //import MovementsPagination from './MovementsPagination';
 import NoMovements from './NoMovements';
 import Loading from './Loading';
+import {  useHistory } from 'react-router-dom';
 
 
 const MovementsTab = ({ Fund, NavInfoToggled }) => {
-    // eslint-disable-next-line 
+    const history = useHistory();
 
     const [Movements, setMovements] = useState([])
     const [page, setPage] = useState(0)
-    const [FetchingMovements, setFetchingMovements] = useState(false);
+    const [FetchingMovements, setFetchingMovements] = useState(true);
 
     const token = sessionStorage.getItem('access_token')
+
+    const toLogin = () => {
+        sessionStorage.clear(); history.push(`/login`);
+    }
 
     const getMovements = async () => {
         var url = `${process.env.REACT_APP_APIURL}/Accounts/${Fund.id}/movements`;
@@ -32,20 +37,19 @@ const MovementsTab = ({ Fund, NavInfoToggled }) => {
         if (response.status === 200) {
             const data = await response.json()
             setMovements(data.sort(function (a, b) { return (a.createdAt > b.createdAt) ? -1 : ((a.createdAt < b.createdAt) ? 1 : 0); }))
+            setFetchingMovements(false)
         } else {
             switch (response.status) {
                 default:
                     console.error("Error ", response.status, " account movements")
+                    toLogin()
             }
         }
     }
 
     useEffect(() => {
-
-        setFetchingMovements(true)
+        if (token === null) toLogin()
         getMovements();
-        setFetchingMovements(false)
-
         return () => {
         }
         // eslint-disable-next-line

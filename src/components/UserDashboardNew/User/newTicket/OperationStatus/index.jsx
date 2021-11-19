@@ -4,7 +4,7 @@ import '../operationsForm.css'
 
 import { Container, Row, Col } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
+import { faCheckCircle } from '@fortawesome/free-regular-svg-icons'
 import './index.css'
 
 const OperationStatus = ({setItemSelected,NavInfoToggled}) => {

@@ -6,16 +6,18 @@ import { Container, Row, Col, Accordion } from 'react-bootstrap'
 import FundSelector from './FundSelector'
 import BuyData from './BuyData'
 import { useHistory } from 'react-router-dom';
+import Loading from '../Loading';
+import NoFunds from '../NoFunds';
 
 const BuyForm = ({ NavInfoToggled }) => {
     //HardCoded data (here we should request Funds that have available feeParts to sell)
     const [data, setData] = useState({ amount: 1, FundSelected: -1 })
     const [some, setSome] = useState(false)
     const [Funds, setFunds] = useState([])
-    const [validated, setValidated] = useState(false);
+    const [validated, setValidated] = useState(true);
     const [CollapsedFields, setCollapsedFields] = useState(true);
     const [Account, setAccount] = useState(0);
-
+    const [FetchingFunds, setFetchingFunds] = useState(true)
 
     const token = sessionStorage.getItem('access_token')
 
@@ -26,7 +28,7 @@ const BuyForm = ({ NavInfoToggled }) => {
         var url = `${process.env.REACT_APP_APIURL}/funds/${Funds[data.FundSelected].id}/buy`;
         const response = await fetch(url, {
             method: 'POST',
-            body: JSON.stringify({ amount: data.amount }),
+            body: JSON.stringify({ amount: parseFloat(data.amount) }),
             headers: {
                 Authorization: `Bearer ${token}`,
                 Accept: "*/*",
@@ -62,6 +64,7 @@ const BuyForm = ({ NavInfoToggled }) => {
             if (response.status === 200) {
                 const data = await response.json()
                 setFunds(data)
+                setFetchingFunds(false)
             } else {
                 switch (response.status) {
                     case 500:
@@ -87,7 +90,7 @@ const BuyForm = ({ NavInfoToggled }) => {
             if (response.status === 200) {
                 const data = await response.json()
                 setAccount(data[0])
-                if(data.length>0)sessionStorage.setItem('balance',data[0].balance)
+                if (data.length > 0) sessionStorage.setItem('balance', data[0].balance)
             } else {
                 switch (response.status) {
                     case 500:
@@ -141,19 +144,27 @@ const BuyForm = ({ NavInfoToggled }) => {
     }
     return (
         <Container className={NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}>
-            <Row className="newTicket">
-                <Col xs="12">
-                    <Accordion flush defaultActiveKey="0">
-                        <FundSelector openAccordion={openAccordion}
-                            Funds={Funds} data={data} some={some} setData={setData} setSome={setSome}/>
-                    </Accordion>
-                    <Accordion flush activeKey={CollapsedFields ? "-1" : "0"}>
-                        <BuyData 
-                        handleSubmit={handleSubmit} validated={validated}
-                            handleChange={handleChange} Funds={Funds} data={data}
-                            toggleAccordion={toggleAccordion} Balance={Account.balance}/>
-                    </Accordion>
-                </Col>
+            <Row className="newTicket h-100">
+                {
+                    FetchingFunds ?
+                        <Loading />
+                        :
+                        Funds.length > 0 ?
+                            <Col xs="12">
+                                <Accordion flush defaultActiveKey="0">
+                                    <FundSelector openAccordion={openAccordion}
+                                        Funds={Funds} data={data} some={some} setData={setData} setSome={setSome} />
+                                </Accordion>
+                                <Accordion flush activeKey={CollapsedFields ? "-1" : "0"}>
+                                    <BuyData
+                                        handleSubmit={handleSubmit} validated={validated}
+                                        handleChange={handleChange} Funds={Funds} data={data}
+                                        toggleAccordion={toggleAccordion} Balance={Account.balance} />
+                                </Accordion>
+                            </Col>
+                            :
+                            <NoFunds />
+                }
             </Row>
         </Container>
     )

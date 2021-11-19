@@ -9,21 +9,22 @@ const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFun
     // eslint-disable-next-line
     const { t } = useTranslation();
     const [Funds, setFunds] = useState([]);
-    const [FetchingFunds, setFetchingFunds] = useState(false);
+    const [FetchingFunds, setFetchingFunds] = useState(true);
 
     const [Accounts, setAccounts] = useState([])
 
     // eslint-disable-next-line 
-    const toLogin = () => {
-        sessionStorage.clear();
-        history.push(`/login`);
-    }
 
-    const token = sessionStorage.getItem('access_token')
     useEffect(() => {
+        const token = sessionStorage.getItem('access_token')
+
+        const toLogin = () => {
+            sessionStorage.clear();
+            history.push(`/login`);
+        }
+
         const getFunds = async () => {
             var url = `${process.env.REACT_APP_APIURL}/funds/stakes`;
-            setFetchingFunds(true)
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -36,21 +37,16 @@ const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFun
             if (response.status === 200) {
                 const data = await response.json()
                 setFunds(data)
-                setFetchingFunds(false)
             } else {
                 switch (response.status) {
-                    case 500:
-                        console.error("Error. Vefique los datos ingresados")
-                        break;
                     default:
-                        console.error(response.status)
+                        toLogin()
                 }
-                setFetchingFunds(false)
             }
         }
+
         const getAccounts = async () => {
             var url = `${process.env.REACT_APP_APIURL}/accounts`;
-            setFetchingFunds(true)
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -64,21 +60,19 @@ const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFun
                 const data = await response.json()
                 setAccounts(data)
                 if (data.length > 0) sessionStorage.setItem('balance', data[0].balance)
-                setFetchingFunds(false)
             } else {
                 switch (response.status) {
-                    case 500:
-                        console.error("Error. Vefique los datos ingresados")
-                        break;
                     default:
-                        console.error(response.status)
+                        toLogin()
                 }
-                setFetchingFunds(false)
             }
         }
 
+        if(token===null) toLogin()
+        setFetchingFunds(true)
         getFunds()
         getAccounts()
+        setFetchingFunds(false)
 
         return () => {
         }
@@ -88,7 +82,7 @@ const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFun
     return (
         <Container fluid
             className={`accountParent px-0 ${NavInfoToggled ? "min-free-area-withoutNavInfo" : "min-free-area"} d-flex align-items-center`}>            {
-                FetchingFunds
+                    FetchingFunds
                     ?
                     <Container fluid>
                         <Row className="d-flex justify-content-center align-items-center">

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Route, useRouteMatch, useHistory,useLocation } from 'react-router-dom';
+import { Route, useRouteMatch, useHistory, useLocation } from 'react-router-dom';
 
 import './index.css'
 
@@ -14,14 +14,13 @@ import Footer from './Footer';
 import MovementsTable from './User/MovementsTable';
 import AddAccount from './Admin/AddAccount';
 
-import BuyForm from './User/BuyForm';
-import SellForm from './User/SellForm';
-import WithdrawForm from './User/WithdrawForm';
-import DepositForm from './User/DepositForm';
-import OperationStatus from './User/OperationStatus';
+import BuyForm from './User/newTicket/BuyForm';
+import SellForm from './User/newTicket/SellForm';
+import WithdrawForm from './User/newTicket/WithdrawForm';
+import DepositForm from './User/newTicket/DepositForm';
+import OperationStatus from './User/newTicket/OperationStatus';
 
 const UserDashboard = () => {
-    const admin = sessionStorage.getItem("admin")
     // eslint-disable-next-line 
     let location = useLocation()
 
@@ -32,14 +31,17 @@ const UserDashboard = () => {
     const [width, setWidth] = useState(window.innerWidth);
     const [numberOfFunds, setNumberOfFunds] = useState(0);
     const [itemSelected, setItemSelected] = useState(location.pathname.split('/')[2])
+    const [balance, setBalance] = useState(0)
 
+
+    const admin = sessionStorage.getItem("admin")
 
     useEffect(
-      () => {
-        const selected=location.pathname.split('/')[2]
-        setItemSelected(selected)
-      },
-      [location]
+        () => {
+            const selected = location.pathname.split('/')[2]
+            setItemSelected(selected)
+        },
+        [location]
     )
 
     function handleWindowSizeChange() {
@@ -54,33 +56,63 @@ const UserDashboard = () => {
         setUserData({ "id": 4, "username": "Marco", "email": "marcos.sk8.parengo@gmail.com", "externalId": "RL580035", "firstName": "Marco", "lastName": "Giangarelli", "gender": "M", "birthdate": "2002-05-16", "customer": {} })
     }
 
+
+
     useEffect(() => {
-        if (admin === undefined) {
-            sessionStorage.clear();
-            history.push(`/login`)
+        const toLogin = () => {
+            sessionStorage.clear(); history.push(`/login`);
+        }
+
+        const getAccounts = async () => {
+            var url = `${process.env.REACT_APP_APIURL}/accounts`;
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    Accept: "*/*",
+                    'Content-Type': 'application/json'
+                }
+            })
+
+            if (response.status === 200) {
+                const data = await response.json()
+                if (data.length > 0){ sessionStorage.setItem('balance', data[0].balance);setBalance(data[0].balance)}
+            } else {
+                switch (response.status) {
+                    default:
+                        toLogin()
+                }
+            }
         }
         window.addEventListener('resize', handleWindowSizeChange);
+
+        const admin = sessionStorage.getItem("admin")
+        const token = sessionStorage.getItem('access_token')
+
+        if (token === null || admin === undefined) toLogin()
+        
         getUserData();
+        getAccounts();
         return () => {
             window.removeEventListener('resize', handleWindowSizeChange);
         }
-    }, [admin, history])
+    },[history])
 
 
     return (
-        <div className="dashboard"       style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/backGround/bgDashboard.svg)` }}>
+        <div className="dashboard" style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/backGround/bgDashboard.svg)` }}>
             <NavInfo NavInfoToggled={NavInfoToggled} userData={userData} />
             <NavBar NavInfoToggled={NavInfoToggled} setNavInfoToggled={setNavInfoToggled}
                 setItemSelected={setItemSelected} itemSelected={itemSelected} />
             {JSON.parse(admin) ?
-                <div className={`adminContainer ${NavInfoToggled ?  "free-area-withoutNavInfo" : "free-area" }`}>
+                <div className={`adminContainer ${NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}`}>
                     <Route path={`${path}/addAccount`}>
                         <AddAccount />
                     </Route>
                 </div>
                 :
                 <>
-                    <NavBarTotal />
+                    <NavBarTotal balance={balance}/>
                     <Route path={`${path}/accounts`}>
                         <FundsContainer
                             NavInfoToggled={NavInfoToggled}
@@ -100,16 +132,16 @@ const UserDashboard = () => {
                         />
                     </Route>
                     <Route path={`${path}/buy`}>
-                        <BuyForm NavInfoToggled={NavInfoToggled}/>
+                        <BuyForm NavInfoToggled={NavInfoToggled} />
                     </Route>
                     <Route path={`${path}/sell`}>
-                        <SellForm NavInfoToggled={NavInfoToggled}/>
+                        <SellForm NavInfoToggled={NavInfoToggled} />
                     </Route>
                     <Route path={`${path}/deposit`}>
-                        <DepositForm NavInfoToggled={NavInfoToggled}/>
+                        <DepositForm NavInfoToggled={NavInfoToggled} />
                     </Route>
                     <Route path={`${path}/withdraw`}>
-                        <WithdrawForm NavInfoToggled={NavInfoToggled}/>
+                        <WithdrawForm NavInfoToggled={NavInfoToggled} />
                     </Route>
                     <Route path={`${path}/operationResult`}>
                         <OperationStatus setItemSelected={setItemSelected} NavInfoToggled={NavInfoToggled} />
