@@ -68,7 +68,7 @@ const UserDashboard = () => {
 
 
     return (
-        <div className="dashboard"       style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/background/bgDashboard.svg)` }}>
+        <div className="dashboard"       style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/backGround/bgDashboard.svg)` }}>
             <NavInfo NavInfoToggled={NavInfoToggled} userData={userData} />
             <NavBar NavInfoToggled={NavInfoToggled} setNavInfoToggled={setNavInfoToggled}
                 setItemSelected={setItemSelected} itemSelected={itemSelected} />
