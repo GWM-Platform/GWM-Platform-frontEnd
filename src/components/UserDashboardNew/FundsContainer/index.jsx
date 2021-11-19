@@ -9,14 +9,10 @@ const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFun
     // eslint-disable-next-line
     const { t } = useTranslation();
     const [Funds, setFunds] = useState([]);
-    const [SwitchState, setSwitchState] = useState(false);
     const [FetchingFunds, setFetchingFunds] = useState(false);
 
     const [Accounts, setAccounts] = useState([])
 
-    const handleSwitch = (event) => {
-        setSwitchState(event.target.checked)
-    }
     // eslint-disable-next-line 
     const toLogin = () => {
         sessionStorage.clear();
@@ -67,7 +63,7 @@ const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFun
             if (response.status === 200) {
                 const data = await response.json()
                 setAccounts(data)
-                if(data.length>0)sessionStorage.setItem('balance',data[0].balance)
+                if (data.length > 0) sessionStorage.setItem('balance', data[0].balance)
                 setFetchingFunds(false)
             } else {
                 switch (response.status) {
@@ -80,82 +76,14 @@ const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFun
                 setFetchingFunds(false)
             }
         }
-        const hardcodedFunds = [
-            {
-                "id": 11,
-                "clientId": 1,
-                "fundId": 4,
-                "shares": 17,
-                "createdAt": "2021-11-03T14:00:19.348Z",
-                "updatedAt": "2021-11-03T14:05:00.000Z",
-                "fund": {
-                    "type": "realState",
-                    "id": 4,
-                    "name": "Fondo hardcodeado Real state",
-                    "shares": 20,
-                    "sharePrice": 2,
-                    "freeShares": 15,
-                    "createdAt": "2021-11-02T12:36:32.559Z",
-                    "updatedAt": "2021-11-03T14:05:00.000Z"
-                }
-            },
-            {
-                "id": 12,
-                "clientId": 1,
-                "fundId": 5,
-                "shares": 7,
-                "createdAt": "2021-11-03T14:04:16.821Z",
-                "updatedAt": "2021-11-03T14:08:11.000Z",
-                "fund": {
-                    "type": "crypto",
-                    "id": 5,
-                    "name": "Fondo hardcodeado crypto",
-                    "shares": 7,
-                    "sharePrice": 55,
-                    "freeShares": 0,
-                    "createdAt": "2021-11-02T12:36:32.562Z",
-                    "updatedAt": "2021-11-03T14:08:11.000Z"
-                }
-            },
-            {
-                "id": 12,
-                "clientId": 1,
-                "fundId": 5,
-                "shares": 7,
-                "createdAt": "2021-11-03T14:04:16.821Z",
-                "updatedAt": "2021-11-03T14:08:11.000Z",
-                "fund": {
-                    "type": "crypto",
-                    "id": 5,
-                    "name": "Fondo hardcodeado crypto",
-                    "shares": 7,
-                    "sharePrice": 55,
-                    "freeShares": 0,
-                    "createdAt": "2021-11-02T12:36:32.562Z",
-                    "updatedAt": "2021-11-03T14:08:11.000Z"
-                }
-            }
-        ]
-        const hardcodedAccounts =[{
-                "id": 1,
-                "clientId": 1,
-                "balance": 5652,
-                "createdAt": "2021-11-17T21:37:32.427Z",
-                "updatedAt": "2021-11-17T21:56:10.000Z"
-            }]
 
-        if (SwitchState) {
-            getFunds()
-            getAccounts()
-        } else {
-            setFunds(hardcodedFunds)
-            setAccounts(hardcodedAccounts)
-            sessionStorage.setItem('balance',hardcodedAccounts[0].balance)
-        }
+        getFunds()
+        getAccounts()
+
         return () => {
         }
         // eslint-disable-next-line
-    }, [SwitchState])
+    }, [])
 
     return (
         <Container fluid
@@ -178,8 +106,6 @@ const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFun
                         Funds={Funds}
                         numberOfFunds={numberOfFunds}
                         Accounts={Accounts}
-                        SwitchState={SwitchState}
-                        handleSwitch={handleSwitch}
                     />
             }
         </Container>

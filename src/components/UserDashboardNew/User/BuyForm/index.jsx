@@ -11,7 +11,6 @@ const BuyForm = ({ NavInfoToggled }) => {
     //HardCoded data (here we should request Funds that have available feeParts to sell)
     const [data, setData] = useState({ amount: 1, FundSelected: -1 })
     const [some, setSome] = useState(false)
-    const [SwitchState, setSwitchState] = useState(false)
     const [Funds, setFunds] = useState([])
     const [validated, setValidated] = useState(false);
     const [CollapsedFields, setCollapsedFields] = useState(true);
@@ -73,136 +72,8 @@ const BuyForm = ({ NavInfoToggled }) => {
                 }
             }
         }
-        const hardcodedFunds = [{
-            name: "CryptoCurrency Fund",
-            shares: 1000,
-            freeShares: 37,
-            sharePrice: 30,
-            composition: [{
-                label: 'Bitcoin USD',
-                value: 15
-            }, {
-                label: 'Ethereum USD',
-                value: 5
-            }, {
-                label: 'HEX USD',
-                value: 7
-            }, {
-                label: 'Tether USD',
-                value: 0.2
-            }, {
-                label: 'Cardano USD',
-                value: 5
-            }, {
-                label: 'BinanceCoin US',
-                value: 15
-            }]
 
-        }, {
-            name: "CryptoCurrency Fund",
-            shares: 10000,
-            freeShares: 1000,
-            sharePrice: 6,
-            composition: [{
-                label: 'Bitcoin USD',
-                value: 25
-            }, {
-                label: 'Cardano USD',
-                value: 5
-            }, {
-                label: 'Ethereum USD',
-                value: 75,
-            }]
-
-        }, {
-            name: "CryptoCurrency Fund",
-            shares: 10000,
-            freeShares: 1000,
-            sharePrice: 6,
-            composition: [{
-                label: 'Bitcoin USD',
-                value: 25
-            }, {
-                label: 'Cardano USD',
-                value: 5
-            }, {
-                label: 'Ethereum USD',
-                value: 75,
-            }]
-        }, {
-            name: "CryptoCurrency Fund",
-            shares: 10000,
-            freeShares: 1000,
-            sharePrice: 6,
-            composition: [{
-                label: 'Bitcoin USD',
-                value: 25
-            }, {
-                label: 'Cardano USD',
-                value: 5
-            }, {
-                label: 'Ethereum USD',
-                value: 75,
-            }]
-
-        }, {
-            name: "CryptoCurrency Fund",
-            shares: 1000,
-            freeShares: 37,
-            sharePrice: 30,
-            composition: [{
-                label: 'Bitcoin USD',
-                value: 15
-            }, {
-                label: 'Ethereum USD',
-                value: 5
-            }, {
-                label: 'HEX USD',
-                value: 7
-            }, {
-                label: 'Tether USD',
-                value: 0.2
-            }, {
-                label: 'Cardano USD',
-                value: 5
-            }, {
-                label: 'BinanceCoin US',
-                value: 15
-            }]
-
-        }, {
-            name: "CryptoCurrency Fund",
-            shares: 10000,
-            freeShares: 1000,
-            sharePrice: 6,
-            composition: [{
-                label: 'Bitcoin USD',
-                value: 25
-            }, {
-                label: 'Cardano USD',
-                value: 5
-            }, {
-                label: 'Ethereum USD',
-                value: 75,
-            }]
-
-        }, {
-            name: "CryptoCurrency Fund",
-            shares: 10000,
-            freeShares: 1000,
-            sharePrice: 6,
-            composition: [{
-                label: 'Bitcoin USD',
-                value: 25
-            }, {
-                label: 'Cardano USD',
-                value: 5
-            }, {
-                label: 'Ethereum USD',
-                value: 75,
-            }]
-        }]
-        const getAccountWithApi = async () => {
+        const getAccount = async () => {
             var url = `${process.env.REACT_APP_APIURL}/accounts`;
             const response = await fetch(url, {
                 method: 'GET',
@@ -227,44 +98,22 @@ const BuyForm = ({ NavInfoToggled }) => {
                 }
             }
         }
-
-        const getAccount = () => {
-            if (SwitchState) {
-                getAccountWithApi()
-            } else {
-                setAccount({
-                    "id": 1,
-                    "clientId": 1,
-                    "balance": 50,
-                    "createdAt": "2021-11-17T21:37:32.427Z",
-                    "updatedAt": "2021-11-17T21:56:10.000Z"
-                })
-                sessionStorage.setItem('balance',5652)
-            }
-        };
         getAccount()
-        if (SwitchState) {
-            getFunds()
-        } else {
-            setFunds(hardcodedFunds)
-        }
+        getFunds()
+
         let aux = data
         aux.FundSelected = -1
         setData(aux)
         return () => {
         }
         // eslint-disable-next-line
-    }, [SwitchState])
+    }, [])
 
     const handleChange = (event) => {
         let aux = data;
         aux[event.target.id] = event.target.value;
         setData(aux);
         setSome(!some)
-    }
-
-    const handleSwitch = () => {
-        setSwitchState(!SwitchState)
     }
 
     const handleSubmit = (event) => {
@@ -295,7 +144,7 @@ const BuyForm = ({ NavInfoToggled }) => {
             <Row className="newTicket">
                 <Col xs="12">
                     <Accordion flush defaultActiveKey="0">
-                        <FundSelector SwitchState={SwitchState} handleSwitch={handleSwitch} openAccordion={openAccordion}
+                        <FundSelector openAccordion={openAccordion}
                             Funds={Funds} data={data} some={some} setData={setData} setSome={setSome}/>
                     </Accordion>
                     <Accordion flush activeKey={CollapsedFields ? "-1" : "0"}>

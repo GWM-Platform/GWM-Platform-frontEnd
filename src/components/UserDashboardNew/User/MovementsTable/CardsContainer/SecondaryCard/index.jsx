@@ -14,7 +14,7 @@ const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownK
     const ref = useRef(null)
 
     const { t } = useTranslation();
-    const balanceInCash=parentKey===0 ? (Fund.shares * Fund.fund.sharePrice) : Fund.balance 
+    const balanceInCash=parentKey===1 ? (Fund.shares * Fund.fund.sharePrice) : Fund.balance 
 
     return (
         <Collapse in={categorySelected!==parentKey || (selected!==ownKey && categorySelected===parentKey )} className="pt-0 pb-2">
@@ -23,7 +23,7 @@ const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownK
                     <Col sm="4" lg="auto" className="d-none d-sm-none d-md-flex currencyCol d-flex align-items-center">
                         <div className="currencyContainer d-flex align-items-center justify-content-center">
                             {
-                                parentKey === 0 ?
+                                parentKey === 1 ?
                                     Fund.fund.type !== undefined ?
                                         <img className="currency px-0 mx-0" alt={Fund.fund.type} src={process.env.PUBLIC_URL + '/images/' + Fund.fund.type + '.svg'} />
                                         :
@@ -36,7 +36,7 @@ const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownK
                     <Col sm="12" md="8" className="secondary d-flex align-items-start flex-column" >
                         <div className="mb-auto mt-2">
                             <h1 className="description mt-0 pt-0">
-                                {t(parentKey === 0 ? Fund.fund.name : "Cash")}
+                                {t(parentKey === 1 ? Fund.fund.name : "Cash")}
                             </h1>
                         </div>
                         <div className="mb-2">

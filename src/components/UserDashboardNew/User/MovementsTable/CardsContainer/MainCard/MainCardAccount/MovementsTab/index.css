@@ -35,7 +35,7 @@
     width: 100%;
 }
 .movementsTableContainer {
-    min-height: calc( 100vh - 412px );
+    min-height: calc( 100vh - 367px  );
     overflow: auto;
     display: inline-block;
     width: 100%;
@@ -43,11 +43,11 @@
 .movementsTable {
     overflow: auto;
     width: 100%;
-    min-height: calc( 100vh - 412px );
+    min-height: calc( 100vh - 367px  );
 }
 
 .movementsTableContainer-navInfoToggled {
-    min-height: calc( 100vh - 412px + 76px );
+    min-height: calc( 100vh - 367px  + 76px );
     overflow: auto;
     display: inline-block;
     width: 100%;
@@ -55,7 +55,7 @@
 .movementsTable-navInfoToggled {
     overflow: auto;
     width: 100%;
-    min-height: calc( 100vh - 412px + 76px );
+    min-height: calc( 100vh - 367px  + 76px );
 }
 @media (min-width: 1201px) {
     .tableDescription {

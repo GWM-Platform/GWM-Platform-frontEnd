@@ -49,14 +49,6 @@ const FormMobile = ({ handleChange, handleSubmit, buttonDisabled, setButtonDisab
                     <Button variant="link" size="sm" className="forgot" href="/forgotPassword">{t('Forgot Password?')}</Button>
                 </Col>
             </Row>
-            <Form.Group className="mb-3">
-                <Form.Check
-                    id="api"
-                    value={data.api}
-                    onChange={handleChange}
-                    type="checkbox"
-                    label="¿Deseas Logearte con la api?" />
-            </Form.Group>
             <Button type="submit" disabled={buttonDisabled} variant="danger" className="mainColor button block px-4 py-2">
                 <Spinner
                     as="span"

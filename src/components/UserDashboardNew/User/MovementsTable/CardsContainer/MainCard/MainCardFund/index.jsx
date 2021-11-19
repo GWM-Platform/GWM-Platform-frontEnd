@@ -12,7 +12,7 @@ import MovementsTab from './MovementsTab';
 import FundDetail from './FundDetail';
 import './index.css'
 
-const MainCard = ({ Fund,  Hide, setHide, NavInfoToggled,SwitchState }) => {
+const MainCard = ({ Fund,  Hide, setHide, NavInfoToggled }) => {
     const [SelectedTab, setSelectedTab] = useState("0")
     const [Performance, setPerformance] = useState(0)
 
@@ -32,7 +32,7 @@ const MainCard = ({ Fund,  Hide, setHide, NavInfoToggled,SwitchState }) => {
 
     return (
         <div className="movementsMainCardFund">
-            <Container fluid className="p-0 mt-4">
+            <Container fluid className="p-0 mt-2">
                 <Row className="m-0">
                     <Container className="bg-white info ms-0 mb-2 px-0">
                         <Col className="d-flex justify-content-between align-items-end pe-2">
@@ -110,7 +110,7 @@ const MainCard = ({ Fund,  Hide, setHide, NavInfoToggled,SwitchState }) => {
                         {
                             {
                                 0:
-                                    <MovementsTab setPerformance={setPerformance} NavInfoToggled={NavInfoToggled} SwitchState={SwitchState}
+                                    <MovementsTab setPerformance={setPerformance} NavInfoToggled={NavInfoToggled}
                                         Fund={Fund} />,
                                 1:
                                     <FundDetail NavInfoToggled={NavInfoToggled} />

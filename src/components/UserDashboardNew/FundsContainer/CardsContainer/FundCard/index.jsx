@@ -8,7 +8,7 @@ import { faEyeSlash, faEye, faIdCard, faPaperPlane } from '@fortawesome/free-sol
 import './index.css'
 import ChangeNameModal from './ChangeNameModal'
 
-const FundCard = ({ Hide, setHide, switchState, Fund, Funds, setItemSelected }) => {
+const FundCard = ({ Hide, setHide, Fund }) => {
     const [show, setShow] = useState(false)
 
     const handleClose = () => setShow(false);

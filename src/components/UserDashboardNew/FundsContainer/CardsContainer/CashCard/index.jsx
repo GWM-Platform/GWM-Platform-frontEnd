@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Row, Col, Card, Button, Form } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -7,7 +7,7 @@ import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 import { useHistory } from 'react-router-dom';
 import './index.css'
 
-const CashCard = ({ Hide, setHide, handleSwitch, SwitchState, Fund }) => {
+const CashCard = ({ Hide, setHide, Fund }) => {
     const { t } = useTranslation();
 
     let history = useHistory();
@@ -31,13 +31,6 @@ const CashCard = ({ Hide, setHide, handleSwitch, SwitchState, Fund }) => {
                     </div>
                 </Card.Header>
                 <Card.Body className="body">
-                    <Form.Check
-                        onChange={handleSwitch}
-                        checked={SwitchState}
-                        type="switch"
-                        id="FundApi"
-                        label={t("API's Funds (For devops)")}
-                    />
                     <Card.Title >
                         <h1 className="title mt-0">
                             {t("Cash")}

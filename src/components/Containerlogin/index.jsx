@@ -24,14 +24,7 @@ const ContainerLogin = () => {
 
   const handleChange = (event) => {
     let aux = data;
-    switch (event.target.id) {
-      case 'api':
-        aux[event.target.id] = event.target.checked;
-        break
-      default:
-        aux[event.target.id] = event.target.value;
-        break
-    }
+    aux[event.target.id] = event.target.value;
     setData(aux);
     setSome(!Some)
     setButtonDisabled(((data.password !== undefined && data.password !== "") && (data.email !== undefined && data.email !== "")) ? false : true)
@@ -43,30 +36,10 @@ const ContainerLogin = () => {
     setButtonDisabled(true)
     setLoading(true)
     setButtonContent("Loading")
-    if (data.api) {
-      loginWithApi()
-    } else {
-      loginWithoutApi()
-    }
+    Login()
   }
 
-  const loginWithoutApi = () => {
-    if (data.email === "admin" && data.password === "1234") {
-      sessionStorage.setItem("admin", true)
-      toDashBoard("addAccount");
-      setError("")
-    } else if (data.email === "user" && data.password === "1234") {
-      sessionStorage.setItem("admin", false)
-      toDashBoard("accounts");
-    } else {
-      setError("Sorry, the login failed! Pleasse Try again")
-      setButtonContent("Login")
-      setButtonDisabled(false)
-      setLoading(false)
-    }
-  }
-
-  const loginWithApi = async () => {
+  const Login = async () => {
     var url = `${process.env.REACT_APP_APIURL}/auth/login`;
     const response = await fetch(url, {
       method: 'POST',
@@ -145,7 +118,7 @@ const ContainerLogin = () => {
                 setLoading={setLoading}
                 data={data}
                 setData={setData} />
-                :
+              :
               <FormDesktop
                 handleChange={handleChange}
                 handleSubmit={handleSubmit}

@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 import { useTranslation } from "react-i18next";
 
-const FundSelector = ({ handleSwitch, SwitchState, data, setData, some, setSome, Funds, openAccordion }) => {
+const FundSelector = ({ data, setData, some, setSome, Funds, openAccordion }) => {
     const { t } = useTranslation();
     const [showRightChevron, setShowRightChevron] = useState(true)
     const [showLeftChevron, setShowLeftChevron] = useState(false)
@@ -81,13 +81,6 @@ const FundSelector = ({ handleSwitch, SwitchState, data, setData, some, setSome,
             </Accordion.Header>
             <Accordion.Body>
                 <div className="formSection">
-                    <Form.Check
-                        onChange={handleSwitch}
-                        value={SwitchState}
-                        type="switch"
-                        id="FundApi"
-                        label={t("API's Funds (For devops)")}
-                    />
                     <Row className="d-flex justify-content-center">
                         <div className="p-relative">
                             <Row className="flex-row flex-nowrap overflow-hidden" ref={FundsContainer}>

@@ -1,6 +1,5 @@
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 
-import './index.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import TableLastMovements from './TableLastMovements';
 //import MovementsPagination from './MovementsPagination';
@@ -8,7 +7,7 @@ import NoMovements from './NoMovements';
 import Loading from './Loading';
 
 
-const MovementsTab = ({ Fund, SwitchState,NavInfoToggled,setPerformance }) => {
+const MovementsTab = ({ Fund,NavInfoToggled,setPerformance }) => {
     // eslint-disable-next-line 
 
     const [Movements, setMovements] = useState([])
@@ -17,9 +16,8 @@ const MovementsTab = ({ Fund, SwitchState,NavInfoToggled,setPerformance }) => {
 
     const token = sessionStorage.getItem('access_token')
 
-    const getMovementsWithApi = async () => {
+    const getMovements = async () => {
         var url = `${process.env.REACT_APP_APIURL}/funds/${Fund.fundId}/transactions`;
-        setFetchingMovements(true)
         const response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -40,83 +38,14 @@ const MovementsTab = ({ Fund, SwitchState,NavInfoToggled,setPerformance }) => {
                 default:
                     console.error(response.status)
             }
-            setFetchingMovements(false)
         }
     }
 
-    const getMovements = useCallback(
-        () => {
-            setFetchingMovements(true)
-            if (SwitchState) {
-                getMovementsWithApi()
-            } else {
-                setMovements(
-                    [
-                        {
-                            "id": 3,
-                            "clientId": 1,
-                            "fundId": 2,
-                            "shares": -2,
-                            "sharePrice": 20,
-                            "createdAt": "2021-11-16T00:35:35.299Z"
-                        },
-                        {
-                            "id": 1,
-                            "clientId": 1,
-                            "fundId": 2,
-                            "shares": 2.5,
-                            "sharePrice": 20,
-                            "createdAt": "2021-11-16T00:33:17.279Z"
-                        },
-                        {
-                            "id": 1,
-                            "clientId": 1,
-                            "fundId": 2,
-                            "shares": 2.5,
-                            "sharePrice": 20,
-                            "createdAt": "2021-11-16T00:33:17.279Z"
-                        },
-                        {
-                            "id": 1,
-                            "clientId": 1,
-                            "fundId": 2,
-                            "shares": 2.5,
-                            "sharePrice": 20,
-                            "createdAt": "2021-11-16T00:33:17.279Z"
-                        },
-                        {
-                            "id": 1,
-                            "clientId": 1,
-                            "fundId": 2,
-                            "shares": 2.5,
-                            "sharePrice": 20,
-                            "createdAt": "2021-11-16T00:33:17.279Z"
-                        },
-                        {
-                            "id": 1,
-                            "clientId": 1,
-                            "fundId": 2,
-                            "shares": 2.5,
-                            "sharePrice": 20,
-                            "createdAt": "2021-11-16T00:33:17.279Z"
-                        },
-                        {
-                            "id": 1,
-                            "clientId": 1,
-                            "fundId": 2,
-                            "shares": 2.5,
-                            "sharePrice": 20,
-                            "createdAt": "2021-11-16T00:33:17.279Z"
-                        }
-                    ]
-                )
-            }
-            setFetchingMovements(false)
-            // eslint-disable-next-line
-        }, [SwitchState, Fund]);
 
     useEffect(() => {
+        setFetchingMovements(true)
         getMovements();
+        setFetchingMovements(false)
         return () => {
         }
         // eslint-disable-next-line
@@ -129,7 +58,7 @@ const MovementsTab = ({ Fund, SwitchState,NavInfoToggled,setPerformance }) => {
                 <div className="d-flex align-items-start justify-content-center flex-column MovementsTableContainer">
                     {
                         FetchingMovements ?
-                            <Loading />
+                            <Loading NavInfoToggled={NavInfoToggled}/>
                             :
                             Movements.length > 0 ?
                                 <TableLastMovements

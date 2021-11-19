@@ -52,9 +52,6 @@ const FormDesktop = ({ handleChange, handleSubmit, buttonDisabled, error, button
                             <Button variant="link" size="sm" className="forgot" href="/forgotPassword">{t('Forgot Password?')}</Button>
                         </Col>
                     </Row>
-                    <Form.Group className="mb-3">
-                        <Form.Check onChange={handleChange} id="api" type="checkbox" label="¿Deseas Logearte con la api?" />
-                    </Form.Group>
                 </Card.Body>
                 <Card.Footer>
                     <Button type="submit" disabled={buttonDisabled} variant="danger" className="mainColor button block px-4 py-2">
