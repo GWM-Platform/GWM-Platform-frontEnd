@@ -12,7 +12,7 @@ import MovementsTab from './MovementsTab';
 import FundDetail from './FundDetail';
 import './index.css'
 
-const MainCard = ({ Fund,  Hide, setHide, NavInfoToggled }) => {
+const MainCard = ({ Fund, Hide, setHide, NavInfoToggled }) => {
     const [SelectedTab, setSelectedTab] = useState("0")
     const [Performance, setPerformance] = useState(0)
 
@@ -28,7 +28,7 @@ const MainCard = ({ Fund,  Hide, setHide, NavInfoToggled }) => {
         history.push(`/login`);
     }
 
-    const balanceInCash=(Fund.shares * Fund.fund.sharePrice)
+    const balanceInCash = (Fund.shares * Fund.fund.sharePrice)
 
     return (
         <div className="movementsMainCardFund">
@@ -44,6 +44,11 @@ const MainCard = ({ Fund,  Hide, setHide, NavInfoToggled }) => {
                                 <span className="ps-3" style={{ fontWeight: "bolder" }}>
                                     ${Fund.fund.sharePrice}
                                 </span>
+                            </h2>
+                        </Col>
+                        <Col>
+                            <h2 className="px-2 left">
+                                {Fund.shares} FeeParts in possession
                             </h2>
                         </Col>
                         <Col className="d-flex justify-content-between align-items-end pe-2 pb-2 border-bottom-main">
