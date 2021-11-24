@@ -24,7 +24,7 @@ const TableLastMovements = ({ page, setPage, movsShown, movementsCount, content,
                         <th className="tableHeader">{t("Date")}</th>
                         <th className="d-none d-sm-table-cell">{t("in FeePars")}</th>
                         <th className="tableAmount">{t("In Cash")}</th>
-                        <th className="tableDescription d-none d-sm-table-cell">{t("Value of the share (at the time of the purchase / sale operation)")}</th>
+                        <th className="tableDescription d-none d-sm-table-cell">{t("Value of the share (at the time of the operation)")}</th>
                     </tr>
                 </thead>
                 <tbody>

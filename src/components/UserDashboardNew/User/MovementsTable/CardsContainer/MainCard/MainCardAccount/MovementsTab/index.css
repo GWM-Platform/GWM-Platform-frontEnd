@@ -143,9 +143,9 @@
         height: calc(100vh - 130px);
     }
     .movementsTable {
-        max-height: auto;
+        max-height: none;
     }
     .movementsTableAccounts {
-        max-height: auto;
+        max-height: none;
     }
 }

@@ -1,53 +1,57 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react';
 import { Row, Col } from 'react-bootstrap';
+import { useTranslation } from "react-i18next";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import MainCardFund from './MainCard/MainCardFund';
 import MainCardAccount from './MainCard/MainCardAccount';
 
 import SecondaryCard from './SecondaryCard';
-import MobileCard from './MobileCard';
+import MobileCardFound from './MobileCards/MobileCardFound';
+import MobileCardAccount from './MobileCards/MobileCardAccount';
 
 import './index.css'
 
 const CardsContainer = ({ setItemSelected, isMobile, Funds, numberOfFunds, selected, setSelected, NavInfoToggled, Accounts }) => {
-    const [categorySelected, setCategorySelected] = useState( Accounts.length > 0 ? 0 : Funds.length > 0 ? 1 : 0 )
+    const [categorySelected, setCategorySelected] = useState(Accounts.length > 0 ? 0 : Funds.length > 0 ? 1 : 0)
     const [Hide, setHide] = useState(false)
+
+    const { t } = useTranslation();
 
     useEffect(() => {
         if (numberOfFunds > 0) {
             if (Accounts.length > 0) { setCategorySelected(0) } else { if (Funds.length > 0) setCategorySelected(1) }
         }
-    }, [Accounts, Funds,numberOfFunds])
-
-    console.log(Accounts,Funds,numberOfFunds,categorySelected)
+    }, [Accounts, Funds, numberOfFunds])
 
     return (
         <Row className="HistoryCardsContainer">
             {isMobile ?
-                <Col md="12" lg="4" xl="3" className="secondaryCardContainer ps-2 ps-sm-2 ps-md-2 ps-md-0 ps-lg-0 pe-2 pt-0">
-                    {Funds.map(
-                        (j, k) => {
-                            ;
-                            return (
-                                <MobileCard
-                                    setItemSelected={setItemSelected}
-                                    numberOfFunds={numberOfFunds}
-                                    setCategorySelected={setCategorySelected}
-                                    setSelected={setSelected}
-                                    parentKey={1}
-                                    ownKey={k}
-                                    Fund={j}
-                                    selected={selected}
-                                    categorySelected={categorySelected}
-                                    Funds={Funds}
-                                    display={true}
-                                />
-                            )
-                        }
-                    )
-                    }
-                </Col>
+                Accounts.length > 1 || Funds.length > 1 ?
+                    <>
+                        <Col md="12" className="secondaryCardContainer ps-2 ps-sm-2 ps-md-2 ps-md-0 ps-lg-0 pe-2 pt-0">
+                            {Accounts.map(
+                                (j, k) => {
+                                    ;
+                                    return (
+                                        <MobileCardAccount Fund={j} />
+                                    )
+                                }
+                            )}
+                            {Funds.map(
+                                (j, k) => {
+                                    ;
+                                    return (
+                                        <MobileCardFound Fund={j} />
+                                    )
+                                }
+                            )}
+                        </Col>
+                    </>
+                    :
+                    <Col className="h-100">
+                        <h1>{t("Your user doesn't have any account")}</h1>
+                    </Col>
                 :
                 numberOfFunds > 1 ?
                     <>
