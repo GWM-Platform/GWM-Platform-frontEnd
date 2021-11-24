@@ -90,8 +90,7 @@ const MainCard = ({ Fund,  Hide, setHide, NavInfoToggled }) => {
                         {
                             {
                                 0:
-                                    <MovementsTab NavInfoToggled={NavInfoToggled}
-                                        Fund={Fund} />,
+                                    <MovementsTab NavInfoToggled={NavInfoToggled} Fund={Fund} />,
                                 1:
                                     <FundDetail />
                             }[SelectedTab]

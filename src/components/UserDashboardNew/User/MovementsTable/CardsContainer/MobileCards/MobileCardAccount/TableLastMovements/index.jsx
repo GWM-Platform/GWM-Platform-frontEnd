@@ -8,14 +8,12 @@ const TableLastMovements = ({ content,fetchingMovements }) => {
     const { t } = useTranslation();
     const [open, setOpen] = useState(false);
 
-    console.log(fetchingMovements)
-
     return (
         <Col md="12" className="p-0 mt-2">
             {fetchingMovements ?
                 <h2>{t("Loading movements")}</h2> :
                 content.length === 0 || content === null ?
-                    <h2>{t("There are no records of any movement in this Fund")}</h2> :
+                    <h2>{t("There are no records of any movement in this Account")}</h2> :
                     <div>
                         <Container fluid className="p-0"
                             onClick={() => setOpen(!open)}
@@ -32,11 +30,7 @@ const TableLastMovements = ({ content,fetchingMovements }) => {
                                     <thead >
                                         <tr>
                                             <th className="tableHeader">{t("Date")}</th>
-                                            <th className="tableDescription d-none d-sm-table-cell">{t("Value of the share (at the time of the purchase / sale operation)")}</th>
-                                        </tr>
-                                        <tr>
-                                            <th className="d-none d-sm-table-cell">{t("in FeePars")}</th>
-                                            <th className="tableAmount">{t("In Cash")}</th>
+                                            <th className="tableDescription d-sm-table-cell">{t("Amount")}</th>
                                         </tr>
                                     </thead>
                                     <tbody>

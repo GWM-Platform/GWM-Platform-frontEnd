@@ -212,7 +212,7 @@ i18n
           "Hi": "Hola",
           "Reset password": "Reestablecer",
           "API's Funds (For devops)": "Fondos de la API (Para desarrolladores)",
-          "Value of the share (at the time of the purchase / sale operation)": "Valor de la cuotaparte (en el momento de la operación de compra / venta)",
+          "Value of the share (at the time of the operation)": "Valor de la cuotaparte (en el momento de la operación)",
           "in FeePars": "En cuotapartes",
           "In Cash": "En dinero",
           "Last Movements":"Ultimos Movimientos",
