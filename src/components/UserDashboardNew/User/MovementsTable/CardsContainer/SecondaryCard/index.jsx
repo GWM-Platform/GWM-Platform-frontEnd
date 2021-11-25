@@ -20,7 +20,7 @@ const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownK
         <Collapse in={categorySelected!==parentKey || (selected!==ownKey && categorySelected===parentKey )} className="pt-0 pb-2">
             <Container ref={ref} >
                 <Row className="secondaryCard" onClick={select}>
-                    <Col sm="4" lg="auto" className="d-none d-sm-none d-md-flex currencyCol d-flex align-items-center">
+                    <Col sm="4" lg="auto" className="d-none d-sm-none d-md-none d-lg-flex currencyCol d-flex align-items-center">
                         <div className="currencyContainer d-flex align-items-center justify-content-center">
                             {
                                 parentKey === 1 ?
@@ -33,7 +33,7 @@ const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownK
                             }
                         </div>
                     </Col>
-                    <Col sm="12" md="8" className="secondary d-flex align-items-start flex-column" >
+                    <Col sm="12" md="12" lg="8" className="secondary d-flex align-items-start flex-column" >
                         <div className="mb-auto mt-2">
                             <h1 className="description mt-0 pt-0">
                                 {t(parentKey === 1 ? Fund.fund.name : "Cash")}

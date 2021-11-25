@@ -1,7 +1,7 @@
 {
   "name": "gwm",
   "version": "0.1.0",
-  "homepage": "https://gwm-platform.github.io/",
+  "homepage": "https://gwm-platform.github.io/GWM-Platform-frontEnd/",
   "private": true,
   "engines": {
     "node": "16.x"

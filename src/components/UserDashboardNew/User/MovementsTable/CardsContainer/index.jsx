@@ -9,12 +9,15 @@ import MainCardAccount from './MainCard/MainCardAccount';
 import SecondaryCard from './SecondaryCard';
 import MobileCardFound from './MobileCards/MobileCardFound';
 import MobileCardAccount from './MobileCards/MobileCardAccount';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
 
 import './index.css'
 
 const CardsContainer = ({ setItemSelected, isMobile, Funds, numberOfFunds, selected, setSelected, NavInfoToggled, Accounts }) => {
     const [categorySelected, setCategorySelected] = useState(Accounts.length > 0 ? 0 : Funds.length > 0 ? 1 : 0)
     const [Hide, setHide] = useState(false)
+    const [collapseSecondary, setCollapseSecondary] = useState(false)
 
     const { t } = useTranslation();
 
@@ -25,11 +28,11 @@ const CardsContainer = ({ setItemSelected, isMobile, Funds, numberOfFunds, selec
     }, [Accounts, Funds, numberOfFunds])
 
     return (
-        <Row className="HistoryCardsContainer">
+        <Row className="HistoryCardsContainer d-flex flex-md-nowrap">
             {isMobile ?
                 Accounts.length > 1 || Funds.length > 1 ?
                     <>
-                        <Col md="12" className="secondaryCardContainer ps-2 ps-sm-2 ps-md-2 ps-md-0 ps-lg-0 pe-2 pt-0">
+                        <Col md="12" className="ps-2 ps-sm-2 ps-md-2 ps-md-0 ps-lg-0 pe-2 pt-0">
                             {Accounts.map(
                                 (j, k) => {
                                     ;
@@ -55,7 +58,10 @@ const CardsContainer = ({ setItemSelected, isMobile, Funds, numberOfFunds, selec
                 :
                 numberOfFunds > 1 ?
                     <>
-                        <Col className="px-2 " md="12" lg="8" xl="9" >
+                        <Col className="px-2 p-relative mainCardCol"
+                            md="12"
+                            lg={collapseSecondary ? "12" : "8"}
+                            xl={collapseSecondary ? "12" : "9"} >
                             {
                                 categorySelected === 1 ?
                                     <MainCardFund
@@ -70,10 +76,12 @@ const CardsContainer = ({ setItemSelected, isMobile, Funds, numberOfFunds, selec
                                         NavInfoToggled={NavInfoToggled}
                                     />
                             }
-
-
+                            <div className={`d-none d-md-none d-lg-block collapser ${collapseSecondary ? "expanded" : "collapsed"}`}
+                                onClick={() => { setCollapseSecondary(!collapseSecondary) }}>
+                                <FontAwesomeIcon icon={faChevronRight} />
+                            </div>
                         </Col>
-                        <Col md="12" lg="4" xl="3" className="secondaryCardContainer mt-2 ps-2 ps-sm-2 ps-md-2 ps-md-0 ps-lg-0 pe-2 pt-0">
+                        <Col sm="4" md="4" lg="4" xl="3" className={`secondaryCardContainer ${collapseSecondary ?  "collapsed" : "expanded"} p-relative mt-2 ps-2 ps-sm-2 ps-md-2 ps-md-0 ps-lg-0 pe-2 pt-0`}>
                             {
                                 Accounts.length > 0 && (categorySelected === 0 ? Accounts.length - 1 > 0 : true) ?
                                     <div className="CategoryLabel">
@@ -104,7 +112,6 @@ const CardsContainer = ({ setItemSelected, isMobile, Funds, numberOfFunds, selec
                                     </div>
                                     :
                                     null
-
                             }
                             {Funds.map(
                                 (Fund, key) => {
@@ -121,7 +128,10 @@ const CardsContainer = ({ setItemSelected, isMobile, Funds, numberOfFunds, selec
                                 }
                             )
                             }
-
+                            <div className={`d-md-block d-lg-none collapser ${collapseSecondary ? "expanded" : "collapsed"}`}
+                                onClick={() => { setCollapseSecondary(!collapseSecondary) }}>
+                                <FontAwesomeIcon icon={faChevronRight} />
+                            </div>
                         </Col>
                     </>
                     :
