@@ -55,7 +55,7 @@
 .movementsTable-navInfoToggled {
     overflow: auto;
     width: 100%;
-    min-height: calc( 100vh - 367px  + 76px );
+    min-height: calc( 100vh - 387px  + 76px );
 }
 @media (min-width: 1201px) {
     .tableDescription {

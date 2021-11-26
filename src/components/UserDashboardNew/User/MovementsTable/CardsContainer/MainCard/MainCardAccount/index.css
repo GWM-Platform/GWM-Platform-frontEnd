@@ -81,5 +81,5 @@
 }
 
 .movementsMainCardAccount .loadingMovements.navInfoToggled {
-    height: calc( 100vh - 368 +  76px )
+    height: calc( 100vh - 368px +  76px )
 }

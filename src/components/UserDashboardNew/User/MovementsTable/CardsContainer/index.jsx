@@ -76,12 +76,17 @@ const CardsContainer = ({ setItemSelected, isMobile, Funds, numberOfFunds, selec
                                         NavInfoToggled={NavInfoToggled}
                                     />
                             }
-                            <div className={`d-none d-md-none d-lg-block collapser ${collapseSecondary ? "expanded" : "collapsed"}`}
+                            <div className={`d-none d-sm-block collapser ${collapseSecondary ? "expanded" : "collapsed"}`}
                                 onClick={() => { setCollapseSecondary(!collapseSecondary) }}>
                                 <FontAwesomeIcon icon={faChevronRight} />
                             </div>
                         </Col>
-                        <Col sm="4" md="4" lg="4" xl="3" className={`secondaryCardContainer ${collapseSecondary ?  "collapsed" : "expanded"} p-relative mt-2 ps-2 ps-sm-2 ps-md-2 ps-md-0 ps-lg-0 pe-2 pt-0`}>
+                        <Col sm="4" md="4" lg="4" xl="3"
+                            className={
+                                `secondaryCardContainer 
+                                ${NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}
+                                ${collapseSecondary ? "collapsed" : "expanded"} p-relative px-0 pe-2 pt-0`
+                            }>
                             {
                                 Accounts.length > 0 && (categorySelected === 0 ? Accounts.length - 1 > 0 : true) ?
                                     <div className="CategoryLabel">
@@ -111,8 +116,7 @@ const CardsContainer = ({ setItemSelected, isMobile, Funds, numberOfFunds, selec
                                         <h1 className="title">Funds</h1>
                                     </div>
                                     :
-                                    null
-                            }
+                                    null}
                             {Funds.map(
                                 (Fund, key) => {
                                     ;
@@ -126,12 +130,7 @@ const CardsContainer = ({ setItemSelected, isMobile, Funds, numberOfFunds, selec
                                         />
                                     )
                                 }
-                            )
-                            }
-                            <div className={`d-md-block d-lg-none collapser ${collapseSecondary ? "expanded" : "collapsed"}`}
-                                onClick={() => { setCollapseSecondary(!collapseSecondary) }}>
-                                <FontAwesomeIcon icon={faChevronRight} />
-                            </div>
+                            )}
                         </Col>
                     </>
                     :

@@ -75,7 +75,7 @@ const MovementsTab = ({ Fund,NavInfoToggled,setPerformance }) => {
                                     page={page}
                                     setPage={setPage} />
                                 :
-                                <NoMovements />
+                                <NoMovements NavInfoToggled={NavInfoToggled}/>
                     }
                     {/*
                         <MovementsPagination

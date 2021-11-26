@@ -70,7 +70,7 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected, NavInfoToggled, setNav
         <Navbar  sticky="top" className="py-0 mb-0 navBarDesktop" collapseOnSelect expand="sm" variant="dark" >
             <Container fluid className="bottomInnerBorder px-0 d-none d-sm-block">
                 <Row className="w-100 d-flex align-items-center mx-0">
-                    <Col md={1} lg={2} style={{ paddingBottom: "5px" }}>
+                    <Col sm="auto" md={1} lg={2} style={{ paddingBottom: "5px" }}>
                         <Button className={`navInfoToggler ${NavInfoToggled ? "toggled" : ""}`} onClick={() => toggleNavInfo()}>
                             <FontAwesomeIcon icon={faChevronCircleUp} />
                         </Button>

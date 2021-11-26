@@ -7,55 +7,83 @@
 	margin-bottom: 1rem;
 	margin-top: 0;
 }
-.mainCardCol{
-    transition: width 1.5s;
+.mainCardCol {
+	transition: width 1.5s;
 }
 .collapser {
 	position: absolute;
 	top: 50%;
-	right: 0;
+	right: 5px;
 	transform: translateY(-50%);
 	font-size: 30px;
 	cursor: pointer;
-    transition: all 1.5s;
+	transition: ease all 1.5s;
 }
 .collapser:hover {
-    animation: 1s bounce ease infinite;
+	animation: 1s bounce ease 2;
+}
+.collapser.expanded {
+	transform: translateY(-50%) rotate(180deg);
+	right: 0px;
+}
+.collapser.expanded:hover {
+	animation: 1s bounceExpanded ease 2;
 }
 
 @keyframes bounce {
-	0%,100% {
-		right: 0px ;
+	0%,
+	100% {
+		right: 5px;
+	}
+	50% {
+		right: 0px;
+	}
+}
+
+@keyframes bounceExpanded {
+	0%,
+	100% {
+		right: 0px;
 	}
 	50% {
 		right: 5px;
 	}
 }
 
-.collapser.expanded {
-    transform: translateY(-50%) rotate(180deg);
-}
-
 @media (max-width: 992px) {
-    .secondaryCardContainer{
-        position: absolute;
-        right: 0px;
-        height: calc( 100vh - 216px);
-        overflow-y: auto;
-        background-color: aliceblue;
-        transition: all 2s;
-    }
-    .secondaryCardContainer.collapsed{
-        width: 0px;
-        overflow-x: hidden;
-        transform: translateX(95%);
-    }
-    .collapser {
-        top: 50%;
-        left: 0;
-        transform: translateY(-50%) translateX(-10%);
-    }
-    .collapser.expanded {
-        transform: translateY(-50%) translateX(-10%) rotate(180deg);
-    }
+	.secondaryCardContainer {
+		position: absolute;
+		right: 0px;
+		overflow-y: auto;
+		background-color: aliceblue;
+		transition: all 1.5s;
+        transform-origin:right
+	}
+	.secondaryCardContainer.collapsed {
+		overflow-x: hidden;
+		transform-origin: right;
+		transform: rotateY(90deg);
+		transition: all 1.5s;
+	}
+	.collapser {
+		position: fixed;
+        transition:all 1s;
+	}
+	.collapser.expanded {
+		top: 50%;
+		right: 0px;
+		transform: translateY(-50%)rotate(180deg);
+        transition:all 1.8s;
+
+	}
+	.collapser.collapsed {
+		transform: translateY(-50%);
+		right: 34%;
+	}
+	.collapser:hover {
+		animation: none;
+	}
+	.collapser.expanded:hover {
+		animation: none;
+	}
 }
