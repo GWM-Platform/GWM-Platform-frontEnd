@@ -27,7 +27,7 @@ const FormMobile = ({ handleChange, handleSubmit, buttonDisabled, setButtonDisab
                     required
                 />
             </InputGroup>
-            <Row className="d-flex flex-row-reverse">
+            <Row className="d-flex flex-row-reverse align-items-between">
                 <Col xs="12">
                     <InputGroup className="mb-3">
                         <InputGroup.Text>
@@ -44,9 +44,17 @@ const FormMobile = ({ handleChange, handleSubmit, buttonDisabled, setButtonDisab
                         />
                     </InputGroup>
                 </Col>
-                <Col xs="12" className="text-right">
+                <Col xs="auto" className="text-right">
                     <h2 className="error">{t(error)}</h2>
                     <Button variant="link" size="sm" className="forgot" href="/forgotPassword">{t('Forgot Password?')}</Button>
+                </Col>
+                <Col>
+                    <Form.Check
+                        checked={data.admin}
+                        onChange={handleChange}
+                        type="switch"
+                        id="admin"
+                    />
                 </Col>
             </Row>
             <Button type="submit" disabled={buttonDisabled} variant="danger" className="mainColor button block px-4 py-2">

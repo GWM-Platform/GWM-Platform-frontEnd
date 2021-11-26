@@ -18,16 +18,20 @@ const ContainerLogin = () => {
   const [loading, setLoading] = useState(false);
   const [Some, setSome] = useState(false);
 
-  const [data, setData] = useState({ email: "", password: "", api: false });
+  const [FormData, setFormData] = useState({ email: "", password: "", admin: false });
   const [Background, setBackground] = useState("background1.png");
   const [width, setWidth] = useState(window.innerWidth);
 
   const handleChange = (event) => {
-    let aux = data;
-    aux[event.target.id] = event.target.value;
-    setData(aux);
+    let aux = FormData;
+    if (event.target.id === "admin") {
+      aux[event.target.id] = event.target.checked
+    } else {
+      aux[event.target.id] = event.target.value;
+    }
+    setFormData(aux);
     setSome(!Some)
-    setButtonDisabled(((data.password !== undefined && data.password !== "") && (data.email !== undefined && data.email !== "")) ? false : true)
+    setButtonDisabled(((FormData.password !== undefined && FormData.password !== "") && (FormData.email !== undefined && FormData.email !== "")) ? false : true)
   };
 
   const handleSubmit = (event) => {
@@ -43,7 +47,7 @@ const ContainerLogin = () => {
     var url = `${process.env.REACT_APP_APIURL}/auth/login`;
     const response = await fetch(url, {
       method: 'POST',
-      body: JSON.stringify({ email: data.email, password: data.password }),
+      body: JSON.stringify({ email: FormData.email, password: FormData.password }),
       headers: {
         Accept: "*/*",
         'Content-Type': 'application/json'
@@ -53,8 +57,12 @@ const ContainerLogin = () => {
     if (response.status === 200) {
       const data = await response.json()
       sessionStorage.setItem("access_token", data.access_token)
-      sessionStorage.setItem("admin", false)
-      toDashBoard("accounts");
+      sessionStorage.setItem("admin", FormData.admin)
+      if (FormData.admin) {
+        toDashBoard("addAccount");
+      } else {
+        toDashBoard("accounts");
+      }
     } else {
       switch (response.status) {
         case 500://Unhandled (Por ahora lo tira cuando el mail no matchea con ninguno de los de la DB)
@@ -102,7 +110,7 @@ const ContainerLogin = () => {
       onClick={() => { cycleBG() }} className="login"
       style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/backGround/${Background})` }}>
       <Container>
-        <Row className="d-flex min-vh-100  justify-content-center align-items-start align-items-lg-center pt-3">
+        <Row className="d-flex min-vh-100  justify-content-center align-items-start align-items-sm-center pt-3">
           <Col xs="11" sm="8" md="6" lg="5" xl="4">
             {isMobile ?
               <FormMobile
@@ -116,8 +124,8 @@ const ContainerLogin = () => {
                 setButtonContent={setButtonContent}
                 loading={loading}
                 setLoading={setLoading}
-                data={data}
-                setData={setData} />
+                data={FormData}
+                setData={setFormData} />
               :
               <FormDesktop
                 handleChange={handleChange}
@@ -130,8 +138,8 @@ const ContainerLogin = () => {
                 setButtonContent={setButtonContent}
                 loading={loading}
                 setLoading={setLoading}
-                data={data}
-                setData={setData} />
+                data={FormData}
+                setData={setFormData} />
             }
           </Col>
         </Row>

@@ -62,9 +62,9 @@
 	border-radius: 0 30PX 30PX 0px;
 }
 .login .mobile {
-	margin-top: 30%;
+	margin-top: 4em;
 }
-@media (max-width: 991px) {
+@media (max-width: 576px) {
 	.login .button {
 		border-radius: 30px 30px 30px 30px;
 		border-top: none;
@@ -72,11 +72,8 @@
 	.login .card-img {
 		width: 30%;
 	}
-	.login {
-		background-image: none !important;
-	}
 }
-@media (min-width: 992px) {
+@media (min-width: 576px) {
 	.login .button {
 		border-radius: 0 0 30px 30px;
 	}

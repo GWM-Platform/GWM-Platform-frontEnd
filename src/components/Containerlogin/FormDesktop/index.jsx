@@ -11,7 +11,7 @@ const FormDesktop = ({ handleChange, handleSubmit, buttonDisabled, error, button
     const { t } = useTranslation();
 
     return (
-        <Card className="loginCard d-none d-lg-block">
+        <Card className="loginCard">
             <Form onSubmit={handleSubmit}>
                 <Card.Body className="p-4">
                     <div className="d-flex justify-content-center">
@@ -30,7 +30,7 @@ const FormDesktop = ({ handleChange, handleSubmit, buttonDisabled, error, button
                             type="email"
                         />
                     </InputGroup>
-                    <Row className="d-flex flex-row-reverse">
+                    <Row className="d-flex align-items-between ">
                         <Col xs="12">
                             <InputGroup className="mb-3">
                                 <InputGroup.Text>
@@ -47,6 +47,16 @@ const FormDesktop = ({ handleChange, handleSubmit, buttonDisabled, error, button
                         </Col>
                         <Col xs="12" className="text-right">
                             <h2 className="error">{t(error)}</h2>
+                        </Col>
+                        <Col>
+                            <Form.Check
+                                checked={data.admin}
+                                onChange={handleChange}
+                                type="switch"
+                                id="admin"
+                            />
+                        </Col>
+                        <Col xs="auto">
                             <Button variant="link" size="sm" className="forgot" href="/forgotPassword">{t('Forgot Password?')}</Button>
                         </Col>
                     </Row>
