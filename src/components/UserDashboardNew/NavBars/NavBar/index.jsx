@@ -25,38 +25,39 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected, NavInfoToggled, setNav
     }
 
     const toAccounts = () => {
-        setItemSelected("accounts");
         history.push(`${url}/accounts`);
     }
 
     const toMovements = () => {
-        setItemSelected("history");
         history.push(`${url}/history`);
     }
 
     const toBuy = (type) => {
-        setItemSelected("buy");
         history.push(`${url}/buy`);
     }
 
     const toSell = (type) => {
-        setItemSelected("sell");
         history.push(`${url}/sell`);
     }
-    
+
     const toDeposit = (type) => {
-        setItemSelected("deposit");
         history.push(`${url}/deposit`);
     }
-    
+
     const toWithdraw = (type) => {
-        setItemSelected("withdraw");
         history.push(`${url}/withdraw`);
     }
 
     const toAddAccount = () => {
-        setItemSelected("addAccount");
         history.push(`${url}/addAccount`);
+    }
+
+    const toPendingAprovals = () => {
+        history.push(`${url}/pendingAprovals`);
+    }
+
+    const toFundsAdministration = () => {
+        history.push(`${url}/fundsAdministration`);
     }
 
     const toggleNavInfo = () => {
@@ -67,7 +68,7 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected, NavInfoToggled, setNav
 
     return (
 
-        <Navbar  sticky="top" className="py-0 mb-0 navBarDesktop" collapseOnSelect expand="sm" variant="dark" >
+        <Navbar sticky="top" className="py-0 mb-0 navBarDesktop" collapseOnSelect expand="sm" variant="dark" >
             <Container fluid className="bottomInnerBorder px-0 d-none d-sm-block">
                 <Row className="w-100 d-flex align-items-center mx-0">
                     <Col sm="auto" md={1} lg={2} style={{ paddingBottom: "5px" }}>
@@ -79,50 +80,64 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected, NavInfoToggled, setNav
                         <Nav >
                             {
                                 JSON.parse(admin)
-                                ?
-                                <Nav.Link
-                                    className="px-2"
-                                    active={itemSelected === "addAccount" || itemSelected === "addAccount"}
-                                    onClick={() => { toAddAccount() }}>
-                                    {t("Add Account")}
-                                </Nav.Link>
-                                :
-                                <>
-                                    <Nav.Link
-                                        className="px-2"
-                                        active={itemSelected === "accounts" || itemSelected === "Accounts"}
-                                        onClick={() => { toAccounts() }}>
-                                        {t("Accounts")}
-                                    </Nav.Link>
-                                    <Nav.Link
-                                        className="px-2 px-lg-4"
-                                        active={itemSelected === "history"}
-                                        onClick={() => { toMovements() }}>
-                                        {t("History")}
-                                    </Nav.Link>
-                                    <NavDropdown className="px-0 transactionDropdown" active={itemSelected === "buy" || itemSelected === "sell" || itemSelected === "deposit" || itemSelected === "withdraw"} title={t("Operations")} id="collasible-nav-dropdown">
-                                        <NavDropdown.Item
-                                            active={itemSelected === "buy"}
-                                            onClick={() => { toBuy(); }}>
-                                            {t("Buy")}
-                                        </NavDropdown.Item>
-                                        <NavDropdown.Item
-                                            active={itemSelected === "sell"}
-                                            onClick={() => { toSell(); }}>
-                                            {t("Sell")}
-                                        </NavDropdown.Item>
-                                        <NavDropdown.Item
-                                            active={itemSelected === "deposit"}
-                                            onClick={() => { toDeposit(); }}>
-                                            {t("Deposit")}
-                                        </NavDropdown.Item>
-                                        <NavDropdown.Item
-                                            active={itemSelected === "withdraw"}
-                                            onClick={() => { toWithdraw(); }}>
-                                            {t("Withdraw")}
-                                        </NavDropdown.Item>
-                                    </NavDropdown>
-                                </>
+                                    ?
+                                    <>
+                                        <Nav.Link
+                                            className="px-2"
+                                            active={itemSelected === "fundsAdministration"}
+                                            onClick={() => { toFundsAdministration() }}>
+                                            {t("Funds Administration")}
+                                        </Nav.Link>
+                                        <Nav.Link
+                                            className="px-2"
+                                            active={itemSelected === "addAccount" || itemSelected === "addAccount"}
+                                            onClick={() => { toAddAccount() }}>
+                                            {t("Add Account")}
+                                        </Nav.Link>
+                                        <Nav.Link
+                                            className="px-2"
+                                            active={itemSelected === "pendingAprovals"}
+                                            onClick={() => { toPendingAprovals() }}>
+                                            {t("Pending approvals")}
+                                        </Nav.Link>
+                                    </>
+                                    :
+                                    <>
+                                        <Nav.Link
+                                            className="px-2"
+                                            active={itemSelected === "accounts" || itemSelected === "Accounts"}
+                                            onClick={() => { toAccounts() }}>
+                                            {t("Accounts")}
+                                        </Nav.Link>
+                                        <Nav.Link
+                                            className="px-2 px-lg-4"
+                                            active={itemSelected === "history"}
+                                            onClick={() => { toMovements() }}>
+                                            {t("History")}
+                                        </Nav.Link>
+                                        <NavDropdown className="px-0 transactionDropdown" active={itemSelected === "buy" || itemSelected === "sell" || itemSelected === "deposit" || itemSelected === "withdraw"} title={t("Operations")} id="collasible-nav-dropdown">
+                                            <NavDropdown.Item
+                                                active={itemSelected === "buy"}
+                                                onClick={() => { toBuy(); }}>
+                                                {t("Buy")}
+                                            </NavDropdown.Item>
+                                            <NavDropdown.Item
+                                                active={itemSelected === "sell"}
+                                                onClick={() => { toSell(); }}>
+                                                {t("Sell")}
+                                            </NavDropdown.Item>
+                                            <NavDropdown.Item
+                                                active={itemSelected === "deposit"}
+                                                onClick={() => { toDeposit(); }}>
+                                                {t("Deposit")}
+                                            </NavDropdown.Item>
+                                            <NavDropdown.Item
+                                                active={itemSelected === "withdraw"}
+                                                onClick={() => { toWithdraw(); }}>
+                                                {t("Withdraw")}
+                                            </NavDropdown.Item>
+                                        </NavDropdown>
+                                    </>
                             }
 
                         </Nav>
@@ -162,7 +177,7 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected, NavInfoToggled, setNav
                     </Row>
                     <Row className={`w-100 justify-content-between align-items-center mx-0 px-0 ${itemSelected === "buy" || itemSelected === "sell" || itemSelected === "deposit" || itemSelected === "withdraw" ? "d-flex" : "d-none"}`}>
                         <Col xs="6" className="px-0">
-                            <OverlayTrigger  trigger='focus' placement="bottom" overlay={
+                            <OverlayTrigger trigger='focus' placement="bottom" overlay={
                                 <Popover id="popover-funds" className="OverlayNavMobile" >
                                     <Popover.Body>
                                         <NavDropdown.Item

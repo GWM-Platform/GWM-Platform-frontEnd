@@ -215,13 +215,25 @@ i18n
           "Value of the share (at the time of the operation)": "Valor de la cuotaparte (en el momento de la operación)",
           "in FeePars": "En cuotapartes",
           "In Cash": "En dinero",
-          "Last Movements":"Ultimos Movimientos",
-          "Fund Detail":"Detalle del fondo",
-          "There are no records of any movement in this Fund.":"No hay registros de ningún movimiento en este Fondo.",
-          "There are no movements to show":"No hay movimientos que mostrar",
-          "Operations":"Operaciones",
+          "Last Movements": "Ultimos Movimientos",
+          "Fund Detail": "Detalle del fondo",
+          "There are no records of any movement in this Fund.": "No hay registros de ningún movimiento en este Fondo.",
+          "There are no movements to show": "No hay movimientos que mostrar",
+          "Operations": "Operaciones",
           "There are no funds available for the operation":
-          "No hay fondos disponibles para la operación"
+            "No hay fondos disponibles para la operación",
+          "Pending approvals": "Aprobaciones pendientes",
+          "Funds Administration": "Administración de fondos",
+          "Search fund by name": "Buscar Fondos por nombre",
+          "Name": "Nombre",
+          "Shares": "Cuota partes",
+          "Free Shares": "Cuota partes libres",
+          "Share Price": "Valor de la cuota parte",
+          "Actions":"Acciones",
+          "There were no results for your search":"No hubieron resultados para tu búsqueda",
+          "Fund delete confirmation":"Confirmación de eliminación del fondo",
+          "You are about to delete the fund":"Estas a punto de eliminar el fondo",
+          "Are you sure?":"¿Estas seguro?"
         }
       }
     },

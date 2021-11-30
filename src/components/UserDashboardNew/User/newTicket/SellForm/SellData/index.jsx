@@ -53,7 +53,7 @@ const SellData = ({ data, Funds, handleChange, validated, handleSubmit,toggleAcc
                                         "you should enter how much you want to invest"
                                         :
                                         `You are trying to sell ${data.shares} shares, equivalent to
-                                        $${data.shares * Funds[data.FundSelected].fund.sharePrice}, but you only have ${Funds[data.FundSelected].shares} in position.`}
+                                        $${(data.shares * Funds[data.FundSelected].fund.sharePrice).toFixed(2)}, but you only have ${Funds[data.FundSelected].shares} in position.`}
                         </Form.Control.Feedback>
                         <Form.Control.Feedback type="valid">
                             {

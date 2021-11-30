@@ -19,6 +19,7 @@ import SellForm from './User/newTicket/SellForm';
 import WithdrawForm from './User/newTicket/WithdrawForm';
 import DepositForm from './User/newTicket/DepositForm';
 import OperationStatus from './User/newTicket/OperationStatus';
+import FundsAdministration from './Admin/FundsAdministration';
 
 const UserDashboard = () => {
     // eslint-disable-next-line 
@@ -76,7 +77,7 @@ const UserDashboard = () => {
 
             if (response.status === 200) {
                 const data = await response.json()
-                if (data.length > 0){ sessionStorage.setItem('balance', data[0].balance);setBalance(data[0].balance)}
+                if (data.length > 0) { sessionStorage.setItem('balance', data[0].balance); setBalance(data[0].balance) }
             } else {
                 switch (response.status) {
                     default:
@@ -90,13 +91,13 @@ const UserDashboard = () => {
         const token = sessionStorage.getItem('access_token')
 
         if (token === null || admin === undefined) toLogin()
-        
+
         getUserData();
         getAccounts();
         return () => {
             window.removeEventListener('resize', handleWindowSizeChange);
         }
-    },[history])
+    }, [history])
 
 
     return (
@@ -109,10 +110,16 @@ const UserDashboard = () => {
                     <Route path={`${path}/addAccount`}>
                         <AddAccount />
                     </Route>
+                    <Route path={`${path}/fundsAdministration`}>
+                        <FundsAdministration />
+                    </Route>
+                    <Route path={`${path}/pendingAprovals`}>
+                        
+                    </Route>
                 </div>
                 :
                 <>
-                    <NavBarTotal balance={balance}/>
+                    <NavBarTotal balance={balance} />
                     <Route path={`${path}/accounts`}>
                         <FundsContainer
                             NavInfoToggled={NavInfoToggled}

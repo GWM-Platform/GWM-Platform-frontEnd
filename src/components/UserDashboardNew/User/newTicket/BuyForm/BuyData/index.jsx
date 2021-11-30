@@ -63,7 +63,7 @@ const BuyData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAcc
                                 data.FundSelected === -1 ?
                                     "Please, select a Fund to buy"
                                     :
-                                    `You are trying to invest $${data.amount}, with you could buy ${data.amount / Funds[data.FundSelected].sharePrice} shares.`
+                                    `You are trying to invest $${data.amount}, with you could buy ${(data.amount / Funds[data.FundSelected].sharePrice).toFixed(2)} shares.`
                             }
                         </Form.Control.Feedback>
                     </InputGroup>

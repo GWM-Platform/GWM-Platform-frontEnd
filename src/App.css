@@ -91,7 +91,10 @@
 body {
 	overflow-y: overlay;
 }
-
+.spinner-border{
+	border:3px solid currentColor!important;
+	border-right-color:transparent!important
+}
 .free-area {
 	height: calc(100vh - 201px);
 	overflow-y: overlay;
@@ -100,7 +103,7 @@ body {
 }
 
 .adminContainer.free-area {
-	min-height: calc(100vh - 201px + 39px);	
+	min-height: calc(100vh - 201px + 40px);	
 }
 
 .free-area-withMargin {
@@ -127,7 +130,7 @@ body {
 	transition: all 0.5s;
 }
 .adminContainer.free-area-withoutNavInfo {
-	min-height: calc(100vh - 201px + 39px + 76px);	
+	min-height: calc(100vh - 201px + 40px + 76px);	
 }
 .free-area-withMargin-withoutNavInfo {
 	height: calc(100vh - 201px - 1rem + 76px);
