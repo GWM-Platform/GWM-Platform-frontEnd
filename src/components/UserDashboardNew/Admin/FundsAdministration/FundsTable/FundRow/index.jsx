@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt, faEdit } from '@fortawesome/free-regular-svg-icons'
 import DeleteConfirmationModal from './DeleteConfirmationModal'
 
-const FundRow = ({ Fund }) => {
+const FundRow = ({ Fund, AssetTypes,chargeFunds }) => {
 
     const { t } = useTranslation();
     const [ShowModal, setShowModal] = useState(false)
@@ -23,10 +23,12 @@ const FundRow = ({ Fund }) => {
             <tr className="fundRow">
                 <td>{t(Fund.id)}</td>
                 <td>{t(Fund.name)}</td>
+                <td>{t(AssetTypes[getAssetTypeById(AssetTypes, Fund.typeId)].name)}</td>
                 <td>{t(Fund.shares)}</td>
                 <td>{t(Fund.freeShares)}</td>
                 <td>{t(Fund.sharePrice)}</td>
-                <td>
+
+                <td className="verticalCenter" >
                     <div className="h-100 d-flex align-items-center justify-content-around">
                         <div className="iconContainer red" onClick={() => { launchDeleteConfirmation() }}>
                             <FontAwesomeIcon className="icon" icon={faTrashAlt} />
@@ -37,8 +39,13 @@ const FundRow = ({ Fund }) => {
                     </div>
                 </td>
             </tr>
-            <DeleteConfirmationModal show={ShowModal} handleClose={handleCloseModal} Fund={Fund}/>
+            <DeleteConfirmationModal show={ShowModal} handleClose={handleCloseModal} Fund={Fund} chargeFunds={chargeFunds} />
         </>
     )
 }
 export default FundRow
+
+
+const getAssetTypeById = (assetTypes, id) => 
+    assetTypes.findIndex((AssetType) => AssetType.id === id)
+

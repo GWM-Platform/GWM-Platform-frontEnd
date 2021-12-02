@@ -11,6 +11,8 @@ const FundsAdministration = () => {
     const [FetchingFunds, setFetchingFunds] = useState([])
     const [Funds, setFunds] = useState([])
     const [FilteredFunds, setFilteredFunds] = useState([])
+    const [AssetTypes, setAssetTypes] = useState([])
+
     const [SearchText, setSearchText] = useState("")
 
     const getFunds = async () => {
@@ -38,8 +40,31 @@ const FundsAdministration = () => {
     }
 
     useEffect(() => {
+        const getTypes = async () => {
+            var url = `${process.env.REACT_APP_APIURL}/assets/types`;
+
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    Accept: "*/*",
+                    'Content-Type': 'application/json'
+                }
+            })
+
+            if (response.status === 200) {
+                const data = await response.json()
+                setAssetTypes(data)
+                getFunds()
+            } else {
+                switch (response.status) {
+                    default:
+                        console.error(response.status)
+                }
+            }
+        }
+
         setFetchingFunds(true)
-        getFunds()
+        getTypes()
     }, [])
 
     const handleSearch = (event) => {
@@ -54,18 +79,23 @@ const FundsAdministration = () => {
         setFilteredFunds(Funds)
     }
 
+    const chargeFunds = () => {
+        setFetchingFunds(true)
+            getFunds()
+    }
+
     if (FetchingFunds) {
         return <Loading />
     } else {
         return (
             <Container className="h-100 FundsAdministration">
                 <Row className="h-100 d-flex justify-content-center">
-                    <Col sm="12" md="9">
+                    <Col sm="12" md="10">
                         <FundsSearch FilteredFunds={FilteredFunds} SearchText={SearchText} handleSearch={handleSearch} cancelSearch={cancelSearch} />
                         {
                             FilteredFunds.length === 0 ?
                                 <NoFunds /> :
-                                <FundsTable Funds={FilteredFunds} />
+                                <FundsTable Funds={FilteredFunds} AssetTypes={AssetTypes} chargeFunds={chargeFunds} />
                         }
                     </Col>
                 </Row>

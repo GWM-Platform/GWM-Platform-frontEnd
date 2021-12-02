@@ -59,11 +59,16 @@
 	outline: unset;
 	box-shadow: unset;
 }
-
+.FundsAdministration .verticalTop th{
+	vertical-align: top;
+}
 .FundsAdministration .fundRow .iconContainer {
 	cursor: pointer;
 	transition: all 1s;
 	color: black;
+}
+.FundsAdministration .fundRow .iconContainer .icon {
+	transition:all 1s
 }
 .FundsAdministration .fundRow .iconContainer:hover .icon {
 	animation: ease hover 0.7s;
@@ -71,8 +76,25 @@
 .FundsAdministration .fundRow .iconContainer.red:hover {
 	color: red;
 }
-.FundsAdministration .fundRow .iconContainer.green:hover {
+.FundsAdministration .fundRow .iconContainer.green:hover .icon {
 	color: green;
+}
+.FundsAdministration .fundRow.addFund .cellWithoudPadding{
+	padding: 0;
+	height: 0;
+}
+.FundsAdministration .fundRow .verticalCenter{
+	vertical-align: middle;
+}
+.FundsAdministration .fundRow .cellWithoudPadding .form-control,
+.FundsAdministration .fundRow .cellWithoudPadding .form-select{
+	border: 0;
+	border-radius: 0;
+	background-color: rgb(255 255 255 / 70%);
+}
+.FundsAdministration .fundRow .noStyle{
+	background-color: transparent;
+	border: none;
 }
 @keyframes hover {
 	0% {
