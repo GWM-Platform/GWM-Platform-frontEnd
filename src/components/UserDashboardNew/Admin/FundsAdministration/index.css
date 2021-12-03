@@ -104,9 +104,70 @@
 		transform: rotateY(360deg);
 	}
 }
+.deleteModal .hidden{
+	position: absolute;
+	left:0;
+	right: 0;
+	opacity: 0;
+	transition:ease opacity 0.5s;
+}
+.deleteModal .show{
+	position: absolute;
+	left:0;
+	right: 0;
+	opacity: 1;
+	transition:ease 0.5s opacity 0.5s;
+}
+.deleteModal .placeHolder{
+	opacity: 0;
+}
 .deleteModal .header, .deleteModal .body, .deleteModal .footer{
 	background-color:white!important
 }
-.deleteModal .modal-title{
-	color:black!important
+ .deleteModal .body{
+	 border-radius: 30px 30px 0 0;
+ }
+
+.deleteModal .title{
+	color:black!important;
+	text-align: center;
+	font-weight: 300;
+
+	font-size: 40px;
+}
+.deleteModal .descriptionIconContainer{
+	font-size: 60px;
+	width: 1.5em;
+	height: 1.5em;
+	border: 3px solid;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.deleteModal .descriptionIconContainer.red{
+	border-color: red;
+}
+.deleteModal .descriptionIconContainer.green{
+	border-color: green;
+}
+
+.deleteModal .icon{
+	text-align: center;
+	font-size: 60px;
+}
+.deleteModal .icon.red{
+	color:red!important;
+}
+.deleteModal .subTitle{
+	color:black!important;
+	font-weight: 500;
+	text-align: center;
+	font-size: 20px;
+}
+.deleteModal .heading{
+	color:black!important;
+	text-align: center;
+	font-weight: 300;
+	font-size: 15px;
 }

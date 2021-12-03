@@ -14,10 +14,6 @@ const FundRow = ({ Fund, AssetTypes,chargeFunds }) => {
         setShowModal(true)
     }
 
-    const handleCloseModal = () => {
-        setShowModal(false)
-    }
-
     return (
         <>
             <tr className="fundRow">
@@ -39,7 +35,7 @@ const FundRow = ({ Fund, AssetTypes,chargeFunds }) => {
                     </div>
                 </td>
             </tr>
-            <DeleteConfirmationModal show={ShowModal} handleClose={handleCloseModal} Fund={Fund} chargeFunds={chargeFunds} />
+            <DeleteConfirmationModal show={ShowModal} setShowModal={setShowModal} Fund={Fund} chargeFunds={chargeFunds} />
         </>
     )
 }
