@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Row, Col } from 'react-bootstrap'
-import FundsTable from './FundsTable'
-import FundsSearch from './FundsSearch'
-import './index.css'
+import { Container, Row } from 'react-bootstrap'
+import ViewDeleteAndCreateFunds from './ViewDeleteAndCreateFunds'
+import EditFunds from './EditFunds'
 import Loading from './Loading'
-import NoFunds from './NoFunds'
+import './index.css'
+
 
 const FundsAdministration = () => {
     const [FetchingFunds, setFetchingFunds] = useState([])
     const [Funds, setFunds] = useState([])
     const [FilteredFunds, setFilteredFunds] = useState([])
     const [AssetTypes, setAssetTypes] = useState([])
+
+    const [FundSelected, setFundSelected] = useState(-1)
 
     const [SearchText, setSearchText] = useState("")
 
@@ -81,7 +83,7 @@ const FundsAdministration = () => {
 
     const chargeFunds = () => {
         setFetchingFunds(true)
-            getFunds()
+        getFunds()
     }
 
     if (FetchingFunds) {
@@ -90,14 +92,15 @@ const FundsAdministration = () => {
         return (
             <Container className="h-100 FundsAdministration">
                 <Row className="h-100 d-flex justify-content-center">
-                    <Col sm="12" md="10">
-                        <FundsSearch FilteredFunds={FilteredFunds} SearchText={SearchText} handleSearch={handleSearch} cancelSearch={cancelSearch} />
-                        {
-                            FilteredFunds.length === 0 ?
-                                <NoFunds /> :
-                                <FundsTable Funds={FilteredFunds} AssetTypes={AssetTypes} chargeFunds={chargeFunds} />
-                        }
-                    </Col>
+                    {FundSelected === -1 ?
+                        <ViewDeleteAndCreateFunds
+                            SearchText={SearchText} handleSearch={handleSearch} cancelSearch={cancelSearch} AssetTypes={AssetTypes}
+                            FilteredFunds={FilteredFunds} chargeFunds={chargeFunds} setFundSelected={setFundSelected}
+                        />
+                        :
+                        <EditFunds Funds={Funds} AssetTypes={AssetTypes} chargeFunds={chargeFunds}
+                            FundSelected={FundSelected} setFundSelected={setFundSelected} />
+                    }
                 </Row>
             </Container>
         )

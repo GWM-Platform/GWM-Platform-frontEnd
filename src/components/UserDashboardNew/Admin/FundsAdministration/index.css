@@ -1,7 +1,7 @@
-.FundsAdministration .searchBar{
-    border-radius: 30px;
-    box-shadow: 0 0 0 0 rgb(255 255 25 / 0%);
-    transition: all 0.2s;
+.FundsAdministration .searchBar {
+	border-radius: 30px;
+	box-shadow: 0 0 0 0 rgb(255 255 25 / 0%);
+	transition: all 0.2s;
 }
 .FundsAdministration .searchBar .input-group-text {
 	border-radius: 30px 0 0 30px;
@@ -16,7 +16,7 @@
 .FundsAdministration .searchBar .input-group-text.left {
 	border-radius: 30px 0 0 30px;
 	border-right: none;
-	margin-right: 0px!important;
+	margin-right: 0px !important;
 }
 .FundsAdministration .searchBar .input-group-text.left .icon {
 	margin-left: 0.7em;
@@ -24,13 +24,12 @@
 .FundsAdministration .searchBar .input-group-text.right {
 	border-radius: 0 30px 30px 0;
 	border-left: none;
-	margin-left: 0px!important;
+	margin-left: 0px !important;
 	cursor: pointer;
 	transition: all 2s;
 }
-.FundsAdministration .searchBar .input-group-text.right:hover .icon{
-	color: rgb(250 70 0 / 50%)
-	
+.FundsAdministration .searchBar .input-group-text.right:hover .icon {
+	color: rgb(250 70 0 / 50%);
 }
 .FundsAdministration .searchBar .input-group-text.right .icon {
 	margin-right: 0.7em;
@@ -43,10 +42,10 @@
 	border-left: none;
 	background: rgba(255, 255, 255, 0.7);
 }
-.FundsAdministration .notfound.searchBar{
-	box-shadow: 0 0 0 0.25rem rgb(200 70 0 / 25%)!important;
+.FundsAdministration .notfound.searchBar {
+	box-shadow: 0 0 0 0.25rem rgb(200 70 0 / 25%) !important;
 }
-.FundsAdministration .searchBar.search{
+.FundsAdministration .searchBar.search {
 	box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
 }
 .FundsAdministration .searchBar.search .form-control {
@@ -59,40 +58,72 @@
 	outline: unset;
 	box-shadow: unset;
 }
-.FundsAdministration .verticalTop th{
+.FundsAdministration .verticalTop th {
 	vertical-align: top;
 }
+.FundsAdministration .FundsTable .id,
+.FundsAdministration .FundsTable .Name,
+.FundsAdministration .FundsTable .Type,
+.FundsAdministration .FundsTable .Shares,
+.FundsAdministration .FundsTable .FreeShares,
+.FundsAdministration .FundsTable .SharePrice,
+.FundsAdministration .FundsTable .Actions {
+	font-size: 15px;
+}
+
+.FundsAdministration .FundsTable .id {
+	max-width: 5ch;
+}
+.FundsAdministration .FundsTable .Name {
+	min-width: 15ch;
+	max-width:20ch
+}
+
+.FundsAdministration .FundsTable .Shares {
+	max-width: 10ch;
+}
+.FundsAdministration .FundsTable .FreeShares {
+	max-width: 10ch;
+}
+.FundsAdministration .FundsTable .SharePrice {
+	max-width: 10ch;
+}
+.FundsAdministration .FundsTable .Actions {
+	max-width: 8ch;
+
+}
+
 .FundsAdministration .fundRow .iconContainer {
 	cursor: pointer;
 	transition: all 1s;
 	color: black;
 }
 .FundsAdministration .fundRow .iconContainer .icon {
-	transition:all 1s
+	transition: all 1s;
 }
 .FundsAdministration .fundRow .iconContainer:hover .icon {
 	animation: ease hover 0.7s;
 }
-.FundsAdministration .fundRow .iconContainer.red:hover {
+.FundsAdministration .fundRow .iconContainer.red:hover .icon{
 	color: red;
 }
 .FundsAdministration .fundRow .iconContainer.green:hover .icon {
 	color: green;
 }
-.FundsAdministration .fundRow.addFund .cellWithoudPadding{
+.FundsAdministration .fundRow.addFund .cellWithoudPadding {
 	padding: 0;
 	height: 0;
 }
-.FundsAdministration .fundRow .verticalCenter{
+.FundsAdministration .fundRow .verticalCenter {
 	vertical-align: middle;
 }
 .FundsAdministration .fundRow .cellWithoudPadding .form-control,
-.FundsAdministration .fundRow .cellWithoudPadding .form-select{
+.FundsAdministration .fundRow .cellWithoudPadding .form-select {
 	border: 0;
 	border-radius: 0;
 	background-color: rgb(255 255 255 / 70%);
 }
-.FundsAdministration .fundRow .noStyle{
+.FundsAdministration .noStyle {
 	background-color: transparent;
 	border: none;
 }
@@ -104,38 +135,53 @@
 		transform: rotateY(360deg);
 	}
 }
-.deleteModal .hidden{
+.deleteModal .hidden {
 	position: absolute;
-	left:0;
+	left: 0;
 	right: 0;
 	opacity: 0;
-	transition:ease opacity 0.5s;
+	transition: ease opacity 0.5s;
 }
-.deleteModal .show{
+.deleteModal .show {
 	position: absolute;
-	left:0;
+	left: 0;
 	right: 0;
 	opacity: 1;
-	transition:ease 0.5s opacity 0.5s;
+	transition: ease 0.5s opacity 0.5s;
 }
-.deleteModal .placeHolder{
+.deleteModal .placeHolder {
 	opacity: 0;
 }
-.deleteModal .header, .deleteModal .body, .deleteModal .footer{
-	background-color:white!important
+.deleteModal .header,
+.deleteModal .body,
+.deleteModal .footer {
+	background-color: white !important;
 }
- .deleteModal .body{
-	 border-radius: 30px 30px 0 0;
- }
+.deleteModal .body {
+	border-radius: 30px 30px 0 0;
+}
 
-.deleteModal .title{
-	color:black!important;
+.deleteModal .title {
+	color: black !important;
 	text-align: center;
 	font-weight: 300;
 
 	font-size: 40px;
 }
-.deleteModal .descriptionIconContainer{
+.FundsAdministration .editResult,.FundsAdministration .editForm,.FundsAdministration .ViewDeleteAndCreateFunds{
+	animation: ease growOpacity 1s;
+}
+
+@keyframes growOpacity {
+	0%{
+		opacity: 0;
+	}
+	100%{
+		opacity: 1;
+	}
+}
+
+.deleteModal .descriptionIconContainer,.editResult .descriptionIconContainer {
 	font-size: 60px;
 	width: 1.5em;
 	height: 1.5em;
@@ -145,29 +191,81 @@
 	align-items: center;
 	justify-content: center;
 }
-.deleteModal .descriptionIconContainer.red{
+.deleteModal .descriptionIconContainer.red,.editResult .descriptionIconContainer.red{
 	border-color: red;
 }
-.deleteModal .descriptionIconContainer.green{
+.deleteModal .descriptionIconContainer.green,.editResult .descriptionIconContainer.green {
 	border-color: green;
 }
 
-.deleteModal .icon{
+.deleteModal .icon,.editResult .icon {
 	text-align: center;
 	font-size: 60px;
 }
-.deleteModal .icon.red{
-	color:red!important;
+.deleteModal .icon.red,.editResult .icon.red{
+	color: red !important;
 }
-.deleteModal .subTitle{
-	color:black!important;
+.deleteModal .icon.green,.editResult .icon.green {
+	color: green !important;
+}
+.deleteModal .subTitle,.editResult .subTitle {
+	color: black !important;
 	font-weight: 500;
 	text-align: center;
 	font-size: 20px;
 }
-.deleteModal .heading{
-	color:black!important;
+.deleteModal .heading,.editResult .heading {
+	color: black !important;
 	text-align: center;
 	font-weight: 300;
 	font-size: 15px;
+}
+.FundsAdministration .editForm .header,
+.FundsAdministration .editResult .header{
+	position: relative;
+	font-size: 30px;
+	padding: 0.5em 0;
+	margin: 0.5em 0;
+	border-bottom: 1px solid;
+}
+.FundsAdministration .editForm .header .title,
+.FundsAdministration .editResult .header .title{
+	font-size: 30px;
+	font-weight: 300;
+	padding: 0;
+	margin:0
+}
+.FundsAdministration .editForm .header .button,
+.FundsAdministration .editResult .header .button{
+	font-size: 20px;
+	position: absolute;
+	bottom: 0;
+	left:1ch;
+	transform: translateY(50%);
+	cursor: pointer;
+	transition: 0.5s all;
+}
+.FundsAdministration .editForm .header .button.icon,
+.FundsAdministration .editResult .header .button.icon{
+	font-size: 20px;
+	color: green;
+	background-color: lightgrey;
+	border-radius: 50%;
+}
+.FundsAdministration .editForm .header .button.icon:hover,
+.FundsAdministration .editResult .header .button.icon:hover{
+	animation: ease bounceLeft 0.5s 2;
+}
+
+@keyframes bounceLeft {
+	0%,100%{
+		transform: translateY(50%) translateX(0%);
+	}
+	50%{
+		transform: translateY(50%) translateX(-25%);
+	}
+}
+.FundsAdministration .editForm .littleSpinner{
+	width: 1em!important;
+	height: 1em!important;
 }

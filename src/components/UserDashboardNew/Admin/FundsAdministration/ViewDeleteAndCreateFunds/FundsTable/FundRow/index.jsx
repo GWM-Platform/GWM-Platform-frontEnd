@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt, faEdit } from '@fortawesome/free-regular-svg-icons'
 import DeleteConfirmationModal from './DeleteConfirmationModal'
 
-const FundRow = ({ Fund, AssetTypes,chargeFunds }) => {
+const FundRow = ({ Fund, AssetTypes,chargeFunds,setFundSelected,ownKey }) => {
 
     const { t } = useTranslation();
     const [ShowModal, setShowModal] = useState(false)
@@ -17,20 +17,20 @@ const FundRow = ({ Fund, AssetTypes,chargeFunds }) => {
     return (
         <>
             <tr className="fundRow">
-                <td>{t(Fund.id)}</td>
-                <td>{t(Fund.name)}</td>
-                <td>{t(AssetTypes[getAssetTypeById(AssetTypes, Fund.typeId)].name)}</td>
-                <td>{t(Fund.shares)}</td>
-                <td>{t(Fund.freeShares)}</td>
-                <td>{t(Fund.sharePrice)}</td>
+                <td className="Id">{t(Fund.id)}</td>
+                <td className="Name">{t(Fund.name)}</td>
+                <td className="Type">{t(AssetTypes[getAssetTypeById(AssetTypes, Fund.typeId)].name)}</td>
+                <td className="Shares">{t(Fund.shares)}</td>
+                <td className="FreeShares">{t(Fund.freeShares)}</td>
+                <td className="SharePrice">{t(Fund.sharePrice)}</td>
 
-                <td className="verticalCenter" >
+                <td className="Actions verticalCenter" >
                     <div className="h-100 d-flex align-items-center justify-content-around">
                         <div className="iconContainer red" onClick={() => { launchDeleteConfirmation() }}>
                             <FontAwesomeIcon className="icon" icon={faTrashAlt} />
                         </div>
                         <div className="iconContainer green">
-                            <FontAwesomeIcon className="icon" icon={faEdit} />
+                            <FontAwesomeIcon className="icon" icon={faEdit} onClick={()=>setFundSelected(ownKey)}/>
                         </div>
                     </div>
                 </td>

@@ -5,7 +5,7 @@ import { Table, Form } from 'react-bootstrap'
 import FundRow from './FundRow'
 import AddFundRow from './AddFundRow'
 
-const FundsTable = ({ Funds, AssetTypes,chargeFunds }) => {
+const FundsTable = ({ Funds, AssetTypes, chargeFunds, setFundSelected }) => {
 
     const { t } = useTranslation();
     const [validated, setValidated] = useState(false);
@@ -15,7 +15,7 @@ const FundsTable = ({ Funds, AssetTypes,chargeFunds }) => {
         shares: 0,
         freeShares: 0,
         sharePrice: 0,
-        typeId:1
+        typeId: 1
     })
 
     const handleSubmit = (event) => {
@@ -28,13 +28,13 @@ const FundsTable = ({ Funds, AssetTypes,chargeFunds }) => {
         }
         setValidated(true);
     };
-    
+
     const createFund = async () => {
         const url = `${process.env.REACT_APP_APIURL}/funds`;
-        const token=sessionStorage.getItem("access_token")
+        const token = sessionStorage.getItem("access_token")
         const response = await fetch(url, {
             method: 'POST',
-            body: JSON.stringify( newFund ),
+            body: JSON.stringify(newFund),
             headers: {
                 Authorization: `Bearer ${token}`,
                 Accept: "*/*",
@@ -54,23 +54,23 @@ const FundsTable = ({ Funds, AssetTypes,chargeFunds }) => {
 
     return (
         <Form noValidate validated={validated} onSubmit={handleSubmit}>
-            <Table striped bordered hover>
+            <Table className="FundsTable" striped bordered hover>
                 <thead className="verticalTop">
                     <tr>
-                        <th>{t("#id")}</th>
-                        <th>{t("Name")}</th>
-                        <th>{t("Type")}</th>
-                        <th>{t("Shares")}</th>
-                        <th>{t("Free Shares")}</th>
-                        <th>{t("Share Price")}</th>
-                        <th>{t("Actions")}</th>
+                        <th className="id">{t("#id")}</th>
+                        <th className="Name">{t("0000000000")}</th>
+                        <th className="Type">{t("Type")}</th>
+                        <th className="Shares">{t("Shares")}</th>
+                        <th className="FreeShares">{t("Free Shares")}</th>
+                        <th className="SharePrice">{t("Share Price")}</th>
+                        <th className="Actions">{t("Actions")}</th>
                     </tr>
-
                 </thead>
                 <tbody>
                     <AddFundRow newFund={newFund} setNewFund={setNewFund} AssetTypes={AssetTypes} setValidated={setValidated} />
                     {Funds.map((Fund, key) => {
-                        return <FundRow AssetTypes={AssetTypes} Fund={Fund} key={key} chargeFunds={chargeFunds}/>
+                        return <FundRow AssetTypes={AssetTypes} Fund={Fund} key={key} ownKey={key}
+                            chargeFunds={chargeFunds} setFundSelected={setFundSelected} />
                     })}
                 </tbody>
             </Table>

@@ -229,11 +229,31 @@ i18n
           "Shares": "Cuota partes",
           "Free Shares": "Cuota partes libres",
           "Share Price": "Valor de la cuota parte",
-          "Actions":"Acciones",
-          "There were no results for your search":"No hubieron resultados para tu búsqueda",
-          "Fund delete confirmation":"Confirmación de eliminación del fondo",
-          "You are about to delete the fund":"Estas a punto de eliminar el fondo",
-          "Are you sure?":"¿Estas seguro?"
+          "Actions": "Acciones",
+          "There were no results for your search": "No hubieron resultados para tu búsqueda",
+          "Fund delete confirmation": "Confirmación de eliminación del fondo",
+          "You are about to delete the fund": "Estas a punto de eliminar el fondo",
+          "Are you sure?": "¿Estas seguro?",
+          "This action cannot be undone": "Esta accion no puede ser deshecha",
+          "Cancel": "Cancelar",
+          "Type": "Tipo",
+          "Close": "Cerrar",
+          "The fund": "El fondo",
+          "has been removed succesfully": "Fue eliminado correctamente",
+          "It is probably due to a user owning shares":
+            "Probablemente se deba a que un usuario posee acciones",
+          "Failed to delete the fund":
+            "Fallo al intentar eliminar el fondo",
+          "Loading": "Cargando",
+          "Assets Type": "Tipo de Assets",
+          "You must provide a name for the fund": "Debe proveer un nombre para el fondo",
+          "The shares must be more than 0": "Las cantidad de cuotapartes debe ser mayor a 0",
+          "The free shares must be more than 0": "Las cantidad de cuotapartes disponibles debe ser mayor a 0",
+          "The free shares must be less than or equal to Fund's total shares": "La cantidad de cuotapartes libres debe ser menor o igual que la cantidad de cuotapartes",
+          "The share price value must be greater than 0": "El valor de la cuotaparte debe ser mayor a 0",
+          "has been edited succesfully":"fue editado correctamente",
+          "Fund edit form for":"Formulario de edición del fondo",
+          "Form edit result for ":"Resultado del formulario de edicion del fondo "
         }
       }
     },
