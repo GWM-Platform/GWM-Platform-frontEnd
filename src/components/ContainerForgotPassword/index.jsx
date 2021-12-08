@@ -125,7 +125,7 @@ const ContainerForgotPassword = () => {
                     </InputGroup>*/
                     }
 
-                    <Button variant="danger" className="mainColor button" type="submit" disabled={buttonDisabled}>
+                    <Button variant="danger" className="button" type="submit" disabled={buttonDisabled}>
                       {t("Reset password")}
                     </Button>
                   </Form>

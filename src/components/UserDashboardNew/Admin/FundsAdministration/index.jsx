@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row } from 'react-bootstrap'
-import ViewDeleteAndCreateFunds from './ViewDeleteAndCreateFunds'
+import ViewAndDeleteFunds from './ViewAndDeleteFunds'
 import EditFunds from './EditFunds'
+import CreateFunds from './CreateFunds'
 import Loading from './Loading'
 import './index.css'
 
@@ -13,7 +14,7 @@ const FundsAdministration = () => {
     const [FilteredFunds, setFilteredFunds] = useState([])
     const [AssetTypes, setAssetTypes] = useState([])
 
-    const [FundSelected, setFundSelected] = useState(-1)
+    const [Action, setAction] = useState({ fund: -1, action: -1 })//Action===0 -> edit; Action===1 -> create
 
     const [SearchText, setSearchText] = useState("")
 
@@ -92,14 +93,20 @@ const FundsAdministration = () => {
         return (
             <Container className="h-100 FundsAdministration">
                 <Row className="h-100 d-flex justify-content-center">
-                    {FundSelected === -1 ?
-                        <ViewDeleteAndCreateFunds
-                            SearchText={SearchText} handleSearch={handleSearch} cancelSearch={cancelSearch} AssetTypes={AssetTypes}
-                            FilteredFunds={FilteredFunds} chargeFunds={chargeFunds} setFundSelected={setFundSelected}
-                        />
-                        :
-                        <EditFunds Funds={Funds} AssetTypes={AssetTypes} chargeFunds={chargeFunds}
-                            FundSelected={FundSelected} setFundSelected={setFundSelected} />
+                    {
+
+                        {
+                            "-1":
+                                <ViewAndDeleteFunds
+                                    SearchText={SearchText} handleSearch={handleSearch} cancelSearch={cancelSearch} AssetTypes={AssetTypes}
+                                    FilteredFunds={FilteredFunds} chargeFunds={chargeFunds} setAction={setAction} Action={Action}
+                                />
+                            ,
+                            0: <EditFunds Funds={Funds} AssetTypes={AssetTypes} chargeFunds={chargeFunds}
+                                Action={Action} setAction={setAction} />,
+                            1: <CreateFunds Funds={Funds} AssetTypes={AssetTypes} chargeFunds={chargeFunds}
+                                Action={Action} setAction={setAction} />
+                        }[Action.action]
                     }
                 </Row>
             </Container>

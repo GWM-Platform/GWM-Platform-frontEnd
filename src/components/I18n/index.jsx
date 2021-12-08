@@ -253,7 +253,10 @@ i18n
           "The share price value must be greater than 0": "El valor de la cuotaparte debe ser mayor a 0",
           "has been edited succesfully":"fue editado correctamente",
           "Fund edit form for":"Formulario de edición del fondo",
-          "Form edit result for ":"Resultado del formulario de edicion del fondo "
+          "Form edit result for ":"Resultado del formulario de edicion del fondo ",
+          "The fund has been Created succesfully":"El fondo fue creado correctamente",
+          "Asset Types":"Tipo De Activos",
+          "Fund Create form":"Formulario de Creacion de Fondos"
         }
       }
     },

@@ -5,15 +5,15 @@ import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronCircleLeft } from '@fortawesome/free-solid-svg-icons'
 
-const EditFunds = ({ data, EditRequest,handleChange,Funds,FundSelected,setFundSelected,validated,handleSubmit,AssetTypes }) => {
+const EditFunds = ({ data, EditRequest,handleChange,Funds,Action,setAction,validated,handleSubmit,AssetTypes }) => {
     const { t } = useTranslation();
     return (
             <div className="editForm">
                 <div className="header">
                     <h1 className="title">
-                        {t("Fund edit form for")}{" \""}{Funds[FundSelected].name}{"\""}
+                        {t("Fund edit form for")}{" \""}{Funds[Action.fund].name}{"\""}
                     </h1>
-                    <FontAwesomeIcon className="button icon" onClick={() => setFundSelected(-1)} icon={faChevronCircleLeft} />
+                    <FontAwesomeIcon className="button icon" onClick={() => {setAction({...Action,...{action:-1,fund:-1}})}} icon={faChevronCircleLeft} />
                 </div>
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
                     <FloatingLabel
@@ -36,7 +36,7 @@ const EditFunds = ({ data, EditRequest,handleChange,Funds,FundSelected,setFundSe
                         label={t("Shares")}
                         className="mb-3"
                     >
-                        <Form.Control required onChange={handleChange} id="shares" value={data.shares} min="0.01" step="0.01" type="number" placeholder={t("Shares")} />
+                        <Form.Control readonly disabled onChange={handleChange} id="shares" value={data.shares} min="0.01" step="0.01" type="number" placeholder={t("Shares")} />
                         <Form.Control.Feedback type="invalid">
                             {t("The shares must be more than 0")}
                         </Form.Control.Feedback>
@@ -45,7 +45,7 @@ const EditFunds = ({ data, EditRequest,handleChange,Funds,FundSelected,setFundSe
                         label={t("Free Shares")}
                         className="mb-3"
                     >
-                        <Form.Control required onChange={handleChange} id="freeShares" value={data.freeShares} min="0.01" step="0.01" max={data.shares} type="number" placeholder={t("Free Shares")} />
+                        <Form.Control readonly disabled onChange={handleChange} id="freeShares" value={data.freeShares} min="0.01" step="0.01" max={data.shares} type="number" placeholder={t("Free Shares")} />
                         <Form.Control.Feedback type="invalid">
                             {data.freeShares === 0 ?
                                 t("The free shares must be more than 0")

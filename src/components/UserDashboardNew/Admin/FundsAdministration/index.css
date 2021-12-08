@@ -61,6 +61,13 @@
 .FundsAdministration .verticalTop th {
 	vertical-align: top;
 }
+.FundsAdministration .FundsTable {
+	position:relative
+}
+.FundsAdministration .FundsTable .tableHeader {
+	{/*position:sticky;
+	top:0*/}
+}
 .FundsAdministration .FundsTable .id,
 .FundsAdministration .FundsTable .Name,
 .FundsAdministration .FundsTable .Type,
@@ -110,6 +117,19 @@
 .FundsAdministration .fundRow .iconContainer.green:hover .icon {
 	color: green;
 }
+.FundsAdministration .fundRow.addFund {
+	border:none
+}
+.FundsAdministration .fundRow.addFund  td{
+	border:none
+}
+.FundsAdministration .fundRow.addFund  .Actions{
+	border:1px solid;
+	border-color: grey;
+	background-color: rgba(0, 0, 0, 0.025);
+}
+
+
 .FundsAdministration .fundRow.addFund .cellWithoudPadding {
 	padding: 0;
 	height: 0;

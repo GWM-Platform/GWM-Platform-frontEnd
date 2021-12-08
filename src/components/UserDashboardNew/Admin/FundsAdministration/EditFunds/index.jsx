@@ -4,14 +4,14 @@ import { Col } from 'react-bootstrap'
 
 import EditForm from './EditForm'
 import EditResult from './EditResult'
-const EditFunds = ({ Funds, AssetTypes, chargeFunds, FundSelected, setFundSelected }) => {
+const EditFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
     const [validated, setValidated] = useState(false);
     const [data, setData] = useState({
-        name: Funds[FundSelected].name,
-        typeId: Funds[FundSelected].typeId,
-        shares: Funds[FundSelected].shares,
-        freeShares: Funds[FundSelected].freeShares,
-        sharePrice: Funds[FundSelected].sharePrice,
+        name: Funds[Action.fund].name,
+        typeId: Funds[Action.fund].typeId,
+        shares: Funds[Action.fund].shares,
+        freeShares: Funds[Action.fund].freeShares,
+        sharePrice: Funds[Action.fund].sharePrice,
 
     })
 
@@ -40,14 +40,15 @@ const EditFunds = ({ Funds, AssetTypes, chargeFunds, FundSelected, setFundSelect
     const editFund = async () => {
         setEditRequest(
             {
-                ...EditRequest,
-                fetching: true,
-                fetched: false,
-                valid: false
+                ...EditRequest, ...{
+                    fetching: true,
+                    fetched: false,
+                    valid: false
+                }
             }
         )
 
-        const url = `${process.env.REACT_APP_APIURL}/funds/${Funds[FundSelected].id}`;
+        const url = `${process.env.REACT_APP_APIURL}/funds/${Funds[Action.fund].id}`;
         const token = sessionStorage.getItem("access_token")
         const response = await fetch(url, {
             method: 'PUT',
@@ -62,19 +63,21 @@ const EditFunds = ({ Funds, AssetTypes, chargeFunds, FundSelected, setFundSelect
         if (response.status === 200) {
             setEditRequest(
                 {
-                    ...EditRequest,
-                    fetching: false,
-                    fetched: true,
-                    valid: true
+                    ...EditRequest, ...{
+                        fetching: false,
+                        fetched: true,
+                        valid: true
+                    }
                 }
             )
         } else {
             setEditRequest(
                 {
-                    ...EditRequest,
-                    fetching: false,
-                    fetched: true,
-                    valid: false
+                    ...EditRequest, ...{
+                        fetching: false,
+                        fetched: true,
+                        valid: false
+                    }
                 }
             )
             switch (response.status) {
@@ -88,12 +91,12 @@ const EditFunds = ({ Funds, AssetTypes, chargeFunds, FundSelected, setFundSelect
         <Col sm="12" md="10">
             {
                 EditRequest.fetched ?
-                    <EditResult EditRequest={EditRequest} setFundSelected={setFundSelected} chargeFunds={chargeFunds}
-                        Funds={Funds} FundSelected={FundSelected} />
+                    <EditResult EditRequest={EditRequest} setAction={setAction} chargeFunds={chargeFunds}
+                        Funds={Funds} Action={Action} />
                     :
                     <EditForm
                         data={data} handleChange={handleChange} handleSubmit={handleSubmit} EditRequest={EditRequest}
-                        Funds={Funds} FundSelected={FundSelected} setFundSelected={setFundSelected} validated={validated} AssetTypes={AssetTypes}
+                        Funds={Funds} Action={Action} setAction={setAction} validated={validated} AssetTypes={AssetTypes}
                     />
             }
 

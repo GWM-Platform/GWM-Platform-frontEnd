@@ -62,7 +62,7 @@ const FormDesktop = ({ handleChange, handleSubmit, buttonDisabled, error, button
                     </Row>
                 </Card.Body>
                 <Card.Footer>
-                    <Button type="submit" disabled={buttonDisabled} variant="danger" className="mainColor button block px-4 py-2">
+                    <Button type="submit" disabled={buttonDisabled} variant="danger" className="button block px-4 py-2">
                         <Spinner
                             as="span"
                             animation="border"
