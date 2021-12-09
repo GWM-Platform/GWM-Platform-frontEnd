@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {  faEdit } from '@fortawesome/free-regular-svg-icons'
 import DeleteConfirmationModal from './DeleteConfirmationModal'
 
-const FundRow = ({ Fund, AssetTypes, chargeFunds, setAction, Action, ownKey }) => {
+const AssetRow = ({ Asset, AssetTypes, chargeAssets, setAction, Action, ownKey }) => {
 
     const { t } = useTranslation();
     const [ShowModal, setShowModal] = useState(false)
@@ -14,33 +14,31 @@ const FundRow = ({ Fund, AssetTypes, chargeFunds, setAction, Action, ownKey }) =
     const launchDeleteConfirmation = () => {
         setShowModal(true)
     }
-
+    console.log(Asset)
     return (
         <>
-            <tr className="fundRow">
-                <td className="Id">{t(Fund.id)}</td>
-                <td className="Name">{t(Fund.name)}</td>
-                <td className="Type">{t(AssetTypes[getAssetTypeById(AssetTypes, Fund.typeId)].name)}</td>
-                <td className="Shares">{t(Fund.shares)}</td>
-                <td className="FreeShares">{t(Fund.freeShares)}</td>
-                <td className="SharePrice">${t(Fund.sharePrice)}</td>
+            <tr className="AssetRow">
+                <td className="Id">{t(Asset.id)}</td>
+                <td className="Name">{t(Asset.name)}</td>
+                <td className="Type">{t(AssetTypes[getAssetTypeById(AssetTypes, Asset.typeId)].name)}</td>
+                <td className="SharePrice">${t(Asset.value)}</td>
 
                 <td className="Actions verticalCenter" >
                     <div className="h-100 d-flex align-items-center justify-content-around">
                         {/*<div className="iconContainer red" onClick={() => { launchDeleteConfirmation() }}>
                             <FontAwesomeIcon className="icon" icon={faTrashAlt} />
                         </div>*/}
-                        <div className="iconContainer green" onClick={() => setAction({ ...Action, ...{ action: 0, fund: ownKey } })}>
+                        <div className="iconContainer green" onClick={() => setAction({ ...Action, ...{ action: 0, Asset: ownKey } })}>
                             <FontAwesomeIcon className="icon" icon={faEdit} />
                         </div>
                     </div>
                 </td>
             </tr>
-            <DeleteConfirmationModal show={ShowModal} setShowModal={setShowModal} Fund={Fund} chargeFunds={chargeFunds} />
+            <DeleteConfirmationModal show={ShowModal} setShowModal={setShowModal} Asset={Asset} chargeAssets={chargeAssets} />
         </>
     )
 }
-export default FundRow
+export default AssetRow
 
 
 const getAssetTypeById = (assetTypes, id) =>

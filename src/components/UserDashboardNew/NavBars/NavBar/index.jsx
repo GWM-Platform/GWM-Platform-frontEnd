@@ -60,6 +60,10 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected, NavInfoToggled, setNav
         history.push(`${url}/fundsAdministration`);
     }
 
+    const toAssetsAdministration = () => {
+        history.push(`${url}/assetsAdministration`);
+    }
+
     const toggleNavInfo = () => {
         setNavInfoToggled(!NavInfoToggled)
     }
@@ -90,15 +94,21 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected, NavInfoToggled, setNav
                                         </Nav.Link>
                                         <Nav.Link
                                             className="px-2"
-                                            active={itemSelected === "addAccount" || itemSelected === "addAccount"}
-                                            onClick={() => { toAddAccount() }}>
-                                            {t("Add Account")}
+                                            active={itemSelected === "assetsAdministration"}
+                                            onClick={() => { toAssetsAdministration() }}>
+                                            {t("Assets Administration")}
                                         </Nav.Link>
                                         <Nav.Link
                                             className="px-2"
                                             active={itemSelected === "pendingAprovals"}
                                             onClick={() => { toPendingAprovals() }}>
                                             {t("Pending approvals")}
+                                        </Nav.Link>
+                                        <Nav.Link
+                                            className="px-2"
+                                            active={itemSelected === "addAccount" || itemSelected === "addAccount"}
+                                            onClick={() => { toAddAccount() }}>
+                                            {t("Add Account")}
                                         </Nav.Link>
                                     </>
                                     :

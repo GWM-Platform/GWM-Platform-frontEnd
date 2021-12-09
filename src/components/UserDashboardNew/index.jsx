@@ -20,6 +20,7 @@ import WithdrawForm from './User/newTicket/WithdrawForm';
 import DepositForm from './User/newTicket/DepositForm';
 import OperationStatus from './User/newTicket/OperationStatus';
 import FundsAdministration from './Admin/FundsAdministration';
+import AssetsAdministration from './Admin/AssetsAdministration';
 
 const UserDashboard = () => {
     // eslint-disable-next-line 
@@ -112,6 +113,9 @@ const UserDashboard = () => {
                     </Route>
                     <Route path={`${path}/fundsAdministration`}>
                         <FundsAdministration />
+                    </Route>
+                    <Route path={`${path}/assetsAdministration`}>
+                        <AssetsAdministration />
                     </Route>
                     <Route path={`${path}/pendingAprovals`}>
                         
