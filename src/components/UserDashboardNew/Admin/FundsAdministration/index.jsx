@@ -63,6 +63,7 @@ const FundsAdministration = () => {
                     default:
                         console.error(response.status)
                 }
+                getFunds()
             }
         }
 
@@ -99,7 +100,7 @@ const FundsAdministration = () => {
                             "-1":
                                 <ViewAndDeleteFunds
                                     SearchText={SearchText} handleSearch={handleSearch} cancelSearch={cancelSearch} AssetTypes={AssetTypes}
-                                    FilteredFunds={FilteredFunds} chargeFunds={chargeFunds} setAction={setAction} Action={Action}
+                                    FilteredFunds={FilteredFunds} Funds={Funds} chargeFunds={chargeFunds} setAction={setAction} Action={Action}
                                 />
                             ,
                             0: <EditFunds Funds={Funds} AssetTypes={AssetTypes} chargeFunds={chargeFunds}

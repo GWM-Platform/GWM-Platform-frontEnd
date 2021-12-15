@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {  faEdit } from '@fortawesome/free-regular-svg-icons'
+import {  faTrashAlt } from '@fortawesome/free-regular-svg-icons'
 import DeleteConfirmationModal from './DeleteConfirmationModal'
 
 const FundRow = ({ Fund, AssetTypes, chargeFunds, setAction, Action, ownKey }) => {
@@ -10,7 +10,6 @@ const FundRow = ({ Fund, AssetTypes, chargeFunds, setAction, Action, ownKey }) =
     const { t } = useTranslation();
     const [ShowModal, setShowModal] = useState(false)
     
-    // eslint-disable-next-line
     const launchDeleteConfirmation = () => {
         setShowModal(true)
     }
@@ -27,12 +26,12 @@ const FundRow = ({ Fund, AssetTypes, chargeFunds, setAction, Action, ownKey }) =
 
                 <td className="Actions verticalCenter" >
                     <div className="h-100 d-flex align-items-center justify-content-around">
-                        {/*<div className="iconContainer red" onClick={() => { launchDeleteConfirmation() }}>
+                        <div className="iconContainer red" onClick={() => { launchDeleteConfirmation() }}>
                             <FontAwesomeIcon className="icon" icon={faTrashAlt} />
-                        </div>*/}
-                        <div className="iconContainer green" onClick={() => setAction({ ...Action, ...{ action: 0, fund: ownKey } })}>
-                            <FontAwesomeIcon className="icon" icon={faEdit} />
                         </div>
+                        {/*<div className="iconContainer green" onClick={() => setAction({ ...Action, ...{ action: 0, fund: ownKey } })}>
+                            <FontAwesomeIcon className="icon" icon={faEdit} />
+                        </div>*/}
                     </div>
                 </td>
             </tr>

@@ -4,7 +4,7 @@ import { Form, Button, FloatingLabel, Spinner } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronCircleLeft } from '@fortawesome/free-solid-svg-icons'
-import FundAssets from './FundAssets'
+//import FundAssets from './FundAssets'
 
 const EditFunds = ({ data, EditRequest, handleChange, Funds, Action, setAction, validated, handleSubmit, AssetTypes }) => {
     const { t } = useTranslation();
@@ -29,7 +29,7 @@ const EditFunds = ({ data, EditRequest, handleChange, Funds, Action, setAction, 
 
                 {/*------------------------------------------------------------------------------------------------------------------------------------------ */}
 
-                <FundAssets Fund={Funds[Action.fund]}/>
+                {/*<FundAssets Fund={Funds[Action.fund]}/> */}
 
                 {/*------------------------------------------------------------------------------------------------------------------------------------------ */}
 

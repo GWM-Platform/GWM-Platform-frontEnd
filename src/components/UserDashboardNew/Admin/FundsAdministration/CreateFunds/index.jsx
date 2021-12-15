@@ -9,8 +9,6 @@ const CreateFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
     const [data, setData] = useState({
         name: "",
         shares: 0,
-        freeShares: 0,
-        sharePrice: 0,
         typeId: 1
     })
 

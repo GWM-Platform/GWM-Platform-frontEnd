@@ -28,7 +28,7 @@ const CreateAssets = ({ CreateRequest, setAction, chargeAssets, Assets, Action }
                             <h1 className="title"><FontAwesomeIcon className="icon red" icon={faTimes} /></h1>
                         </div>
                         <h2 className="subTitle mt-4">{t("Failed to Create the Asset")}</h2>
-                        <h3 className="heading">{t("It is probably due to a user owning shares")}</h3>
+                        <h3 className="heading">{t("Try it again later")}</h3>
                     </>
             }
         </div>

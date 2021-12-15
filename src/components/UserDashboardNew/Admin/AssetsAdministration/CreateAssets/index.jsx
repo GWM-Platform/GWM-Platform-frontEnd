@@ -22,7 +22,7 @@ const CreateAssets = ({ Assets, AssetTypes, chargeAssets, Action, setAction }) =
                 }
             }
         )
-        const url = `${process.env.REACT_APP_APIURL}/Assets`;
+        const url = `${process.env.REACT_APP_APIURL}/assets`;
         const token = sessionStorage.getItem("access_token")
         const response = await fetch(url, {
             method: 'POST',

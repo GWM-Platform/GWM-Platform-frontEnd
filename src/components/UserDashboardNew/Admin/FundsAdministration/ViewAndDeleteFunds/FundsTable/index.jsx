@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next';
 import { Table } from 'react-bootstrap'
 import FundRow from './FundRow'
-import AddFundRow from './AddFundRow'
+//import AddFundRow from './AddFundRow'
 
 const FundsTable = ({ Funds, AssetTypes, chargeFunds, setAction, Action }) => {
 
@@ -29,9 +29,11 @@ const FundsTable = ({ Funds, AssetTypes, chargeFunds, setAction, Action }) => {
                         chargeFunds={chargeFunds} Action={Action} setAction={setAction} />
                 })}
             </tbody>
-             <thead className="verticalTop">
+            {/*
+            <thead className="verticalTop">
                 <AddFundRow Action={Action} setAction={setAction} />
             </thead>
+            */}
         </Table>
     )
 }
