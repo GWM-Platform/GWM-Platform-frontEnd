@@ -14,7 +14,6 @@ const AssetRow = ({ Asset, AssetTypes, chargeAssets, setAction, Action, ownKey }
     const launchDeleteConfirmation = () => {
         setShowModal(true)
     }
-    console.log(Asset)
     return (
         <>
             <tr className="AssetRow">

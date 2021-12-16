@@ -4,13 +4,13 @@ import { Form, InputGroup, Row, Button, Accordion, Container } from 'react-boots
 import { useTranslation } from "react-i18next";
 
 
-const BuyData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAccordion,Balance }) => {
+const BuyData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAccordion, Balance }) => {
 
     const { t } = useTranslation();
 
     return (
         <Accordion.Item eventKey="0" disabled>
-            <Accordion.Header onClick={() => {if(data.FundSelected!==-1)toggleAccordion()}}>
+            <Accordion.Header onClick={() => { if (data.FundSelected !== -1) toggleAccordion() }}>
                 <Container>
                     <Row className="d-flex justify-content-center">
                         <Form.Label className="pt-0 label d-flex align-items-center" column sm="auto">
@@ -32,7 +32,8 @@ const BuyData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAcc
                         <InputGroup.Text>U$D</InputGroup.Text>
 
                         <Form.Control
-                            disabled={data.FundSelected===-1}
+                            onWheel={event => event.currentTarget.blur()}
+                            disabled={data.FundSelected === -1}
                             value={data.amount}
                             step=".01"
                             onChange={handleChange}
@@ -40,7 +41,7 @@ const BuyData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAcc
                             max={data.FundSelected === -1 ?
                                 1
                                 :
-                                Math.min(Funds[data.FundSelected].freeShares * Funds[data.FundSelected].sharePrice,Balance)}
+                                Math.min(Funds[data.FundSelected].freeShares * Funds[data.FundSelected].sharePrice, Balance)}
                             id="amount"
                             type="number"
                             required
@@ -54,7 +55,10 @@ const BuyData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAcc
                                     data.amount === "" ?
                                         "you should enter how much you want to invest"
                                         :
-                                        `You are trying to invest $${data.amount}, with you could buy
+                                        data.amount > Balance ?
+                                            `You are trying to invest $${data.amount} but you only have $${Balance} available in your account.`
+                                            :
+                                            `You are trying to invest $${data.amount}, with you could buy
                                         ${data.amount / Funds[data.FundSelected].sharePrice} shares, but there are only
                                         ${Funds[data.FundSelected].freeShares} free.`}
                         </Form.Control.Feedback>
@@ -68,7 +72,7 @@ const BuyData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAcc
                         </Form.Control.Feedback>
                     </InputGroup>
                     <Button disabled={
-                        data.FundSelected === -1 ? true : data.amount > Math.min(Funds[data.FundSelected].freeShares * Funds[data.FundSelected].sharePrice,Balance) && data.amount>0}
+                        data.FundSelected === -1 ? true : data.amount > Math.min(Funds[data.FundSelected].freeShares * Funds[data.FundSelected].sharePrice, Balance) && data.amount > 0}
                         variant="danger" type="submit">{t("Submit")}</Button>
                 </Form>
             </Accordion.Body>

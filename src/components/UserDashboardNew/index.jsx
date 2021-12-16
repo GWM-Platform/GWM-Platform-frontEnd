@@ -11,16 +11,19 @@ import NavBarMobile from './NavBars/NavBarMobile';
 import NavBarTotal from './NavBars/NavBarTotal';
 import Footer from './Footer';
 
+//User
 import MovementsTable from './User/MovementsTable';
-import AddAccount from './Admin/AddAccount';
-
 import BuyForm from './User/newTicket/BuyForm';
 import SellForm from './User/newTicket/SellForm';
 import WithdrawForm from './User/newTicket/WithdrawForm';
 import DepositForm from './User/newTicket/DepositForm';
 import OperationStatus from './User/newTicket/OperationStatus';
+
+//Admin
+import AddAccount from './Admin/AddAccount';
 import FundsAdministration from './Admin/FundsAdministration';
 import AssetsAdministration from './Admin/AssetsAdministration';
+import TicketsAdministration from './Admin/TicketsAdministration';
 
 const UserDashboard = () => {
     // eslint-disable-next-line 
@@ -33,7 +36,7 @@ const UserDashboard = () => {
     const [width, setWidth] = useState(window.innerWidth);
     const [numberOfFunds, setNumberOfFunds] = useState(0);
     const [itemSelected, setItemSelected] = useState(location.pathname.split('/')[2])
-    const [balance, setBalance] = useState(0)
+    const [balanceChanged, setBalanceChanged] = useState(true)
 
 
     const admin = sessionStorage.getItem("admin")
@@ -78,7 +81,7 @@ const UserDashboard = () => {
 
             if (response.status === 200) {
                 const data = await response.json()
-                if (data.length > 0) { sessionStorage.setItem('balance', data[0].balance); setBalance(data[0].balance) }
+                if (data.length > 0) { sessionStorage.setItem('balance', data[0].balance) }
             } else {
                 switch (response.status) {
                     default:
@@ -117,13 +120,13 @@ const UserDashboard = () => {
                     <Route path={`${path}/assetsAdministration`}>
                         <AssetsAdministration />
                     </Route>
-                    <Route path={`${path}/pendingAprovals`}>
-                        
+                    <Route path={`${path}/ticketsAdministration`}>
+                        <TicketsAdministration />
                     </Route>
                 </div>
                 :
                 <>
-                    <NavBarTotal balance={balance} />
+                    <NavBarTotal balanceChanged={balanceChanged} setBalanceChanged={setBalanceChanged} />
                     <Route path={`${path}/accounts`}>
                         <FundsContainer
                             NavInfoToggled={NavInfoToggled}
@@ -143,16 +146,16 @@ const UserDashboard = () => {
                         />
                     </Route>
                     <Route path={`${path}/buy`}>
-                        <BuyForm NavInfoToggled={NavInfoToggled} />
+                        <BuyForm NavInfoToggled={NavInfoToggled} balanceChanged={() => setBalanceChanged(true)} />
                     </Route>
                     <Route path={`${path}/sell`}>
-                        <SellForm NavInfoToggled={NavInfoToggled} />
+                        <SellForm NavInfoToggled={NavInfoToggled} balanceChanged={() => setBalanceChanged(true)} />
                     </Route>
                     <Route path={`${path}/deposit`}>
-                        <DepositForm NavInfoToggled={NavInfoToggled} />
+                        <DepositForm NavInfoToggled={NavInfoToggled} balanceChanged={() => setBalanceChanged(true)} />
                     </Route>
                     <Route path={`${path}/withdraw`}>
-                        <WithdrawForm NavInfoToggled={NavInfoToggled} />
+                        <WithdrawForm NavInfoToggled={NavInfoToggled} balanceChanged={() => setBalanceChanged(true)} />
                     </Route>
                     <Route path={`${path}/operationResult`}>
                         <OperationStatus setItemSelected={setItemSelected} NavInfoToggled={NavInfoToggled} />

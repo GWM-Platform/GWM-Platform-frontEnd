@@ -3,7 +3,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, Col } from 'react-bootstrap'
 
 const AssetCard = ({ Asset, ownKey, AssetSelected ,setAssetSelected}) => {
-    console.log(Asset)
     return (
         <Col xs="auto" className="assetCard containerCard">
             <Card onClick={()=>{setAssetSelected(ownKey)}}

@@ -52,8 +52,8 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected, NavInfoToggled, setNav
         history.push(`${url}/addAccount`);
     }
 
-    const toPendingAprovals = () => {
-        history.push(`${url}/pendingAprovals`);
+    const ticketsAdministration = () => {
+        history.push(`${url}/ticketsAdministration`);
     }
 
     const toFundsAdministration = () => {
@@ -100,9 +100,9 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected, NavInfoToggled, setNav
                                         </Nav.Link>
                                         <Nav.Link
                                             className="px-2"
-                                            active={itemSelected === "pendingAprovals"}
-                                            onClick={() => { toPendingAprovals() }}>
-                                            {t("Pending approvals")}
+                                            active={itemSelected === "ticketsAdministration"}
+                                            onClick={() => { ticketsAdministration() }}>
+                                            {t("Tickets Administration")}
                                         </Nav.Link>
                                         <Nav.Link
                                             className="px-2"

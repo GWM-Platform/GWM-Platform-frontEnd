@@ -4,13 +4,13 @@ import { Form, InputGroup, Row, Button, Accordion, Container } from 'react-boots
 import { useTranslation } from "react-i18next";
 
 
-const SellData = ({ data, Funds, handleChange, validated, handleSubmit,toggleAccordion }) => {
+const SellData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAccordion }) => {
 
     const { t } = useTranslation();
 
     return (
         <Accordion.Item eventKey="0">
-            <Accordion.Header onClick={() => {if(data.FundSelected!==-1)toggleAccordion()}}>
+            <Accordion.Header onClick={() => { if (data.FundSelected !== -1) toggleAccordion() }}>
                 <Container>
                     <Row className="d-flex justify-content-center">
                         <Form.Label className="pt-0 label d-flex align-items-center" column sm="auto">
@@ -30,6 +30,7 @@ const SellData = ({ data, Funds, handleChange, validated, handleSubmit,toggleAcc
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
                     <InputGroup className="mb-1">
                         <Form.Control
+                            onWheel={event => event.currentTarget.blur()}
                             value={data.shares}
                             onChange={handleChange}
                             min="0.01"
@@ -66,7 +67,7 @@ const SellData = ({ data, Funds, handleChange, validated, handleSubmit,toggleAcc
                         </Form.Control.Feedback>
                     </InputGroup>
                     <Button disabled={
-                        data.FundSelected === -1 ? true : data.shares > Funds[data.FundSelected].shares || data.shares<=0}
+                        data.FundSelected === -1 ? true : data.shares > Funds[data.FundSelected].shares || data.shares <= 0}
                         variant="danger" type="submit">{t("Submit")}</Button>
                 </Form>
             </Accordion.Body>

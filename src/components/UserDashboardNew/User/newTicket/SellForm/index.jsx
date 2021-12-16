@@ -8,9 +8,9 @@ import { useHistory } from 'react-router-dom';
 import Loading from '../Loading';
 import NoFunds from '../NoFunds';
 
-const SellForm = ({ NavInfoToggled }) => {
+const SellForm = ({ NavInfoToggled,balanceChanged}) => {
     //HardCoded data (here we should request Funds that have available feeParts to sell)
-    const [data, setData] = useState({ shares: 0.01, FundSelected: -1 })
+    const [data, setData] = useState({ shares: "", FundSelected: -1 })
     const [some, setSome] = useState(false)
     const [Funds, setFunds] = useState([])
     const [validated, setValidated] = useState(true);
@@ -26,7 +26,7 @@ const SellForm = ({ NavInfoToggled }) => {
         var url = `${process.env.REACT_APP_APIURL}/funds/${Funds[data.FundSelected].fundId}/sell`;
         const response = await fetch(url, {
             method: 'POST',
-            body: JSON.stringify({ shares:  parseFloat(data.shares) }),
+            body: JSON.stringify({ shares: parseFloat(data.shares) }),
             headers: {
                 Authorization: `Bearer ${token}`,
                 Accept: "*/*",
@@ -35,15 +35,16 @@ const SellForm = ({ NavInfoToggled }) => {
         })
 
         if (response.status === 201) {
-            return (true)
+            balanceChanged()
+            history.push(`/dashboardnew/operationResult`);
         } else {
             switch (response.status) {
                 case 500:
                     console.error(response.status)
-                    return (false)
+                    break
                 default:
                     console.error(response.status)
-                    return (false)
+                    break
             }
         }
     }
@@ -96,10 +97,7 @@ const SellForm = ({ NavInfoToggled }) => {
         event.stopPropagation();
         const form = event.currentTarget;
         if (form.checkValidity() === true) {
-            let success = sell()
-            if (success) {
-                history.push(`/dashboardnew/operationResult`);
-            }
+            sell()
         }
         setValidated(true);
     }

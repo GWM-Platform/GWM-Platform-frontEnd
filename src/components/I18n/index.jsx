@@ -256,7 +256,8 @@ i18n
           "Form edit result for ":"Resultado del formulario de edicion del fondo ",
           "The fund has been Created succesfully":"El fondo fue creado correctamente",
           "Asset Types":"Tipo De Activos",
-          "Fund Create form":"Formulario de Creacion de Fondos"
+          "Fund Create form":"Formulario de Creacion de Fondos",
+          "Select a state to list the transactions with it":"Seleccione un estado para listar las transacciones en el mismo"
         }
       }
     },

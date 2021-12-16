@@ -7,7 +7,7 @@ const Loading = () => {
     const { t } = useTranslation();
 
     return (
-        <div class="h-100 d-flex align-items-center justify-content-center">
+        <div className="h-100 d-flex align-items-center justify-content-center">
             <h1>
                 <Spinner className="me-2" animation="border" variant="danger" />
                 {t("Loading")}

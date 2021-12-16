@@ -9,9 +9,9 @@ import { useHistory } from 'react-router-dom';
 import Loading from '../Loading';
 import NoFunds from '../NoFunds';
 
-const BuyForm = ({ NavInfoToggled }) => {
+const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
     //HardCoded data (here we should request Funds that have available feeParts to sell)
-    const [data, setData] = useState({ amount: 1, FundSelected: -1 })
+    const [data, setData] = useState({ amount: "", FundSelected: -1 })
     const [some, setSome] = useState(false)
     const [Funds, setFunds] = useState([])
     const [validated, setValidated] = useState(true);
@@ -37,15 +37,15 @@ const BuyForm = ({ NavInfoToggled }) => {
         })
 
         if (response.status === 201) {
-            return (true)
+            balanceChanged()
+            history.push(`/dashboardnew/operationResult`);
         } else {
             switch (response.status) {
                 case 500:
                     console.error(response.status)
-                    return (false)
+                    break
                 default:
                     console.error(response.status)
-                    return (false)
             }
         }
     }
@@ -127,10 +127,7 @@ const BuyForm = ({ NavInfoToggled }) => {
             if (token === null) {
                 console.log("compra")
             } else {
-                let success = buy()
-                if (success) {
-                    history.push(`/dashboardnew/operationResult`);
-                }
+                buy()
             }
         }
         setValidated(true);

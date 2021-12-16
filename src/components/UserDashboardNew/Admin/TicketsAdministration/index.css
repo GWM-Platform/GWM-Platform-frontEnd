@@ -1,0 +1,83 @@
+.fetchMessage .text{
+    text-transform: capitalize;
+}
+.TicketsAdministration .verticalTop th {
+	vertical-align: top;
+}
+.TicketsAdministration .TicketsTable {
+	position:relative
+}
+.TicketsAdministration .TicketsTable .tableHeader {
+	{/*position:sticky;
+	top:0*/}
+}
+.TicketsAdministration .TicketsTable .id,
+.TicketsAdministration .TicketsTable .Name,
+.TicketsAdministration .TicketsTable .Type,
+.TicketsAdministration .TicketsTable .Shares,
+.TicketsAdministration .TicketsTable .FreeShares,
+.TicketsAdministration .TicketsTable .SharePrice,
+.TicketsAdministration .TicketsTable .Actions {
+	font-size: 15px;
+}
+
+.TicketsAdministration .TicketsTable .id {
+	max-width: 5ch;
+}
+.TicketsAdministration .TicketsTable .Name {
+	min-width: 15ch;
+	max-width:20ch
+}
+
+.TicketsAdministration .TicketsTable .Shares {
+	max-width: 10ch;
+}
+.TicketsAdministration .TicketsTable .FreeShares {
+	max-width: 10ch;
+}
+.TicketsAdministration .TicketsTable .SharePrice {
+	max-width: 10ch;
+}
+.TicketsAdministration .TicketsTable .Actions {
+	max-width: 8ch;
+
+}
+
+.TicketsAdministration .transactionRow .iconContainer {
+	cursor: pointer;
+	transition: all 1s;
+	color: black;
+}
+.TicketsAdministration .transactionRow .iconContainer .icon {
+	transition: all 1s;
+}
+.TicketsAdministration .transactionRow .iconContainer:hover .icon {
+	animation: ease hover 0.7s;
+}
+.TicketsAdministration .transactionRow .iconContainer.red:hover .icon{
+	color: red;
+}
+.TicketsAdministration .transactionRow .iconContainer.green:hover .icon {
+	color: green;
+}
+.TicketsAdministration .transactionRow .verticalCenter {
+	vertical-align: middle;
+}
+.TicketsAdministration .transactionRow .cellWithoudPadding .form-control,
+.TicketsAdministration .transactionRow .cellWithoudPadding .form-select {
+	border: 0;
+	border-radius: 0;
+	background-color: rgb(255 255 255 / 70%);
+}
+.TicketsAdministration .noStyle {
+	background-color: transparent;
+	border: none;
+}
+@keyframes hover {
+	0% {
+		transform: rotateY(0deg);
+	}
+	100% {
+		transform: rotateY(360deg);
+	}
+}
