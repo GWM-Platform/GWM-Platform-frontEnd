@@ -257,7 +257,20 @@ i18n
           "The fund has been Created succesfully":"El fondo fue creado correctamente",
           "Asset Types":"Tipo De Activos",
           "Fund Create form":"Formulario de Creacion de Fondos",
-          "Select a state to list the transactions with it":"Seleccione un estado para listar las transacciones en el mismo"
+          "Select a state to list the transactions with it":"Seleccione un estado para listar las transacciones en el mismo",
+          "You are about to":"Estas a punto de",
+          "approve":"aprobar",
+          "deny":"rechazar",
+          "the ticket with the id":"el ticket con el id",
+          "The ticket has been":"El ticket fue",
+          "approved":"aprobado",
+          "denied":"rechazado",
+          "succesfully":"exitosamente",
+          "There are no tickets in the state selected":"No hay tickets en el estado seleccionado",
+          "couldn't fetch tickets, try again later":"no se pudieron obtener los tickets, intentalo de nuevo mas tarde",
+          "Created at":"Fecha de creacion",
+          "Assets Administration":"Administracion de activos",
+          "Tickets Administration":"Administracion de tickets"
         }
       }
     },

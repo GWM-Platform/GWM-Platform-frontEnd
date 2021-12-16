@@ -72,7 +72,7 @@ const ActionConfirmationModal = ({ transaction, setShowModal, action,show,reload
                         <h1 className="title"><FontAwesomeIcon className="icon red" icon={faExclamation} /></h1>
                     </div>
                     <h1 className="title"> {t("Are you sure?")}</h1>
-                    <h2 className="subTitle">{t("You are about to")} {t(action)} {t("the transaction")} {t("with the id")} {t(transaction.id)}</h2>
+                    <h2 className="subTitle">{t("You are about to")} {t(action)} {t("the ticket with the id")} {t(transaction.id)}</h2>
                     <h3 className="heading">{t("This action cannot be undone")}</h3>
                 </div>
                 <div className={ActionFetch.fetched && !ActionFetch.fetching ? "show" : "hidden"}>
@@ -82,7 +82,7 @@ const ActionConfirmationModal = ({ transaction, setShowModal, action,show,reload
                                 <div className="descriptionIconContainer green mx-auto">
                                     <h1 className="title"><FontAwesomeIcon className="icon green" icon={faCheck} /></h1>
                                 </div>
-                                <h2 className="subTitle mt-4">{t("The tocket")}{" "}{t("has been")} {t(action)} {t("succesfully")}</h2>
+                                <h2 className="subTitle mt-4">{t("The ticket has been")} {t(action==="approve" ? "approved" : "denied")} {t("succesfully")}</h2>
                             </>
                             :
                             <>
@@ -99,7 +99,7 @@ const ActionConfirmationModal = ({ transaction, setShowModal, action,show,reload
                         <h1 className="title"><FontAwesomeIcon className="icon red" icon={faExclamation} /></h1>
                     </div>
                     <h1 className="title"> {t("Are you sure?")}</h1>
-                    <h2 className="subTitle">{t("You are about to")} {t(action)} {t("the transaction")} {t("with the id")} {t(transaction.id)}</h2>
+                    <h2 className="subTitle">{t("You are about to")} {t(action)} {t("the ticket with the id")} {t(transaction.id)}</h2>
                     <h3 className="heading">{t("This action cannot be undone")}</h3>
                 </div>
             </Modal.Body>
@@ -108,7 +108,7 @@ const ActionConfirmationModal = ({ transaction, setShowModal, action,show,reload
                 {
                     ActionFetch.fetched ?
                         <Button variant="outline-secondary" onClick={() => {reloadTransactions();handleClose()}}>
-                            Close
+                            {t("Close")}
                         </Button>
                         :
                         <>

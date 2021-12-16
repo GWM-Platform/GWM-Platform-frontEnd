@@ -5,7 +5,7 @@ import { faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icon
 import moment from 'moment';
 import ActionConfirmationModal from './ActionConfirmationModal'
 
-const TransactionRow = ({ Transaction,state,reloadTransactions }) => {
+const TransactionRow = ({ Transaction, state, reloadTransactions }) => {
 
     var momentDate = moment(Transaction.createdAt);
 
@@ -20,6 +20,7 @@ const TransactionRow = ({ Transaction,state,reloadTransactions }) => {
         <>
             <tr className="transactionRow">
                 <td>{Transaction.id}</td>
+                <th >{Transaction.clientId}</th>
                 <td>{Transaction.fundId}</td>
                 <td>{Transaction.shares}</td>
                 <td>{Transaction.sharePrice}</td>

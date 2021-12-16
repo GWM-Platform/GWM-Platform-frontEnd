@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Table, Col } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next';
 import TransactionRow from './TransactionRow'
-const TransactionsTable = ({ transactions, state,reloadTransactions }) => {
+const TransactionsTable = ({ transactions, state, reloadTransactions }) => {
     const { t } = useTranslation();
 
     return (
@@ -12,6 +12,7 @@ const TransactionsTable = ({ transactions, state,reloadTransactions }) => {
                 <thead className="tableHeader solid-bg">
                     <tr>
                         <th >{t("#id")}</th>
+                        <th >{t("Client Id")}</th>
                         <th >{t("Fund Id")}</th>
                         <th >{t("Shares")}</th>
                         <th >{t("Share Price")}</th>
