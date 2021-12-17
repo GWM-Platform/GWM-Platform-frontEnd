@@ -28,11 +28,11 @@ const CardsContainer = ({ setItemSelected, isMobile, Funds, numberOfFunds, selec
     }, [Accounts, Funds, numberOfFunds])
 
     return (
-        <Row className="HistoryCardsContainer d-flex flex-md-nowrap">
+        <Row className="HistoryCardsContainer d-flex flex-md-nowrap ">
             {isMobile ?
                 Accounts.length > 1 || Funds.length > 1 ?
                     <>
-                        <Col md="12" className="ps-2 ps-sm-2 ps-md-2 ps-md-0 ps-lg-0 pe-2 pt-0">
+                        <Col md="12" className="ps-2 ps-sm-2 ps-md-2 ps-md-0 ps-lg-0 pe-2 pt-0 growAnimation" >
                             {Accounts.map(
                                 (j, k) => {
                                     ;
@@ -58,7 +58,7 @@ const CardsContainer = ({ setItemSelected, isMobile, Funds, numberOfFunds, selec
                 :
                 numberOfFunds > 1 ?
                     <>
-                        <Col className="px-2 p-relative mainCardCol"
+                        <Col className="px-2 p-relative mainCardCol growAnimation"
                             md="12"
                             lg={collapseSecondary ? "12" : "8"}
                             xl={collapseSecondary ? "12" : "9"} >
@@ -83,12 +83,12 @@ const CardsContainer = ({ setItemSelected, isMobile, Funds, numberOfFunds, selec
                         </Col>
                         <Col sm="4" md="4" lg="4" xl="3"
                             className={
-                                `secondaryCardContainer 
+                                `secondaryCardContainer growAnimation
                                 ${NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}
                                 ${collapseSecondary ? "collapsed" : "expanded"} p-relative px-0 pe-2 pt-0`
                             }>
                             {
-                                Accounts.length > 0 && (categorySelected === 0 ? Accounts.length - 1 > 0 : true) ?
+                                Accounts.length > 0 ?
                                     <div className="CategoryLabel">
                                         <h1 className="title">Cash</h1>
                                     </div>
@@ -135,7 +135,7 @@ const CardsContainer = ({ setItemSelected, isMobile, Funds, numberOfFunds, selec
                     </>
                     :
                     (numberOfFunds === 1 ?
-                        <Col className="px-2 pb-2" xs="12" xl="12" >
+                        <Col className="px-2 pb-2 growAnimation" xs="12" xl="12" >
                             {Accounts.length === 1 ?
                                 <MainCardAccount
                                     Fund={Accounts[0]}

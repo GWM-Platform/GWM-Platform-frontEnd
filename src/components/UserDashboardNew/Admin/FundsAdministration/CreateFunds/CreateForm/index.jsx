@@ -33,12 +33,12 @@ const CreateFunds = ({ data, CreateRequest,handleChange,Action,setAction,validat
                         </Form.Select>
                     </FloatingLabel>
                     <FloatingLabel
-                        label={t("Shares")}
+                        label={t("FeeParts")}
                         className="mb-3"
                     >
-                        <Form.Control required onChange={handleChange} id="shares" value={data.shares} min="0.01" step="0.01" type="number" placeholder={t("Shares")} />
+                        <Form.Control required onChange={handleChange} id="shares" value={data.shares} min="0.01" step="0.01" type="number" placeholder={t("FeeParts")} />
                         <Form.Control.Feedback type="invalid">
-                            {t("The shares must be more than 0")}
+                            {t("The feeParts must be more than 0")}
                         </Form.Control.Feedback>
                     </FloatingLabel>
                     <div className="d-flex justify-content-end">

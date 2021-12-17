@@ -17,7 +17,7 @@ const FundCard = ({ Hide, setHide, Fund }) => {
     const { t } = useTranslation();
 
     return (
-        <Col className="fund-col" sm="6" md="6" lg="4">
+        <Col className="fund-col growAnimation" sm="6" md="6" lg="4">
             <Card className="FundCard h-100">
                 <Card.Header
                     className="header d-flex align-items-center justify-content-center"
@@ -75,8 +75,8 @@ const FundCard = ({ Hide, setHide, Fund }) => {
                                     </Row>
                                 </h1>
                                 <Card.Text className="subTitle lighter mt-0 mb-2">
-                                    Acquired FeeParts:<span className="bolder"> {Fund.shares}</span><br />
-                                    FeePart Price (updated: Now):<span className="bolder"> ${Fund.fund.sharePrice}</span><br />
+                                    {t("Acquired FeeParts")}:<span className="bolder"> {Fund.shares}</span><br />
+                                    {t("FeePart Price (updated")}: {t("Now")}):<span className="bolder"> ${Fund.fund.sharePrice}</span><br />
                                 </Card.Text>
                             </Row>
                         </Container>

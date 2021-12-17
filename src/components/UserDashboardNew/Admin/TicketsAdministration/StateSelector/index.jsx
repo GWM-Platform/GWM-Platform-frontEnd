@@ -7,14 +7,14 @@ const StateSelector = ({ handleChange, TransactionStates }) => {
     const { t } = useTranslation();
 
     return (
-        <Col xs="12">
+        <Col xs="12" className="growAnimation">
             <Form>
                 <Form.Select className="my-3" required onChange={handleChange} value={TransactionStates.selected}>
                     <option disabled value="">{t("Select a state to list the transactions with it")}</option>
                     {
                         TransactionStates.values.map(
                             (state, key) => {
-                                return <option value={state.id} key={key}>{state.id}.{state.name} </option>
+                                return <option value={state.id} key={key}>{state.id}. {state.name} </option>
                             }
                         )
                     }

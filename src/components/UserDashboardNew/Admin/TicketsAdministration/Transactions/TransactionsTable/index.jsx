@@ -8,12 +8,12 @@ const TransactionsTable = ({ transactions, state, reloadTransactions }) => {
 
     return (
         <Col xs="12">
-            <Table className="TicketsTable table table-striped table-bordered table-hover">
+            <Table className="TicketsTable table table-striped table-bordered table-hover growAnimation">
                 <thead className="tableHeader solid-bg">
                     <tr>
                         <th >{t("#id")}</th>
-                        <th >{t("Client Id")}</th>
-                        <th >{t("Fund Id")}</th>
+                        <th >{t("Client name")}</th>
+                        <th >{t("Fund name")}</th>
                         <th >{t("Shares")}</th>
                         <th >{t("Share Price")}</th>
                         <th >{t("Created at")}</th>

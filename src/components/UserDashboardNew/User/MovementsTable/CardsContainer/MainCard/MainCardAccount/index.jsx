@@ -30,7 +30,7 @@ const MainCard = ({ Fund,  Hide, setHide, NavInfoToggled }) => {
     
 
     return (
-        <div className="movementsMainCardAccount">
+        <div className="movementsMainCardAccount growAnimation">
             <Container fluid className="p-0 mt-2">
                 <Row className="m-0">
                     <Container className="bg-white info ms-0 mb-2 px-0">

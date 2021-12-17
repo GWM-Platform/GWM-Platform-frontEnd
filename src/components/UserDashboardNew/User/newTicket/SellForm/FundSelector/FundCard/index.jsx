@@ -3,8 +3,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import DonutChart from 'react-donut-chart';
 import './index.css'
 import { Col, Card, Container, Row } from 'react-bootstrap'
+import { useTranslation } from "react-i18next";
 
 const FundCard = ({ Fund, ownKey, data, setData, setSome, some,openAccordion }) => {
+    const { t } = useTranslation();
     const ref = useRef(null)
     const [width, setWidth] = useState(0)
 
@@ -13,28 +15,28 @@ const FundCard = ({ Fund, ownKey, data, setData, setSome, some,openAccordion }) 
     }, [ref]);
 
     return (
-        <Col sm="3" className="py-1"
+        <Col sm="3" className="py-1 growAnimation"
             style={{
                 pointerEvents: Fund.freeShares === 0 ? "none" : "all",
                 filter: `opacity(${Fund.freeShares === 0 ? "0.5" : "1"})`
             }}>
             <Card
                 ref={ref}
-                className={`FundCard h-100 ${data.FundSelected === ownKey ? "FundSelected" : ""}`}
+                className={`FundCard h-100 ${data.FundSelected === ownKey ? t("FundSelected") : ""}`}
                 onClick={() => { setFundSelected(data, setData, ownKey, setSome, some,openAccordion) }}>
                 <Card.Header><strong className="title">{Fund.fund.name}</strong></Card.Header>
                 <Card.Body>
-                    <Card.Title>Obtained FeeParts in cash: <strong>${Fund.fund.sharePrice*Fund.shares}</strong></Card.Title>
+                    <Card.Title> {t("Obtained FeeParts in cash")}{": "} <strong>${Fund.fund.sharePrice*Fund.shares}</strong></Card.Title>
                     <Container fluid className="px-0">
                         <Row className="d-flex justify-content-between">
                             <Col md="auto">
                                 <Card.Text className="mb-1 feePartsInfo">
-                                    <strong>{Fund.shares}</strong> in posesion
+                                    <strong>{Fund.shares}</strong>{t(" in posesion")}
                                 </Card.Text>
                             </Col>
                             <Col md="auto">
                                 <Card.Text className="mb-1 feePartsInfo">
-                                    <strong>${Fund.fund.sharePrice}</strong> Each
+                                    <strong>${Fund.fund.sharePrice}</strong> {t(" Each")}
                                 </Card.Text>
                             </Col>
                         </Row>

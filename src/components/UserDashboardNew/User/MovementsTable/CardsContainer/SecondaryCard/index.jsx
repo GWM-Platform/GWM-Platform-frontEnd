@@ -1,6 +1,6 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Collapse, Container, Col, Row } from 'react-bootstrap';
+import {  Container, Col, Row } from 'react-bootstrap';
 import { useTranslation } from "react-i18next";
 import { useRef } from 'react'
 import './index.css'
@@ -17,9 +17,8 @@ const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownK
     const balanceInCash=parentKey===1 ? (Fund.shares * Fund.fund.sharePrice) : Fund.balance 
 
     return (
-        <Collapse in={categorySelected!==parentKey || (selected!==ownKey && categorySelected===parentKey )} className="pt-0 pb-2 ps-0 pe-1">
-            <Container fluid className="px-0" ref={ref} >
-                <Row className="secondaryCard mx-0 px-0" onClick={select}>
+            <Container fluid className="pt-0 pb-2 px-1 growAnimation" ref={ref} >
+                <Row className={`secondaryCard ${parentKey===categorySelected && selected===ownKey ? "selected" : null } mx-0 px-0`} onClick={select}>
                     <Col lg="auto" className="d-none d-sm-none d-md-none d-lg-flex currencyCol d-flex align-items-center">
                         <div className="currencyContainer d-flex align-items-center justify-content-center">
                             {
@@ -63,7 +62,6 @@ const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownK
                     </Col>
                 </Row>
             </Container>
-        </Collapse>
     )
 }
 export default SecondaryCard

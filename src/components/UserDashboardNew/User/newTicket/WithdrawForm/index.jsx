@@ -63,7 +63,7 @@ const WithdrawForm = ({ NavInfoToggled,balanceChanged }) => {
 
     return (
         <Container className={NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}>
-            <Row className="newTicket h-100">
+            <Row className="newTicket h-100 growAnimation">
                 <Col xs="12">
                     <WithdrawData
                         handleSubmit={handleSubmit} validated={validated}

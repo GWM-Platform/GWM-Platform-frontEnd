@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { useHistory } from 'react-router-dom';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css'
 
@@ -6,12 +8,49 @@ import { Navbar, Row, Container, Col } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next';
 
 
-const NavBarInfo = ({ userData,NavInfoToggled }) => {
+const NavBarInfo = ({ NavInfoToggled }) => {
+    const history = useHistory();
+
     const { t } = useTranslation();
+
+    const [UserData, setUserData] = useState({})
+
+    useEffect(() => {
+        const toLogin = () => {
+            sessionStorage.clear(); history.push(`/login`);
+        }
+
+        const getUserData = async () => {
+            var url = `${process.env.REACT_APP_APIURL}/clients/me`;
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    Accept: "*/*",
+                    'Content-Type': 'application/json'
+                }
+            })
+
+            if (response.status === 200) {
+                const data = await response.json()
+                setUserData(data)
+            } else {
+                switch (response.status) {
+                    default:
+                        toLogin()
+                }
+            }
+        }
+
+        const token = sessionStorage.getItem('access_token')
+        if (token === null) toLogin()
+
+        getUserData();
+    }, [history])
 
     return (
 
-        <Navbar className={`${NavInfoToggled?"toggled": ""} d-none d-sm-block py-0 navBarInfo d-flex justify-content-center`} collapseOnSelect expand="lg" variant="dark">
+        <Navbar className={`${NavInfoToggled ? "toggled" : ""} d-none d-sm-block py-0 navBarInfo d-flex justify-content-center`} collapseOnSelect expand="lg" variant="dark">
             <Container fluid>
                 <Row className=" w-100 d-flex justify-content-between align-items-center">
                     <Col className="d-flex justify-content-start" xs="3" sm="3" md="2" lg="2">
@@ -28,9 +67,9 @@ const NavBarInfo = ({ userData,NavInfoToggled }) => {
                         <div>
                             <h1 className="greeting p-0 my-0" >
                                 {t("Hi")},
-                                {` ${userData.firstName === undefined ? "" : userData.firstName === "-" ? "" : userData.firstName} 
-                                ${userData.lastName === undefined ? "" : userData.lastName === "-" ? "" : userData.lastName}`}!
-                                </h1>
+                                {` ${UserData.firstName === undefined ? "" : UserData.firstName === "-" ? "" : UserData.firstName} 
+                                ${UserData.lastName === undefined ? "" : UserData.lastName === "-" ? "" : UserData.lastName}`}!
+                            </h1>
                         </div>
                     </Col>
                 </Row>

@@ -53,21 +53,27 @@ const BuyData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAcc
                                     "Please, select a Fund to buy"
                                     :
                                     data.amount === "" ?
-                                        "you should enter how much you want to invest"
+                                        t("You must enter how much you want to invest")
                                         :
                                         data.amount > Balance ?
-                                            `You are trying to invest $${data.amount} but you only have $${Balance} available in your account.`
+                                            t("You are trying to invest") + " $" + data.amount + " " + t("but you only have") + t(" $") + Balance +
+                                            " " + t("available in your account.")
                                             :
-                                            `You are trying to invest $${data.amount}, with you could buy
-                                        ${data.amount / Funds[data.FundSelected].sharePrice} shares, but there are only
-                                        ${Funds[data.FundSelected].freeShares} free.`}
+                                            data.amount<0 ?
+                                            t("The amount must be greater than 0")
+                                            :
+                                            t("You are trying to invest") + t(" $") + data.amount + ", with you could buy" +t(" ")+
+                                            data.amount / Funds[data.FundSelected].sharePrice + " " + t("shares, but there are only") +
+                                            Funds[data.FundSelected].freeShares + t(" free.")
+                            }
                         </Form.Control.Feedback>
                         <Form.Control.Feedback type="valid">
                             {
                                 data.FundSelected === -1 ?
-                                    "Please, select a Fund to buy"
+                                    t("Please, select a Fund to buy")
                                     :
-                                    `You are trying to invest $${data.amount}, with you could buy ${(data.amount / Funds[data.FundSelected].sharePrice).toFixed(2)} shares.`
+                                    t("You are trying to invest")+" $"+data.amount+t(", with you could buy")+t(" ") +
+                                    (data.amount / Funds[data.FundSelected].sharePrice).toFixed(2)+" "+t("shares")+"."
                             }
                         </Form.Control.Feedback>
                     </InputGroup>

@@ -21,7 +21,7 @@ const CashCard = ({ Hide, setHide, Fund }) => {
     }
 
     return (
-        <Col sm="6" md="6" lg="4" className="fund-col">
+        <Col sm="6" md="6" lg="4" className="fund-col growAnimation">
             <Card className="h-100 cashCard">
                 <Card.Header
                     className="header d-flex align-items-center justify-content-center"
@@ -79,12 +79,12 @@ const CashCard = ({ Hide, setHide, Fund }) => {
                     <Row className="d-flex justify-content-center m-0">
                         <Col xs="6" className="d-flex justify-content-center p-0 m-0">
                             <Button onClick={() => toDeposit()} className="me-1 button left d-flex align-items-center justify-content-center">
-                                <span className="label">Deposit</span>
+                                <span className="label">{t("Deposit")}</span>
                             </Button>
                         </Col>
                         <Col xs="6" className="d-flex justify-content-center p-0 m-0">
                             <Button onClick={() => toWithdraw()} className="ms-1 button right d-flex align-items-center justify-content-center">
-                                <span className="label">Withdraw</span>
+                                <span className="label">{t("Withdraw")}</span>
                             </Button>
                         </Col>
                     </Row>

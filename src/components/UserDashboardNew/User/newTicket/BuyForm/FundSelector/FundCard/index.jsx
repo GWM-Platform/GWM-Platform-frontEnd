@@ -3,8 +3,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import DonutChart from 'react-donut-chart';
 import './index.css'
 import { Col, Card, Container, Row } from 'react-bootstrap'
+import { useTranslation } from "react-i18next";
 
-const FundCard = ({ Fund, ownKey, data, setData, setSome, some,openAccordion }) => {
+const FundCard = ({ Fund, ownKey, data, setData, setSome, some, openAccordion }) => {
+    const { t } = useTranslation();
     const ref = useRef(null)
     const [width, setWidth] = useState(0)
 
@@ -13,7 +15,7 @@ const FundCard = ({ Fund, ownKey, data, setData, setSome, some,openAccordion }) 
     }, [ref]);
 
     return (
-        <Col sm="3" className="py-1"
+        <Col sm="3" className="py-1 growAnimation"
             style={{
                 pointerEvents: Fund.freeShares === 0 ? "none" : "all",
                 filter: `opacity(${Fund.freeShares === 0 ? "0.5" : "1"})`
@@ -21,20 +23,20 @@ const FundCard = ({ Fund, ownKey, data, setData, setSome, some,openAccordion }) 
             <Card
                 ref={ref}
                 className={`FundCard h-100 ${data.FundSelected === ownKey ? "FundSelected" : ""}`}
-                onClick={() => { setFundSelected(data, setData, ownKey, setSome, some,openAccordion) }}>
+                onClick={() => { setFundSelected(data, setData, ownKey, setSome, some, openAccordion) }}>
                 <Card.Header><strong className="title">{Fund.name}</strong></Card.Header>
                 <Card.Body>
-                    <Card.Title>FeeParts value: <strong>${Fund.sharePrice}</strong></Card.Title>
+                    <Card.Title>{t("FeeParts value")}: <strong>${Fund.sharePrice}</strong></Card.Title>
                     <Container fluid className="px-0">
                         <Row className="d-flex justify-content-between">
                             <Col md="auto">
                                 <Card.Text className="mb-1 feePartsInfo">
-                                    <strong>{Fund.freeShares}</strong> Available
+                                    <strong>{Fund.freeShares}</strong>{" "}{t("Available")}
                                 </Card.Text>
                             </Col>
                             <Col md="auto">
                                 <Card.Text className="mb-1 feePartsInfo">
-                                    <strong>{Fund.shares}</strong> Total
+                                    <strong>{Fund.shares}</strong>{" "}{t("in total")}
                                 </Card.Text>
                             </Col>
                         </Row>
@@ -60,7 +62,7 @@ const FundCard = ({ Fund, ownKey, data, setData, setSome, some,openAccordion }) 
     )
 }
 
-const setFundSelected = (data, setData, ownKey, setSome, some,openAccordion) => {
+const setFundSelected = (data, setData, ownKey, setSome, some, openAccordion) => {
     let aux = data
     aux.FundSelected = ownKey
     setData(aux)

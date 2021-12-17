@@ -19,7 +19,6 @@ const ContainerLogin = () => {
   const [Some, setSome] = useState(false);
 
   const [FormData, setFormData] = useState({ email: "", password: "", admin: false });
-  const [Background, setBackground] = useState("background1.png");
   const [width, setWidth] = useState(window.innerWidth);
 
   const handleChange = (event) => {
@@ -59,7 +58,7 @@ const ContainerLogin = () => {
       sessionStorage.setItem("access_token", data.access_token)
       sessionStorage.setItem("admin", FormData.admin)
       if (FormData.admin) {
-        toDashBoard("addAccount");
+        toDashBoard("fundsAdministration");
       } else {
         toDashBoard("accounts");
       }
@@ -81,17 +80,6 @@ const ContainerLogin = () => {
     }
   }
 
-  const cycleBG = () => {
-    let backgroundNumber = (Background.slice(10, -4))
-    if (backgroundNumber <= 3) {
-      setBackground(`background${parseInt(backgroundNumber) + 1}.png`)
-    } else if (backgroundNumber <= 5) {
-      setBackground(`background${parseInt(backgroundNumber) + 1}.svg`)
-    } else {
-      setBackground("background1.png")
-    }
-  }
-
   function handleWindowSizeChange() {
     setWidth(window.innerWidth);
   }
@@ -106,12 +94,11 @@ const ContainerLogin = () => {
   }, [])
 
   return (
-    <div
-      onClick={() => { cycleBG() }} className="login"
-      style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/backGround/${Background})` }}>
+    <div className="login"
+      style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/backGround/bgDashboard.svg)` }}>
       <Container>
         <Row className="d-flex min-vh-100  justify-content-center align-items-start align-items-sm-center pt-3">
-          <Col xs="11" sm="8" md="6" lg="5" xl="4">
+          <Col xs="11" sm="8" md="6" lg="5" xl="4" className="growAnimation">
             {isMobile ?
               <FormMobile
                 handleChange={handleChange}

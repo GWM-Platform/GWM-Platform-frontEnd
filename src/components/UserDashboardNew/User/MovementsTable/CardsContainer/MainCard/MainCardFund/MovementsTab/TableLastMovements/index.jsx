@@ -17,7 +17,7 @@ const TableLastMovements = ({ page, setPage, movsShown, movementsCount, content,
     }, [Fund,content,setPerformance])
 
     return (
-        <div className={NavInfoToggled? "movementsTable-navInfoToggled" : "movementsTable" }>
+        <div className={NavInfoToggled? "movementsTable-navInfoToggled growAnimation" : "movementsTable growAnimation" }>
             <Table id="tableMovements" striped bordered hover className="mb-auto m-0" >
                 <thead >
                     <tr>

@@ -1,5 +1,6 @@
 .newTicket .FundCard{
     text-align: start;
+    transition:all 0.5s
 }
 .newTicket .FundCard .title{
     text-align: start;

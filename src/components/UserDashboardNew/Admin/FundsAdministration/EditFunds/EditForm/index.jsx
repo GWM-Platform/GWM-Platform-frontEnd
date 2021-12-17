@@ -44,10 +44,10 @@ const EditFunds = ({ data, EditRequest, handleChange, Funds, Action, setAction, 
                 {/*------------------------------------------------------------------------------------------------------------------------------------------ */}
 
                 <FloatingLabel
-                    label={t("Shares")}
+                    label={t("FeeParts")}
                     className="mb-3"
                 >
-                    <Form.Control readonly disabled onChange={handleChange} id="shares" value={data.shares} min="0.01" step="0.01" type="number" placeholder={t("Shares")} />
+                    <Form.Control readonly disabled onChange={handleChange} id="shares" value={data.shares} min="0.01" step="0.01" type="number" placeholder={t("FeeParts")} />
                     <Form.Control.Feedback type="invalid">
                         {t("The shares must be more than 0")}
                     </Form.Control.Feedback>

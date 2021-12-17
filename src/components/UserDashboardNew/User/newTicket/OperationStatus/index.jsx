@@ -12,7 +12,7 @@ const OperationStatus = ({setItemSelected,NavInfoToggled}) => {
         setItemSelected("")
     }, [setItemSelected])
     return (
-        <Container className="OperationStatus">
+        <Container className="OperationStatus growAnimation">
             <Row className={`${NavInfoToggled? "free-area-withoutNavInfo": "free-area"} d-flex align-items-center justify-content-center`}>
                 <Col sm="auto">
                     <h1 className="statusIcon"><FontAwesomeIcon icon={faCheckCircle}/></h1>

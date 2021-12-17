@@ -111,7 +111,7 @@ const SellForm = ({ NavInfoToggled,balanceChanged}) => {
 
     return (
         <Container className={NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}>
-            <Row className="newTicket h-100">
+            <Row className="newTicket h-100 growAnimation">
                 {
                     FetchingFunds ?
                         <Loading />

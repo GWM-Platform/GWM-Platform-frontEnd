@@ -189,6 +189,18 @@ body {
 .spinner-border{
 	border: 1px solid currentColor
 }
+.growAnimation{
+	animation: ease growOpacity 1s;
+}
+
+@keyframes growOpacity {
+	0%{
+		opacity: 0;
+	}
+	100%{
+		opacity: 1;
+	}
+}
 
 @media (max-width: 576px) {
 	.free-area {
