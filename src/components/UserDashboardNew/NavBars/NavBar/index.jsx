@@ -64,6 +64,11 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected, NavInfoToggled, setNav
         history.push(`${url}/assetsAdministration`);
     }
 
+    const toDepositCash = () => {
+        history.push(`${url}/depositCash`);
+
+    }
+
     const toggleNavInfo = () => {
         setNavInfoToggled(!NavInfoToggled)
     }
@@ -104,12 +109,23 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected, NavInfoToggled, setNav
                                             onClick={() => { ticketsAdministration() }}>
                                             {t("Tickets Administration")}
                                         </Nav.Link>
-                                        <Nav.Link
-                                            className="px-2"
-                                            active={itemSelected === "addAccount" || itemSelected === "addAccount"}
-                                            onClick={() => { toAddAccount() }}>
-                                            {t("Add Account")}
-                                        </Nav.Link>
+
+
+                                        <NavDropdown
+                                            active={itemSelected === "depositCash" || itemSelected === "addAccount"}
+                                            className="px-0 transactionDropdown" title={t("Accounts Administration")} id="collasible-nav-dropdown">
+                                            <NavDropdown.Item
+                                                active={itemSelected === "depositCash"}
+                                                onClick={() => { toDepositCash() }}>
+                                                {t("Deposit Cash")}
+                                            </NavDropdown.Item>
+                                            <NavDropdown.Item
+                                                active={itemSelected === "addAccount" || itemSelected === "addAccount"}
+                                                onClick={() => { toAddAccount() }}>
+                                                {t("Add Account")}
+                                            </NavDropdown.Item>
+                                        </NavDropdown>
+
                                     </>
                                     :
                                     <>
