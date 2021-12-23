@@ -43,9 +43,12 @@ const NavBarInfo = ({ NavInfoToggled }) => {
         }
 
         const token = sessionStorage.getItem('access_token')
-        if (token === null) toLogin()
+        const admin = JSON.parse(sessionStorage.getItem('admin'))
 
-        getUserData();
+        if (token === null) toLogin()
+        if(!admin){
+            getUserData();
+        }
     }, [history])
 
     return (
@@ -63,15 +66,21 @@ const NavBarInfo = ({ NavInfoToggled }) => {
                             />
                         </Navbar.Brand>
                     </Col>
-                    <Col xs="9" sm="9" md="10" lg="10" className="d-flex align-items-center">
-                        <div>
-                            <h1 className="greeting p-0 my-0" >
-                                {t("Hi")},
-                                {` ${UserData.firstName === undefined ? "" : UserData.firstName === "-" ? "" : UserData.firstName} 
+                    {
+                        UserData.firstName !== undefined ?
+
+                            <Col xs="9" sm="9" md="10" lg="10" className="d-flex align-items-center">
+                                <div>
+                                    <h1 className="greeting p-0 my-0" >
+                                        {t("Hi")},
+                                        {` ${UserData.firstName === undefined ? "" : UserData.firstName === "-" ? "" : UserData.firstName} 
                                 ${UserData.lastName === undefined ? "" : UserData.lastName === "-" ? "" : UserData.lastName}`}!
-                            </h1>
-                        </div>
-                    </Col>
+                                    </h1>
+                                </div>
+                            </Col>
+                            :
+                            null
+                    }
                 </Row>
             </Container>
 

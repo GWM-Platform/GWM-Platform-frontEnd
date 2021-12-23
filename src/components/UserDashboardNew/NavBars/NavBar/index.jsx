@@ -11,7 +11,7 @@ import { faSignOutAlt, faChevronCircleUp } from '@fortawesome/free-solid-svg-ico
 
 import { useTranslation } from "react-i18next";
 
-const NavBarDashBoard = ({ setItemSelected, itemSelected, NavInfoToggled, setNavInfoToggled }) => {
+const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) => {
 
 
     const { t } = useTranslation();
@@ -24,49 +24,8 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected, NavInfoToggled, setNav
         history.push(`/`);
     }
 
-    const toAccounts = () => {
-        history.push(`${url}/accounts`);
-    }
-
-    const toMovements = () => {
-        history.push(`${url}/history`);
-    }
-
-    const toBuy = (type) => {
-        history.push(`${url}/buy`);
-    }
-
-    const toSell = (type) => {
-        history.push(`${url}/sell`);
-    }
-
-    const toDeposit = (type) => {
-        history.push(`${url}/deposit`);
-    }
-
-    const toWithdraw = (type) => {
-        history.push(`${url}/withdraw`);
-    }
-
-    const toAddAccount = () => {
-        history.push(`${url}/addAccount`);
-    }
-
-    const ticketsAdministration = () => {
-        history.push(`${url}/ticketsAdministration`);
-    }
-
-    const toFundsAdministration = () => {
-        history.push(`${url}/fundsAdministration`);
-    }
-
-    const toAssetsAdministration = () => {
-        history.push(`${url}/assetsAdministration`);
-    }
-
-    const toDepositCash = () => {
-        history.push(`${url}/depositCash`);
-
+    const goTo = (destination) => {
+        history.push(`${url}/${destination}`);
     }
 
     const toggleNavInfo = () => {
@@ -94,19 +53,19 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected, NavInfoToggled, setNav
                                         <Nav.Link
                                             className="px-2"
                                             active={itemSelected === "fundsAdministration"}
-                                            onClick={() => { toFundsAdministration() }}>
+                                            onClick={() => { goTo("FundsAdministration") }}>
                                             {t("Funds Administration")}
                                         </Nav.Link>
                                         <Nav.Link
                                             className="px-2"
                                             active={itemSelected === "assetsAdministration"}
-                                            onClick={() => { toAssetsAdministration() }}>
+                                            onClick={() => { goTo("AssetsAdministration") }}>
                                             {t("Assets Administration")}
                                         </Nav.Link>
                                         <Nav.Link
                                             className="px-2"
                                             active={itemSelected === "ticketsAdministration"}
-                                            onClick={() => { ticketsAdministration() }}>
+                                            onClick={() => { goTo("ticketsAdministration") }}>
                                             {t("Tickets Administration")}
                                         </Nav.Link>
 
@@ -116,12 +75,12 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected, NavInfoToggled, setNav
                                             className="px-0 transactionDropdown" title={t("Accounts Administration")} id="collasible-nav-dropdown">
                                             <NavDropdown.Item
                                                 active={itemSelected === "depositCash"}
-                                                onClick={() => { toDepositCash() }}>
+                                                onClick={() => { goTo("DepositCash") }}>
                                                 {t("Deposit Cash")}
                                             </NavDropdown.Item>
                                             <NavDropdown.Item
                                                 active={itemSelected === "addAccount" || itemSelected === "addAccount"}
-                                                onClick={() => { toAddAccount() }}>
+                                                onClick={() => { goTo("addAccount") }}>
                                                 {t("Add Account")}
                                             </NavDropdown.Item>
                                         </NavDropdown>
@@ -132,34 +91,38 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected, NavInfoToggled, setNav
                                         <Nav.Link
                                             className="px-2"
                                             active={itemSelected === "accounts" || itemSelected === "Accounts"}
-                                            onClick={() => { toAccounts() }}>
+                                            onClick={() => { goTo("accounts") }}>
                                             {t("Accounts")}
                                         </Nav.Link>
                                         <Nav.Link
                                             className="px-2 px-lg-4"
                                             active={itemSelected === "history"}
-                                            onClick={() => { toMovements() }}>
+                                            onClick={() => {
+                                                goTo("history")
+                                            }}>
                                             {t("History")}
                                         </Nav.Link>
                                         <NavDropdown className="px-0 transactionDropdown" active={itemSelected === "buy" || itemSelected === "sell" || itemSelected === "deposit" || itemSelected === "withdraw"} title={t("Operations")} id="collasible-nav-dropdown">
                                             <NavDropdown.Item
                                                 active={itemSelected === "buy"}
-                                                onClick={() => { toBuy(); }}>
+                                                onClick={() => { goTo("buy") }}>
                                                 {t("Buy")}
                                             </NavDropdown.Item>
                                             <NavDropdown.Item
                                                 active={itemSelected === "sell"}
-                                                onClick={() => { toSell(); }}>
+                                                onClick={() => { goTo("sell") }}>
                                                 {t("Sell")}
                                             </NavDropdown.Item>
+                                            {/*
                                             <NavDropdown.Item
                                                 active={itemSelected === "deposit"}
                                                 onClick={() => { toDeposit(); }}>
                                                 {t("Deposit")}
                                             </NavDropdown.Item>
+                                            */}
                                             <NavDropdown.Item
                                                 active={itemSelected === "withdraw"}
-                                                onClick={() => { toWithdraw(); }}>
+                                                onClick={() => { goTo("withdraw"); }}>
                                                 {t("Withdraw")}
                                             </NavDropdown.Item>
                                         </NavDropdown>
@@ -189,14 +152,14 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected, NavInfoToggled, setNav
                             <Nav.Link
                                 className="ps-4 text-start"
                                 active={itemSelected === "accounts" || itemSelected === "Accounts"}
-                                onClick={() => { toAccounts() }}>
+                                onClick={() => { goTo("accounts") }}>
                                 {t("Accounts")}
                             </Nav.Link> </Col>
                         <Col xs="6" className="px-0">
                             <Nav.Link
                                 className="pe-4 text-end"
                                 active={itemSelected === "history"}
-                                onClick={() => { toMovements() }}>
+                                onClick={() => { goTo("history") }}>
                                 {t("History")}
                             </Nav.Link>
                         </Col>
@@ -208,12 +171,15 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected, NavInfoToggled, setNav
                                     <Popover.Body>
                                         <NavDropdown.Item
                                             active={itemSelected === "buy"}
-                                            onClick={() => { toBuy(); }}>
+                                            onClick={() => { goTo("buy") }}>
                                             {t("Buy")}
                                         </NavDropdown.Item>
                                         <NavDropdown.Item
                                             active={itemSelected === "sell"}
-                                            onClick={() => { toSell(); }}>
+                                            onClick={() => {
+                                                goTo("sell")
+                                                ;
+                                            }}>
                                             {t("Sell")}
                                         </NavDropdown.Item>
                                     </Popover.Body>
@@ -228,14 +194,14 @@ const NavBarDashBoard = ({ setItemSelected, itemSelected, NavInfoToggled, setNav
                             <OverlayTrigger trigger='focus' placement="bottom" overlay={
                                 <Popover id="popover-cash" className="OverlayNavMobile">
                                     <Popover.Body>
-                                        <NavDropdown.Item
+                                        {/*<NavDropdown.Item
                                             active={itemSelected === "deposit"}
                                             onClick={() => { toDeposit(); }}>
                                             {t("Deposit")}
-                                        </NavDropdown.Item>
+                                        </NavDropdown.Item>*/}
                                         <NavDropdown.Item
                                             active={itemSelected === "withdraw"}
-                                            onClick={() => { toWithdraw(); }}>
+                                            onClick={() => { goTo("withdraw"); }}>
                                             {t("Withdraw")}
                                         </NavDropdown.Item>
                                     </Popover.Body>

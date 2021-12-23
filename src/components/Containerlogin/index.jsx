@@ -18,7 +18,7 @@ const ContainerLogin = () => {
   const [loading, setLoading] = useState(false);
   const [Some, setSome] = useState(false);
 
-  const [FormData, setFormData] = useState({ email: "", password: "", admin: false });
+  const [FormData, setFormData] = useState({ email: "", password: "" });
   const [width, setWidth] = useState(window.innerWidth);
 
   const handleChange = (event) => {
@@ -56,8 +56,8 @@ const ContainerLogin = () => {
     if (response.status === 200) {
       const data = await response.json()
       sessionStorage.setItem("access_token", data.access_token)
-      sessionStorage.setItem("admin", FormData.admin)
-      if (FormData.admin) {
+      sessionStorage.setItem("admin", data.user.client===null)
+      if (data.user.client===null) {
         toDashBoard("fundsAdministration");
       } else {
         toDashBoard("accounts");

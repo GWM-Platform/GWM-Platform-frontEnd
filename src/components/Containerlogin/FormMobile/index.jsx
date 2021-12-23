@@ -44,17 +44,9 @@ const FormMobile = ({ handleChange, handleSubmit, buttonDisabled, setButtonDisab
                         />
                     </InputGroup>
                 </Col>
-                <Col xs="auto" className="text-right">
+                <Col xs="12" className="text-right">
                     <h2 className="error">{t(error)}</h2>
                     <Button variant="link" size="sm" className="forgot" href="/forgotPassword">{t('Forgot Password?')}</Button>
-                </Col>
-                <Col>
-                    <Form.Check
-                        checked={data.admin}
-                        onChange={handleChange}
-                        type="switch"
-                        id="admin"
-                    />
                 </Col>
             </Row>
             <Button type="submit" disabled={buttonDisabled} variant="danger" className="button block px-4 py-2">
