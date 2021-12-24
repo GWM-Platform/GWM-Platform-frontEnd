@@ -20,6 +20,7 @@
     "@testing-library/user-event": "^12.8.3",
     "@trendmicro/react-sidenav": "^0.5.0",
     "bootstrap": "^5.0.2",
+    "check-password-strength": "^2.0.3",
     "chokidar": "^3.5.2",
     "flag-icon-css": "^3.5.0",
     "html2canvas": "^1.0.0",

@@ -6,12 +6,13 @@ import ContainerForgotPassword from './components/ContainerForgotPassword';
 import ContainerChangePassword from './components/ContainerChangePassword';
 import ContainerVerifyAccount from './components/ContainerVerifyAccount';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import UserDashboardNew from './components/UserDashboardNew';
+import DashBoard from './components/DashBoard';
 import NotFound from './components/NotFound';
+import SetPassword from './components/SetPassword';
 
 function App() {
   return (
-    <div className="App">
+    <div className="App"  style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/backGround/bgDashboard.svg)` }}>
         <BrowserRouter>
           <Switch>
             <Route exact path="/">
@@ -35,8 +36,11 @@ function App() {
             <Route exact path="/verifyAccount/:user/:token">
               <ContainerVerifyAccount />
             </Route>
-            <Route path="/DashboardNew">
-              <UserDashboardNew />
+            <Route exact path="/setPassword">
+              <SetPassword />
+            </Route>
+            <Route path="/dashboard">
+              <DashBoard />
             </Route>
             <Route>
               <NotFound />

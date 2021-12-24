@@ -29,7 +29,7 @@ const WithdrawForm = ({ NavInfoToggled,balanceChanged }) => {
 
         if (response.status === 201) {
             balanceChanged()
-            history.push(`/dashboardnew/operationResult`);
+            history.push(`/dashboard/operationResult`);
         } else {
             switch (response.status) {
                 case 500:

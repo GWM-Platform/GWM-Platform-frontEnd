@@ -40,7 +40,7 @@ const DepositCashToClient = () => {
         })
 
         if (response.status === 201) {
-            history.push(`/dashboardnew/operationResult`);
+            history.push(`/dashboard/operationResult`);
         } else {
             switch (response.status) {
                 case 500:

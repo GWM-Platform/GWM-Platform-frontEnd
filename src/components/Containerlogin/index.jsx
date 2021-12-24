@@ -9,8 +9,11 @@ import { useHistory } from 'react-router-dom';
 const ContainerLogin = () => {
   let history = useHistory();
   const toDashBoard = (path) => {
-    history.push(`/dashboardNew/${path}`);
+    history.push(`/dashboard/${path}`);
   }
+  /*const toSetPassword= () => {
+    history.push(`/setPassword`);
+  }*/
 
   const [buttonDisabled, setButtonDisabled] = useState(true)
   const [error, setError] = useState("");
@@ -56,11 +59,15 @@ const ContainerLogin = () => {
     if (response.status === 200) {
       const data = await response.json()
       sessionStorage.setItem("access_token", data.access_token)
-      sessionStorage.setItem("admin", data.user.client===null)
-      if (data.user.client===null) {
-        toDashBoard("fundsAdministration");
-      } else {
-        toDashBoard("accounts");
+      sessionStorage.setItem("admin", data.user.client === null)
+      //if (data.user.resetPassword || data.user.resetPassword === undefined) {
+      //  toSetPassword()
+      //} else {
+        if (data.user.client === null) {
+          toDashBoard("fundsAdministration");
+        } else {
+          toDashBoard("accounts");
+      //  }
       }
     } else {
       switch (response.status) {

@@ -63,6 +63,13 @@
 ::-webkit-scrollbar-thumb:hover {
 	opacity: #555;
 }
+
+.App{
+	background-color: lightgray;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
 .capitalize {
 	text-transform: capitalize;
 }
@@ -191,6 +198,11 @@ body {
 }
 .growAnimation{
 	animation: ease growOpacity 1s;
+}
+
+.growOpacity{
+	opacity: 0;
+	animation: 1s growOpacity forwards;
 }
 
 @keyframes growOpacity {

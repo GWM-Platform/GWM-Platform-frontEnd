@@ -28,7 +28,7 @@ const DepositForm = ({ NavInfoToggled,balanceChanged }) => {
         })
 
         if (response.status === 201) {
-            history.push(`/dashboardnew/operationResult`);
+            history.push(`/dashboard/operationResult`);
             balanceChanged()
         } else {
             switch (response.status) {

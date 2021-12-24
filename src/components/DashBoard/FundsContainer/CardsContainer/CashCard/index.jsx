@@ -13,11 +13,11 @@ const CashCard = ({ Hide, setHide, Fund }) => {
     let history = useHistory();
 
     const toDeposit = (type) => {
-        history.push(`/dashboardNew/deposit`);
+        history.push(`/dashboard/deposit`);
     }
 
     const toWithdraw = (type) => {
-        history.push(`/dashboardNew/withdraw`);
+        history.push(`/dashboard/withdraw`);
     }
 
     return (

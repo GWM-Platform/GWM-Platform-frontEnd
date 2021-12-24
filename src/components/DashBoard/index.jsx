@@ -62,8 +62,6 @@ const UserDashboard = () => {
         setUserData({ "id": 4, "username": "Marco", "email": "marcos.sk8.parengo@gmail.com", "externalId": "RL580035", "firstName": "Marco", "lastName": "Giangarelli", "gender": "M", "birthdate": "2002-05-16", "customer": {} })
     }
 
-
-
     useEffect(() => {
         const toLogin = () => {
             sessionStorage.clear(); history.push(`/login`);
@@ -96,9 +94,9 @@ const UserDashboard = () => {
         const token = sessionStorage.getItem('access_token')
 
         if (token === null || admin === undefined) toLogin()
-
         getUserData();
         getAccounts();
+
         return () => {
             window.removeEventListener('resize', handleWindowSizeChange);
         }

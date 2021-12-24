@@ -296,13 +296,17 @@ i18n
           " free.": " disponibles.",
           "Please, select a Fund to buy": "Por favor, seleccione el fondo a comprar",
           "shares": "cuotapartes",
-          "FeeParts value":"valor de la cuotaparte",
-          "Available":"Disponibles",
-          "in total":"en total",
-          "Cash":"Dinero",
-          "Acquired FeeParts":"Cuotapartes adquiridas",
-          "FeePart Price (updated":"Valor de la cuotaparte (Actualizado",
-          "Now":"Ahora"
+          "FeeParts value": "valor de la cuotaparte",
+          "Available": "Disponibles",
+          "in total": "en total",
+          "Cash": "Dinero",
+          "Acquired FeeParts": "Cuotapartes adquiridas",
+          "FeePart Price (updated": "Valor de la cuotaparte (Actualizado",
+          "Now": "Ahora",
+          
+          "Welcome!": "Bienvenido!",
+          "You are about to start investing with GWM": "Está a punto de comenzar a invertir con GWM",
+          "But first you will have to set a new password": "Pero primero tendrás que establecer una nueva contraseña"
         }
       }
     },
