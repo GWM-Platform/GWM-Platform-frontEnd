@@ -306,7 +306,13 @@ i18n
           
           "Welcome!": "Bienvenido!",
           "You are about to start investing with GWM": "Está a punto de comenzar a invertir con GWM",
-          "But first you will have to set a new password": "Pero primero tendrás que establecer una nueva contraseña"
+          "But first you will have to set a new password": "Pero primero tendrás que establecer una nueva contraseña",
+          "New Password":"Nueva contraseña",
+          "Password Confirmation":"Confirmar contraseña",
+          "Looks good":"Se ve bien",
+          "Make sure the password meets the requirements":"Asegurate de que la contraseña cumpla con los requerimientos",
+          "Password and password cofirmation must match":"Las contraseñas deben coincidir",
+          "Your new password must have":"Tu nueva contraseña debe contener"
         }
       }
     },

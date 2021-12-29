@@ -33,3 +33,15 @@
     font-size: 17px;
 
 }
+.setPassword .btn{
+    border-radius: 30px;
+}
+.setPassword .result .icon{
+    font-size: 100px;
+    text-align: center;
+    color:green
+}
+.setPassword .result .label{
+    font-size: 20px;
+    text-align: center;
+}
