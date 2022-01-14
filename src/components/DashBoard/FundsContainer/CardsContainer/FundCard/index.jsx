@@ -1,20 +1,24 @@
 import React from 'react'
-import { useState } from 'react';
-import { Container,Row, Col, Card, Button, Popover, OverlayTrigger } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEyeSlash, faEye, faIdCard, faPaperPlane } from '@fortawesome/free-solid-svg-icons'
+import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 import './index.css'
-import ChangeNameModal from './ChangeNameModal'
+import {  useHistory } from 'react-router-dom';
 
-const FundCard = ({ Hide, setHide, Fund }) => {
-    const [show, setShow] = useState(false)
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
 
+const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
     const { t } = useTranslation();
+
+    let history = useHistory();
+
+    const pendingFeeParts = PendingTransactions.value.filter((transaction) => transaction.fundId === Fund.fundId && Math.sign(transaction.shares) === +1).map((transaction) => transaction.shares).reduce((a, b) => a + b, 0).toFixed(2)
+
+    const toTickets = (operation) => {
+        history.push(`${operation}?fund=${Fund.fundId}`);
+    }
 
     return (
         <Col className="fund-col growAnimation" sm="6" md="6" lg="4">
@@ -47,8 +51,8 @@ const FundCard = ({ Hide, setHide, Fund }) => {
                                             <span className={`info ${Hide ? "shown" : "hidden"}`}>
                                                 {(Fund.shares * Fund.fund.sharePrice).toString().replace(/./g, "*")}
                                             </span>
-                                        
-                                            <span className={`info ${Hide? "hidden" : "shown"}`}>
+
+                                            <span className={`info ${Hide ? "hidden" : "shown"}`}>
                                                 {(Fund.shares * Fund.fund.sharePrice).toString()}
                                             </span>
 
@@ -56,19 +60,19 @@ const FundCard = ({ Hide, setHide, Fund }) => {
                                                 {(Fund.shares * Fund.fund.sharePrice).toString()}
                                             </span>
                                         </div>
-                                        <div className="ps-0 hideInfoButton d-flex align-items-center"> 
-                                            <FontAwesomeIcon 
+                                        <div className="ps-0 hideInfoButton d-flex align-items-center">
+                                            <FontAwesomeIcon
                                                 className={`icon ${Hide ? "hidden" : "shown"}`}
-                                                onClick={() => {setHide(!Hide)}}
+                                                onClick={() => { setHide(!Hide) }}
                                                 icon={faEye}
                                             />
-                                            <FontAwesomeIcon 
+                                            <FontAwesomeIcon
                                                 className={`icon ${!Hide ? "hidden" : "shown"}`}
-                                                onClick={() => {setHide(!Hide)}}
+                                                onClick={() => { setHide(!Hide) }}
                                                 icon={faEyeSlash}
                                             />
-                                            <FontAwesomeIcon 
-                                            className="icon placeholder"
+                                            <FontAwesomeIcon
+                                                className="icon placeholder"
                                                 icon={faEyeSlash}
                                             />
                                         </div>
@@ -76,7 +80,11 @@ const FundCard = ({ Hide, setHide, Fund }) => {
                                 </h1>
                                 <Card.Text className="subTitle lighter mt-0 mb-2">
                                     {t("Acquired FeeParts")}:<span className="bolder"> {Fund.shares}</span><br />
+                                    {t("Pending FeeParts")}:
+                                    <span className={`bolder text-green`}>{" "}
+                                        +{pendingFeeParts}</span><br />
                                     {t("FeePart Price (updated")}: {t("Now")}):<span className="bolder"> ${Fund.fund.sharePrice}</span><br />
+
                                 </Card.Text>
                             </Row>
                         </Container>
@@ -85,28 +93,18 @@ const FundCard = ({ Hide, setHide, Fund }) => {
                 <Card.Footer className="footer mt-2 m-0 p-0">
                     <Row className="d-flex justify-content-center m-0">
                         <Col xs="6" className="d-flex justify-content-center p-0 m-0">
-                            <Button onClick={() => { handleShow() }} className="me-1 button left">
-                                <FontAwesomeIcon icon={faIdCard} />
+                            <Button onClick={() => toTickets("buy")} className="me-1 button left">
+                                <span className="label">{t("Buy")}</span>
                             </Button>
                         </Col>
                         <Col xs="6" className="d-flex justify-content-center p-0 m-0">
-                            <OverlayTrigger rootClose trigger='click' placement="left-start" overlay={
-                                <Popover id="popover-basic" >
-                                    <Popover.Header className="mt-0">{t("Fund menu")}</Popover.Header>
-                                    <Popover.Body>
-                                        Some Action
-                                    </Popover.Body>
-                                </Popover>
-                            } popperConfig={Fund}>
-                                <Button className="ms-1 button right">
-                                    <FontAwesomeIcon onClick={(e) => { e.target.focus() }} icon={faPaperPlane} />
-                                </Button>
-                            </OverlayTrigger>
+                            <Button onClick={() => toTickets("sell")} className="ms-1 button right">
+                                <span className="label">{t("Sell")}</span>
+                            </Button>
                         </Col>
                     </Row>
                 </Card.Footer>
             </Card>
-            <ChangeNameModal show={show} handleClose={handleClose} />
         </Col>
 
 

@@ -160,17 +160,6 @@ No hace falta media-query porque será nuestro diseño por defecto*/
     .cardTextMain {
         height: calc(100vh - 130px);
     }
-    .tableDescription {
-        max-width: auto;
-    }
-    .tableDate {
-        font-size: 14px;
-        width: 15%;
-    }
-    .tableAmount {
-        font-size: 14px;
-        width: 20%;
-    }
     .accountsContainerWidth{
         width: 75%;
     }
@@ -189,20 +178,6 @@ No hace falta media-query porque será nuestro diseño por defecto*/
     .cardTextMain {
         height: calc(100vh - 130px);
     }
-    .sideToSidebar {
-        margin-left: 64px;
-    }
-    .tableDescription {
-        max-width: auto;
-    }
-    .tableDate {
-        font-size: 14px;
-        width: 20%;
-    }
-    .tableAmount {
-        font-size: 14px;
-        width: 20%;
-    }
 }
 
 
@@ -218,17 +193,6 @@ No hace falta media-query porque será nuestro diseño por defecto*/
     .sideToSidebar {
         margin-left: 64px;
     }
-    .tableDescription {
-        max-width: auto;
-    }
-    .tableDate {
-        font-size: 14px;
-        width: 25%;
-    }
-    .tableAmount {
-        font-size: 14px;
-        width: 30%;
-    }
 }
 
 
@@ -241,20 +205,6 @@ No hace falta media-query porque será nuestro diseño por defecto*/
     .cardTextMain {
         height: calc(100vh - 130px);
     }
-    .sideToSidebar {
-        margin-left: 64px;
-    }
-    .tableDescription {
-        max-width: auto;
-    }
-    .tableDate {
-        font-size: 14px;
-        width: 25%;
-    }
-    .tableAmount {
-        font-size: 14px;
-        width: 30%;
-    }
 }
 
 
@@ -266,20 +216,6 @@ No hace falta media-query porque será nuestro diseño por defecto*/
     }
     .cardTextMain {
         height: auto;
-    }
-    .sideToSidebar {
-        margin-left: 0px;
-    }
-    .tableDescription {
-        max-width: 70px;
-    }
-    .tableDate {
-        font-size: 14px;
-        width: 40%;
-    }
-    .tableAmount {
-        font-size: 14px;
-        width: 30%;
     }
     .cardTextMain {
         height: calc(100vh - 130px);

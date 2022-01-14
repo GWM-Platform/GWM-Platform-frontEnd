@@ -40,7 +40,7 @@ const MainCard = ({ Fund, Hide, setHide, NavInfoToggled }) => {
                                 {t(Fund.fund.name)}
                             </h1>
                             <h2 className="m-0 left">
-                                FeePart price (Now)
+                                {t("FeePart price (Now)")}
                                 <span className="ps-3" style={{ fontWeight: "bolder" }}>
                                     ${Fund.fund.sharePrice}
                                 </span>
@@ -48,24 +48,24 @@ const MainCard = ({ Fund, Hide, setHide, NavInfoToggled }) => {
                         </Col>
                         <Col>
                             <h2 className="px-2 left">
-                                {Fund.shares} FeeParts in possession
+                                {Fund.shares}{" "}{t("FeeParts in possession")}
                             </h2>
                         </Col>
                         <Col className="d-flex justify-content-between align-items-end pe-2 pb-2 border-bottom-main">
                             <Col className="d-flex justify-content-between pe-5" sm="auto">
                                 <Col className="pe-2">
                                     <div className="containerHideInfo px-2">
-                                        <span>Actual Value in cash of your holding: $</span>
+                                        <span>{t("Actual Value in cash of your holding")}: $</span>
                                         <span className={`info ${Hide ? "shown" : "hidden"}`}>
-                                            {balanceInCash.toString().replace(/./g, "*")}
+                                            {balanceInCash.toFixed(2).toString().replace(/./g, "*")}
                                         </span>
 
                                         <span className={`info ${Hide ? "hidden" : "shown"}`}>
-                                            {balanceInCash.toString()}
+                                            {balanceInCash.toFixed(2).toString()}
                                         </span>
 
                                         <span className={`info placeholder`}>
-                                            {balanceInCash.toString()}
+                                            {balanceInCash.toFixed(2).toString()}
                                         </span>
                                     </div>
                                 </Col>
@@ -93,7 +93,7 @@ const MainCard = ({ Fund, Hide, setHide, NavInfoToggled }) => {
                                         '1': 'text-green',
                                         '-1': 'text-red'
                                     }[Math.sign(Performance)]}>
-                                    {Performance.toFixed(2)}%
+                                    {Performance}%
                                 </span>
                             </Col>
                         </Col>
@@ -106,7 +106,7 @@ const MainCard = ({ Fund, Hide, setHide, NavInfoToggled }) => {
                                 <Nav.Link eventKey={"0"}>{t("Last Movements")}</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Nav.Link eventKey={"1"}>{t("Fund Detail")}</Nav.Link>
+                                <Nav.Link eventKey={"1"}>{t("Investment Evolution")}</Nav.Link>
                             </Nav.Item>
                         </Nav>
                     </Container>

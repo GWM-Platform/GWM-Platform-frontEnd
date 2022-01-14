@@ -2,6 +2,7 @@
     border: 1px transparent;
     border-radius: 30px;
     background-color: transparent;
+    filter: drop-shadow(0px 0px 3px gray);
 }
 
 .cashCard .header {
@@ -97,12 +98,6 @@
     font-size: 20px;
     
 }
-
-.cashCard .footer  .left{
-    border-radius: 0px 0px 0px 30px;
-
-}
-
-.cashCard .footer .right{
-    border-radius: 0px 0px 30px 0px;
+.cashCard .footer .button{
+    border-radius: 0px 0px 30px 30px;
 }

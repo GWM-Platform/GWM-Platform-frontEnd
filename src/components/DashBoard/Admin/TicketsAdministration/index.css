@@ -73,6 +73,10 @@
 	background-color: transparent;
 	border: none;
 }
+.TicketsAdministration .title{
+	font-size: 20px;
+	margin:0.5em 0;
+}
 @keyframes hover {
 	0% {
 		transform: rotateY(0deg);

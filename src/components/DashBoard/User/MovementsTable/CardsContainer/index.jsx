@@ -90,7 +90,7 @@ const CardsContainer = ({ setItemSelected, isMobile, Funds, numberOfFunds, selec
                             {
                                 Accounts.length > 0 ?
                                     <div className="CategoryLabel">
-                                        <h1 className="title">Cash</h1>
+                                        <h1 className="title">{t("Cash")}</h1>
                                     </div>
                                     :
                                     null
@@ -111,9 +111,9 @@ const CardsContainer = ({ setItemSelected, isMobile, Funds, numberOfFunds, selec
                             )
                             }
                             {
-                                Funds.length > 0 && (categorySelected === 1 ? Funds.length - 1 > 0 : true) ?
+                                Funds.length > 0 ?
                                     <div className="CategoryLabel">
-                                        <h1 className="title">Funds</h1>
+                                        <h1 className="title">{t("Funds")}</h1>
                                     </div>
                                     :
                                     null}

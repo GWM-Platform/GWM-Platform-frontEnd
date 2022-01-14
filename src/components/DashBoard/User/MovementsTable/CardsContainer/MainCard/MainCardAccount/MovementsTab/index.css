@@ -12,21 +12,22 @@
 }
 
 .tableDescription {
-    font-size: 14px;
     text-align: end;
     max-width: 70px;
 
 }
 .tableDate {
-    font-size: 14px;
     width: fit-content;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 .tableAmount {
-    font-size: 14px;
     text-align: end;
+}
+.tableConcept {
+    text-align: end;
+    width: fit-content;
 }
 .movementsTableAccounts {
     max-height: calc(100vh - 250px);
@@ -59,14 +60,12 @@
 }
 @media (min-width: 1201px) {
     .tableDescription {
-        max-width: auto;
+        max-width: unset;
     }
     .tableDate {
-        font-size: 14px;
         width: 15%;
     }
     .tableAmount {
-        font-size: 14px;
         width: 20%;
     }
     .accountsContainerWidth{
@@ -80,13 +79,12 @@
         max-width: auto;
     }
     .tableDate {
-        font-size: 14px;
         width: 20%;
     }
     .tableAmount {
-        font-size: 14px;
         width: 20%;
     }
+    
 }
 
 
@@ -98,11 +96,9 @@
         max-width: auto;
     }
     .tableDate {
-        font-size: 14px;
         width: 25%;
     }
     .tableAmount {
-        font-size: 14px;
         width: 30%;
     }
 }
@@ -115,11 +111,9 @@
         max-width: auto;
     }
     .tableDate {
-        font-size: 14px;
         width: 25%;
     }
     .tableAmount {
-        font-size: 14px;
         width: 30%;
     }
 }
@@ -132,11 +126,9 @@
         max-width: 70px;
     }
     .tableDate {
-        font-size: 14px;
         width: 40%;
     }
     .tableAmount {
-        font-size: 14px;
         width: 30%;
     }
     .cardTextMain {

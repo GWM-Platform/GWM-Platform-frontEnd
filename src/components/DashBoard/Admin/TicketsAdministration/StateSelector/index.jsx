@@ -9,7 +9,7 @@ const StateSelector = ({ handleChange, TransactionStates }) => {
     return (
         <Col xs="12" className="growAnimation">
             <Form>
-                <Form.Select className="my-3" required onChange={handleChange} value={TransactionStates.selected}>
+                <Form.Select className="mt-3" required onChange={handleChange} value={TransactionStates.selected}>
                     <option disabled value="">{t("Select a state to list the transactions with it")}</option>
                     {
                         TransactionStates.values.map(

@@ -73,15 +73,6 @@ const MovementsTab = ({ Fund, NavInfoToggled }) => {
                                 :
                                 <NoMovements NavInfoToggled={NavInfoToggled}/>
                     }
-                    {/*
-                        <MovementsPagination
-                        MovementsCount={100}
-                        IsMobile={IsMobile}
-                        movsShown={movsShown}
-                        page={page}
-                        setPage={setPage}
-                        />
-                    */}
                 </div>
             </div>
         </>

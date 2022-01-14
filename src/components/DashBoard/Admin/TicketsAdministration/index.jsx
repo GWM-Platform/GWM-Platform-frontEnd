@@ -18,10 +18,17 @@ const TicketsAdministration = () => {
             message: "there are no states, ask for the administrator to create them",
             needSpinner: false
         }, {
-            message: "couldn't fetch tickets, try again later",
+            message: "couldn't fetch sell/purchase tickets, try again later",
             needSpinner: false
         },{
-            message: "There are no tickets in the state selected",
+            message: "There are no sell/purchase tickets in the state selected",
+            needSpinner: false
+        }
+        , {
+            message: "couldn't fetch retire tickets, try again later",
+            needSpinner: false
+        },{
+            message: "There are no retire tickets in the state selected",
             needSpinner: false
         }
     ]

@@ -25,6 +25,7 @@ import FundsAdministration from './Admin/FundsAdministration';
 import AssetsAdministration from './Admin/AssetsAdministration';
 import TicketsAdministration from './Admin/TicketsAdministration';
 import DepositCashToClient from './Admin/DepositCashToClient';
+import OperationStatusAdmin from './Admin/OperationStatus';
 
 const UserDashboard = () => {
     // eslint-disable-next-line 
@@ -126,7 +127,7 @@ const UserDashboard = () => {
                         <DepositCashToClient />
                     </Route>
                     <Route path={`${path}/operationResult`}>
-                        <OperationStatus setItemSelected={setItemSelected} NavInfoToggled={NavInfoToggled} />
+                        <OperationStatusAdmin setItemSelected={setItemSelected} NavInfoToggled={NavInfoToggled} />
                     </Route>
                 </div>
                 :

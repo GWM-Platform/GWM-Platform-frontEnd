@@ -4,12 +4,6 @@
     font-size: 40px;
 
 }
-.OperationStatus .description{
-    color:green;
-    text-align: center;
-    font-size: 20px;
-
-}
 .OperationStatus .statusIcon{
     text-align: center;
     font-size: 100px;

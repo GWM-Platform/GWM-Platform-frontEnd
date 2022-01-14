@@ -6,7 +6,13 @@ import { useTranslation } from 'react-i18next';
 const AddAccount = () => {
 
     const { t } = useTranslation();
-    const [formData, setFormData] = useState({})
+    const [formData, setFormData] = useState(
+        {
+            email: "",
+            firstName: "",
+            lastName: ""
+        }
+    )
     const [message, setMessage] = useState()
 
     const [validated, setValidated] = useState(false);
@@ -30,11 +36,13 @@ const AddAccount = () => {
     const signup = async () => {
         setButtonDisabled(true)
         var url = `${process.env.REACT_APP_APIURL}/clients/signup`;
+        const token = sessionStorage.getItem('access_token')
 
         const response = await fetch(url, {
             method: 'POST',
             body: JSON.stringify(formData),
             headers: {
+                Authorization: `Bearer ${token}`,
                 Accept: "*/*",
                 'Content-Type': 'application/json'
             }
@@ -96,43 +104,6 @@ const AddAccount = () => {
                                 onChange={handleChange}
                                 type="text"
                                 placeholder={t("Last Name")}
-                            />
-                        </FloatingLabel>
-                        <FloatingLabel
-                            label={t("Password")}
-                            className="mb-3"
-                        >
-                            <Form.Control
-                                required
-                                id="password"
-                                onChange={handleChange}
-                                type="Password"
-                                placeholder={t("Password")}
-                            />
-                        </FloatingLabel>
-                        <FloatingLabel
-                            label={t("username")}
-                            className="mb-3"
-                        >
-                            <Form.Control
-                                disabled
-                                id="username"
-                                onChange={handleChange}
-                                type="text"
-                                placeholder={t("username")}
-                            />
-                        </FloatingLabel>
-                        <FloatingLabel
-                            id="initialFunds"
-                            label={t("Initial Funds")}
-                            className="mb-3"
-                        >
-                            <Form.Control
-                                disabled
-                                onChange={handleChange}
-                                type="number"
-                                min="0"
-                                placeholder={t("Initial Funds")}
                             />
                         </FloatingLabel>
                         <p>{message}</p>

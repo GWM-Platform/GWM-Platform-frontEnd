@@ -45,15 +45,15 @@ const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownK
                                         $
                                     </span>
                                     <span className={`info ${Hide ? "shown" : "hidden"}`}>
-                                        {balanceInCash.toString().replace(/./g, "*")}
+                                        {balanceInCash.toFixed(2).toString().replace(/./g, "*")}
                                     </span>
 
                                     <span className={`info ${Hide ? "hidden" : "shown"}`}>
-                                        {balanceInCash.toString()}
+                                        {balanceInCash.toFixed(2).toString()}
                                     </span>
 
                                     <span className={`info placeholder`}>
-                                        {balanceInCash.toString()}
+                                        {balanceInCash.toFixed(2).toString()}
                                     </span>
                                 </div>
                             </h2>

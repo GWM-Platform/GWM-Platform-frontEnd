@@ -74,11 +74,11 @@
 	text-transform: capitalize;
 }
 .text-green {
-	color: green;
+	color: #47744f!important;
 }
 
 .text-red {
-	color: red;
+	color: red!important;
 }
 
 .mainColor {

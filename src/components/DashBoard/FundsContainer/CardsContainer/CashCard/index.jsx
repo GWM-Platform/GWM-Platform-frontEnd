@@ -7,18 +7,16 @@ import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 import { useHistory } from 'react-router-dom';
 import './index.css'
 
-const CashCard = ({ Hide, setHide, Fund }) => {
+const CashCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
     const { t } = useTranslation();
 
     let history = useHistory();
 
-    const toDeposit = (type) => {
-        history.push(`/dashboard/deposit`);
-    }
-
     const toWithdraw = (type) => {
         history.push(`/dashboard/withdraw`);
     }
+
+    const pendingCash = PendingTransactions.value.filter((transaction) => Math.sign(transaction.shares) === -1).map((transaction) => transaction.shares * transaction.sharePrice).reduce((a, b) => a + b, 0).toFixed(2)
 
     return (
         <Col sm="6" md="6" lg="4" className="fund-col growAnimation">
@@ -74,16 +72,14 @@ const CashCard = ({ Hide, setHide, Fund }) => {
                             </Row>
                         </Container>
                     </Card.Title>
+                    <Card.Text className="subTitle lighter mt-0 mb-2">
+                        {t("Pending Cash")}:<span className="bolder text-green"> +${Math.abs(pendingCash)}</span><br />
+                    </Card.Text>
                 </Card.Body>
                 <Card.Footer className="footer mt-2 m-0 p-0">
                     <Row className="d-flex justify-content-center m-0">
-                        <Col xs="6" className="d-flex justify-content-center p-0 m-0">
-                            <Button onClick={() => toDeposit()} className="me-1 button left d-flex align-items-center justify-content-center">
-                                <span className="label">{t("Deposit")}</span>
-                            </Button>
-                        </Col>
-                        <Col xs="6" className="d-flex justify-content-center p-0 m-0">
-                            <Button onClick={() => toWithdraw()} className="ms-1 button right d-flex align-items-center justify-content-center">
+                        <Col xs="12" className="d-flex justify-content-center p-0 m-0">
+                            <Button onClick={() => toWithdraw()} className="button d-flex align-items-center justify-content-center">
                                 <span className="label">{t("Withdraw")}</span>
                             </Button>
                         </Col>

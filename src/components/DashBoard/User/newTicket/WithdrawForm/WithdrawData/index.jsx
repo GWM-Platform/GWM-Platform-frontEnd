@@ -4,7 +4,7 @@ import { Form, InputGroup, Row, Button,  Container } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
 
 
-const WithdrawData = ({ data, handleChange, validated, handleSubmit }) => {
+const WithdrawData = ({ data, handleChange, validated, handleSubmit,account }) => {
 
     const { t } = useTranslation();
 
@@ -35,6 +35,7 @@ const WithdrawData = ({ data, handleChange, validated, handleSubmit }) => {
                             step=".01"
                             onChange={handleChange}
                             min="0.01"
+                            max={account.balance}
                             id="amount"
                             type="number"
                             required
@@ -45,6 +46,9 @@ const WithdrawData = ({ data, handleChange, validated, handleSubmit }) => {
 
                                 data.amount === "" ?
                                     t("You should enter how much you want to withdraw")
+                                    :
+                                    data.amount > account.balance ?
+                                    t("The amount must be lower or equal to your balance")+" ($"+account.balance+")"
                                     :
                                     t("The amount must be greater than 0")
                             }

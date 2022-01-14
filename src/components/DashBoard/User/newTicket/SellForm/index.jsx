@@ -1,15 +1,24 @@
 import React, { useState, useEffect } from 'react'
+import { useHistory,useLocation } from 'react-router-dom';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { Container, Row, Col, Accordion } from 'react-bootstrap'
 import FundSelector from './FundSelector'
 import SellData from './SellData'
-import { useHistory } from 'react-router-dom';
 import Loading from '../Loading';
 import NoFunds from '../NoFunds';
 
 const SellForm = ({ NavInfoToggled,balanceChanged}) => {
-    //HardCoded data (here we should request Funds that have available feeParts to sell)
+    function useQuery() {
+        const { search } = useLocation();
+
+        return React.useMemo(() => new URLSearchParams(search), [search]);
+    }
+
+    //If the user came from an specific fund, we use the query to auto select that one
+    let fundId = parseInt(useQuery().get("fund"))
+
     const [data, setData] = useState({ shares: "", FundSelected: -1 })
     const [some, setSome] = useState(false)
     const [Funds, setFunds] = useState([])
@@ -62,8 +71,15 @@ const SellForm = ({ NavInfoToggled,balanceChanged}) => {
             })
 
             if (response.status === 200) {
-                const data = await response.json()
-                setFunds(data)
+                const dataFetched = await response.json()
+                if(fundId){
+                    const fundSelected=dataFetched.findIndex(fund => fund.fundId === fundId)
+                    if(fundSelected>=0){
+                        openAccordion()
+                        setData({...data,...{FundSelected:fundSelected}})
+                    }
+                }
+                setFunds(dataFetched)
                 setFetchingFunds(false)
             } else {
                 switch (response.status) {

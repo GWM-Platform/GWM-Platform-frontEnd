@@ -2,23 +2,19 @@ import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Table, Col } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next';
-import TransactionRow from './TransactionRow'
-
-const TransactionsTable = ({ transactions, state, reloadData }) => {
+import MovementRow from './MovementRow'
+const MovementsTable = ({ movements, state, reloadData }) => {
     const { t } = useTranslation();
 
     return (
         <Col xs="12">
-            <h1 className="title">{t("Purchase and sale tickets")}:</h1>
+            <h1 className="title">{t("Withdrawal tickets")}:</h1>
             <Table className="TicketsTable table table-striped table-bordered table-hover growAnimation">
                 <thead className="tableHeader solid-bg">
                     <tr>
                         <th >{t("#id")}</th>
                         <th >{t("Client")}</th>
-                        <th >{t("Operation")}</th>
-                        <th >{t("Fund name")}</th>
-                        <th >{t("Shares")}</th>
-                        <th >{t("Share Price")}</th>
+                        <th >{t("Amount")}</th>
                         <th >{t("Created at")}</th>
                         {
                             state === 1 || state === "1" ? <th >{t("Action")}</th> : null
@@ -27,8 +23,8 @@ const TransactionsTable = ({ transactions, state, reloadData }) => {
                 </thead>
                 <tbody>
                     {
-                        transactions.map((transaction, key) => {
-                            return <TransactionRow reloadData={reloadData} key={key} Transaction={transaction} state={state} />
+                        movements.map((movement, key) => {
+                            return <MovementRow reloadData={reloadData} key={key} Movement={movement} state={state} />
                         })
                     }
                 </tbody>
@@ -36,6 +32,6 @@ const TransactionsTable = ({ transactions, state, reloadData }) => {
         </Col>
     )
 }
-export default TransactionsTable
+export default MovementsTable
 
 

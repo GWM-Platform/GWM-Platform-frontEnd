@@ -57,7 +57,7 @@ const SellData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAc
                                             t("The amount must be greater than 0")
                                             :
                                             t("You are trying to sell") + t(" ") + data.shares + " " + t("FeeParts, equivalent to") + t(" $") +
-                                            (data.shares * Funds[data.FundSelected].fund.sharePrice).toFixed(2) + t(", but you only have") + t(" $") + Funds[data.FundSelected].shares + t(" ") + t("in position.")
+                                            (data.shares * Funds[data.FundSelected].fund.sharePrice).toFixed(2) + t(", but you only have") + t(" ") + Funds[data.FundSelected].shares + t(" ") + t("in position.")
                             }
                         </Form.Control.Feedback>
                         <Form.Control.Feedback type="valid">

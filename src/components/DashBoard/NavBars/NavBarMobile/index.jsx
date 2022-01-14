@@ -2,13 +2,13 @@ import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCommentsDollar, faEnvelope, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faCommentsDollar, faUser,faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 import { Row, Container, Col } from 'react-bootstrap'
 import { useRouteMatch, useHistory } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
 
 const NavBarMobile = ({ setItemSelected , itemSelected }) => {
-
+    
     const { t } = useTranslation();
 
     const { url } = useRouteMatch()
@@ -22,6 +22,11 @@ const NavBarMobile = ({ setItemSelected , itemSelected }) => {
     const toBuy = (type) => {
         setItemSelected("buy");
         history.push(`${url}/buy`);
+    }
+
+    const logOut = () => {
+        sessionStorage.clear();
+        history.push(`/`);
     }
 
     return (
@@ -46,12 +51,13 @@ const NavBarMobile = ({ setItemSelected , itemSelected }) => {
                     <h1 className="section-label mt-0 mb-0 pb-0  pt-1" >{t("Create Tickets")}</h1>
                 </Col>
                 <Col
+                    onClick={()=>logOut()}
                     xs="auto"
                     className={`${itemSelected === "contact" ? "selected" : ""}`}>
                     <div className="d-flex justify-content-center">
-                        <FontAwesomeIcon className="icon" icon={faEnvelope} />
+                        <FontAwesomeIcon className="icon" icon={faSignOutAlt} />
                     </div>
-                    <h1 className="section-label mt-0 mb-0 pb-0  pt-1" >{t("Contact")}</h1>
+                    <h1 className="section-label mt-0 mb-0 pb-0  pt-1" >{t("Logout")}</h1>
                 </Col>
             </Row>
         </Container>

@@ -52,19 +52,19 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) =>
                                     <>
                                         <Nav.Link
                                             className="px-2"
-                                            active={itemSelected === "fundsAdministration"}
+                                            active={itemSelected === "fundsAdministration" || itemSelected === "FundsAdministration" }
                                             onClick={() => { goTo("FundsAdministration") }}>
                                             {t("Funds Administration")}
                                         </Nav.Link>
                                         <Nav.Link
                                             className="px-2"
-                                            active={itemSelected === "assetsAdministration"}
+                                            active={itemSelected === "assetsAdministration" || itemSelected === "AssetsAdministration" }
                                             onClick={() => { goTo("AssetsAdministration") }}>
                                             {t("Assets Administration")}
                                         </Nav.Link>
                                         <Nav.Link
                                             className="px-2"
-                                            active={itemSelected === "ticketsAdministration"}
+                                            active={itemSelected === "ticketsAdministration"|| itemSelected === "TicketsAdministration"}
                                             onClick={() => { goTo("ticketsAdministration") }}>
                                             {t("Tickets Administration")}
                                         </Nav.Link>

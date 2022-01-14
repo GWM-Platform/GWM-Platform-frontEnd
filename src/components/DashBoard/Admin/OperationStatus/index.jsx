@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../operationsForm.css'
+import './operationsForm.css'
+import './index.css'
 
 import { Container, Row, Col } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faClock } from '@fortawesome/free-regular-svg-icons'
-import './index.css'
+import { faCheckCircle } from '@fortawesome/free-regular-svg-icons'
 import { useTranslation } from 'react-i18next';
 
 const OperationStatus = ({setItemSelected,NavInfoToggled}) => {
@@ -18,9 +18,8 @@ const OperationStatus = ({setItemSelected,NavInfoToggled}) => {
         <Container className="OperationStatus growAnimation">
             <Row className={`${NavInfoToggled? "free-area-withoutNavInfo": "free-area"} d-flex align-items-center justify-content-center`}>
                 <Col sm="auto">
-                    <h1 className="statusIcon"><FontAwesomeIcon icon={faClock}/></h1>
-                    <h1  className="title">{t("Ticket created successfully")}</h1>
-                    <h2  className="description">{t("Wait for an administrator to aprove or deny it")}</h2>
+                    <h1 className="statusIcon"><FontAwesomeIcon icon={faCheckCircle}/></h1>
+                    <h1  className="title">{t("Deposit done successfully")}</h1>
                 </Col>
             </Row>
         </Container>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../operationsForm.css'
 
@@ -9,14 +9,15 @@ import WithdrawData from './WithdrawData'
 const WithdrawForm = ({ NavInfoToggled,balanceChanged }) => {
     const [data, setData] = useState({ amount: "" })
     const [validated, setValidated] = useState(true);
+    const [account, setAccount] = useState({});
 
-    const token = sessionStorage.getItem('access_token')
 
     let history = useHistory();
 
 
     const withdraw = async () => {
-        var url = `${process.env.REACT_APP_APIURL}/accounts/withdraw`;
+        const token = sessionStorage.getItem('access_token')
+        var url = `${process.env.REACT_APP_APIURL}/accounts/${account.id}/withdraw`;
         const response = await fetch(url, {
             method: 'POST',
             body: JSON.stringify({ amount: parseFloat(data.amount) }),
@@ -51,6 +52,7 @@ const WithdrawForm = ({ NavInfoToggled,balanceChanged }) => {
         event.preventDefault();
         event.stopPropagation();
         const form = event.currentTarget;
+        const token = sessionStorage.getItem('access_token')
         if (form.checkValidity() === true) {
             if (token === null) {
                 console.log("compra")
@@ -61,13 +63,42 @@ const WithdrawForm = ({ NavInfoToggled,balanceChanged }) => {
         setValidated(true);
     }
 
+    useEffect(() => {
+        const getAccount = async () => {
+            const token = sessionStorage.getItem('access_token')
+            var url = `${process.env.REACT_APP_APIURL}/accounts/`;
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    Accept: "*/*",
+                    'Content-Type': 'application/json'
+                }
+            })
+    
+            if (response.status === 200) {
+                const data= await response.json()
+                setAccount(data[0])
+            } else {
+                switch (response.status) {
+                    case 500:
+                        console.error(response.status)
+                        break;
+                    default:
+                        console.error(response.status)
+                }
+            }
+        }
+        getAccount()
+    }, [])
+
     return (
         <Container className={NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}>
             <Row className="newTicket h-100 growAnimation">
                 <Col xs="12">
                     <WithdrawData
                         handleSubmit={handleSubmit} validated={validated}
-                        handleChange={handleChange} data={data} />
+                        handleChange={handleChange} data={data} account={account} />
                 </Col>
             </Row>
         </Container>

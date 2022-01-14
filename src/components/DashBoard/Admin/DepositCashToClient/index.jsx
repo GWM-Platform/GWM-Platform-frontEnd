@@ -139,7 +139,7 @@ const DepositCashToClient = () => {
                             className="mb-3" aria-label="Select Account id" required>
                             <option disabled value="">Open this select menu</option>
                             {Accounts.value.map((Account, key) => {
-                                return <option key={key} value={Account.clientId}>Id: {Account.clientId} / Actual Balance: {Account.balance}</option>
+                                return <option key={key} value={Account.id}>Client Id: {Account.clientId} / Account Id {Account.id} / Actual Balance: {Account.balance}</option>
                             })}
                         </Form.Select>
                             <Form.Label>{t("Amount")}</Form.Label>

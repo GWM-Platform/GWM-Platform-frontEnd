@@ -1,5 +1,6 @@
 .navBarFooter{
-    background-color: var(--footer-background)
+    background-color: var(--footer-background);
+    filter: drop-shadow(0px 0px 5px black);
 }
 .navBarFooter .text{
     color:white

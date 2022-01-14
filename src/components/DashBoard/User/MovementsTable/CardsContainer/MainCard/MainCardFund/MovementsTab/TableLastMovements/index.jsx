@@ -13,7 +13,7 @@ const TableLastMovements = ({ page, setPage, movsShown, movementsCount, content,
         content.forEach((a)=>{
             moneySpent+=a.shares*a.sharePrice
         })
-        setPerformance(actualMoney*100/moneySpent-100)
+        setPerformance((actualMoney*100/moneySpent-100).toFixed(2))
     }, [Fund,content,setPerformance])
 
     return (
@@ -22,9 +22,9 @@ const TableLastMovements = ({ page, setPage, movsShown, movementsCount, content,
                 <thead >
                     <tr>
                         <th className="tableHeader">{t("Date")}</th>
-                        <th className="d-none d-sm-table-cell">{t("in FeePars")}</th>
-                        <th className="tableAmount">{t("In Cash")}</th>
-                        <th className="tableDescription d-none d-sm-table-cell">{t("Value of the share (at the time of the operation)")}</th>
+                        <th className="d-none d-sm-table-cell">{t("Concept")}</th>
+                        <th className="tableDescription d-none d-sm-table-cell">{t("Share value")}</th>
+                        <th className="tableAmount">{t("Amount")}</th>
                     </tr>
                 </thead>
                 <tbody>

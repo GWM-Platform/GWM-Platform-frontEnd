@@ -3,21 +3,19 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icons'
 import { Spinner } from 'react-bootstrap'
-import { useTranslation } from 'react-i18next';
 
 import moment from 'moment';
 import ActionConfirmationModal from './ActionConfirmationModal'
 
-const TransactionRow = ({ Transaction, state, reloadData }) => {
-    const { t } = useTranslation();
+const MovementRow = ({ Movement, state, reloadData }) => {
 
-    var momentDate = moment(Transaction.createdAt);
+    var momentDate = moment(Movement.createdAt);
 
     const [ShowModal, setShowModal] = useState(false)
     const [Action, setAction] = useState("approve")
 
-    const [UserTicketInfo, SetUserTicketInfo] = useState({ fetching: true, value: {} })
-    const [FundTicketInfo, SetFundTicketInfo] = useState({ fetching: true, value: {} })
+    const [AccountTicketInfo, SetAccountTicketInfo] = useState({ fetching: true, value: {} })
+    const [ClientAccountInfo, SetClientAccountInfo] = useState({ fetching: true, value: {} })
 
     const launchModalConfirmation = (action) => {
         setAction(action)
@@ -25,8 +23,8 @@ const TransactionRow = ({ Transaction, state, reloadData }) => {
     }
 
     useEffect(() => {
-        const getUserData = async () => {
-            var url = `${process.env.REACT_APP_APIURL}/clients/${Transaction.clientId}`;
+        const getAccountData = async () => {
+            var url = `${process.env.REACT_APP_APIURL}/accounts/${Movement.accountId}`;
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -38,7 +36,8 @@ const TransactionRow = ({ Transaction, state, reloadData }) => {
 
             if (response.status === 200) {
                 const data = await response.json()
-                SetUserTicketInfo({ ...UserTicketInfo, ...{ fetching: false, value: data } })
+                SetAccountTicketInfo({ ...AccountTicketInfo, ...{ fetching: false, value: data } })
+                getAccountClientData(data)
             } else {
                 switch (response.status) {
                     default:
@@ -46,9 +45,8 @@ const TransactionRow = ({ Transaction, state, reloadData }) => {
                 }
             }
         }
-
-        const getFundData = async () => {
-            var url = `${process.env.REACT_APP_APIURL}/funds/${Transaction.fundId}`;
+        const getAccountClientData = async (AccountTicketInfoFetched) => {
+            var url = `${process.env.REACT_APP_APIURL}/clients/${AccountTicketInfoFetched.clientId}`;
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -60,7 +58,7 @@ const TransactionRow = ({ Transaction, state, reloadData }) => {
 
             if (response.status === 200) {
                 const data = await response.json()
-                SetFundTicketInfo({ ...FundTicketInfo, ...{ fetching: false, value: data } })
+                SetClientAccountInfo({ ...ClientAccountInfo, ...{ fetching: false, value: data } })
             } else {
                 switch (response.status) {
                     default:
@@ -68,34 +66,26 @@ const TransactionRow = ({ Transaction, state, reloadData }) => {
                 }
             }
         }
+
+
+
         const token = sessionStorage.getItem('access_token')
-        getFundData();
-        getUserData();
+        getAccountData();
         //eslint-disable-next-line
-    }, [Transaction])
-
+    }, [Movement,state])
     return (
         <>
             <tr className="transactionRow">
-                <td>{Transaction.id}</td>
+                <td>{Movement.id}</td>
                 <td>
                     {
-                        UserTicketInfo.fetching ?
+                        ClientAccountInfo.fetching ?
                             <Spinner animation="border" size="sm" />
                             :
-                            UserTicketInfo.value.alias
+                            ClientAccountInfo.value.alias
                     }
                 </td>
-                <td>{Math.sign(Transaction.shares) === -1 ? t("Sale") : t("Purchase")}</td>
-                <td>
-                    {
-                        FundTicketInfo.fetching ?
-                            <Spinner animation="border" size="sm" />
-                            : FundTicketInfo.value.name
-                    }
-                </td>
-                <td>{Transaction.shares}</td>
-                <td>{Transaction.sharePrice}</td>
+                <td>${Movement.amount}</td>
                 <td>{momentDate.format('MMMM Do YYYY, h:mm:ss a')}</td>
                 {
                     state === 1 || state === "1" ?
@@ -114,11 +104,11 @@ const TransactionRow = ({ Transaction, state, reloadData }) => {
                 }
             </tr>
             {state === 1 || state === "1" ?
-                <ActionConfirmationModal reloadData={reloadData} transaction={Transaction} setShowModal={setShowModal} action={Action} show={ShowModal} />
+                <ActionConfirmationModal reloadData={reloadData} movement={Movement} setShowModal={setShowModal} action={Action} show={ShowModal} />
                 :
                 null}
         </>
     )
 }
-export default TransactionRow
+export default MovementRow
 

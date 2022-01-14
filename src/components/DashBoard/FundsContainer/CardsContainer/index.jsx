@@ -6,7 +6,7 @@ import CashCard from './CashCard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 
-const CardsContainer = ({ setItemSelected, Funds, Accounts }) => {
+const CardsContainer = ({ setItemSelected, Funds, Accounts,PendingTransactions }) => {
     const [showRightChevron, setShowRightChevron] = useState(true)
     const [showLeftChevron, setShowLeftChevron] = useState(false)
     const [Hide, setHide] = useState(false)
@@ -72,14 +72,14 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts }) => {
                 w-100 g-1 g-sm-5 pb-2 flex-wrap flex-sm-nowrap overflow-hidden `}>
                 {Accounts.map((account, key) => {
                     return (
-                        <CashCard key={key} Hide={Hide} setHide={setHide} Fund={account} />
+                        <CashCard PendingTransactions={PendingTransactions} key={key} Hide={Hide} setHide={setHide} Fund={account} />
                     )
                 })
                 }
                 {
                     Funds.map((j, k) => {
                         return (
-                            <FundCard Hide={Hide} setHide={setHide} key={k}
+                            <FundCard Hide={Hide} setHide={setHide} key={k} PendingTransactions={PendingTransactions}
                                 setItemSelected={setItemSelected} Funds={Funds} Fund={j} />
                         )
                     }

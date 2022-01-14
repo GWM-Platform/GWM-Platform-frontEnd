@@ -6,14 +6,16 @@ import { useHistory } from 'react-router-dom'
 import { Spinner, Row, Container, Col } from 'react-bootstrap';
 const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFunds, setNumberOfFunds }) => {
     let history = useHistory();
-    // eslint-disable-next-line
     const { t } = useTranslation();
     const [Funds, setFunds] = useState([]);
     const [FetchingFunds, setFetchingFunds] = useState(true);
-
     const [Accounts, setAccounts] = useState([])
 
-    // eslint-disable-next-line 
+    const [PendingTransactions, setPendingTransactions] = useState({
+        value: [],
+        fetched: false,
+        fetching: false
+    })
 
     useEffect(() => {
         const token = sessionStorage.getItem('access_token')
@@ -37,6 +39,7 @@ const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFun
             if (response.status === 200) {
                 const data = await response.json()
                 setFunds(data)
+                getPendingTransactions()
             } else {
                 switch (response.status) {
                     default:
@@ -68,7 +71,46 @@ const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFun
             }
         }
 
-        if(token===null) toLogin()
+        const getPendingTransactions = async () => {
+            setPendingTransactions({
+                ...PendingTransactions, ...{
+                    fetched: false,
+                    fetching: true
+                }
+            })
+            var url = `${process.env.REACT_APP_APIURL}/transactions/states/1/transactions`;
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    Accept: "*/*",
+                    'Content-Type': 'application/json'
+                }
+            })
+
+            if (response.status === 200) {
+                const data = await response.json()
+                setPendingTransactions({
+                    ...PendingTransactions, ...{
+                        value: data,
+                        fetched: true,
+                        fetching: false
+                    }
+                })
+            } else {
+                switch (response.status) {
+                    default:
+                        setPendingTransactions({
+                            ...PendingTransactions, ...{
+                                fetched: false,
+                                fetching: false
+                            }
+                        })
+                }
+            }
+        }
+
+        if (token === null) toLogin()
         setFetchingFunds(true)
         getFunds()
         getAccounts()
@@ -82,7 +124,7 @@ const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFun
     return (
         <Container fluid
             className={`accountParent px-0 ${NavInfoToggled ? "min-free-area-withoutNavInfo" : "min-free-area"} d-flex align-items-center`}>            {
-                    FetchingFunds
+                FetchingFunds
                     ?
                     <Container fluid>
                         <Row className="d-flex justify-content-center align-items-center">
@@ -94,6 +136,7 @@ const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFun
                     </Container>
                     :
                     <CardsContainer
+                        PendingTransactions={PendingTransactions}
                         NavInfoToggled={NavInfoToggled}
                         setItemSelected={setItemSelected}
                         isMobile={isMobile}

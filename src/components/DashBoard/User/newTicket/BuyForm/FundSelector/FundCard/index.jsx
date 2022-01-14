@@ -31,11 +31,6 @@ const FundCard = ({ Fund, ownKey, data, setData, setSome, some, openAccordion })
                         <Row className="d-flex justify-content-between">
                             <Col md="auto">
                                 <Card.Text className="mb-1 feePartsInfo">
-                                    <strong>{Fund.freeShares}</strong>{" "}{t("Available")}
-                                </Card.Text>
-                            </Col>
-                            <Col md="auto">
-                                <Card.Text className="mb-1 feePartsInfo">
                                     <strong>{Fund.shares}</strong>{" "}{t("in total")}
                                 </Card.Text>
                             </Col>

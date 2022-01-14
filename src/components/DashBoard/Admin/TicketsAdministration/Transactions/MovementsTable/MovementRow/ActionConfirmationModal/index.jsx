@@ -7,7 +7,7 @@ import { faExclamation, faCheck, faTimes } from '@fortawesome/free-solid-svg-ico
 import { Modal, Button } from 'react-bootstrap'
 
 
-const ActionConfirmationModal = ({ transaction, setShowModal, action,show,reloadData }) => {
+const ActionConfirmationModal = ({ movement, setShowModal, action,show,reloadData }) => {
     const { t } = useTranslation();
 
     const [ActionFetch, setActionFetch] = useState({ fetched: false, fetching: false, valid: false })
@@ -31,7 +31,7 @@ const ActionConfirmationModal = ({ transaction, setShowModal, action,show,reload
             valid: false
         })
 
-        const url = `${process.env.REACT_APP_APIURL}/transactions/${transaction.id}/${action}`;
+        const url = `${process.env.REACT_APP_APIURL}/accounts/movements/${movement.id}/${action}`;
         const token = sessionStorage.getItem("access_token")
 
         const response = await fetch(url, {
@@ -72,7 +72,7 @@ const ActionConfirmationModal = ({ transaction, setShowModal, action,show,reload
                         <h1 className="title"><FontAwesomeIcon className="icon red" icon={faExclamation} /></h1>
                     </div>
                     <h1 className="title"> {t("Are you sure?")}</h1>
-                    <h2 className="subTitle">{t("You are about to")} {t(action)} {t("the ticket with the id")} {t(transaction.id)}</h2>
+                    <h2 className="subTitle">{t("You are about to")} {t(action)} {t("the ticket with the id")} {t(movement.id)}</h2>
                     <h3 className="heading">{t("This action cannot be undone")}</h3>
                 </div>
                 <div className={ActionFetch.fetched && !ActionFetch.fetching ? "show" : "hidden"}>
@@ -99,7 +99,7 @@ const ActionConfirmationModal = ({ transaction, setShowModal, action,show,reload
                         <h1 className="title"><FontAwesomeIcon className="icon red" icon={faExclamation} /></h1>
                     </div>
                     <h1 className="title"> {t("Are you sure?")}</h1>
-                    <h2 className="subTitle">{t("You are about to")} {t(action)} {t("the ticket with the id")} {t(transaction.id)}</h2>
+                    <h2 className="subTitle">{t("You are about to")} {t(action)} {t("the ticket with the id")} {t(movement.id)}</h2>
                     <h3 className="heading">{t("This action cannot be undone")}</h3>
                 </div>
             </Modal.Body>
