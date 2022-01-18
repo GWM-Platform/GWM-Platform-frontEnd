@@ -66,7 +66,7 @@ const SellData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAc
                                     t("Please, select a Fund to Sell")
                                     :
                                     t("Selling") + t(" ") + data.shares + t(" ") + t("FeeParts from the fund") + t(" \"") + Funds[data.FundSelected].fund.name + t("\"") +
-                                    t(", equivalent to $") + data.shares * Funds[data.FundSelected].fund.sharePrice
+                                    t(", equivalent to $") + (data.shares * Funds[data.FundSelected].fund.sharePrice).toFixed(2)
                             }
                         </Form.Control.Feedback>
                     </InputGroup>

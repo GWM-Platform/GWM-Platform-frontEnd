@@ -26,7 +26,7 @@ const EditAssets = ({ data, EditRequest,handleChange,Assets,Action,setAction,val
                         </Form.Control.Feedback>
                     </FloatingLabel>
                     <FloatingLabel className="mb-3" label={t("Asset Types")}>
-                        <Form.Select required id="typeId" onChange={handleChange} value={data.typeId}>
+                        <Form.Select disabled id="typeId" onChange={handleChange} value={data.typeId}>
                             {AssetTypes.map((Asset, key) => {
                                 return <option key={key} value={Asset.id}>{Asset.name}</option>
                             })}

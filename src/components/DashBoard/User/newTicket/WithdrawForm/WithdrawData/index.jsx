@@ -45,7 +45,7 @@ const WithdrawData = ({ data, handleChange, validated, handleSubmit,account }) =
                             {
 
                                 data.amount === "" ?
-                                    t("You should enter how much you want to withdraw")
+                                    t("You must enter how much you want to withdraw")
                                     :
                                     data.amount > account.balance ?
                                     t("The amount must be lower or equal to your balance")+" ($"+account.balance+")"
@@ -54,9 +54,7 @@ const WithdrawData = ({ data, handleChange, validated, handleSubmit,account }) =
                             }
                         </Form.Control.Feedback>
                         <Form.Control.Feedback type="valid">
-                            {
-                                t("Looks good!")
-                            }
+                            {t("Looks good")}!
                         </Form.Control.Feedback>
                     </InputGroup>
                     <Button disabled={data.amount === "" || data.amount <= 0}

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
@@ -9,6 +9,14 @@ import './index.css'
 
 const CashCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
     const { t } = useTranslation();
+    const [PendingMovements, setPendingMovements] = useState(
+        {
+            fetching: true,
+            fetched: false,
+            value: []
+        }
+    )
+    const [PendingCash,setPendingCash]=useState(0)
 
     let history = useHistory();
 
@@ -16,7 +24,60 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
         history.push(`/dashboard/withdraw`);
     }
 
-    const pendingCash = PendingTransactions.value.filter((transaction) => Math.sign(transaction.shares) === -1).map((transaction) => transaction.shares * transaction.sharePrice).reduce((a, b) => a + b, 0).toFixed(2)
+    useEffect(() => {
+        let PendingMovementsCash=PendingMovements.value.map((movement) => movement.amount).reduce((a, b) => a + b, 0)*-1
+        let PendingTransactionsCash=PendingTransactions.value.filter((transaction) => Math.sign(transaction.shares) === -1).map((transaction) => transaction.shares * transaction.sharePrice).reduce((a, b) => a + b, 0)
+        setPendingCash((PendingMovementsCash+PendingTransactionsCash).toFixed())
+    }, [PendingTransactions,PendingMovements.value])
+
+    useEffect(() => {
+        const getPendingMovements = async () => {
+            const token = sessionStorage.getItem('access_token')
+            var url = `${process.env.REACT_APP_APIURL}/accounts/movements/bystate/1`;
+            
+            setPendingMovements(prevState => ({
+                ...prevState,
+                ...{
+                    fetching: true,
+                }
+            }))
+
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    Accept: "*/*",
+                    'Content-Type': 'application/json'
+                }
+            })
+
+            if (response.status === 200) {
+                const data = await response.json()
+                setPendingMovements(prevState => ({
+                    ...prevState,
+                    ...{
+                        fetching: false,
+                        fetched: true,
+                        value: data
+                    }
+                }))
+                
+            } else {
+                switch (response.status) {
+                    default:
+                        console.log(response.status)
+                        setPendingMovements(prevState => ({
+                            ...prevState,
+                            ...{
+                                fetching: false,
+                                fetched: false,
+                            }
+                        }))
+                }
+            }
+        }
+        getPendingMovements()
+    }, [])
 
     return (
         <Col sm="6" md="6" lg="4" className="fund-col growAnimation">
@@ -73,7 +134,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
                         </Container>
                     </Card.Title>
                     <Card.Text className="subTitle lighter mt-0 mb-2">
-                        {t("Pending Cash")}:<span className="bolder text-green"> +${Math.abs(pendingCash)}</span><br />
+                        {t("Pending Cash")}:<span className="bolder text-green"> +${Math.abs(PendingCash)}</span><br />
                     </Card.Text>
                 </Card.Body>
                 <Card.Footer className="footer mt-2 m-0 p-0">

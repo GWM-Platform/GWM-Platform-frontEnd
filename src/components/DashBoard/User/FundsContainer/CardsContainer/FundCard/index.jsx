@@ -49,15 +49,15 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
                                         <div className="pe-2 containerHideInfo">
                                             <span>$</span>
                                             <span className={`info ${Hide ? "shown" : "hidden"}`}>
-                                                {(Fund.shares * Fund.fund.sharePrice).toString().replace(/./g, "*")}
+                                                {(Fund.shares * Fund.fund.sharePrice).toFixed(2).toString().replace(/./g, "*")}
                                             </span>
 
                                             <span className={`info ${Hide ? "hidden" : "shown"}`}>
-                                                {(Fund.shares * Fund.fund.sharePrice).toString()}
+                                                {(Fund.shares * Fund.fund.sharePrice).toFixed(2).toString()}
                                             </span>
 
                                             <span className={`info placeholder`}>
-                                                {(Fund.shares * Fund.fund.sharePrice).toString()}
+                                                {(Fund.shares * Fund.fund.sharePrice).toFixed(2).toString()}
                                             </span>
                                         </div>
                                         <div className="ps-0 hideInfoButton d-flex align-items-center">

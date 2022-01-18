@@ -119,7 +119,7 @@ const SetPassword = () => {
                                                         isValid={validation.value === "Medium" || validation.value === "Strong"}
                                                         isInvalid={validation.value !== "Medium" && validation.value !== "Strong"}
                                                     />
-                                                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                                                    <Form.Control.Feedback>{t("Looks good")}!</Form.Control.Feedback>
                                                     <Form.Control.Feedback type="invalid">
                                                         <p className="validation">{t("Your new password must have")}:
                                                             <br />

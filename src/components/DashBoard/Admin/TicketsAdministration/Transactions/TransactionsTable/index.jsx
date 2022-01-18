@@ -15,7 +15,7 @@ const TransactionsTable = ({ transactions, state, reloadData }) => {
                     <tr>
                         <th >{t("#id")}</th>
                         <th >{t("Client")}</th>
-                        <th >{t("Operation")}</th>
+                        <th >{t("Concept")}</th>
                         <th >{t("Fund name")}</th>
                         <th >{t("Shares")}</th>
                         <th >{t("Share Price")}</th>

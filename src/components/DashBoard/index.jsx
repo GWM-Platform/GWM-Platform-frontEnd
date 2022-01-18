@@ -4,7 +4,6 @@ import { Route, useRouteMatch, useHistory, useLocation } from 'react-router-dom'
 
 import './index.css'
 
-import FundsContainer from './FundsContainer'
 import NavBar from './NavBars/NavBar';
 import NavInfo from './NavBars/NavInfo';
 import NavBarMobile from './NavBars/NavBarMobile';
@@ -12,6 +11,7 @@ import NavBarTotal from './NavBars/NavBarTotal';
 import Footer from './Footer';
 
 //User
+import FundsContainer from './User/FundsContainer'
 import MovementsTable from './User/MovementsTable';
 import BuyForm from './User/newTicket/BuyForm';
 import SellForm from './User/newTicket/SellForm';
