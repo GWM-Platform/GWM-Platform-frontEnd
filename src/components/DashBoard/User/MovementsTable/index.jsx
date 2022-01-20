@@ -87,11 +87,11 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, NavInfoToggl
     }, [])
 
     useEffect(() => {
-        if(!FetchingFunds){
+        if (!FetchingFunds) {
             setNumberOfFunds(Accounts.length + Funds.length)
             if (Accounts.length + Funds.length === 0 && !FetchingFunds) setError("No tiene participacion en ningun fondo")
         }
-    }, [Accounts, Funds, setNumberOfFunds,FetchingFunds])
+    }, [Accounts, Funds, setNumberOfFunds, FetchingFunds])
 
     return (
         <Container fluid className={NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}>
@@ -102,7 +102,8 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, NavInfoToggl
                         <Row className="d-flex justify-content-center align-items-center">
                             <Col className="free-area d-flex justify-content-center align-items-center">
                                 <Spinner className={`me-2 ${error === "No tiene participacion en ningun fondo" ? "d-none" : ""}`} animation="border" variant="danger" />
-                                <span className="loadingText">{t(error)}</span>
+                                <span className="d-none d-md-block loadingText">{t(error)}</span>
+                                <span className="d-block d-md-none loadingText">{t("Loading")}</span>
                             </Col>
                         </Row>
                     </Container>

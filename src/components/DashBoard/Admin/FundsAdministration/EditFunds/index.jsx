@@ -8,11 +8,7 @@ const EditFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
     const [validated, setValidated] = useState(false);
     const [data, setData] = useState({
         name: Funds[Action.fund].name,
-        typeId: Funds[Action.fund].typeId,
-        shares: Funds[Action.fund].shares,
-        freeShares: Funds[Action.fund].freeShares,
-        sharePrice: Funds[Action.fund].sharePrice,
-
+        spreadsheetId:Funds[Action.fund].spreadsheetId
     })
 
     const [EditRequest, setEditRequest] = useState({

@@ -83,7 +83,7 @@ const FundSelector = ({ data, setData, some, setSome, Funds, openAccordion }) =>
                 <div className="formSection">
                     <Row className="d-flex justify-content-center">
                         <div className="p-relative">
-                            <Row className="flex-row flex-nowrap overflow-hidden" ref={FundsContainer}>
+                            <Row className="flex-row flex-nowrap  overflow-overlay overflow-sm-hidden" ref={FundsContainer}>
                                 {Funds.map((Fund, key) => {
                                     return (
                                         <FundCard openAccordion={openAccordion} key={key} ownKey={key} 

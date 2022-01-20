@@ -17,6 +17,8 @@ const AddAssetRow = ({ Action,setAction }) => {
                 </td>
                 <td className="cellWithoudPadding SharePrice">
                 </td>
+                <td className="cellWithoudPadding SharePrice">
+                </td>
                 <td className="verticalCenter Actions solid-bg" >
                     <div className="h-100 d-flex align-items-center justify-content-around">
                         <div className="iconContainer green">

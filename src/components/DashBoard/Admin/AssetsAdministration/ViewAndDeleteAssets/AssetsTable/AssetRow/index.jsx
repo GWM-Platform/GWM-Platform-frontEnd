@@ -20,6 +20,7 @@ const AssetRow = ({ Asset, AssetTypes, chargeAssets, setAction, Action, ownKey }
                 <td className="Id">{t(Asset.id)}</td>
                 <td className="Name">{t(Asset.name)}</td>
                 <td className="Type">{t(AssetTypes[getAssetTypeById(AssetTypes, Asset.typeId)].name)}</td>
+                <td className="SharePrice">${t(Asset.symbol)}</td>
                 <td className="SharePrice">${t(Asset.value)}</td>
 
                 <td className="Actions verticalCenter" >

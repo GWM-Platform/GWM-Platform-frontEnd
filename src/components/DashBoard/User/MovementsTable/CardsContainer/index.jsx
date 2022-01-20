@@ -14,7 +14,7 @@ import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
 
 import './index.css'
 
-const CardsContainer = ({ setItemSelected, isMobile, Funds, numberOfFunds, selected, setSelected, NavInfoToggled, Accounts }) => {
+const CardsContainer = ({ isMobile, Funds, numberOfFunds, selected, setSelected, NavInfoToggled, Accounts }) => {
     const [categorySelected, setCategorySelected] = useState(Accounts.length > 0 ? 0 : Funds.length > 0 ? 1 : 0)
     const [Hide, setHide] = useState(false)
     const [collapseSecondary, setCollapseSecondary] = useState(false)
@@ -27,10 +27,12 @@ const CardsContainer = ({ setItemSelected, isMobile, Funds, numberOfFunds, selec
         }
     }, [Accounts, Funds, numberOfFunds])
 
+    console.log(Accounts)
+
     return (
         <Row className="HistoryCardsContainer d-flex flex-md-nowrap ">
             {isMobile ?
-                Accounts.length > 1 || Funds.length > 1 ?
+                Accounts.length >= 1 || Funds.length >= 1 ?
                     <>
                         <Col md="12" className="ps-2 ps-sm-2 ps-md-2 ps-md-0 ps-lg-0 pe-2 pt-0 growAnimation" >
                             {Accounts.map(

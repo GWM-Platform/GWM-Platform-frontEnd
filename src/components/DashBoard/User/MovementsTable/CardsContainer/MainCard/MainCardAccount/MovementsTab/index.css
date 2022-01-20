@@ -42,7 +42,8 @@
     width: 100%;
 }
 .movementsTable {
-    overflow: auto;
+    overflow-y: overlay;
+    overflow-x:auto;
     width: 100%;
     min-height: calc( 100vh - 367px  );
 }

@@ -29,7 +29,15 @@ const EditFunds = ({ data, EditRequest, handleChange, Funds, Action, setAction, 
 
                 {/*------------------------------------------------------------------------------------------------------------------------------------------ */}
 
-                {/*<FundAssets Fund={Funds[Action.fund]}/> */}
+                <FloatingLabel
+                        label={t("Google SpreadSheet Id")}
+                        className="mb-3"
+                    >
+                        <Form.Control required onChange={handleChange} id="spreadsheetId" value={data.spreadsheetId} type="number" placeholder={t("Google SpreadSheet Id")} />
+                        <Form.Control.Feedback type="valid">
+                            {t("Looks good")}!
+                        </Form.Control.Feedback>
+                    </FloatingLabel>
 
                 {/*------------------------------------------------------------------------------------------------------------------------------------------ */}
 
@@ -53,33 +61,6 @@ const EditFunds = ({ data, EditRequest, handleChange, Funds, Action, setAction, 
                     </Form.Control.Feedback>
                 </FloatingLabel>
 
-                {/*------------------------------------------------------------------------------------------------------------------------------------------ */}
-
-                <FloatingLabel
-                    label={t("Free Shares")}
-                    className="mb-3"
-                >
-                    <Form.Control readonly disabled onChange={handleChange} id="freeShares" value={data.freeShares} min="0.01" step="0.01" max={data.shares} type="number" placeholder={t("Free Shares")} />
-                    <Form.Control.Feedback type="invalid">
-                        {data.freeShares === 0 ?
-                            t("The free shares must be more than 0")
-                            :
-                            t("The free shares must be less than or equal to Fund's total shares") + " (" + data.shares + ")"
-                        }
-                    </Form.Control.Feedback>
-                </FloatingLabel>
-
-                {/*------------------------------------------------------------------------------------------------------------------------------------------ */}
-
-                <FloatingLabel
-                    label={t("Share Price")}
-                    className="mb-3"
-                >
-                    <Form.Control required onChange={handleChange} id="sharePrice" value={data.sharePrice} min="0.01" step="0.01" type="number" placeholder={t("Share Price")} />
-                    <Form.Control.Feedback type="invalid">
-                        {t("The share price value must be greater than 0")}
-                    </Form.Control.Feedback>
-                </FloatingLabel>
                 <div className="d-flex justify-content-end">
                     <Button variant="danger" type="submit" className="mb-3">
                         <Spinner animation="border" variant="light"

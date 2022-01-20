@@ -36,7 +36,7 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) =>
 
     return (
 
-        <Navbar sticky="top" className="py-0 mb-0 navBarDesktop" collapseOnSelect expand="sm" variant="dark" >
+        <Navbar sticky="top" className={`py-0 mb-0 navBarDesktop dropShadow`} collapseOnSelect expand="sm" variant="dark" >
             <Container fluid className="bottomInnerBorder px-0 d-none d-sm-block">
                 <Row className="w-100 d-flex align-items-center mx-0">
                     <Col sm="auto" md={1} lg={2} style={{ paddingBottom: "5px" }}>
@@ -52,29 +52,29 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) =>
                                     <>
                                         <Nav.Link
                                             className="px-2"
-                                            active={itemSelected === "fundsAdministration" || itemSelected === "FundsAdministration" }
+                                            active={itemSelected === "fundsAdministration" || itemSelected === "FundsAdministration"}
                                             onClick={() => { goTo("FundsAdministration") }}>
                                             {t("Funds Administration")}
                                         </Nav.Link>
                                         <Nav.Link
                                             className="px-2"
-                                            active={itemSelected === "assetsAdministration" || itemSelected === "AssetsAdministration" }
+                                            active={itemSelected === "assetsAdministration" || itemSelected === "AssetsAdministration"}
                                             onClick={() => { goTo("AssetsAdministration") }}>
                                             {t("Assets Administration")}
                                         </Nav.Link>
                                         <Nav.Link
                                             className="px-2"
-                                            active={itemSelected === "ticketsAdministration"|| itemSelected === "TicketsAdministration"}
+                                            active={itemSelected === "ticketsAdministration" || itemSelected === "TicketsAdministration"}
                                             onClick={() => { goTo("ticketsAdministration") }}>
                                             {t("Tickets Administration")}
                                         </Nav.Link>
 
 
                                         <NavDropdown
-                                            active={itemSelected === "depositCash"|| itemSelected === "DepositCash" || itemSelected === "AddAccount" || itemSelected === "addAccount"}
+                                            active={itemSelected === "depositCash" || itemSelected === "DepositCash" || itemSelected === "AddAccount" || itemSelected === "addAccount"}
                                             className="px-0 transactionDropdown" title={t("Accounts Administration")} id="collasible-nav-dropdown">
                                             <NavDropdown.Item
-                                                active={itemSelected === "depositCash"||itemSelected === "DepositCash"}
+                                                active={itemSelected === "depositCash" || itemSelected === "DepositCash"}
                                                 onClick={() => { goTo("DepositCash") }}>
                                                 {t("Deposit Cash")}
                                             </NavDropdown.Item>
@@ -147,6 +147,52 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) =>
             <Navbar.Toggle style={{ borderColor: "rgba(0,0,0,0)" }} className="ps-2 ms-2 d-none" aria-controls="responsive-navbar-nav" />
             <Nav className={`w-100 d-block d-sm-none`}  >
                 <Container fluid className="px-0">
+                    <Row className={`w-100 justify-content-between align-items-center mx-0 px-0 ${itemSelected === "fundsAdministration" || itemSelected === "assetsAdministration" ? "d-flex" : "d-none"}`}>
+                        <Col xs="6" className="px-0">
+                            <Nav.Link
+                                className="ps-4 text-start"
+                                active={itemSelected === "fundsAdministration" || itemSelected === "FundsAdministration"}
+                                onClick={() => { goTo("fundsAdministration") }}>
+                                {t("Funds Administration")}
+                            </Nav.Link> </Col>
+                        <Col xs="6" className="px-0">
+                            <Nav.Link
+                                className="pe-4 text-end"
+                                active={itemSelected === "assetsAdministration" || itemSelected === "AssetsAdministration"}
+                                onClick={() => { goTo("assetsAdministration") }}>
+                                {t("Assets Administration")}
+                            </Nav.Link>
+                        </Col>
+                    </Row>
+
+                    <Row className={`w-100 justify-content-between align-items-center mx-0 px-0 ${itemSelected === "addAccount" || itemSelected === "DepositCash" ? "d-flex" : "d-none"}`}>
+                        <Col xs="6" className="px-0">
+                            <Nav.Link
+                                className="ps-4 text-start"
+                                active={itemSelected === "DepositCash" || itemSelected === "depositCash"}
+                                onClick={() => { goTo("DepositCash") }}>
+                                {t("Deposit Cash")}
+                            </Nav.Link> </Col>
+                        <Col xs="6" className="px-0">
+                            <Nav.Link
+                                className="pe-4 text-end"
+                                active={itemSelected === "addAccount" || itemSelected === "addAccount"}
+                                onClick={() => { goTo("addAccount") }}>
+                                {t("Add Account")}
+                            </Nav.Link>
+                        </Col>
+                    </Row>
+                    
+                    <Row className={`w-100 justify-content-between align-items-center mx-0 px-0 ${itemSelected === "ticketsAdministration" || itemSelected === "TicketsAdministration" ? "d-flex" : "d-none"}`}>
+                        <Col xs="12" className="px-0">
+                            <Nav.Link
+                                className="text-center"
+                                active={itemSelected === "ticketsAdministration" || itemSelected === "TicketsAdministration"}
+                                onClick={() => { goTo("ticketsAdministration") }}>
+                                {t("Tickets Administration")}
+                            </Nav.Link> </Col>
+                    </Row>
+
                     <Row className={`w-100 justify-content-between align-items-center mx-0 px-0 ${itemSelected === "accounts" || itemSelected === "Accounts" || itemSelected === "history" ? "d-flex" : "d-none"}`}>
                         <Col xs="6" className="px-0">
                             <Nav.Link
@@ -178,7 +224,7 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) =>
                                             active={itemSelected === "sell"}
                                             onClick={() => {
                                                 goTo("sell")
-                                                ;
+                                                    ;
                                             }}>
                                             {t("Sell")}
                                         </NavDropdown.Item>

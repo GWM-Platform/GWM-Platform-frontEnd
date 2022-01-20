@@ -7,7 +7,7 @@ const Message = ({ messageVariants, selected }) => {
     const { t } = useTranslation();
 
     return (
-        <Col className="my-5 d-flex justify-content-center align-items-center fetchMessage">
+        <Col sm={12} className="my-5 d-flex justify-content-center align-items-center fetchMessage">
             <h1 className="p-0 m-0 text d-flex align-items-center">
                 {
                     messageVariants[selected].needSpinner ?

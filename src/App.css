@@ -64,21 +64,21 @@
 	opacity: #555;
 }
 
-.App{
+.App {
 	background-color: lightgray;
-    background-repeat: no-repeat;
-    background-size: cover;
+	background-repeat: no-repeat;
+	background-size: cover;
 }
 
 .capitalize {
 	text-transform: capitalize;
 }
 .text-green {
-	color: #47744f!important;
+	color: #47744f !important;
 }
 
 .text-red {
-	color: red!important;
+	color: red !important;
 }
 
 .mainColor {
@@ -98,9 +98,9 @@
 body {
 	overflow-y: overlay;
 }
-.spinner-border{
-	border:3px solid currentColor!important;
-	border-right-color:transparent!important
+.spinner-border {
+	border: 3px solid currentColor !important;
+	border-right-color: transparent !important;
 }
 .free-area {
 	height: calc(100vh - 201px);
@@ -110,7 +110,7 @@ body {
 }
 
 .adminContainer.free-area {
-	min-height: calc(100vh - 201px + 40px);	
+	min-height: calc(100vh - 201px + 40px);
 }
 
 .free-area-withMargin {
@@ -137,7 +137,7 @@ body {
 	transition: all 0.5s;
 }
 .adminContainer.free-area-withoutNavInfo {
-	min-height: calc(100vh - 201px + 40px + 76px);	
+	min-height: calc(100vh - 201px + 40px + 76px);
 }
 .free-area-withMargin-withoutNavInfo {
 	height: calc(100vh - 201px - 1rem + 76px);
@@ -156,12 +156,12 @@ body {
 	transition: all 0.5s;
 }
 
-.containerHideInfo{
-	width: auto!important;
+.containerHideInfo {
+	width: auto !important;
 	position: relative;
-} 
+}
 .hideInfoButton {
-	width: auto!important;
+	width: auto !important;
 	cursor: pointer;
 	position: relative;
 }
@@ -169,7 +169,7 @@ body {
 	width: 25px;
 }
 .hideInfoButton .icon.placeholder,
-.containerHideInfo .info.placeholder  {
+.containerHideInfo .info.placeholder {
 	pointer-events: none;
 	opacity: 0;
 }
@@ -193,24 +193,23 @@ body {
 	transform: rotate3d(0, 1, 0, 0deg);
 	transition: 0.4s transform 0.4s;
 }
-.spinner-border{
-	border: 1px solid currentColor
+.spinner-border {
+	border: 1px solid currentColor;
 }
-.growAnimation{
+.growAnimation {
 	animation: ease growOpacity 1s;
 }
 
-.growOpacity{
+.growOpacity {
 	opacity: 0;
 	animation: 1s growOpacity forwards;
 }
 
-
 @keyframes growOpacity {
-	0%{
+	0% {
 		opacity: 0;
 	}
-	100%{
+	100% {
 		opacity: 1;
 	}
 }
@@ -220,6 +219,9 @@ body {
 		height: calc(100vh - 135px);
 		overflow-y: overlay;
 		overflow-x: hidden;
+	}
+	.adminContainer.free-area {
+		height: calc(100vh - 135px + 40px);
 	}
 	.min-free-area {
 		min-height: calc(100vh - 95px);

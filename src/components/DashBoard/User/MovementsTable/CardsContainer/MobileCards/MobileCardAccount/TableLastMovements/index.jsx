@@ -20,7 +20,7 @@ const TableLastMovements = ({ content,fetchingMovements }) => {
                             aria-expanded={open}>
                             <Row className="d-flex justify-content-end">
                                 <Col>
-                                    <h2 className="my-2 toggler-mobile">{t("Fund last movements")}</h2>
+                                    <h2 className="my-2 toggler-mobile">{t("Last movements")}</h2>
                                 </Col>
                             </Row>
                         </Container>

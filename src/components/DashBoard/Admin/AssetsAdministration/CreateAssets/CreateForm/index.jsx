@@ -36,6 +36,13 @@ const CreateAssets = ({ data, CreateRequest,handleChange,Action,setAction,valida
                     </FloatingLabel>
 
                     <FloatingLabel
+                        label={t("Symbol")}
+                        className="mb-3"
+                    >
+                        <Form.Control required onChange={handleChange} id="symbol" value={data.symbol} type="text" placeholder={t("Symbol")} />
+                    </FloatingLabel>
+
+                    <FloatingLabel
                         label={t("Value")}
                         className="mb-3"
                     >

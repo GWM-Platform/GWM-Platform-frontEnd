@@ -9,7 +9,8 @@ const CreateAssets = ({ Assets, AssetTypes, chargeAssets, Action, setAction }) =
     const [data, setData] = useState({
         name: "",
         value: 0,
-        typeId: 1
+        typeId: 1,
+        symbol:""
     })
 
     const createAsset = async () => {

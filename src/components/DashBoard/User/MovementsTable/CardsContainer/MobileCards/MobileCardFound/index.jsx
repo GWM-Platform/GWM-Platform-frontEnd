@@ -50,6 +50,8 @@ const MobileCard = ({ setItemSelected, isMobile, className, Fund }) => {
         // eslint-disable-next-line 
     }, [Fund])
 
+    console.log(Fund)
+
     return (
         <Card border="danger" className="movementsCardMobile">
             <Card.Header >
@@ -67,19 +69,19 @@ const MobileCard = ({ setItemSelected, isMobile, className, Fund }) => {
                         <Col xs="12" className="px-0">
                             <Card.Title >
                                 <span>
-                                    {Fund.shares} FeeParts in possession
+                                    {Fund.shares} {t("FeeParts in possession")}
                                 </span>
                             </Card.Title>
                             <Card.Title >
                                 <span>
-                                    FeePart price (Now)
-                                    <span className="ps-3" style={{ fontWeight: "bolder" }}>
+                                    {t("FeePart price (Now)")}
+                                    <span className="ps-1" style={{ fontWeight: "bolder" }}>
                                         ${Fund.fund.sharePrice}
                                     </span>
                                 </span>
                             </Card.Title>
                             <Card.Text>
-                                <span>{t("Balance")}: <span style={{ fontWeight: "bolder" }}>$</span>balanceInCash</span>
+                                <span>{t("Balance")}: <span style={{ fontWeight: "bolder" }}>${Fund.fund.sharePrice}</span></span>
                             </Card.Text>
                         </Col>
                         <TableLastMovements

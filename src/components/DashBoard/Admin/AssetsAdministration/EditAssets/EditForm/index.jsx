@@ -25,6 +25,7 @@ const EditAssets = ({ data, EditRequest,handleChange,Assets,Action,setAction,val
                             {t("You must provide a name for the Asset")}
                         </Form.Control.Feedback>
                     </FloatingLabel>
+                    
                     <FloatingLabel className="mb-3" label={t("Asset Types")}>
                         <Form.Select disabled id="typeId" onChange={handleChange} value={data.typeId}>
                             {AssetTypes.map((Asset, key) => {
@@ -32,6 +33,14 @@ const EditAssets = ({ data, EditRequest,handleChange,Assets,Action,setAction,val
                             })}
                         </Form.Select>
                     </FloatingLabel>
+
+                    <FloatingLabel
+                        label={t("Symbol")}
+                        className="mb-3"
+                    >
+                        <Form.Control required onChange={handleChange} id="symbol" value={data.symbol} type="text" placeholder={t("Symbol")} />
+                    </FloatingLabel>
+
                     <FloatingLabel
                         label={t("Value")}
                         className="mb-3"
@@ -44,7 +53,7 @@ const EditAssets = ({ data, EditRequest,handleChange,Assets,Action,setAction,val
                     <div className="d-flex justify-content-end">
                         <Button variant="danger" type="submit" className="mb-3">
                             <Spinner animation="border" variant="light"
-                                className={`${EditRequest.fetching ? "d-inline-block" : "d-none"} littleSpinner ms-1`} />
+                                className={`${EditRequest.fetching ? "d-inline-block" : "d-none"} littleSpinner me-1`} />
                             {t("Submit")}
                         </Button>
                     </div>

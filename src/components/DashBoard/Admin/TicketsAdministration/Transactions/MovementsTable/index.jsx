@@ -9,26 +9,29 @@ const MovementsTable = ({ movements, state, reloadData }) => {
     return (
         <Col xs="12">
             <h1 className="title">{t("Withdrawal tickets")}:</h1>
-            <Table className="TicketsTable table table-striped table-bordered table-hover growAnimation">
-                <thead className="tableHeader solid-bg">
-                    <tr>
-                        <th >{t("#id")}</th>
-                        <th >{t("Client")}</th>
-                        <th >{t("Amount")}</th>
-                        <th >{t("Created at")}</th>
+            <div style={{ overflowX: "auto" }}>
+                <Table className="TicketsTable table table-striped table-bordered table-hover growAnimation">
+                    <thead className="tableHeader solid-bg">
+                        <tr>
+                            <th >{t("#id")}</th>
+                            <th >{t("Client")}</th>
+                            <th >{t("Amount")}</th>
+                            <th >{t("Created at")}</th>
+                            {
+                                state === 1 || state === "1" ? <th >{t("Action")}</th> : null
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
                         {
-                            state === 1 || state === "1" ? <th >{t("Action")}</th> : null
+                            movements.map((movement, key) => {
+                                return <MovementRow reloadData={reloadData} key={key} Movement={movement} state={state} />
+                            })
                         }
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        movements.map((movement, key) => {
-                            return <MovementRow reloadData={reloadData} key={key} Movement={movement} state={state} />
-                        })
-                    }
-                </tbody>
-            </Table>
+                    </tbody>
+                </Table>
+            </div>
+
         </Col>
     )
 }

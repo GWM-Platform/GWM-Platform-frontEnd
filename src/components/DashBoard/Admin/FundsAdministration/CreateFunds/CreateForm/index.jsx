@@ -16,6 +16,7 @@ const CreateFunds = ({ data, CreateRequest,handleChange,Action,setAction,validat
                     <FontAwesomeIcon className="button icon" onClick={() => {setAction({...Action,...{action:-1,fund:-1}})}} icon={faChevronCircleLeft} />
                 </div>
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
+
                     <FloatingLabel
                         label={t("Name")}
                         className="mb-3"
@@ -25,6 +26,17 @@ const CreateFunds = ({ data, CreateRequest,handleChange,Action,setAction,validat
                             {t("You must provide a name for the fund")}
                         </Form.Control.Feedback>
                     </FloatingLabel>
+
+                    <FloatingLabel
+                        label={t("Google SpreadSheet Id")}
+                        className="mb-3"
+                    >
+                        <Form.Control required onChange={handleChange} id="spreadsheetId" value={data.spreadsheetId} type="number" placeholder={t("Google SpreadSheet Id")} />
+                        <Form.Control.Feedback type="valid">
+                            {t("Looks good")}!
+                        </Form.Control.Feedback>
+                    </FloatingLabel>
+
                     <FloatingLabel className="mb-3" label={t("Asset Types")}>
                         <Form.Select required id="typeId" onChange={handleChange} value={data.typeId}>
                             {AssetTypes.map((Asset, key) => {
@@ -32,6 +44,7 @@ const CreateFunds = ({ data, CreateRequest,handleChange,Action,setAction,validat
                             })}
                         </Form.Select>
                     </FloatingLabel>
+
                     <FloatingLabel
                         label={t("FeeParts")}
                         className="mb-3"
@@ -41,6 +54,7 @@ const CreateFunds = ({ data, CreateRequest,handleChange,Action,setAction,validat
                             {t("The feeParts must be more than 0")}
                         </Form.Control.Feedback>
                     </FloatingLabel>
+
                     <div className="d-flex justify-content-end">
                         <Button variant="danger" type="submit" className="mb-3">
                             <Spinner animation="border" variant="light"

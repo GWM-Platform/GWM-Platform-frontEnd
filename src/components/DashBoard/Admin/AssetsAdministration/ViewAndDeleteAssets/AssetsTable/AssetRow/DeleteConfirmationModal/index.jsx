@@ -100,7 +100,7 @@ const DeleteConfirmationModal = ({ show, setShowModal, Asset, chargeAssets }) =>
                                     <h1 className="title"><FontAwesomeIcon className="icon red" icon={faTimes} /></h1>
                                 </div>
                                 <h2 className="subTitle mt-4">{t("Failed to delete the Asset")}{" \""}{Asset.name}{"\" "}</h2>
-                                <h3 className="heading">{t("It is probably due to a user owning shares")}</h3>
+                                <h3 className="heading">{t("It is probably due to a user owning feeParts")}</h3>
                             </>
                     }
 

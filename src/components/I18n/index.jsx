@@ -241,7 +241,7 @@ i18n
           "Close": "Cerrar",
           "The fund": "El fondo",
           "has been removed succesfully": "Fue eliminado correctamente",
-          "It is probably due to a user owning shares":
+          "It is probably due to a user owning feeParts":
             "Probablemente se deba a que un usuario posee acciones",
           "Failed to delete the fund":
             "Fallo al intentar eliminar el fondo",
@@ -254,7 +254,7 @@ i18n
           "The share price value must be greater than 0": "El valor de la cuotaparte debe ser mayor a 0",
           "has been edited succesfully": "fue editado correctamente",
           "Fund edit form for": "Formulario de edición del fondo",
-          "Form edit result for ": "Resultado del formulario de edición del fondo ",
+          "Form edit result for ": "Resultado del formulario de edición para ",
           "The fund has been Created succesfully": "El fondo fue creado correctamente",
           "Asset Types": "Tipo De Activos",
           "Fund Create form": "Formulario de Creación de Fondos",
@@ -349,7 +349,15 @@ i18n
           "Asset edit form for":"Formulario de edicion del activo ",
           "Asset Create form":"Formulario de creacion de activos",
           "You must provide a name for the Asset":"Debe especificar un nombre para el activo",
-          "The value must be greater than 0":"El valor debe ser mayor a 0"
+          "The value must be greater than 0":"El valor debe ser mayor a 0",
+          "Google SpreadSheet Id":"Id de la hoja de cálculo de Google",
+          "SpreadSheet Id":"Id de la hoja de cálculo",
+          "Symbol":"Simbolo",
+          "The Asset has been Createed succesfully":"El activo fue creado correctamente",
+          "Form Create result":"Resultado del formulario de creacion",
+          "Failed to edit the Asset":"Fallo al intentar editar el activo",
+          "Last movements":"Ultimos movimientos"
+
         }
       }
     },

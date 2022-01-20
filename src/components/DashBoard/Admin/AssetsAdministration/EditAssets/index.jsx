@@ -10,6 +10,7 @@ const EditAssets = ({ Assets, AssetTypes, chargeAssets, Action, setAction }) => 
         name: Assets[Action.Asset].name,
         typeId: Assets[Action.Asset].typeId,
         value: Assets[Action.Asset].value,
+        symbol: Assets[Action.Asset].symbol,
     })
 
     const [EditRequest, setEditRequest] = useState({

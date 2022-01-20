@@ -13,7 +13,7 @@ const Movement = ({ content }) => {
       </tr>
       <tr className="d-table-row d-sm-none descriptionRowMobile">
         <td className={`tableAmount ${Math.sign(content.shares) === 1 ? 'text-green' : 'text-red'}`}><span>{Math.sign(content.shares) === 1 ? '+' : '-'}</span><span ></span>{Math.abs(content.shares)} FeeParts</td>
-        <td className={`tableAmount ${Math.sign(content.shares) === 1 ? 'text-green' : 'text-red'}`}><span>{Math.sign(content.shares) === 1 ? '+' : '-'}</span><span >$</span>{Math.abs(content.shares) * content.sharePrice}</td>
+        <td className={`tableAmount ${Math.sign(content.shares) === 1 ? 'text-green' : 'text-red'}`}><span>{Math.sign(content.shares) === 1 ? '+' : '-'}</span><span >$</span>{(Math.abs(content.shares) * content.sharePrice).toFixed(2)}</td>
       </tr>
     </>
 
