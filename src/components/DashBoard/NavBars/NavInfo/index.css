@@ -1,6 +1,5 @@
 .navBarInfo {
-    background: rgb(211,211,211);
-    background: linear-gradient(90deg, var(--nav-info1) 0%,  var(--nav-info1) 31%,  var(--nav-info2) 100%);
+    background: rgb(241,241,241);
     transition: all 0.5s;
     max-height: 100px;
     overflow-y: hidden;
@@ -8,7 +7,8 @@
 .navBarInfo .greeting{
     margin:0;
     color:black;
-    font-weight: bolder;
+    font-weight: 400;
+    font-size: 25px;
 }
 .navBarInfo .image{
     opacity:0.2;

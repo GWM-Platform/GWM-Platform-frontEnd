@@ -44,7 +44,7 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
                         </Card.Title>
                         <Container>
                             <Row className="d-flex justify-content-between">
-                                <h1 className="title mt-1">
+                                <h1 className="title-gray mt-1">
                                     <Row className="d-flex justify-content-between">
                                         <div className="pe-2 containerHideInfo">
                                             <span>$</span>

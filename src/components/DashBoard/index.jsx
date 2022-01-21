@@ -105,7 +105,7 @@ const UserDashboard = () => {
 
 
     return (
-        <div className="dashboard" style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/backGround/bgDashboard.svg)` }}>
+        <div className="dashboard" style={{ backgroundImage: `url(https://estudiotronica.net/gwm/wp-content/uploads/2021/11/dotted-worldmap1.png)` }}>
             <NavInfo NavInfoToggled={NavInfoToggled} userData={userData} />
             <NavBar NavInfoToggled={NavInfoToggled} setNavInfoToggled={setNavInfoToggled}
                 setItemSelected={setItemSelected} itemSelected={itemSelected} />

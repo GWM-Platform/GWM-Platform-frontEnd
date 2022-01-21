@@ -1,5 +1,5 @@
 .login {
-	background-color: lightgray;
+	background-color: rgb(248 248 249);
 	background-repeat: no-repeat;
 	background-size: cover;
 }
@@ -35,7 +35,13 @@
 	text-transform: uppercase;
 	border-radius: 0 0 30px 30px;
 	transition: border-radius 0.5s;
+	background-color:var(--blue-main)!important;
+	border-color:#1379e7!important
 }
+.login .button:hover {
+    background-color: #0b89f2!important;
+}
+
 .login .card-footer {
 	padding: 0;
 	border-radius: 0 0 30px 30px;

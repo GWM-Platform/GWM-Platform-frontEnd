@@ -13,7 +13,7 @@
 .movementsMainCardFund .history-tabs .nav-item>.active {
     border-radius: 0;
     border: none;
-    border-top: rgb(250, 70, 70) 3px solid;
+    border-top: var(--blue-main) 3px solid;
 }
 
 .movementsMainCardFund .nav-link:hover {
@@ -64,7 +64,7 @@
 
 .movementsMainCardFund .info .title {
     text-transform: uppercase;
-    color: var(--main-color);
+    color: black;
     font-weight: 600;
     font-size: 23px;
 }

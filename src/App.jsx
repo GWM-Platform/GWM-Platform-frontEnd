@@ -12,7 +12,7 @@ import SetPassword from './components/SetPassword';
 
 function App() {
   return (
-    <div className="App"  style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/backGround/bgDashboard.svg)` }}>
+    <div className="App"  style={{ backgroundImage: `url(https://estudiotronica.net/gwm/wp-content/uploads/2021/11/dotted-worldmap1.png)` }}>
         <BrowserRouter>
           <Switch>
             <Route exact path="/">

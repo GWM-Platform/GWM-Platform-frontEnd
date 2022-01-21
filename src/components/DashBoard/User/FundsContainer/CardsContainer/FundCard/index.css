@@ -8,9 +8,9 @@
 .cardsContainer .FundCard .header {
 	border-radius: 30px 30px 0px 0px;
 	border: 1px solid;
-	border-color: var(--main-card-color);
+	border-color: var(--blue-main);
 	font-size: 60px;
-	background-color: var(--main-card-color);
+	background-color: var(--blue-main);
 }
 
 .cardsContainer .FundCard .header .currencyContainer > .currency {
@@ -37,15 +37,31 @@
 	border-left: 1px solid;
 	border-right: 1px solid;
 	border-bottom: 1px solid;
-	border-color: var(--main-card-color);
+	border-color: var(--blue-main);
 	background-color: white;
 }
 
 .cardsContainer .FundCard .body .title {
-	color: dimgray;
-	text-align: start;
-	font-size: 20px;
+	color: black;
+    text-transform: uppercase;
+    text-align: start;
+    font-size: 20px;
 }
+
+.cardsContainer .FundCard .body .title-gray {
+	text-transform: capitalize;
+    color: dimgray;
+    text-align: start;
+    font-size: 20px;
+}
+
+.cashCard .body .title {
+    color: black;
+    text-transform: uppercase;
+    text-align: start;
+    font-size: 20px;
+}
+
 
 .cardsContainer .FundCard .body .subTitle {
 	color: black;
@@ -93,8 +109,8 @@
 	font-size: 30px;
 	background-color: white;
 	border: 1px solid;
-	border-color: var(--main-card-color);
-	color: var(--main-card-color);
+	border-color: var(--blue-main);
+	color: var(--blue-main);
 	width: 100%;
 }
 

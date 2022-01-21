@@ -1,5 +1,5 @@
 .dropdown-item.active, .dropdown-item:active{
-    background-color: var(--main-color);
+    background-color: gray;
 }
 .dropdown{
     float:left
@@ -8,4 +8,8 @@
 .languageSelector .bg-none{
     background-color: transparent;
     border-color: transparent;
+}
+.btn-secondary{
+    color:black;
+    font-size:16px
 }

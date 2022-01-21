@@ -36,7 +36,7 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) =>
 
     return (
 
-        <Navbar sticky="top" className={`py-0 mb-0 navBarDesktop dropShadow`} collapseOnSelect expand="sm" variant="dark" >
+        <Navbar sticky="top" className={`py-0 mb-0 navBarDesktop`} collapseOnSelect expand="sm" variant="dark" >
             <Container fluid className="bottomInnerBorder px-0 d-none d-sm-block">
                 <Row className="w-100 d-flex align-items-center mx-0">
                     <Col sm="auto" md={1} lg={2} style={{ paddingBottom: "5px" }}>
@@ -136,7 +136,7 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) =>
                             <div className="d-block d-sm-none d-md-block" style={{ paddingBottom: "5px" }}>
                                 <LanguageSelector />
                             </div>
-                            <Nav.Link onClick={() => logOut()}>
+                            <Nav.Link className="text-black" onClick={() => logOut()}>
                                 {t("LogOut")}{" "}
                                 <FontAwesomeIcon icon={faSignOutAlt} />
                             </Nav.Link>
