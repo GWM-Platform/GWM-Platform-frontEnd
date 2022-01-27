@@ -5,7 +5,7 @@ import './index.css'
 import { Col, Card, Container, Row } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
 
-const FundCard = ({ Fund, ownKey, data, setData, setSome, some, openAccordion }) => {
+const FundCard = ({ Fund, ownKey, data, setData, openAccordion, Account }) => {
     const { t } = useTranslation();
     const ref = useRef(null)
     const [width, setWidth] = useState(0)
@@ -15,15 +15,15 @@ const FundCard = ({ Fund, ownKey, data, setData, setSome, some, openAccordion })
     }, [ref]);
 
     return (
-        <Col sm="3" className="py-1 growAnimation"
-            style={{
-                pointerEvents: Fund.freeShares === 0 ? "none" : "all",
-                filter: `opacity(${Fund.freeShares === 0 ? "0.5" : "1"})`
-            }}>
+        <Col sm="3" className={`py-1 growAnimation  `} >
             <Card
                 ref={ref}
-                className={`FundCard h-100 ${data.FundSelected === ownKey ? "FundSelected" : ""}`}
-                onClick={() => { setFundSelected(data, setData, ownKey, setSome, some, openAccordion) }}>
+                className={
+                    `FundCard h-100 
+                    ${data.FundSelected === ownKey ? "FundSelected" : ""} 
+                    ${Fund.freeShares  === 0 || Fund.sharePrice > Account.balance ? "disabled" : ""}`
+                }
+                onClick={() => { if (Fund.freeShares > 0) setFundSelected(setData, ownKey, openAccordion) }}>
                 <Card.Header><strong className="title">{Fund.name}</strong></Card.Header>
                 <Card.Body>
                     <Card.Title>{t("FeeParts value")}: <strong>${Fund.sharePrice}</strong></Card.Title>
@@ -57,11 +57,8 @@ const FundCard = ({ Fund, ownKey, data, setData, setSome, some, openAccordion })
     )
 }
 
-const setFundSelected = (data, setData, ownKey, setSome, some, openAccordion) => {
-    let aux = data
-    aux.FundSelected = ownKey
-    setData(aux)
-    setSome(!some)
+const setFundSelected = (setData, ownKey, openAccordion) => {
+    setData((prevState) => ({ ...prevState, ...{ FundSelected: ownKey } }))
     openAccordion()
 }
 

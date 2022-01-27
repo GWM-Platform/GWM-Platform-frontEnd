@@ -11,6 +11,7 @@ import Loading from '../Loading';
 import NoFunds from '../NoFunds';
 
 const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
+
     function useQuery() {
         const { search } = useLocation();
 
@@ -117,6 +118,7 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
                 }
             }
         }
+
         getAccount()
         getFunds()
 
@@ -165,8 +167,8 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
                         Funds.length > 0 ?
                             <Col xs="12">
                                 <Accordion flush defaultActiveKey="0">
-                                    <FundSelector openAccordion={openAccordion}
-                                        Funds={Funds} data={data} some={some} setData={setData} setSome={setSome} />
+                                    <FundSelector openAccordion={openAccordion} Account={Account}
+                                        Funds={Funds} data={data} setData={setData}/>
                                 </Accordion>
                                 <Accordion flush activeKey={CollapsedFields ? "-1" : "0"}>
                                     <BuyData

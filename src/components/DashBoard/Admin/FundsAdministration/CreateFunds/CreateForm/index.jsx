@@ -31,7 +31,7 @@ const CreateFunds = ({ data, CreateRequest,handleChange,Action,setAction,validat
                         label={t("Google SpreadSheet Id")}
                         className="mb-3"
                     >
-                        <Form.Control required onChange={handleChange} id="spreadsheetId" value={data.spreadsheetId} type="number" placeholder={t("Google SpreadSheet Id")} />
+                        <Form.Control required onChange={handleChange} id="spreadsheetId" value={data.spreadsheetId} type="text" placeholder={t("Google SpreadSheet Id")} />
                         <Form.Control.Feedback type="valid">
                             {t("Looks good")}!
                         </Form.Control.Feedback>

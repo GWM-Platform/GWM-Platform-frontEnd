@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 import { useTranslation } from "react-i18next";
 
-const FundSelector = ({ data, setData, some, setSome, Funds, openAccordion }) => {
+const FundSelector = ({ data, setData, Funds, openAccordion,Account }) => {
     const { t } = useTranslation();
     const [showRightChevron, setShowRightChevron] = useState(true)
     const [showLeftChevron, setShowLeftChevron] = useState(false)
@@ -86,8 +86,8 @@ const FundSelector = ({ data, setData, some, setSome, Funds, openAccordion }) =>
                             <Row className="flex-row flex-nowrap  overflow-overlay overflow-sm-hidden" ref={FundsContainer}>
                                 {Funds.map((Fund, key) => {
                                     return (
-                                        <FundCard openAccordion={openAccordion} key={key} ownKey={key} 
-                                        Fund={Fund} data={data} setData={setData} some={some} setSome={setSome} />
+                                        <FundCard Account={Account} openAccordion={openAccordion} key={key} ownKey={key} 
+                                        Fund={Fund} data={data} setData={setData} />
                                     )
                                 })}
                             </Row>

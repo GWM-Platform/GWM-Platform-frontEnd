@@ -105,9 +105,9 @@ const MainCard = ({ Fund, Hide, setHide, NavInfoToggled }) => {
                             <Nav.Item>
                                 <Nav.Link eventKey={"0"}>{t("Last Movements")}</Nav.Link>
                             </Nav.Item>
-                            <Nav.Item>
+                            {/*<Nav.Item>
                                 <Nav.Link eventKey={"1"}>{t("Investment Evolution")}</Nav.Link>
-                            </Nav.Item>
+                            </Nav.Item>*/}
                         </Nav>
                     </Container>
                     {/*tabs content */}

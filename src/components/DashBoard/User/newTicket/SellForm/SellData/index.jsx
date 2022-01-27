@@ -20,7 +20,7 @@ const SellData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAc
                                         <span className="number">2</span>
                                     </div>
                                 </span>
-                                {t("Specify the amount of FeeParts you want to sell")}
+                                {t("Specify the amount of feeParts you want to sell")}
                             </span>
                         </Form.Label>
                     </Row>
@@ -33,8 +33,8 @@ const SellData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAc
                             onWheel={event => event.currentTarget.blur()}
                             value={data.shares}
                             onChange={handleChange}
-                            min="0.01"
-                            step="0.01"
+                            min="1"
+                            step="0.0001"
                             max={data.FundSelected === -1 ?
                                 1
                                 :
@@ -48,24 +48,24 @@ const SellData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAc
                         <Form.Control.Feedback type="invalid">
                             {
                                 data.FundSelected === -1 ?
-                                    "Please, select a Fund to Sell"
+                                    "Please, select a fund to sell"
                                     :
                                     data.shares === "" ?
-                                        t("You must enter how many FeeParts you want to sell")
+                                        t("You must enter how many feeparts you want to sell")
                                         :
-                                        data.shares < 0 ?
-                                            t("The amount must be greater than 0")
+                                        data.shares < 1 ?
+                                            t("At least you must sell 1 feepart")
                                             :
-                                            t("You are trying to sell") + t(" ") + data.shares + " " + t("FeeParts, equivalent to") + t(" $") +
+                                            t("You are trying to sell") + t(" ") + data.shares + " " + t("feeparts, equivalent to") + t(" $") +
                                             (data.shares * Funds[data.FundSelected].fund.sharePrice).toFixed(2) + t(", but you only have") + t(" ") + Funds[data.FundSelected].shares + t(" ") + t("in position.")
                             }
                         </Form.Control.Feedback>
                         <Form.Control.Feedback type="valid">
                             {
                                 data.FundSelected === -1 ?
-                                    t("Please, select a Fund to Sell")
+                                    t("Please, select a fund to sell")
                                     :
-                                    t("Selling") + t(" ") + data.shares + t(" ") + t("FeeParts from the fund") + t(" \"") + Funds[data.FundSelected].fund.name + t("\"") +
+                                    t("Selling") + t(" ") + data.shares + t(" ") + t("feeparts from the fund") + t(" \"") + Funds[data.FundSelected].fund.name + t("\"") +
                                     t(", equivalent to $") + (data.shares * Funds[data.FundSelected].fund.sharePrice).toFixed(2)
                             }
                         </Form.Control.Feedback>

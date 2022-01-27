@@ -78,7 +78,7 @@
 }
 .navBarDesktop .navInfoToggler.toggled  {
     background-color: transparent;
-    color:var(--secondary-color);
+    color:var(--blue-main);
     transform: rotate(180deg);
 }
 .navBarDesktop .left,.navBarDesktop .right{
