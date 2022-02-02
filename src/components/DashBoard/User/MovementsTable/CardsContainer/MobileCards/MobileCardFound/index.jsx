@@ -53,7 +53,7 @@ const MobileCard = ({ setItemSelected, isMobile, className, Fund }) => {
     console.log(Fund)
 
     return (
-        <Card border="danger" className="movementsCardMobile">
+        <Card className="movementsCardMobile">
             <Card.Header >
                 <Container fluid className="px-3">
                     <Row className="d-flex justify-content-end align-items-center">

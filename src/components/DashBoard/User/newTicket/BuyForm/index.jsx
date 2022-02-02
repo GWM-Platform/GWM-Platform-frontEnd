@@ -9,6 +9,7 @@ import FundSelector from './FundSelector'
 import BuyData from './BuyData'
 import Loading from '../Loading';
 import NoFunds from '../NoFunds';
+//import SourceAccount from './SourceAccount';
 
 const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
 
@@ -166,7 +167,8 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
                         :
                         Funds.length > 0 ?
                             <Col xs="12">
-                                <Accordion flush defaultActiveKey="0">
+{/*                                <SourceAccount Account={Account}/>
+*/}                                <Accordion flush defaultActiveKey="0">
                                     <FundSelector openAccordion={openAccordion} Account={Account}
                                         Funds={Funds} data={data} setData={setData}/>
                                 </Accordion>

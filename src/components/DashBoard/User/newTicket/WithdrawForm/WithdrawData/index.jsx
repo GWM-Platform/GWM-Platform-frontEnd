@@ -58,7 +58,7 @@ const WithdrawData = ({ data, handleChange, validated, handleSubmit,account }) =
                         </Form.Control.Feedback>
                     </InputGroup>
                     <Button disabled={data.amount === "" || data.amount <= 0}
-                        variant="danger" type="submit">{t("Submit")}</Button>
+                        variant="danger" type="submit" className="submitBtn">{t("Submit")}</Button>
                 </Form>
                 </>
     )

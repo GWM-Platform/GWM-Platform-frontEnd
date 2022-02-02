@@ -71,6 +71,12 @@
 	margin-top: 4em;
 }
 @media (max-width: 576px) {
+	.login {
+		background-color: rgb(248 248 249);
+		background-repeat: no-repeat;
+		background-size: auto 106%;
+		background-position: 10% center;
+	}
 	.login .button {
 		border-radius: 30px 30px 30px 30px;
 		border-top: none;
@@ -86,4 +92,5 @@
 	.login .card-img {
 		width: 30%;
 	}
+	
 }

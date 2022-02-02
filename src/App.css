@@ -104,56 +104,56 @@ body {
 	border-right-color: transparent !important;
 }
 .free-area {
-	height: calc(100vh - 201px);
+	height: calc(100vh - 204px);
 	overflow-y: overlay;
 	overflow-x: hidden;
 	transition: all 0.5s;
 }
 
 .adminContainer.free-area {
-	min-height: calc(100vh - 201px + 40px);
+	min-height: calc(100vh - 204px + 40px);
 }
 
 .free-area-withMargin {
-	height: calc(100vh - 201px - 1rem);
+	height: calc(100vh - 204px - 1rem);
 	overflow-y: overlay;
 	overflow-x: hidden;
 	transition: all 0.5s;
 }
 
 .min-free-area {
-	min-height: calc(100vh - 201px);
+	min-height: calc(100vh - 204px);
 	transition: all 0.5s;
 }
 
 .min-free-area-withMargin {
-	min-height: calc(100vh - 201px - 1rem);
+	min-height: calc(100vh - 204px - 1rem);
 	transition: all 0.5s;
 }
 
 .free-area-withoutNavInfo {
-	height: calc(100vh - 201px + 76px);
+	height: calc(100vh - 204px + 76px);
 	overflow-y: overlay;
 	overflow-x: hidden;
 	transition: all 0.5s;
 }
 .adminContainer.free-area-withoutNavInfo {
-	min-height: calc(100vh - 201px + 40px + 76px);
+	min-height: calc(100vh - 204px + 40px + 76px);
 }
 .free-area-withMargin-withoutNavInfo {
-	height: calc(100vh - 201px - 1rem + 76px);
+	height: calc(100vh - 204px - 1rem + 76px);
 	overflow-y: overlay;
 	overflow-x: hidden;
 	transition: all 0.5s;
 }
 
 .min-free-area-withoutNavInfo {
-	min-height: calc(100vh - 201px + 76px);
+	min-height: calc(100vh - 204px + 76px);
 	transition: all 0.5s;
 }
 
 .min-free-area-withMargin-withoutNavInfo {
-	min-height: calc(100vh - 201px - 1rem + 76px);
+	min-height: calc(100vh - 204px - 1rem + 76px);
 	transition: all 0.5s;
 }
 

@@ -26,7 +26,6 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
 
             if (response.status === 200) {
                 const data = await response.json()
-                console.log(data)
                 setBalance(prevState=>({ ...prevState, ...{ fetching: false, value: data } }))
             } else {
                 switch (response.status) {
@@ -43,9 +42,9 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
     return (
         <Navbar className="navBarTotal" bg="light">
             <Container className="px-0" fluid>
-                <Row className="w-100 mx-0">
-                    <Col className="ps-2 ps-md-2 ps-lg-0" md={{ spant: "auto", offset: 0 }} lg={{ span: "auto", offset: 2 }}>
-                        <h1 className="total my-0 py-0"> {t("Total Balance")}: ${Balance.value}</h1>
+                <Row className="w-100 mx-0 d-flex justify-content-center">
+                    <Col className="ps-2 ps-md-2 ps-lg-0" lg="auto">
+                        <h1 className="total my-0 py-0"> {t("Total Balance")}: ${Balance.value.toFixed(2)}</h1>
                     </Col>
                 </Row>
             </Container>

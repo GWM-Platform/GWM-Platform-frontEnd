@@ -196,14 +196,14 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) =>
                     <Row className={`w-100 justify-content-between align-items-center mx-0 px-0 ${itemSelected === "accounts" || itemSelected === "Accounts" || itemSelected === "history" ? "d-flex" : "d-none"}`}>
                         <Col xs="6" className="px-0">
                             <Nav.Link
-                                className="ps-4 text-start"
+                                className="text-center"
                                 active={itemSelected === "accounts" || itemSelected === "Accounts"}
                                 onClick={() => { goTo("accounts") }}>
                                 {t("Accounts")}
                             </Nav.Link> </Col>
                         <Col xs="6" className="px-0">
                             <Nav.Link
-                                className="pe-4 text-end"
+                                className="text-center"
                                 active={itemSelected === "history"}
                                 onClick={() => { goTo("history") }}>
                                 {t("History")}

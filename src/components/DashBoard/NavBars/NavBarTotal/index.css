@@ -7,8 +7,14 @@
 }
 
 .total{
-    color:white;
+    font-size: 23px;
     font-weight: bold;
-    font-size: 20px;
+    text-align: center;
+    color:white;
     opacity: 0.87;
+}
+@media (max-width: 576px) {
+    .total{
+        font-size: 20px
+    }
 }

@@ -6,7 +6,7 @@ import CashCard from './CashCard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 
-const CardsContainer = ({ setItemSelected, Funds, Accounts,PendingTransactions }) => {
+const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions, PendingWithoutpossession }) => {
     const [showRightChevron, setShowRightChevron] = useState(true)
     const [showLeftChevron, setShowLeftChevron] = useState(false)
     const [Hide, setHide] = useState(false)
@@ -63,12 +63,12 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts,PendingTransactions }
     useEffect(() => {
         return () => {
         }
-    }, [Funds])
+    }, [Funds,PendingWithoutpossession])
 
     return (
         <Container className="px-0 d-flex justify-content-center accountsContainerWidth cardsContainer p-relative">
             <Row ref={FundsContainer}
-                className={`d-flex align-items-stretch ${Funds.length < 3 ? "justify-content-center" : ""}
+                className={`d-flex align-items-stretch ${Funds.length+PendingWithoutpossession.length < 3 ? "justify-content-center" : ""}
                 w-100 g-1 g-sm-5 pb-2 flex-wrap flex-sm-nowrap overflow-hidden `}>
                 {Accounts.map((account, key) => {
                     return (
@@ -85,15 +85,23 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts,PendingTransactions }
                     }
                     )
                 }
-
+                {
+                    PendingWithoutpossession.map((j, k) => {
+                        return (
+                            <FundCard Hide={Hide} setHide={setHide} key={k} PendingTransactions={PendingTransactions}
+                                setItemSelected={setItemSelected} Funds={Funds} Fund={j} />
+                        )
+                    }
+                    )
+                }
             </Row>
             <div className={`arrow  right d-none d-sm-block
-                                ${Funds.length > 2 && showRightChevron ? "opacity-1" : ""}`}
+                                ${Funds.length + PendingWithoutpossession.length > 2 && showRightChevron ? "opacity-1" : ""}`}
                 onClick={() => scrollFundContainer(true)}>
                 <FontAwesomeIcon icon={faChevronRight} />
             </div>
             <div className={` arrow left d-none d-sm-block
-                                ${Funds.length > 2 && showLeftChevron ? "opacity-1" : ""}`}
+                                ${Funds.length + PendingWithoutpossession.length > 2 && showLeftChevron ? "opacity-1" : ""}`}
                 onClick={() => scrollFundContainer(false)}>
                 <FontAwesomeIcon icon={faChevronLeft} />
             </div>

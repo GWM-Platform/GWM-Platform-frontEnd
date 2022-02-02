@@ -84,7 +84,7 @@ const BuyData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAcc
                     </InputGroup>
                     <Button disabled={
                         data.FundSelected === -1 ? true : data.amount > Math.min(Funds[data.FundSelected].freeShares * Funds[data.FundSelected].sharePrice, Balance) && data.amount > 0}
-                        variant="danger" type="submit">{t("Submit")}</Button>
+                        variant="danger" type="submit" className="submitBtn">{t("Submit")}</Button>
                 </Form>
             </Accordion.Body>
         </Accordion.Item>

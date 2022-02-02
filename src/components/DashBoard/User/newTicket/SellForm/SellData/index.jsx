@@ -72,7 +72,7 @@ const SellData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAc
                     </InputGroup>
                     <Button disabled={
                         data.FundSelected === -1 ? true : data.shares > Funds[data.FundSelected].shares || data.shares <= 0}
-                        variant="danger" type="submit">{t("Submit")}</Button>
+                        variant="danger" type="submit" className="submitBtn">{t("Submit")}</Button>
                 </Form>
             </Accordion.Body>
         </Accordion.Item>

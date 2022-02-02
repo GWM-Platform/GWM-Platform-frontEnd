@@ -115,6 +115,9 @@
     .overflow-overlay{
         overflow: overlay;
     }
+    .newTicket .submitBtn{
+        transform: translateX(20%);
+    }
 
 }
 @media (main-width: 576px) {

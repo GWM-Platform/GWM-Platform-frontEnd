@@ -1,6 +1,7 @@
 .navBarDesktop {
     background-color: var(--main-bg-nav-color);
     transition: all 0.5s;
+    filter:drop-shadow(0px 0px 3px grey);
 }
 .navBarDesktop.dropShadow{
     filter: drop-shadow(0px 0px 5px black);
@@ -92,18 +93,21 @@
     border-color: transparent;
 }
 .navBarDesktop .left{
-    text-align: start;
+    color:black;
+    text-align: center;
     padding: .5em .5em .5em 1.5rem;
 
-}.navBarDesktop .right{
-    text-align: end;
+}
+.navBarDesktop .right{
+    color:black;
+    text-align: center;
     padding: .5em 1.5rem .5em .5em;
-
 }
 
 .navBarDesktop .left.active,.navBarDesktop .right.active{
     border-bottom: 5px solid;
     border-color: var(--selected-underline-section-color);
+    color:rgba(0,0,0,0.7)
 }
 .navBarDesktop .dropdown-menu.show {
     margin-top:0!important

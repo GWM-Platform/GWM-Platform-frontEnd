@@ -27,8 +27,6 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, selected, setSelected,
         }
     }, [Accounts, Funds, numberOfFunds])
 
-    console.log(Accounts)
-
     return (
         <Row className="HistoryCardsContainer d-flex flex-md-nowrap ">
             {isMobile ?

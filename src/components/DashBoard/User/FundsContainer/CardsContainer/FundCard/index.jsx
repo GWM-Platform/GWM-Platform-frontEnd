@@ -14,10 +14,10 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
 
     let history = useHistory();
 
-    const pendingFeeParts = PendingTransactions.value.filter((transaction) => transaction.fundId === Fund.fundId && Math.sign(transaction.shares) === +1).map((transaction) => transaction.shares).reduce((a, b) => a + b, 0).toFixed(2)
-
+    const pendingFeeParts = PendingTransactions.value.filter((transaction) => transaction.fundId === Fund.fund.id && Math.sign(transaction.shares) === +1).map((transaction) => transaction.shares).reduce((a, b) => a + b, 0).toFixed(2)
+    
     const toTickets = (operation) => {
-        history.push(`${operation}?fund=${Fund.fundId}`);
+        history.push(`${operation}?fund=${Fund.fund.id}`);
     }
 
     return (
@@ -49,15 +49,15 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
                                         <div className="pe-2 containerHideInfo">
                                             <span>$</span>
                                             <span className={`info ${Hide ? "shown" : "hidden"}`}>
-                                                {(Fund.shares * Fund.fund.sharePrice).toFixed(2).toString().replace(/./g, "*")}
+                                                {Fund.shares ? (Fund.shares * Fund.fund.sharePrice).toFixed(2).toString().replace(/./g, "*") : 0}
                                             </span>
 
                                             <span className={`info ${Hide ? "hidden" : "shown"}`}>
-                                                {(Fund.shares * Fund.fund.sharePrice).toFixed(2).toString()}
+                                                {Fund.shares ? (Fund.shares * Fund.fund.sharePrice).toFixed(2).toString() : 0}
                                             </span>
 
                                             <span className={`info placeholder`}>
-                                                {(Fund.shares * Fund.fund.sharePrice).toFixed(2).toString()}
+                                                {Fund.shares ? (Fund.shares * Fund.fund.sharePrice).toFixed(2).toString() : 0}
                                             </span>
                                         </div>
                                         <div className="ps-0 hideInfoButton d-flex align-items-center">
@@ -79,7 +79,7 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
                                     </Row>
                                 </h1>
                                 <Card.Text className="subTitle lighter mt-0 mb-2">
-                                    {t("Acquired FeeParts")}:<span className="bolder"> {Fund.shares}</span><br />
+                                    {t("Acquired FeeParts")}:<span className="bolder"> {Fund.shares ? Fund.shares : 0}</span><br />
                                     {t("Pending FeeParts")}:
                                     <span className={`bolder text-green`}>{" "}
                                         +{pendingFeeParts}</span><br />

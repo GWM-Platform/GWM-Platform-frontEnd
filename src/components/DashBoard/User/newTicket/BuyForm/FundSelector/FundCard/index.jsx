@@ -15,7 +15,7 @@ const FundCard = ({ Fund, ownKey, data, setData, openAccordion, Account }) => {
     }, [ref]);
 
     return (
-        <Col sm="3" className={`py-1 growAnimation  `} >
+        <Col xs="10" sm="3" className={`py-1 growAnimation  `} >
             <Card
                 ref={ref}
                 className={

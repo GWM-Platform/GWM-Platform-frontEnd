@@ -1,6 +1,6 @@
 .navBarMobile{
     background-color: var(--footer-background);
-    color:rgb(206, 206, 206);
+    color:black;
     position: sticky;
     bottom: 0;
     z-index: 10;
@@ -16,6 +16,7 @@
 }
 
 .navBarMobile .selected{
-    color: white;
+    color: rgba(0,0,0,0.7);
 }
+
 
