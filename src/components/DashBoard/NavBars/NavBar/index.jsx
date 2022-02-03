@@ -11,7 +11,7 @@ import { faSignOutAlt, faChevronCircleUp } from '@fortawesome/free-solid-svg-ico
 
 import { useTranslation } from "react-i18next";
 
-const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) => {
+const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled, selected, changeLanguage, languages }) => {
 
 
     const { t } = useTranslation();
@@ -134,7 +134,9 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) =>
                     <Col sm="auto">
                         <Nav className="d-flex align-items-center justify-content-end">
                             <div className="d-block d-sm-none d-md-block" style={{ paddingBottom: "5px" }}>
-                                <LanguageSelector />
+                                <LanguageSelector selected={selected}
+                                    changeLanguage={changeLanguage}
+                                    languages={languages} />
                             </div>
                             <Nav.Link className="text-black" onClick={() => logOut()}>
                                 {t("LogOut")}{" "}
@@ -182,7 +184,7 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) =>
                             </Nav.Link>
                         </Col>
                     </Row>
-                    
+
                     <Row className={`w-100 justify-content-between align-items-center mx-0 px-0 ${itemSelected === "ticketsAdministration" || itemSelected === "TicketsAdministration" ? "d-flex" : "d-none"}`}>
                         <Col xs="12" className="px-0">
                             <Nav.Link

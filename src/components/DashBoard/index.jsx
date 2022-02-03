@@ -27,7 +27,7 @@ import TicketsAdministration from './Admin/TicketsAdministration';
 import DepositCashToClient from './Admin/DepositCashToClient';
 import OperationStatusAdmin from './Admin/OperationStatus';
 
-const UserDashboard = () => {
+const UserDashboard = ({ selected, changeLanguage, languages }) => {
     // eslint-disable-next-line 
     let location = useLocation()
 
@@ -108,7 +108,8 @@ const UserDashboard = () => {
         <div className="dashboard" style={{ backgroundImage: `url(https://estudiotronica.net/gwm/wp-content/uploads/2021/11/dotted-worldmap1.png)` }}>
             <NavInfo NavInfoToggled={NavInfoToggled} userData={userData} />
             <NavBar NavInfoToggled={NavInfoToggled} setNavInfoToggled={setNavInfoToggled}
-                setItemSelected={setItemSelected} itemSelected={itemSelected} />
+                setItemSelected={setItemSelected} itemSelected={itemSelected}
+                selected={selected} changeLanguage={changeLanguage} languages={languages} />
             {JSON.parse(admin) ?
                 <div className={`adminContainer ${NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}`}>
                     <Route path={`${path}/addAccount`}>

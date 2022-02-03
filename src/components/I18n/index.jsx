@@ -4,11 +4,12 @@ import { initReactI18next } from "react-i18next";
 //import backend from "i18next-http-backend";
 
 const getLanguage = () => {
-  if (localStorage.getItem("language") !== undefined) {
-    localStorage.setItem("language", "es")
-    return "es"
+  let language=localStorage.getItem("language")
+  if (language) {
+    console.log(language)
+    return language
   } else {
-    localStorage.setItem("language", "gb")
+    localStorage.setItem("language", "es")
     return "es"
   }
 }
