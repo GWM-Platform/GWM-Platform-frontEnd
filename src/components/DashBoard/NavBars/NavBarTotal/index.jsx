@@ -1,19 +1,23 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { useTranslation } from "react-i18next";
 import { Navbar, Container, Col, Row } from 'react-bootstrap';
 
 import './index.css'
+import { dashboardContext } from '../../../../context/dashboardContext';
 
 const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
     const { t } = useTranslation();
+
     const [Balance, setBalance] = useState({ fetching: false, value: 0 })
-    const token = sessionStorage.getItem('access_token')
+
+    const {token,ClientSelected}=useContext(dashboardContext)
+    
 
     useEffect(() => {
         const getAccounts = async () => {
-            var url = `${process.env.REACT_APP_APIURL}/clients/me/balance`;
+            var url = `${process.env.REACT_APP_APIURL}/clients/${ClientSelected.id}/balance`;
             setBalance({ ...Balance, ...{ fetching: true } })
             const response = await fetch(url, {
                 method: 'GET',
@@ -34,10 +38,9 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
             }
             setBalanceChanged(false)
         }
-
-        if (balanceChanged) getAccounts()
+        if (balanceChanged && ClientSelected.id) getAccounts()
         // eslint-disable-next-line 
-    }, [setBalance, token, balanceChanged, setBalanceChanged])
+    }, [setBalance, token, balanceChanged, setBalanceChanged,ClientSelected])
 
     return (
         <Navbar className="navBarTotal" bg="light">

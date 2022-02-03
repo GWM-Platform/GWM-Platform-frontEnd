@@ -6,7 +6,6 @@ import { initReactI18next } from "react-i18next";
 const getLanguage = () => {
   let language=localStorage.getItem("language")
   if (language) {
-    console.log(language)
     return language
   } else {
     localStorage.setItem("language", "es")
@@ -364,7 +363,8 @@ i18n
           "Pending FeeParts": "Cuotapartes pendientes",
           "Pending Cash": "Dinero pendiente",
           "Ticket created successfully":"Ticket creado correctamente",
-          "Wait for an administrator to aprove or deny it":"Espere a que un administrador lo apruebe o rechace"
+          "Wait for an administrator to aprove or deny it":"Espere a que un administrador lo apruebe o rechace",
+          "All rights reserved":"Todos los derechos reservados"
         }
       }
     },

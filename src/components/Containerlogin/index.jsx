@@ -61,12 +61,12 @@ const ContainerLogin = () => {
     if (response.status === 200) {
       const data = await response.json()
       sessionStorage.setItem("access_token", data.access_token)
-      sessionStorage.setItem("admin", data.user.client === null)
+      sessionStorage.setItem("admin", data.user.isAdmin)
       
-      if (!data.user.changedPassword  && data.user.client !== null) {
+      if (!data.user.changedPassword  && !data.user.isAdmin) {
         toSetPassword()
       } else {
-        if (data.user.client === null) {
+        if (data.user.isAdmin) {
           toDashBoard("fundsAdministration");
         } else {
           toDashBoard("accounts");

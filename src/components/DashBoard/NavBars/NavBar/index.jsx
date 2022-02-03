@@ -1,18 +1,22 @@
-import React from 'react'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './index.css'
+import React, { useContext } from 'react'
 
 import { Nav, Navbar, Container, Row, Col, NavDropdown, Button, OverlayTrigger, Popover } from 'react-bootstrap'
-import LanguageSelector from '../../../LanguageSelector';
 import { useRouteMatch, useHistory } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSignOutAlt, faChevronCircleUp } from '@fortawesome/free-solid-svg-icons'
 
 import { useTranslation } from "react-i18next";
+import { dashboardContext } from '../../../../context/dashboardContext';
+
+import LanguageSelector from '../../../LanguageSelector';
+import ClientSelector from '../../User/ClientSelector';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './index.css'
 
 const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled, selected, changeLanguage, languages }) => {
-
+    const { admin } = useContext(dashboardContext)
 
     const { t } = useTranslation();
 
@@ -32,8 +36,6 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled, sele
         setNavInfoToggled(!NavInfoToggled)
     }
 
-    const admin = sessionStorage.getItem("admin")
-
     return (
 
         <Navbar sticky="top" className={`py-0 mb-0 navBarDesktop`} collapseOnSelect expand="sm" variant="dark" >
@@ -47,7 +49,7 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled, sele
                     <Col className="px-0 flex-grow-1" sm="auto">
                         <Nav >
                             {
-                                JSON.parse(admin)
+                                admin
                                     ?
                                     <>
                                         <Nav.Link
@@ -133,6 +135,9 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled, sele
                     </Col>
                     <Col sm="auto">
                         <Nav className="d-flex align-items-center justify-content-end">
+                            <div className="d-block d-sm-none d-md-block" style={{ paddingBottom: "5px" }}>
+                                <ClientSelector  />
+                            </div>
                             <div className="d-block d-sm-none d-md-block" style={{ paddingBottom: "5px" }}>
                                 <LanguageSelector selected={selected}
                                     changeLanguage={changeLanguage}

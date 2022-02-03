@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Route, useRouteMatch, useHistory, useLocation } from 'react-router-dom';
 
@@ -9,6 +9,9 @@ import NavInfo from './NavBars/NavInfo';
 import NavBarMobile from './NavBars/NavBarMobile';
 import NavBarTotal from './NavBars/NavBarTotal';
 import Footer from './Footer';
+
+//Context
+import { dashboardContext } from '../../context/dashboardContext';
 
 //User
 import FundsContainer from './User/FundsContainer'
@@ -26,22 +29,19 @@ import AssetsAdministration from './Admin/AssetsAdministration';
 import TicketsAdministration from './Admin/TicketsAdministration';
 import DepositCashToClient from './Admin/DepositCashToClient';
 import OperationStatusAdmin from './Admin/OperationStatus';
+import Loading from './Loading';
 
 const UserDashboard = ({ selected, changeLanguage, languages }) => {
-    // eslint-disable-next-line 
     let location = useLocation()
+
+    const { token, admin, ClientSelected,balanceChanged,setBalanceChanged } = useContext(dashboardContext);
 
     const { path } = useRouteMatch()
     const history = useHistory();
     const [NavInfoToggled, setNavInfoToggled] = useState(false)
-    const [userData, setUserData] = useState({});
     const [width, setWidth] = useState(window.innerWidth);
     const [numberOfFunds, setNumberOfFunds] = useState(0);
     const [itemSelected, setItemSelected] = useState(location.pathname.split('/')[2])
-    const [balanceChanged, setBalanceChanged] = useState(true)
-
-
-    const admin = sessionStorage.getItem("admin")
 
     useEffect(
         () => {
@@ -57,120 +57,94 @@ const UserDashboard = ({ selected, changeLanguage, languages }) => {
 
     let isMobile = (width <= 576);
 
-    //When the user try to open this url it checks if the user has a valid token in their session storage,
-    //if it is true, it is redirected to the dashboard, if not, it is redirected to login
-    const getUserData = () => {
-        setUserData({ "id": 4, "username": "Marco", "email": "marcos.sk8.parengo@gmail.com", "externalId": "RL580035", "firstName": "Marco", "lastName": "Giangarelli", "gender": "M", "birthdate": "2002-05-16", "customer": {} })
-    }
-
     useEffect(() => {
-        const toLogin = () => {
-            sessionStorage.clear(); history.push(`/login`);
-        }
-
-        const getAccounts = async () => {
-            var url = `${process.env.REACT_APP_APIURL}/accounts`;
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    Accept: "*/*",
-                    'Content-Type': 'application/json'
-                }
-            })
-
-            if (response.status === 200) {
-                const data = await response.json()
-                if (data.length > 0) { sessionStorage.setItem('balance', data[0].balance) }
-            } else {
-                switch (response.status) {
-                    default:
-                        toLogin()
-                }
-            }
-        }
         window.addEventListener('resize', handleWindowSizeChange);
-
-        const admin = sessionStorage.getItem("admin")
-        const token = sessionStorage.getItem('access_token')
-
-        if (token === null || admin === undefined) toLogin()
-        getUserData();
-        getAccounts();
 
         return () => {
             window.removeEventListener('resize', handleWindowSizeChange);
         }
-    }, [history])
+    }, [history, admin, token])
 
+    useEffect(()=>{
+    },[ClientSelected])
 
     return (
         <div className="dashboard" style={{ backgroundImage: `url(https://estudiotronica.net/gwm/wp-content/uploads/2021/11/dotted-worldmap1.png)` }}>
-            <NavInfo NavInfoToggled={NavInfoToggled} userData={userData} />
-            <NavBar NavInfoToggled={NavInfoToggled} setNavInfoToggled={setNavInfoToggled}
-                setItemSelected={setItemSelected} itemSelected={itemSelected}
-                selected={selected} changeLanguage={changeLanguage} languages={languages} />
-            {JSON.parse(admin) ?
-                <div className={`adminContainer ${NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}`}>
-                    <Route path={`${path}/addAccount`}>
-                        <AddAccount />
-                    </Route>
-                    <Route path={`${path}/fundsAdministration`}>
-                        <FundsAdministration />
-                    </Route>
-                    <Route path={`${path}/assetsAdministration`}>
-                        <AssetsAdministration />
-                    </Route>
-                    <Route path={`${path}/ticketsAdministration`}>
-                        <TicketsAdministration />
-                    </Route>
-                    <Route path={`${path}/depositCash`}>
-                        <DepositCashToClient />
-                    </Route>
-                    <Route path={`${path}/operationResult`}>
-                        <OperationStatusAdmin setItemSelected={setItemSelected} NavInfoToggled={NavInfoToggled} />
-                    </Route>
+            {
+                admin || ClientSelected.id ?
+                <div className="growOpacity">
+                <NavInfo NavInfoToggled={NavInfoToggled} />
+                    <NavBar NavInfoToggled={NavInfoToggled} setNavInfoToggled={setNavInfoToggled}
+                        setItemSelected={setItemSelected} itemSelected={itemSelected}
+                        selected={selected} changeLanguage={changeLanguage} languages={languages} />
+                    {
+                        admin ?
+                            <div className={`adminContainer ${NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}`}>
+                                <Route path={`${path}/addAccount`}>
+                                    <AddAccount />
+                                </Route>
+                                <Route path={`${path}/fundsAdministration`}>
+                                    <FundsAdministration />
+                                </Route>
+                                <Route path={`${path}/assetsAdministration`}>
+                                    <AssetsAdministration />
+                                </Route>
+                                <Route path={`${path}/ticketsAdministration`}>
+                                    <TicketsAdministration />
+                                </Route>
+                                <Route path={`${path}/depositCash`}>
+                                    <DepositCashToClient />
+                                </Route>
+                                <Route path={`${path}/operationResult`}>
+                                    <OperationStatusAdmin setItemSelected={setItemSelected} NavInfoToggled={NavInfoToggled} />
+                                </Route>
+                            </div>
+                            :
+                            <>
+                                <NavBarTotal balanceChanged={balanceChanged} setBalanceChanged={setBalanceChanged} />
+                                {
+                                    <Route path={`${path}/accounts`}>
+                                        <FundsContainer
+                                            NavInfoToggled={NavInfoToggled}
+                                            isMobile={isMobile}
+                                            setItemSelected={setItemSelected}
+                                            numberOfFunds={numberOfFunds}
+                                            setNumberOfFunds={setNumberOfFunds}
+                                        />
+                                    </Route>
+                                }
+                                <Route path={`${path}/history`}>
+                                    <MovementsTable
+                                        isMobile={isMobile}
+                                        setItemSelected={setItemSelected}
+                                        numberOfFunds={numberOfFunds}
+                                        setNumberOfFunds={setNumberOfFunds}
+                                        NavInfoToggled={NavInfoToggled}
+                                    />
+                                </Route>
+                                <Route path={`${path}/buy`}>
+                                    <BuyForm NavInfoToggled={NavInfoToggled} balanceChanged={() => setBalanceChanged(true)} />
+                                </Route>
+                                <Route path={`${path}/sell`}>
+                                    <SellForm NavInfoToggled={NavInfoToggled} balanceChanged={() => setBalanceChanged(true)} />
+                                </Route>
+                                <Route path={`${path}/deposit`}>
+                                    <DepositForm NavInfoToggled={NavInfoToggled} balanceChanged={() => setBalanceChanged(true)} />
+                                </Route>
+                                <Route path={`${path}/withdraw`}>
+                                    <WithdrawForm NavInfoToggled={NavInfoToggled} balanceChanged={() => setBalanceChanged(true)} />
+                                </Route>
+                                <Route path={`${path}/operationResult`}>
+                                    <OperationStatus setItemSelected={setItemSelected} NavInfoToggled={NavInfoToggled} />
+                                </Route>
+                            </>
+                    }
+                    <Footer />
+                    <NavBarMobile setItemSelected={setItemSelected} itemSelected={itemSelected} />
                 </div>
                 :
-                <>
-                    <NavBarTotal balanceChanged={balanceChanged} setBalanceChanged={setBalanceChanged} />
-                    <Route path={`${path}/accounts`}>
-                        <FundsContainer
-                            NavInfoToggled={NavInfoToggled}
-                            isMobile={isMobile}
-                            setItemSelected={setItemSelected}
-                            numberOfFunds={numberOfFunds}
-                            setNumberOfFunds={setNumberOfFunds}
-                        />
-                    </Route>
-                    <Route path={`${path}/history`}>
-                        <MovementsTable
-                            isMobile={isMobile}
-                            setItemSelected={setItemSelected}
-                            numberOfFunds={numberOfFunds}
-                            setNumberOfFunds={setNumberOfFunds}
-                            NavInfoToggled={NavInfoToggled}
-                        />
-                    </Route>
-                    <Route path={`${path}/buy`}>
-                        <BuyForm NavInfoToggled={NavInfoToggled} balanceChanged={() => setBalanceChanged(true)} />
-                    </Route>
-                    <Route path={`${path}/sell`}>
-                        <SellForm NavInfoToggled={NavInfoToggled} balanceChanged={() => setBalanceChanged(true)} />
-                    </Route>
-                    <Route path={`${path}/deposit`}>
-                        <DepositForm NavInfoToggled={NavInfoToggled} balanceChanged={() => setBalanceChanged(true)} />
-                    </Route>
-                    <Route path={`${path}/withdraw`}>
-                        <WithdrawForm NavInfoToggled={NavInfoToggled} balanceChanged={() => setBalanceChanged(true)} />
-                    </Route>
-                    <Route path={`${path}/operationResult`}>
-                        <OperationStatus setItemSelected={setItemSelected} NavInfoToggled={NavInfoToggled} />
-                    </Route>
-                </>
+                <Loading />
             }
-            <Footer />
-            <NavBarMobile setItemSelected={setItemSelected} itemSelected={itemSelected} />
         </div>
     )
 }

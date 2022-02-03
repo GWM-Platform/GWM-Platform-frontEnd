@@ -1,12 +1,19 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import CardsContainer from './CardsContainer';
 import { useTranslation } from "react-i18next";
 import { useHistory } from 'react-router-dom'
 import { Spinner, Row, Container, Col } from 'react-bootstrap';
+import { dashboardContext } from '../../../../context/dashboardContext';
 const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFunds }) => {
+
+    const { token, ClientSelected } = useContext(dashboardContext);
+
     let history = useHistory();
     const { t } = useTranslation();
+
+    const [contentReady, setContentReady] = useState(false);
+
     const [Funds, setFunds] = useState([]);
     const [FetchingFunds, setFetchingFunds] = useState(true);
     const [Accounts, setAccounts] = useState([])
@@ -20,15 +27,24 @@ const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFun
     const [PendingWithoutpossession, setPendingWithoutpossession] = useState([])
 
     useEffect(() => {
-        const token = sessionStorage.getItem('access_token')
-
         const toLogin = () => {
             sessionStorage.clear();
             history.push(`/login`);
         }
+        const getAccountsAndFunds=async()=>{
+            setFetchingFunds(true)
+            const [resposponseAccounts, resposponseFunds] = await Promise.all([getAccounts(), getFunds()]);
+            setAccounts(resposponseAccounts)
+            setFunds(resposponseFunds)
+            setFetchingFunds(false)
+            getPendingTransactions()
+        }
 
         const getFunds = async () => {
-            var url = `${process.env.REACT_APP_APIURL}/funds/stakes`;
+            setFunds([])
+            var url = `${process.env.REACT_APP_APIURL}/stakes/?` + new URLSearchParams({
+                client: ClientSelected.id,
+            });
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -39,9 +55,10 @@ const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFun
             })
 
             if (response.status === 200) {
-                const data = await response.json()
-                setFunds(data)
-                getPendingTransactions()
+                //const data = await response.json()
+                //setFunds(data)
+                //getPendingTransactions()
+                return await response.json()
             } else {
                 switch (response.status) {
                     default:
@@ -51,7 +68,9 @@ const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFun
         }
 
         const getAccounts = async () => {
-            var url = `${process.env.REACT_APP_APIURL}/accounts`;
+            var url = `${process.env.REACT_APP_APIURL}/accounts/?` + new URLSearchParams({
+                client: ClientSelected.id,
+            });
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -62,9 +81,10 @@ const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFun
             })
 
             if (response.status === 200) {
-                const data = await response.json()
-                setAccounts(data)
-                if (data.length > 0) sessionStorage.setItem('balance', data[0].balance)
+                //const data = await response.json()
+                //setAccounts(data)
+                //if (data.length > 0) sessionStorage.setItem('balance', data[0].balance)
+                return await response.json()
             } else {
                 switch (response.status) {
                     default:
@@ -80,7 +100,9 @@ const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFun
                     fetching: true
                 }
             })
-            var url = `${process.env.REACT_APP_APIURL}/transactions/states/1/transactions`;
+            var url = `${process.env.REACT_APP_APIURL}/transactions/byState/1/?` + new URLSearchParams({
+                client: ClientSelected.id,
+            });
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -112,69 +134,78 @@ const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFun
             }
         }
 
-        if (token === null) toLogin()
-        setFetchingFunds(true)
-        getFunds()
-        getAccounts()
-        setFetchingFunds(false)
+        setContentReady(false)
+        setPendingWithoutpossession([])
+        getAccountsAndFunds()
+        //getFunds()
+        //getAccounts()
 
         return () => {
         }
         // eslint-disable-next-line
-    }, [])
+    }, [ClientSelected])
 
     useEffect(() => {
-        const token = sessionStorage.getItem('access_token')
 
         const toLogin = () => {
             sessionStorage.clear();
             history.push(`/login`);
         }
 
-        const addPendingFundsWithoutPosesion = () => {
-
+        const addPendingFundsWithoutPosesion = async () => {
+            setPendingWithoutpossession([])
             let FundsWithPendingTransactions = new Set(PendingTransactions.value.map(transaction => transaction.fundId))
             let FundsWithPosession = new Set(Funds.map(Funds => Funds.fundId))
 
             const FundsWithNoPosession = ([...FundsWithPendingTransactions].filter(x => !FundsWithPosession.has(x)))//Diference (All in pending that are not funds with posession)
 
-            FundsWithNoPosession.forEach((fund) => {
-                getFund(fund)
-            })
-        }
+            const getFund = async (id) => {
+                var url = `${process.env.REACT_APP_APIURL}/funds/${id}`;
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        Accept: "*/*",
+                        'Content-Type': 'application/json'
+                    }
+                })
 
-        const getFund = async (id) => {
-            var url = `${process.env.REACT_APP_APIURL}/funds/${id}`;
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    Accept: "*/*",
-                    'Content-Type': 'application/json'
+                if (response.status === 200) {
+                    return await response.json()
+                } else {
+                    switch (response.status) {
+                        default:
+                            toLogin()
+                    }
                 }
-            })
 
-            if (response.status === 200) {
-                const data = await response.json()
-                setPendingWithoutpossession(prevState => [...prevState, { fund: data }])
-            } else {
-                switch (response.status) {
-                    default:
-                        toLogin()
-                }
             }
+
+            const promises = FundsWithNoPosession.map((fund) => {
+                return getFund(fund)
+            });
+
+            const responses = await Promise.all(promises);
+            
+            responses.forEach((response) => {
+                setPendingWithoutpossession(prevState => [...prevState, { fund: response }])
+            })
+
+            setContentReady(true)
         }
 
-        if (!FetchingFunds && PendingTransactions.fetched) addPendingFundsWithoutPosesion()
+        if (!FetchingFunds && PendingTransactions.fetched && !contentReady) {
+            addPendingFundsWithoutPosesion()
+        }    
 
         //eslint-disable-next-line
-    }, [Funds, PendingTransactions]);
+    }, [Funds, PendingTransactions, ClientSelected]);
 
 
     return (
         <Container fluid
             className={`accountParent px-0 ${NavInfoToggled ? "min-free-area-withoutNavInfo" : "min-free-area"} d-flex align-items-center`}>            {
-                FetchingFunds
+                FetchingFunds || !contentReady
                     ?
                     <Container fluid>
                         <Row className="d-flex justify-content-center align-items-center">
