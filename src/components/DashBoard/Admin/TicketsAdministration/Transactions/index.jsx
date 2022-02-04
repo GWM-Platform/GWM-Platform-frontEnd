@@ -21,7 +21,7 @@ const Transactionslist = ({ state, messageVariants }) => {
 
     const transactionsInState = async () => {
         const token = sessionStorage.getItem('access_token')
-        var url = `${process.env.REACT_APP_APIURL}/transactions/states/${state}/transactions`;
+        var url = `${process.env.REACT_APP_APIURL}/transactions/byState/${state}`;
         setTransactions({
             ...Transactions,
             ...{
@@ -71,7 +71,7 @@ const Transactionslist = ({ state, messageVariants }) => {
 
     const movementsInState = async () => {
         const token = sessionStorage.getItem('access_token')
-        var url = `${process.env.REACT_APP_APIURL}/accounts/movements/bystate/${state}`;
+        var url = `${process.env.REACT_APP_APIURL}/movements/bystate/${state}`;
         setMovements({
             ...Movements,
             ...{

@@ -1,16 +1,17 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect,useContext } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../operationsForm.css'
 
 import { Container, Row, Col } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom';
 import WithdrawData from './WithdrawData'
+import { dashboardContext } from '../../../../../context/dashboardContext';
 
-const WithdrawForm = ({ NavInfoToggled,balanceChanged }) => {
+const WithdrawForm = ({ NavInfoToggled, balanceChanged }) => {
     const [data, setData] = useState({ amount: "" })
     const [validated, setValidated] = useState(true);
     const [account, setAccount] = useState({});
-
+    const {token,ClientSelected} = useContext(dashboardContext);
 
     let history = useHistory();
 
@@ -65,8 +66,9 @@ const WithdrawForm = ({ NavInfoToggled,balanceChanged }) => {
 
     useEffect(() => {
         const getAccount = async () => {
-            const token = sessionStorage.getItem('access_token')
-            var url = `${process.env.REACT_APP_APIURL}/accounts/`;
+            var url = `${process.env.REACT_APP_APIURL}/accounts/?` + new URLSearchParams({
+                client: ClientSelected.id,
+            });
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -75,9 +77,9 @@ const WithdrawForm = ({ NavInfoToggled,balanceChanged }) => {
                     'Content-Type': 'application/json'
                 }
             })
-    
+
             if (response.status === 200) {
-                const data= await response.json()
+                const data = await response.json()
                 setAccount(data[0])
             } else {
                 switch (response.status) {
@@ -90,7 +92,7 @@ const WithdrawForm = ({ NavInfoToggled,balanceChanged }) => {
             }
         }
         getAccount()
-    }, [])
+    }, [ClientSelected,token])
 
     return (
         <Container className={NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}>

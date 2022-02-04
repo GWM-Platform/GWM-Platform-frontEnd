@@ -25,9 +25,7 @@ const MainCard = ({ Fund,  Hide, setHide, NavInfoToggled }) => {
         history.push(`/login`);
     }
 
-
     const balanceInCash=Fund.balance 
-    
 
     return (
         <div className="movementsMainCardAccount growAnimation">

@@ -135,9 +135,15 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled, sele
                     </Col>
                     <Col sm="auto">
                         <Nav className="d-flex align-items-center justify-content-end">
-                            <div className="d-block d-sm-none d-md-block" style={{ paddingBottom: "5px" }}>
-                                <ClientSelector  />
-                            </div>
+                            {admin ?
+                                null
+                                :
+                                <div className="d-block d-sm-none d-md-block" style={{ paddingBottom: "5px" }}>
+                                    <ClientSelector />
+                                </div>
+                            }
+
+
                             <div className="d-block d-sm-none d-md-block" style={{ paddingBottom: "5px" }}>
                                 <LanguageSelector selected={selected}
                                     changeLanguage={changeLanguage}

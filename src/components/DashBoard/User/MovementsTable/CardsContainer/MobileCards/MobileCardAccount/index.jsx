@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect,useContext } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, Container, Col, Row } from 'react-bootstrap';
 import TableLastMovements from './TableLastMovements';
 import { useTranslation } from "react-i18next";
 import { useHistory } from 'react-router-dom'
+import { dashboardContext } from '../../../../../../../context/dashboardContext';
 
 const MobileCard = ({ Fund }) => {
     // eslint-disable-next-line
-
+    const {token,ClientSelected} = useContext(dashboardContext);
     const { t } = useTranslation();
     let history = useHistory();
     const [movements, setMovements] = useState([])
@@ -20,10 +21,11 @@ const MobileCard = ({ Fund }) => {
 
 
     useEffect(() => {
-        const token = sessionStorage.getItem('access_token')
 
         const getMovements = async () => {
-            var url = `${process.env.REACT_APP_APIURL}/Accounts/${Fund.id}/movements`;
+            var url = `${process.env.REACT_APP_APIURL}/movements/byAccount/${Fund.id}/?` + new URLSearchParams({
+                client: ClientSelected.id,
+            });
             setFetchingMovements(true)
             const response = await fetch(url, {
                 method: 'GET',

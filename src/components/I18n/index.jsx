@@ -4,7 +4,7 @@ import { initReactI18next } from "react-i18next";
 //import backend from "i18next-http-backend";
 
 const getLanguage = () => {
-  let language=localStorage.getItem("language")
+  let language = localStorage.getItem("language")
   if (language) {
     return language
   } else {
@@ -362,9 +362,15 @@ i18n
           "Last movements": "Ultimos movimientos",
           "Pending FeeParts": "Cuotapartes pendientes",
           "Pending Cash": "Dinero pendiente",
-          "Ticket created successfully":"Ticket creado correctamente",
-          "Wait for an administrator to aprove or deny it":"Espere a que un administrador lo apruebe o rechace",
-          "All rights reserved":"Todos los derechos reservados"
+          "Ticket created successfully": "Ticket creado correctamente",
+          "Wait for an administrator to aprove or deny it": "Espere a que un administrador lo apruebe o rechace",
+          "All rights reserved": "Todos los derechos reservados",
+          "couldn't fetch states, try again later": "No se pudieron obtener los estados, intente de nuevo luego",
+          "there are no states, ask for the administrator to create them": "No hay estados, pidele al administrador que los cree",
+          "couldn't fetch sell/purchase tickets, try again later": "No se pudieron obtener los tickets de compra/venta, intente de nuevo luego",
+          "There are no sell/purchase tickets in the state selected": "No hay tickets de compra/venta en el estado seleccionado",
+          "couldn't fetch retire tickets, try again later": "No se pudieron obtener los tickets de retiro, intente de nuevo luego ",
+          "There are no retire tickets in the state selected": "No hay tickets de retiro en el estado seleccionado"
         }
       }
     },

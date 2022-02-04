@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Route, useRouteMatch, useHistory, useLocation } from 'react-router-dom';
+import { Route, useRouteMatch, useHistory } from 'react-router-dom';
 
 import './index.css'
 
@@ -32,24 +32,15 @@ import OperationStatusAdmin from './Admin/OperationStatus';
 import Loading from './Loading';
 
 const UserDashboard = ({ selected, changeLanguage, languages }) => {
-    let location = useLocation()
 
-    const { token, admin, ClientSelected,balanceChanged,setBalanceChanged } = useContext(dashboardContext);
+    const { token, admin, ClientSelected,balanceChanged,setBalanceChanged,itemSelected,setItemSelected } = useContext(dashboardContext);
 
     const { path } = useRouteMatch()
     const history = useHistory();
     const [NavInfoToggled, setNavInfoToggled] = useState(false)
     const [width, setWidth] = useState(window.innerWidth);
     const [numberOfFunds, setNumberOfFunds] = useState(0);
-    const [itemSelected, setItemSelected] = useState(location.pathname.split('/')[2])
-
-    useEffect(
-        () => {
-            const selected = location.pathname.split('/')[2]
-            setItemSelected(selected)
-        },
-        [location]
-    )
+    
 
     function handleWindowSizeChange() {
         setWidth(window.innerWidth);
