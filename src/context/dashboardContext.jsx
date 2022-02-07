@@ -14,7 +14,7 @@ export const DashboardProvider = ({ children }) => {
 
     const [UserClients, setUserClients] = useState([])
     const [ClientSelected, setClientSelected] = useState({})
-    const [IndexClientSelected, setIndexClientSelected] = useState(0)
+    const [IndexClientSelected, setIndexClientSelected] = useState(-1)
 
     const [contentReady, setContentReady] = useState(false);
 
@@ -100,9 +100,6 @@ export const DashboardProvider = ({ children }) => {
             })
 
             if (response.status === 200) {
-                //const data = await response.json()
-                //setAccounts(data)
-                //if (data.length > 0) sessionStorage.setItem('balance', data[0].balance)
                 return await response.json()
             } else {
                 switch (response.status) {
@@ -255,7 +252,7 @@ export const DashboardProvider = ({ children }) => {
     }, [])
 
     useEffect(() => {
-        if (UserClients.length > 0) {
+        if (UserClients.length > 0 && IndexClientSelected >= 0) {
             setClientSelected(UserClients[IndexClientSelected])
             setBalanceChanged(true)
         }

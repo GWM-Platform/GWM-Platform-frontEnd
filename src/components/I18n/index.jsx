@@ -370,7 +370,8 @@ i18n
           "couldn't fetch sell/purchase tickets, try again later": "No se pudieron obtener los tickets de compra/venta, intente de nuevo luego",
           "There are no sell/purchase tickets in the state selected": "No hay tickets de compra/venta en el estado seleccionado",
           "couldn't fetch retire tickets, try again later": "No se pudieron obtener los tickets de retiro, intente de nuevo luego ",
-          "There are no retire tickets in the state selected": "No hay tickets de retiro en el estado seleccionado"
+          "There are no retire tickets in the state selected": "No hay tickets de retiro en el estado seleccionado",
+          "Select a client to operate":"Seleccione un cliente para operar"
         }
       }
     },

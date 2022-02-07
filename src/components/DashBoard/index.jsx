@@ -21,6 +21,7 @@ import SellForm from './User/newTicket/SellForm';
 import WithdrawForm from './User/newTicket/WithdrawForm';
 import DepositForm from './User/newTicket/DepositForm';
 import OperationStatus from './User/newTicket/OperationStatus';
+import SelectClient from './User/SelectClient';
 
 //Admin
 import AddAccount from './Admin/AddAccount';
@@ -33,14 +34,14 @@ import Loading from './Loading';
 
 const UserDashboard = ({ selected, changeLanguage, languages }) => {
 
-    const { token, admin, ClientSelected,balanceChanged,setBalanceChanged,itemSelected,setItemSelected } = useContext(dashboardContext);
+    const { token, admin, ClientSelected, balanceChanged, setBalanceChanged, itemSelected, setItemSelected, IndexClientSelected, UserClients } = useContext(dashboardContext);
 
     const { path } = useRouteMatch()
     const history = useHistory();
     const [NavInfoToggled, setNavInfoToggled] = useState(false)
     const [width, setWidth] = useState(window.innerWidth);
     const [numberOfFunds, setNumberOfFunds] = useState(0);
-    
+
 
     function handleWindowSizeChange() {
         setWidth(window.innerWidth);
@@ -56,85 +57,94 @@ const UserDashboard = ({ selected, changeLanguage, languages }) => {
         }
     }, [history, admin, token])
 
-    useEffect(()=>{
-    },[ClientSelected])
+    useEffect(() => {
+    }, [ClientSelected])
 
     return (
         <div className="dashboard" style={{ backgroundImage: `url(https://estudiotronica.net/gwm/wp-content/uploads/2021/11/dotted-worldmap1.png)` }}>
             {
-                admin || ClientSelected.id ?
-                <div className="growOpacity">
-                <NavInfo NavInfoToggled={NavInfoToggled} />
-                    <NavBar NavInfoToggled={NavInfoToggled} setNavInfoToggled={setNavInfoToggled}
-                        setItemSelected={setItemSelected} itemSelected={itemSelected}
-                        selected={selected} changeLanguage={changeLanguage} languages={languages} />
-                    {
-                        admin ?
-                            <div className={`adminContainer ${NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}`}>
-                                <Route path={`${path}/addAccount`}>
-                                    <AddAccount />
-                                </Route>
-                                <Route path={`${path}/fundsAdministration`}>
-                                    <FundsAdministration />
-                                </Route>
-                                <Route path={`${path}/assetsAdministration`}>
-                                    <AssetsAdministration />
-                                </Route>
-                                <Route path={`${path}/ticketsAdministration`}>
-                                    <TicketsAdministration />
-                                </Route>
-                                <Route path={`${path}/depositCash`}>
-                                    <DepositCashToClient />
-                                </Route>
-                                <Route path={`${path}/operationResult`}>
-                                    <OperationStatusAdmin setItemSelected={setItemSelected} NavInfoToggled={NavInfoToggled} />
-                                </Route>
+                IndexClientSelected >= 0 ?
+                    UserClients.length > 0 || admin ?
+                        ClientSelected.id ?
+                            <div className="growOpacity">
+                                <NavInfo NavInfoToggled={NavInfoToggled} />
+                                <NavBar NavInfoToggled={NavInfoToggled} setNavInfoToggled={setNavInfoToggled}
+                                    setItemSelected={setItemSelected} itemSelected={itemSelected}
+                                    selected={selected} changeLanguage={changeLanguage} languages={languages} />
+                                {
+                                    admin ?
+                                        <div className={`adminContainer ${NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}`}>
+                                            <Route path={`${path}/addAccount`}>
+                                                <AddAccount />
+                                            </Route>
+                                            <Route path={`${path}/fundsAdministration`}>
+                                                <FundsAdministration />
+                                            </Route>
+                                            <Route path={`${path}/assetsAdministration`}>
+                                                <AssetsAdministration />
+                                            </Route>
+                                            <Route path={`${path}/ticketsAdministration`}>
+                                                <TicketsAdministration />
+                                            </Route>
+                                            <Route path={`${path}/depositCash`}>
+                                                <DepositCashToClient />
+                                            </Route>
+                                            <Route path={`${path}/operationResult`}>
+                                                <OperationStatusAdmin setItemSelected={setItemSelected} NavInfoToggled={NavInfoToggled} />
+                                            </Route>
+                                        </div>
+                                        :
+                                        <>
+                                            <NavBarTotal balanceChanged={balanceChanged} setBalanceChanged={setBalanceChanged} />
+                                            {
+                                                <Route path={`${path}/accounts`}>
+                                                    <FundsContainer
+                                                        NavInfoToggled={NavInfoToggled}
+                                                        isMobile={isMobile}
+                                                        setItemSelected={setItemSelected}
+                                                        numberOfFunds={numberOfFunds}
+                                                        setNumberOfFunds={setNumberOfFunds}
+                                                    />
+                                                </Route>
+                                            }
+                                            <Route path={`${path}/history`}>
+                                                <MovementsTable
+                                                    isMobile={isMobile}
+                                                    setItemSelected={setItemSelected}
+                                                    numberOfFunds={numberOfFunds}
+                                                    setNumberOfFunds={setNumberOfFunds}
+                                                    NavInfoToggled={NavInfoToggled}
+                                                />
+                                            </Route>
+                                            <Route path={`${path}/buy`}>
+                                                <BuyForm NavInfoToggled={NavInfoToggled} balanceChanged={() => setBalanceChanged(true)} />
+                                            </Route>
+                                            <Route path={`${path}/sell`}>
+                                                <SellForm NavInfoToggled={NavInfoToggled} balanceChanged={() => setBalanceChanged(true)} />
+                                            </Route>
+                                            <Route path={`${path}/deposit`}>
+                                                <DepositForm NavInfoToggled={NavInfoToggled} balanceChanged={() => setBalanceChanged(true)} />
+                                            </Route>
+                                            <Route path={`${path}/withdraw`}>
+                                                <WithdrawForm NavInfoToggled={NavInfoToggled} balanceChanged={() => setBalanceChanged(true)} />
+                                            </Route>
+                                            <Route path={`${path}/operationResult`}>
+                                                <OperationStatus setItemSelected={setItemSelected} NavInfoToggled={NavInfoToggled} />
+                                            </Route>
+                                        </>
+                                }
+                                <Footer />
+                                <NavBarMobile setItemSelected={setItemSelected} itemSelected={itemSelected} />
                             </div>
                             :
-                            <>
-                                <NavBarTotal balanceChanged={balanceChanged} setBalanceChanged={setBalanceChanged} />
-                                {
-                                    <Route path={`${path}/accounts`}>
-                                        <FundsContainer
-                                            NavInfoToggled={NavInfoToggled}
-                                            isMobile={isMobile}
-                                            setItemSelected={setItemSelected}
-                                            numberOfFunds={numberOfFunds}
-                                            setNumberOfFunds={setNumberOfFunds}
-                                        />
-                                    </Route>
-                                }
-                                <Route path={`${path}/history`}>
-                                    <MovementsTable
-                                        isMobile={isMobile}
-                                        setItemSelected={setItemSelected}
-                                        numberOfFunds={numberOfFunds}
-                                        setNumberOfFunds={setNumberOfFunds}
-                                        NavInfoToggled={NavInfoToggled}
-                                    />
-                                </Route>
-                                <Route path={`${path}/buy`}>
-                                    <BuyForm NavInfoToggled={NavInfoToggled} balanceChanged={() => setBalanceChanged(true)} />
-                                </Route>
-                                <Route path={`${path}/sell`}>
-                                    <SellForm NavInfoToggled={NavInfoToggled} balanceChanged={() => setBalanceChanged(true)} />
-                                </Route>
-                                <Route path={`${path}/deposit`}>
-                                    <DepositForm NavInfoToggled={NavInfoToggled} balanceChanged={() => setBalanceChanged(true)} />
-                                </Route>
-                                <Route path={`${path}/withdraw`}>
-                                    <WithdrawForm NavInfoToggled={NavInfoToggled} balanceChanged={() => setBalanceChanged(true)} />
-                                </Route>
-                                <Route path={`${path}/operationResult`}>
-                                    <OperationStatus setItemSelected={setItemSelected} NavInfoToggled={NavInfoToggled} />
-                                </Route>
-                            </>
-                    }
-                    <Footer />
-                    <NavBarMobile setItemSelected={setItemSelected} itemSelected={itemSelected} />
-                </div>
-                :
-                <Loading />
+                            <Loading />
+                        :
+                        <Loading />
+                    :
+                    UserClients.length > 0 ?
+                        <SelectClient />
+                        :
+                        <Loading />
             }
         </div>
     )
