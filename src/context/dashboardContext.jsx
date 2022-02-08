@@ -236,6 +236,9 @@ export const DashboardProvider = ({ children }) => {
             if (response.status === 200) {
                 const data = await response.json()
                 setUserClients(data)
+                if(localStorage.getItem(data[0].alias)){
+                    setIndexClientSelected(parseInt(localStorage.getItem(data[0].alias)))
+                }
             } else {
                 switch (response.status) {
                     default:

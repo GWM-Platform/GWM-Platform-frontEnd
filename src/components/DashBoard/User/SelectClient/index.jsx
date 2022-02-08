@@ -5,14 +5,27 @@ import { dashboardContext } from "../../../../context/dashboardContext";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
 
-import { Container, Row, Col, Card, Button } from "react-bootstrap";
+import { Container, Row, Col, Card, Button, Form } from "react-bootstrap";
 import Client from './Client';
 import './index.css'
 
 const SelectClient = () => {
-    const { UserClients,setIndexClientSelected } = useContext(dashboardContext);
+    const { UserClients, setIndexClientSelected } = useContext(dashboardContext);
     const { t } = useTranslation()
     const [ClientToAccess, setClientToAccess] = useState(-1)
+
+    const [remember, setRemember] = useState(false)
+
+    const handleChange = (event) => {
+        setRemember(event.target.checked)
+    }
+
+    const toDashboard = () => {
+        if(remember){
+            localStorage.setItem(UserClients[0].alias,ClientToAccess)
+        }
+        setIndexClientSelected(ClientToAccess)
+    }
 
     return (
         <Container className="ClientSelector growAnimation">
@@ -31,10 +44,19 @@ const SelectClient = () => {
                                 )
                                 }
                             </div>
+                            <div className="w-100 mt-4 mt-2">
+                                <Form.Check
+                                    value={remember}
+                                    onChange={handleChange}
+                                    type="checkbox"
+                                    id="remember"
+                                    label={t("Remember my choice")}
+                                />
+                            </div>
                             <div className="w-100 d-flex justify-content-end">
-                                <Button className="mt-2 toDashboard" onClick={()=>setIndexClientSelected(ClientToAccess)} disabled={ClientToAccess === -1} variant="danger" >
+                                <Button className="mt-2 toDashboard" onClick={() => toDashboard()} disabled={ClientToAccess === -1} variant="danger" >
                                     {t("To dashboard")}
-                                    <FontAwesomeIcon className={`ms-2 chevron ${ClientToAccess!==-1 ? "show" : "" }`} icon={faChevronRight} />
+                                    <FontAwesomeIcon className={`ms-2 chevron ${ClientToAccess !== -1 ? "show" : ""}`} icon={faChevronRight} />
                                 </Button>
                             </div>
                         </Card.Body>
