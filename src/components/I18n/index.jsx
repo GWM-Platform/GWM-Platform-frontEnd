@@ -371,7 +371,19 @@ i18n
           "There are no sell/purchase tickets in the state selected": "No hay tickets de compra/venta en el estado seleccionado",
           "couldn't fetch retire tickets, try again later": "No se pudieron obtener los tickets de retiro, intente de nuevo luego ",
           "There are no retire tickets in the state selected": "No hay tickets de retiro en el estado seleccionado",
-          "Select a client to operate":"Seleccione un cliente para operar"
+          "Select a client to operate": "Seleccione un cliente para operar",
+          "Failed to": "Fallo al",
+          "the ticket": "el ticket",
+          "Clients Supervision": "Supervision de clientes",
+          "Data from Account with the id ": "Datos de la cuenta con el id ",
+          " owned by ": " propiedad de ",
+          "Account general data": "Datos generales de la cuenta",
+          "Owner alias": "Alias del dueño",
+          "Owner first name": "Nombre del dueño",
+          "Owner last name": "Apellido del dueño",
+          "Funds posession":"Tenencia de fondos",
+          "Account's movements":"Movimientos de la cuenta",
+          "Transactions by fund":"Transacciones por fondo"
         }
       }
     },

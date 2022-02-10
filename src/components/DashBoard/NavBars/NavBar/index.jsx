@@ -85,6 +85,11 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled, sele
                                                 onClick={() => { goTo("addAccount") }}>
                                                 {t("Add Account")}
                                             </NavDropdown.Item>
+                                            <NavDropdown.Item
+                                                active={itemSelected === "accountsSupervision" || itemSelected === "accountssupervision"}
+                                                onClick={() => { goTo("accountsSupervision") }}>
+                                                {t("Accounts Supervision")}
+                                            </NavDropdown.Item>
                                         </NavDropdown>
 
                                     </>

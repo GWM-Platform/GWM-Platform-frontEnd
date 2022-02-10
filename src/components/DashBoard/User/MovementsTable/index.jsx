@@ -20,7 +20,7 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, NavInfoToggl
     useEffect(() => {
         if (!FetchingFunds && contentReady) {
             setNumberOfFunds(Accounts.length + Funds.length)
-            if (Accounts.length + Funds.length === 0 && !FetchingFunds) setError("No tiene participacion en ningun fondo")
+            if (Accounts.length + Funds.length === 0 && !FetchingFunds && contentReady) setError("No tiene participacion en ningun fondo")
         }
     }, [Accounts, Funds, setNumberOfFunds, FetchingFunds,contentReady])
 

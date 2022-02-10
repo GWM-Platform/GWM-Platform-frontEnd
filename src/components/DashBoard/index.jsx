@@ -31,6 +31,7 @@ import TicketsAdministration from './Admin/TicketsAdministration';
 import DepositCashToClient from './Admin/DepositCashToClient';
 import OperationStatusAdmin from './Admin/OperationStatus';
 import Loading from './Loading';
+import AccountsSupervision from './Admin/AccountsSupervision';
 
 const UserDashboard = ({ selected, changeLanguage, languages }) => {
 
@@ -63,9 +64,9 @@ const UserDashboard = ({ selected, changeLanguage, languages }) => {
     return (
         <div className="dashboard" style={{ backgroundImage: `url(https://estudiotronica.net/gwm/wp-content/uploads/2021/11/dotted-worldmap1.png)` }}>
             {
-                IndexClientSelected >= 0 ?
+                IndexClientSelected >= 0 || admin ?
                     UserClients.length > 0 || admin ?
-                        ClientSelected.id ?
+                        ClientSelected.id || admin ?
                             <div className="growOpacity">
                                 <NavInfo NavInfoToggled={NavInfoToggled} />
                                 <NavBar NavInfoToggled={NavInfoToggled} setNavInfoToggled={setNavInfoToggled}
@@ -76,6 +77,9 @@ const UserDashboard = ({ selected, changeLanguage, languages }) => {
                                         <div className={`adminContainer ${NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}`}>
                                             <Route path={`${path}/addAccount`}>
                                                 <AddAccount />
+                                            </Route>
+                                            <Route path={`${path}/accountsSupervision`}>
+                                                <AccountsSupervision />
                                             </Route>
                                             <Route path={`${path}/fundsAdministration`}>
                                                 <FundsAdministration />

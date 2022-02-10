@@ -1,0 +1,60 @@
+.AccountsSupervision .searchBar {
+	border-radius: 30px;
+	box-shadow: 0 0 0 0 rgb(255 255 25 / 0%);
+	transition: all 0.2s;
+}
+.AccountsSupervision .searchBar .input-group-text {
+	border-radius: 30px 0 0 30px;
+	background: rgba(255, 255, 255, 0.7);
+	border-right: none;
+}
+.AccountsSupervision .searchBar .input-group-text .icon {
+	color: #8c8a8d;
+	transition: all 0.2s;
+}
+
+.AccountsSupervision .searchBar .input-group-text.left {
+	border-radius: 30px 0 0 30px;
+	border-right: none;
+	margin-right: 0px !important;
+}
+.AccountsSupervision .searchBar .input-group-text.left .icon {
+	margin-left: 0.7em;
+}
+.AccountsSupervision .searchBar .input-group-text.right {
+	border-radius: 0 30px 30px 0;
+	border-left: none;
+	margin-left: 0px !important;
+	cursor: pointer;
+	transition: all 2s;
+}
+.AccountsSupervision .searchBar .input-group-text.right:hover .icon {
+	color: rgb(250 70 0 / 50%);
+}
+.AccountsSupervision .searchBar .input-group-text.right .icon {
+	margin-right: 0.7em;
+}
+
+.AccountsSupervision .searchBar .form-control {
+	border-radius: 0 30px 30px 0;
+	padding: 0.7em;
+	border-right: none;
+	border-left: none;
+	background: rgba(255, 255, 255, 0.7);
+}
+.AccountsSupervision .notfound.searchBar {
+	box-shadow: 0 0 0 0.25rem rgb(200 70 0 / 25%) !important;
+}
+.AccountsSupervision .searchBar.search {
+	box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
+}
+.AccountsSupervision .searchBar.search .form-control {
+	border-right: none;
+}
+.AccountsSupervision .searchBar .form-control:focus {
+	color: #212529;
+	background: rgba(255, 255, 255, 0.7);
+	border-color: rgb(206, 212, 218);
+	outline: unset;
+	box-shadow: unset;
+}
