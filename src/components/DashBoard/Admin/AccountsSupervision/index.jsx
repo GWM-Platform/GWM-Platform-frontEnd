@@ -43,7 +43,9 @@ const AccountsSupervision = () => {
         }
         const getClients = async () => {
             setClients((prevState) => ({ fetching: true, fetched: true, content: [] }))
-            var url = `${process.env.REACT_APP_APIURL}/Clients`
+            var url = `${process.env.REACT_APP_APIURL}/Clients`+ new URLSearchParams({
+            client: "all",
+        });
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
