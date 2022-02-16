@@ -64,7 +64,7 @@ const UserDashboard = ({ selected, changeLanguage, languages }) => {
     return (
         <div className="dashboard" style={{ backgroundImage: `url(https://estudiotronica.net/gwm/wp-content/uploads/2021/11/dotted-worldmap1.png)` }}>
             {
-                IndexClientSelected >= 0 || admin ?
+                IndexClientSelected >= 0 || admin || UserClients.length === 1  ?
                     UserClients.length > 0 || admin ?
                         ClientSelected.id || admin ?
                             <div className="growOpacity">
@@ -73,7 +73,7 @@ const UserDashboard = ({ selected, changeLanguage, languages }) => {
                                     setItemSelected={setItemSelected} itemSelected={itemSelected}
                                     selected={selected} changeLanguage={changeLanguage} languages={languages} />
                                 {
-                                    admin ?
+                                    admin && IndexClientSelected === -1 ?
                                         <div className={`adminContainer ${NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}`}>
                                             <Route path={`${path}/addAccount`}>
                                                 <AddAccount />
@@ -145,7 +145,7 @@ const UserDashboard = ({ selected, changeLanguage, languages }) => {
                         :
                         <Loading />
                     :
-                    UserClients.length > 0 ?
+                    UserClients.length > 1 ?
                         <SelectClient />
                         :
                         <Loading />

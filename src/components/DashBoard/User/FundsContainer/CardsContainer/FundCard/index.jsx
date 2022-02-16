@@ -7,8 +7,6 @@ import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 import './index.css'
 import {  useHistory } from 'react-router-dom';
 
-
-
 const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
     const { t } = useTranslation();
 

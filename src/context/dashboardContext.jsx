@@ -150,7 +150,7 @@ export const DashboardProvider = ({ children }) => {
             }
         }
 
-        if (ClientSelected.id && !admin) {
+        if (ClientSelected.id) {
             setContentReady(false)
             setPendingWithoutpossession([])
             getAccountsAndFunds()
@@ -209,7 +209,7 @@ export const DashboardProvider = ({ children }) => {
 
             setContentReady(true)
         }
-        if (!FetchingFunds && PendingTransactions.fetched && !contentReady && ClientSelected.id && !admin) {
+        if (!FetchingFunds && PendingTransactions.fetched && !contentReady && ClientSelected.id) {
             addPendingFundsWithoutPosesion()
         }
 
@@ -236,9 +236,13 @@ export const DashboardProvider = ({ children }) => {
             if (response.status === 200) {
                 const data = await response.json()
                 setUserClients(data)
-                if(localStorage.getItem(data[0].alias)){
+                if (data.length === 1) {
+                    setIndexClientSelected(0)
+                }
+                if (localStorage.getItem(data[0].alias)) {
                     setIndexClientSelected(parseInt(localStorage.getItem(data[0].alias)))
                 }
+
             } else {
                 switch (response.status) {
                     default:
@@ -248,18 +252,20 @@ export const DashboardProvider = ({ children }) => {
         }
 
         if (token === null) toLogin()
-        if (!admin) {
-            getUserData();
-        }
+        getUserData();
         //eslint-disable-next-line
     }, [])
 
     useEffect(() => {
         if (UserClients.length > 0 && IndexClientSelected >= 0) {
             setClientSelected(UserClients[IndexClientSelected])
+            history.push(`/dashboard/Accounts`);
             setBalanceChanged(true)
+        }else if(admin && IndexClientSelected === -1 ){
+            history.push(`/dashboard/FundsAdministration`);
         }
-    }, [UserClients, IndexClientSelected]);
+
+    }, [history,UserClients, IndexClientSelected,admin]);
 
 
     return <dashboardContext.Provider

@@ -4,35 +4,48 @@ import { Dropdown } from 'react-bootstrap'
 import './index.css'
 import "flag-icon-css/css/flag-icon.min.css"
 import { dashboardContext } from '../../../../context/dashboardContext';
+import { useTranslation } from "react-i18next";
 
 const ClientSelector = () => {
+    const { t } = useTranslation();
+    const { UserClients, IndexClientSelected, setIndexClientSelected, ClientSelected, admin } = useContext(dashboardContext)
 
-    const { UserClients, IndexClientSelected, setIndexClientSelected, ClientSelected } = useContext(dashboardContext)
+    return ((admin && UserClients.length > 0) || (!admin && ClientSelected && UserClients.length > 1) ?
+        <Dropdown className="clientSelector">
+            <Dropdown.Toggle
+                variant="secondary btn-sm"
+                className="bg-none"
+                id="dropdown-clients">
+                {
+                    IndexClientSelected === -1 ?
+                        t("Admin Panel")
+                        :
+                        ClientSelected.alias
+                }
+            </Dropdown.Toggle>
 
-    return (
-        ClientSelected ?
-            <Dropdown className="clientSelector">
-                <Dropdown.Toggle
-                    variant="secondary btn-sm"
-                    className="bg-none"
-                    id="dropdown-clients">
-                    {ClientSelected.alias}
-                </Dropdown.Toggle>
-
-                <Dropdown.Menu>
-                    {
-                        UserClients.map((client, key) => {
-                            return (
-                                <Dropdown.Item key={key} active={IndexClientSelected === key ? true : false} onClick={() => { setIndexClientSelected(key) }}>
-                                    {client.alias}
-                                </Dropdown.Item>
-                            )
-                        })
-                    }
-                </Dropdown.Menu>
-            </Dropdown>
-            :
-            null
+            <Dropdown.Menu>
+                {
+                    admin ?
+                        <Dropdown.Item active={IndexClientSelected === -1 ? true : false} onClick={() => { setIndexClientSelected(-1) }}>
+                            {t("Admin Panel")}
+                        </Dropdown.Item>
+                        :
+                        null
+                }
+                {
+                    UserClients.map((client, key) => {
+                        return (
+                            <Dropdown.Item key={key} active={IndexClientSelected === key ? true : false} onClick={() => { setIndexClientSelected(key) }}>
+                                {client.alias}
+                            </Dropdown.Item>
+                        )
+                    })
+                }
+            </Dropdown.Menu>
+        </Dropdown>
+        :
+        null
     )
 }
 export default ClientSelector

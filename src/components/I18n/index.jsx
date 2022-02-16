@@ -374,7 +374,7 @@ i18n
           "Select a client to operate": "Seleccione un cliente para operar",
           "Failed to": "Fallo al",
           "the ticket": "el ticket",
-          "Clients Supervision": "Supervision de clientes",
+          "Accounts Supervision": "Supervision de cuentas",
           "Data from Account with the id ": "Datos de la cuenta con el id ",
           " owned by ": " propiedad de ",
           "Account general data": "Datos generales de la cuenta",
