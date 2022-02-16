@@ -1,0 +1,17 @@
+.AccountsTable .toDetails{
+    text-align:center;
+    cursor:pointer;
+}
+
+.AccountsTable .toDetails .chevron{
+    margin-left: 0.5em;
+}
+
+@keyframes bounceRight {
+    0%,100%{
+        transform: translateX(0);
+    }
+    40%,60%{
+        transform: translateX(25%);
+    }
+}

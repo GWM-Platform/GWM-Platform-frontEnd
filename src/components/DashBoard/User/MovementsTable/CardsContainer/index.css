@@ -12,7 +12,7 @@
 }
 .collapser {
 	position: absolute;
-	top: 50%;
+	top: calc( ( 100vh - 204px ) / 2 );
 	right: 5px;
 	transform: translateY(-50%);
 	font-size: 30px;

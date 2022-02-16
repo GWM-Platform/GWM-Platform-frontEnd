@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { useHistory,useLocation } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react'
+import { useHistory, useLocation } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -8,11 +8,13 @@ import FundSelector from './FundSelector'
 import SellData from './SellData'
 import Loading from '../Loading';
 import NoFunds from '../NoFunds';
+import { dashboardContext } from '../../../../../context/dashboardContext';
 
-const SellForm = ({ NavInfoToggled,balanceChanged}) => {
+const SellForm = ({ NavInfoToggled, balanceChanged }) => {
+    const { token,ClientSelected,contentReady } = useContext(dashboardContext);
+
     function useQuery() {
         const { search } = useLocation();
-
         return React.useMemo(() => new URLSearchParams(search), [search]);
     }
 
@@ -26,13 +28,12 @@ const SellForm = ({ NavInfoToggled,balanceChanged}) => {
     const [CollapsedFields, setCollapsedFields] = useState(true);
     const [FetchingFunds, setFetchingFunds] = useState(true)
 
-    const token = sessionStorage.getItem('access_token')
-
     let history = useHistory();
 
-
     const sell = async () => {
-        var url = `${process.env.REACT_APP_APIURL}/funds/${Funds[data.FundSelected].fundId}/sell`;
+        var url = `${process.env.REACT_APP_APIURL}/funds/${Funds[data.FundSelected].fundId}/sell/?`+ new URLSearchParams({
+            client: ClientSelected.id,
+        });
         const response = await fetch(url, {
             method: 'POST',
             body: JSON.stringify({ shares: parseFloat(data.shares) }),
@@ -60,7 +61,9 @@ const SellForm = ({ NavInfoToggled,balanceChanged}) => {
 
     useEffect(() => {
         const getFunds = async () => {
-            var url = `${process.env.REACT_APP_APIURL}/funds/stakes`;
+            var url = `${process.env.REACT_APP_APIURL}/stakes/?` + new URLSearchParams({
+                client: ClientSelected.id,
+            });
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -72,11 +75,11 @@ const SellForm = ({ NavInfoToggled,balanceChanged}) => {
 
             if (response.status === 200) {
                 const dataFetched = await response.json()
-                if(fundId){
-                    const fundSelected=dataFetched.findIndex(fund => fund.fundId === fundId)
-                    if(fundSelected>=0){
+                if (fundId) {
+                    const fundSelected = dataFetched.findIndex(fund => fund.fundId === fundId)
+                    if (fundSelected >= 0) {
                         openAccordion()
-                        setData({...data,...{FundSelected:fundSelected}})
+                        setData({ ...data, ...{ FundSelected: fundSelected } })
                     }
                 }
                 setFunds(dataFetched)
@@ -99,7 +102,7 @@ const SellForm = ({ NavInfoToggled,balanceChanged}) => {
         return () => {
         }
         // eslint-disable-next-line
-    }, [])
+    }, [ClientSelected])
 
     const handleChange = (event) => {
         let aux = data;
@@ -129,7 +132,7 @@ const SellForm = ({ NavInfoToggled,balanceChanged}) => {
         <Container className={NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}>
             <Row className="newTicket h-100 growAnimation">
                 {
-                    FetchingFunds ?
+                    FetchingFunds || !contentReady ?
                         <Loading />
                         :
                         Funds.length > 0 ?

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect,useContext } from 'react'
 
 import './index.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -7,23 +7,25 @@ import TableLastMovements from './TableLastMovements';
 import NoMovements from './NoMovements';
 import Loading from './Loading';
 import {  useHistory } from 'react-router-dom';
+import { dashboardContext } from '../../../../../../../../context/dashboardContext';
 
 
 const MovementsTab = ({ Fund, NavInfoToggled }) => {
+    const {token,ClientSelected} = useContext(dashboardContext);
     const history = useHistory();
 
     const [Movements, setMovements] = useState([])
     const [page, setPage] = useState(0)
     const [FetchingMovements, setFetchingMovements] = useState(true);
 
-    const token = sessionStorage.getItem('access_token')
-
     const toLogin = () => {
         sessionStorage.clear(); history.push(`/login`);
     }
 
     const getMovements = async () => {
-        var url = `${process.env.REACT_APP_APIURL}/Accounts/${Fund.id}/movements`;
+        var url = `${process.env.REACT_APP_APIURL}/movements/byAccount/${Fund.id}/?` + new URLSearchParams({
+                client: ClientSelected.id,
+            });
         setFetchingMovements(true)
         const response = await fetch(url, {
             method: 'GET',

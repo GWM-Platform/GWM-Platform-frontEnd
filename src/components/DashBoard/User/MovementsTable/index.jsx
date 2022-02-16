@@ -1,102 +1,33 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import CardsContainer from './CardsContainer';
 import { useTranslation } from "react-i18next";
-import { useHistory } from 'react-router-dom'
 import { Spinner, Row, Container, Col } from 'react-bootstrap';
+import { dashboardContext } from '../../../../context/dashboardContext';
 const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, NavInfoToggled, setNumberOfFunds }) => {
     const { t } = useTranslation();
 
-    const [Accounts, setAccounts] = useState([]);
-    const [Funds, setFunds] = useState([]);
-
-    const [FetchingFunds, setFetchingFunds] = useState(true);
+    const {FetchingFunds,Funds,Accounts,contentReady} = useContext(dashboardContext);
 
     const [error, setError] = useState("Loading Content");
 
     const [selected, setSelected] = useState(0)
 
-    const token = sessionStorage.getItem('access_token')
-
-    let history = useHistory();
-
-    // eslint-disable-next-line 
-    const toLogin = () => {
-        sessionStorage.clear(); history.push(`/login`);
-    }
-
-    const getAccounts = async () => {
-        var url = `${process.env.REACT_APP_APIURL}/accounts`;
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                Authorization: `Bearer ${token}`,
-                Accept: "*/*",
-                'Content-Type': 'application/json'
-            }
-        })
-
-        if (response.status === 200) {
-            const data = await response.json()
-            setAccounts(data)
-            if (data.length > 0) sessionStorage.setItem('balance', data[0].balance)
-        } else {
-            switch (response.status) {
-                case 500:
-                    console.error("Error ", response.status, " obteniendo stakes")
-                    break;
-                default:
-                    console.error("Error ", response.status, " obteniendo stakes")
-            }
-        }
-    }
-    const getFunds = async () => {
-        var url = `${process.env.REACT_APP_APIURL}/funds/stakes`;
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                Authorization: `Bearer ${token}`,
-                Accept: "*/*",
-                'Content-Type': 'application/json'
-            }
-        })
-
-        if (response.status === 200) {
-            const data = await response.json()
-            setFunds(data)
-        } else {
-            switch (response.status) {
-                case 500:
-                    console.error("Error. obteniendo stakes")
-                    break;
-                default:
-                    console.error("Error. obteniendo stakes")
-            }
-        }
-        setFetchingFunds(false)
-    }
-
-
     useEffect(() => {
         setNumberOfFunds(0)
-        getAccounts();
-        getFunds();
-        return () => {
-        }
-        // eslint-disable-next-line
-    }, [])
+    }, [setNumberOfFunds])
 
     useEffect(() => {
-        if (!FetchingFunds) {
+        if (!FetchingFunds && contentReady) {
             setNumberOfFunds(Accounts.length + Funds.length)
-            if (Accounts.length + Funds.length === 0 && !FetchingFunds) setError("No tiene participacion en ningun fondo")
+            if (Accounts.length + Funds.length === 0 && !FetchingFunds && contentReady) setError("No tiene participacion en ningun fondo")
         }
-    }, [Accounts, Funds, setNumberOfFunds, FetchingFunds])
+    }, [Accounts, Funds, setNumberOfFunds, FetchingFunds,contentReady])
 
     return (
         <Container fluid className={NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}>
             {
-                FetchingFunds || Funds.length + Accounts.length === 0
+                FetchingFunds || Funds.length + Accounts.length === 0 || !contentReady
                     ?
                     <Container fluid>
                         <Row className="d-flex justify-content-center align-items-center">

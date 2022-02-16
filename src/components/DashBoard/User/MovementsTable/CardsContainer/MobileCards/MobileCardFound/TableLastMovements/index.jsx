@@ -8,8 +8,6 @@ const TableLastMovements = ({ content,fetchingMovements }) => {
     const { t } = useTranslation();
     const [open, setOpen] = useState(false);
 
-    console.log(fetchingMovements)
-
     return (
         <Col md="12" className="p-0 mt-2">
             {fetchingMovements ?

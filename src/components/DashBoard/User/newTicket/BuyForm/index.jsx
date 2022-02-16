@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { useHistory,useLocation } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react'
+import { useHistory, useLocation } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../operationsForm.css'
@@ -9,9 +9,12 @@ import FundSelector from './FundSelector'
 import BuyData from './BuyData'
 import Loading from '../Loading';
 import NoFunds from '../NoFunds';
+import { dashboardContext } from '../../../../../context/dashboardContext';
 //import SourceAccount from './SourceAccount';
 
 const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
+
+    const { token, ClientSelected,contentReady } = useContext(dashboardContext);
 
     function useQuery() {
         const { search } = useLocation();
@@ -30,13 +33,13 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
     const [Account, setAccount] = useState(0);
     const [FetchingFunds, setFetchingFunds] = useState(true)
 
-    const token = sessionStorage.getItem('access_token')
-
     let history = useHistory();
 
 
     const buy = async () => {
-        var url = `${process.env.REACT_APP_APIURL}/funds/${Funds[data.FundSelected].id}/buy`;
+        var url = `${process.env.REACT_APP_APIURL}/funds/${Funds[data.FundSelected].id}/buy/?` + new URLSearchParams({
+            client: ClientSelected.id,
+        });
         const response = await fetch(url, {
             method: 'POST',
             body: JSON.stringify({ amount: parseFloat(data.amount) }),
@@ -74,13 +77,14 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
 
             if (response.status === 200) {
                 const dataFetched = await response.json()
-                if(fundId){
-                    const fundSelected=dataFetched.findIndex(fund => fund.id === fundId && fund.freeShares>0)
-                    console.log(fundSelected>0,fundSelected)
-                    if(fundSelected>=0){
+                if (fundId) {
+                    const fundSelected = dataFetched.findIndex(fund => fund.id === fundId && fund.freeShares > 0)
+                    console.log(fundSelected > 0, fundSelected)
+                    if (fundSelected >= 0) {
                         openAccordion()
-                        setData({...data,...{FundSelected:fundSelected}})
-                    }                }
+                        setData({ ...data, ...{ FundSelected: fundSelected } })
+                    }
+                }
                 setFunds(dataFetched)
                 setFetchingFunds(false)
             } else {
@@ -95,7 +99,9 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
         }
 
         const getAccount = async () => {
-            var url = `${process.env.REACT_APP_APIURL}/accounts`;
+            var url = `${process.env.REACT_APP_APIURL}/accounts/?` + new URLSearchParams({
+                client: ClientSelected.id,
+            });
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -120,6 +126,7 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
             }
         }
 
+        setCollapsedFields(true)
         getAccount()
         getFunds()
 
@@ -129,7 +136,7 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
         return () => {
         }
         // eslint-disable-next-line
-    }, [])
+    }, [ClientSelected])
 
     const handleChange = (event) => {
         let aux = data;
@@ -158,19 +165,20 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
     const openAccordion = () => {
         setCollapsedFields(false)
     }
+
     return (
         <Container className={NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}>
             <Row className="newTicket h-100 growAnimation">
                 {
-                    FetchingFunds ?
+                    FetchingFunds || !contentReady ?
                         <Loading />
                         :
                         Funds.length > 0 ?
                             <Col xs="12">
-{/*                                <SourceAccount Account={Account}/>
-*/}                                <Accordion flush defaultActiveKey="0">
+                                {/*<SourceAccount Account={Account}/>*/}
+                                <Accordion flush defaultActiveKey="0">
                                     <FundSelector openAccordion={openAccordion} Account={Account}
-                                        Funds={Funds} data={data} setData={setData}/>
+                                        Funds={Funds} data={data} setData={setData} />
                                 </Accordion>
                                 <Accordion flush activeKey={CollapsedFields ? "-1" : "0"}>
                                     <BuyData

@@ -73,6 +73,7 @@ const MovementRow = ({ Movement, state, reloadData }) => {
         getAccountData();
         //eslint-disable-next-line
     }, [Movement,state])
+    
     return (
         <>
             <tr className="transactionRow">

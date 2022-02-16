@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect,useContext } from 'react'
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
@@ -6,9 +6,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 import { useHistory } from 'react-router-dom';
 import './index.css'
+import { dashboardContext } from '../../../../../../context/dashboardContext';
 
 const CashCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
     const { t } = useTranslation();
+    const {token,ClientSelected}=useContext(dashboardContext)
+
     const [PendingMovements, setPendingMovements] = useState(
         {
             fetching: true,
@@ -32,9 +35,11 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
 
     useEffect(() => {
         const getPendingMovements = async () => {
-            const token = sessionStorage.getItem('access_token')
-            var url = `${process.env.REACT_APP_APIURL}/accounts/movements/bystate/1`;
             
+            var url = `${process.env.REACT_APP_APIURL}/movements/bystate/1/?` + new URLSearchParams({
+                client: ClientSelected.id,
+            });
+
             setPendingMovements(prevState => ({
                 ...prevState,
                 ...{
@@ -77,7 +82,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
             }
         }
         getPendingMovements()
-    }, [])
+    }, [token,ClientSelected.id])
 
     return (
         <Col sm="6" md="6" lg="4" className="fund-col growAnimation">

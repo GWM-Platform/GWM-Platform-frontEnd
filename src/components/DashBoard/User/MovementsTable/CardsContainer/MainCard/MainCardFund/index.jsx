@@ -4,7 +4,6 @@ import { Container, Col, Row, Nav } from 'react-bootstrap';
 
 import { useTranslation } from "react-i18next";
 import { useState } from 'react';
-import { useHistory } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 
@@ -16,17 +15,7 @@ const MainCard = ({ Fund, Hide, setHide, NavInfoToggled }) => {
     const [SelectedTab, setSelectedTab] = useState("0")
     const [Performance, setPerformance] = useState(0)
 
-    // eslint-disable-next-line 
-
-
     const { t } = useTranslation();
-    let history = useHistory();
-
-    // eslint-disable-next-line 
-    const toLogin = () => {
-        sessionStorage.clear();
-        history.push(`/login`);
-    }
 
     const balanceInCash = (Fund.shares * Fund.fund.sharePrice)
 

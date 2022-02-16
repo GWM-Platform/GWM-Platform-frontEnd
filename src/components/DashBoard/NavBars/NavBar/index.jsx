@@ -1,18 +1,22 @@
-import React from 'react'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './index.css'
+import React, { useContext } from 'react'
 
 import { Nav, Navbar, Container, Row, Col, NavDropdown, Button, OverlayTrigger, Popover } from 'react-bootstrap'
-import LanguageSelector from '../../../LanguageSelector';
 import { useRouteMatch, useHistory } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSignOutAlt, faChevronCircleUp } from '@fortawesome/free-solid-svg-icons'
 
 import { useTranslation } from "react-i18next";
+import { dashboardContext } from '../../../../context/dashboardContext';
+
+import LanguageSelector from '../../../LanguageSelector';
+import ClientSelector from '../../User/ClientSelector';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './index.css'
 
 const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled, selected, changeLanguage, languages }) => {
-
+    const { admin, IndexClientSelected, UserClients } = useContext(dashboardContext)
 
     const { t } = useTranslation();
 
@@ -32,22 +36,20 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled, sele
         setNavInfoToggled(!NavInfoToggled)
     }
 
-    const admin = sessionStorage.getItem("admin")
-
     return (
 
         <Navbar sticky="top" className={`py-0 mb-0 navBarDesktop`} collapseOnSelect expand="sm" variant="dark" >
             <Container fluid className="bottomInnerBorder px-0 d-none d-sm-block">
                 <Row className="w-100 d-flex align-items-center mx-0">
-                    <Col sm="auto" md={1} lg={2} style={{ paddingBottom: "5px" }}>
+                    <Col sm="auto" md={1} lg={admin && UserClients.length > 0 && IndexClientSelected === -1 ? "auto" : 2} style={{ paddingBottom: "5px" }}>
                         <Button className={`navInfoToggler ${NavInfoToggled ? "toggled" : ""}`} onClick={() => toggleNavInfo()}>
                             <FontAwesomeIcon icon={faChevronCircleUp} />
                         </Button>
                     </Col>
-                    <Col className="px-0 flex-grow-1" sm="auto">
+                    <Col className="px-0 flex-grow-1">
                         <Nav >
                             {
-                                JSON.parse(admin)
+                                admin && IndexClientSelected === -1
                                     ?
                                     <>
                                         <Nav.Link
@@ -71,7 +73,7 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled, sele
 
 
                                         <NavDropdown
-                                            active={itemSelected === "depositCash" || itemSelected === "DepositCash" || itemSelected === "AddAccount" || itemSelected === "addAccount"}
+                                            active={itemSelected === "depositCash" || itemSelected === "DepositCash" || itemSelected === "AddAccount" || itemSelected === "addAccount" || itemSelected === "accountsSupervision"}
                                             className="px-0 transactionDropdown" title={t("Accounts Administration")} id="collasible-nav-dropdown">
                                             <NavDropdown.Item
                                                 active={itemSelected === "depositCash" || itemSelected === "DepositCash"}
@@ -82,6 +84,11 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled, sele
                                                 active={itemSelected === "addAccount" || itemSelected === "addAccount"}
                                                 onClick={() => { goTo("addAccount") }}>
                                                 {t("Add Account")}
+                                            </NavDropdown.Item>
+                                            <NavDropdown.Item
+                                                active={itemSelected === "accountsSupervision" || itemSelected === "accountssupervision"}
+                                                onClick={() => { goTo("accountsSupervision") }}>
+                                                {t("Accounts Supervision")}
                                             </NavDropdown.Item>
                                         </NavDropdown>
 
@@ -133,6 +140,13 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled, sele
                     </Col>
                     <Col sm="auto">
                         <Nav className="d-flex align-items-center justify-content-end">
+
+                            <div className="d-block d-sm-none d-md-block" style={{ paddingBottom: "5px" }}>
+                                <ClientSelector />
+                            </div>
+
+
+
                             <div className="d-block d-sm-none d-md-block" style={{ paddingBottom: "5px" }}>
                                 <LanguageSelector selected={selected}
                                     changeLanguage={changeLanguage}

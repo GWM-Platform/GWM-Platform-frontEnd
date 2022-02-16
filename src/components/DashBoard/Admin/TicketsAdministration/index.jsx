@@ -45,7 +45,7 @@ const TicketsAdministration = () => {
         const token = sessionStorage.getItem('access_token')
 
         const transactionsStates = async () => {
-            var url = `${process.env.REACT_APP_APIURL}/transactions/states`;
+            var url = `${process.env.REACT_APP_APIURL}/states`;
             setTransactionStates({
                 ...TransactionStates,
                 ...{

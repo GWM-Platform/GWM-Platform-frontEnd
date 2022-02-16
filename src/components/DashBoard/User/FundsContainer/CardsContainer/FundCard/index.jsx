@@ -7,8 +7,6 @@ import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 import './index.css'
 import {  useHistory } from 'react-router-dom';
 
-
-
 const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
     const { t } = useTranslation();
 
@@ -21,7 +19,7 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
     }
 
     return (
-        <Col className="fund-col growAnimation" sm="6" md="6" lg="4">
+        <Col className="fund-col growAnimation" sm="6" md="6" lg="4" >
             <Card className="FundCard h-100">
                 <Card.Header
                     className="header d-flex align-items-center justify-content-center"

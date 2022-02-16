@@ -1,19 +1,23 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { useTranslation } from "react-i18next";
-import { Navbar, Container, Col, Row } from 'react-bootstrap';
+import { Navbar, Container, Col, Row, Spinner } from 'react-bootstrap';
 
 import './index.css'
+import { dashboardContext } from '../../../../context/dashboardContext';
 
 const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
     const { t } = useTranslation();
+
     const [Balance, setBalance] = useState({ fetching: false, value: 0 })
-    const token = sessionStorage.getItem('access_token')
+
+    const { token, ClientSelected } = useContext(dashboardContext)
+
 
     useEffect(() => {
         const getAccounts = async () => {
-            var url = `${process.env.REACT_APP_APIURL}/clients/me/balance`;
+            var url = `${process.env.REACT_APP_APIURL}/clients/${ClientSelected.id}/balance`;
             setBalance({ ...Balance, ...{ fetching: true } })
             const response = await fetch(url, {
                 method: 'GET',
@@ -26,7 +30,7 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
 
             if (response.status === 200) {
                 const data = await response.json()
-                setBalance(prevState=>({ ...prevState, ...{ fetching: false, value: data } }))
+                setBalance(prevState => ({ ...prevState, ...{ fetching: false, value: data } }))
             } else {
                 switch (response.status) {
                     default:
@@ -34,17 +38,25 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
             }
             setBalanceChanged(false)
         }
-
-        if (balanceChanged) getAccounts()
+        if (balanceChanged && ClientSelected.id) getAccounts()
         // eslint-disable-next-line 
-    }, [setBalance, token, balanceChanged, setBalanceChanged])
+    }, [setBalance, token, balanceChanged, setBalanceChanged, ClientSelected])
 
     return (
         <Navbar className="navBarTotal" bg="light">
             <Container className="px-0" fluid>
                 <Row className="w-100 mx-0 d-flex justify-content-center">
                     <Col className="ps-2 ps-md-2 ps-lg-0" lg="auto">
-                        <h1 className="total my-0 py-0"> {t("Total Balance")}: ${Balance.value.toFixed(2)}</h1>
+                        <h1 className="total my-0 py-0 d-flex align-items-center growOpacity">
+                            {t("Total Balance")}
+                            {
+                                Balance.fetching ?
+                                    <Spinner className="ms-2" animation="border" size="sm" />
+
+                                    :
+                                    <span className="growOpacity">{": " + Balance.value.toFixed(2)}</span>
+                            }
+                        </h1>
                     </Col>
                 </Row>
             </Container>

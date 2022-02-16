@@ -19,46 +19,34 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
     }
 
     //Scrolling Function
-    const scrollFundContainer = (right) => {
+    const scrollContainer = (right) => {
         let cardWidth = isNull() ? "" : FundsContainer.current.clientWidth / 3
-        if (right) {
-            let scrollAmount = 0;
-            let slideTimer = setInterval(function () {
-                if (!isNull()) {
-                    FundsContainer.current.scrollLeft += 15;
-                    scrollAmount += 15;
+        let next=FundsContainer.current.scrollLeft + cardWidth
+        let prev=FundsContainer.current.scrollLeft - cardWidth
+        if (!isNull()) {
+            FundsContainer.current.scrollTo({
+                top: 0,
+                left: right ?next : prev,
+                behavior: 'smooth'
+            })
+            if (right) {
+                if (FundsContainer.current.scrollWidth - FundsContainer.current.clientWidth < next + 10) {
+                    setShowRightChevron(false)
                 }
-                if (!isNull() && scrollAmount >= cardWidth) {
-                    window.clearInterval(slideTimer);
-                    if (isNull() ? false : FundsContainer.current.scrollLeft !== 0 && !showLeftChevron) {
-                        setShowLeftChevron(true)
-                    } else if (isNull() ? false : FundsContainer.current.scrollWidth
-                        - FundsContainer.current.clientWidth === FundsContainer.current.scrollLeft) {
-                        setShowRightChevron(false)
-                        setShowLeftChevron(true)
-                    }
+                if (next > 10 && !showLeftChevron) {
+                    setShowLeftChevron(true)
                 }
-            }, 25);
-        } else {
-            let scrollAmount = 0;
-            let slideTimer = setInterval(function () {
-                if (!isNull()) {
-                    FundsContainer.current.scrollLeft -= 15;
-                    scrollAmount += 15;
+            } else {
+                if (prev< 10) {
+                    setShowLeftChevron(false)
                 }
-                if (!isNull() && scrollAmount >= cardWidth) {
-                    window.clearInterval(slideTimer);
-                    if (isNull() ? false : FundsContainer.current.scrollLeft === 0 && showLeftChevron) {
-                        setShowLeftChevron(false)
-                        setShowRightChevron(true)
-                    } else if (isNull() ? false : FundsContainer.current.scrollWidth
-                        - FundsContainer.current.clientWidth !== FundsContainer.current.scrollLeft) {
-                        setShowRightChevron(true)
-                    }
+                if (FundsContainer.current.scrollWidth - FundsContainer.current.clientWidth !== prev) {
+                    setShowRightChevron(true)
                 }
-            }, 25);
+            }
         }
     }
+
 
     useEffect(() => {
         return () => {
@@ -66,7 +54,7 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
     }, [Funds,PendingWithoutpossession])
 
     return (
-        <Container className="px-0 d-flex justify-content-center accountsContainerWidth cardsContainer p-relative">
+        <Container className="px-0 d-flex justify-content-center FundsContainerWidth cardsContainer p-relative">
             <Row ref={FundsContainer}
                 className={`d-flex align-items-stretch ${Funds.length+PendingWithoutpossession.length < 3 ? "justify-content-center" : ""}
                 w-100 g-1 g-sm-5 pb-2 flex-wrap flex-sm-nowrap overflow-hidden `}>
@@ -97,12 +85,12 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
             </Row>
             <div className={`arrow  right d-none d-sm-block
                                 ${Funds.length + PendingWithoutpossession.length > 2 && showRightChevron ? "opacity-1" : ""}`}
-                onClick={() => scrollFundContainer(true)}>
+                onClick={() => scrollContainer(true)}>
                 <FontAwesomeIcon icon={faChevronRight} />
             </div>
             <div className={` arrow left d-none d-sm-block
                                 ${Funds.length + PendingWithoutpossession.length > 2 && showLeftChevron ? "opacity-1" : ""}`}
-                onClick={() => scrollFundContainer(false)}>
+                onClick={() => scrollContainer(false)}>
                 <FontAwesomeIcon icon={faChevronLeft} />
             </div>
         </Container>
