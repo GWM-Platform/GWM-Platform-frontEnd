@@ -76,7 +76,13 @@
     background-color: transparent;
     box-shadow: inset 0 -1px 0 rgb(0 0 0 / 13%);
 }
-
+.navBarAvailableCash{
+    position: unset;
+    top: 0px;
+    z-index: 1009;
+    background-color: var(--blue-main)!important;
+    filter: drop-shadow(0px 0px 5px black);
+}
 .arrow{
     font-size: 30px;
     position:absolute;
@@ -109,6 +115,69 @@
 .newTicket .sellDescription{
     font-size: 17px;
 
+}
+
+.confirmationModal .header,
+.confirmationModal .body,
+.confirmationModal .footer {
+	background-color: white !important;
+}
+.confirmationModal .body {
+	border-radius: 30px 30px 0 0;
+}
+
+.confirmationModal .title {
+	color: black !important;
+	text-align: center;
+	font-weight: 300;
+
+	font-size: 40px;
+}
+.FundsAdministration .editResult,.FundsAdministration .editForm{
+	animation: ease growOpacity 1s;
+}
+
+.confirmationModal .descriptionIconContainer {
+	font-size: 60px;
+	width: 1.5em;
+	height: 1.5em;
+	border: 3px solid;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.confirmationModal .descriptionIconContainer.red{
+	border-color: red;
+}
+.confirmationModal .descriptionIconContainer.green {
+	border-color: green;
+}
+
+.confirmationModal .icon {
+	text-align: center;
+	font-size: 60px;
+}
+.confirmationModal .icon.red{
+	color: red !important;
+}
+.confirmationModal .icon.green {
+	color: green !important;
+}
+.confirmationModal .listedInfo{
+	color: black !important;
+	font-weight: 300;
+	text-align: start;
+	font-size: 16px;
+}
+.confirmationModal .emphasis{
+	font-weight: 500;
+}
+.confirmationModal .heading{
+	color: black !important;
+	text-align: center;
+	font-weight: 300;
+	font-size: 15px;
 }
 
 @media (max-width: 576px) {

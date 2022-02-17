@@ -4,7 +4,7 @@ import { Form, InputGroup, Row, Button, Accordion, Container } from 'react-boots
 import { useTranslation } from "react-i18next";
 
 
-const SellData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAccordion }) => {
+const SellData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAccordion, fetching }) => {
 
     const { t } = useTranslation();
 
@@ -70,8 +70,9 @@ const SellData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAc
                             }
                         </Form.Control.Feedback>
                     </InputGroup>
-                    <Button disabled={
-                        data.FundSelected === -1 ? true : data.shares > Funds[data.FundSelected].shares || data.shares <= 0}
+                    <Button
+                        disabled={fetching ||
+                            (data.FundSelected === -1 ? true : data.shares > Funds[data.FundSelected].shares || data.shares <= 0)}
                         variant="danger" type="submit" className="submitBtn">{t("Submit")}</Button>
                 </Form>
             </Accordion.Body>

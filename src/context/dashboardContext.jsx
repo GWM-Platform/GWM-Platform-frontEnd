@@ -162,7 +162,6 @@ export const DashboardProvider = ({ children }) => {
     }, [ClientSelected, itemSelected])
 
     useEffect(() => {
-
         const toLogin = () => {
             sessionStorage.clear();
             history.push(`/login`);
@@ -209,7 +208,7 @@ export const DashboardProvider = ({ children }) => {
 
             setContentReady(true)
         }
-        if (!FetchingFunds && PendingTransactions.fetched && !contentReady && ClientSelected.id) {
+        if (!FetchingFunds && PendingTransactions.fetched && Accounts.length>0 &&!contentReady && ClientSelected.id) {
             addPendingFundsWithoutPosesion()
         }
 

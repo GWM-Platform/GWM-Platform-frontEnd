@@ -10,11 +10,12 @@ import BuyData from './BuyData'
 import Loading from '../Loading';
 import NoFunds from '../NoFunds';
 import { dashboardContext } from '../../../../../context/dashboardContext';
-//import SourceAccount from './SourceAccount';
+import SourceAccount from '../SourceAccount';
+import ActionConfirmationModal from './ActionConfirmationModal';
 
 const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
 
-    const { token, ClientSelected,contentReady } = useContext(dashboardContext);
+    const { token, ClientSelected, contentReady, Accounts } = useContext(dashboardContext);
 
     function useQuery() {
         const { search } = useLocation();
@@ -26,17 +27,18 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
     let fundId = parseInt(useQuery().get("fund"))
 
     const [data, setData] = useState({ amount: "", FundSelected: -1 })
+    const [ShowModal, setShowModal] = useState(false)
+    const [fetching, setFetching] = useState(false)
     const [some, setSome] = useState(false)
     const [Funds, setFunds] = useState([])
     const [validated, setValidated] = useState(true);
     const [CollapsedFields, setCollapsedFields] = useState(true);
-    const [Account, setAccount] = useState(0);
     const [FetchingFunds, setFetchingFunds] = useState(true)
 
     let history = useHistory();
 
-
     const buy = async () => {
+        setFetching(true)
         var url = `${process.env.REACT_APP_APIURL}/funds/${Funds[data.FundSelected].id}/buy/?` + new URLSearchParams({
             client: ClientSelected.id,
         });
@@ -62,6 +64,7 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
                     console.error(response.status)
             }
         }
+        setFetching(false)
     }
 
     useEffect(() => {
@@ -98,36 +101,7 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
             }
         }
 
-        const getAccount = async () => {
-            var url = `${process.env.REACT_APP_APIURL}/accounts/?` + new URLSearchParams({
-                client: ClientSelected.id,
-            });
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    Accept: "*/*",
-                    'Content-Type': 'application/json'
-                }
-            })
-
-            if (response.status === 200) {
-                const data = await response.json()
-                setAccount(data[0])
-                if (data.length > 0) sessionStorage.setItem('balance', data[0].balance)
-            } else {
-                switch (response.status) {
-                    case 500:
-                        console.error("Error ", response.status, " obteniendo stakes")
-                        break;
-                    default:
-                        console.error("Error ", response.status, " obteniendo stakes")
-                }
-            }
-        }
-
         setCollapsedFields(true)
-        getAccount()
         getFunds()
 
         let aux = data
@@ -149,11 +123,11 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
         event.preventDefault();
         event.stopPropagation();
         const form = event.currentTarget;
-        if (form.checkValidity() === true) {
+        if (form.checkValidity() === true && !fetching) {
             if (token === null) {
                 console.log("compra")
             } else {
-                buy()
+                setShowModal(true)
             }
         }
         setValidated(true);
@@ -167,31 +141,41 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
     }
 
     return (
-        <Container className={NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}>
-            <Row className="newTicket h-100 growAnimation">
-                {
-                    FetchingFunds || !contentReady ?
-                        <Loading />
-                        :
-                        Funds.length > 0 ?
-                            <Col xs="12">
-                                {/*<SourceAccount Account={Account}/>*/}
-                                <Accordion flush defaultActiveKey="0">
-                                    <FundSelector openAccordion={openAccordion} Account={Account}
-                                        Funds={Funds} data={data} setData={setData} />
-                                </Accordion>
-                                <Accordion flush activeKey={CollapsedFields ? "-1" : "0"}>
-                                    <BuyData
-                                        handleSubmit={handleSubmit} validated={validated}
-                                        handleChange={handleChange} Funds={Funds} data={data}
-                                        toggleAccordion={toggleAccordion} Balance={Account.balance} />
-                                </Accordion>
-                            </Col>
+        <div className={`d-flex flex-column ${NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}`}>
+            <SourceAccount />
+            <Container className="h-100" >
+                <Row className="newTicket h-100 growAnimation">
+                    {
+                        FetchingFunds || !contentReady ?
+                            <Loading />
                             :
-                            <NoFunds />
-                }
-            </Row>
-        </Container>
+                            Funds.length > 0 ?
+                                <Col xs="12">
+                                    {/*<SourceAccount Account={Account}/>*/}
+                                    <Accordion flush defaultActiveKey="0">
+                                        <FundSelector openAccordion={openAccordion} Account={Accounts[0]}
+                                            Funds={Funds} data={data} setData={setData} />
+                                    </Accordion>
+                                    <Accordion flush activeKey={CollapsedFields ? "-1" : "0"}>
+                                        <BuyData
+                                            handleSubmit={handleSubmit} validated={validated}
+                                            handleChange={handleChange} Funds={Funds} data={data}
+                                            toggleAccordion={toggleAccordion} Balance={Accounts[0].balance} fetching={fetching} />
+                                    </Accordion>
+                                </Col>
+                                :
+                                <NoFunds />
+                    }
+                </Row>
+            </Container>
+            {
+                data.FundSelected !== -1 ?
+                    <ActionConfirmationModal fetching={fetching} setShowModal={setShowModal} show={ShowModal} action={buy} data={data} Funds={Funds} Balance={Accounts[0].balance} />
+                    :
+                    null
+            }
+        </div>
+
     )
 }
 export default BuyForm

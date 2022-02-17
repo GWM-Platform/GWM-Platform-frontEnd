@@ -41,6 +41,11 @@
     border-color: var(--selected-underline-section-color);
 }
 
+.navBarDesktop .transactionDropdown.show .nav-link {
+    border-bottom: 5px solid;
+    border-color: var(--selected-underline-section-color);
+}
+
 .navBarDesktop .nav-link.active:hover {
     border-color: var(--selected-underline-section-color)!important;
 }

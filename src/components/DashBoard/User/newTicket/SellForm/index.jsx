@@ -3,15 +3,16 @@ import { useHistory, useLocation } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import { dashboardContext } from '../../../../../context/dashboardContext';
 import { Container, Row, Col, Accordion } from 'react-bootstrap'
 import FundSelector from './FundSelector'
 import SellData from './SellData'
 import Loading from '../Loading';
 import NoFunds from '../NoFunds';
-import { dashboardContext } from '../../../../../context/dashboardContext';
+import ActionConfirmationModal from './ActionConfirmationModal';
 
 const SellForm = ({ NavInfoToggled, balanceChanged }) => {
-    const { token,ClientSelected,contentReady } = useContext(dashboardContext);
+    const { token, ClientSelected, contentReady,Accounts } = useContext(dashboardContext);
 
     function useQuery() {
         const { search } = useLocation();
@@ -22,6 +23,8 @@ const SellForm = ({ NavInfoToggled, balanceChanged }) => {
     let fundId = parseInt(useQuery().get("fund"))
 
     const [data, setData] = useState({ shares: "", FundSelected: -1 })
+    const [ShowModal, setShowModal] = useState(false)
+    const [fetching, setFetching] = useState(false)
     const [some, setSome] = useState(false)
     const [Funds, setFunds] = useState([])
     const [validated, setValidated] = useState(true);
@@ -31,7 +34,8 @@ const SellForm = ({ NavInfoToggled, balanceChanged }) => {
     let history = useHistory();
 
     const sell = async () => {
-        var url = `${process.env.REACT_APP_APIURL}/funds/${Funds[data.FundSelected].fundId}/sell/?`+ new URLSearchParams({
+        setFetching(true)
+        var url = `${process.env.REACT_APP_APIURL}/funds/${Funds[data.FundSelected].fundId}/sell/?` + new URLSearchParams({
             client: ClientSelected.id,
         });
         const response = await fetch(url, {
@@ -57,6 +61,7 @@ const SellForm = ({ NavInfoToggled, balanceChanged }) => {
                     break
             }
         }
+        setFetching(false)
     }
 
     useEffect(() => {
@@ -115,8 +120,8 @@ const SellForm = ({ NavInfoToggled, balanceChanged }) => {
         event.preventDefault();
         event.stopPropagation();
         const form = event.currentTarget;
-        if (form.checkValidity() === true) {
-            sell()
+        if (form.checkValidity() === true && !fetching) {
+            setShowModal(true)
         }
         setValidated(true);
     }
@@ -142,7 +147,7 @@ const SellForm = ({ NavInfoToggled, balanceChanged }) => {
                                         Funds={Funds} data={data} some={some} setData={setData} setSome={setSome} />
                                 </Accordion>
                                 <Accordion flush activeKey={CollapsedFields ? "-1" : "0"}>
-                                    <SellData toggleAccordion={toggleAccordion} handleSubmit={handleSubmit} validated={validated}
+                                    <SellData fetching={fetching} toggleAccordion={toggleAccordion} handleSubmit={handleSubmit} validated={validated}
                                         handleChange={handleChange} Funds={Funds} data={data} />
                                 </Accordion>
                             </Col>
@@ -150,6 +155,12 @@ const SellForm = ({ NavInfoToggled, balanceChanged }) => {
                             <NoFunds />
                 }
             </Row>
+            {
+                data.FundSelected !== -1 ?
+                    <ActionConfirmationModal fetching={fetching} setShowModal={setShowModal} show={ShowModal} action={sell} data={data} Funds={Funds} Balance={Accounts[0].balance} />
+                    :
+                    null
+            }
         </Container>
     )
 }

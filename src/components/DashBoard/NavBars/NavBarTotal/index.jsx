@@ -54,7 +54,7 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
                                     <Spinner className="ms-2" animation="border" size="sm" />
 
                                     :
-                                    <span className="growOpacity">{": " + Balance.value.toFixed(2)}</span>
+                                    <span className="growOpacity">{": $" + Balance.value.toFixed(2)}</span>
                             }
                         </h1>
                     </Col>

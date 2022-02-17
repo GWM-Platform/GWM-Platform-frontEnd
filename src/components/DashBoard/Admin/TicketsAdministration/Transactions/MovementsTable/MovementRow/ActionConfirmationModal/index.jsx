@@ -115,7 +115,7 @@ const ActionConfirmationModal = ({ movement, setShowModal, action,show,reloadDat
                             <Button variant="outline-secondary" onClick={() => handleClose()}>
                                 {t("Cancel")}
                             </Button>
-                            <Button variant="outline-danger" onClick={() => { changeTransactionState() }}>
+                            <Button variant="outline-danger" onClick={() => { if(!ActionFetch.fetching) changeTransactionState() }}>
                                 <div className="iconContainer red">
                                     <FontAwesomeIcon icon={ action==="approve" ? faCheckCircle : faTimesCircle } />
                                 </div>

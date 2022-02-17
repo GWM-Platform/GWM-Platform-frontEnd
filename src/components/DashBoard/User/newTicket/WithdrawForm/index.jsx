@@ -1,24 +1,29 @@
-import React, { useState, useEffect,useContext } from 'react'
+import React, { useState, useContext } from 'react'
+import { useHistory } from 'react-router-dom';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../operationsForm.css'
 
 import { Container, Row, Col } from 'react-bootstrap'
-import { useHistory } from 'react-router-dom';
-import WithdrawData from './WithdrawData'
 import { dashboardContext } from '../../../../../context/dashboardContext';
-
+import WithdrawData from './WithdrawData'
+import Loading from '../Loading';
+import SourceAccount from '../SourceAccount';
+import ActionConfirmationModal from './ActionConfirmationModal';
 const WithdrawForm = ({ NavInfoToggled, balanceChanged }) => {
     const [data, setData] = useState({ amount: "" })
+    const [ShowModal, setShowModal] = useState(false)
     const [validated, setValidated] = useState(true);
-    const [account, setAccount] = useState({});
-    const {token,ClientSelected} = useContext(dashboardContext);
+    const [fetching, setFetching] = useState(false)
+
+    const { token, Accounts, contentReady } = useContext(dashboardContext);
 
     let history = useHistory();
 
 
     const withdraw = async () => {
-        const token = sessionStorage.getItem('access_token')
-        var url = `${process.env.REACT_APP_APIURL}/accounts/${account.id}/withdraw`;
+        setFetching(true)
+        var url = `${process.env.REACT_APP_APIURL}/accounts/${Accounts[0].id}/withdraw`;
         const response = await fetch(url, {
             method: 'POST',
             body: JSON.stringify({ amount: parseFloat(data.amount) }),
@@ -41,6 +46,7 @@ const WithdrawForm = ({ NavInfoToggled, balanceChanged }) => {
                     console.error(response.status)
             }
         }
+        setFetching(false)
     }
 
     const handleChange = (event) => {
@@ -54,56 +60,41 @@ const WithdrawForm = ({ NavInfoToggled, balanceChanged }) => {
         event.stopPropagation();
         const form = event.currentTarget;
         const token = sessionStorage.getItem('access_token')
-        if (form.checkValidity() === true) {
+        if (form.checkValidity() === true && !fetching) {
             if (token === null) {
                 console.log("compra")
             } else {
-                withdraw()
+                setShowModal(true)
             }
         }
         setValidated(true);
     }
 
-    useEffect(() => {
-        const getAccount = async () => {
-            var url = `${process.env.REACT_APP_APIURL}/accounts/?` + new URLSearchParams({
-                client: ClientSelected.id,
-            });
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    Accept: "*/*",
-                    'Content-Type': 'application/json'
-                }
-            })
-
-            if (response.status === 200) {
-                const data = await response.json()
-                setAccount(data[0])
-            } else {
-                switch (response.status) {
-                    case 500:
-                        console.error(response.status)
-                        break;
-                    default:
-                        console.error(response.status)
-                }
-            }
-        }
-        getAccount()
-    }, [ClientSelected,token])
-
     return (
-        <Container className={NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}>
-            <Row className="newTicket h-100 growAnimation">
-                <Col xs="12">
-                    <WithdrawData
-                        handleSubmit={handleSubmit} validated={validated}
-                        handleChange={handleChange} data={data} account={account} />
-                </Col>
-            </Row>
-        </Container>
+        <div className={`d-flex flex-column ${NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}`}>
+            <SourceAccount />
+            <Container className="h-100">
+                <Row className="newTicket h-100 growAnimation">
+                    {
+                        !contentReady ?
+                            <Loading />
+                            :
+                            <Col xs="12">
+                                <WithdrawData
+                                    handleSubmit={handleSubmit} validated={validated}
+                                    handleChange={handleChange} data={data} account={Accounts[0]} fetching={fetching} />
+                            </Col>
+                    }
+
+                </Row>
+            </Container>
+            {
+                contentReady ?
+                    <ActionConfirmationModal fetching={fetching} setShowModal={setShowModal} show={ShowModal} action={withdraw} data={data} Balance={Accounts[0].balance} />
+                    :
+                    null
+            }
+        </div>
     )
 }
 export default WithdrawForm
