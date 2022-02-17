@@ -13,6 +13,7 @@ const TableLastMovements = ({ content, symbol,NavInfoToggled }) => {
                 <thead >
                     <tr>
                         <th className="tableHeader">{t("Date")}</th>
+                        <th className="tableHeader">{t("Concept")}</th>
                         <th className="tableDescription d-none d-sm-table-cell">{t("Amount")}</th>
                     </tr>
                 </thead>

@@ -27,18 +27,11 @@ i18n
       gb: {
         translation: {
           //Translations in English
-          //Translations for login 
-          "Welcome to React": "Welcome to react",
-          "Username": "Username",
-          "Password": "Password",
-          "Forgot Password?": "Forgot Password?",
-          "Login": "Login",
-          //Translations for changePassword
-          "Password Reset": "Password Reset",
-          "Enter your user account's verified email address and we will send you a password reset link.":
-            "Enter your user account's verified email address and we will send you a password reset link.",
-          "Send password reset email": "Send password reset email"
-          //Translation for Currencyes ABM
+          "DEPOSIT": "Deposit",
+          "WITHDRAWAL": "Withdrawal",
+          "STAKE_BUY": "Purchase of a fund's shares",
+          "STAKE_SELL": "Sale of a fund's shares",
+          "REPAYMENT": "Refund due to denied ticket "
         }
       },
       es: {
@@ -393,6 +386,11 @@ i18n
           "Ticket summary": "Resumen del ticket",
           "Selling (in feeParts)": "Vendiendo (en cuotapartes)",
           "Selling (in cash)": "Vendiendo (en dinero)",
+          "DEPOSIT": "Deposito",
+          "WITHDRAWAL": "Retiro",
+          "STAKE_BUY": "Compra de cuotapartes en un fondo",
+          "STAKE_SELL": "Venta de cuotapartes en un fondo",
+          "REPAYMENT": "Devolucion por ticket rechazado"
         }
       }
     },
