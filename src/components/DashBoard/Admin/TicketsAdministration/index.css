@@ -77,6 +77,14 @@
 	font-size: 20px;
 	margin:0.5em 0;
 }
+
+.TicketsTable .seeMore .cellWithoudPadding {
+	padding: 0;
+	height: 0;
+}
+
+
+
 @keyframes hover {
 	0% {
 		transform: rotateY(0deg);

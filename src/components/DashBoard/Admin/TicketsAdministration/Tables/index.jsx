@@ -4,6 +4,8 @@ import Message from '../Message'
 import TransactionsTable from './TransactionsTable'
 import MovementsTable from './MovementsTable'
 
+const token = sessionStorage.getItem('access_token')
+
 const Transactionslist = ({ state, messageVariants }) => {
     const [Transactions, setTransactions] = useState({
         fetching: true,
@@ -19,8 +21,81 @@ const Transactionslist = ({ state, messageVariants }) => {
         values: []
     })
 
+    const [UsersInfo, SetUsersInfo] = useState({ fetching: true, value: {} })
+    const [FundInfo, SetFundInfo] = useState({ fetching: true, value: {} })
+    const [AccountInfo, SetAccountInfo] = useState({ fetching: true, value: {} })
+
+    const getAccounts = async () => {
+        var url = `${process.env.REACT_APP_APIURL}/accounts`
+
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: "*/*",
+                'Content-Type': 'application/json'
+            }
+        })
+
+        if (response.status === 200) {
+            const data = await response.json()
+            SetAccountInfo({ ...AccountInfo, ...{ fetching: false, value: data } })
+        } else {
+            switch (response.status) {
+                default:
+                    console.log(response)
+            }
+        }
+    }
+
+    const getUsersInfo = async () => {
+        var url = `${process.env.REACT_APP_APIURL}/clients/?` + new URLSearchParams({
+            all: true,
+        });
+
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: "*/*",
+                'Content-Type': 'application/json'
+            }
+        })
+
+        if (response.status === 200) {
+            const data = await response.json()
+            SetUsersInfo({ ...UsersInfo, ...{ fetching: false, value: data } })
+        } else {
+            switch (response.status) {
+                default:
+                    console.log(response)
+            }
+        }
+    }
+
+    const getFundsInfo = async () => {
+        var url = `${process.env.REACT_APP_APIURL}/funds`;
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: "*/*",
+                'Content-Type': 'application/json'
+            }
+        })
+
+        if (response.status === 200) {
+            const data = await response.json()
+            SetFundInfo({ ...FundInfo, ...{ fetching: false, value: data } })
+        } else {
+            switch (response.status) {
+                default:
+                    console.log(response)
+            }
+        }
+    }
+
     const transactionsInState = async () => {
-        const token = sessionStorage.getItem('access_token')
         var url = `${process.env.REACT_APP_APIURL}/transactions/byState/${state}`;
         setTransactions({
             ...Transactions,
@@ -70,7 +145,6 @@ const Transactionslist = ({ state, messageVariants }) => {
     }
 
     const movementsInState = async () => {
-        const token = sessionStorage.getItem('access_token')
         var url = `${process.env.REACT_APP_APIURL}/movements/bystate/${state}`;
         setMovements({
             ...Movements,
@@ -122,6 +196,9 @@ const Transactionslist = ({ state, messageVariants }) => {
     useEffect(() => {
         transactionsInState()
         movementsInState()
+        getUsersInfo()
+        getFundsInfo()
+        getAccounts()
         // eslint-disable-next-line
     }, [state])
 
@@ -141,7 +218,8 @@ const Transactionslist = ({ state, messageVariants }) => {
                     Transactions.values.length === 0 ?
                         <Message selected={4} messageVariants={messageVariants} />
                         :
-                        <TransactionsTable reloadData={reloadData} state={state} transactions={Transactions.values} />
+                        <TransactionsTable UsersInfo={UsersInfo} FundInfo={FundInfo}
+                            reloadData={reloadData} state={state} transactions={Transactions.values} />
                 }
                 {
                     !Movements.valid ?
@@ -150,7 +228,8 @@ const Transactionslist = ({ state, messageVariants }) => {
                         Movements.values.length === 0 ?
                             <Message selected={6} messageVariants={messageVariants} />
                             :
-                            <MovementsTable reloadData={reloadData} state={state} movements={Movements.values} />
+                            <MovementsTable AccountInfo={AccountInfo} UsersInfo={UsersInfo} 
+                            reloadData={reloadData} state={state} movements={Movements.values} />
                 }
             </>
 

@@ -10,7 +10,7 @@ import { Modal, Button } from 'react-bootstrap'
 const ActionConfirmationModal = ({ movement, setShowModal, action,show,reloadData }) => {
     const { t } = useTranslation();
     const [ActionFetch, setActionFetch] = useState({ fetched: false, fetching: false, valid: false })
-    console.log(movement)
+
     const handleClose = () => {
         setActionFetch({
             ...ActionFetch,

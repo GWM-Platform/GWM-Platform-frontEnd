@@ -3,19 +3,20 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icons'
 import { Spinner } from 'react-bootstrap'
-
+import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 import ActionConfirmationModal from './ActionConfirmationModal'
 
-const MovementRow = ({ Movement, state, reloadData }) => {
+const MovementRow = ({ AccountInfo,UsersInfo,Movement, state, reloadData }) => {
+   
+    const { t } = useTranslation();
 
     var momentDate = moment(Movement.createdAt);
 
     const [ShowModal, setShowModal] = useState(false)
     const [Action, setAction] = useState("approve")
 
-    const [AccountTicketInfo, SetAccountTicketInfo] = useState({ fetching: true, value: {} })
-    const [ClientAccountInfo, SetClientAccountInfo] = useState({ fetching: true, value: {} })
+    const [ClientAccountInfo, SetClientAccountInfo] = useState({ fetching: true,valid:false, value: {} })
 
     const launchModalConfirmation = (action) => {
         setAction(action)
@@ -23,56 +24,44 @@ const MovementRow = ({ Movement, state, reloadData }) => {
     }
 
     useEffect(() => {
-        const getAccountData = async () => {
-            var url = `${process.env.REACT_APP_APIURL}/accounts/${Movement.accountId}`;
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    Accept: "*/*",
-                    'Content-Type': 'application/json'
-                }
-            })
-
-            if (response.status === 200) {
-                const data = await response.json()
-                SetAccountTicketInfo({ ...AccountTicketInfo, ...{ fetching: false, value: data } })
-                getAccountClientData(data)
-            } else {
-                switch (response.status) {
-                    default:
-                        console.log(response)
-                }
+        
+        const userInfoById=(clientId)=>{
+            let indexClientTransaction = UsersInfo.value.findIndex((client)=>client.id===clientId)
+            if(indexClientTransaction>=0){
+                SetClientAccountInfo((prevState)=>({
+                    ...prevState,
+                    valid:true,
+                    fetching:false,
+                    value:UsersInfo.value[indexClientTransaction]
+                }))
+            }else{
+                SetClientAccountInfo((prevState)=>({
+                    ...prevState,
+                    valid:false,
+                    fetching:false,
+                }))
             }
         }
-        const getAccountClientData = async (AccountTicketInfoFetched) => {
-            var url = `${process.env.REACT_APP_APIURL}/clients/${AccountTicketInfoFetched.clientId}`;
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    Accept: "*/*",
-                    'Content-Type': 'application/json'
-                }
-            })
-
-            if (response.status === 200) {
-                const data = await response.json()
-                SetClientAccountInfo({ ...ClientAccountInfo, ...{ fetching: false, value: data } })
-            } else {
-                switch (response.status) {
-                    default:
-                        console.log(response)
-                }
+    
+        const accountInfoById=(accountId)=>{
+            let indexAccountTransaction = AccountInfo.value.findIndex((account)=>account.id===accountId)
+            if(indexAccountTransaction>=0){
+                userInfoById(AccountInfo.value[indexAccountTransaction].clientId)
+            }else{
+                SetClientAccountInfo((prevState)=>({
+                    ...prevState,
+                    valid:false,
+                    fetching:false,
+                }))
             }
+
         }
 
-
-
-        const token = sessionStorage.getItem('access_token')
-        getAccountData();
+        if(!AccountInfo.fetching && !UsersInfo.fetching){
+            accountInfoById(Movement.accountId)
+        }
         //eslint-disable-next-line
-    }, [Movement,state])
+    }, [Movement,state,AccountInfo,UsersInfo])
     
     return (
         <>
@@ -83,7 +72,10 @@ const MovementRow = ({ Movement, state, reloadData }) => {
                         ClientAccountInfo.fetching ?
                             <Spinner animation="border" size="sm" />
                             :
-                            ClientAccountInfo.value.alias
+                            ClientAccountInfo.valid ?
+                                ClientAccountInfo.value.alias
+                                :
+                                t("Undefined Client")
                     }
                 </td>
                 <td>${Movement.amount}</td>

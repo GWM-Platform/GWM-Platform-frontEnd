@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 import ActionConfirmationModal from './ActionConfirmationModal'
 
-const TransactionRow = ({ Transaction, state, reloadData }) => {
+const TransactionRow = ({  UsersInfo, FundInfo, Transaction, state, reloadData }) => {
     const { t } = useTranslation();
 
     var momentDate = moment(Transaction.createdAt);
@@ -16,63 +16,62 @@ const TransactionRow = ({ Transaction, state, reloadData }) => {
     const [ShowModal, setShowModal] = useState(false)
     const [Action, setAction] = useState("approve")
 
-    const [UserTicketInfo, SetUserTicketInfo] = useState({ fetching: true, value: {} })
-    const [FundTicketInfo, SetFundTicketInfo] = useState({ fetching: true, value: {} })
+    const [UserTicketInfo, SetUserTicketInfo] = useState({ fetching: true, valid: false, value: {} })
+    const [FundTicketInfo, SetFundTicketInfo] = useState({ fetching: true, valid: false, value: {} })
 
     const launchModalConfirmation = (action) => {
         setAction(action)
         setShowModal(true)
     }
 
+
+
     useEffect(() => {
-        const getUserData = async () => {
-            var url = `${process.env.REACT_APP_APIURL}/clients/${Transaction.clientId}`;
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    Accept: "*/*",
-                    'Content-Type': 'application/json'
-                }
-            })
-
-            if (response.status === 200) {
-                const data = await response.json()
-                SetUserTicketInfo({ ...UserTicketInfo, ...{ fetching: false, value: data } })
-            } else {
-                switch (response.status) {
-                    default:
-                        console.log(response)
-                }
+        const userInfoById = (clientId) => {
+            let indexClientTransaction = UsersInfo.value.findIndex((client) => client.id === clientId)
+            if (indexClientTransaction >= 0) {
+                SetUserTicketInfo((prevState) => ({
+                    ...prevState,
+                    valid: true,
+                    fetching: false,
+                    value: UsersInfo.value[indexClientTransaction]
+                }))
+            }else{
+                SetUserTicketInfo((prevState) => ({
+                    ...prevState,
+                    valid: false,
+                    fetching: false,
+                }))
             }
         }
 
-        const getFundData = async () => {
-            var url = `${process.env.REACT_APP_APIURL}/funds/${Transaction.fundId}`;
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    Accept: "*/*",
-                    'Content-Type': 'application/json'
-                }
-            })
-
-            if (response.status === 200) {
-                const data = await response.json()
-                SetFundTicketInfo({ ...FundTicketInfo, ...{ fetching: false, value: data } })
-            } else {
-                switch (response.status) {
-                    default:
-                        console.log(response)
-                }
+        const fundInfoById = (fundId) => {
+            let indexFundTransaction = FundInfo.value.findIndex((fund) => fund.id === fundId)
+            if (indexFundTransaction >= 0) {
+                SetFundTicketInfo((prevState) => ({
+                    ...prevState,
+                    valid: true,
+                    fetching: false,
+                    value: FundInfo.value[indexFundTransaction]
+                }))
+            }else{
+                SetFundTicketInfo((prevState) => ({
+                    ...prevState,
+                    valid: false,
+                    fetching: false,
+                }))
             }
+
         }
-        const token = sessionStorage.getItem('access_token')
-        getFundData();
-        getUserData();
+
+        if (!FundInfo.fetching) {
+            fundInfoById(Transaction.fundId)
+        }
+        if (!UsersInfo.fetching) {
+            userInfoById(Transaction.clientId)
+        }
         //eslint-disable-next-line
-    }, [Transaction])
+    }, [Transaction, UsersInfo, FundInfo])
 
     return (
         <>
@@ -83,7 +82,10 @@ const TransactionRow = ({ Transaction, state, reloadData }) => {
                         UserTicketInfo.fetching ?
                             <Spinner animation="border" size="sm" />
                             :
-                            UserTicketInfo.value.alias
+                            UserTicketInfo.valid ?
+                                UserTicketInfo.value.alias
+                                :
+                                t("Undefined Client")
                     }
                 </td>
                 <td>{Math.sign(Transaction.shares) === -1 ? t("Sale") : t("Purchase")}</td>
@@ -91,7 +93,11 @@ const TransactionRow = ({ Transaction, state, reloadData }) => {
                     {
                         FundTicketInfo.fetching ?
                             <Spinner animation="border" size="sm" />
-                            : FundTicketInfo.value.name
+                            :
+                            FundTicketInfo.valid ?
+                                FundTicketInfo.value.name
+                                :
+                                t("Undefined Fund")
                     }
                 </td>
                 <td>{Transaction.shares}</td>

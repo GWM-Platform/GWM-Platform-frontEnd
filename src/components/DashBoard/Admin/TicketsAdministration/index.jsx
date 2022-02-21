@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row } from 'react-bootstrap'
 import StateSelector from './StateSelector'
 import Message from './Message'
-import Transactions from './Transactions'
+import Transactions from './Tables'
 import './index.css'
 const TicketsAdministration = () => {
 

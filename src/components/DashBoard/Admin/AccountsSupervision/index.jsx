@@ -43,9 +43,10 @@ const AccountsSupervision = () => {
         }
         const getClients = async () => {
             setClients((prevState) => ({ fetching: true, fetched: true, content: [] }))
-            var url = `${process.env.REACT_APP_APIURL}/Clients`+ new URLSearchParams({
-            client: "all",
-        });
+            var url = `${process.env.REACT_APP_APIURL}/Clients/?` + new URLSearchParams({
+                all:true,
+            });
+            
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -75,7 +76,7 @@ const AccountsSupervision = () => {
 
     useEffect(() => {
         const token = sessionStorage.getItem('access_token')
-        
+
         const getTransactions = async () => {
             setTransactions((prevState) => ({ fetching: true, fetched: true, content: [] }))
             var url = `${process.env.REACT_APP_APIURL}/transactions/`
@@ -154,11 +155,11 @@ const AccountsSupervision = () => {
             }
         }
 
-        if (!Accounts.fetching && !Clients.fetching){
+        if (!Accounts.fetching && !Clients.fetching) {
             getStakes()
             getMovements()
             getTransactions()
-        } 
+        }
     }, [Accounts, Clients])
 
 
@@ -176,7 +177,7 @@ const AccountsSupervision = () => {
     return (
         <Container className="h-100 AccountsSupervision">
             <Row className="h-100">
-                {Accounts.fetching || Clients.fetching || Movements.fetching || stakes.fetching || Transactions.fetching  ?
+                {Accounts.fetching || Clients.fetching || Movements.fetching || stakes.fetching || Transactions.fetching ?
                     <Loading />
                     :
                     SelectedAccountId ?
@@ -184,7 +185,7 @@ const AccountsSupervision = () => {
                             Movements={Movements.content} stakes={stakes.content} Transactions={Transactions.content}
                             Client={getClientByClientId(getAccountByAccountId(SelectedAccountId).clientId)}
                             SelectedAccountId={SelectedAccountId} setSelectedAccountId={setSelectedAccountId}
-                            Account={getAccountByAccountId(SelectedAccountId)} 
+                            Account={getAccountByAccountId(SelectedAccountId)}
                         />
                         :
                         <AccountSelector setSelectedAccountId={setSelectedAccountId} Accounts={Accounts.content} Clients={Clients.content} />

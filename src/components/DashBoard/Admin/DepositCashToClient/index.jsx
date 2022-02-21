@@ -73,7 +73,7 @@ const DepositCashToClient = () => {
         const form = event.currentTarget;
         if (form.checkValidity() === true) {
             if (token === null) {
-                
+
             } else {
                 deposit()
             }
@@ -133,7 +133,10 @@ const DepositCashToClient = () => {
 
         const getClients = async () => {
             const token = sessionStorage.getItem('access_token')
-            var url = `${process.env.REACT_APP_APIURL}/clients`;
+             var url = `${process.env.REACT_APP_APIURL}/Clients/?` + new URLSearchParams({
+                all:true,
+            });
+            
             setClients(
                 {
                     ...Clients,
@@ -207,8 +210,8 @@ const DepositCashToClient = () => {
                                         {
                                             Clients.fetched ?
                                                 getClientNameById(Account.clientId) ?
-                                                    t("Client Alias")+": " + getClientNameById(Account.clientId) :
-                                                    t("Client Id")+": " + Account.clientId
+                                                    t("Client Alias") + ": " + getClientNameById(Account.clientId) :
+                                                    t("Client Id") + ": " + Account.clientId
                                                 :
                                                 "Client Id: " + Account.clientId
                                         }
@@ -242,7 +245,7 @@ const DepositCashToClient = () => {
                             </Form.Control.Feedback>
                             <Form.Control.Feedback type="valid">
                                 {
-                                    t("Looks good")+"!"
+                                    t("Looks good") + "!"
                                 }
                             </Form.Control.Feedback>
                         </InputGroup>
