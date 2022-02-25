@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 const Message = ({ messageVariants, selected }) => {
     const { t } = useTranslation();
-
+console.log(messageVariants[selected].message)
     return (
         <Col sm={12} className="my-5 d-flex justify-content-center align-items-center fetchMessage">
             <h1 className="p-0 m-0 text d-flex align-items-center">

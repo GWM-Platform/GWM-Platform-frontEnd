@@ -9,7 +9,8 @@ const CreateFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
     const [data, setData] = useState({
         name: "",
         shares: 0,
-        typeId: 1
+        typeId: 1,
+        spreadsheetId: ""
     })
 
     const createFund = async () => {
@@ -26,7 +27,7 @@ const CreateFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
         const token = sessionStorage.getItem("access_token")
         const response = await fetch(url, {
             method: 'POST',
-            body: JSON.stringify(data),
+            body: JSON.stringify({...data,spreadsheetId:extractGoogleStyleSpreadSheetID(data.spreadsheetId)}),
             headers: {
                 Authorization: `Bearer ${token}`,
                 Accept: "*/*",
@@ -67,6 +68,15 @@ const CreateFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
         valid: false
     })
 
+    const extractGoogleStyleSpreadSheetID = (url) => {
+        const urlRegExp = new RegExp((`^https://docs.google.com/spreadsheets/d/[a-zA-Z0-9_-]{1,}/edit#gid[0-9]{1,}`), 'i')
+        if(urlRegExp.test(url)){
+            let id=url.slice(39).split('/')[0]
+            return id ? id : false
+        }else return false
+        
+    }
+
     const handleSubmit = (event) => {
         const form = event.currentTarget;
         event.preventDefault();
@@ -78,11 +88,12 @@ const CreateFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
     };
 
     const handleChange = (event) => {
+        if (event.target.id === "spreadsheetId") console.log(extractGoogleStyleSpreadSheetID(event.target.value))
         let aux = data
         aux[event.target.id] = parseInt(event.target.value) || event.target.value
         setData({ ...data, ...aux })
     }
-    
+
     return (
         <Col sm="12" md="10">
             {

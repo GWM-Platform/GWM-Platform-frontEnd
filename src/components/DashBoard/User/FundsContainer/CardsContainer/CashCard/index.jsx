@@ -36,8 +36,9 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
     useEffect(() => {
         const getPendingMovements = async () => {
 
-            var url = `${process.env.REACT_APP_APIURL}/movements/bystate/1/?` + new URLSearchParams({
+            var url = `${process.env.REACT_APP_APIURL}/movements/?` + new URLSearchParams({
                 client: ClientSelected.id,
+                filterState:1
             });
 
             setPendingMovements(prevState => ({

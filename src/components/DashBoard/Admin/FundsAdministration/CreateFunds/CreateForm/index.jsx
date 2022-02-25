@@ -28,10 +28,15 @@ const CreateFunds = ({ data, CreateRequest,handleChange,Action,setAction,validat
                     </FloatingLabel>
 
                     <FloatingLabel
-                        label={t("Google SpreadSheet Id")}
+                        label={t("Google SpreadSheet url (from which the id will be extracted)")}
                         className="mb-3"
                     >
-                        <Form.Control required onChange={handleChange} id="spreadsheetId" value={data.spreadsheetId} type="text" placeholder={t("Google SpreadSheet Id")} />
+                        <Form.Control 
+                        pattern="https:\/\/docs\.google\.com\/spreadsheets\/d\/[a-zA-Z0-9_-]{1,}\/edit#gid[0-9]{1,}"
+                        required onChange={handleChange} id="spreadsheetId" 
+                        value={data.spreadsheetId} type="text" 
+                        placeholder={t("Google SpreadSheet Id")} 
+                        />
                         <Form.Control.Feedback type="valid">
                             {t("Looks good")}!
                         </Form.Control.Feedback>
@@ -58,7 +63,7 @@ const CreateFunds = ({ data, CreateRequest,handleChange,Action,setAction,validat
                     <div className="d-flex justify-content-end">
                         <Button variant="danger" type="submit" className="mb-3">
                             <Spinner animation="border" variant="light"
-                                className={`${CreateRequest.fetching ? "d-inline-block" : "d-none"} littleSpinner ms-1`} />
+                                className={`${CreateRequest.fetching ? "d-inline-block" : "d-none"} littleSpinner me-1`} />
                             {t("Submit")}
                         </Button>
                     </div>

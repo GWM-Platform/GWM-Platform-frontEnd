@@ -382,7 +382,13 @@ i18n
           "STAKE_BUY": "Compra de cuotapartes en un fondo",
           "STAKE_SELL": "Venta de cuotapartes en un fondo",
           "REPAYMENT": "Devolucion por ticket rechazado",
-          "Change client":"Cambiar cliente"
+          "Change client": "Cambiar cliente",
+          "Google SpreadSheet url (from which the id will be extracted)":
+            "Google SpreadSheet url (de la cual se extraerá la id)",
+          "Confirm": "Confirmar",
+          "loading": "cargando",
+          "Show more": "Mostrar más",
+          "Show less": "Mostrar menos"
         }
       }
     }

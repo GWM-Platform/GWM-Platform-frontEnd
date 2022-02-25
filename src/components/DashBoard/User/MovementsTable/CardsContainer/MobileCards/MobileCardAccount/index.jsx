@@ -23,8 +23,9 @@ const MobileCard = ({ Fund }) => {
     useEffect(() => {
 
         const getMovements = async () => {
-            var url = `${process.env.REACT_APP_APIURL}/movements/byAccount/${Fund.id}/?` + new URLSearchParams({
+            var url = `${process.env.REACT_APP_APIURL}/movements/?` + new URLSearchParams({
                 client: ClientSelected.id,
+                filterAccont:Fund.id
             });
             setFetchingMovements(true)
             const response = await fetch(url, {

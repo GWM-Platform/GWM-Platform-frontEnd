@@ -129,8 +129,9 @@ export const DashboardProvider = ({ children }) => {
                     fetching: true
                 }
             })
-            var url = `${process.env.REACT_APP_APIURL}/transactions/byState/1/?` + new URLSearchParams({
+            var url = `${process.env.REACT_APP_APIURL}/transactions/?` + new URLSearchParams({
                 client: ClientSelected.id,
+                filterState:1
             });
             const response = await fetch(url, {
                 method: 'GET',

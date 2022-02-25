@@ -42,7 +42,7 @@ const EditFunds = ({ data, EditRequest, handleChange, Funds, Action, setAction, 
                 {/*------------------------------------------------------------------------------------------------------------------------------------------ */}
 
                 <FloatingLabel className="mb-3" label={t("Asset Types")}>
-                    <Form.Select readonly disabled required id="typeId" onChange={handleChange} value={data.typeId}>
+                    <Form.Select readOnly disabled required id="typeId" onChange={handleChange} value={data.typeId}>
                         {AssetTypes.map((Asset, key) => {
                             return <option key={key} value={Asset.id}>{Asset.name}</option>
                         })}
@@ -55,7 +55,7 @@ const EditFunds = ({ data, EditRequest, handleChange, Funds, Action, setAction, 
                     label={t("FeeParts")}
                     className="mb-3"
                 >
-                    <Form.Control readonly disabled onChange={handleChange} id="shares" value={data.shares} min="0.01" step="0.01" type="number" placeholder={t("FeeParts")} />
+                    <Form.Control readOnly disabled onChange={handleChange} id="shares" value={data.shares} min="0.01" step="0.01" type="number" placeholder={t("FeeParts")} />
                     <Form.Control.Feedback type="invalid">
                         {t("The shares must be more than 0")}
                     </Form.Control.Feedback>

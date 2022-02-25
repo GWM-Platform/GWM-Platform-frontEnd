@@ -97,7 +97,9 @@ const Transactionslist = ({ state, messageVariants }) => {
     }
 
     const transactionsInState = async () => {
-        var url = `${process.env.REACT_APP_APIURL}/transactions/byState/${state}`;
+        var url = `${process.env.REACT_APP_APIURL}/transactions/?` + new URLSearchParams({
+            filterState: state,
+        });
         setTransactions({
             ...Transactions,
             ...{
@@ -146,7 +148,9 @@ const Transactionslist = ({ state, messageVariants }) => {
     }
 
     const movementsInState = async () => {
-        var url = `${process.env.REACT_APP_APIURL}/movements/bystate/${state}`;
+        var url = `${process.env.REACT_APP_APIURL}/movements/?` + new URLSearchParams({
+            filterState: state,
+        });
         setMovements({
             ...Movements,
             ...{

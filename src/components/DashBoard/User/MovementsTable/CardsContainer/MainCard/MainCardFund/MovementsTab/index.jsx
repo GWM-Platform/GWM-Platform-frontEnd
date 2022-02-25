@@ -24,8 +24,9 @@ const MovementsTab = ({ Fund,NavInfoToggled,setPerformance }) => {
 
     const getMovements = async () => {
         setFetchingMovements(true)
-        var url = `${process.env.REACT_APP_APIURL}/transactions/byFund/${Fund.id}/?` + new URLSearchParams({
+        var url = `${process.env.REACT_APP_APIURL}/transactions/?` + new URLSearchParams({
             client: ClientSelected.id,
+            filterFund:Fund.id
         });
         const response = await fetch(url, {
             method: 'GET',
