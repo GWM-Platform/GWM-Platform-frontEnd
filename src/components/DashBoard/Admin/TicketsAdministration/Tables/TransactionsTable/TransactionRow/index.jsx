@@ -107,10 +107,10 @@ const TransactionRow = ({  UsersInfo, FundInfo, Transaction, state, reloadData }
                     state === 1 || state === "1" ?
                         <td className="Actions verticalCenter" >
                             <div className="h-100 d-flex align-items-center justify-content-around">
-                                <div className="iconContainer red">
+                                <div className="iconContainer green">
                                     <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => { launchModalConfirmation("approve") }} />
                                 </div>
-                                <div className="iconContainer green">
+                                <div className="iconContainer red">
                                     <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => { launchModalConfirmation("deny") }} />
                                 </div>
                             </div>

@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icons'
 import { faExclamation, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { Modal, Button } from 'react-bootstrap'
 
@@ -116,9 +115,9 @@ const ActionConfirmationModal = ({ transaction, setShowModal, action,show,reload
                             <Button variant="outline-secondary" onClick={() => handleClose()}>
                                 {t("Cancel")}
                             </Button>
-                            <Button variant="outline-danger" onClick={() => { if(!ActionFetch.fetching) changeTransactionState() }}>
-                                <div className="iconContainer red">
-                                    <FontAwesomeIcon icon={ action==="approve" ? faCheckCircle : faTimesCircle } />
+                            <Button variant="outline-success" onClick={() => { if(!ActionFetch.fetching) changeTransactionState() }}>
+                                <div className="iconContainer green">
+                                    {t("Confirm")}
                                 </div>
                             </Button>
                         </>

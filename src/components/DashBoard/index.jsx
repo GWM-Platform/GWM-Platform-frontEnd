@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Route, useRouteMatch, useHistory } from 'react-router-dom';
+import { Route, useRouteMatch } from 'react-router-dom';
 
 import './index.css'
 
@@ -33,30 +33,13 @@ import OperationStatusAdmin from './Admin/OperationStatus';
 import Loading from './Loading';
 import AccountsSupervision from './Admin/AccountsSupervision';
 
-const UserDashboard = ({ selected, changeLanguage, languages }) => {
+const UserDashboard = () => {
 
-    const { token, admin, ClientSelected, balanceChanged, setBalanceChanged, itemSelected, setItemSelected, IndexClientSelected, UserClients } = useContext(dashboardContext);
+    const { isMobile,admin, ClientSelected, balanceChanged, setBalanceChanged, itemSelected, setItemSelected, IndexClientSelected, UserClients } = useContext(dashboardContext);
 
     const { path } = useRouteMatch()
-    const history = useHistory();
     const [NavInfoToggled, setNavInfoToggled] = useState(false)
-    const [width, setWidth] = useState(window.innerWidth);
     const [numberOfFunds, setNumberOfFunds] = useState(0);
-
-
-    function handleWindowSizeChange() {
-        setWidth(window.innerWidth);
-    }
-
-    let isMobile = (width <= 576);
-
-    useEffect(() => {
-        window.addEventListener('resize', handleWindowSizeChange);
-
-        return () => {
-            window.removeEventListener('resize', handleWindowSizeChange);
-        }
-    }, [history, admin, token])
 
     useEffect(() => {
     }, [ClientSelected])
@@ -71,7 +54,7 @@ const UserDashboard = ({ selected, changeLanguage, languages }) => {
                                 <NavInfo NavInfoToggled={NavInfoToggled} />
                                 <NavBar NavInfoToggled={NavInfoToggled} setNavInfoToggled={setNavInfoToggled}
                                     setItemSelected={setItemSelected} itemSelected={itemSelected}
-                                    selected={selected} changeLanguage={changeLanguage} languages={languages} />
+                                     />
                                 {
                                     admin && IndexClientSelected === -1 ?
                                         <div className={`adminContainer ${NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}`}>

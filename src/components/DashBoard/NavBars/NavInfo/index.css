@@ -2,7 +2,6 @@
     background: rgb(241,241,241);
     transition: all 0.5s;
     max-height: 100px;
-    overflow-y: hidden;
     filter:drop-shadow(0px 0px 3px gray);
 }
 .navBarInfo .greeting{
@@ -23,5 +22,9 @@
     .navBarInfo .greeting{
         font-size: 19px;
     }
+    .navBarInfo{
+        z-index: 1500;
+    }
+
     
 }

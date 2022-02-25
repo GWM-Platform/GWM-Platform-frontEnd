@@ -11,6 +11,7 @@ export const DashboardProvider = ({ children }) => {
     const [token] = useState(sessionStorage.getItem("access_token"));
     const [admin] = useState(JSON.parse(sessionStorage.getItem("admin")));
     const [balanceChanged, setBalanceChanged] = useState(true)
+    const [width, setWidth] = useState(window.innerWidth);
 
     const [UserClients, setUserClients] = useState([])
     const [ClientSelected, setClientSelected] = useState({})
@@ -24,8 +25,6 @@ export const DashboardProvider = ({ children }) => {
 
     const [itemSelected, setItemSelected] = useState(location.pathname.split('/')[2])
 
-
-
     const [PendingTransactions, setPendingTransactions] = useState({
         value: [],
         fetched: false,
@@ -33,6 +32,21 @@ export const DashboardProvider = ({ children }) => {
     })
 
     const [PendingWithoutpossession, setPendingWithoutpossession] = useState([])
+
+
+    function handleWindowSizeChange() {
+        setWidth(window.innerWidth);
+    }
+
+    let isMobile = (width <= 576);
+
+    useEffect(() => {
+        window.addEventListener('resize', handleWindowSizeChange);
+
+        return () => {
+            window.removeEventListener('resize', handleWindowSizeChange);
+        }
+    }, [])
 
     useEffect(
         () => {
@@ -42,8 +56,7 @@ export const DashboardProvider = ({ children }) => {
             const selected = location.pathname.split('/')[2]
             setItemSelected(selected)
         },
-        [location]
-    )
+        [location])
 
     useEffect(() => {
         const toLogin = () => {
@@ -208,7 +221,7 @@ export const DashboardProvider = ({ children }) => {
 
             setContentReady(true)
         }
-        if (!FetchingFunds && PendingTransactions.fetched && Accounts.length>0 &&!contentReady && ClientSelected.id) {
+        if (!FetchingFunds && PendingTransactions.fetched && Accounts.length > 0 && !contentReady && ClientSelected.id) {
             addPendingFundsWithoutPosesion()
         }
 
@@ -260,17 +273,17 @@ export const DashboardProvider = ({ children }) => {
             setClientSelected(UserClients[IndexClientSelected])
             history.push(`/dashboard/Accounts`);
             setBalanceChanged(true)
-        }else if(admin && IndexClientSelected === -1 ){
+        } else if (admin && IndexClientSelected === -1) {
             history.push(`/dashboard/FundsAdministration`);
         }
 
-    }, [history,UserClients, IndexClientSelected,admin]);
+    }, [history, UserClients, IndexClientSelected, admin]);
 
 
     return <dashboardContext.Provider
         value={{
             token, admin, UserClients, ClientSelected, IndexClientSelected, setIndexClientSelected, balanceChanged, setBalanceChanged,
-            FetchingFunds, contentReady, PendingWithoutpossession, PendingTransactions, Accounts, Funds, itemSelected, setItemSelected
+            FetchingFunds, contentReady, PendingWithoutpossession, PendingTransactions, Accounts, Funds, itemSelected, setItemSelected,isMobile,width
         }}>
         {children}
     </dashboardContext.Provider>

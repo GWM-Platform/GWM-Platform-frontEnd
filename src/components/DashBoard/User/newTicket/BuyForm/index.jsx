@@ -10,7 +10,6 @@ import BuyData from './BuyData'
 import Loading from '../Loading';
 import NoFunds from '../NoFunds';
 import { dashboardContext } from '../../../../../context/dashboardContext';
-import SourceAccount from '../SourceAccount';
 import ActionConfirmationModal from './ActionConfirmationModal';
 
 const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
@@ -142,7 +141,6 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
 
     return (
         <div className={`d-flex flex-column ${NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}`}>
-            <SourceAccount />
             <Container className="h-100" >
                 <Row className="newTicket h-100 growAnimation">
                     {
@@ -151,7 +149,6 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
                             :
                             Funds.length > 0 ?
                                 <Col xs="12">
-                                    {/*<SourceAccount Account={Account}/>*/}
                                     <Accordion flush defaultActiveKey="0">
                                         <FundSelector openAccordion={openAccordion} Account={Accounts[0]}
                                             Funds={Funds} data={data} setData={setData} />

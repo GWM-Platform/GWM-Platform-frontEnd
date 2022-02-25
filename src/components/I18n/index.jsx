@@ -3,28 +3,19 @@ import { initReactI18next } from "react-i18next";
 //import detector from "i18next-browser-languagedetector";
 //import backend from "i18next-http-backend";
 
-const getLanguage = () => {
-  let language = localStorage.getItem("language")
-  if (language) {
-    return language
-  } else {
-    localStorage.setItem("language", "es")
-    return "es"
-  }
-}
-
 i18n
   //.use(detector) //Detects the browser language
   //.use(backend)
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
-    fallbackLng: getLanguage(), // use en if detected lng is not available
+    fallbackLng: "en", // use en if detected lng is not available
     saveMissing: true, // send not translated keys to endpoint
-
+    interpolation: {
+      escapeValue: false, // not needed for react as it escapes by default
+    },
     // the translations
-    // (TODO: move them in a JSON file and import them)
     resources: {
-      gb: {
+      en: {
         translation: {
           //Translations in English
           "DEPOSIT": "Deposit",
@@ -390,12 +381,10 @@ i18n
           "WITHDRAWAL": "Retiro",
           "STAKE_BUY": "Compra de cuotapartes en un fondo",
           "STAKE_SELL": "Venta de cuotapartes en un fondo",
-          "REPAYMENT": "Devolucion por ticket rechazado"
+          "REPAYMENT": "Devolucion por ticket rechazado",
+          "Change client":"Cambiar cliente"
         }
       }
-    },
-    interpolation: {
-      escapeValue: false
     }
   });
 export default i18n;

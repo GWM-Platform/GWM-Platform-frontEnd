@@ -28,7 +28,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, selected, setSelected,
     }, [Accounts, Funds, numberOfFunds])
 
     return (
-        <Row className="HistoryCardsContainer d-flex flex-md-nowrap ">
+        <Row className="HistoryCardsContainer d-flex align-items-stretch flex-md-nowrap ">
             {isMobile ?
                 Accounts.length >= 1 || Funds.length >= 1 ?
                     <>
@@ -58,7 +58,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, selected, setSelected,
                 :
                 numberOfFunds > 1 ?
                     <>
-                        <Col className="px-2 p-relative mainCardCol growAnimation"
+                        <Col className="h-100 px-2 p-relative mainCardCol growAnimation"
                             md="12"
                             lg={collapseSecondary ? "12" : "8"}
                             xl={collapseSecondary ? "12" : "9"} >
@@ -85,7 +85,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, selected, setSelected,
                             className={
                                 `secondaryCardContainer growAnimation
                                 ${NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}
-                                ${collapseSecondary ? "collapsed" : "expanded"} p-relative px-0 pe-2 pt-0`
+                                ${collapseSecondary ? "collapsed" : "expanded"} p-relative px-0 pe-2 pt-0 h-100`
                             }>
                             {
                                 Accounts.length > 0 ?

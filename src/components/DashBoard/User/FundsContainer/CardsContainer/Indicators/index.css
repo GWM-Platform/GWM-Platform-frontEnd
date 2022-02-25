@@ -1,0 +1,27 @@
+.cardsContainer .indicators{
+    position:absolute;
+    bottom: 0;
+    left:50%;
+    transform: translate( -50% , 50%);
+}
+.cardsContainer .indicators .indicator{
+    width:8px;
+    height:8px;
+    border-radius:4px;
+    background-color:gray;
+    opacity:.5;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+.cardsContainer .indicators .indicator:hover:not(.selected){
+    opacity:.8;
+}
+
+.cardsContainer .indicators .indicator.selected{
+    width:8px;
+    height:8px;
+    border-radius:4px;
+    background-color:var(--blue-main);
+    opacity:1;
+}
+

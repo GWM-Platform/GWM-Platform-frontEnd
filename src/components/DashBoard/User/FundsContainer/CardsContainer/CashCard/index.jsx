@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
@@ -10,7 +10,7 @@ import { dashboardContext } from '../../../../../../context/dashboardContext';
 
 const CashCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
     const { t } = useTranslation();
-    const {token,ClientSelected}=useContext(dashboardContext)
+    const { token, ClientSelected } = useContext(dashboardContext)
 
     const [PendingMovements, setPendingMovements] = useState(
         {
@@ -19,7 +19,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
             value: []
         }
     )
-    const [PendingCash,setPendingCash]=useState(0)
+    const [PendingCash, setPendingCash] = useState(0)
 
     let history = useHistory();
 
@@ -28,14 +28,14 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
     }
 
     useEffect(() => {
-        let PendingMovementsCash=PendingMovements.value.map((movement) => movement.amount).reduce((a, b) => a + b, 0)*-1
-        let PendingTransactionsCash=PendingTransactions.value.filter((transaction) => Math.sign(transaction.shares) === -1).map((transaction) => transaction.shares * transaction.sharePrice).reduce((a, b) => a + b, 0)
-        setPendingCash((PendingMovementsCash+PendingTransactionsCash).toFixed())
-    }, [PendingTransactions,PendingMovements.value])
+        let PendingMovementsCash = PendingMovements.value.map((movement) => movement.amount).reduce((a, b) => a + b, 0) * -1
+        let PendingTransactionsCash = PendingTransactions.value.filter((transaction) => Math.sign(transaction.shares) === -1).map((transaction) => transaction.shares * transaction.sharePrice).reduce((a, b) => a + b, 0)
+        setPendingCash((PendingMovementsCash + PendingTransactionsCash).toFixed())
+    }, [PendingTransactions, PendingMovements.value])
 
     useEffect(() => {
         const getPendingMovements = async () => {
-            
+
             var url = `${process.env.REACT_APP_APIURL}/movements/bystate/1/?` + new URLSearchParams({
                 client: ClientSelected.id,
             });
@@ -66,7 +66,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
                         value: data
                     }
                 }))
-                
+
             } else {
                 switch (response.status) {
                     default:
@@ -82,7 +82,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
             }
         }
         getPendingMovements()
-    }, [token,ClientSelected.id])
+    }, [token, ClientSelected.id])
 
     return (
         <Col sm="6" md="6" lg="4" className="fund-col growAnimation">
@@ -95,52 +95,53 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
                     </div>
                 </Card.Header>
                 <Card.Body className="body">
-                    <Card.Title >
-                        <h1 className="title mt-0">
-                            {t("Cash")}
+                    <Row >
+                        <Card.Title >
+                            <h1 className="title mt-0">
+                                {t("Cash")}
+                            </h1>
+                        </Card.Title>
+
+                        <h1 className="title-gray mt-1">
+                            <Container fluid className="px-0">
+                                <Row className="w-100 mx-0 d-flex justify-content-between gx-0">
+                                    <div className="pe-2 containerHideInfo">
+                                        <span>$</span>
+                                        <span className={`info ${Hide ? "shown" : "hidden"}`}>
+                                            {parseFloat(Fund.balance).toString().replace(/./g, "*")}
+                                        </span>
+
+                                        <span className={`info ${Hide ? "hidden" : "shown"}`}>
+                                            {parseFloat(Fund.balance).toString()}
+                                        </span>
+
+                                        <span className={`info placeholder`}>
+                                            {parseFloat(Fund.balance).toString()}
+                                        </span>
+                                    </div>
+                                    <div className="ps-0 hideInfoButton d-flex align-items-center">
+                                        <FontAwesomeIcon
+                                            className={`icon ${Hide ? "hidden" : "shown"}`}
+                                            onClick={() => { setHide(!Hide) }}
+                                            icon={faEye}
+                                        />
+                                        <FontAwesomeIcon
+                                            className={`icon ${!Hide ? "hidden" : "shown"}`}
+                                            onClick={() => { setHide(!Hide) }}
+                                            icon={faEyeSlash}
+                                        />
+                                        <FontAwesomeIcon
+                                            className="icon placeholder"
+                                            icon={faEyeSlash}
+                                        />
+                                    </div>
+                                </Row>
+                            </Container>
                         </h1>
-                        <Container fluid className="px-0">
-                            <Row className="d-flex justify-content-between">
-                                <h1 className="title-gray mt-1">
-                                    <Row className="d-flex justify-content-between">
-                                        <div className="pe-2 containerHideInfo">
-                                            <span>$</span>
-                                            <span className={`info ${Hide ? "shown" : "hidden"}`}>
-                                                {parseFloat(Fund.balance).toString().replace(/./g, "*")}
-                                            </span>
-
-                                            <span className={`info ${Hide ? "hidden" : "shown"}`}>
-                                                {parseFloat(Fund.balance).toString()}
-                                            </span>
-
-                                            <span className={`info placeholder`}>
-                                                {parseFloat(Fund.balance).toString()}
-                                            </span>
-                                        </div>
-                                        <div className="ps-0 hideInfoButton d-flex align-items-center">
-                                            <FontAwesomeIcon
-                                                className={`icon ${Hide ? "hidden" : "shown"}`}
-                                                onClick={() => { setHide(!Hide) }}
-                                                icon={faEye}
-                                            />
-                                            <FontAwesomeIcon
-                                                className={`icon ${!Hide ? "hidden" : "shown"}`}
-                                                onClick={() => { setHide(!Hide) }}
-                                                icon={faEyeSlash}
-                                            />
-                                            <FontAwesomeIcon
-                                                className="icon placeholder"
-                                                icon={faEyeSlash}
-                                            />
-                                        </div>
-                                    </Row>
-                                </h1>
-                            </Row>
-                        </Container>
-                    </Card.Title>
-                    <Card.Text className="subTitle lighter mt-0 mb-2">
-                        {t("Pending Cash")}:<span className="bolder text-green"> +${Math.abs(PendingCash)}</span><br />
-                    </Card.Text>
+                        <Card.Text className="subTitle lighter mt-0 mb-2">
+                            {t("Pending Cash")}:<span className="bolder text-green"> +${Math.abs(PendingCash)}</span><br />
+                        </Card.Text>
+                    </Row>
                 </Card.Body>
                 <Card.Footer className="footer mt-2 m-0 p-0">
                     <Row className="d-flex justify-content-center m-0">

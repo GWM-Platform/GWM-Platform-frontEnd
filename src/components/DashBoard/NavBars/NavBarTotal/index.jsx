@@ -12,8 +12,9 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
 
     const [Balance, setBalance] = useState({ fetching: false, value: 0 })
 
-    const { token, ClientSelected } = useContext(dashboardContext)
+    const { token, ClientSelected, itemSelected,contentReady,Accounts } = useContext(dashboardContext)
 
+    const sectionsCashInAccount = ["buy", "withdraw","sell"]
 
     useEffect(() => {
         const getAccounts = async () => {
@@ -46,15 +47,31 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
         <Navbar className="navBarTotal" bg="light">
             <Container className="px-0" fluid>
                 <Row className="w-100 mx-0 d-flex justify-content-center">
-                    <Col className="ps-2 ps-md-2 ps-lg-0" lg="auto">
+                    <Col className="ps-2 ps-md-2 ps-lg-0" xs="auto">
                         <h1 className="total my-0 py-0 d-flex align-items-center growOpacity">
-                            {t("Total Balance")}
-                            {
-                                Balance.fetching ?
-                                    <Spinner className="ms-2" animation="border" size="sm" />
 
-                                    :
-                                    <span className="growOpacity">{": $" + Balance.value.toFixed(2)}</span>
+                            {
+                                sectionsCashInAccount.includes(itemSelected)?
+                                <>
+                                    {t("Cash in account")}:&nbsp;
+                                    {
+                                        contentReady ?
+                                            <span className="growOpacity">${Accounts[0].balance}</span>
+                                            :
+                                            <Spinner className="ms-2" animation="border" size="sm" />
+                                    }
+                                </>
+                                :
+                            <>
+                                {t("Total Balance")}
+                                {
+                                    Balance.fetching ?
+                                        <Spinner className="ms-2" animation="border" size="sm" />
+
+                                        :
+                                        <span className="growOpacity">{": $" + Balance.value.toFixed(2)}</span>
+                                }
+                            </>
                             }
                         </h1>
                     </Col>

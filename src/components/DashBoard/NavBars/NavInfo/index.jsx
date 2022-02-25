@@ -6,6 +6,7 @@ import './index.css'
 import { Navbar, Row, Container, Col } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next';
 import { dashboardContext } from '../../../../context/dashboardContext';
+import ClientSelector from './ClientSelector';
 
 
 const NavBarInfo = ({ NavInfoToggled }) => {
@@ -17,7 +18,7 @@ const NavBarInfo = ({ NavInfoToggled }) => {
         <Navbar className={`${NavInfoToggled ? "toggled" : ""} py-0 navBarInfo d-flex justify-content-center`} collapseOnSelect expand="lg" variant="dark">
             <Container fluid>
                 <Row className=" w-100 d-flex justify-content-between align-items-center">
-                    <Col className="d-flex justify-content-end" xs="3" sm="3" md="2" lg="2">
+                    <Col className="d-flex justify-content-center justify-content-md-end " xs="3" sm="3" md="2" lg="2">
                         <Navbar.Brand>
                             <img
                                 alt=""
@@ -31,14 +32,15 @@ const NavBarInfo = ({ NavInfoToggled }) => {
                         ClientSelected ?
                             ClientSelected.firstName ?
 
-                                <Col xs="9" sm="9" md="10" lg="10" className="d-flex align-items-center px-0">
-                                    <div>
+                                <Col className="d-flex align-items-center px-0">
+                                    <div className="d-none d-md-block">
                                         <h1 className="greeting p-0 my-0" >
                                             {t("Hi")},
                                             {` ${ClientSelected.firstName === undefined ? "" : ClientSelected.firstName === "-" ? "" : ClientSelected.firstName} 
                                 ${ClientSelected.lastName === undefined ? "" : ClientSelected.lastName === "-" ? "" : ClientSelected.lastName}`}!
                                         </h1>
                                     </div>
+                                    <ClientSelector />
                                 </Col>
                                 :
                                 null

@@ -3,8 +3,17 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next';
 import { Container, Row, Button, Col } from 'react-bootstrap'
 
-const TableControls = ({ showMore, showLess, InScreen, content }) => {
+const TableControls = ({  setInScreen,InScreen, content }) => {
     const { t } = useTranslation();
+
+    const showMore = (add = 5) => {
+        setInScreen((prevState) => (prevState + add))
+    }
+
+    const showLess = (subtract = 5) => {
+        setInScreen((prevState) => (prevState - subtract))
+    }
+
     return (
         <Container fluid className="px-0 mb-1">
             <Row className="mx-0 w-100 d-flex justify-content-between">

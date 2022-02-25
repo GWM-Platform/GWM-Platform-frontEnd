@@ -34,7 +34,8 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
                     </div>
                 </Card.Header>
                 <Card.Body className="body">
-                    <Row className="h-100 align-content-between">
+                    <Container fluid className="px-0">
+                    <Row className="mx-0 w-100 gx-0">
                         <Card.Title >
                             <h1 className="title mt-0">
                                 {t(Fund.fund.name)}
@@ -43,7 +44,8 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
                         <Container>
                             <Row className="d-flex justify-content-between">
                                 <h1 className="title-gray mt-1">
-                                    <Row className="d-flex justify-content-between">
+                                    <Container fluid className="px-0">
+                                    <Row className="mx-0 w-100 gx-0 d-flex justify-content-between">
                                         <div className="pe-2 containerHideInfo">
                                             <span>$</span>
                                             <span className={`info ${Hide ? "shown" : "hidden"}`}>
@@ -75,6 +77,7 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
                                             />
                                         </div>
                                     </Row>
+                                    </Container>
                                 </h1>
                                 <Card.Text className="subTitle lighter mt-0 mb-2">
                                     {t("Acquired FeeParts")}:<span className="bolder"> {Fund.shares ? Fund.shares : 0}</span><br />
@@ -87,6 +90,7 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
                             </Row>
                         </Container>
                     </Row>
+                    </Container>
                 </Card.Body>
                 <Card.Footer className="footer mt-2 m-0 p-0">
                     <Row className="d-flex justify-content-center m-0">

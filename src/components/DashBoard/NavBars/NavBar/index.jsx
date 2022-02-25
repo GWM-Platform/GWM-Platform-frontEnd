@@ -10,12 +10,12 @@ import { useTranslation } from "react-i18next";
 import { dashboardContext } from '../../../../context/dashboardContext';
 
 import LanguageSelector from '../../../LanguageSelector';
-import ClientSelector from '../../User/ClientSelector';
+import ClientSelector from './ClientSelector';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css'
 
-const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled, selected, changeLanguage, languages }) => {
+const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) => {
     const { admin, IndexClientSelected, UserClients } = useContext(dashboardContext)
 
     const { t } = useTranslation();
@@ -37,7 +37,6 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled, sele
     }
 
     return (
-
         <Navbar sticky="top" className={`py-0 mb-0 navBarDesktop`} collapseOnSelect expand="sm" variant="dark" >
             <Container fluid className="bottomInnerBorder px-0 d-none d-sm-block">
                 <Row className="w-100 d-flex align-items-center mx-0">
@@ -148,9 +147,7 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled, sele
 
 
                             <div className="d-block d-sm-none d-md-block" style={{ paddingBottom: "5px" }}>
-                                <LanguageSelector selected={selected}
-                                    changeLanguage={changeLanguage}
-                                    languages={languages} />
+                                <LanguageSelector />
                             </div>
                             <Nav.Link className="text-black" onClick={() => logOut()}>
                                 {t("LogOut")}{" "}

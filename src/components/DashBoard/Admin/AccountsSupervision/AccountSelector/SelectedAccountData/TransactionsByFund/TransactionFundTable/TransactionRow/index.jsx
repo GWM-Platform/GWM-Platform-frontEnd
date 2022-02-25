@@ -5,7 +5,7 @@ import 'moment/locale/es'
 import { useTranslation } from "react-i18next";
 
 const TransactionRow = ({ transaction }) => {
-  moment.locale(localStorage.getItem('language')==='gb'? "en" : "es")
+  moment.locale(localStorage.getItem('language'))
   var momentDate = moment(transaction.createdAt);
   const { t } = useTranslation();
 

@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Table, Col } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next';
 import TransactionRow from './TransactionRow'
-import TableControls from '../../TableControls'
+import TableControls from '../../../../TableControls'
 
 const TransactionsTable = ({ UsersInfo, FundInfo, transactions, state, reloadData }) => {
     const { t } = useTranslation();
@@ -13,15 +13,6 @@ const TransactionsTable = ({ UsersInfo, FundInfo, transactions, state, reloadDat
         setInScreenTransactions(5)
     }, [transactions])
     
-
-    const showMoreTransactions = (add=5) => {
-        setInScreenTransactions((prevState) => (prevState + add))
-    }
-
-    const showLessTransactions = (subtract=5) => {
-        setInScreenTransactions((prevState) => (prevState - subtract))
-    }
-
     return (
         <Col xs="12">
             <h1 className="title">{t("Purchase and sale tickets")}:</h1>
@@ -54,7 +45,7 @@ const TransactionsTable = ({ UsersInfo, FundInfo, transactions, state, reloadDat
                     </tbody>
                 </Table>
                 <TableControls InScreen={InScreenTransactions} content={transactions} state={state}
-                            showMore={showMoreTransactions} showLess={showLessTransactions} />
+                            setInScreen={setInScreenTransactions}/>
             </div>
         </Col>
     )

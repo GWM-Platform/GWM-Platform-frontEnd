@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 
 
 const Movement = ({ content }) => {
-  moment.locale(localStorage.getItem('language') === 'gb' ? "en" : "es")
+  moment.locale(localStorage.getItem('language'))
   var momentDate = moment(content.createdAt);
   const { t } = useTranslation();
 

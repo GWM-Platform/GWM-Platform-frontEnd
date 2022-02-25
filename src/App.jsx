@@ -1,9 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import { DashboardProvider } from './context/dashboardContext';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
-import i18n from './components/I18n';
-
 import Landing from './components/Landing';
 import Containerlogin from './components/Containerlogin';
 import ContainerForgotPassword from './components/ContainerForgotPassword';
@@ -12,34 +10,17 @@ import ContainerVerifyAccount from './components/ContainerVerifyAccount';
 import DashBoard from './components/DashBoard';
 import NotFound from './components/NotFound';
 import SetPassword from './components/SetPassword';
-
+import { useTranslation } from "react-i18next";
 import './App.css';
 
 function App() {
+  const {  i18n } = useTranslation();
 
-  const [languages] = useState(
-    [
-      {
-        "code": "es",
-        "name": "Spanish"
-      }, {
-        "code": "gb",
-        "name": "English"
-      }
-    ]
-  );
-
-  const [selected, setSelected] = useState(localStorage.getItem("language") === null ? 1 : languages.findIndex(x => x.code === localStorage.getItem("language")))
-
-  const changeLanguage = (language) => {
-    i18n.changeLanguage(languages[language].code);
-    setSelected(language)
-    localStorage.setItem("language", languages[language].code);
-  }
-
-  if (localStorage.getItem("language") === null) {
-    localStorage.setItem("language", "es")
-  }
+  useEffect(() => {
+    let prefferedLanguage = localStorage.getItem("language")
+    i18n.changeLanguage(prefferedLanguage ? prefferedLanguage : "es");
+    // eslint-disable-next-line
+  }, [])
 
   return (
     <div className="App" style={{ backgroundImage: `url(https://estudiotronica.net/gwm/wp-content/uploads/2021/11/dotted-worldmap1.png)` }}>
@@ -79,7 +60,7 @@ function App() {
 
           <DashboardProvider>
             <Route path="/dashboard">
-              <DashBoard selected={selected} changeLanguage={changeLanguage} languages={languages} />
+              <DashBoard />
             </Route>
           </DashboardProvider>
 

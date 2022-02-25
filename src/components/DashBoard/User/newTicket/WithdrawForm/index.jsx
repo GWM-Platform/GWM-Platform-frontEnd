@@ -8,7 +8,6 @@ import { Container, Row, Col } from 'react-bootstrap'
 import { dashboardContext } from '../../../../../context/dashboardContext';
 import WithdrawData from './WithdrawData'
 import Loading from '../Loading';
-import SourceAccount from '../SourceAccount';
 import ActionConfirmationModal from './ActionConfirmationModal';
 const WithdrawForm = ({ NavInfoToggled, balanceChanged }) => {
     const [data, setData] = useState({ amount: "" })
@@ -72,7 +71,6 @@ const WithdrawForm = ({ NavInfoToggled, balanceChanged }) => {
 
     return (
         <div className={`d-flex flex-column ${NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}`}>
-            <SourceAccount />
             <Container className="h-100">
                 <Row className="newTicket h-100 growAnimation">
                     {

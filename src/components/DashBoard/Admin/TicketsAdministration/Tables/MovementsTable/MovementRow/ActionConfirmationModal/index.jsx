@@ -2,12 +2,11 @@ import React, { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icons'
 import { faExclamation, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { Modal, Button } from 'react-bootstrap'
 
 
-const ActionConfirmationModal = ({ movement, setShowModal, action,show,reloadData }) => {
+const ActionConfirmationModal = ({ movement, setShowModal, action, show, reloadData }) => {
     const { t } = useTranslation();
     const [ActionFetch, setActionFetch] = useState({ fetched: false, fetching: false, valid: false })
 
@@ -81,12 +80,12 @@ const ActionConfirmationModal = ({ movement, setShowModal, action,show,reloadDat
                                 <div className="descriptionIconContainer green mx-auto">
                                     <h1 className="title"><FontAwesomeIcon className="icon green" icon={faCheck} /></h1>
                                 </div>
-                                <h2 className="subTitle mt-4">{t("The ticket has been")} {t(action==="approve" ? "approved" : "denied")} {t("succesfully")}</h2>
+                                <h2 className="subTitle mt-4">{t("The ticket has been")} {t(action === "approve" ? "approved" : "denied")} {t("succesfully")}</h2>
                             </>
                             :
                             <>
-                                <div className="descriptionIconContainer red mx-auto">
-                                    <h1 className="title"><FontAwesomeIcon className="icon red" icon={faTimes} /></h1>
+                                <div className="descriptionIconContainer green mx-auto">
+                                    <h1 className="title"><FontAwesomeIcon className="icon green" icon={faTimes} /></h1>
                                 </div>
                                 <h2 className="subTitle mt-4">{t("Failed to")}{" "}{t(action)}{" "}{t("the ticket")}</h2>
                             </>
@@ -94,8 +93,8 @@ const ActionConfirmationModal = ({ movement, setShowModal, action,show,reloadDat
 
                 </div>
                 <div className="placeHolder">
-                    <div className="descriptionIconContainer red mx-auto">
-                        <h1 className="title"><FontAwesomeIcon className="icon red" icon={faExclamation} /></h1>
+                    <div className="descriptionIconContainer green mx-auto">
+                        <h1 className="title"><FontAwesomeIcon className="icon green" icon={faExclamation} /></h1>
                     </div>
                     <h1 className="title"> {t("Are you sure?")}</h1>
                     <h2 className="subTitle">{t("You are about to")} {t(action)} {t("the ticket with the id")} {t(movement.id)}</h2>
@@ -106,7 +105,7 @@ const ActionConfirmationModal = ({ movement, setShowModal, action,show,reloadDat
             <Modal.Footer className="footer justify-content-center">
                 {
                     ActionFetch.fetched ?
-                        <Button variant="outline-secondary" onClick={() => {reloadData();handleClose()}}>
+                        <Button variant="outline-secondary" onClick={() => { reloadData(); handleClose() }}>
                             {t("Close")}
                         </Button>
                         :
@@ -115,9 +114,9 @@ const ActionConfirmationModal = ({ movement, setShowModal, action,show,reloadDat
                             <Button variant="outline-secondary" onClick={() => handleClose()}>
                                 {t("Cancel")}
                             </Button>
-                            <Button variant="outline-danger" onClick={() => { if(!ActionFetch.fetching) changeTransactionState() }}>
-                                <div className="iconContainer red">
-                                    <FontAwesomeIcon icon={ action==="approve" ? faCheckCircle : faTimesCircle } />
+                            <Button variant="outline-success" onClick={() => { if (!ActionFetch.fetching) changeTransactionState() }}>
+                                <div className="iconContainer green">
+                                    {t("Confirm")}
                                 </div>
                             </Button>
                         </>

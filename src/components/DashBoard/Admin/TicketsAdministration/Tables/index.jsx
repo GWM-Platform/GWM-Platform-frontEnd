@@ -4,9 +4,10 @@ import Message from '../Message'
 import TransactionsTable from './TransactionsTable'
 import MovementsTable from './MovementsTable'
 
-const token = sessionStorage.getItem('access_token')
 
 const Transactionslist = ({ state, messageVariants }) => {
+    const token = sessionStorage.getItem('access_token')
+
     const [Transactions, setTransactions] = useState({
         fetching: true,
         fetched: false,
@@ -26,7 +27,7 @@ const Transactionslist = ({ state, messageVariants }) => {
     const [AccountInfo, SetAccountInfo] = useState({ fetching: true, value: {} })
 
     const getAccounts = async () => {
-        var url = `${process.env.REACT_APP_APIURL}/accounts`
+        var url = `${process.env.REACT_APP_APIURL}/accounts/?all=true`
 
         const response = await fetch(url, {
             method: 'GET',

@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Dropdown } from 'react-bootstrap'
 import './index.css'
 import "flag-icon-css/css/flag-icon.min.css"
-import { dashboardContext } from '../../../../context/dashboardContext';
+import { dashboardContext } from '../../../../../context/dashboardContext';
 import { useTranslation } from "react-i18next";
 
 const ClientSelector = () => {
@@ -17,10 +17,7 @@ const ClientSelector = () => {
                 className="bg-none"
                 id="dropdown-clients">
                 {
-                    IndexClientSelected === -1 ?
-                        t("Admin Panel")
-                        :
-                        ClientSelected.alias
+                    t("Change client")
                 }
             </Dropdown.Toggle>
 

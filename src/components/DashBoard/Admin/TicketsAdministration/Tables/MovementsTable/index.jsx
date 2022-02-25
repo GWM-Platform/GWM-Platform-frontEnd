@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Table, Col } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next';
 import MovementRow from './MovementRow'
-import TableControls from '../../TableControls'
+import TableControls from '../../../../TableControls'
 
 const MovementsTable = ({ AccountInfo, UsersInfo, movements, state, reloadData }) => {
     const { t } = useTranslation();
@@ -13,14 +13,6 @@ const MovementsTable = ({ AccountInfo, UsersInfo, movements, state, reloadData }
         setInScreenMovements(5)
     }, [movements])
 
-
-    const showMoreMovements = (add = 5) => {
-        setInScreenMovements((prevState) => (prevState + add))
-    }
-
-    const showLessMovements = (subtract = 5) => {
-        setInScreenMovements((prevState) => (prevState - subtract))
-    }
     return (
         <Col xs="12">
             <h1 className="title">{t("Withdrawal tickets")}:</h1>
@@ -50,7 +42,7 @@ const MovementsTable = ({ AccountInfo, UsersInfo, movements, state, reloadData }
                     </tbody>
                 </Table>
                 <TableControls InScreen={InScreenMovements} content={movements} state={state}
-                            showMore={showMoreMovements} showLess={showLessMovements} />
+                            setInScreen={setInScreenMovements} />
             </div>
 
         </Col>

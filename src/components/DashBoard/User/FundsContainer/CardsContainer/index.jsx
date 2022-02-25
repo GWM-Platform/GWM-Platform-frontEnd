@@ -1,12 +1,17 @@
-import React, { useEffect, createRef, useState } from 'react'
+import React, { useEffect, createRef, useState, useContext } from 'react'
 import { Row, Container } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import FundCard from './FundCard';
 import CashCard from './CashCard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
-
+import { dashboardContext } from '../../../../../context/dashboardContext';
+import Indicators from './Indicators'
 const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions, PendingWithoutpossession }) => {
+    const { width } = useContext(dashboardContext)
+
+    const [CardWidth, setCardWidth] = useState(false)
+    const [Offset, setOffset] = useState(0)
     const [showRightChevron, setShowRightChevron] = useState(true)
     const [showLeftChevron, setShowLeftChevron] = useState(false)
     const [Hide, setHide] = useState(false)
@@ -14,49 +19,50 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
     //For scrolling
     const FundsContainer = createRef()
 
-    const isNull = () => {
-        return (FundsContainer.current === null)
-    }
+    const isNull = () => !FundsContainer.current
 
     //Scrolling Function
-    const scrollContainer = (right) => {
-        let cardWidth = isNull() ? "" : FundsContainer.current.clientWidth / 3
-        let next=FundsContainer.current.scrollLeft + cardWidth
-        let prev=FundsContainer.current.scrollLeft - cardWidth
+    const setScrollPositionByOffset = (offset) => {
         if (!isNull()) {
+            let widthScroll =
+                isNull() ?
+                    "" :
+                    CardWidth ?
+                        FundsContainer.current.clientWidth / CardWidth :
+                        FundsContainer.current.clientWidth / 3
+            let scroll = widthScroll * offset
             FundsContainer.current.scrollTo({
                 top: 0,
-                left: right ?next : prev,
+                left: scroll,
                 behavior: 'smooth'
             })
-            if (right) {
-                if (FundsContainer.current.scrollWidth - FundsContainer.current.clientWidth < next + 10) {
-                    setShowRightChevron(false)
-                }
-                if (next > 10 && !showLeftChevron) {
-                    setShowLeftChevron(true)
-                }
-            } else {
-                if (prev< 10) {
-                    setShowLeftChevron(false)
-                }
-                if (FundsContainer.current.scrollWidth - FundsContainer.current.clientWidth !== prev) {
-                    setShowRightChevron(true)
-                }
-            }
+            let maxOffset = Funds.length + PendingWithoutpossession.length + 1 - CardWidth
+            let toSetOffset = offset > maxOffset ? maxOffset : offset
+            setShowRightChevron(toSetOffset!==maxOffset)
+            setShowLeftChevron(toSetOffset!==0)
+            setOffset(toSetOffset)
         }
     }
-
 
     useEffect(() => {
         return () => {
         }
-    }, [Funds,PendingWithoutpossession])
+    }, [Funds, PendingWithoutpossession])
+
+    useEffect(() => {
+        if (width < 578) {
+            setCardWidth(1)
+        } else if (width < 992) {
+            setCardWidth(2)
+        } else {
+            setCardWidth(3)
+        }
+    }, [width])
 
     return (
         <Container className="px-0 d-flex justify-content-center FundsContainerWidth cardsContainer p-relative">
             <Row ref={FundsContainer}
-                className={`d-flex align-items-stretch ${Funds.length+PendingWithoutpossession.length < 3 ? "justify-content-center" : ""}
+                className={`d-flex align-items-stretch ${Funds.length + PendingWithoutpossession.length < 3 ? "justify-content-center" : ""}
                 w-100 g-1 g-sm-5 pb-2 flex-wrap flex-sm-nowrap overflow-hidden `}>
                 {Accounts.map((account, key) => {
                     return (
@@ -85,14 +91,19 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
             </Row>
             <div className={`arrow  right d-none d-sm-block
                                 ${Funds.length + PendingWithoutpossession.length > 2 && showRightChevron ? "opacity-1" : ""}`}
-                onClick={() => scrollContainer(true)}>
+                onClick={() => {if(showRightChevron)setScrollPositionByOffset(Offset+1)}}>
                 <FontAwesomeIcon icon={faChevronRight} />
             </div>
             <div className={` arrow left d-none d-sm-block
                                 ${Funds.length + PendingWithoutpossession.length > 2 && showLeftChevron ? "opacity-1" : ""}`}
-                onClick={() => scrollContainer(false)}>
+                onClick={() => {if(showLeftChevron) setScrollPositionByOffset(Offset-1)}}>
                 <FontAwesomeIcon icon={faChevronLeft} />
             </div>
+            <Indicators
+                cardsAmount={Funds.length + PendingWithoutpossession.length + 1}
+                inScreenFunds={CardWidth}
+                offset={Offset} setScrollPositionByOffset={setScrollPositionByOffset}
+            />
         </Container>
 
     )
