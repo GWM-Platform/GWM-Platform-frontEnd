@@ -14,7 +14,7 @@ const FormDesktop = ({ handleChange, handleSubmit, buttonDisabled, error, button
             <Form onSubmit={handleSubmit}>
                 <Card.Body className="p-4">
                     <div className="d-flex justify-content-center">
-                        <Card.Img className="mb-4" src={process.env.PUBLIC_URL + '/images/logo/logo.png'} />
+                        <Card.Img className="mb-4" src={process.env.PUBLIC_URL + '/images/logo/logo.svg'} />
                     </div>
                     <InputGroup className="mb-3">
                         <InputGroup.Text id="basic-addon1">

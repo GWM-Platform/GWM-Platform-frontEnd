@@ -93,6 +93,9 @@
 .p-relative {
 	position: relative;
 }
+.overflowXhidden {
+	overflow-x: hidden;
+}
 .min-100vh {
 	min-height: 100vh;
 }

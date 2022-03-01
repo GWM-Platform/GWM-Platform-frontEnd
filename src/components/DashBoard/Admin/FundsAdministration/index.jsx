@@ -17,6 +17,7 @@ const FundsAdministration = () => {
     const [Action, setAction] = useState({ fund: -1, action: -1 })//Action===0 -> edit; Action===1 -> create
 
     const [SearchText, setSearchText] = useState("")
+    //const [CategorySearched, setCategorySearched] = useState("")
 
     const getFunds = async () => {
         var url = `${process.env.REACT_APP_APIURL}/funds`;
@@ -34,6 +35,7 @@ const FundsAdministration = () => {
             setFunds(data)
             setFilteredFunds(data)
             setFetchingFunds(false)
+            //setCategorySearched(Object.keys(data[0])[0])
         } else {
             switch (response.status) {
                 default:
@@ -99,6 +101,7 @@ const FundsAdministration = () => {
                         {
                             "-1":
                                 <ViewAndDeleteFunds
+                                    /*CategorySearched={CategorySearched} setCategorySearched={setCategorySearched}*/
                                     SearchText={SearchText} handleSearch={handleSearch} cancelSearch={cancelSearch} AssetTypes={AssetTypes}
                                     FilteredFunds={FilteredFunds} Funds={Funds} chargeFunds={chargeFunds} setAction={setAction} Action={Action}
                                 />

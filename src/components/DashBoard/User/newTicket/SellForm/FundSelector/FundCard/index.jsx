@@ -15,7 +15,7 @@ const FundCard = ({ Fund, ownKey, data, setData, setSome, some,openAccordion }) 
     }, [ref]);
 
     return (
-        <Col sm="3" className="py-1 growAnimation"
+        <Col xs="10" sm="3" className="py-1 growAnimation FundCardContainer"
             style={{
                 pointerEvents: Fund.freeShares === 0 ? "none" : "all",
                 filter: `opacity(${Fund.freeShares === 0 ? "0.5" : "1"})`

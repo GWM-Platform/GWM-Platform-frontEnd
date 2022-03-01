@@ -28,7 +28,7 @@ const LanguageSelector = () => {
                 id="dropdown-basic">
                 {
                     selected === "en" ?
-                        <img src={process.env.PUBLIC_URL + '/images/englishFlag.png'} alt="en" height="16px" style={{ verticalAlign: "sub" }} />
+                        <img src={process.env.PUBLIC_URL + '/images/englishFlag.svg'} alt="en" height="16px" style={{ verticalAlign: "sub" }} />
                         :
                         <span className={`flag-icon flag-icon-${selected}`}></span>
                 }
@@ -41,7 +41,7 @@ const LanguageSelector = () => {
                             <Dropdown.Item key={lng} active={selected === lng} onClick={() => changeLanguage(lng)}>
                                 {
                                     lng === "en" ?
-                                        <img src={process.env.PUBLIC_URL + '/images/englishFlag.png'} alt="en" height="16px" style={{ verticalAlign: "sub" }} />
+                                        <img src={process.env.PUBLIC_URL + '/images/englishFlag.svg'} alt="en" height="16px" style={{ verticalAlign: "sub" }} />
 
                                         :
                                         <span className={`flag-icon flag-icon-${lng}`}></span>

@@ -12,7 +12,7 @@ const FormMobile = ({ handleChange, handleSubmit, buttonDisabled, setButtonDisab
     return (
         <Form onSubmit={handleSubmit} className="d-block d-lg-none mobile">
             <div className="d-flex justify-content-center">
-                <Card.Img className="mb-4" src={process.env.PUBLIC_URL + '/images/logo/logo.png'} />
+                <Card.Img className="mb-4" src={process.env.PUBLIC_URL + '/images/logo/logo.svg'} />
             </div>
             <InputGroup className="mb-3">
                 <InputGroup.Text id="basic-addon1">

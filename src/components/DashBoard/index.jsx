@@ -45,7 +45,7 @@ const UserDashboard = () => {
     }, [ClientSelected])
 
     return (
-        <div className="dashboard" style={{ backgroundImage: `url(https://estudiotronica.net/gwm/wp-content/uploads/2021/11/dotted-worldmap1.png)` }}>
+        <div className="dashboard" style={{ backgroundImage: `url(http://159.203.103.104/wp-content/uploads/2022/01/dotted-worldmap2.jpg)` }}>
             {
                 IndexClientSelected >= 0 || admin || UserClients.length === 1  ?
                     UserClients.length > 0 || admin ?

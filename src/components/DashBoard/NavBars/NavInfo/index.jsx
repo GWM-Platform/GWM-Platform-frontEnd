@@ -22,7 +22,7 @@ const NavBarInfo = ({ NavInfoToggled }) => {
                         <Navbar.Brand>
                             <img
                                 alt=""
-                                src={process.env.PUBLIC_URL + '/images/logo/logo.png'}
+                                src={process.env.PUBLIC_URL + '/images/logo/logo.svg'}
                                 height="50"
                                 className="d-inline-block align-top my-2"
                             />

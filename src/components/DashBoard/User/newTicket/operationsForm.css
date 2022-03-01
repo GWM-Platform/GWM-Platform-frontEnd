@@ -189,7 +189,7 @@
     }
 
 }
-@media (main-width: 576px) {
+@media (min-width: 576px) {
     .overflow-sm-hidden{
         overflow: hidden;
     }

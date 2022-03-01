@@ -1,4 +1,4 @@
-import React  from 'react'
+import React, { useEffect } from 'react'
 import { useHistory } from 'react-router-dom';
 import { Col, Row, Container, Spinner } from 'react-bootstrap';
 import { useTranslation } from "react-i18next";
@@ -6,21 +6,26 @@ import { useTranslation } from "react-i18next";
 function Landing() {
     const { t } = useTranslation();
 
+
     let history = useHistory();
 
-    // eslint-disable-next-line 
-    const toLogin = () => {
-        sessionStorage.clear();
-        history.push(`/login`);
-    }
 
     //When the app is opened, it checks if the user has a valid token in their local storage,
     //if it is true, it is redirected to the dashboard, if not, it is redirected to login
+    useEffect(() => {
 
-    let token = sessionStorage.getItem('access_token')
-    if(token===null){
-        toLogin()
-    }
+        const toLogin = () => {
+            sessionStorage.clear();
+            history.push(`/login`);
+        }
+
+        let token = sessionStorage.getItem('access_token')
+        if (token === null) {
+            toLogin()
+        }
+    }, [history])
+
+
 
     return (
         <Container>

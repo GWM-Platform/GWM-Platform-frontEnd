@@ -388,7 +388,8 @@ i18n
           "Confirm": "Confirmar",
           "loading": "cargando",
           "Show more": "Mostrar más",
-          "Show less": "Mostrar menos"
+          "Show less": "Mostrar menos",
+          "Assets":"Activos"
         }
       }
     }
