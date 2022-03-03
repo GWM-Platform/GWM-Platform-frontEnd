@@ -39,7 +39,7 @@ const MobileCard = ({ setItemSelected, isMobile, className, Fund }) => {
 
             if (response.status === 200) {
                 const data = await response.json()
-                setMovements(data.sort(function (a, b) { return (a.createdAt > b.createdAt) ? -1 : ((a.createdAt < b.createdAt) ? 1 : 0); }))
+                setMovements(data.transactions.sort(function (a, b) { return (a.createdAt > b.createdAt) ? -1 : ((a.createdAt < b.createdAt) ? 1 : 0); }))
             } else {
                 switch (response.status) {
                     default:

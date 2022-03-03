@@ -105,7 +105,7 @@ const ContainerLogin = () => {
 
   return (
     <div className="login"
-      style={{ backgroundImage: `url(http://159.203.103.104/wp-content/uploads/2022/01/dotted-worldmap2.jpg)` }}>
+      style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/backGround/background.jpg)` }}>
       <Container>
         <Row className="d-flex min-vh-100  justify-content-center align-items-start align-items-sm-center pt-3">
           <Col xs="11" sm="8" md="6" lg="5" xl="4" className="growAnimation">

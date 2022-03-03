@@ -84,10 +84,10 @@
 }
 
 .movementsMainCardFund .loadingMovements {
-    height: calc( 100vh - 368px );
+    height: calc( 100vh - 424px - 52px );
     transition:all 0.5s
 }
 
 .movementsMainCardFund .loadingMovements.navInfoToggled{
-    height: calc( 100vh - 368px + 76px)
+    height: calc( 100vh - 424px - 52px + 76px)
 }

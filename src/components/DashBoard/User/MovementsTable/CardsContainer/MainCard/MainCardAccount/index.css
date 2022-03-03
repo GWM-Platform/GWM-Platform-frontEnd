@@ -77,9 +77,9 @@
 }
 
 .movementsMainCardAccount .loadingMovements {
-    height: calc( 100vh - 367px )
+    height: calc( 100vh - 424px )
 }
 
 .movementsMainCardAccount .loadingMovements.navInfoToggled {
-    height: calc( 100vh - 368px +  76px )
+    height: calc( 100vh - 424px +  76px )
 }

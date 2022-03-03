@@ -64,7 +64,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
                     ...{
                         fetching: false,
                         fetched: true,
-                        value: data
+                        value: data.movements
                     }
                 }))
 

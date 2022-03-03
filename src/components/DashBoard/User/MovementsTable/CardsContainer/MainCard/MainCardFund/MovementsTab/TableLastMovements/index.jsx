@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Table } from 'react-bootstrap';
 import Movement from './Movement';
 import { useTranslation } from "react-i18next";
-import TableControls from '../../../../../../../TableControls';
 
-const TableLastMovements = ({ page, setPage, movsShown, movementsCount, content, decimals, symbol, NavInfoToggled, Fund, setPerformance }) => {
+const TableLastMovements = ({ content, Fund, NavInfoToggled,setPerformance }) => {
     const { t } = useTranslation();
 
     useEffect(() => {
@@ -17,14 +16,8 @@ const TableLastMovements = ({ page, setPage, movsShown, movementsCount, content,
         setPerformance((actualMoney * 100 / moneySpent - 100).toFixed(2))
     }, [Fund, content, setPerformance])
 
-    const [InScreenMovements, setInScreenMovements] = useState(5)
-
-    useEffect(() => {
-        setInScreenMovements(5)
-    }, [content])
-
     return (
-        <div className={NavInfoToggled ? "movementsTable-navInfoToggled growAnimation" : "movementsTable growAnimation"}>
+        <div  className={`loadingMovements ${NavInfoToggled ? "navInfoToggled" : ""}`}>
             <Table id="tableMovements" striped bordered hover className="mb-auto m-0" >
                 <thead >
                     <tr>
@@ -35,17 +28,13 @@ const TableLastMovements = ({ page, setPage, movsShown, movementsCount, content,
                     </tr>
                 </thead>
                 <tbody>
-                    {content.map((u, i) => {
-                        return i < InScreenMovements ?
-                            <Movement key={i} content={u} symbol={symbol} decimals={decimals} />
-                            :
-                            null
-                    })}
+                    {content.map((u, i) =>
+                        <Movement key={i} content={u} />
+                    )}
                 </tbody>
             </Table>
-            <TableControls InScreen={InScreenMovements} content={content}
-                setInScreen={setInScreenMovements} />
-        </div>
+            </div>
+
     )
 }
 export default TableLastMovements

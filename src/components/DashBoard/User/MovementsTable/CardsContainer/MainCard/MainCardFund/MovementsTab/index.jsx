@@ -1,21 +1,29 @@
 import React, { useState, useEffect, useContext } from 'react'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {  useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { dashboardContext } from '../../../../../../../../context/dashboardContext';
 import TableLastMovements from './TableLastMovements';
 //import MovementsPagination from './MovementsPagination';
 import NoMovements from './NoMovements';
 import Loading from './Loading';
+import PaginationController from './PaginationController';
+import FilterOptions from './FilterOptions';
 
-
-const MovementsTab = ({ Fund,NavInfoToggled,setPerformance }) => {
+const MovementsTab = ({ Fund, NavInfoToggled, setPerformance }) => {
     const history = useHistory();
-    const {token,ClientSelected}=useContext(dashboardContext)
+    const { token, ClientSelected } = useContext(dashboardContext)
 
-    const [Movements, setMovements] = useState([])
-    const [page, setPage] = useState(0)
+    const [Movements, setMovements] = useState({
+        transactions: 0,
+        total: 0,//Total of movements with the filters applied
+    })
     const [FetchingMovements, setFetchingMovements] = useState(true);
+
+    const [Pagination, setPagination] = useState({
+        skip: 0,//Offset (in quantity of movements)
+        take: 1,//Movements per page
+    })
 
 
     const toLogin = () => {
@@ -26,7 +34,9 @@ const MovementsTab = ({ Fund,NavInfoToggled,setPerformance }) => {
         setFetchingMovements(true)
         var url = `${process.env.REACT_APP_APIURL}/transactions/?` + new URLSearchParams({
             client: ClientSelected.id,
-            filterFund:Fund.id
+            filterFund: Fund.id,
+            take: Pagination.take,
+            skip: Pagination.skip
         });
         const response = await fetch(url, {
             method: 'GET',
@@ -39,7 +49,7 @@ const MovementsTab = ({ Fund,NavInfoToggled,setPerformance }) => {
 
         if (response.status === 200) {
             const data = await response.json()
-            setMovements(data.sort(function (a, b) { return (a.createdAt > b.createdAt) ? -1 : ((a.createdAt < b.createdAt) ? 1 : 0); }))
+            setMovements(prevState => ({ ...prevState, ...data }))
             setFetchingMovements(false)
         } else {
             switch (response.status) {
@@ -51,36 +61,44 @@ const MovementsTab = ({ Fund,NavInfoToggled,setPerformance }) => {
         }
     }
 
-
     useEffect(() => {
         getMovements();
         return () => {
         }
         // eslint-disable-next-line
-    }, [Fund])
+    }, [Fund, Pagination])
 
     return (
         <>
             {/*Movements */}
             <div className="p-0 mb-2">
                 <div className="d-flex align-items-start justify-content-center flex-column MovementsTableContainer">
-                    {
-                        FetchingMovements ?
-                            <Loading NavInfoToggled={NavInfoToggled}/>
-                            :
-                            Movements.length > 0 ?
-                                <TableLastMovements
-                                setPerformance={setPerformance}
-                                    Fund={Fund}
-                                    NavInfoToggled={NavInfoToggled}
-                                    MovementsCount={100}
-                                    content={Movements}
-                                    /*movsShown={movsShown}*/
-                                    page={page}
-                                    setPage={setPage} />
+                    <div className={NavInfoToggled ? "movementsTable-navInfoToggled growAnimation" : "movementsTable growAnimation"}>
+                        
+                        <FilterOptions setPagination={setPagination} movsPerPage={Pagination.take} total={Movements.total}/>
+                        {
+                            FetchingMovements ?
+                                <Loading NavInfoToggled={NavInfoToggled} />
                                 :
-                                <NoMovements NavInfoToggled={NavInfoToggled}/>
-                    }
+                                Movements.total > 0 ?
+                                    <TableLastMovements
+                                        content={Movements.transactions}
+                                        Fund={Fund}
+                                        NavInfoToggled={NavInfoToggled}
+                                        setPerformance={setPerformance}
+                                    />
+                                    :
+                                    <NoMovements NavInfoToggled={NavInfoToggled} />
+                        }
+                        {
+                            Movements.total > 0 ?
+                                <PaginationController PaginationData={Pagination} setPaginationData={setPagination} total={Movements.total} />
+                                :
+                                null
+                        }
+
+                    </div>
+
                 </div>
             </div>
         </>

@@ -90,7 +90,7 @@ const AccountsSupervision = () => {
 
             if (response.status === 200) {
                 const dataFetched = await response.json()
-                setTransactions((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, content: dataFetched } }))
+                setTransactions((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, content: dataFetched.transactions } }))
             } else {
                 switch (response.status) {
                     case 500:
@@ -116,7 +116,7 @@ const AccountsSupervision = () => {
 
             if (response.status === 200) {
                 const dataFetched = await response.json()
-                setMovements((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, content: dataFetched } }))
+                setMovements((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, content: dataFetched.movements } }))
             } else {
                 switch (response.status) {
                     case 500:

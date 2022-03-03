@@ -1,18 +1,24 @@
-.HistoryCardsContainer .CategoryLabel .title {
-	border-bottom: 1px solid;
+.HistoryCardsContainer .CategoryLabel {
 	font-size: 30px;
+	margin-top: 0.5rem;
 	padding-right: 1rem;
 	padding-left: 1rem;
-	padding-bottom: 1rem;
 	margin-bottom: 1rem;
-	margin-top: 0.43em;
+	min-height: calc(27.59px + 34.84px);
+	border-bottom: 1px solid;
+	display:flex;
+	align-items: center;
+}
+.HistoryCardsContainer .CategoryLabel .title {
+	font-size: 30px;
+	margin-top: 0;
 }
 .mainCardCol {
 	transition: width 1.5s;
 }
 .collapser {
 	position: absolute;
-	top: calc( ( 100vh - 204px ) / 2 );
+	top: calc( ( 100vh - 206px ) / 2 );
 	right: 5px;
 	transform: translateY(-50%);
 	font-size: 30px;

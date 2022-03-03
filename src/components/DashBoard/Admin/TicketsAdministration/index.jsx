@@ -33,7 +33,6 @@ const TicketsAdministration = () => {
         }
     ]
 
-
     const [TransactionStates, setTransactionStates] = useState({
         selected: "",
         fetching: true,

@@ -23,7 +23,7 @@ function App() {
   }, [])
 
   return (
-    <div className="App" style={{ backgroundImage: `url(http://159.203.103.104/wp-content/uploads/2022/01/dotted-worldmap2.jpg)` }}>
+    <div className="App" style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/backGround/background.jpg)` }}>
       <BrowserRouter>
         <Switch>
           <Route exact path="/">

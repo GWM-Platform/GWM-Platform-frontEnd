@@ -39,7 +39,7 @@ const MobileCard = ({ Fund }) => {
     
             if (response.status === 200) {
                 const data = await response.json()
-                setMovements(data.sort(function (a, b) { return (a.createdAt > b.createdAt) ? -1 : ((a.createdAt < b.createdAt) ? 1 : 0); }))
+                setMovements(data.movements.sort(function (a, b) { return (a.createdAt > b.createdAt) ? -1 : ((a.createdAt < b.createdAt) ? 1 : 0); }))
                 setFetchingMovements(false)
             } else {
                 switch (response.status) {

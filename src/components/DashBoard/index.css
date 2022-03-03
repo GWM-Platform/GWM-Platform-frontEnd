@@ -34,9 +34,11 @@
 .page-item.active .page-link {
     background-color: var(--main-color);
     border-color: var(--secondary-color);
+    transition:all 0.3s
 }
 .page-link {
     color: var(--main-color);
+    transition:all 0.3s
 }
 .page-link:hover {
     color: var(--secondary-color);

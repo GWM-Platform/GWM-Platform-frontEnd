@@ -33,6 +33,11 @@ export const DashboardProvider = ({ children }) => {
 
     const [PendingWithoutpossession, setPendingWithoutpossession] = useState([])
 
+    const [TransactionStates, setTransactionStates] = useState({
+        fetching: true,
+        fetched: false,
+        values: []
+    })
 
     function handleWindowSizeChange() {
         setWidth(window.innerWidth);
@@ -43,10 +48,62 @@ export const DashboardProvider = ({ children }) => {
     useEffect(() => {
         window.addEventListener('resize', handleWindowSizeChange);
 
+        const transactionsStates = async () => {
+            var url = `${process.env.REACT_APP_APIURL}/states`;
+
+            setTransactionStates((prevState) => ({
+                ...prevState, ...{
+                    fetching: true,
+                    fetched: false,
+                    valid: false,
+                    values: []
+                }
+            }))
+
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    Accept: "*/*",
+                    'Content-Type': 'application/json'
+                }
+            })
+
+            if (response.status === 200) {
+                const data = await response.json()
+
+                setTransactionStates((prevState) => ({
+                    ...prevState, ...{
+                        fetching: false,
+                        fetched: true,
+                        valid: true,
+                        values: data
+                    }
+                }))
+            } else {
+                setTransactionStates((prevState) => ({
+                    ...prevState, ...{
+                        fetching: false,
+                        fetched: true,
+                        valid: false,
+                    }
+                }))
+                
+                switch (response.status) {
+                    case 500:
+                        break;
+                    default:
+                        console.error(response.status)
+                }
+            }
+        }
+
+        transactionsStates()
+
         return () => {
             window.removeEventListener('resize', handleWindowSizeChange);
         }
-    }, [])
+    }, [token])
 
     useEffect(
         () => {
@@ -131,7 +188,7 @@ export const DashboardProvider = ({ children }) => {
             })
             var url = `${process.env.REACT_APP_APIURL}/transactions/?` + new URLSearchParams({
                 client: ClientSelected.id,
-                filterState:1
+                filterState: 1
             });
             const response = await fetch(url, {
                 method: 'GET',
@@ -144,9 +201,10 @@ export const DashboardProvider = ({ children }) => {
 
             if (response.status === 200) {
                 const data = await response.json()
+                console.log(data)
                 setPendingTransactions({
                     ...PendingTransactions, ...{
-                        value: data,
+                        value: data.transactions,
                         fetched: true,
                         fetching: false
                     }
@@ -283,8 +341,8 @@ export const DashboardProvider = ({ children }) => {
 
     return <dashboardContext.Provider
         value={{
-            token, admin, UserClients, ClientSelected, IndexClientSelected, setIndexClientSelected, balanceChanged, setBalanceChanged,
-            FetchingFunds, contentReady, PendingWithoutpossession, PendingTransactions, Accounts, Funds, itemSelected, setItemSelected,isMobile,width
+            token, admin, UserClients, ClientSelected, IndexClientSelected, setIndexClientSelected, balanceChanged, setBalanceChanged, TransactionStates,
+            FetchingFunds, contentReady, PendingWithoutpossession, PendingTransactions, Accounts, Funds, itemSelected, setItemSelected, isMobile, width
         }}>
         {children}
     </dashboardContext.Provider>

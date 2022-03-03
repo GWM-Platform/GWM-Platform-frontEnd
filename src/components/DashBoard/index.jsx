@@ -45,7 +45,7 @@ const UserDashboard = () => {
     }, [ClientSelected])
 
     return (
-        <div className="dashboard" style={{ backgroundImage: `url(http://159.203.103.104/wp-content/uploads/2022/01/dotted-worldmap2.jpg)` }}>
+        <div className="dashboard" style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/backGround/background.jpg)` }}>
             {
                 IndexClientSelected >= 0 || admin || UserClients.length === 1  ?
                     UserClients.length > 0 || admin ?

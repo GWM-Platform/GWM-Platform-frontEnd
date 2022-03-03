@@ -126,7 +126,7 @@ const Transactionslist = ({ state, messageVariants }) => {
                     fetching: false,
                     fetched: true,
                     valid: true,
-                    values: data
+                    values: data.transactions
                 }
             })
         } else {
@@ -177,7 +177,7 @@ const Transactionslist = ({ state, messageVariants }) => {
                     fetching: false,
                     fetched: true,
                     valid: true,
-                    values: data
+                    values: data.movements
                 }
             })
         } else {
