@@ -88,7 +88,7 @@ export const DashboardProvider = ({ children }) => {
                         valid: false,
                     }
                 }))
-                
+
                 switch (response.status) {
                     case 500:
                         break;
@@ -201,7 +201,6 @@ export const DashboardProvider = ({ children }) => {
 
             if (response.status === 200) {
                 const data = await response.json()
-                console.log(data)
                 setPendingTransactions({
                     ...PendingTransactions, ...{
                         value: data.transactions,
@@ -338,10 +337,22 @@ export const DashboardProvider = ({ children }) => {
 
     }, [history, UserClients, IndexClientSelected, admin]);
 
+    const getMoveStateById = (id) => {
+        if (TransactionStates.fetched && TransactionStates.valid && !TransactionStates.fetching) {
+            let index = TransactionStates.values.findIndex((state) => (state.id === id))
+            if (index >= 0) {
+                return TransactionStates.values[index]
+            } else {
+                return { name: "-" }
+            }
+        } else {
+            return { name: "-" }
+        }
+    }
 
     return <dashboardContext.Provider
         value={{
-            token, admin, UserClients, ClientSelected, IndexClientSelected, setIndexClientSelected, balanceChanged, setBalanceChanged, TransactionStates,
+            token, admin, UserClients, ClientSelected, IndexClientSelected, setIndexClientSelected, balanceChanged, setBalanceChanged, TransactionStates, getMoveStateById,
             FetchingFunds, contentReady, PendingWithoutpossession, PendingTransactions, Accounts, Funds, itemSelected, setItemSelected, isMobile, width
         }}>
         {children}

@@ -48,6 +48,14 @@
     min-height: calc( 100vh - 367px  );
 }
 
+.tableMovements {
+    min-height: calc( 100vh - 424px - 52px )
+}
+.tableMovements.navInfoToggled {
+    min-height: calc( 100vh - 424px - 52px + 76px )
+}
+
+
 .movementsTableContainer-navInfoToggled {
     min-height: calc( 100vh - 367px  + 76px );
     overflow: auto;

@@ -17,11 +17,12 @@ const TableLastMovements = ({ content, Fund, NavInfoToggled,setPerformance }) =>
     }, [Fund, content, setPerformance])
 
     return (
-        <div  className={`loadingMovements ${NavInfoToggled ? "navInfoToggled" : ""}`}>
-            <Table id="tableMovements" striped bordered hover className="mb-auto m-0" >
+        <div  className={`tableMovements ${NavInfoToggled ? "navInfoToggled" : ""}`}>
+            <Table striped bordered hover className=" mb-auto m-0" >
                 <thead >
                     <tr>
                         <th className="tableHeader">{t("Date")}</th>
+                        <th className="d-none d-sm-table-cell">{t("State")}</th>
                         <th className="d-none d-sm-table-cell">{t("Concept")}</th>
                         <th className="tableDescription d-none d-sm-table-cell">{t("Share value")}</th>
                         <th className="tableAmount">{t("Amount")}</th>
@@ -33,7 +34,7 @@ const TableLastMovements = ({ content, Fund, NavInfoToggled,setPerformance }) =>
                     )}
                 </tbody>
             </Table>
-            </div>
+        </div>
 
     )
 }

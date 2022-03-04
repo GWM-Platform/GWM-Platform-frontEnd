@@ -7,8 +7,8 @@ import TableLastMovements from './TableLastMovements';
 //import MovementsPagination from './MovementsPagination';
 import NoMovements from './NoMovements';
 import Loading from './Loading';
-import PaginationController from './PaginationController';
-import FilterOptions from './FilterOptions';
+import PaginationController from '../../../../../../PaginationController'
+import FilterOptions from '../../../../../../FilterOptions'
 
 const MovementsTab = ({ Fund, NavInfoToggled, setPerformance }) => {
     const history = useHistory();
@@ -22,7 +22,8 @@ const MovementsTab = ({ Fund, NavInfoToggled, setPerformance }) => {
 
     const [Pagination, setPagination] = useState({
         skip: 0,//Offset (in quantity of movements)
-        take: 1,//Movements per page
+        take: 5,//Movements per page
+        state: null
     })
 
 
@@ -32,12 +33,18 @@ const MovementsTab = ({ Fund, NavInfoToggled, setPerformance }) => {
 
     const getMovements = async () => {
         setFetchingMovements(true)
-        var url = `${process.env.REACT_APP_APIURL}/transactions/?` + new URLSearchParams({
-            client: ClientSelected.id,
-            filterFund: Fund.id,
-            take: Pagination.take,
-            skip: Pagination.skip
-        });
+
+        var url = `${process.env.REACT_APP_APIURL}/transactions/?` + new URLSearchParams(
+            Object.fromEntries(Object.entries(
+                {
+                    client: ClientSelected.id,
+                    filterFund: Fund.id,
+                    take: Pagination.take,
+                    skip: Pagination.skip,
+                    filterState: Pagination.state
+                }
+            ).filter(([_, v]) => v != null))
+        );
         const response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -62,20 +69,26 @@ const MovementsTab = ({ Fund, NavInfoToggled, setPerformance }) => {
     }
 
     useEffect(() => {
+        setPagination((prevState) => ({
+            ...prevState, ...{
+                skip: 0,
+                take: 5,
+                state: null
+            }
+        }))
+    }, [Fund])
+
+    useEffect(() => {
         getMovements();
-        return () => {
-        }
         // eslint-disable-next-line
     }, [Fund, Pagination])
 
     return (
-        <>
-            {/*Movements */}
             <div className="p-0 mb-2">
                 <div className="d-flex align-items-start justify-content-center flex-column MovementsTableContainer">
                     <div className={NavInfoToggled ? "movementsTable-navInfoToggled growAnimation" : "movementsTable growAnimation"}>
-                        
-                        <FilterOptions setPagination={setPagination} movsPerPage={Pagination.take} total={Movements.total}/>
+
+                        <FilterOptions Fund={Fund} setPagination={setPagination} movsPerPage={Pagination.take} total={Movements.total} />
                         {
                             FetchingMovements ?
                                 <Loading NavInfoToggled={NavInfoToggled} />
@@ -101,7 +114,6 @@ const MovementsTab = ({ Fund, NavInfoToggled, setPerformance }) => {
 
                 </div>
             </div>
-        </>
     )
 }
 export default MovementsTab

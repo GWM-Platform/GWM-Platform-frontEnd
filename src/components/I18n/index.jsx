@@ -18,7 +18,10 @@ i18n
           "WITHDRAWAL": "Withdrawal",
           "STAKE_BUY": "Purchase of a fund's shares",
           "STAKE_SELL": "Sale of a fund's shares",
-          "REPAYMENT": "Refund due to denied ticket "
+          "REPAYMENT": "Refund due to denied ticket",
+          "Pendiente": "Pending",
+          "Aprobado": "Approved",
+          "Denegado": "Denied"
         }
       },
       es: {
@@ -385,7 +388,15 @@ i18n
           "loading": "cargando",
           "Show more": "Mostrar más",
           "Show less": "Mostrar menos",
-          "Assets":"Activos"
+          "Assets": "Activos",
+          "Pendiente": "Pendiente",
+          "Aprobado": "Aprobado",
+          "Denegado": "Denegado",
+          "Moves per page": "Movimientos por pagina",
+          "Moves state": "Estado",
+          "Update":"Actualizar",
+          "All":"Todos",
+          "Filter Options":"Opciones de filtrado"
         }
       }
     }
