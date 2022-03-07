@@ -21,13 +21,13 @@ const ActionConfirmationModal = ({ setShowModal, show, action, data, Balance ,fe
                     <h1 className="title"> {t("Ticket summary")} </h1>
                     <ul>
                         <li className="listedInfo">
-                            {t("Client with whom the operation will be made")}: <span className="emphasis">{ClientSelected.alias}</span>
+                            {t("Account with whom the operation will be made")}: <span className="emphasis">{ClientSelected.alias}</span>
                         </li>
                         <li className="listedInfo">
-                            {t("Available cash")}: <span className="emphasis">${Balance}</span>
+                            {t("Current account balance")}: <span className="emphasis">${Balance}</span>
                         </li>
                         <li className="listedInfo">
-                            {t("Withdrawing")}:<span className="emphasis"> {data.amount}</span>
+                            {t("Withdrawing")}:<span className="emphasis"> ${data.amount}</span>
                         </li>
                     </ul>
                 </div>

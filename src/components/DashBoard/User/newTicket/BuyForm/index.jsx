@@ -166,7 +166,7 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
                 </Row>
             </Container>
             {
-                data.FundSelected !== -1 ?
+                data.FundSelected !== -1 && contentReady ?
                     <ActionConfirmationModal fetching={fetching} setShowModal={setShowModal} show={ShowModal} action={buy} data={data} Funds={Funds} Balance={Accounts[0].balance} />
                     :
                     null

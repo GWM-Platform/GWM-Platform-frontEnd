@@ -354,7 +354,7 @@ i18n
           "There are no sell/purchase tickets in the state selected": "No hay tickets de compra/venta en el estado seleccionado",
           "couldn't fetch retire tickets, try again later": "No se pudieron obtener los tickets de retiro, intente de nuevo luego ",
           "There are no retire tickets in the state selected": "No hay tickets de retiro en el estado seleccionado",
-          "Select a client to operate": "Seleccione un cliente para operar",
+          "Select an account to operate": "Seleccione una cuenta para operar",
           "Failed to": "Fallo al",
           "the ticket": "el ticket",
           "Accounts Supervision": "Supervision de cuentas",
@@ -368,7 +368,7 @@ i18n
           "Account's movements": "Movimientos de la cuenta",
           "Transactions by fund": "Transacciones por fondo",
           "Cash in account": "Dinero en cuenta",
-          "Client with whom the operation will be made": "Cliente con el que se ejecutara la operacion",
+          "Account with whom the operation will be made": "Cuenta con la que se ejecutara la operacion",
           "Available cash": "Dinero disponible",
           "Fund selected": "Fondo seleccionado",
           "Investing (in cash)": "Invirtiendo (en dinero)",
@@ -396,7 +396,14 @@ i18n
           "Moves state": "Estado",
           "Update":"Actualizar",
           "All":"Todos",
-          "Filter Options":"Opciones de filtrado"
+          "Filter Options":"Opciones de filtrado",
+          "Remember my choice":"Recuerda mi elección",
+          "To dashboard":"Ir al panel",
+          "Available Cash":"Dinero Disponible",
+          "Change account":"Cambiar cuenta",
+          "Withdrawing":"Retirando",
+          "Current account":"Cuenta corriente",
+          "Current account balance":"Saldo en cuenta corriente"
         }
       }
     }

@@ -1,11 +1,10 @@
 import React, { useRef, useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DonutChart from 'react-donut-chart';
-import './index.css'
 import { Col, Card, Container, Row } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
 
-const FundCard = ({ Fund, ownKey, data, setData, setSome, some,openAccordion }) => {
+const FundCard = ({ Fund, ownKey, data, setData, setSome, some, openAccordion }) => {
     const { t } = useTranslation();
     const ref = useRef(null)
     const [width, setWidth] = useState(0)
@@ -15,19 +14,20 @@ const FundCard = ({ Fund, ownKey, data, setData, setSome, some,openAccordion }) 
     }, [ref]);
 
     return (
-        <Col xs="10" sm="3" className="py-1 growAnimation FundCardContainer"
-            style={{
-                pointerEvents: Fund.freeShares === 0 ? "none" : "all",
-                filter: `opacity(${Fund.freeShares === 0 ? "0.5" : "1"})`
-            }}>
+
+        <Col xs="10" sm="3"
+            className={`py-1 growAnimation  FundCardContainer 
+        ${Fund.freeShares === 0 ? " FundDisabled" : ""}
+        ${data.FundSelected === ownKey ? " FundSelected" : ""} 
+        `}>
             <Card
                 ref={ref}
-                className={`FundCard h-100 ${data.FundSelected === ownKey ? t("FundSelected") : ""}`}
-                onClick={() => { setFundSelected(data, setData, ownKey, setSome, some,openAccordion) }}>
+                className={`FundCard h-100 `}
+                onClick={() => { setFundSelected(data, setData, ownKey, setSome, some, openAccordion) }}>
                 <Card.Header><strong className="title">{Fund.fund.name}</strong></Card.Header>
                 <Card.Body>
                     <Card.Title> {t("Obtained FeeParts")}{": "} <strong>{(Fund.shares).toFixed(2)}</strong></Card.Title>
-                    <Card.Title> {t("In cash")}{": "} <strong>${(Fund.fund.sharePrice*Fund.shares).toFixed(2)}</strong></Card.Title>
+                    <Card.Title> {t("In cash")}{": "} <strong>${(Fund.fund.sharePrice * Fund.shares).toFixed(2)}</strong></Card.Title>
                     <Container fluid className="px-0">
                         <Row className="d-flex justify-content-between">
                             <Col md="auto">
@@ -58,7 +58,7 @@ const FundCard = ({ Fund, ownKey, data, setData, setSome, some,openAccordion }) 
     )
 }
 
-const setFundSelected = (data, setData, ownKey, setSome, some,openAccordion) => {
+const setFundSelected = (data, setData, ownKey, setSome, some, openAccordion) => {
     let aux = data
     aux.FundSelected = ownKey
     setData(aux)

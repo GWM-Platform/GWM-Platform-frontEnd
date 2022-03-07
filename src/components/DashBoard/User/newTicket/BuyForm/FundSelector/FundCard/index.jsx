@@ -15,13 +15,15 @@ const FundCard = ({ Fund, ownKey, data, setData, openAccordion, Account }) => {
     }, [ref]);
 
     return (
-        <Col xs="10" sm="3" className={`py-1 growAnimation  FundCardContainer`} >
+        <Col xs="10" sm="3"
+            className={`py-1 growAnimation  FundCardContainer 
+        ${Fund.freeShares === 0 || Fund.sharePrice > Account.balance || Fund.sharePrice === 0 ? " FundDisabled" : ""}
+        ${data.FundSelected === ownKey ? " FundSelected" : ""} 
+        `}>
             <Card
                 ref={ref}
                 className={
-                    `FundCard h-100 
-                    ${data.FundSelected === ownKey ? "FundSelected" : ""} 
-                    ${Fund.freeShares  === 0 || Fund.sharePrice > Account.balance ? "disabled" : ""}`
+                    `FundCard h-100`
                 }
                 onClick={() => { if (Fund.freeShares > 0) setFundSelected(setData, ownKey, openAccordion) }}>
                 <Card.Header><strong className="title">{Fund.name}</strong></Card.Header>

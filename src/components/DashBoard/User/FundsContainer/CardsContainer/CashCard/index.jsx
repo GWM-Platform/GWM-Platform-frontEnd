@@ -99,7 +99,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
                     <Row >
                         <Card.Title >
                             <h1 className="title mt-0">
-                                {t("Cash")}
+                                {t("Current account")}
                             </h1>
                         </Card.Title>
 

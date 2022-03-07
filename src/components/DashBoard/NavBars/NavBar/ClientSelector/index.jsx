@@ -17,7 +17,7 @@ const ClientSelector = () => {
                 className="bg-none"
                 id="dropdown-clients">
                 {
-                    t("Change client")
+                    t("Change account")
                 }
             </Dropdown.Toggle>
 

@@ -53,7 +53,7 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
                             {
                                 sectionsCashInAccount.includes(itemSelected)?
                                 <>
-                                    {t("Cash in account")}:&nbsp;
+                                    {t("Available Cash")}:&nbsp;
                                     {
                                         contentReady ?
                                             <span className="growOpacity">${Accounts[0].balance}</span>

@@ -87,7 +87,7 @@ const WithdrawForm = ({ NavInfoToggled, balanceChanged }) => {
                 </Row>
             </Container>
             {
-                contentReady ?
+                contentReady && contentReady ?
                     <ActionConfirmationModal fetching={fetching} setShowModal={setShowModal} show={ShowModal} action={withdraw} data={data} Balance={Accounts[0].balance} />
                     :
                     null
