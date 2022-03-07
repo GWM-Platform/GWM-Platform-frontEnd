@@ -1,60 +1,66 @@
-.AccountsSupervision .AccountData .header{
+.AccountsSupervision .AccountData .header {
 	position: relative;
 	font-size: 30px;
 	padding: 0.5em 0;
 	margin: 0.5em 0;
 	border-bottom: 1px solid;
 }
-.AccountsSupervision .AccountData .header .title{
+.AccountsSupervision .AccountData .header .title {
 	font-size: 30px;
 	font-weight: 300;
 	padding: 0;
-	margin:0
+	margin: 0;
 }
-.AccountsSupervision .AccountData .header .button{
+.AccountsSupervision .AccountData .header .button {
 	font-size: 20px;
 	position: absolute;
 	bottom: 0;
-	left:1ch;
+	left: 1ch;
 	transform: translateY(50%);
 	cursor: pointer;
 	transition: 0.5s all;
 }
-.AccountsSupervision .AccountData .header .button.icon{
+.AccountsSupervision .AccountData .header .button.icon {
 	font-size: 20px;
 	color: var(--main-blue);
 	background-color: lightgrey;
 	border-radius: 50%;
 }
-.AccountsSupervision .AccountData .header .button.icon:hover{
+.AccountsSupervision .AccountData .header .button.icon:hover {
 	animation: ease bounceLeft 0.5s 2;
 }
 
 @keyframes bounceLeft {
-	0%,100%{
+	0%,
+	100% {
 		transform: translateY(50%) translateX(0%);
 	}
-	50%{
+	50% {
 		transform: translateY(50%) translateX(-25%);
 	}
 }
-.AccountsSupervision .AccountData .littleSpinner{
-	width: 1em!important;
-	height: 1em!important;
+.AccountsSupervision .AccountData .littleSpinner {
+	width: 1em !important;
+	height: 1em !important;
 }
 
-.AccountsSupervision .AccountData .emphasis{
+.AccountsSupervision .AccountData .emphasis {
 	font-weight: 500;
-	}
-
-.AccountsSupervision .AccountData .Info{
-margin: 0;
-font-size: 16px;
-font-weight: 300;
 }
 
-.AccountsSupervision .AccountData .totalBalance{
+.AccountsSupervision .AccountData .Info {
 	margin: 0;
-font-size: 26px;
-font-weight: 300;
+	font-size: 16px;
+	font-weight: 300;
 }
+
+.AccountsSupervision .AccountData .totalBalance {
+	margin: 0;
+	font-size: 26px;
+	font-weight: 300;
+	text-align: end;
+}
+.AccountsSupervision .AccountData .totalBalance .spinner-border {
+	vertical-align: middle;
+}
+

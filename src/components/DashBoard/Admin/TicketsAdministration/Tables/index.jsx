@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Message from '../Message'
 import TransactionsTable from './TransactionsTable'
 import MovementsTable from './MovementsTable'
+import PaginationController from '../../../PaginationController';
 
 
 const Transactionslist = ({ state, messageVariants }) => {
@@ -12,19 +13,37 @@ const Transactionslist = ({ state, messageVariants }) => {
         fetching: true,
         fetched: false,
         valid: false,
-        values: []
+        values: {
+            movements: [],
+            total: 0
+        }
+    })
+    const [PaginationTransactions, setPaginationTransactions] = useState({
+        skip: 0,//Offset (in quantity of movements)
+        take: 5,//Movements per page
+        state: null
     })
 
     const [Movements, setMovements] = useState({
         fetching: true,
         fetched: false,
         valid: false,
-        values: []
+        values: {
+            movements: [],
+            total: 0
+        }
+    })
+    const [PaginationMovements, setPaginationMovements] = useState({
+        skip: 0,//Offset (in quantity of movements)
+        take: 5,//Movements per page
+        state: null
     })
 
     const [UsersInfo, SetUsersInfo] = useState({ fetching: true, value: {} })
     const [FundInfo, SetFundInfo] = useState({ fetching: true, value: {} })
     const [AccountInfo, SetAccountInfo] = useState({ fetching: true, value: {} })
+
+
 
     const getAccounts = async () => {
         var url = `${process.env.REACT_APP_APIURL}/accounts/?all=true`
@@ -99,6 +118,8 @@ const Transactionslist = ({ state, messageVariants }) => {
     const transactionsInState = async () => {
         var url = `${process.env.REACT_APP_APIURL}/transactions/?` + new URLSearchParams({
             filterState: state,
+            take: PaginationTransactions.take,
+            skip: PaginationTransactions.skip,
         });
         setTransactions({
             ...Transactions,
@@ -106,7 +127,10 @@ const Transactionslist = ({ state, messageVariants }) => {
                 fetching: true,
                 fetched: false,
                 valid: false,
-                values: []
+                values: {
+                    movements: [],
+                    total: 0
+                }
             }
         })
         const response = await fetch(url, {
@@ -126,7 +150,7 @@ const Transactionslist = ({ state, messageVariants }) => {
                     fetching: false,
                     fetched: true,
                     valid: true,
-                    values: data.transactions
+                    values: data
                 }
             })
         } else {
@@ -150,6 +174,8 @@ const Transactionslist = ({ state, messageVariants }) => {
     const movementsInState = async () => {
         var url = `${process.env.REACT_APP_APIURL}/movements/?` + new URLSearchParams({
             filterState: state,
+            take: PaginationMovements.take,
+            skip: PaginationMovements.skip,
         });
         setMovements({
             ...Movements,
@@ -157,7 +183,10 @@ const Transactionslist = ({ state, messageVariants }) => {
                 fetching: true,
                 fetched: false,
                 valid: false,
-                values: []
+                values: {
+                    movements: [],
+                    total: 0
+                }
             }
         })
         const response = await fetch(url, {
@@ -177,7 +206,7 @@ const Transactionslist = ({ state, messageVariants }) => {
                     fetching: false,
                     fetched: true,
                     valid: true,
-                    values: data.movements
+                    values: data
                 }
             })
         } else {
@@ -199,13 +228,40 @@ const Transactionslist = ({ state, messageVariants }) => {
     }
 
     useEffect(() => {
-        transactionsInState()
-        movementsInState()
         getUsersInfo()
         getFundsInfo()
         getAccounts()
         // eslint-disable-next-line
+    }, [])
+
+    useEffect(() => {
+        setPaginationMovements((prevState) => ({
+            ...prevState, ...{
+                skip: 0,//Offset (in quantity of movements)
+                take: 5,//Movements per page
+                state: null
+            }
+        }))
+        setPaginationTransactions(
+            (prevState) => ({
+                ...prevState, ...{
+                    skip: 0,//Offset (in quantity of movements)
+                    take: 5,//Movements per page
+                    state: null
+                }
+            })
+        )
     }, [state])
+
+    useEffect(() => {
+        transactionsInState()
+        // eslint-disable-next-line
+    }, [PaginationTransactions, state])
+
+    useEffect(() => {
+        movementsInState()
+        // eslint-disable-next-line
+    }, [PaginationMovements, state])
 
     const reloadData = () => {
         transactionsInState()
@@ -213,28 +269,52 @@ const Transactionslist = ({ state, messageVariants }) => {
     }
 
     return (
-        Transactions.fetching || Movements.fetching ?
+        Transactions.fetching && Movements.fetching ?
             <Message selected={0} messageVariants={messageVariants} />
             :
             <>
-                {!Transactions.valid ?
-                    <Message selected={3} messageVariants={messageVariants} />
-                    :
-                    Transactions.values.length === 0 ?
-                        <Message selected={4} messageVariants={messageVariants} />
+                {
+                    Transactions.fetching ?
+                        <Message selected={0} messageVariants={messageVariants} />
                         :
-                        <TransactionsTable UsersInfo={UsersInfo} FundInfo={FundInfo}
-                            reloadData={reloadData} state={state} transactions={Transactions.values} />
+                        !Transactions.valid ?
+                            <Message selected={3} messageVariants={messageVariants} />
+                            :
+                            Transactions.values.length === 0 ?
+                                <Message selected={4} messageVariants={messageVariants} />
+                                :
+                                <>
+                                    <TransactionsTable UsersInfo={UsersInfo} FundInfo={FundInfo}
+                                        reloadData={reloadData} state={state} transactions={Transactions.values.transactions} />
+                                    {
+                                        Transactions.values.total > 0 ?
+                                            <PaginationController PaginationData={PaginationTransactions} setPaginationData={setPaginationTransactions} total={Transactions.values.total} />
+                                            :
+                                            null
+                                    }
+                                </>
+
                 }
                 {
-                    !Movements.valid ?
-                        <Message selected={5} messageVariants={messageVariants} />
+                    Movements.fetching ?
+                        <Message selected={0} messageVariants={messageVariants} />
                         :
-                        Movements.values.length === 0 ?
-                            <Message selected={6} messageVariants={messageVariants} />
+                        !Movements.valid ?
+                            <Message selected={5} messageVariants={messageVariants} />
                             :
-                            <MovementsTable AccountInfo={AccountInfo} UsersInfo={UsersInfo} 
-                            reloadData={reloadData} state={state} movements={Movements.values} />
+                            Movements.values.movements.length === 0 ?
+                                <Message selected={6} messageVariants={messageVariants} />
+                                :
+                                <>
+                                    <MovementsTable AccountInfo={AccountInfo} UsersInfo={UsersInfo}
+                                        reloadData={reloadData} state={state} movements={Movements.values.movements} />
+                                    {
+                                        Movements.values.total > 0 ?
+                                            <PaginationController PaginationData={PaginationMovements} setPaginationData={setPaginationMovements} total={Movements.values.total} />
+                                            :
+                                            null
+                                    }
+                                </>
                 }
             </>
 

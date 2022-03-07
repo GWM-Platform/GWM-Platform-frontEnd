@@ -5,7 +5,7 @@ import { Accordion, Spinner,Container,Row,Col } from 'react-bootstrap'
 const AccountGeneralData = ({ Account, Client }) => {
     const { t } = useTranslation();
     const [balanceTotal, setBalanceTotal] = useState({ fetching: true, fetched: true, value: 0 })
-
+    console.table(Account.balance)
     useEffect(() => {
         const token = sessionStorage.getItem('access_token')
 
@@ -49,7 +49,7 @@ const AccountGeneralData = ({ Account, Client }) => {
                             <h1 className="Info">{t("Owner first name")}: <span className='emphasis'>{Client.firstName}</span></h1>
                             <h1 className="Info">{t("Owner last name")}: <span className='emphasis'>{Client.lastName}</span></h1>
                         </Col>
-                        <Col className="d-flex justify-content-end pe-0">
+                        <Col className="pe-0">
                             <h1 className="totalBalance">{t("Total balance")}:{
                                 balanceTotal.fetching ?
                                     <Spinner animation="border" size="sm" />
@@ -57,6 +57,7 @@ const AccountGeneralData = ({ Account, Client }) => {
                                     <span className='emphasis'>{"$" + balanceTotal.value}</span>
                             }
                             </h1>
+                            <h1 className="Info text-end">{t("Current account balance")}: <span className='emphasis'>${Account.balance}</span></h1>
                         </Col>
                     </Row>
                 </Container>

@@ -12,7 +12,7 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
 
     let history = useHistory();
 
-    const pendingFeeParts = PendingTransactions.value.filter((transaction) => transaction.fundId === Fund.fund.id && Math.sign(transaction.shares) === +1).map((transaction) => transaction.shares).reduce((a, b) => a + b, 0).toFixed(2)
+    const pendingfeeParts = PendingTransactions.value.filter((transaction) => transaction.fundId === Fund.fund.id && Math.sign(transaction.shares) === +1).map((transaction) => transaction.shares).reduce((a, b) => a + b, 0).toFixed(2)
     
     const toTickets = (operation) => {
         history.push(`${operation}?fund=${Fund.fund.id}`);
@@ -80,10 +80,10 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
                                     </Container>
                                 </h1>
                                 <Card.Text className="subTitle lighter mt-0 mb-2">
-                                    {t("Acquired FeeParts")}:<span className="bolder"> {Fund.shares ? Fund.shares : 0}</span><br />
-                                    {t("Pending FeeParts")}:
+                                    {t("Acquired feeParts")}:<span className="bolder"> {Fund.shares ? Fund.shares : 0}</span><br />
+                                    {t("Pending feeParts")}:
                                     <span className={`bolder text-green`}>{" "}
-                                        +{pendingFeeParts}</span><br />
+                                        +{pendingfeeParts}</span><br />
                                     {t("FeePart Price (updated")}: {t("Now")}):<span className="bolder"> ${Fund.fund.sharePrice}</span><br />
 
                                 </Card.Text>

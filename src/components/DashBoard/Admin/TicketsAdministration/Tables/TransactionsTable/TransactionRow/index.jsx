@@ -101,7 +101,7 @@ const TransactionRow = ({  UsersInfo, FundInfo, Transaction, state, reloadData }
                     }
                 </td>
                 <td>{Transaction.shares}</td>
-                <td>{Transaction.sharePrice}</td>
+                <td>${Transaction.sharePrice}</td>
                 <td>{momentDate.format('MMMM Do YYYY, h:mm:ss a')}</td>
                 {
                     state === 1 || state === "1" ?

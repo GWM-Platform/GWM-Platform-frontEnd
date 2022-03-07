@@ -37,7 +37,7 @@ const MainCard = ({ Fund, Hide, setHide, NavInfoToggled }) => {
                         </Col>
                         <Col>
                             <h2 className="px-2 left">
-                                {Fund.shares}{" "}{t("FeeParts in possession")}
+                                {Fund.shares}{" "}{t("feeParts in possession")}
                             </h2>
                         </Col>
                         <Col className="d-flex justify-content-between align-items-end pe-2 pb-2 border-bottom-main">

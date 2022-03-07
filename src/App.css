@@ -114,7 +114,7 @@ body {
 }
 
 .adminContainer.free-area {
-	min-height: calc(100vh - 206px + 40px);
+	min-height: calc(100vh - 201px + 40px);
 }
 
 .free-area-withMargin {
@@ -141,7 +141,7 @@ body {
 	transition: all 0.5s;
 }
 .adminContainer.free-area-withoutNavInfo {
-	min-height: calc(100vh - 206px + 40px + 76px);
+	min-height: calc(100vh - 201px + 40px + 76px);
 }
 .free-area-withMargin-withoutNavInfo {
 	height: calc(100vh - 206px - 1rem + 76px);

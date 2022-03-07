@@ -28,7 +28,7 @@ const FundCard = ({ Fund, ownKey, data, setData, openAccordion, Account }) => {
                 onClick={() => { if (Fund.freeShares > 0) setFundSelected(setData, ownKey, openAccordion) }}>
                 <Card.Header><strong className="title">{Fund.name}</strong></Card.Header>
                 <Card.Body>
-                    <Card.Title>{t("FeeParts value")}: <strong>${Fund.sharePrice}</strong></Card.Title>
+                    <Card.Title>{t("feeParts value")}: <strong>${Fund.sharePrice}</strong></Card.Title>
                     <Container fluid className="px-0">
                         <Row className="d-flex justify-content-between">
                             <Col md="auto">

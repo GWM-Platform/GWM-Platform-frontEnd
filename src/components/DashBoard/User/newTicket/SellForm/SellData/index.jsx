@@ -51,12 +51,12 @@ const SellData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAc
                                     "Please, select a fund to sell"
                                     :
                                     data.shares === "" ?
-                                        t("You must enter how many feeparts you want to sell")
+                                        t("You must enter how many feeParts you want to sell")
                                         :
                                         data.shares < 1 ?
                                             t("At least you must sell 1 feepart")
                                             :
-                                            t("You are trying to sell") + t(" ") + data.shares + " " + t("feeparts, equivalent to") + t(" $") +
+                                            t("You are trying to sell") + t(" ") + data.shares + " " + t("feeParts, equivalent to") + t(" $") +
                                             (data.shares * Funds[data.FundSelected].fund.sharePrice).toFixed(2) + t(", but you only have") + t(" ") + Funds[data.FundSelected].shares + t(" ") + t("in position.")
                             }
                         </Form.Control.Feedback>
@@ -65,7 +65,7 @@ const SellData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAc
                                 data.FundSelected === -1 ?
                                     t("Please, select a fund to sell")
                                     :
-                                    t("Selling") + t(" ") + data.shares + t(" ") + t("feeparts from the fund") + t(" \"") + Funds[data.FundSelected].fund.name + t("\"") +
+                                    t("Selling") + t(" ") + data.shares + t(" ") + t("feeParts from the fund") + t(" \"") + Funds[data.FundSelected].fund.name + t("\"") +
                                     t(", equivalent to $") + (data.shares * Funds[data.FundSelected].fund.sharePrice).toFixed(2)
                             }
                         </Form.Control.Feedback>

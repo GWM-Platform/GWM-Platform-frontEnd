@@ -15,7 +15,7 @@ const Movement = ({ content }) => {
     <tr>
       <td className="tableDate">{momentDate.format('DD/MM/YYYY, h:mm a')}</td>
       <td className={`tableConcept ${ content.stateId===3 ? 'text-red' : 'text-green'}`}>{t(getMoveStateById(content.stateId).name)}</td>
-      <td className={`tableConcept ${Math.sign(content.shares) === 1 ? 'text-green' : 'text-red'}`}><span>{Math.sign(content.shares) === 1 ? t('Purchase of') : t('Sale of')}{" "}</span><span ></span>{Math.abs(content.shares)} {t("FeeParts")}</td>
+      <td className={`tableConcept ${Math.sign(content.shares) === 1 ? 'text-green' : 'text-red'}`}><span>{Math.sign(content.shares) === 1 ? t('Purchase of') : t('Sale of')}{" "}</span><span ></span>{Math.abs(content.shares)} {t("feeParts")}</td>
       <td className="tableDescription d-none d-sm-table-cell ">${content.sharePrice}</td>
       <td className={`tableAmount ${Math.sign(content.shares) === 1 ? 'text-green' : 'text-red'}`}><span>{Math.sign(content.shares) === 1 ? '+' : '-'}</span><span >$</span>{(Math.abs(content.shares) * content.sharePrice).toFixed(2)}</td>
     </tr>

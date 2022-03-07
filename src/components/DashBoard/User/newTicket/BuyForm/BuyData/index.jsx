@@ -78,7 +78,7 @@ const BuyData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAcc
                                     t("Please, select a fund to buy")
                                     :
                                     t("You are trying to invest") + " $" + data.amount + t(", with you could buy") + t(" ") +
-                                    (data.amount / Funds[data.FundSelected].sharePrice).toFixed(2) + " " + t("feeparts") + "."
+                                    (data.amount / Funds[data.FundSelected].sharePrice).toFixed(2) + " " + t("feeParts") + "."
                             }
                         </Form.Control.Feedback>
                     </InputGroup>

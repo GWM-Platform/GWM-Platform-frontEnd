@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row } from 'react-bootstrap'
 import StateSelector from './StateSelector'
 import Message from './Message'
-import Transactions from './Tables'
+import Tables from './Tables'
 import './index.css'
 const TicketsAdministration = () => {
 
@@ -20,14 +20,14 @@ const TicketsAdministration = () => {
         }, {
             message: "couldn't fetch sell/purchase tickets, try again later",
             needSpinner: false
-        },{
+        }, {
             message: "There are no sell/purchase tickets in the state selected",
             needSpinner: false
         }
         , {
             message: "couldn't fetch retire tickets, try again later",
             needSpinner: false
-        },{
+        }, {
             message: "There are no retire tickets in the state selected",
             needSpinner: false
         }
@@ -120,8 +120,8 @@ const TicketsAdministration = () => {
                                 <Message selected={2} messageVariants={messageVariants} />
                                 :
                                 <>
-                                <StateSelector handleChange={handleChange} TransactionStates={TransactionStates} />
-                                <Transactions state={TransactionStates.selected} messageVariants={messageVariants}/>
+                                    <StateSelector handleChange={handleChange} TransactionStates={TransactionStates} />
+                                    <Tables state={TransactionStates.selected} messageVariants={messageVariants} />
                                 </>
                 }
             </Row>

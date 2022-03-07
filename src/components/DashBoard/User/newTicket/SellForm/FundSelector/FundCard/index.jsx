@@ -26,7 +26,7 @@ const FundCard = ({ Fund, ownKey, data, setData, setSome, some, openAccordion })
                 onClick={() => { setFundSelected(data, setData, ownKey, setSome, some, openAccordion) }}>
                 <Card.Header><strong className="title">{Fund.fund.name}</strong></Card.Header>
                 <Card.Body>
-                    <Card.Title> {t("Obtained FeeParts")}{": "} <strong>{(Fund.shares).toFixed(2)}</strong></Card.Title>
+                    <Card.Title> {t("Obtained feeParts")}{": "} <strong>{(Fund.shares).toFixed(2)}</strong></Card.Title>
                     <Card.Title> {t("In cash")}{": "} <strong>${(Fund.fund.sharePrice * Fund.shares).toFixed(2)}</strong></Card.Title>
                     <Container fluid className="px-0">
                         <Row className="d-flex justify-content-between">

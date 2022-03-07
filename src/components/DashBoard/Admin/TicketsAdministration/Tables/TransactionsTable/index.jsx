@@ -1,18 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Table, Col } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next';
 import TransactionRow from './TransactionRow'
-import TableControls from '../../../../TableControls'
 
 const TransactionsTable = ({ UsersInfo, FundInfo, transactions, state, reloadData }) => {
     const { t } = useTranslation();
-    const [InScreenTransactions, setInScreenTransactions] = useState(5)
 
-    useEffect(() => {
-        setInScreenTransactions(5)
-    }, [transactions])
-    
+
     return (
         <Col xs="12">
             <h1 className="title">{t("Purchase and sale tickets")}:</h1>
@@ -24,8 +19,8 @@ const TransactionsTable = ({ UsersInfo, FundInfo, transactions, state, reloadDat
                             <th >{t("Client")}</th>
                             <th >{t("Concept")}</th>
                             <th >{t("Fund name")}</th>
-                            <th >{t("Shares")}</th>
-                            <th >{t("Share Price")}</th>
+                            <th >{t("FeeParts")}</th>
+                            <th >{t("FeePart Price")}</th>
                             <th >{t("Created at")}</th>
                             {
                                 state === 1 || state === "1" ? <th >{t("Action")}</th> : null
@@ -34,18 +29,14 @@ const TransactionsTable = ({ UsersInfo, FundInfo, transactions, state, reloadDat
                     </thead>
                     <tbody>
                         {
-                            transactions.map((transaction, key) => {
-                                return key < InScreenTransactions ?
-                                    <TransactionRow UsersInfo={UsersInfo} FundInfo={FundInfo}
-                                        reloadData={reloadData} key={key} Transaction={transaction} state={state} />
-                                    :
-                                    null
-                            })
+                            transactions.map((transaction, key) =>
+                                <TransactionRow UsersInfo={UsersInfo} FundInfo={FundInfo}
+                                    reloadData={reloadData} key={key} Transaction={transaction} state={state} />
+                            )
                         }
                     </tbody>
                 </Table>
-                <TableControls InScreen={InScreenTransactions} content={transactions} state={state}
-                            setInScreen={setInScreenTransactions}/>
+
             </div>
         </Col>
     )

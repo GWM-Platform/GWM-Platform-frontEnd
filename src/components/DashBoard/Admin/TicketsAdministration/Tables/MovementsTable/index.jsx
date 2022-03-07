@@ -1,17 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Table, Col } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next';
 import MovementRow from './MovementRow'
-import TableControls from '../../../../TableControls'
 
 const MovementsTable = ({ AccountInfo, UsersInfo, movements, state, reloadData }) => {
     const { t } = useTranslation();
-    const [InScreenMovements, setInScreenMovements] = useState(5)
-
-    useEffect(() => {
-        setInScreenMovements(5)
-    }, [movements])
 
     return (
         <Col xs="12">
@@ -31,18 +25,13 @@ const MovementsTable = ({ AccountInfo, UsersInfo, movements, state, reloadData }
                     </thead>
                     <tbody>
                         {
-                            movements.map((movement, key) => {
-                                return key < InScreenMovements ?
+                            movements.map((movement, key) => 
                                     <MovementRow AccountInfo={AccountInfo} UsersInfo={UsersInfo}
                                         reloadData={reloadData} key={key} Movement={movement} state={state} />
-                                    :
-                                    null
-                            })
+                            )
                         }
                     </tbody>
                 </Table>
-                <TableControls InScreen={InScreenMovements} content={movements} state={state}
-                            setInScreen={setInScreenMovements} />
             </div>
 
         </Col>

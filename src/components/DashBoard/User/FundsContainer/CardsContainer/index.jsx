@@ -62,7 +62,7 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
     return (
         <Container className="px-0 d-flex justify-content-center FundsContainerWidth cardsContainer p-relative">
             <Row ref={FundsContainer}
-                className={`d-flex align-items-stretch ${Funds.length + PendingWithoutpossession.length < 3 ? "justify-content-center" : ""}
+                className={`d-flex align-items-stretch mx-0 w-100 ${Funds.length + PendingWithoutpossession.length < 3 ? "justify-content-center" : ""}
                 w-100 g-1 g-sm-5 pb-2 flex-wrap flex-sm-nowrap overflow-hidden `}>
                 {Accounts.map((account, key) => {
                     return (
