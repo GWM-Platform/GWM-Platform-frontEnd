@@ -76,27 +76,6 @@
     background-color: transparent;
     box-shadow: inset 0 -1px 0 rgb(0 0 0 / 13%);
 }
-
-.arrow{
-    font-size: 30px;
-    position:absolute;
-    width: auto;
-    transform: translateY(-50%);
-    top:50%;
-    cursor:initial;
-    opacity:0;
-    transition: opacity 1s;
-}
-.arrow.opacity-1{
-    opacity:1;
-    cursor:pointer;
-}
-.right{
-    right:0;
-}
-.left{
-    left:0;
-}
 .currency-input{
     padding:1rem
 }

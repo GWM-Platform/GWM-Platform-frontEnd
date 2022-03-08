@@ -15,6 +15,7 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
     const [showRightChevron, setShowRightChevron] = useState(true)
     const [showLeftChevron, setShowLeftChevron] = useState(false)
     const [Hide, setHide] = useState(false)
+    const [Pinned, setPinned] = useState(true)
 
     //For scrolling
     const FundsContainer = createRef()
@@ -38,8 +39,8 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
             })
             let maxOffset = Funds.length + PendingWithoutpossession.length + 1 - CardWidth
             let toSetOffset = offset > maxOffset ? maxOffset : offset
-            setShowRightChevron(toSetOffset!==maxOffset)
-            setShowLeftChevron(toSetOffset!==0)
+            setShowRightChevron(toSetOffset !== maxOffset)
+            setShowLeftChevron(toSetOffset !== 0)
             setOffset(toSetOffset)
         }
     }
@@ -62,41 +63,38 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
     return (
         <Container className="px-0 d-flex justify-content-center FundsContainerWidth cardsContainer p-relative">
             <Row ref={FundsContainer}
-                className={`d-flex align-items-stretch mx-0 w-100 ${Funds.length + PendingWithoutpossession.length < 3 ? "justify-content-center" : ""}
-                w-100 g-1 g-sm-5 pb-2 flex-wrap flex-sm-nowrap overflow-hidden `}>
-                {Accounts.map((account, key) => {
-                    return (
-                        <CashCard PendingTransactions={PendingTransactions} key={key} Hide={Hide} setHide={setHide} Fund={account} />
-                    )
-                })
+                className={`d-flex align-items-stretch mx-0 w-100 
+                ${Funds.length + PendingWithoutpossession.length < 3 ?
+                        "justify-content-center" : ""}
+                 pb-2 flex-wrap flex-sm-nowrap overflow-hidden `}>
+                {Accounts.map((account, key) =>
+                    <CashCard Pinned={Pinned} setPinned={setPinned}
+                        PendingTransactions={PendingTransactions} key={key} Hide={Hide} setHide={setHide} Fund={account} />
+                )
                 }
                 {
-                    Funds.map((j, k) => {
-                        return (
-                            <FundCard Hide={Hide} setHide={setHide} key={k} PendingTransactions={PendingTransactions}
-                                setItemSelected={setItemSelected} Funds={Funds} Fund={j} />
-                        )
-                    }
+                    Funds.map((j, k) =>
+                        <FundCard Hide={Hide} setHide={setHide} key={k} PendingTransactions={PendingTransactions}
+                            setItemSelected={setItemSelected} Funds={Funds} Fund={j} />
+
+
                     )
                 }
                 {
-                    PendingWithoutpossession.map((j, k) => {
-                        return (
-                            <FundCard Hide={Hide} setHide={setHide} key={k} PendingTransactions={PendingTransactions}
-                                setItemSelected={setItemSelected} Funds={Funds} Fund={j} />
-                        )
-                    }
+                    PendingWithoutpossession.map((j, k) =>
+                        <FundCard Hide={Hide} setHide={setHide} key={k} PendingTransactions={PendingTransactions}
+                            setItemSelected={setItemSelected} Funds={Funds} Fund={j} />
                     )
                 }
             </Row>
             <div className={`arrow  right d-none d-sm-block
                                 ${Funds.length + PendingWithoutpossession.length > 2 && showRightChevron ? "opacity-1" : ""}`}
-                onClick={() => {if(showRightChevron)setScrollPositionByOffset(Offset+1)}}>
+                onClick={() => { if (showRightChevron) setScrollPositionByOffset(Offset + 1) }}>
                 <FontAwesomeIcon icon={faChevronRight} />
             </div>
             <div className={` arrow left d-none d-sm-block
                                 ${Funds.length + PendingWithoutpossession.length > 2 && showLeftChevron ? "opacity-1" : ""}`}
-                onClick={() => {if(showLeftChevron) setScrollPositionByOffset(Offset-1)}}>
+                onClick={() => { if (showLeftChevron) setScrollPositionByOffset(Offset - 1) }}>
                 <FontAwesomeIcon icon={faChevronLeft} />
             </div>
             <Indicators

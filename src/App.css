@@ -89,7 +89,9 @@
 .secondaryColor {
 	background-color: var(--secondary-color);
 }
-
+.opacity-0{
+	opacity:0!important
+}
 .p-relative {
 	position: relative;
 }
@@ -195,7 +197,7 @@ body {
 .hideInfoButton .icon.shown {
 	position: absolute;
 	transform: rotate3d(0, 1, 0, 0deg);
-	transition: 0.4s transform 0.4s;
+	transition: 0.4s transform 0.4s,all 0.3s;
 }
 .spinner-border {
 	border: 1px solid currentColor;

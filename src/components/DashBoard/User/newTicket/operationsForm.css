@@ -83,26 +83,6 @@
     background-color: var(--blue-main)!important;
     filter: drop-shadow(0px 0px 5px black);
 }
-.arrow{
-    font-size: 30px;
-    position:absolute;
-    width: auto;
-    transform: translateY(-50%);
-    top:50%;
-    cursor:initial;
-    opacity:0;
-    transition: opacity 1s;
-}
-.arrow.opacity-1{
-    opacity:1;
-    cursor:pointer;
-}
-.right{
-    right:0;
-}
-.left{
-    left:0;
-}
 .currency-input{
     padding:1rem
 }
