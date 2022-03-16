@@ -4,7 +4,7 @@ import { Container, Row } from 'react-bootstrap'
 import ViewAndDeleteFunds from './ViewAndDeleteFunds'
 import EditFunds from './EditFunds'
 import CreateFunds from './CreateFunds'
-import Loading from './Loading'
+import Loading from 'components/DashBoard/Admin/Loading'
 import './index.css'
 
 

@@ -32,6 +32,7 @@ import DepositCashToClient from './Admin/DepositCashToClient';
 import OperationStatusAdmin from './Admin/OperationStatus';
 import Loading from './Loading';
 import AccountsSupervision from './Admin/AccountsSupervision';
+import APL from './Admin/APL'
 
 const UserDashBoard = () => {
 
@@ -60,6 +61,9 @@ const UserDashBoard = () => {
                                         <div className={`adminContainer tabContent`}>
                                             <Route path={`${path}/addAccount`}>
                                                 <AddAccount />
+                                            </Route>
+                                            <Route path={`${path}/APL`}>
+                                                <APL />
                                             </Route>
                                             <Route path={`${path}/accountsSupervision`}>
                                                 <AccountsSupervision />

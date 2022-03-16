@@ -65,6 +65,11 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) =>
                                                 onClick={() => { goTo("AssetsAdministration") }}>
                                                 {t("Assets")}
                                             </NavDropdown.Item>
+                                            <NavDropdown.Item
+                                                active={itemSelected === "APL"}
+                                                onClick={() => { goTo("APL") }}>
+                                                {t("APL")}
+                                            </NavDropdown.Item>
                                         </NavDropdown>
                                         <Nav.Link
                                             className="px-2"
