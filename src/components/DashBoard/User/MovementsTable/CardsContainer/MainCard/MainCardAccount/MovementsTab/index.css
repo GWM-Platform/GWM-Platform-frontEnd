@@ -45,23 +45,14 @@
     overflow-y: overlay;
     overflow-x:auto;
     width: 100%;
-    min-height: calc( 100vh - 367px  );
 }
 
 .tableMovements {
     min-height: calc( 100vh - 424px - 52px )
 }
-.tableMovements.navInfoToggled {
-    min-height: calc( 100vh - 424px - 52px + 76px )
-}
 
 
-.movementsTableContainer-navInfoToggled {
-    min-height: calc( 100vh - 367px  + 76px );
-    overflow: auto;
-    display: inline-block;
-    width: 100%;
-}
+
 .movementsTable-navInfoToggled {
     overflow: auto;
     width: 100%;
@@ -142,9 +133,6 @@
     }
     .cardTextMain {
         height: calc(100vh - 130px);
-    }
-    .movementsTable {
-        max-height: none;
     }
     .movementsTableAccounts {
         max-height: none;

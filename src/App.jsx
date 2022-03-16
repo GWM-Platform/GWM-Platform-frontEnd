@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react'
-import { DashboardProvider } from './context/dashboardContext';
+import { DashBoardProvider } from 'context/DashBoardContext';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
-import Landing from './components/Landing';
-import Containerlogin from './components/Containerlogin';
-import ContainerForgotPassword from './components/ContainerForgotPassword';
-import ContainerChangePassword from './components/ContainerChangePassword';
-import ContainerVerifyAccount from './components/ContainerVerifyAccount';
-import DashBoard from './components/DashBoard';
-import NotFound from './components/NotFound';
-import SetPassword from './components/SetPassword';
+import Landing from 'components/Landing';
+import Containerlogin from 'components/Containerlogin';
+import ContainerForgotPassword from 'components/ContainerForgotPassword';
+import ContainerChangePassword from 'components/ContainerChangePassword';
+import ContainerVerifyAccount from 'components/ContainerVerifyAccount';
+import DashBoard from 'components/DashBoard';
+import NotFound from 'components/NotFound';
+import SetPassword from 'components/SetPassword';
 import { useTranslation } from "react-i18next";
 import './App.css';
 
@@ -58,11 +58,11 @@ function App() {
             <SetPassword />
           </Route>
 
-          <DashboardProvider>
-            <Route path="/dashboard">
+          <DashBoardProvider>
+            <Route path="/DashBoard">
               <DashBoard />
             </Route>
-          </DashboardProvider>
+          </DashBoardProvider>
 
           <Route>
             <NotFound />

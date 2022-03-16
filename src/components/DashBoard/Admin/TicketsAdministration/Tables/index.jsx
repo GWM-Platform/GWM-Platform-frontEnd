@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Message from '../Message'
 import TransactionsTable from './TransactionsTable'
 import MovementsTable from './MovementsTable'
-import PaginationController from '../../../PaginationController';
+import PaginationController from 'components/DashBoard/PaginationController';
 
 
 const Transactionslist = ({ state, messageVariants }) => {
@@ -280,7 +280,7 @@ const Transactionslist = ({ state, messageVariants }) => {
                         !Transactions.valid ?
                             <Message selected={3} messageVariants={messageVariants} />
                             :
-                            Transactions.values.length === 0 ?
+                            Transactions.values.total === 0 ?
                                 <Message selected={4} messageVariants={messageVariants} />
                                 :
                                 <>
@@ -302,7 +302,7 @@ const Transactionslist = ({ state, messageVariants }) => {
                         !Movements.valid ?
                             <Message selected={5} messageVariants={messageVariants} />
                             :
-                            Movements.values.movements.length === 0 ?
+                            Movements.values.total === 0 ?
                                 <Message selected={6} messageVariants={messageVariants} />
                                 :
                                 <>

@@ -1,3 +1,6 @@
+.HistoryCardsContainer {
+	overflow-x: clip;
+}
 .HistoryCardsContainer .CategoryLabel {
 	font-size: 30px;
 	margin-top: 0.5rem;
@@ -6,7 +9,7 @@
 	margin-bottom: 1rem;
 	min-height: calc(27.59px + 34.84px);
 	border-bottom: 1px solid;
-	display:flex;
+	display: flex;
 	align-items: center;
 }
 .HistoryCardsContainer .CategoryLabel .title {
@@ -18,7 +21,7 @@
 }
 .collapser {
 	position: absolute;
-	top: calc( ( 100vh - 206px ) / 2 );
+	top: calc( (100vh - 206px) / 2);
 	right: 5px;
 	transform: translateY(-50%);
 	font-size: 30px;
@@ -36,20 +39,32 @@
 	animation: 1s bounceExpanded ease 2;
 }
 
-.movementsCardMobile:first-of-type{
-    margin-top: 10%;
+.movementsCardMobile:first-of-type {
+	margin-top: 10%;
 }
-.movementsCardMobile{
+.movementsCardMobile {
 	border-color: var(--blue-main);
-    margin-left: 2%;
-    margin-right: 2%;
-    margin-bottom:10%;
-    border-radius: 30px;
+	margin-left: 2%;
+	margin-right: 2%;
+	margin-bottom: 10%;
+	border-radius: 30px;
 }
-.movementsCardMobile .card-header{
-    border-radius: 30px 30px 0 0;
-    background-color: var(--blue-main);
-    color: white;
+.movementsCardMobile .card-header {
+	border-radius: 30px 30px 0 0;
+	background-color: var(--blue-main);
+	color: white;
+}
+
+.movementsMainCardAccount,
+.movementsMainCardFund {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+.movementsMainCardAccount .historyContent,
+.movementsMainCardFund .historyContent {
+	flex-grow: 1;
+	margin-bottom: .5rem;
 }
 
 @keyframes bounce {
@@ -79,7 +94,8 @@
 		overflow-y: auto;
 		background-color: aliceblue;
 		transition: all 1.5s;
-        transform-origin:right
+		transform-origin: right;
+		max-height: calc(100vh - (45px + 45px + 76px + 40px));
 	}
 	.secondaryCardContainer.collapsed {
 		overflow-x: hidden;
@@ -88,15 +104,15 @@
 		transition: all 1.5s;
 	}
 	.collapser {
+		top: 50%;
 		position: fixed;
-        transition:all 1s;
+		transition: all 1s;
 	}
 	.collapser.expanded {
 		top: 50%;
 		right: 0px;
 		transform: translateY(-50%)rotate(180deg);
-        transition:all 1.8s;
-
+		transition: all 1.8s;
 	}
 	.collapser.collapsed {
 		transform: translateY(-50%);

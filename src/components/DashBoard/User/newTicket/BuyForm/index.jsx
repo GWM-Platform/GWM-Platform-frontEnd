@@ -9,12 +9,12 @@ import FundSelector from './FundSelector'
 import BuyData from './BuyData'
 import Loading from '../Loading';
 import NoFunds from '../NoFunds';
-import { dashboardContext } from '../../../../../context/dashboardContext';
+import { DashBoardContext } from 'context/DashBoardContext';
 import ActionConfirmationModal from './ActionConfirmationModal';
 
 const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
 
-    const { token, ClientSelected, contentReady, Accounts } = useContext(dashboardContext);
+    const { token, ClientSelected, contentReady, Accounts } = useContext(DashBoardContext);
 
     function useQuery() {
         const { search } = useLocation();
@@ -53,7 +53,7 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
 
         if (response.status === 201) {
             balanceChanged()
-            history.push(`/dashboard/operationResult`);
+            history.push(`/DashBoard/operationResult`);
         } else {
             switch (response.status) {
                 case 500:
@@ -140,37 +140,39 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
     }
 
     return (
-        <div className={`d-flex flex-column ${NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}`}>
-            <Container className="h-100" >
-                <Row className="newTicket h-100 growAnimation">
-                    {
-                        FetchingFunds || !contentReady ?
-                            <Loading />
-                            :
-                            Funds.length > 0 ?
-                                <Col xs="12">
-                                    <Accordion flush defaultActiveKey="0">
-                                        <FundSelector openAccordion={openAccordion} Account={Accounts[0]}
-                                            Funds={Funds} data={data} setData={setData} />
-                                    </Accordion>
-                                    <Accordion flush activeKey={CollapsedFields ? "-1" : "0"}>
-                                        <BuyData
-                                            handleSubmit={handleSubmit} validated={validated}
-                                            handleChange={handleChange} Funds={Funds} data={data}
-                                            toggleAccordion={toggleAccordion} Balance={Accounts[0].balance} fetching={fetching} />
-                                    </Accordion>
-                                </Col>
+        <div className="tabContent">
+            <div className={`d-flex flex-column h-100`}>
+                <Container className="h-100" >
+                    <Row className="newTicket h-100 growAnimation">
+                        {
+                            FetchingFunds || !contentReady ?
+                                <Loading />
                                 :
-                                <NoFunds />
-                    }
-                </Row>
-            </Container>
-            {
-                data.FundSelected !== -1 && contentReady ?
-                    <ActionConfirmationModal fetching={fetching} setShowModal={setShowModal} show={ShowModal} action={buy} data={data} Funds={Funds} Balance={Accounts[0].balance} />
-                    :
-                    null
-            }
+                                Funds.length > 0?
+                                    <Col xs="12">
+                                        <Accordion flush defaultActiveKey="0">
+                                            <FundSelector openAccordion={openAccordion} Account={Accounts[0]}
+                                                Funds={Funds} data={data} setData={setData} />
+                                        </Accordion>
+                                        <Accordion flush activeKey={CollapsedFields ? "-1" : "0"}>
+                                            <BuyData
+                                                handleSubmit={handleSubmit} validated={validated}
+                                                handleChange={handleChange} Funds={Funds} data={data}
+                                                toggleAccordion={toggleAccordion} Balance={Accounts[0].balance} fetching={fetching} />
+                                        </Accordion>
+                                    </Col>
+                                    :
+                                    <NoFunds />
+                        }
+                    </Row>
+                </Container>
+                {
+                    data.FundSelected !== -1 && contentReady ?
+                        <ActionConfirmationModal fetching={fetching} setShowModal={setShowModal} show={ShowModal} action={buy} data={data} Funds={Funds} Balance={Accounts[0].balance} />
+                        :
+                        null
+                }
+            </div>
         </div>
 
     )

@@ -5,14 +5,14 @@ import './index.css'
 
 import { Navbar, Row, Container, Col } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next';
-import { dashboardContext } from '../../../../context/dashboardContext';
+import { DashBoardContext } from 'context/DashBoardContext';
 import ClientSelector from './ClientSelector';
 
 
 const NavBarInfo = ({ NavInfoToggled }) => {
 
     const { t } = useTranslation();
-    const { ClientSelected } = useContext(dashboardContext)
+    const { ClientSelected } = useContext(DashBoardContext)
 
     return (
         <Navbar className={`${NavInfoToggled ? "toggled" : ""} py-0 navBarInfo d-flex justify-content-center`} collapseOnSelect expand="lg" variant="dark">

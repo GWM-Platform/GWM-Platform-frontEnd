@@ -48,7 +48,7 @@ const DepositCashToClient = () => {
         })
 
         if (response.status === 201) {
-            history.push(`/dashboard/operationResult`);
+            history.push(`/DashBoard/operationResult`);
         } else {
             switch (response.status) {
                 case 500:
@@ -196,7 +196,7 @@ const DepositCashToClient = () => {
     return (
         <Container className="h-100 AssetsAdministration">
             <Row className="h-100 d-flex justify-content-center">
-                <Col className="newTicket h-100 growAnimation" xs="12">
+                <Col className="newTicket h-100 growAnimation" sm="12" md="9">
                     <h1>{t("Deposit Cash to an Account")}</h1>
                     <Form noValidate validated={validated} onSubmit={handleSubmit}>
                         <Form.Label>{t("Select the account to which cash will be deposited")}</Form.Label>

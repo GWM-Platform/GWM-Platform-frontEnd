@@ -3,12 +3,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Dropdown,Col } from 'react-bootstrap'
 import './index.css'
 import "flag-icon-css/css/flag-icon.min.css"
-import { dashboardContext } from '../../../../../context/dashboardContext';
+import { DashBoardContext } from 'context/DashBoardContext';
 import { useTranslation } from "react-i18next";
 
 const ClientSelector = () => {
     const { t } = useTranslation();
-    const { UserClients, IndexClientSelected, setIndexClientSelected, ClientSelected, admin } = useContext(dashboardContext)
+    const { UserClients, IndexClientSelected, setIndexClientSelected, ClientSelected, admin } = useContext(DashBoardContext)
 
     return ((admin && UserClients.length > 0) || (!admin && ClientSelected && UserClients.length > 1) ?
         <Dropdown className="d-block d-md-none clientSelector">

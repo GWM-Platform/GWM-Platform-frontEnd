@@ -28,7 +28,7 @@ const DepositForm = ({ NavInfoToggled,balanceChanged }) => {
         })
 
         if (response.status === 201) {
-            history.push(`/dashboard/operationResult`);
+            history.push(`/DashBoard/operationResult`);
             balanceChanged()
         } else {
             switch (response.status) {
@@ -63,7 +63,8 @@ const DepositForm = ({ NavInfoToggled,balanceChanged }) => {
     }
 
     return (
-        <Container className={NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}>
+<div className="tabContent">
+        <Container className="h-100">
             <Row className="newTicket h-100 growAnimation">
                 <Col xs="12">
                     <DepositData
@@ -72,6 +73,7 @@ const DepositForm = ({ NavInfoToggled,balanceChanged }) => {
                 </Col>
             </Row>
         </Container>
+        </div>
     )
 }
 export default DepositForm

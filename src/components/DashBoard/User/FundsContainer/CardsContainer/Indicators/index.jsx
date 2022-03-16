@@ -6,7 +6,7 @@ import Indicator from './Indicator'
 
 const Indicators = ({ cardsAmount,offset=0,inScreenFunds,setScrollPositionByOffset }) => {
     return (
-        <Row className={`indicators justify-content-center g-0 ${cardsAmount>inScreenFunds ? "d-flex" : "d-none"}`}>
+        <Row className={`indicators justify-content-center g-0 d-none ${cardsAmount>inScreenFunds ? "d-sm-flex" : "d-sm-none"}`}>
             <Container>
                 <Row className="gx-1">
                     {[...Array(cardsAmount)].map((x, i) =>

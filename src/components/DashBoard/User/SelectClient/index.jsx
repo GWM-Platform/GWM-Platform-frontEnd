@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { dashboardContext } from "../../../../context/dashboardContext";
+import { DashBoardContext } from "context/DashBoardContext";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
@@ -10,7 +10,7 @@ import Client from './Client';
 import './index.css'
 
 const SelectClient = () => {
-    const { UserClients, setIndexClientSelected } = useContext(dashboardContext);
+    const { UserClients, setIndexClientSelected } = useContext(DashBoardContext);
     const { t } = useTranslation()
     const [ClientToAccess, setClientToAccess] = useState(-1)
 
@@ -20,7 +20,7 @@ const SelectClient = () => {
         setRemember(event.target.checked)
     }
 
-    const toDashboard = () => {
+    const toDashBoard = () => {
         if(remember){
             localStorage.setItem(UserClients[0].alias,ClientToAccess)
         }
@@ -54,8 +54,8 @@ const SelectClient = () => {
                                 />
                             </div>
                             <div className="w-100 d-flex justify-content-end">
-                                <Button className="mt-2 toDashboard" onClick={() => toDashboard()} disabled={ClientToAccess === -1} variant="danger" >
-                                    {t("To dashboard")}
+                                <Button className="mt-2 toDashBoard" onClick={() => toDashBoard()} disabled={ClientToAccess === -1} variant="danger" >
+                                    {t("To DashBoard")}
                                     <FontAwesomeIcon className={`ms-2 chevron ${ClientToAccess !== -1 ? "show" : ""}`} icon={faChevronRight} />
                                 </Button>
                             </div>

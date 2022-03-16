@@ -1,14 +1,14 @@
-import React, { useState, useEffect,useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, Container, Col, Row } from 'react-bootstrap';
 import TableLastMovements from './TableLastMovements';
 import { useTranslation } from "react-i18next";
 import { useHistory } from 'react-router-dom'
-import { dashboardContext } from '../../../../../../../context/dashboardContext';
+import { DashBoardContext } from 'context/DashBoardContext';
 
 const MobileCard = ({ Fund }) => {
     // eslint-disable-next-line
-    const {token,ClientSelected} = useContext(dashboardContext);
+    const { token, ClientSelected } = useContext(DashBoardContext);
     const { t } = useTranslation();
     let history = useHistory();
     const [movements, setMovements] = useState([])
@@ -25,7 +25,7 @@ const MobileCard = ({ Fund }) => {
         const getMovements = async () => {
             var url = `${process.env.REACT_APP_APIURL}/movements/?` + new URLSearchParams({
                 client: ClientSelected.id,
-                filterAccont:Fund.id
+                filterAccont: Fund.id
             });
             setFetchingMovements(true)
             const response = await fetch(url, {
@@ -36,10 +36,17 @@ const MobileCard = ({ Fund }) => {
                     'Content-Type': 'application/json'
                 }
             })
-    
+
             if (response.status === 200) {
                 const data = await response.json()
-                setMovements(data.movements.sort(function (a, b) { return (a.createdAt > b.createdAt) ? -1 : ((a.createdAt < b.createdAt) ? 1 : 0); }))
+                setMovements(
+                    data.movements ?
+                        data.movements.sort((a, b) =>
+                            (a.createdAt > b.createdAt) ? -1 : ((a.createdAt < b.createdAt) ? 1 : 0)
+                        )
+                        :
+                        []
+                )
                 setFetchingMovements(false)
             } else {
                 switch (response.status) {
@@ -49,7 +56,7 @@ const MobileCard = ({ Fund }) => {
                 }
             }
         }
-        
+
         getMovements()
         // eslint-disable-next-line 
     }, [Fund])

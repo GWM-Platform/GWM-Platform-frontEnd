@@ -2,11 +2,11 @@ import React, { useContext, useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Accordion, Form, Row, Col, Button } from 'react-bootstrap';
 import { useTranslation } from "react-i18next";
-import { dashboardContext } from '../../../context/dashboardContext';
+import { DashBoardContext } from 'context/DashBoardContext';
 
 const FilterOptions = ({ Fund, movsPerPage, setPagination }) => {
     const { t } = useTranslation();
-    const { TransactionStates } = useContext(dashboardContext)
+    const { TransactionStates } = useContext(DashBoardContext)
     const [filterOptions, setFilterOptions] = useState({
         moves: movsPerPage,
         state: ""

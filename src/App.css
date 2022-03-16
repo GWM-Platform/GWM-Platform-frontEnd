@@ -1,10 +1,10 @@
 * {
-	--blue-main:#082044;
+	--blue-main: #082044;
 	/*General*/
 	--main-color: #082044;
 	--secondary-color: #1856b3;
 	/*Sections BG*/
-	--main-dashboard-bg: rgb(238, 238, 238);
+	--main-DashBoard-bg: rgb(238, 238, 238);
 	/*Text*/
 	--error: rgb(145, 85, 85);
 	--red: rgb(201, 44, 45);
@@ -14,9 +14,9 @@
 	--nav-info2: rgba(0, 0, 0, 1);
 
 	/*Footer*/
-	--footer-background: rgb(226,226,226);
+	--footer-background: rgb(226, 226, 226);
 	/*NavBar*/
-	--main-bg-nav-color: rgb(226,226,226);
+	--main-bg-nav-color: rgb(226, 226, 226);
 	--selected-underline-section-color: #b3b3b3;
 	--default-underline-section-color: #383838;
 	--text-nav-section-color: #e2e5ea;
@@ -64,9 +64,35 @@
 ::-webkit-scrollbar-thumb:hover {
 	opacity: #555;
 }
+html,
+body,
+#root,
+.App,
+.DashBoard{
+	height: 100%;
+	min-height: 100%;
+}
+.DashBoard {
+	display: flex;
+	flex-direction: column;
+}
+
+.navBarInfo,
+.navBarDesktop,
+.navBarTotal,
+.navBarFooter,
+.navBarMobile {
+	flex: none;
+}
+
+.tabContent {
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+	flex: auto;
+}
 
 .App {
-	background-color: rgb(248,248,248);
+	background-color: rgb(248, 248, 248);
 	background-repeat: no-repeat;
 	background-size: cover;
 }
@@ -89,8 +115,8 @@
 .secondaryColor {
 	background-color: var(--secondary-color);
 }
-.opacity-0{
-	opacity:0!important
+.opacity-0 {
+	opacity: 0 !important;
 }
 .p-relative {
 	position: relative;
@@ -197,7 +223,7 @@ body {
 .hideInfoButton .icon.shown {
 	position: absolute;
 	transform: rotate3d(0, 1, 0, 0deg);
-	transition: 0.4s transform 0.4s,all 0.3s;
+	transition: 0.4s transform 0.4s, all 0.3s;
 }
 .spinner-border {
 	border: 1px solid currentColor;
@@ -211,14 +237,14 @@ body {
 	animation: 1s growOpacity forwards;
 }
 
-.btn.btn-danger{
-	background-color: #1153e0!important;
-	border-color: #0b89f2!important;
-	transition: 0.5s all!important;
+.btn.btn-danger {
+	background-color: #1153e0 !important;
+	border-color: #0b89f2 !important;
+	transition: 0.5s all !important;
 }
-.btn.btn-danger:hover{
-	border-color: #1379e7!important;
-		background-color: #1379e7!important;
+.btn.btn-danger:hover {
+	border-color: #1379e7 !important;
+	background-color: #1379e7 !important;
 }
 
 @keyframes growOpacity {

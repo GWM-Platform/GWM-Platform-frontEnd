@@ -2,9 +2,9 @@ import React from 'react'
 import { createContext, useState, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
-export const dashboardContext = createContext();
+export const DashBoardContext = createContext();
 
-export const DashboardProvider = ({ children }) => {
+export const DashBoardProvider = ({ children }) => {
     const history = useHistory();
     let location = useLocation()
 
@@ -201,9 +201,10 @@ export const DashboardProvider = ({ children }) => {
 
             if (response.status === 200) {
                 const data = await response.json()
+
                 setPendingTransactions({
                     ...PendingTransactions, ...{
-                        value: data.transactions,
+                        value: data.transactions ? data.transactions : [],
                         fetched: true,
                         fetching: false
                     }
@@ -329,10 +330,10 @@ export const DashboardProvider = ({ children }) => {
     useEffect(() => {
         if (UserClients.length > 0 && IndexClientSelected >= 0) {
             setClientSelected(UserClients[IndexClientSelected])
-            history.push(`/dashboard/Accounts`);
+            history.push(`/DashBoard/Accounts`);
             setBalanceChanged(true)
         } else if (admin && IndexClientSelected === -1) {
-            history.push(`/dashboard/FundsAdministration`);
+            history.push(`/DashBoard/FundsAdministration`);
         }
 
     }, [history, UserClients, IndexClientSelected, admin]);
@@ -350,12 +351,12 @@ export const DashboardProvider = ({ children }) => {
         }
     }
 
-    return <dashboardContext.Provider
+    return <DashBoardContext.Provider
         value={{
             token, admin, UserClients, ClientSelected, IndexClientSelected, setIndexClientSelected, balanceChanged, setBalanceChanged, TransactionStates, getMoveStateById,
             FetchingFunds, contentReady, PendingWithoutpossession, PendingTransactions, Accounts, Funds, itemSelected, setItemSelected, isMobile, width
         }}>
         {children}
-    </dashboardContext.Provider>
+    </DashBoardContext.Provider>
 }
 

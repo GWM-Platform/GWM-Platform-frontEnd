@@ -3,11 +3,11 @@ import React, { useState, useEffect,useContext } from 'react';
 import CardsContainer from './CardsContainer';
 import { useTranslation } from "react-i18next";
 import { Spinner, Row, Container, Col } from 'react-bootstrap';
-import { dashboardContext } from '../../../../context/dashboardContext';
+import { DashBoardContext } from 'context/DashBoardContext';
 const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, NavInfoToggled, setNumberOfFunds }) => {
     const { t } = useTranslation();
 
-    const {FetchingFunds,Funds,Accounts,contentReady} = useContext(dashboardContext);
+    const {FetchingFunds,Funds,Accounts,contentReady} = useContext(DashBoardContext);
 
     const [error, setError] = useState("Loading Content");
 
@@ -25,7 +25,7 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, NavInfoToggl
     }, [Accounts, Funds, setNumberOfFunds, FetchingFunds,contentReady])
 
     return (
-        <Container fluid className={NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}>
+        <Container fluid className="tabContent">
             {
                 FetchingFunds || Funds.length + Accounts.length === 0 || !contentReady
                     ?

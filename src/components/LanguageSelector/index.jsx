@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
-import i18n from '../I18n';
+import i18n from 'components/I18n';
 import { Dropdown } from 'react-bootstrap'
 import './index.css'
 import "flag-icon-css/css/flag-icon.min.css"

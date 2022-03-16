@@ -13,8 +13,8 @@ const SetPassword = () => {
         sessionStorage.clear(); history.push(`/login`);
     }
 
-    const toDashboard = () => {
-        history.push(`/dashboard/accounts`);
+    const toDashBoard = () => {
+        history.push(`/DashBoard/accounts`);
     }
 
     const history = useHistory();
@@ -93,8 +93,8 @@ const SetPassword = () => {
                                         {t("Password, has been changed successfully.")}
                                     </h2>
                                     <Col xs="12" className="d-flex justify-content-center">
-                                        <Button variant="danger" onClick={() => toDashboard()} className='btn mainColor mt-4'>
-                                            {t("To dashboard")}
+                                        <Button variant="danger" onClick={() => toDashBoard()} className='btn mainColor mt-4'>
+                                            {t("To DashBoard")}
                                         </Button>
                                     </Col>
                                 </div>

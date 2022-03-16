@@ -15,8 +15,8 @@ const OperationStatus = ({setItemSelected,NavInfoToggled}) => {
         setItemSelected("")
     }, [setItemSelected])
     return (
-        <Container className="OperationStatus growAnimation">
-            <Row className={`${NavInfoToggled? "free-area-withoutNavInfo": "free-area"} d-flex align-items-center justify-content-center`}>
+        <Container className="OperationStatus h-100 growAnimation">
+            <Row className={`h-100 d-flex align-items-center justify-content-center`}>
                 <Col sm="auto">
                     <h1 className="statusIcon"><FontAwesomeIcon icon={faClock}/></h1>
                     <h1  className="title">{t("Ticket created successfully")}</h1>

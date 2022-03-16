@@ -55,6 +55,9 @@
 	color: var(--secondary-text-color);
 }
 @media (max-width: 992px) {
+	.secondaryCard{
+		border-radius: 0;
+	}
 	.secondaryCard > .secondary {
 		border-left: rgb(180, 200, 180) 0px solid;
 		border-top: rgb(180, 200, 180) 1px solid;

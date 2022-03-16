@@ -6,7 +6,7 @@ import FundCard from './FundCard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 import { useTranslation } from "react-i18next";
-import { dashboardContext } from '../../../../../../context/dashboardContext';
+import { DashBoardContext } from 'context/DashBoardContext';
 
 const FundSelector = ({ data, setData, some, setSome, Funds,openAccordion }) => {
     const { t } = useTranslation();
@@ -14,7 +14,7 @@ const FundSelector = ({ data, setData, some, setSome, Funds,openAccordion }) => 
     const [Offset, setOffset] = useState(0)
     const [showRightChevron, setShowRightChevron] = useState(true)
     const [showLeftChevron, setShowLeftChevron] = useState(false)
-    const { width } = useContext(dashboardContext)
+    const { width } = useContext(DashBoardContext)
 
     //For scrolling
     const FundsContainer = createRef()

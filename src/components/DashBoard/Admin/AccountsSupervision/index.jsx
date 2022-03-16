@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row } from 'react-bootstrap'
-import Loading from '../../User/MovementsTable/CardsContainer/MainCard/MainCardFund/MovementsTab/Loading';
+import Loading from 'components/DashBoard/User/MovementsTable/CardsContainer/MainCard/MainCardFund/MovementsTab/Loading';
 import AccountSelector from './AccountSelector';
 import SelectedAccountData from './AccountSelector/SelectedAccountData';
 

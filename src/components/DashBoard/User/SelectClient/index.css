@@ -54,16 +54,16 @@
 	color: var(--blue-main);
 }
 
-.ClientSelector .clientSelectorCard .toDashboard {
+.ClientSelector .clientSelectorCard .toDashBoard {
 	float: left;
 }
 
-.ClientSelector .clientSelectorCard .toDashboard .chevron{
+.ClientSelector .clientSelectorCard .toDashBoard .chevron{
 	max-width: 0;
 	overflow: hidden;
 	transition:1s ease
 }
-.ClientSelector .clientSelectorCard .toDashboard .chevron.show{
+.ClientSelector .clientSelectorCard .toDashBoard .chevron.show{
 	max-width: 100px;
 }
 

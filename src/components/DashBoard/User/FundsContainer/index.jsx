@@ -1,12 +1,12 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, { useContext, useEffect,useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import CardsContainer from './CardsContainer';
 import { useTranslation } from "react-i18next";
 import { Spinner, Row, Container, Col } from 'react-bootstrap';
-import { dashboardContext } from '../../../../context/dashboardContext';
+import { DashBoardContext } from 'context/DashBoardContext';
 const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFunds }) => {
 
-    const { FetchingFunds, contentReady, PendingWithoutpossession, PendingTransactions,Accounts,Funds } = useContext(dashboardContext);
+    const { FetchingFunds, contentReady, PendingWithoutpossession, PendingTransactions, Accounts, Funds } = useContext(DashBoardContext);
     const { t } = useTranslation();
 
     const [Mounted, setMounted] = useState(false);
@@ -14,11 +14,12 @@ const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFun
     useEffect(() => {
         setMounted(true)
     }, []);
-    
+
 
     return (
         <Container fluid
-            className={`accountParent px-0 ${NavInfoToggled ? "min-free-area-withoutNavInfo" : "min-free-area"} d-flex align-items-center`}>            {
+            className={`accountParent tabContent px-0  d-flex align-items-center`}>
+            {
                 FetchingFunds || !contentReady || !Mounted
                     ?
                     <Container fluid>

@@ -11,7 +11,7 @@ function Landing() {
 
 
     //When the app is opened, it checks if the user has a valid token in their local storage,
-    //if it is true, it is redirected to the dashboard, if not, it is redirected to login
+    //if it is true, it is redirected to the DashBoard, if not, it is redirected to login
     useEffect(() => {
 
         const toLogin = () => {

@@ -5,14 +5,14 @@ import { useTranslation } from "react-i18next";
 import { Navbar, Container, Col, Row, Spinner } from 'react-bootstrap';
 
 import './index.css'
-import { dashboardContext } from '../../../../context/dashboardContext';
+import { DashBoardContext } from 'context/DashBoardContext';
 
 const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
     const { t } = useTranslation();
 
     const [Balance, setBalance] = useState({ fetching: false, value: 0 })
 
-    const { token, ClientSelected, itemSelected,contentReady,Accounts } = useContext(dashboardContext)
+    const { token, ClientSelected, itemSelected,contentReady,Accounts } = useContext(DashBoardContext)
 
     const sectionsCashInAccount = ["buy", "withdraw","sell"]
 

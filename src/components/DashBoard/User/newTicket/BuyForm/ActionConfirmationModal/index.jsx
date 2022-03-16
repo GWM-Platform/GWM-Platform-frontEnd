@@ -5,11 +5,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheckCircle } from '@fortawesome/free-regular-svg-icons'
 import { Modal, Button } from 'react-bootstrap'
 import { useContext } from 'react';
-import { dashboardContext } from '../../../../../../context/dashboardContext';
+import { DashBoardContext } from 'context/DashBoardContext';
 
 const ActionConfirmationModal = ({ setShowModal, show, action, data, Funds, Balance,fetching }) => {
     const { t } = useTranslation();
-    const { ClientSelected } = useContext(dashboardContext)
+    const { ClientSelected } = useContext(DashBoardContext)
     const handleClose = () => {
         setShowModal(false)
     }

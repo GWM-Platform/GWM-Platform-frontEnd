@@ -11,7 +11,7 @@ import NavBarTotal from './NavBars/NavBarTotal';
 import Footer from './Footer';
 
 //Context
-import { dashboardContext } from '../../context/dashboardContext';
+import { DashBoardContext } from 'context/DashBoardContext';
 
 //User
 import FundsContainer from './User/FundsContainer'
@@ -33,9 +33,9 @@ import OperationStatusAdmin from './Admin/OperationStatus';
 import Loading from './Loading';
 import AccountsSupervision from './Admin/AccountsSupervision';
 
-const UserDashboard = () => {
+const UserDashBoard = () => {
 
-    const { isMobile,admin, ClientSelected, balanceChanged, setBalanceChanged, itemSelected, setItemSelected, IndexClientSelected, UserClients } = useContext(dashboardContext);
+    const { isMobile, admin, ClientSelected, balanceChanged, setBalanceChanged, itemSelected, setItemSelected, IndexClientSelected, UserClients } = useContext(DashBoardContext);
 
     const { path } = useRouteMatch()
     const [NavInfoToggled, setNavInfoToggled] = useState(false)
@@ -45,19 +45,19 @@ const UserDashboard = () => {
     }, [ClientSelected])
 
     return (
-        <div className="dashboard" style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/backGround/background.jpg)` }}>
+        <div className="DashBoard growOpacity" style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/backGround/background.jpg)` }}>
             {
-                IndexClientSelected >= 0 || admin || UserClients.length === 1  ?
+                IndexClientSelected >= 0 || admin || UserClients.length === 1 ?
                     UserClients.length > 0 || admin ?
                         ClientSelected.id || admin ?
-                            <div className="growOpacity">
+                            <>
                                 <NavInfo NavInfoToggled={NavInfoToggled} />
                                 <NavBar NavInfoToggled={NavInfoToggled} setNavInfoToggled={setNavInfoToggled}
                                     setItemSelected={setItemSelected} itemSelected={itemSelected}
-                                     />
+                                />
                                 {
                                     admin && IndexClientSelected === -1 ?
-                                        <div className={`adminContainer ${NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}`}>
+                                        <div className={`adminContainer tabContent`}>
                                             <Route path={`${path}/addAccount`}>
                                                 <AddAccount />
                                             </Route>
@@ -83,17 +83,15 @@ const UserDashboard = () => {
                                         :
                                         <>
                                             <NavBarTotal balanceChanged={balanceChanged} setBalanceChanged={setBalanceChanged} />
-                                            {
-                                                <Route path={`${path}/accounts`}>
-                                                    <FundsContainer
-                                                        NavInfoToggled={NavInfoToggled}
-                                                        isMobile={isMobile}
-                                                        setItemSelected={setItemSelected}
-                                                        numberOfFunds={numberOfFunds}
-                                                        setNumberOfFunds={setNumberOfFunds}
-                                                    />
-                                                </Route>
-                                            }
+                                            <Route path={`${path}/accounts`}>
+                                                <FundsContainer
+                                                    NavInfoToggled={NavInfoToggled}
+                                                    isMobile={isMobile}
+                                                    setItemSelected={setItemSelected}
+                                                    numberOfFunds={numberOfFunds}
+                                                    setNumberOfFunds={setNumberOfFunds}
+                                                />
+                                            </Route>
                                             <Route path={`${path}/history`}>
                                                 <MovementsTable
                                                     isMobile={isMobile}
@@ -122,7 +120,7 @@ const UserDashboard = () => {
                                 }
                                 <Footer />
                                 <NavBarMobile setItemSelected={setItemSelected} itemSelected={itemSelected} />
-                            </div>
+                            </>
                             :
                             <Loading />
                         :
@@ -136,4 +134,4 @@ const UserDashboard = () => {
         </div>
     )
 }
-export default UserDashboard
+export default UserDashBoard

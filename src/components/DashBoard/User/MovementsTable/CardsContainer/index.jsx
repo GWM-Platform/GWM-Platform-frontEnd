@@ -31,26 +31,24 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, selected, setSelected,
         <Row className="HistoryCardsContainer d-flex align-items-stretch flex-md-nowrap ">
             {isMobile ?
                 Accounts.length >= 1 || Funds.length >= 1 ?
-                    <>
-                        <Col md="12" className="ps-2 ps-sm-2 ps-md-2 ps-md-0 ps-lg-0 pe-2 pt-0 growAnimation" >
-                            {Accounts.map(
-                                (j, k) => {
-                                    ;
-                                    return (
-                                        <MobileCardAccount Fund={j} />
-                                    )
-                                }
-                            )}
-                            {Funds.map(
-                                (j, k) => {
-                                    ;
-                                    return (
-                                        <MobileCardFound Fund={j} />
-                                    )
-                                }
-                            )}
-                        </Col>
-                    </>
+                    <Col md="12" className="ps-2 ps-sm-2 ps-md-2 ps-md-0 ps-lg-0 pe-2 pt-0 growAnimation" >
+                        {Accounts.map(
+                            (j, k) => {
+                                ;
+                                return (
+                                    <MobileCardAccount Fund={j} />
+                                )
+                            }
+                        )}
+                        {Funds.map(
+                            (fund, key) => {
+                                ;
+                                return (
+                                    <MobileCardFound key={key} Fund={fund} />
+                                )
+                            }
+                        )}
+                    </Col>
                     :
                     <Col className="h-100">
                         <h1>{t("Your user doesn't have any account")}</h1>
@@ -58,7 +56,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, selected, setSelected,
                 :
                 numberOfFunds > 1 ?
                     <>
-                        <Col className="h-100 px-2 p-relative mainCardCol growAnimation"
+                        <Col className="px-2 p-relative mainCardCol growAnimation"
                             md="12"
                             lg={collapseSecondary ? "12" : "8"}
                             xl={collapseSecondary ? "12" : "9"} >
@@ -84,8 +82,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, selected, setSelected,
                         <Col sm="4" md="4" lg="4" xl="3"
                             className={
                                 `secondaryCardContainer growAnimation
-                                ${NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}
-                                ${collapseSecondary ? "collapsed" : "expanded"} p-relative px-0 pe-2 pt-0 h-100`
+                                ${collapseSecondary ? "collapsed" : "expanded"} px-0 pe-2 pt-0 h-100`
                             }>
                             {
                                 Accounts.length > 0 ?

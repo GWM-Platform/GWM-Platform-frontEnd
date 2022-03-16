@@ -61,7 +61,7 @@ i18n
           "a capital letter": "una letra mayúscula",
           "a symbol": "un símbolo",
           "The fields \"password\" and \"confirm password\" don't match": "Los campos \"contraseña\" y \"confirmar contraseña\" no coinciden",
-          //Translation for dashboard
+          //Translation for DashBoard
           "Loading Content": "Cargando Contenido",
           "Your user don't have any account": "Su usuario no dispone de ninguna cuenta",
           "Account": "Usuario",
@@ -397,7 +397,7 @@ i18n
           "All": "Todos",
           "Filter Options": "Opciones de filtrado",
           "Remember my choice": "Recuerda mi elección",
-          "To dashboard": "Ir al panel",
+          "To DashBoard": "Ir al panel",
           "Available Cash": "Dinero Disponible",
           "Change account": "Cambiar cuenta",
           "Withdrawing": "Retirando",

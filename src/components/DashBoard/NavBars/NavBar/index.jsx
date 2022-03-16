@@ -7,16 +7,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSignOutAlt, faChevronCircleUp } from '@fortawesome/free-solid-svg-icons'
 
 import { useTranslation } from "react-i18next";
-import { dashboardContext } from '../../../../context/dashboardContext';
+import { DashBoardContext } from 'context/DashBoardContext';
 
-import LanguageSelector from '../../../LanguageSelector';
+import LanguageSelector from 'components/LanguageSelector';
 import ClientSelector from './ClientSelector';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css'
 
 const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) => {
-    const { admin, IndexClientSelected, UserClients } = useContext(dashboardContext)
+    const { admin, IndexClientSelected, UserClients } = useContext(DashBoardContext)
 
     const { t } = useTranslation();
 

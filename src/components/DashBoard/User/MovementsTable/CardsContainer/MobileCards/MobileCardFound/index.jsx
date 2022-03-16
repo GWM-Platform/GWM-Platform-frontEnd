@@ -1,15 +1,15 @@
-import React, { useState, useEffect,useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, Container, Col, Row } from 'react-bootstrap';
 import TableLastMovements from './TableLastMovements';
 import { useTranslation } from "react-i18next";
 import { useHistory } from 'react-router-dom'
-import { dashboardContext } from '../../../../../../../context/dashboardContext';
+import { DashBoardContext } from 'context/DashBoardContext';
 
 const MobileCard = ({ setItemSelected, isMobile, className, Fund }) => {
     // eslint-disable-next-line
 
-    const {token,ClientSelected} = useContext(dashboardContext);
+    const { token, ClientSelected } = useContext(DashBoardContext);
     const { t } = useTranslation();
     let history = useHistory();
     const [movements, setMovements] = useState([])
@@ -26,7 +26,7 @@ const MobileCard = ({ setItemSelected, isMobile, className, Fund }) => {
             setFetchingMovements(true)
             var url = `${process.env.REACT_APP_APIURL}/transactions/?` + new URLSearchParams({
                 client: ClientSelected.id,
-                filterFund:Fund.fundId
+                filterFund: Fund.fundId
             });
             const response = await fetch(url, {
                 method: 'GET',
@@ -39,7 +39,12 @@ const MobileCard = ({ setItemSelected, isMobile, className, Fund }) => {
 
             if (response.status === 200) {
                 const data = await response.json()
-                setMovements(data.transactions.sort(function (a, b) { return (a.createdAt > b.createdAt) ? -1 : ((a.createdAt < b.createdAt) ? 1 : 0); }))
+                setMovements(
+                    data.transactions ?
+                        data.transactions.sort((a, b) => (a.createdAt > b.createdAt) ? -1 : ((a.createdAt < b.createdAt) ? 1 : 0))
+                        :
+                        []
+                )
             } else {
                 switch (response.status) {
                     default:

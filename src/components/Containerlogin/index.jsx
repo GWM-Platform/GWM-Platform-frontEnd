@@ -10,7 +10,7 @@ const ContainerLogin = () => {
   let history = useHistory();
 
   const toDashBoard = (path) => {
-    history.push(`/dashboard/${path}`);
+    history.push(`/DashBoard/${path}`);
   }
 
   const toSetPassword= () => {

@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../operationsForm.css'
 
 import { Container, Row, Col } from 'react-bootstrap'
-import { dashboardContext } from '../../../../../context/dashboardContext';
+import { DashBoardContext } from 'context/DashBoardContext';
 import WithdrawData from './WithdrawData'
 import Loading from '../Loading';
 import ActionConfirmationModal from './ActionConfirmationModal';
@@ -15,7 +15,7 @@ const WithdrawForm = ({ NavInfoToggled, balanceChanged }) => {
     const [validated, setValidated] = useState(true);
     const [fetching, setFetching] = useState(false)
 
-    const { token, Accounts, contentReady } = useContext(dashboardContext);
+    const { token, Accounts, contentReady } = useContext(DashBoardContext);
 
     let history = useHistory();
 
@@ -35,7 +35,7 @@ const WithdrawForm = ({ NavInfoToggled, balanceChanged }) => {
 
         if (response.status === 201) {
             balanceChanged()
-            history.push(`/dashboard/operationResult`);
+            history.push(`/DashBoard/operationResult`);
         } else {
             switch (response.status) {
                 case 500:
@@ -70,7 +70,7 @@ const WithdrawForm = ({ NavInfoToggled, balanceChanged }) => {
     }
 
     return (
-        <div className={`d-flex flex-column ${NavInfoToggled ? "free-area-withoutNavInfo" : "free-area"}`}>
+        <div className={`d-flex flex-column h-100`}>
             <Container className="h-100">
                 <Row className="newTicket h-100 growAnimation">
                     {

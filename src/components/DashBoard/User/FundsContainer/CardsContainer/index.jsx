@@ -5,17 +5,17 @@ import FundCard from './FundCard';
 import CashCard from './CashCard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
-import { dashboardContext } from '../../../../../context/dashboardContext';
+import { DashBoardContext } from 'context/DashBoardContext';
 import Indicators from './Indicators'
 const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions, PendingWithoutpossession }) => {
-    const { width } = useContext(dashboardContext)
+    const { width } = useContext(DashBoardContext)
 
     const [CardWidth, setCardWidth] = useState(false)
     const [Offset, setOffset] = useState(0)
     const [showRightChevron, setShowRightChevron] = useState(true)
     const [showLeftChevron, setShowLeftChevron] = useState(false)
     const [Hide, setHide] = useState(false)
-    const [Pinned, setPinned] = useState(true)
+    const [Pinned, setPinned] = useState(false)
 
     //For scrolling
     const FundsContainer = createRef()
@@ -68,7 +68,8 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
                         "justify-content-center" : ""}
                  pb-2 flex-wrap flex-sm-nowrap overflow-hidden `}>
                 {Accounts.map((account, key) =>
-                    <CashCard Pinned={Pinned} setPinned={setPinned}
+                    <CashCard cardsAmount={Funds.length + PendingWithoutpossession.length + 1}
+                    inScreenFunds={CardWidth} Pinned={Pinned} setPinned={setPinned}
                         PendingTransactions={PendingTransactions} key={key} Hide={Hide} setHide={setHide} Fund={account} />
                 )
                 }

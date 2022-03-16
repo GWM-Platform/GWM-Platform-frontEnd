@@ -7,12 +7,12 @@ import TableLastMovements from './TableLastMovements';
 import NoMovements from './NoMovements';
 import Loading from './Loading';
 import { useHistory } from 'react-router-dom';
-import { dashboardContext } from '../../../../../../../../context/dashboardContext';
-import PaginationController from '../../../../../../PaginationController'
-import FilterOptions from '../../../../../../FilterOptions'
+import { DashBoardContext } from 'context/DashBoardContext';
+import PaginationController from 'components/DashBoard/PaginationController'
+import FilterOptions from 'components/DashBoard/FilterOptions'
 
 const MovementsTab = ({ Fund, NavInfoToggled }) => {
-    const { token, ClientSelected } = useContext(dashboardContext);
+    const { token, ClientSelected } = useContext(DashBoardContext);
     const history = useHistory();
 
     const [Movements, setMovements] = useState({ movements: 0, total: 0 })
@@ -84,10 +84,10 @@ const MovementsTab = ({ Fund, NavInfoToggled }) => {
 
     return (
 
-        <div className="p-0 mb-2">
+        <div className="p-0 h-100">
             <div className="d-flex align-items-start justify-content-center flex-column MovementsTableContainer">
-                <div className={NavInfoToggled ? "movementsTable-navInfoToggled growAnimation" : "movementsTable growAnimation"}>
-                <FilterOptions Fund={Fund} setPagination={setPagination} movsPerPage={Pagination.take} total={Movements.total} />
+                <div className={`movementsTable growAnimation`}>
+                    <FilterOptions Fund={Fund} setPagination={setPagination} movsPerPage={Pagination.take} total={Movements.total} />
                     {
                         FetchingMovements ?
                             <Loading NavInfoToggled={NavInfoToggled} />
