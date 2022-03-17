@@ -53,7 +53,7 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) =>
                                     <>
 
                                         <NavDropdown
-                                            active={itemSelected === "fundsAdministration" || itemSelected === "FundsAdministration" || itemSelected === "assetsAdministration" || itemSelected === "AssetsAdministration"}
+                                            active={itemSelected === "APL" || itemSelected === "fundsAdministration" || itemSelected === "FundsAdministration" || itemSelected === "assetsAdministration" || itemSelected === "AssetsAdministration"}
                                             className="px-0 transactionDropdown" title={t("Funds Administration")} id="collasible-nav-dropdown">
                                             <NavDropdown.Item
                                                 active={itemSelected === "fundsAdministration" || itemSelected === "FundsAdministration"}

@@ -12,7 +12,7 @@ const FundSelector = ({ SelectedFund, setSelectedFund, Funds }) => {
 
     return (
         <>
-            <Form.Select className="mt-2" value={SelectedFund} onChange={handleChange} >
+            <Form.Select className="my-2" value={SelectedFund} onChange={handleChange} >
                 <option disabled value="">{t("Open this select menu")}</option>
                 {Funds.map((Fund, key) =>
                     <option key={key} value={key}>

@@ -4,14 +4,13 @@ import { Table, Col } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next';
 import MovementRow from './MovementRow'
 
-const MovementsTable = ({ AccountInfo, UsersInfo, movements, state, reloadData }) => {
+const MovementsTable = ({ AccountInfo, UsersInfo, movements, state, reloadData, take }) => {
     const { t } = useTranslation();
 
     return (
         <Col xs="12">
-            <h1 className="title">{t("Withdrawal tickets")}:</h1>
-            <div style={{ overflowX: "auto" }}>
-                <Table className="TicketsTable table table-striped table-bordered table-hover growAnimation mb-0">
+            <div style={{ overflowX: "auto",minHeight: `calc( .5rem + ( 0.5rem * 2 + 25.5px ) * ${take + 1} )` }}>
+                <Table className="TicketsTable table table-striped table-bordered table-hover growAnimation mb-0 mt-2">
                     <thead className="tableHeader solid-bg">
                         <tr>
                             <th >{t("#id")}</th>
@@ -25,15 +24,14 @@ const MovementsTable = ({ AccountInfo, UsersInfo, movements, state, reloadData }
                     </thead>
                     <tbody>
                         {
-                            movements.map((movement, key) => 
-                                    <MovementRow AccountInfo={AccountInfo} UsersInfo={UsersInfo}
-                                        reloadData={reloadData} key={key} Movement={movement} state={state} />
+                            movements.map((movement, key) =>
+                                <MovementRow AccountInfo={AccountInfo} UsersInfo={UsersInfo}
+                                    reloadData={reloadData} key={key} Movement={movement} state={state} />
                             )
                         }
                     </tbody>
                 </Table>
             </div>
-
         </Col>
     )
 }

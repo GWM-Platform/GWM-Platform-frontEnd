@@ -4,13 +4,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useHistory } from 'react-router-dom';
 import { DashBoardContext } from 'context/DashBoardContext';
 import TableLastMovements from './TableLastMovements';
-//import MovementsPagination from './MovementsPagination';
-import NoMovements from './NoMovements';
-import Loading from './Loading';
-import PaginationController from 'components/DashBoard/PaginationController'
-import FilterOptions from 'components/DashBoard/FilterOptions'
+import NoMovements from 'components/DashBoard/GeneralUse/NoMovements';
+import Loading from 'components/DashBoard/GeneralUse/Loading';
+import PaginationController from 'components/DashBoard/GeneralUse/PaginationController'
+import FilterOptions from 'components/DashBoard/GeneralUse/FilterOptions'
 
-const MovementsTab = ({ Fund, NavInfoToggled, setPerformance }) => {
+const MovementsTab = ({ Fund, setPerformance }) => {
     const history = useHistory();
     const { token, ClientSelected } = useContext(DashBoardContext)
 
@@ -18,6 +17,7 @@ const MovementsTab = ({ Fund, NavInfoToggled, setPerformance }) => {
         transactions: 0,
         total: 0,//Total of movements with the filters applied
     })
+
     const [FetchingMovements, setFetchingMovements] = useState(true);
 
     const [Pagination, setPagination] = useState({
@@ -25,7 +25,6 @@ const MovementsTab = ({ Fund, NavInfoToggled, setPerformance }) => {
         take: 5,//Movements per page
         state: null
     })
-
 
     const toLogin = () => {
         sessionStorage.clear(); history.push(`/login`);
@@ -38,7 +37,7 @@ const MovementsTab = ({ Fund, NavInfoToggled, setPerformance }) => {
             Object.fromEntries(Object.entries(
                 {
                     client: ClientSelected.id,
-                    filterFund: Fund.id,
+                    filterFund: Fund.fund.id,
                     take: Pagination.take,
                     skip: Pagination.skip,
                     filterState: Pagination.state
@@ -90,17 +89,18 @@ const MovementsTab = ({ Fund, NavInfoToggled, setPerformance }) => {
                     <FilterOptions Fund={Fund} setPagination={setPagination} movsPerPage={Pagination.take} total={Movements.total} />
                     {
                         FetchingMovements ?
-                            <Loading NavInfoToggled={NavInfoToggled} />
+                            <Loading movements={Pagination.take}
+                            />
                             :
                             Movements.total > 0 ?
                                 <TableLastMovements
                                     content={Movements.transactions}
                                     Fund={Fund}
-                                    NavInfoToggled={NavInfoToggled}
                                     setPerformance={setPerformance}
+                                    movements={Pagination.take}
                                 />
                                 :
-                                <NoMovements NavInfoToggled={NavInfoToggled} />
+                                <NoMovements movements={Pagination.take} />
                     }
                     {
                         Movements.total > 0 ?

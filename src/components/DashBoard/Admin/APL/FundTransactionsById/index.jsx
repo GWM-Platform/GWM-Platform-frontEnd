@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useTranslation } from "react-i18next";
-import { Table } from 'react-bootstrap'
-import TransactionRow from './TransactionRow'
-import PaginationController from 'components/DashBoard/PaginationController';
+import PaginationController from 'components/DashBoard/GeneralUse/PaginationController';
+import TransactionsTable from './TransactionsTable';
+import FilterOptions from 'components/DashBoard/GeneralUse/FilterOptions';
+import NoMovements from 'components/DashBoard/GeneralUse/NoMovements';
+import Loading from 'components/DashBoard/GeneralUse/Loading';
 
 const TransactionFundTable = ({ Id }) => {
-    const { t } = useTranslation();
-
     const [Transactions, setTransactions] = useState({
         fetching: true,
         fetched: false,
@@ -34,7 +33,6 @@ const TransactionFundTable = ({ Id }) => {
             var url = `${process.env.REACT_APP_APIURL}/transactions/?` + new URLSearchParams(
                 Object.fromEntries(Object.entries(
                     {
-                        client: "all",
                         filterFund: Id,
                         take: Pagination.take,
                         skip: Pagination.skip,
@@ -68,21 +66,16 @@ const TransactionFundTable = ({ Id }) => {
 
     return (
         <>
-            <Table id="tabletransactions" striped bordered hover className="mt-3 mb-auto m-0" >
-                <thead >
-                    <tr>
-                        <th className="tableHeader">{t("Date")}</th>
-                        <th className="d-none d-sm-table-cell">{t("Concept")}</th>
-                        <th className="tableDescription d-none d-sm-table-cell">{t("Share value")}</th>
-                        <th className="tableAmount">{t("Amount")}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {Transactions.content.transactions.map((transaction, key) =>
-                        <TransactionRow key={key} transaction={transaction} />
-                    )}
-                </tbody>
-            </Table>
+            <FilterOptions Fund={Id} setPagination={setPagination} movsPerPage={Pagination.take} total={Transactions.content.total} />
+            {
+                Transactions.fetching ?
+                    <Loading movements={Pagination.take} />
+                    :
+                    Transactions.content.total > 0 ?
+                        <TransactionsTable movements={Pagination.take} Transactions={Transactions} />
+                        :
+                        <NoMovements movements={Pagination.take} />
+            }
             <PaginationController PaginationData={Pagination} setPaginationData={setPagination} total={Transactions.content.total} />
         </>
     )

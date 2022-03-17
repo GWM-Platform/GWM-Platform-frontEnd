@@ -407,7 +407,8 @@ i18n
           "APL feeParts": "Cuotapartes APL",
           "FeeParts": "Cuotapartes",
           "FeePart Price": "Precio de la cuotaparte",
-          "Go to details":"Ir a detalles"
+          "Go to details":"Ir a detalles",
+          "pending":"pendientes"
         }
       }
     }

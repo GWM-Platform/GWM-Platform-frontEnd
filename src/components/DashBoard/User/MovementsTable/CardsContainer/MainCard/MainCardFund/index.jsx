@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Col, Nav } from 'react-bootstrap';
 
+import { DashBoardContext } from 'context/DashBoardContext';
 import { useTranslation } from "react-i18next";
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -14,10 +15,13 @@ import './index.css'
 const MainCard = ({ Fund, Hide, setHide, NavInfoToggled }) => {
     const [SelectedTab, setSelectedTab] = useState("0")
     const [Performance, setPerformance] = useState(0)
-
+    const {PendingTransactions}=useContext(DashBoardContext)
     const { t } = useTranslation();
 
-    const balanceInCash = (Fund.shares * Fund.fund.sharePrice)
+    const balanceInCash = Fund.shares ? (Fund.shares * Fund.fund.sharePrice) : 0
+    const pendingfeeParts = PendingTransactions.value.filter((transaction) => transaction.fundId === Fund.fund.id && Math.sign(transaction.shares) === +1).map((transaction) => transaction.shares).reduce((a, b) => a + b, 0).toFixed(2)
+
+    console.log(pendingfeeParts)
 
     return (
         <div className="movementsMainCardFund growAnimation mt-2">
@@ -35,7 +39,7 @@ const MainCard = ({ Fund, Hide, setHide, NavInfoToggled }) => {
                 </div>
                 <div>
                     <h2 className="px-2 left">
-                        {Fund.shares}{" "}{t("feeParts in possession")}
+                        {Fund.shares ? Fund.shares : 0}{" "}{t("feeParts in possession")},{' '}{ pendingfeeParts ? pendingfeeParts : 0}{" "}{t("pending")}
                     </h2>
                 </div>
                 <div className="d-flex justify-content-between align-items-end pe-2 pb-2 border-bottom-main">

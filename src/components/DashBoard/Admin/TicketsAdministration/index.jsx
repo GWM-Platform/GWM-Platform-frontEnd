@@ -108,7 +108,7 @@ const TicketsAdministration = () => {
 
     return (
         <Container className="h-100 TicketsAdministration">
-            <Row>
+            <Row className="pb-2">
                 {
                     TransactionStates.fetching ?
                         <Message selected={0} messageVariants={messageVariants} />

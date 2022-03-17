@@ -69,7 +69,7 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
                  pb-2 flex-wrap flex-sm-nowrap overflow-hidden `}>
                 {Accounts.map((account, key) =>
                     <CashCard cardsAmount={Funds.length + PendingWithoutpossession.length + 1}
-                    inScreenFunds={CardWidth} Pinned={Pinned} setPinned={setPinned}
+                        inScreenFunds={CardWidth} Pinned={Pinned} setPinned={setPinned}
                         PendingTransactions={PendingTransactions} key={key} Hide={Hide} setHide={setHide} Fund={account} />
                 )
                 }

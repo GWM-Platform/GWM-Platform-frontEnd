@@ -4,15 +4,14 @@ import { Table, Col } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next';
 import TransactionRow from './TransactionRow'
 
-const TransactionsTable = ({ UsersInfo, FundInfo, transactions, state, reloadData }) => {
+const TransactionsTable = ({ UsersInfo, FundInfo, transactions, state, reloadData,take }) => {
     const { t } = useTranslation();
 
 
     return (
         <Col xs="12">
-            <h1 className="title">{t("Purchase and sale tickets")}:</h1>
-            <div style={{ overflowX: "auto" }}>
-                <Table className="TicketsTable table table-striped table-bordered table-hover growAnimation mb-0">
+            <div style={{ overflowX: "auto",minHeight: `calc( .5rem + ( 0.5rem * 2 + 25.5px ) * ${take + 1} )` }}>
+                <Table className="TicketsTable table table-striped table-bordered table-hover growAnimation mb-0 mt-2">
                     <thead className="tableHeader solid-bg">
                         <tr>
                             <th >{t("#id")}</th>

@@ -7,9 +7,12 @@ import { Modal, Button } from 'react-bootstrap'
 import { useContext } from 'react';
 import { DashBoardContext } from 'context/DashBoardContext';
 
-const ActionConfirmationModal = ({ setShowModal, show, action, data, Funds, Balance,fetching }) => {
+const ActionConfirmationModal = ({ setShowModal, show, action, data, Funds, Balance, fetching }) => {
+
     const { t } = useTranslation();
+
     const { ClientSelected } = useContext(DashBoardContext)
+
     const handleClose = () => {
         setShowModal(false)
     }
@@ -35,7 +38,7 @@ const ActionConfirmationModal = ({ setShowModal, show, action, data, Funds, Bala
                         <li className="listedInfo">
                             {t("Investing (in feeParts)")}:<span className="emphasis"> {(data.amount / Funds[data.FundSelected].sharePrice).toFixed(2)}</span>
                         </li>
-                        
+
                     </ul>
                 </div>
             </Modal.Body>

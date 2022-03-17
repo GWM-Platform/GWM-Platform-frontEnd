@@ -25,7 +25,11 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
     //If the user came from an specific fund, we use the query to auto select that one
     let fundId = parseInt(useQuery().get("fund"))
 
-    const [data, setData] = useState({ amount: "", FundSelected: -1 })
+    const [data, setData] = useState({
+        amount: "",
+        FundSelected: -1,
+        FundSelectedId:-1,
+     })
     const [ShowModal, setShowModal] = useState(false)
     const [fetching, setFetching] = useState(false)
     const [some, setSome] = useState(false)
@@ -38,9 +42,10 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
 
     const buy = async () => {
         setFetching(true)
-        var url = `${process.env.REACT_APP_APIURL}/funds/${Funds[data.FundSelected].id}/buy/?` + new URLSearchParams({
+        var url = `${process.env.REACT_APP_APIURL}/funds/${data.FundSelectedId}/buy/?` + new URLSearchParams({
             client: ClientSelected.id,
         });
+
         const response = await fetch(url, {
             method: 'POST',
             body: JSON.stringify({ amount: parseFloat(data.amount) }),
@@ -148,7 +153,7 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
                             FetchingFunds || !contentReady ?
                                 <Loading />
                                 :
-                                Funds.length > 0?
+                                Funds.length > 0 ?
                                     <Col xs="12">
                                         <Accordion flush defaultActiveKey="0">
                                             <FundSelector openAccordion={openAccordion} Account={Accounts[0]}

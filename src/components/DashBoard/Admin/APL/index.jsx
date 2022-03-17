@@ -47,7 +47,7 @@ const APL = () => {
     Funds.fetching ?
       <Loading />
       :
-      <Container>
+      <Container className="my-2">
         <Row className="d-flex justify-content-center">
           <Col md="12" lg="10">
             <FundSelector SelectedFund={SelectedFund} setSelectedFund={setSelectedFund} Funds={Funds.content} />

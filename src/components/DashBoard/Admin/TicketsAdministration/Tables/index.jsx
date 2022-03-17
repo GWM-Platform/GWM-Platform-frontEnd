@@ -3,10 +3,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Message from '../Message'
 import TransactionsTable from './TransactionsTable'
 import MovementsTable from './MovementsTable'
-import PaginationController from 'components/DashBoard/PaginationController';
-
+import PaginationController from 'components/DashBoard/GeneralUse/PaginationController';
+import Loading from 'components/DashBoard/GeneralUse/Loading';
+import NoMovements from 'components/DashBoard/GeneralUse/NoMovements';
+import { useTranslation } from 'react-i18next';
 
 const Transactionslist = ({ state, messageVariants }) => {
+
     const token = sessionStorage.getItem('access_token')
 
     const [Transactions, setTransactions] = useState({
@@ -18,6 +21,7 @@ const Transactionslist = ({ state, messageVariants }) => {
             total: 0
         }
     })
+
     const [PaginationTransactions, setPaginationTransactions] = useState({
         skip: 0,//Offset (in quantity of movements)
         take: 5,//Movements per page
@@ -43,6 +47,7 @@ const Transactionslist = ({ state, messageVariants }) => {
     const [FundInfo, SetFundInfo] = useState({ fetching: true, value: {} })
     const [AccountInfo, SetAccountInfo] = useState({ fetching: true, value: {} })
 
+    const { t } = useTranslation()
 
 
     const getAccounts = async () => {
@@ -127,10 +132,6 @@ const Transactionslist = ({ state, messageVariants }) => {
                 fetching: true,
                 fetched: false,
                 valid: false,
-                values: {
-                    movements: [],
-                    total: 0
-                }
             }
         })
         const response = await fetch(url, {
@@ -182,11 +183,7 @@ const Transactionslist = ({ state, messageVariants }) => {
             ...{
                 fetching: true,
                 fetched: false,
-                valid: false,
-                values: {
-                    movements: [],
-                    total: 0
-                }
+                valid: false
             }
         })
         const response = await fetch(url, {
@@ -273,48 +270,51 @@ const Transactionslist = ({ state, messageVariants }) => {
             <Message selected={0} messageVariants={messageVariants} />
             :
             <>
+                <h1 className="title">{t("Purchase and sale tickets")}:</h1>
                 {
                     Transactions.fetching ?
-                        <Message selected={0} messageVariants={messageVariants} />
+                        <Loading movements={PaginationMovements.take} />
                         :
                         !Transactions.valid ?
                             <Message selected={3} messageVariants={messageVariants} />
                             :
                             Transactions.values.total === 0 ?
-                                <Message selected={4} messageVariants={messageVariants} />
+                                <NoMovements movements={PaginationMovements.take} />
                                 :
                                 <>
-                                    <TransactionsTable UsersInfo={UsersInfo} FundInfo={FundInfo}
+                                    <TransactionsTable UsersInfo={UsersInfo} FundInfo={FundInfo} take={PaginationMovements.take}
                                         reloadData={reloadData} state={state} transactions={Transactions.values.transactions} />
-                                    {
-                                        Transactions.values.total > 0 ?
-                                            <PaginationController PaginationData={PaginationTransactions} setPaginationData={setPaginationTransactions} total={Transactions.values.total} />
-                                            :
-                                            null
-                                    }
                                 </>
 
                 }
                 {
+                    Transactions.values.total > 0 ?
+                        <PaginationController PaginationData={PaginationTransactions} setPaginationData={setPaginationTransactions} total={Transactions.values.total} />
+                        :
+                        null
+                }
+                <h1 className="title">{t("Withdrawal tickets")}:</h1>
+                {
                     Movements.fetching ?
-                        <Message selected={0} messageVariants={messageVariants} />
+                        <Loading movements={PaginationMovements.take} />
                         :
                         !Movements.valid ?
                             <Message selected={5} messageVariants={messageVariants} />
                             :
                             Movements.values.total === 0 ?
-                                <Message selected={6} messageVariants={messageVariants} />
+                                <NoMovements movements={PaginationMovements.take} />
                                 :
                                 <>
                                     <MovementsTable AccountInfo={AccountInfo} UsersInfo={UsersInfo}
-                                        reloadData={reloadData} state={state} movements={Movements.values.movements} />
-                                    {
-                                        Movements.values.total > 0 ?
-                                            <PaginationController PaginationData={PaginationMovements} setPaginationData={setPaginationMovements} total={Movements.values.total} />
-                                            :
-                                            null
-                                    }
+                                        reloadData={reloadData} state={state} take={PaginationMovements.take} movements={Movements.values.movements} />
+
                                 </>
+                }
+                {
+                    Movements.values.total > 0 ?
+                        <PaginationController PaginationData={PaginationMovements} setPaginationData={setPaginationMovements} total={Movements.values.total} />
+                        :
+                        null
                 }
             </>
 

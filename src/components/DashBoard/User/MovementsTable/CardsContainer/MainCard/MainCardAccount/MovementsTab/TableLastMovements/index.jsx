@@ -4,12 +4,13 @@ import { Table } from 'react-bootstrap';
 import Movement from './Movement';
 import { useTranslation } from "react-i18next";
 
-const TableLastMovements = ({ content, NavInfoToggled }) => {
+const TableLastMovements = ({ content, movements }) => {
     const { t } = useTranslation();
-   
+
     return (
-        <div  className={`tableMovements ${NavInfoToggled ? "navInfoToggled" : ""}`}>
-            <Table striped bordered hover className="mb-auto m-0" >
+        <div style={{ minHeight: `calc( ( 0.5rem * 2 + 25.5px ) * ${movements + 1} )` }}
+            className={`tableMovements`}>
+            <Table striped bordered hover className="mb-auto m-0  mt-2" >
                 <thead >
                     <tr>
                         <th className="tableHeader">{t("Date")}</th>

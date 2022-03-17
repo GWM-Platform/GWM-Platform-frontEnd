@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
 import { Table } from 'react-bootstrap'
 import TransactionRow from './TransactionRow'
-import TableControls from 'components/DashBoard/TableControls';
+import TableControls from 'components/DashBoard/GeneralUse/TableControls';
 
 const TransactionFundTable = ({ transactions }) => {
     const { t } = useTranslation();

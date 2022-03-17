@@ -4,12 +4,12 @@ import './index.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import TableLastMovements from './TableLastMovements';
 //import MovementsPagination from './MovementsPagination';
-import NoMovements from './NoMovements';
-import Loading from './Loading';
+import NoMovements from 'components/DashBoard/GeneralUse/NoMovements';
+import Loading from 'components/DashBoard/GeneralUse/Loading';
 import { useHistory } from 'react-router-dom';
 import { DashBoardContext } from 'context/DashBoardContext';
-import PaginationController from 'components/DashBoard/PaginationController'
-import FilterOptions from 'components/DashBoard/FilterOptions'
+import PaginationController from 'components/DashBoard/GeneralUse/PaginationController'
+import FilterOptions from 'components/DashBoard/GeneralUse/FilterOptions'
 
 const MovementsTab = ({ Fund, NavInfoToggled }) => {
     const { token, ClientSelected } = useContext(DashBoardContext);
@@ -90,14 +90,14 @@ const MovementsTab = ({ Fund, NavInfoToggled }) => {
                     <FilterOptions Fund={Fund} setPagination={setPagination} movsPerPage={Pagination.take} total={Movements.total} />
                     {
                         FetchingMovements ?
-                            <Loading NavInfoToggled={NavInfoToggled} />
+                            <Loading movements={Pagination.take} />
                             :
                             Movements.total > 0 ?
-                                <TableLastMovements
-                                    NavInfoToggled={NavInfoToggled}
+                                <TableLastMovements 
+                                movements={Pagination.take}
                                     content={Movements.movements} />
                                 :
-                                <NoMovements NavInfoToggled={NavInfoToggled} />
+                                <NoMovements movements={Pagination.take} />
                     }
                     {
                         Movements.total > 0 ?

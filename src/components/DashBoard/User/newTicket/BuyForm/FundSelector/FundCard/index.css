@@ -1,3 +1,7 @@
+.newTicket .FundCardContainer{
+	padding-left: 5px;
+}
+
 .newTicket .FundCardContainer .FundCard {
 	text-align: start;
 	transition: all 0.5s;
@@ -5,22 +9,28 @@
 
 .newTicket .FundCardContainer .FundCard:hover {
 	box-shadow: 0px 0px 5px var(--ticket-main-color);
-	cursor:pointer;
+	cursor: pointer;
 }
 
-.newTicket .FundCardContainer.fundSelected .FundCard{
+.newTicket .FundCardContainer.FundSelected .FundCard {
 	box-shadow: 0px 0px 5px var(--ticket-main-color);
 }
 
-
-.newTicket .FundCardContainer.FundDisabled{
-	order:1;
-	cursor:not-allowed;
+.newTicket .FundCardContainer:not(.FundDisabled) {
+	order: -1;
 }
 
-.newTicket .FundCardContainer.FundDisabled .FundCard{
+.newTicket .FundCardContainer.FundDisabled {
+	cursor: not-allowed;
+}
+
+.newTicket .FundCardContainer.FundDisabled:last-of-type{
+	padding-right: 0;
+}
+
+.newTicket .FundCardContainer.FundDisabled .FundCard {
 	pointer-events: none;
-	opacity:0.5;
+	opacity: 0.5;
 }
 
 .newTicket .FundCard .title {
@@ -34,4 +44,3 @@
 .newTicket .FundCard .card-body > .card-title {
 	font-weight: 400;
 }
-

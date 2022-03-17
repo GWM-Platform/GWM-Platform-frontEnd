@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
 import { Accordion, Table } from 'react-bootstrap'
 import MovementRow from './MovementRow'
-import TableControls from 'components/DashBoard/TableControls';
+import TableControls from 'components/DashBoard/GeneralUse/TableControls';
 const AccountMovements = ({ Movements }) => {
     const { t } = useTranslation();
     const [InScreenMovements, setInScreenMovements] = useState(5)

@@ -1,23 +1,32 @@
-import React, { useEffect } from 'react'
-import { useState } from 'react';
-import { Row, Col } from 'react-bootstrap';
+import React, { useEffect,useState,useContext } from 'react'
 import { useTranslation } from "react-i18next";
+import { Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
+
 import MainCardFund from './MainCard/MainCardFund';
 import MainCardAccount from './MainCard/MainCardAccount';
 
 import SecondaryCard from './SecondaryCard';
 import MobileCardFound from './MobileCards/MobileCardFound';
 import MobileCardAccount from './MobileCards/MobileCardAccount';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
+
+import { DashBoardContext } from 'context/DashBoardContext';
 
 import './index.css'
 
 const CardsContainer = ({ isMobile, Funds, numberOfFunds, selected, setSelected, NavInfoToggled, Accounts }) => {
+
     const [categorySelected, setCategorySelected] = useState(Accounts.length > 0 ? 0 : Funds.length > 0 ? 1 : 0)
     const [Hide, setHide] = useState(false)
     const [collapseSecondary, setCollapseSecondary] = useState(false)
+    
+    const { PendingWithoutpossession }=useContext(DashBoardContext)
+    const FundsWithPending = [...Funds,...PendingWithoutpossession]
+
+    console.log(FundsWithPending)
 
     const { t } = useTranslation();
 
@@ -63,7 +72,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, selected, setSelected,
                             {
                                 categorySelected === 1 ?
                                     <MainCardFund
-                                        Fund={Funds[selected]}
+                                        Fund={FundsWithPending[selected]}
                                         Hide={Hide} setHide={setHide}
                                         NavInfoToggled={NavInfoToggled}
                                     />
@@ -84,14 +93,12 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, selected, setSelected,
                                 `secondaryCardContainer growAnimation
                                 ${collapseSecondary ? "collapsed" : "expanded"} px-0 pe-2 pt-0 h-100`
                             }>
-                            {
-                                Accounts.length > 0 ?
-                                    <div className="CategoryLabel">
-                                        <h1 className="title">{t("Cash")}</h1>
-                                    </div>
-                                    :
-                                    null
-                            }
+                            {Accounts.length > 0 ?
+                                <div className="CategoryLabel">
+                                    <h1 className="title">{t("Cash")}</h1>
+                                </div>
+                                :
+                                null}
                             {Accounts.map(
                                 (Account, key) => {
                                     ;
@@ -105,16 +112,14 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, selected, setSelected,
                                         />
                                     )
                                 }
-                            )
-                            }
-                            {
-                                Funds.length > 0 ?
-                                    <div className="CategoryLabel">
-                                        <h1 className="title">{t("Funds")}</h1>
-                                    </div>
-                                    :
-                                    null}
-                            {Funds.map(
+                            )}
+                            {Funds.length > 0 ?
+                                <div className="CategoryLabel">
+                                    <h1 className="title">{t("Funds")}</h1>
+                                </div>
+                                :
+                                null}
+                            {FundsWithPending.map(
                                 (Fund, key) => {
                                     ;
                                     return (

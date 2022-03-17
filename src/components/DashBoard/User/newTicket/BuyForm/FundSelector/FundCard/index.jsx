@@ -16,16 +16,16 @@ const FundCard = ({ Fund, ownKey, data, setData, openAccordion, Account }) => {
 
     return (
         <Col xs="10" sm="3"
-            className={`py-1 growAnimation  FundCardContainer 
-        ${Fund.freeShares === 0 || Fund.sharePrice > Account.balance || Fund.sharePrice === 0 ? " FundDisabled" : ""}
-        ${data.FundSelected === ownKey ? " FundSelected" : ""} 
+            className={`py-1 pe-1 growAnimation FundCardContainer ${Fund.freeShares === 0 || Fund.sharePrice > Account.balance || Fund.sharePrice === 0 ? " FundDisabled" : ""
+                }${data.FundSelectedId === Fund.id ? " FundSelected" : ""
+                } 
         `}>
             <Card
                 ref={ref}
                 className={
                     `FundCard h-100`
                 }
-                onClick={() => { if (Fund.freeShares > 0) setFundSelected(setData, ownKey, openAccordion) }}>
+                onClick={() => { if (Fund.freeShares > 0) setFundSelected(setData, Fund.id, ownKey, openAccordion) }}>
                 <Card.Header><strong className="title">{Fund.name}</strong></Card.Header>
                 <Card.Body>
                     <Card.Title>{t("feeParts value")}: <strong>${Fund.sharePrice}</strong></Card.Title>
@@ -59,8 +59,8 @@ const FundCard = ({ Fund, ownKey, data, setData, openAccordion, Account }) => {
     )
 }
 
-const setFundSelected = (setData, ownKey, openAccordion) => {
-    setData((prevState) => ({ ...prevState, ...{ FundSelected: ownKey } }))
+const setFundSelected = (setData, id, key, openAccordion) => {
+    setData((prevState) => ({ ...prevState, ...{ FundSelected: key, FundSelectedId: id } }))
     openAccordion()
 }
 

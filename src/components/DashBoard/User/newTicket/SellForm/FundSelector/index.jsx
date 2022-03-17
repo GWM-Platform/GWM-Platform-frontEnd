@@ -1,4 +1,4 @@
-import React, { createRef, useState,useContext,useEffect } from 'react'
+import React, { createRef, useState, useContext, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { Row, Form, Accordion, Container } from 'react-bootstrap'
@@ -8,7 +8,7 @@ import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons
 import { useTranslation } from "react-i18next";
 import { DashBoardContext } from 'context/DashBoardContext';
 
-const FundSelector = ({ data, setData, some, setSome, Funds,openAccordion }) => {
+const FundSelector = ({ data, setData, some, setSome, Funds, openAccordion }) => {
     const { t } = useTranslation();
     const [CardWidth, setCardWidth] = useState(false)
     const [Offset, setOffset] = useState(0)
@@ -72,28 +72,32 @@ const FundSelector = ({ data, setData, some, setSome, Funds,openAccordion }) => 
             </Accordion.Header>
             <Accordion.Body>
                 <div className="formSection">
-                    <Row className="d-flex justify-content-center">
-                        <div className="p-relative">
-                            <Row className="flex-row flex-nowrap overflow-overlay overflow-sm-hidden" ref={FundsContainer}>
-                                {Funds.map((Fund, key) => {
-                                    return (
-                                        <FundCard openAccordion={openAccordion} key={key} ownKey={key} 
-                                        Fund={Fund} data={data} setData={setData} some={some} setSome={setSome} />
-                                    )
-                                })}
-                            </Row>
-                            <div className={`arrow  right d-none d-sm-block
+                    <Container fluid className="px-0">
+                        <Row className="mx-0 d-flex justify-content-center">
+                            <div className="p-relative px-0">
+                                <Container fluid className="px-0">
+                                    <Row className="mx-0 flex-row flex-nowrap overflow-auto overflow-sm-hidden FundCardsContainer" ref={FundsContainer}>
+                                        {Funds.map((Fund, key) => {
+                                            return (
+                                                <FundCard openAccordion={openAccordion} key={key} ownKey={key}
+                                                    Fund={Fund} data={data} setData={setData} some={some} setSome={setSome} />
+                                            )
+                                        })}
+                                    </Row>
+                                </Container>
+                                <div className={`arrow  right d-none d-sm-block
                                 ${Funds.length > 3 && showRightChevron ? "opacity-1" : ""}`}
-                                onClick={() => { if (showRightChevron) setScrollPositionByOffset(Offset + 1) }}>
-                                <FontAwesomeIcon icon={faChevronRight} />
-                            </div>
-                            <div className={` arrow left d-none d-sm-block
+                                    onClick={() => { if (showRightChevron) setScrollPositionByOffset(Offset + 1) }}>
+                                    <FontAwesomeIcon icon={faChevronRight} />
+                                </div>
+                                <div className={` arrow left d-none d-sm-block
                                 ${Funds.length > 3 && showLeftChevron ? "opacity-1" : ""}`}
-                                onClick={() => { if (showLeftChevron) setScrollPositionByOffset(Offset - 1) }}>
-                                <FontAwesomeIcon icon={faChevronLeft} />
+                                    onClick={() => { if (showLeftChevron) setScrollPositionByOffset(Offset - 1) }}>
+                                    <FontAwesomeIcon icon={faChevronLeft} />
+                                </div>
                             </div>
-                        </div>
-                    </Row>
+                        </Row>
+                    </Container>
                 </div>
             </Accordion.Body>
         </Accordion.Item>
