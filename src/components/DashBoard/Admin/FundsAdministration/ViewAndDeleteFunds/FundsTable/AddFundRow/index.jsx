@@ -23,7 +23,7 @@ const AddFundRow = ({ Action,setAction }) => {
                 </td>
                 <td className="verticalCenter Actions solid-bg" >
                     <div className="h-100 d-flex align-items-center justify-content-around">
-                        <div className="iconContainer green">
+                        <div className="iconContainer blue">
                             <button onClick={()=>setAction({...Action,...{action:1,fund:-1}})} className="noStyle">
                                 <FontAwesomeIcon className="icon" icon={faPlusCircle} />
                             </button>

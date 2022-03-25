@@ -7,9 +7,11 @@ import MovementRow from './MovementRow'
 const MovementsTable = ({ AccountInfo, UsersInfo, movements, state, reloadData, take }) => {
     const { t } = useTranslation();
 
+    const anyWithActions = () => Object.values(movements).some((field) => field.stateId === 1)
+
     return (
         <Col xs="12">
-            <div style={{ overflowX: "auto",minHeight: `calc( .5rem + ( 0.5rem * 2 + 25.5px ) * ${take + 1} )` }}>
+            <div style={{ overflowX: "auto", minHeight: `calc( .5rem + ( 0.5rem * 2 + 25.5px ) * ${take + 1} )` }}>
                 <Table className="TicketsTable table table-striped table-bordered table-hover growAnimation mb-0 mt-2">
                     <thead className="tableHeader solid-bg">
                         <tr>
@@ -18,7 +20,7 @@ const MovementsTable = ({ AccountInfo, UsersInfo, movements, state, reloadData, 
                             <th >{t("Amount")}</th>
                             <th >{t("Created at")}</th>
                             {
-                                state === 1 || state === "1" ? <th >{t("Action")}</th> : null
+                                anyWithActions() ? <th >{t("Action")}</th> : null
                             }
                         </tr>
                     </thead>

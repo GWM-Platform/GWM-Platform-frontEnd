@@ -41,7 +41,7 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
     let history = useHistory();
 
     const buy = async () => {
-        setFetching(true)
+       if(!fetching){ setFetching(true)
         var url = `${process.env.REACT_APP_APIURL}/funds/${data.FundSelectedId}/buy/?` + new URLSearchParams({
             client: ClientSelected.id,
         });
@@ -68,7 +68,7 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
                     console.error(response.status)
             }
         }
-        setFetching(false)
+        setFetching(false)}
     }
 
     useEffect(() => {

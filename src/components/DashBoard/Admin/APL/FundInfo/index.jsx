@@ -7,9 +7,9 @@ import { faEye,faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 const FundInfo = ({Fund}) => {
     const [Hide,setHide]=useState(false)
-    const balanceInCash = (Fund.shares * Fund.sharePrice)
+    const balanceInCash = (Fund.freeShares * Fund.sharePrice)
     const { t } = useTranslation()
-
+    console.log(Fund)
     return (
         <div className="bg-white info mt-2 ms-0 mb-2 px-0">
             <div className="d-flex justify-content-between align-items-end pe-2">
@@ -25,7 +25,7 @@ const FundInfo = ({Fund}) => {
             </div>
             <div>
                 <h2 className="px-2 left">
-                    {Fund.shares}{" "}{t("feeParts in possession")}
+                    {Fund.freeShares}{" "}{t("feeParts in possession")}{" ("}{Fund.shares}{" "}{t("in total")}{")"}
                 </h2>
             </div>
             <div className="d-flex justify-content-between align-items-end pe-2 pb-2 border-bottom-main">

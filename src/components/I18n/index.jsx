@@ -253,8 +253,8 @@ i18n
           "There are no tickets in the state selected": "No hay tickets en el estado seleccionado",
           "couldn't fetch tickets, try again later": "no se pudieron obtener los tickets, intentalo de nuevo mas tarde",
           "Created at": "Fecha de creación",
-          "Assets Administration": "Administracion de activos",
-          "Tickets Administration": "Administracion de tickets",
+          "Assets Administration": "Administración de activos",
+          "Tickets Administration": "Administración de tickets",
           "Client name": "Nombre del Cliente",
           "Fund name": "Nombre del Fondo",
           "You are trying to sell": "Estas intentando vender",
@@ -318,7 +318,7 @@ i18n
           "The amount must be lower or equal to your balance": "La cantidad debe ser menor o igual a su balance",
           "Sale": "Venta",
           "Purchase": "Compra",
-          "Accounts Administration": "Administracion de Cuentas",
+          "Accounts Administration": "Administración de Cuentas",
           "Deposit Cash": "Depositar dinero",
           "Deposit Cash to an Account": "Depositar dinero a una cuenta",
           "Account selector": "Selector de cuenta a depositar",
@@ -408,7 +408,11 @@ i18n
           "FeeParts": "Cuotapartes",
           "FeePart Price": "Precio de la cuotaparte",
           "Go to details":"Ir a detalles",
-          "pending":"pendientes"
+          "pending":"pendientes",
+          "Search":"Buscar", 
+          "by id":"por id",
+          "withdrawal tickets":"tickets de retiro",
+          "purchase and sale tickets":"tickets de compra y venta"
         }
       }
     }

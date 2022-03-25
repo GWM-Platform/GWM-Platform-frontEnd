@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 import ActionConfirmationModal from './ActionConfirmationModal'
 
-const TransactionRow = ({  UsersInfo, FundInfo, Transaction, state, reloadData }) => {
+const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData }) => {
     const { t } = useTranslation();
 
     var momentDate = moment(Transaction.createdAt);
@@ -36,7 +36,7 @@ const TransactionRow = ({  UsersInfo, FundInfo, Transaction, state, reloadData }
                     fetching: false,
                     value: UsersInfo.value[indexClientTransaction]
                 }))
-            }else{
+            } else {
                 SetUserTicketInfo((prevState) => ({
                     ...prevState,
                     valid: false,
@@ -54,7 +54,7 @@ const TransactionRow = ({  UsersInfo, FundInfo, Transaction, state, reloadData }
                     fetching: false,
                     value: FundInfo.value[indexFundTransaction]
                 }))
-            }else{
+            } else {
                 SetFundTicketInfo((prevState) => ({
                     ...prevState,
                     valid: false,
@@ -104,7 +104,7 @@ const TransactionRow = ({  UsersInfo, FundInfo, Transaction, state, reloadData }
                 <td>${Transaction.sharePrice}</td>
                 <td>{momentDate.format('MMMM Do YYYY, h:mm:ss a')}</td>
                 {
-                    state === 1 || state === "1" ?
+                    Transaction.stateId === 1 ?
                         <td className="Actions verticalCenter" >
                             <div className="h-100 d-flex align-items-center justify-content-around">
                                 <div className="iconContainer green">
@@ -119,10 +119,11 @@ const TransactionRow = ({  UsersInfo, FundInfo, Transaction, state, reloadData }
                         null
                 }
             </tr>
-            {state === 1 || state === "1" ?
-                <ActionConfirmationModal reloadData={reloadData} transaction={Transaction} setShowModal={setShowModal} action={Action} show={ShowModal} />
-                :
-                null}
+            {
+                Transaction.stateId === 1 ?
+                    <ActionConfirmationModal reloadData={reloadData} transaction={Transaction} setShowModal={setShowModal} action={Action} show={ShowModal} />
+                    :
+                    null}
         </>
     )
 }

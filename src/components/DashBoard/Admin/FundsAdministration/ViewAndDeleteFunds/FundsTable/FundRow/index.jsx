@@ -29,7 +29,7 @@ const FundRow = ({ Fund, AssetTypes, chargeFunds, setAction, Action, ownKey }) =
                         <div className="iconContainer red" onClick={() => { launchDeleteConfirmation() }}>
                             <FontAwesomeIcon className="icon" icon={faTrashAlt} />
                         </div>
-                        <div className="iconContainer green" onClick={() => setAction({ ...Action, ...{ action: 0, fund: ownKey } })}>
+                        <div className="iconContainer  green" onClick={() => setAction({ ...Action, ...{ action: 0, fund: ownKey } })}>
                             <FontAwesomeIcon className="icon" icon={faEdit} />
                         </div>
                     </div>

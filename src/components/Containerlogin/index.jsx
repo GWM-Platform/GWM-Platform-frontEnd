@@ -4,16 +4,26 @@ import './index.css';
 import FormDesktop from './FormDesktop';
 import { Col, Row, Container } from 'react-bootstrap'
 import FormMobile from './FormMobile';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 const ContainerLogin = () => {
+  function useQuery() {
+    const { search } = useLocation();
+
+    return React.useMemo(() => new URLSearchParams(search), [search]);
+  }
+
+  const desiredLocation = useQuery().get("loc")
+  const desiredId = useQuery().get("id")
+  const desiredType = useQuery().get("type")
+
   let history = useHistory();
 
   const toDashBoard = (path) => {
     history.push(`/DashBoard/${path}`);
   }
 
-  const toSetPassword= () => {
+  const toSetPassword = () => {
     history.push(`/setPassword`);
   }
 
@@ -62,12 +72,18 @@ const ContainerLogin = () => {
       const data = await response.json()
       sessionStorage.setItem("access_token", data.access_token)
       sessionStorage.setItem("admin", data.user.isAdmin)
-      
-      if (!data.user.changedPassword  && !data.user.isAdmin) {
+
+      if (!data.user.changedPassword && !data.user.isAdmin) {
         toSetPassword()
       } else {
         if (data.user.isAdmin) {
-          toDashBoard("fundsAdministration");
+          let destination = ""
+          if (desiredLocation && desiredId) {
+            destination = `FundsAdministration?loc=${desiredLocation}&id=${desiredId}&type=${desiredType}`
+          } else {
+            destination = `FundsAdministration`
+          }
+          toDashBoard(destination);
         } else {
           toDashBoard("accounts");
         }

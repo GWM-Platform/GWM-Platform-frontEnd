@@ -114,8 +114,8 @@
 .AssetsAdministration .AssetRow .iconContainer.red:hover .icon{
 	color: red;
 }
-.AssetsAdministration .AssetRow .iconContainer.green:hover .icon {
-	color: green;
+.AssetsAdministration .AssetRow .iconContainer.blue:hover .icon {
+	color: var(--blue-main);
 }
 .AssetsAdministration .AssetRow.addAsset {
 	border:none
@@ -259,7 +259,7 @@
 .AssetsAdministration .editForm .header .button.icon,
 .AssetsAdministration .editResult .header .button.icon{
 	font-size: 20px;
-	color: green;
+	color: var(--blue-main);
 	background-color: lightgrey;
 	border-radius: 50%;
 }

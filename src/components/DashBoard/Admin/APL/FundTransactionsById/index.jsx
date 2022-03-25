@@ -6,7 +6,7 @@ import FilterOptions from 'components/DashBoard/GeneralUse/FilterOptions';
 import NoMovements from 'components/DashBoard/GeneralUse/NoMovements';
 import Loading from 'components/DashBoard/GeneralUse/Loading';
 
-const TransactionFundTable = ({ Id }) => {
+const TransactionFundTable = ({ Id, UsersInfo, AccountInfo }) => {
     const [Transactions, setTransactions] = useState({
         fetching: true,
         fetched: false,
@@ -68,11 +68,12 @@ const TransactionFundTable = ({ Id }) => {
         <>
             <FilterOptions Fund={Id} setPagination={setPagination} movsPerPage={Pagination.take} total={Transactions.content.total} />
             {
-                Transactions.fetching ?
+                Transactions.fetching || UsersInfo.fetching || AccountInfo.fetching ?
                     <Loading movements={Pagination.take} />
                     :
                     Transactions.content.total > 0 ?
-                        <TransactionsTable movements={Pagination.take} Transactions={Transactions} />
+                        <TransactionsTable
+                            UsersInfo={UsersInfo} AccountInfo={AccountInfo} movements={Pagination.take} Transactions={Transactions} />
                         :
                         <NoMovements movements={Pagination.take} />
             }

@@ -8,6 +8,16 @@ export const DashBoardProvider = ({ children }) => {
     const history = useHistory();
     let location = useLocation()
 
+    function useQuery() {
+        const { search } = useLocation();
+
+        return React.useMemo(() => new URLSearchParams(search), [search]);
+    }
+
+    const desiredLocation = useQuery().get("loc")
+    const desiredId = useQuery().get("id")
+    const desiredType = useQuery().get("type")
+
     const [token] = useState(sessionStorage.getItem("access_token"));
     const [admin] = useState(JSON.parse(sessionStorage.getItem("admin")));
     const [balanceChanged, setBalanceChanged] = useState(true)
@@ -333,9 +343,20 @@ export const DashBoardProvider = ({ children }) => {
             history.push(`/DashBoard/Accounts`);
             setBalanceChanged(true)
         } else if (admin && IndexClientSelected === -1) {
-            history.push(`/DashBoard/FundsAdministration`);
+            const validRedirectedSections = ["ticketsAdministration"]
+            const validTypes = ["m","t"]
+            if (desiredLocation && desiredId && desiredType) {
+                if (validRedirectedSections.includes(desiredLocation) && validTypes.includes(desiredType)) {
+                    let destination = `/DashBoard/${desiredLocation}?loc=${desiredLocation}&id=${desiredId}&type=${desiredType}`
+                    history.push(destination);
+                } else {
+                    history.push(`/DashBoard/FundsAdministration`);
+                }
+            } else {
+                history.push(`/DashBoard/FundsAdministration`);
+            }
         }
-
+        //eslint-disable-next-line
     }, [history, UserClients, IndexClientSelected, admin]);
 
     const getMoveStateById = (id) => {
