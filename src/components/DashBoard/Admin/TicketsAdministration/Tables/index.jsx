@@ -7,7 +7,7 @@ import MovementsTable from './MovementsTable'
 import PaginationController from 'components/DashBoard/GeneralUse/PaginationController';
 import Loading from 'components/DashBoard/GeneralUse/Loading';
 import NoMovements from 'components/DashBoard/GeneralUse/NoMovements';
-import TicketSearch from './TicketSearch'
+import TicketSearch from 'components/DashBoard/GeneralUse/TicketSearch'
 
 import { useTranslation } from 'react-i18next';
 
@@ -122,8 +122,8 @@ const Transactionslist = ({ state, messageVariants }) => {
     })
 
     const [searchMovementById, setSearchMovementById] = useState({
-        value: desiredId && desiredType ? desiredType === "t" ? desiredId : "" : "",
-        search: desiredId && desiredType ? desiredType === "t" ? true : false : false
+        value: desiredId && desiredType ? desiredType === "m" ? desiredId : "" : "",
+        search: desiredId && desiredType ? desiredType === "m" ? true : false : false
     })
 
     const handleMovementSearchChange = (event) => {
@@ -404,11 +404,6 @@ const Transactionslist = ({ state, messageVariants }) => {
         if (!searchTransactionById.search) transactionsInState()
         // eslint-disable-next-line
     }, [PaginationMovements, state, searchTransactionById.search])
-
-    useEffect(() => {
-        movementsInState()
-        // eslint-disable-next-line
-    }, [PaginationMovements, state])
 
     const reloadData = () => {
         transactionsInState()

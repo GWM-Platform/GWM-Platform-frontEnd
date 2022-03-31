@@ -23,9 +23,9 @@ const TableLastMovements = ({ content, Fund, movements, setPerformance }) => {
                 <thead >
                     <tr>
                         <th className="tableHeader">{t("Date")}</th>
-                        <th className="d-none d-sm-table-cell">{t("State")}</th>
-                        <th className="d-none d-sm-table-cell">{t("Concept")}</th>
-                        <th className="tableDescription d-none d-sm-table-cell">{t("Share value")}</th>
+                        <th className="d-none d-sm-table-cell">{t("Status")}</th>
+                        <th className="d-none d-sm-table-cell">{t("Description")}</th>
+                        <th className="tableDescription d-none d-sm-table-cell">{t("Share price")}</th>
                         <th className="tableAmount">{t("Amount")}</th>
                     </tr>
                 </thead>

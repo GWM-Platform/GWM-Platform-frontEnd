@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 import './index.css'
-import {  useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
     const { t } = useTranslation();
@@ -13,7 +13,7 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
     let history = useHistory();
 
     const pendingfeeParts = PendingTransactions.value.filter((transaction) => transaction.fundId === Fund.fund.id && Math.sign(transaction.shares) === +1).map((transaction) => transaction.shares).reduce((a, b) => a + b, 0).toFixed(2)
-    
+
     const toTickets = (operation) => {
         history.push(`${operation}?fund=${Fund.fund.id}`);
     }
@@ -35,61 +35,62 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
                 </Card.Header>
                 <Card.Body className="body">
                     <Container fluid className="px-0">
-                    <Row className="mx-0 w-100 gx-0">
-                        <Card.Title >
-                            <h1 className="title mt-0">
-                                {t(Fund.fund.name)}
-                            </h1>
-                        </Card.Title>
-                        <Container>
-                            <Row className="d-flex justify-content-between">
-                                <h1 className="title-gray mt-1">
-                                    <Container fluid className="px-0">
-                                    <Row className="mx-0 w-100 gx-0 d-flex justify-content-between">
-                                        <div className="pe-2 containerHideInfo">
-                                            <span>$</span>
-                                            <span className={`info ${Hide ? "shown" : "hidden"}`}>
-                                                {Fund.shares ? (Fund.shares * Fund.fund.sharePrice).toFixed(2).toString().replace(/./g, "*") : 0}
-                                            </span>
-
-                                            <span className={`info ${Hide ? "hidden" : "shown"}`}>
-                                                {Fund.shares ? (Fund.shares * Fund.fund.sharePrice).toFixed(2).toString() : 0}
-                                            </span>
-
-                                            <span className={`info placeholder`}>
-                                                {Fund.shares ? (Fund.shares * Fund.fund.sharePrice).toFixed(2).toString() : 0}
-                                            </span>
-                                        </div>
-                                        <div className="ps-0 hideInfoButton d-flex align-items-center">
-                                            <FontAwesomeIcon
-                                                className={`icon ${Hide ? "hidden" : "shown"}`}
-                                                onClick={() => { setHide(!Hide) }}
-                                                icon={faEye}
-                                            />
-                                            <FontAwesomeIcon
-                                                className={`icon ${!Hide ? "hidden" : "shown"}`}
-                                                onClick={() => { setHide(!Hide) }}
-                                                icon={faEyeSlash}
-                                            />
-                                            <FontAwesomeIcon
-                                                className="icon placeholder"
-                                                icon={faEyeSlash}
-                                            />
-                                        </div>
-                                    </Row>
-                                    </Container>
+                        <Row className="mx-0 w-100 gx-0">
+                            <Card.Title >
+                                <h1 className="title mt-0">
+                                    {t(Fund.fund.name)}
                                 </h1>
                                 <Card.Text className="subTitle lighter mt-0 mb-2">
-                                    {t("Acquired feeParts")}:<span className="bolder"> {Fund.shares ? Fund.shares : 0}</span><br />
-                                    {t("Pending feeParts")}:
-                                    <span className={`bolder text-green`}>{" "}
-                                        +{pendingfeeParts}</span><br />
-                                    {t("FeePart Price (updated")}: {t("Now")}):<span className="bolder"> ${Fund.fund.sharePrice}</span><br />
-
+                                    {t("Share price")}:<span className="bolder"> ${Fund.fund.sharePrice}</span><br />
                                 </Card.Text>
-                            </Row>
-                        </Container>
-                    </Row>
+                            </Card.Title>
+                            <Container>
+                                <Row className="d-flex justify-content-between">
+                                    <h1 className="title-gray mt-1">
+                                        <Container fluid className="px-0">
+                                            <Row className="mx-0 w-100 gx-0 d-flex justify-content-between">
+                                                <div className="pe-2 containerHideInfo">
+                                                    <span>$</span>
+                                                    <span className={`info ${Hide ? "shown" : "hidden"}`}>
+                                                        {Fund.shares ? (Fund.shares * Fund.fund.sharePrice).toFixed(2).toString().replace(/./g, "*") : 0}
+                                                    </span>
+
+                                                    <span className={`info ${Hide ? "hidden" : "shown"}`}>
+                                                        {Fund.shares ? (Fund.shares * Fund.fund.sharePrice).toFixed(2).toString() : 0}
+                                                    </span>
+
+                                                    <span className={`info placeholder`}>
+                                                        {Fund.shares ? (Fund.shares * Fund.fund.sharePrice).toFixed(2).toString() : 0}
+                                                    </span>
+                                                </div>
+                                                <div className="ps-0 hideInfoButton d-flex align-items-center">
+                                                    <FontAwesomeIcon
+                                                        className={`icon ${Hide ? "hidden" : "shown"}`}
+                                                        onClick={() => { setHide(!Hide) }}
+                                                        icon={faEye}
+                                                    />
+                                                    <FontAwesomeIcon
+                                                        className={`icon ${!Hide ? "hidden" : "shown"}`}
+                                                        onClick={() => { setHide(!Hide) }}
+                                                        icon={faEyeSlash}
+                                                    />
+                                                    <FontAwesomeIcon
+                                                        className="icon placeholder"
+                                                        icon={faEyeSlash}
+                                                    />
+                                                </div>
+                                            </Row>
+                                        </Container>
+                                    </h1>
+                                    <Card.Text className="subTitle lighter mt-0 mb-2">
+                                        {t("Balance (shares)")}:<span className="bolder"> {Fund.shares ? Fund.shares : 0}</span><br />
+                                        {t("Pending transactions (shares)")}:
+                                        <span className={`bolder text-green`}>{" "}
+                                            +{pendingfeeParts}</span><br />
+                                    </Card.Text>
+                                </Row>
+                            </Container>
+                        </Row>
                     </Container>
                 </Card.Body>
                 <Card.Footer className="footer mt-2 m-0 p-0">

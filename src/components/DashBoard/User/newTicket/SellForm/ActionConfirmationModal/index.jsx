@@ -24,7 +24,7 @@ const ActionConfirmationModal = ({ setShowModal, show, action, data, Funds, Bala
                             {t("Account with whom the operation will be made")}: <span className="emphasis">{ClientSelected.alias}</span>
                         </li>
                         <li className="listedInfo">
-                            {t("Current account balance")}: <span className="emphasis">${Balance}</span>
+                            {t("Cash balance")}: <span className="emphasis">${Balance}</span>
                         </li>
                         <li className="listedInfo">
                             {t("Fund selected")}: <span className="emphasis">{Funds[data.FundSelected].fund.name}</span>

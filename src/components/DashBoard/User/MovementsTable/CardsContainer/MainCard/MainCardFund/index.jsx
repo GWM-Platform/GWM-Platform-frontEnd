@@ -12,16 +12,14 @@ import MovementsTab from './MovementsTab';
 import FundDetail from './FundDetail';
 import './index.css'
 
-const MainCard = ({ Fund, Hide, setHide, NavInfoToggled }) => {
+const MainCard = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchById,resetSearchById,handleMovementSearchChange }) => {
     const [SelectedTab, setSelectedTab] = useState("0")
     const [Performance, setPerformance] = useState(0)
-    const {PendingTransactions}=useContext(DashBoardContext)
+    const { PendingTransactions } = useContext(DashBoardContext)
     const { t } = useTranslation();
 
     const balanceInCash = Fund.shares ? (Fund.shares * Fund.fund.sharePrice) : 0
     const pendingfeeParts = PendingTransactions.value.filter((transaction) => transaction.fundId === Fund.fund.id && Math.sign(transaction.shares) === +1).map((transaction) => transaction.shares).reduce((a, b) => a + b, 0).toFixed(2)
-
-    console.log(pendingfeeParts)
 
     return (
         <div className="movementsMainCardFund growAnimation mt-2">
@@ -31,22 +29,23 @@ const MainCard = ({ Fund, Hide, setHide, NavInfoToggled }) => {
                         {t(Fund.fund.name)}
                     </h1>
                     <h2 className="m-0 left">
-                        {t("FeePart price (Now)")}
+                        {t("Share price")}
                         <span className="ps-3" style={{ fontWeight: "bolder" }}>
                             ${Fund.fund.sharePrice}
                         </span>
                     </h2>
                 </div>
+
                 <div>
                     <h2 className="px-2 left">
-                        {Fund.shares ? Fund.shares : 0}{" "}{t("feeParts in possession")},{' '}{ pendingfeeParts ? pendingfeeParts : 0}{" "}{t("pending")}
+                        {t("Balance (Shares)")}:{" "}{Fund.shares ? Fund.shares : 0}
                     </h2>
                 </div>
-                <div className="d-flex justify-content-between align-items-end pe-2 pb-2 border-bottom-main">
+                <div className="d-flex justify-content-between align-items-end pe-2">
                     <Col className="d-flex justify-content-between pe-5" sm="auto">
                         <Col className="pe-2">
                             <div className="containerHideInfo px-2">
-                                <span>{t("Actual Value in cash of your holding")}: $</span>
+                                <span>{t("Balance ($)")}: $</span>
                                 <span className={`info ${Hide ? "shown" : "hidden"}`}>
                                     {balanceInCash.toFixed(2).toString().replace(/./g, "*")}
                                 </span>
@@ -78,7 +77,7 @@ const MainCard = ({ Fund, Hide, setHide, NavInfoToggled }) => {
                         </Col>
                     </Col>
                     <Col sm="auto" >
-                        {"Performance: "}
+                        {t("Performance")}{": "}
                         <span
                             className={{
                                 '1': 'text-green',
@@ -88,12 +87,17 @@ const MainCard = ({ Fund, Hide, setHide, NavInfoToggled }) => {
                         </span>
                     </Col>
                 </div>
+                <div className="border-bottom-main pb-2">
+                    <h2 className="px-2 left">
+                        {t("Pending transactions (shares)")}{" "}{pendingfeeParts ? pendingfeeParts : 0}{" "}
+                    </h2>
+                </div>
             </div>
             {/*tabs controller*/}
             <Container fluid className="px-0">
                 <Nav className="history-tabs" variant="tabs" activeKey={SelectedTab} onSelect={(e) => { setSelectedTab(e) }}>
                     <Nav.Item>
-                        <Nav.Link eventKey={"0"}>{t("Last Movements")}</Nav.Link>
+                        <Nav.Link eventKey={"0"}>{t("Transactions")}</Nav.Link>
                     </Nav.Item>
                     {/*<Nav.Item>
                                 <Nav.Link eventKey={"1"}>{t("Investment Evolution")}</Nav.Link>
@@ -106,7 +110,8 @@ const MainCard = ({ Fund, Hide, setHide, NavInfoToggled }) => {
                     {
                         0:
                             <MovementsTab setPerformance={setPerformance} NavInfoToggled={NavInfoToggled}
-                                Fund={Fund} />,
+                                Fund={Fund} SearchById={SearchById} setSearchById={setSearchById} 
+                                resetSearchById={resetSearchById} handleMovementSearchChange={handleMovementSearchChange}/>,
                         1:
                             <FundDetail NavInfoToggled={NavInfoToggled} />
                     }[SelectedTab]

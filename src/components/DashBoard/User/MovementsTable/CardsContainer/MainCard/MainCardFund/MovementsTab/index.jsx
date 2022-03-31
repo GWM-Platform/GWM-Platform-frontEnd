@@ -8,8 +8,9 @@ import NoMovements from 'components/DashBoard/GeneralUse/NoMovements';
 import Loading from 'components/DashBoard/GeneralUse/Loading';
 import PaginationController from 'components/DashBoard/GeneralUse/PaginationController'
 import FilterOptions from 'components/DashBoard/GeneralUse/FilterOptions'
+import TicketSearch from 'components/DashBoard/GeneralUse/TicketSearch'
 
-const MovementsTab = ({ Fund, setPerformance }) => {
+const MovementsTab = ({ Fund, setPerformance, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
     const history = useHistory();
     const { token, ClientSelected } = useContext(DashBoardContext)
 
@@ -67,6 +68,46 @@ const MovementsTab = ({ Fund, setPerformance }) => {
         }
     }
 
+    const getTransactionById = async (id) => {
+        setSearchById((prevState) => ({ ...prevState, search: true }))
+
+        var url = `${process.env.REACT_APP_APIURL}/transactions/${id}?` + new URLSearchParams(
+            {
+                filterFund: Fund.fund.id,
+                client: ClientSelected.id,
+            })
+
+        setFetchingMovements(true)
+        setMovements([])
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: "*/*",
+                'Content-Type': 'application/json'
+            }
+        })
+
+        if (response.status === 200) {
+            const data = await response.json()
+            if (data.fundId === Fund.fund.id) {
+                setMovements(prevState => ({ ...prevState, ...{ transactions: [data], total: 1 } }))
+            } else {
+                setMovements(prevState => ({ ...prevState, ...{ transactions: [], total: 0 } }))
+            }
+            setFetchingMovements(false)
+        } else {
+            setMovements(prevState => ({ ...prevState, ...{ transactions: [], total: 0 } }))
+            setFetchingMovements(false)
+            switch (response.status) {
+                case 500:
+                    break;
+                default:
+                    console.error(response.status)
+            }
+        }
+    }
+
     useEffect(() => {
         setPagination((prevState) => ({
             ...prevState, ...{
@@ -78,15 +119,24 @@ const MovementsTab = ({ Fund, setPerformance }) => {
     }, [Fund])
 
     useEffect(() => {
-        getMovements();
+        SearchById.search ? getTransactionById(SearchById.value) : getMovements();
         // eslint-disable-next-line
-    }, [Fund, Pagination])
+    }, [Fund, Pagination, SearchById.search])
+
 
     return (
         <div className="p-0 h-100">
             <div className="d-flex align-items-start justify-content-center flex-column MovementsTableContainer">
                 <div className={`movementsTable growAnimation`}>
-                    <FilterOptions Fund={Fund} setPagination={setPagination} movsPerPage={Pagination.take} total={Movements.total} />
+                    <TicketSearch
+                        fetching={FetchingMovements}
+                        keyWord={"transactions"}
+                        SearchText={SearchById.value}
+                        handleSearchChange={handleMovementSearchChange}
+                        cancelSearch={resetSearchById}
+                        Search={() => getTransactionById(SearchById.value)}
+                    />
+                    <FilterOptions disabled={SearchById.search} Fund={Fund} setPagination={setPagination} movsPerPage={Pagination.take} total={Movements.total} />
                     {
                         FetchingMovements ?
                             <Loading movements={Pagination.take}

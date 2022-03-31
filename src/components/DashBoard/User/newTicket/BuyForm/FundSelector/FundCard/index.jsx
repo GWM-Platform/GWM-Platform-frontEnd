@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DonutChart from 'react-donut-chart';
 import './index.css'
-import { Col, Card, Container, Row } from 'react-bootstrap'
+import { Col, Card } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
 
 const FundCard = ({ Fund, ownKey, data, setData, openAccordion, Account }) => {
@@ -28,16 +28,7 @@ const FundCard = ({ Fund, ownKey, data, setData, openAccordion, Account }) => {
                 onClick={() => { if (Fund.freeShares > 0) setFundSelected(setData, Fund.id, ownKey, openAccordion) }}>
                 <Card.Header><strong className="title">{Fund.name}</strong></Card.Header>
                 <Card.Body>
-                    <Card.Title>{t("feeParts value")}: <strong>${Fund.sharePrice}</strong></Card.Title>
-                    <Container fluid className="px-0">
-                        <Row className="d-flex justify-content-between">
-                            <Col md="auto">
-                                <Card.Text className="mb-1 feePartsInfo">
-                                    <strong>{Fund.shares}</strong>{" "}{t("in total")}
-                                </Card.Text>
-                            </Col>
-                        </Row>
-                    </Container>
+                    <Card.Title>{t("Share price")}: <strong>${Fund.sharePrice}</strong></Card.Title>
                     {
                         Fund.composition !== undefined
                             ?

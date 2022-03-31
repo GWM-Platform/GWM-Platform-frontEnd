@@ -57,7 +57,7 @@ const AccountGeneralData = ({ Account, Client }) => {
                                     <span className='emphasis'>{"$" + balanceTotal.value}</span>
                             }
                             </h1>
-                            <h1 className="Info text-end">{t("Current account balance")}: <span className='emphasis'>${Account.balance}</span></h1>
+                            <h1 className="Info text-end">{t("Cash balance")}: <span className='emphasis'>${Account.balance}</span></h1>
                         </Col>
                     </Row>
                 </Container>

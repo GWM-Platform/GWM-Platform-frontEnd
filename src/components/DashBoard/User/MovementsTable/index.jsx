@@ -1,17 +1,19 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, { useState, useEffect,useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import CardsContainer from './CardsContainer';
 import { useTranslation } from "react-i18next";
 import { Spinner, Row, Container, Col } from 'react-bootstrap';
 import { DashBoardContext } from 'context/DashBoardContext';
+
 const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, NavInfoToggled, setNumberOfFunds }) => {
+    
+
     const { t } = useTranslation();
 
-    const {FetchingFunds,Funds,Accounts,contentReady} = useContext(DashBoardContext);
+    const { FetchingFunds, Funds, Accounts, contentReady } = useContext(DashBoardContext);
 
     const [error, setError] = useState("Loading Content");
 
-    const [selected, setSelected] = useState(0)
 
     useEffect(() => {
         setNumberOfFunds(0)
@@ -22,7 +24,7 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, NavInfoToggl
             setNumberOfFunds(Accounts.length + Funds.length)
             if (Accounts.length + Funds.length === 0 && !FetchingFunds && contentReady) setError("No tiene participacion en ningun fondo")
         }
-    }, [Accounts, Funds, setNumberOfFunds, FetchingFunds,contentReady])
+    }, [Accounts, Funds, setNumberOfFunds, FetchingFunds, contentReady])
 
     return (
         <Container fluid className="tabContent">
@@ -41,8 +43,6 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, NavInfoToggl
                     :
                     <CardsContainer
                         NavInfoToggled={NavInfoToggled}
-                        selected={selected}
-                        setSelected={setSelected}
                         setItemSelected={setItemSelected}
                         isMobile={isMobile}
                         Funds={Funds}

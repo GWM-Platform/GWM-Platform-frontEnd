@@ -24,19 +24,19 @@ const ActionConfirmationModal = ({ setShowModal, show, action, data, Funds, Bala
                     <h1 className="title"> {t("Ticket summary")} </h1>
                     <ul>
                         <li className="listedInfo">
-                            {t("Account with whom the operation will be made")}: <span className="emphasis">{ClientSelected.alias}</span>
+                            {t("Account")}: <span className="emphasis">{ClientSelected.alias}</span>
                         </li>
                         <li className="listedInfo">
-                            {t("Current account balance")}: <span className="emphasis">${Balance}</span>
+                            {t("Account balance")}: <span className="emphasis">${Balance}</span>
                         </li>
                         <li className="listedInfo">
-                            {t("Fund selected")}: <span className="emphasis">{Funds[data.FundSelected].name}</span>
+                            {t("Product")}: <span className="emphasis">{Funds[data.FundSelected].name}</span>
                         </li>
                         <li className="listedInfo">
-                            {t("Investing (in cash)")}:<span className="emphasis"> ${data.amount}</span>
+                            {t("Cash amount")}:<span className="emphasis"> ${data.amount}</span>
                         </li>
                         <li className="listedInfo">
-                            {t("Investing (in feeParts)")}:<span className="emphasis"> {(data.amount / Funds[data.FundSelected].sharePrice).toFixed(2)}</span>
+                            {t("Share amount")}:<span className="emphasis"> {(data.amount / Funds[data.FundSelected].sharePrice).toFixed(2)}</span>
                         </li>
 
                     </ul>

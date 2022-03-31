@@ -20,6 +20,7 @@ const Search = ({ SearchText, handleSearchChange, cancelSearch, Search, keyWord,
 
     return (
         <Form onSubmit={handleSubmit}>
+            <Form.Label>{t("Search") + t(" ") + t("by id")}</Form.Label>
             <InputGroup className={`mb-2 searchBar  ${SearchText.length === 0 ? "" : "search"} `}>
                 <Form.Control
                     onChange={handleSearchChange}
@@ -28,17 +29,18 @@ const Search = ({ SearchText, handleSearchChange, cancelSearch, Search, keyWord,
                     aria-label="Search"
                     type="number"
                     disabled={fetching}
+                    required
                 />
                 {SearchText.length > 0 ?
                     <>
-                        <Button className="btn-main" onClick={() => cancelSearch()} id="basic-addon1">
+                        <Button className="btn-main" variant="outline-secondary" onClick={() => cancelSearch()} id="basic-addon1">
                             <FontAwesomeIcon className="icon" icon={faTimes} />
                         </Button>
-                        <Button disabled={fetching} className="btn-main right" type="submit" id="basic-addon1">
-                            {fetching?
-                            <Spinner animation="border" size="sm" />
-                            :
-                            <FontAwesomeIcon className="icon" icon={faSearch} />}
+                        <Button disabled={fetching} variant="outline-secondary" className="btn-main right" type="submit" id="basic-addon1">
+                            {fetching ?
+                                <Spinner animation="border" size="sm" />
+                                :
+                                <FontAwesomeIcon className="icon" icon={faSearch} />}
                         </Button>
                     </>
                     :

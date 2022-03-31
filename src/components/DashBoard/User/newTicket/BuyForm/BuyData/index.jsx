@@ -4,7 +4,7 @@ import { Form, InputGroup, Row, Button, Accordion, Container } from 'react-boots
 import { useTranslation } from "react-i18next";
 
 
-const BuyData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAccordion, Balance,fetching }) => {
+const BuyData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAccordion, Balance, fetching }) => {
 
     const { t } = useTranslation();
 
@@ -22,7 +22,7 @@ const BuyData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAcc
                                         <span className="number">2</span>
                                     </div>
                                 </span>
-                                {t("Specify amount in dollars you want to invest")}
+                                {t("Specify the amount you want to invest")}
                             </span>
                         </Form.Label>
                     </Row>
@@ -58,11 +58,10 @@ const BuyData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAcc
                                         t("You must enter how much you want to invest")
                                         :
                                         data.amount > Balance ?
-                                            t("You are trying to invest") + " $" + data.amount + " " + t("but you only have") + t(" $") + Balance +
-                                            " " + t("available in your account.")
+                                            t("You only have") + " $" + Balance + " " + t("available in your account.")
                                             :
                                             data.amount < (Funds[data.FundSelected] ? Funds[data.FundSelected].sharePrice || 1 : 1) ?
-                                                t("At least you must buy 1 feepart")+" ($"+ (Funds[data.FundSelected] ? Funds[data.FundSelected].sharePrice || 1 : 1) +")"
+                                                t("At least you must buy 1 feepart") + " ($" + (Funds[data.FundSelected] ? Funds[data.FundSelected].sharePrice || 1 : 1) + ")"
                                                 :
                                                 (data.amount * multiplier) % (0.0001 * multiplier) === 0 ?
                                                     t("You are trying to invest") + t(" $") + data.amount + t(", with you could buy") + t(" ") +
@@ -77,12 +76,12 @@ const BuyData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAcc
                                 data.FundSelected === -1 ?
                                     t("Please, select a fund to buy")
                                     :
-                                    t("You are trying to invest") + " $" + data.amount + t(", with you could buy") + t(" ") +
-                                    (data.amount / Funds[data.FundSelected].sharePrice).toFixed(2) + " " + t("feeParts") + "."
+                                    t("You are buying") + " " +
+                                    (data.amount / Funds[data.FundSelected].sharePrice).toFixed(2) + " " + t("shares")
                             }
                         </Form.Control.Feedback>
                     </InputGroup>
-                    <Button disabled={fetching || 
+                    <Button disabled={fetching ||
                         (data.FundSelected === -1 ? true : data.amount > Math.min(Funds[data.FundSelected].freeShares * Funds[data.FundSelected].sharePrice, Balance) && data.amount > 0)}
                         variant="danger" type="submit" className="submitBtn">{t("Submit")}</Button>
                 </Form>

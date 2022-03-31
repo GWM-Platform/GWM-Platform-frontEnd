@@ -34,7 +34,7 @@ const SelectClient = () => {
                     <Card className="clientSelectorCard">
                         <Card.Body className="p-4">
                             <h1 className="header">
-                                {t("Select an account to operate")}
+                                {t("Select an account")}
                             </h1>
                             <div>
 

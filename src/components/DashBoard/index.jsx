@@ -99,7 +99,6 @@ const UserDashBoard = () => {
                                             <Route path={`${path}/history`}>
                                                 <MovementsTable
                                                     isMobile={isMobile}
-                                                    setItemSelected={setItemSelected}
                                                     numberOfFunds={numberOfFunds}
                                                     setNumberOfFunds={setNumberOfFunds}
                                                     NavInfoToggled={NavInfoToggled}

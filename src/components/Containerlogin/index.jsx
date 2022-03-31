@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react'
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
+
+import { useHistory, useLocation } from 'react-router-dom';
 import FormDesktop from './FormDesktop';
 import { Col, Row, Container } from 'react-bootstrap'
 import FormMobile from './FormMobile';
-import { useHistory, useLocation } from 'react-router-dom';
+import LanguageSelector from 'components/LanguageSelector'
 
 const ContainerLogin = () => {
   function useQuery() {
@@ -16,6 +19,8 @@ const ContainerLogin = () => {
   const desiredLocation = useQuery().get("loc")
   const desiredId = useQuery().get("id")
   const desiredType = useQuery().get("type")
+  const desiredClient = useQuery().get("client")
+  const desiredFundId = useQuery().get("fundId")
 
   let history = useHistory();
 
@@ -76,17 +81,21 @@ const ContainerLogin = () => {
       if (!data.user.changedPassword && !data.user.isAdmin) {
         toSetPassword()
       } else {
+        let destination = ""
         if (data.user.isAdmin) {
-          let destination = ""
-          if (desiredLocation && desiredId) {
+          if (desiredLocation && desiredId && desiredType) {
             destination = `FundsAdministration?loc=${desiredLocation}&id=${desiredId}&type=${desiredType}`
           } else {
             destination = `FundsAdministration`
           }
-          toDashBoard(destination);
         } else {
-          toDashBoard("accounts");
+          if (desiredLocation && desiredId && desiredType && desiredClient) {
+            destination = `accounts?loc=${desiredLocation}&id=${desiredId}&type=${desiredType}&client=${desiredClient}${desiredFundId ? `&fundId=${desiredFundId}` : ""}`
+          } else {
+            destination = `accounts`
+          }
         }
+        toDashBoard(destination);
       }
     } else {
       switch (response.status) {
@@ -120,8 +129,11 @@ const ContainerLogin = () => {
   }, [])
 
   return (
-    <div className="login"
+    <div className="login p-relative"
       style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/backGround/background.jpg)` }}>
+      <div className="languageSelectorContainer">
+        <LanguageSelector />
+      </div>
       <Container>
         <Row className="d-flex min-vh-100  justify-content-center align-items-start align-items-sm-center pt-3">
           <Col xs="11" sm="8" md="6" lg="5" xl="4" className="growAnimation">

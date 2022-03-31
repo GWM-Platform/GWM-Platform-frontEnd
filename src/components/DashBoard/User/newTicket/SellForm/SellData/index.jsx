@@ -20,7 +20,7 @@ const SellData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAc
                                         <span className="number">2</span>
                                     </div>
                                 </span>
-                                {t("Specify the amount of feeParts you want to sell")}
+                                {t("Specify the amount of shares you want to sell")}
                             </span>
                         </Form.Label>
                     </Row>
@@ -51,13 +51,12 @@ const SellData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAc
                                     "Please, select a fund to sell"
                                     :
                                     data.shares === "" ?
-                                        t("You must enter how many feeParts you want to sell")
+                                        t("Quantity of shares you want to sell")
                                         :
                                         data.shares < 1 ?
                                             t("At least you must sell 1 feepart")
                                             :
-                                            t("You are trying to sell") + t(" ") + data.shares + " " + t("feeParts, equivalent to") + t(" $") +
-                                            (data.shares * Funds[data.FundSelected].fund.sharePrice).toFixed(2) + t(", but you only have") + t(" ") + Funds[data.FundSelected].shares + t(" ") + t("in position.")
+                                            t("There are only") + " " + Funds[data.FundSelected].shares + " " + t("available shares")
                             }
                         </Form.Control.Feedback>
                         <Form.Control.Feedback type="valid">
@@ -65,8 +64,7 @@ const SellData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAc
                                 data.FundSelected === -1 ?
                                     t("Please, select a fund to sell")
                                     :
-                                    t("Selling") + t(" ") + data.shares + t(" ") + t("feeParts from the fund") + t(" \"") + Funds[data.FundSelected].fund.name + t("\"") +
-                                    t(", equivalent to $") + (data.shares * Funds[data.FundSelected].fund.sharePrice).toFixed(2)
+                                    ""
                             }
                         </Form.Control.Feedback>
                     </InputGroup>

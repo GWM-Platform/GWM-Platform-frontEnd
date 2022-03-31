@@ -1,4 +1,4 @@
-import React, { useEffect,useState,useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import { useTranslation } from "react-i18next";
 import { Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -14,27 +14,86 @@ import MobileCardFound from './MobileCards/MobileCardFound';
 import MobileCardAccount from './MobileCards/MobileCardAccount';
 
 import { DashBoardContext } from 'context/DashBoardContext';
+import { useLocation } from 'react-router-dom';
 
 import './index.css'
 
-const CardsContainer = ({ isMobile, Funds, numberOfFunds, selected, setSelected, NavInfoToggled, Accounts }) => {
-
-    const [categorySelected, setCategorySelected] = useState(Accounts.length > 0 ? 0 : Funds.length > 0 ? 1 : 0)
-    const [Hide, setHide] = useState(false)
-    const [collapseSecondary, setCollapseSecondary] = useState(false)
-    
-    const { PendingWithoutpossession }=useContext(DashBoardContext)
-    const FundsWithPending = [...Funds,...PendingWithoutpossession]
-
-    console.log(FundsWithPending)
-
+const CardsContainer = ({ isMobile, Funds, numberOfFunds, NavInfoToggled, Accounts }) => {
     const { t } = useTranslation();
 
-    useEffect(() => {
-        if (numberOfFunds > 0) {
-            if (Accounts.length > 0) { setCategorySelected(0) } else { if (Funds.length > 0) setCategorySelected(1) }
+    function useQuery() {
+        const { search } = useLocation();
+
+        return React.useMemo(() => new URLSearchParams(search), [search]);
+    }
+
+    const { PendingWithoutpossession } = useContext(DashBoardContext)
+
+    const FundsWithPending = [...Funds, ...PendingWithoutpossession]
+
+    const getFundIndexById = (id) => {
+        let index = FundsWithPending.findIndex(Fund => Fund.fund.id.toString() === id)
+        return index >= 0 ? { found: true, index: index } : { found: false, index: 0 }
+    }
+
+    const desiredId = useQuery().get("id")
+    const desiredType = useQuery().get("type")
+    const desiredFundId = useQuery().get("fundId")
+    const validTypes = ["m", "t"]
+
+    const [categorySelected, setCategorySelected] = useState(
+        desiredType ?
+            validTypes.includes(desiredType) ?
+                desiredType === "t" ?
+                    Funds.length > 0 ? 1 : 0
+                    :
+                    desiredType === "m" ? 0 : 0
+                :
+                Accounts.length > 0 ? 0 : Funds.length > 0 ? 1 : 0
+            :
+            Accounts.length > 0 ? 0 : Funds.length > 0 ? 1 : 0
+    )
+
+    const [selected, setSelected] = useState(desiredType === "t" && desiredFundId ? getFundIndexById(desiredFundId).found ? getFundIndexById(desiredFundId).index : 0 : 0)
+    const [Hide, setHide] = useState(false)
+    const [collapseSecondary, setCollapseSecondary] = useState(false)
+
+    const performSearch = () => {
+        if (desiredType) {
+            if (validTypes.includes(desiredType)) {
+                switch (desiredType) {
+                    case "t":
+                        if (desiredFundId) {
+                            return getFundIndexById(desiredFundId).found
+                        } else {
+                            return false
+                        }
+                    case "m":
+                        return true
+                    default:
+                        return false
+                }
+            } else {
+                return false
+            }
+        } else {
+            return false
         }
-    }, [Accounts, Funds, numberOfFunds])
+
+    }
+
+    const [SearchById, setSearchById] = useState({
+        value: performSearch() ? desiredId : "",
+        search: performSearch()
+    })
+    
+    const resetSearchById = () => {
+        setSearchById((prevState) => ({ ...prevState, ...{ value: "", search: false } }))
+    }
+
+    const handleMovementSearchChange = (event) => {
+        setSearchById((prevState) => ({ ...prevState, value: event.target.value }))
+    }
 
     return (
         <Row className="HistoryCardsContainer d-flex align-items-stretch flex-md-nowrap ">
@@ -75,12 +134,20 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, selected, setSelected,
                                         Fund={FundsWithPending[selected]}
                                         Hide={Hide} setHide={setHide}
                                         NavInfoToggled={NavInfoToggled}
+                                        SearchById={SearchById}
+                                        setSearchById={setSearchById}
+                                        resetSearchById={resetSearchById}
+                                        handleMovementSearchChange={handleMovementSearchChange}
                                     />
                                     :
                                     <MainCardAccount
                                         Fund={Accounts[selected]}
                                         Hide={Hide} setHide={setHide}
                                         NavInfoToggled={NavInfoToggled}
+                                        SearchById={SearchById}
+                                        setSearchById={setSearchById}
+                                        resetSearchById={resetSearchById}
+                                        handleMovementSearchChange={handleMovementSearchChange}
                                     />
                             }
                             <div className={`d-none d-sm-block collapser ${collapseSecondary ? "expanded" : "collapsed"}`}
@@ -104,11 +171,10 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, selected, setSelected,
                                     ;
                                     return (
                                         <SecondaryCard
-                                            Hide={Hide}
-                                            Fund={Account}
+                                            Hide={Hide} Fund={Account} parentKey={0} ownKey={key} key={key}
                                             categorySelected={categorySelected} setCategorySelected={setCategorySelected}
-                                            selected={selected} setSelected={setSelected}
-                                            parentKey={0} ownKey={key} key={key}
+                                            selected={selected} setSelected={setSelected} resetSearchById={resetSearchById}
+
                                         />
                                     )
                                 }
@@ -124,11 +190,9 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, selected, setSelected,
                                     ;
                                     return (
                                         <SecondaryCard
-                                            Hide={Hide}
-                                            Fund={Fund}
+                                            Hide={Hide} Fund={Fund} parentKey={1} ownKey={key} key={key}
                                             categorySelected={categorySelected} setCategorySelected={setCategorySelected}
-                                            selected={selected} setSelected={setSelected}
-                                            parentKey={1} ownKey={key} key={key}
+                                            selected={selected} setSelected={setSelected} resetSearchById={resetSearchById}
                                         />
                                     )
                                 }
@@ -143,12 +207,20 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, selected, setSelected,
                                     Fund={Accounts[0]}
                                     Hide={Hide} setHide={setHide}
                                     NavInfoToggled={NavInfoToggled}
+                                    SearchById={SearchById}
+                                    setSearchById={setSearchById}
+                                    resetSearchById={resetSearchById}
+                                    handleMovementSearchChange={handleMovementSearchChange}
                                 />
                                 :
                                 <MainCardFund
                                     Fund={Funds[0]}
                                     Hide={Hide} setHide={setHide}
                                     NavInfoToggled={NavInfoToggled}
+                                    SearchById={SearchById}
+                                    setSearchById={setSearchById}
+                                    resetSearchById={resetSearchById}
+                                    handleMovementSearchChange={handleMovementSearchChange}
                                 />
                             }
                         </Col>

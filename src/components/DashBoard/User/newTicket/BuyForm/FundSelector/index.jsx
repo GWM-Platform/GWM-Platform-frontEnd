@@ -64,7 +64,7 @@ const FundSelector = ({ data, setData, Funds, openAccordion, Account }) => {
                                         <span className="number">1</span>
                                     </div>
                                 </span>
-                                {t("Select Fund To buy")}
+                                {t("Choose a product")}
                             </span>
                         </Form.Label>
                     </Row>

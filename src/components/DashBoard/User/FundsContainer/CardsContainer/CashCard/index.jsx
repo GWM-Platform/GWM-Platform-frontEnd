@@ -103,7 +103,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                     <Row className="mx-0 w-100">
                                         <Col className="ps-0">
                                             <h1 className="title mt-0">
-                                                {t("Current account")}
+                                                {t("Cash")}
                                             </h1>
                                         </Col>
                                         {cardsAmount > inScreenFunds ?
@@ -197,7 +197,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                             <Row className="mx-0 w-100">
                                                 <Col className="ps-0">
                                                     <h1 className="title mt-0">
-                                                        {t("Current account")}
+                                                        {t("Cash")}
                                                     </h1>
                                                 </Col>
 

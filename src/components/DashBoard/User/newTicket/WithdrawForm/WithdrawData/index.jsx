@@ -19,7 +19,7 @@ const WithdrawData = ({ data, handleChange, validated, handleSubmit, account,fet
                                     <span className="number">1</span>
                                 </div>
                             </span>
-                            {t("Enter the dollar amount you want to withdraw from your account")}
+                            {t("Enter amount you want to withdraw from your account")}
                         </span>
                     </Form.Label>
                 </Row>

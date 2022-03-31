@@ -5,10 +5,11 @@ import { useTranslation } from "react-i18next";
 import { useRef } from 'react'
 import './index.css'
 //Parent key 0-> Fund;Parent key 1->Cash
-const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownKey, selected, Hide, categorySelected }) => {
+const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownKey, selected, Hide, categorySelected,resetSearchById }) => {
     const select = () => {
         setCategorySelected(parentKey)
         setSelected(ownKey)
+        resetSearchById()
     }
 
     const ref = useRef(null)

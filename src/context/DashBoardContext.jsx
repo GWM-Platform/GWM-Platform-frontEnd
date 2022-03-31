@@ -17,6 +17,8 @@ export const DashBoardProvider = ({ children }) => {
     const desiredLocation = useQuery().get("loc")
     const desiredId = useQuery().get("id")
     const desiredType = useQuery().get("type")
+    const desiredClient = useQuery().get("client")
+    const desiredFundId = useQuery().get("fundId")
 
     const [token] = useState(sessionStorage.getItem("access_token"));
     const [admin] = useState(JSON.parse(sessionStorage.getItem("admin")));
@@ -34,6 +36,10 @@ export const DashBoardProvider = ({ children }) => {
     const [Accounts, setAccounts] = useState([])
 
     const [itemSelected, setItemSelected] = useState(location.pathname.split('/')[2])
+
+    //Url preffered locations
+    const [AdminPrefferedUrl, setAdminPrefferedUrl] = useState('')
+    const [UserPrefferedUrl, setUserPrefferedUrl] = useState('')
 
     const [PendingTransactions, setPendingTransactions] = useState({
         value: [],
@@ -54,66 +60,6 @@ export const DashBoardProvider = ({ children }) => {
     }
 
     let isMobile = (width <= 576);
-
-    useEffect(() => {
-        window.addEventListener('resize', handleWindowSizeChange);
-
-        const transactionsStates = async () => {
-            var url = `${process.env.REACT_APP_APIURL}/states`;
-
-            setTransactionStates((prevState) => ({
-                ...prevState, ...{
-                    fetching: true,
-                    fetched: false,
-                    valid: false,
-                    values: []
-                }
-            }))
-
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    Accept: "*/*",
-                    'Content-Type': 'application/json'
-                }
-            })
-
-            if (response.status === 200) {
-                const data = await response.json()
-
-                setTransactionStates((prevState) => ({
-                    ...prevState, ...{
-                        fetching: false,
-                        fetched: true,
-                        valid: true,
-                        values: data
-                    }
-                }))
-            } else {
-                setTransactionStates((prevState) => ({
-                    ...prevState, ...{
-                        fetching: false,
-                        fetched: true,
-                        valid: false,
-                    }
-                }))
-
-                switch (response.status) {
-                    case 500:
-                        break;
-                    default:
-                        console.error(response.status)
-                }
-            }
-        }
-
-        transactionsStates()
-
-        return () => {
-            window.removeEventListener('resize', handleWindowSizeChange);
-        }
-    }, [token])
 
     useEffect(
         () => {
@@ -298,9 +244,58 @@ export const DashBoardProvider = ({ children }) => {
     }, [Funds, PendingTransactions, ClientSelected]);
 
     useEffect(() => {
-
         const toLogin = () => {
             sessionStorage.clear(); history.push(`/login`);
+        }
+
+        const transactionsStates = async () => {
+            var url = `${process.env.REACT_APP_APIURL}/states`;
+
+            setTransactionStates((prevState) => ({
+                ...prevState, ...{
+                    fetching: true,
+                    fetched: false,
+                    valid: false,
+                    values: []
+                }
+            }))
+
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    Accept: "*/*",
+                    'Content-Type': 'application/json'
+                }
+            })
+
+            if (response.status === 200) {
+                const data = await response.json()
+
+                setTransactionStates((prevState) => ({
+                    ...prevState, ...{
+                        fetching: false,
+                        fetched: true,
+                        valid: true,
+                        values: data
+                    }
+                }))
+            } else {
+                setTransactionStates((prevState) => ({
+                    ...prevState, ...{
+                        fetching: false,
+                        fetched: true,
+                        valid: false,
+                    }
+                }))
+
+                switch (response.status) {
+                    case 500:
+                        break;
+                    default:
+                        console.error(response.status)
+                }
+            }
         }
 
         const getUserData = async () => {
@@ -316,11 +311,22 @@ export const DashBoardProvider = ({ children }) => {
 
             if (response.status === 200) {
                 const data = await response.json()
+                const getClientIndexById = (id) => {
+                    return data.findIndex(client => {
+                        return client.id.toString() === id})
+                }
                 setUserClients(data)
                 if (data.length === 1 && !admin) {
                     setIndexClientSelected(0)
                 }
-                if (localStorage.getItem(data[0].alias)) {
+                if (desiredClient) {
+                    if (getClientIndexById(desiredClient) >= 0) {
+                        setIndexClientSelected(getClientIndexById(desiredClient))
+                    } else {
+                        setIndexClientSelected(parseInt(localStorage.getItem(data[0].alias)))
+                    }
+                }
+                else if (localStorage.getItem(data[0].alias)) {
                     setIndexClientSelected(parseInt(localStorage.getItem(data[0].alias)))
                 }
 
@@ -332,19 +338,27 @@ export const DashBoardProvider = ({ children }) => {
             }
         }
 
+        window.addEventListener('resize', handleWindowSizeChange);
         if (token === null) toLogin()
         getUserData();
+        transactionsStates()
+
+        return () => {
+            window.removeEventListener('resize', handleWindowSizeChange);
+        }
         //eslint-disable-next-line
     }, [])
 
+    //Fired when th client changed
     useEffect(() => {
-        if (UserClients.length > 0 && IndexClientSelected >= 0) {
-            setClientSelected(UserClients[IndexClientSelected])
-            history.push(`/DashBoard/Accounts`);
-            setBalanceChanged(true)
-        } else if (admin && IndexClientSelected === -1) {
+
+        const userDashboardSelected = () => UserClients.length > 0 && IndexClientSelected >= 0
+
+        const adminDashboardSelected = () => admin && IndexClientSelected === -1
+
+        const manageUrlAdmin = () => {
             const validRedirectedSections = ["ticketsAdministration"]
-            const validTypes = ["m","t"]
+            const validTypes = ["m", "t"]
             if (desiredLocation && desiredId && desiredType) {
                 if (validRedirectedSections.includes(desiredLocation) && validTypes.includes(desiredType)) {
                     let destination = `/DashBoard/${desiredLocation}?loc=${desiredLocation}&id=${desiredId}&type=${desiredType}`
@@ -356,6 +370,42 @@ export const DashBoardProvider = ({ children }) => {
                 history.push(`/DashBoard/FundsAdministration`);
             }
         }
+
+        const manageUrlUser = () => {
+            const validRedirectedSections = ["history"]
+            const validTypes = ["m", "t"]
+            if (desiredLocation && desiredId && desiredType && desiredClient) {
+                if (validRedirectedSections.includes(desiredLocation) && validTypes.includes(desiredType)) {
+                    let destination = ""
+                    switch (desiredType) {
+                        case "m":
+                            destination = `/DashBoard/${desiredLocation}?loc=${desiredLocation}&id=${desiredId}&client=${desiredClient}&type=${desiredType}`
+                            break;
+                        case "t":
+                            if (desiredFundId) {
+                                destination = `/DashBoard/${desiredLocation}?loc=${desiredLocation}&id=${desiredId}&client=${desiredClient}&fundId=${desiredFundId}&type=${desiredType}`
+                            } else {
+                                destination = "/DashBoard/Accounts"
+                            }
+                            break;
+                        default:
+                            destination = "/DashBoard/Accounts"
+                            break
+                    }
+                    history.push(destination);
+                } else {
+                    history.push(`/DashBoard/Accounts`);
+                }
+            } else {
+                history.push(`/DashBoard/Accounts`);
+            }
+        }
+
+        if (userDashboardSelected()) {
+            setClientSelected(UserClients[IndexClientSelected])
+            manageUrlUser()
+            setBalanceChanged(true)
+        } else if (adminDashboardSelected()) manageUrlAdmin()
         //eslint-disable-next-line
     }, [history, UserClients, IndexClientSelected, admin]);
 

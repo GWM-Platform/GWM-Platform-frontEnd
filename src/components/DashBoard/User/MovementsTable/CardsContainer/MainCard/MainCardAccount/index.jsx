@@ -12,7 +12,7 @@ import MovementsTab from './MovementsTab';
 import FundDetail from './FundDetail';
 import './index.css'
 
-const MainCard = ({ Fund, Hide, setHide, NavInfoToggled }) => {
+const MainCard = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchById,resetSearchById,handleMovementSearchChange }) => {
     const [SelectedTab, setSelectedTab] = useState("0")
     // eslint-disable-next-line 
 
@@ -39,7 +39,7 @@ const MainCard = ({ Fund, Hide, setHide, NavInfoToggled }) => {
                     <Col className="d-flex justify-content-between pe-5" sm="auto">
                         <Col className="pe-2">
                             <div className="containerHideInfo px-2">
-                                <span>Balance: $</span>
+                                <span>{t("Balance")}: $</span>
                                 <span className={`info ${Hide ? "shown" : "hidden"}`}>
                                     {balanceInCash.toString().replace(/./g, "*")}
                                 </span>
@@ -76,7 +76,7 @@ const MainCard = ({ Fund, Hide, setHide, NavInfoToggled }) => {
             <Container fluid className="px-0">
                 <Nav className="history-tabs" variant="tabs" activeKey={SelectedTab} onSelect={(e) => { setSelectedTab(e) }}>
                     <Nav.Item>
-                        <Nav.Link eventKey={"0"}>{t("Last Movements")}</Nav.Link>
+                        <Nav.Link eventKey={"0"}>{t("Transactions")}</Nav.Link>
                     </Nav.Item>
                 </Nav>
             </Container>
@@ -85,7 +85,8 @@ const MainCard = ({ Fund, Hide, setHide, NavInfoToggled }) => {
                 {
                     {
                         0:
-                            <MovementsTab NavInfoToggled={NavInfoToggled} Fund={Fund} />,
+                            <MovementsTab SearchById={SearchById} setSearchById={setSearchById} NavInfoToggled={NavInfoToggled} Fund={Fund} 
+                            resetSearchById={resetSearchById} handleMovementSearchChange={handleMovementSearchChange}/>,
                         1:
                             <FundDetail />
                     }[SelectedTab]

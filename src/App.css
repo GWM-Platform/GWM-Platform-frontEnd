@@ -238,13 +238,7 @@ body {
 }
 
 .btn.btn-main {
-	background-color: var(--blue-main) !important;
-	border-color: var(--blue-main) !important;
 	transition: 0.5s all !important;
-}
-.btn.btn-main:hover {
-	border-color: #1379e7 !important;
-	background-color: #1379e7 !important;
 }
 
 .btn.btn-danger {
