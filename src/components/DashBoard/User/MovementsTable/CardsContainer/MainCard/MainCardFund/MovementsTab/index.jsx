@@ -145,8 +145,6 @@ const MovementsTab = ({ Fund, setPerformance, SearchById, setSearchById, resetSe
                             Movements.total > 0 ?
                                 <TableLastMovements
                                     content={Movements.transactions}
-                                    Fund={Fund}
-                                    setPerformance={setPerformance}
                                     movements={Pagination.take}
                                 />
                                 :

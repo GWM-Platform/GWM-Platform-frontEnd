@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Col, Nav } from 'react-bootstrap';
 
@@ -12,14 +12,44 @@ import MovementsTab from './MovementsTab';
 import FundDetail from './FundDetail';
 import './index.css'
 
-const MainCard = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchById,resetSearchById,handleMovementSearchChange }) => {
+const MainCard = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
     const [SelectedTab, setSelectedTab] = useState("0")
     const [Performance, setPerformance] = useState(0)
-    const { PendingTransactions } = useContext(DashBoardContext)
+    const { PendingTransactions,token,ClientSelected } = useContext(DashBoardContext)
     const { t } = useTranslation();
 
     const balanceInCash = Fund.shares ? (Fund.shares * Fund.fund.sharePrice) : 0
     const pendingfeeParts = PendingTransactions.value.filter((transaction) => transaction.fundId === Fund.fund.id && Math.sign(transaction.shares) === +1).map((transaction) => transaction.shares).reduce((a, b) => a + b, 0).toFixed(2)
+
+    useEffect(() => {
+        const getPerformance = async () => {
+            var url = `${process.env.REACT_APP_APIURL}/funds/${Fund.fund.id}/performance?` + new URLSearchParams(
+                {
+                    client: ClientSelected.id
+                });
+
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    Accept: "*/*",
+                    'Content-Type': 'application/json'
+                }
+            })
+
+            if (response.status === 200) {
+                const data = await response.json()
+                setPerformance(data.toFixed(2))
+            } else {
+                switch (response.status) {
+                    default:
+                        console.error(response.status)
+                }
+            }
+        }
+
+        getPerformance()
+    }, [Fund,ClientSelected.id,token])
 
     return (
         <div className="movementsMainCardFund growAnimation mt-2">
@@ -109,9 +139,9 @@ const MainCard = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchBy
                 {
                     {
                         0:
-                            <MovementsTab setPerformance={setPerformance} NavInfoToggled={NavInfoToggled}
-                                Fund={Fund} SearchById={SearchById} setSearchById={setSearchById} 
-                                resetSearchById={resetSearchById} handleMovementSearchChange={handleMovementSearchChange}/>,
+                            <MovementsTab NavInfoToggled={NavInfoToggled}
+                                Fund={Fund} SearchById={SearchById} setSearchById={setSearchById}
+                                resetSearchById={resetSearchById} handleMovementSearchChange={handleMovementSearchChange} />,
                         1:
                             <FundDetail NavInfoToggled={NavInfoToggled} />
                     }[SelectedTab]
