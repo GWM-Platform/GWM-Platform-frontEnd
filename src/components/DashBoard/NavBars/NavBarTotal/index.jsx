@@ -55,7 +55,7 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
                                 <>
                                     {t("Available Cash")}:&nbsp;
                                     {
-                                        contentReady ?
+                                        contentReady && Accounts[0] ?
                                             <span className="growOpacity">${Accounts[0].balance}</span>
                                             :
                                             <Spinner className="ms-2" animation="border" size="sm" />

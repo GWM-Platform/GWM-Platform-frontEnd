@@ -32,7 +32,6 @@ const BuyData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAcc
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
                     <InputGroup className="mb-3">
                         <InputGroup.Text>U$D</InputGroup.Text>
-
                         <Form.Control
                             onWheel={event => event.currentTarget.blur()}
                             disabled={data.FundSelected === -1}

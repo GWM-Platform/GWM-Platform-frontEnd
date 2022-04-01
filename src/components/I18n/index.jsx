@@ -427,10 +427,13 @@ i18n
           "Share amount": "Cuotapartes",
           "There are only": "Solo hay",
           "available shares": "cuotapartes disponibles",
-          "Holdings value":"Valor tenencia",
+          "Holdings value": "Valor tenencia",
 
-          "Enter amount you want to withdraw from your account":"Ingrese el monto que desea retirar",
-          "(Cancel the search to use them)":"(Cancele la busqueda para usarlos)"
+          "Enter amount you want to withdraw from your account": "Ingrese el monto que desea retirar",
+          "(Cancel the search to use them)": "(Cancele la busqueda para usarlos)",
+
+          "Your password has been successfully reset":"Su contraseña ha sido reestablecida correctamente",
+          "Error. Check the entered data": "Error. Verifique la informacion introducida"
 
         }
       }
