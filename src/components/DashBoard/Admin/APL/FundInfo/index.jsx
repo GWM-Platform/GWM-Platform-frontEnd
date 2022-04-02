@@ -42,7 +42,7 @@ const FundInfo = ({ Fund }) => {
             }
         }
 
-        //getPerformance()
+        getPerformance()
     }, [Fund, token])
 
     return (
