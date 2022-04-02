@@ -1,20 +1,11 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Table } from 'react-bootstrap';
 import Movement from './Movement';
 import { useTranslation } from "react-i18next";
 
-const TableLastMovements = ({ content, Fund, movements, setPerformance }) => {
+const TableLastMovements = ({ content, movements }) => {
     const { t } = useTranslation();
-
-    useEffect(() => {
-        let actualMoney = Fund.shares ? Fund.shares * Fund.fund.sharePrice : 0
-        let moneySpent = 0
-        content.forEach((a) => {
-            moneySpent += a.shares * a.sharePrice
-        })
-        setPerformance(Fund.shares ? (actualMoney * 100 / moneySpent - 100).toFixed(2) : 0)
-    }, [Fund, content, setPerformance])
 
     return (
         <div style={{ minHeight: `calc( ( 0.5rem * 2 + 25.5px ) * ${movements + 1} )` }}

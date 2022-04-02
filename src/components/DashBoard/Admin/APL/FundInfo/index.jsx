@@ -1,15 +1,50 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {  Col } from 'react-bootstrap'
+import { Col } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye,faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { DashBoardContext } from 'context/DashBoardContext';
 
-const FundInfo = ({Fund}) => {
-    const [Hide,setHide]=useState(false)
+const FundInfo = ({ Fund }) => {
+    const { token } = useContext(DashBoardContext)
+
+    const [Hide, setHide] = useState(false)
+    const [Performance, setPerformance] = useState(0)
     const balanceInCash = (Fund.freeShares * Fund.sharePrice)
+    
     const { t } = useTranslation()
-    console.log(Fund)
+
+    useEffect(() => {
+        const getPerformance = async () => {
+            var url = `${process.env.REACT_APP_APIURL}/funds/${Fund.id}/performance?` + new URLSearchParams(
+                {
+                    client: "all"
+                });
+
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    Accept: "*/*",
+                    'Content-Type': 'application/json'
+                }
+            })
+
+            if (response.status === 200) {
+                const data = await response.json()
+                setPerformance(data.toFixed(2))
+            } else {
+                switch (response.status) {
+                    default:
+                        console.error(response.status)
+                }
+            }
+        }
+
+        //getPerformance()
+    }, [Fund, token])
+
     return (
         <div className="bg-white info mt-2 ms-0 mb-2 px-0">
             <div className="d-flex justify-content-between align-items-end pe-2">
@@ -32,7 +67,7 @@ const FundInfo = ({Fund}) => {
                 <Col className="d-flex justify-content-between pe-5" sm="auto">
                     <Col className="pe-2">
                         <div className="containerHideInfo px-2">
-                            <span>{t("Actual Value in cash of your holding")}: $</span>
+                            <span>{t("Balance ($)")}: $</span>
                             <span className={`info ${Hide ? "shown" : "hidden"}`}>
                                 {balanceInCash.toFixed(2).toString().replace(/./g, "*")}
                             </span>
@@ -62,6 +97,16 @@ const FundInfo = ({Fund}) => {
                             icon={faEyeSlash}
                         />
                     </Col>
+                </Col>
+                <Col sm="auto" >
+                    {t("Performance")}{": "}
+                    <span
+                        className={{
+                            '1': 'text-green',
+                            '-1': 'text-red'
+                        }[Math.sign(Performance)]}>
+                        {Performance}%
+                    </span>
                 </Col>
             </div>
         </div>
