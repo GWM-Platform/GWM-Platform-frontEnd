@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -17,20 +17,28 @@ const ContainerForgotPassword = () => {
   let history = useHistory();
 
   // eslint-disable-next-line 
-  const { user, token } = useParams();
+  function useQuery() {
+    const { search } = useLocation();
+
+    return React.useMemo(() => new URLSearchParams(search), [search]);
+  }
+
+  const email = useQuery().get("email")
+  const token = useQuery().get("token")
 
   const symbols = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
 
   const [data, setData] = useState({
     token: token ? token : "",
-    id: user ? user : "",
+    email: email ? email : "",
     password: "",
     passwordConfirm: "",
   })
 
   const [ToAPI, setToAPI] = useState({
     token: token !== undefined ? token : "",
-    id: user !== undefined ? user : ""
+    email: email !== undefined ? email : "",
+    password: ""
   })
 
   const [ButtonDisabled, setButtonDisabled] = useState(true)
@@ -134,23 +142,19 @@ const ContainerForgotPassword = () => {
               <Card.Body className="px-0 px-sm-3">
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
                   <h1 className="mt-0 pb-2">{t("Change password")}</h1>
-                  {user !== undefined ?
-                    <p className="text-medium-emphasis">{t("Change password for")} {user}</p>
-                    :
-                    <></>}
                   <p className="Message mb-1">{Message}</p>
                   <InputGroup className="mb-2">
                     <InputGroup.Text>
                       <FontAwesomeIcon icon={faUser} />
                     </InputGroup.Text>
                     <Form.Control
-                      placeholder={t("id")}
-                      value={data.id}
-                      autoComplete="id"
+                      placeholder={t("e-Mail")}
+                      value={data.email}
+                      autoComplete="email"
                       onChange={handleChange}
                       required
-                      id="id"
-                      type="number"
+                      id="email"
+                      type="mail"
                     />
                   </InputGroup>
                   <InputGroup className="mb-2">

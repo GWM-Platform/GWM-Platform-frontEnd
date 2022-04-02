@@ -86,7 +86,6 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
                 const dataFetched = await response.json()
                 if (fundId) {
                     const fundSelected = dataFetched.findIndex(fund => fund.id === fundId && fund.freeShares > 0)
-                    console.log(fundSelected > 0, fundSelected)
                     if (fundSelected >= 0) {
                         openAccordion()
                         setData({ ...data, ...{ FundSelected: fundSelected } })
