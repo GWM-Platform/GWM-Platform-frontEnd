@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Col } from 'react-bootstrap'
+import { Col,Spinner } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
@@ -10,17 +10,14 @@ const FundInfo = ({ Fund }) => {
     const { token } = useContext(DashBoardContext)
 
     const [Hide, setHide] = useState(false)
-    const [Performance, setPerformance] = useState(0)
+    const [Performance, setPerformance] = useState({ value: 0, fetching: true })
     const balanceInCash = (Fund.freeShares * Fund.sharePrice)
-    
-    const { t } = useTranslation()
 
+    const { t } = useTranslation()
     useEffect(() => {
         const getPerformance = async () => {
-            var url = `${process.env.REACT_APP_APIURL}/funds/${Fund.id}/performance?` + new URLSearchParams(
-                {
-                    client: "all"
-                });
+            setPerformance(prevState => ({ ...prevState, ...{ fetching: true, value: 0 } }))
+            var url = `${process.env.REACT_APP_APIURL}/funds/${Fund.id}/performance`
 
             const response = await fetch(url, {
                 method: 'GET',
@@ -33,15 +30,15 @@ const FundInfo = ({ Fund }) => {
 
             if (response.status === 200) {
                 const data = await response.json()
-                setPerformance(data.toFixed(2))
+                setPerformance(prevState => ({ ...prevState, ...{ fetching: false, value: data.toFixed(2) } }))
             } else {
                 switch (response.status) {
                     default:
+                        setPerformance(prevState => ({ ...prevState, ...{ fetching: false, value: 0 } }))
                         console.error(response.status)
                 }
             }
         }
-
         getPerformance()
     }, [Fund, token])
 
@@ -100,13 +97,18 @@ const FundInfo = ({ Fund }) => {
                 </Col>
                 <Col sm="auto" >
                     {t("Performance")}{": "}
-                    <span
-                        className={{
-                            '1': 'text-green',
-                            '-1': 'text-red'
-                        }[Math.sign(Performance)]}>
-                        {Performance}%
-                    </span>
+                    {
+                        Performance.fetching ?
+                        <Spinner animation="border" size="sm" />
+                            :
+                            <span
+                                className={{
+                                    '1': 'text-green',
+                                    '-1': 'text-red'
+                                }[Math.sign(Performance.value)]}>
+                                {Performance.value}%
+                            </span>
+                    }
                 </Col>
             </div>
         </div>
