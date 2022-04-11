@@ -12,7 +12,7 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, NavInfoToggl
 
     const { FetchingFunds, Funds, Accounts, contentReady } = useContext(DashBoardContext);
 
-    const [error, setError] = useState("Loading Content");
+    const [error, setError] = useState("Loading content");
 
 
     useEffect(() => {

@@ -53,9 +53,9 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
                             {
                                 sectionsCashInAccount.includes(itemSelected)?
                                 <>
-                                    {t("Available Cash")}:&nbsp;
+                                    {t("Available cash")}:&nbsp;
                                     {
-                                        contentReady ?
+                                        contentReady && Accounts[0] ?
                                             <span className="growOpacity">${Accounts[0].balance}</span>
                                             :
                                             <Spinner className="ms-2" animation="border" size="sm" />
@@ -63,7 +63,7 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
                                 </>
                                 :
                             <>
-                                {t("Total Balance")}
+                                {t("Total balance")}
                                 {
                                     Balance.fetching ?
                                         <Spinner className="ms-2" animation="border" size="sm" />

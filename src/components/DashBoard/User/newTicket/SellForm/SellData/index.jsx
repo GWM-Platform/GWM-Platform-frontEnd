@@ -54,7 +54,7 @@ const SellData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAc
                                         t("Quantity of shares you want to sell")
                                         :
                                         data.shares < 1 ?
-                                            t("At least you must sell 1 feepart")
+                                            t("At least you must sell one share")
                                             :
                                             t("There are only") + " " + Funds[data.FundSelected].shares + " " + t("available shares")
                             }

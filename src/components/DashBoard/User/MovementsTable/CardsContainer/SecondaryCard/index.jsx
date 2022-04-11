@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useRef } from 'react'
 import './index.css'
 //Parent key 0-> Fund;Parent key 1->Cash
-const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownKey, selected, Hide, categorySelected,resetSearchById }) => {
+const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownKey, selected, Hide, categorySelected, resetSearchById }) => {
     const select = () => {
         setCategorySelected(parentKey)
         setSelected(ownKey)
@@ -23,13 +23,21 @@ const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownK
                 <Col lg="auto" className="d-none d-sm-none d-md-none d-lg-flex currencyCol d-flex align-items-center">
                     <div className="currencyContainer d-flex align-items-center justify-content-center">
                         {
-                            parentKey === 1 ?
-                                Fund.fund.type !== undefined ?
-                                    <img className="currency px-0 mx-0" alt={Fund.fund.type} src={process.env.PUBLIC_URL + '/images/' + Fund.fund.type + '.svg'} />
-                                    :
-                                    <img className="currency px-0 mx-0" alt="crypto" src={process.env.PUBLIC_URL + '/images/crypto.svg'} />
+                            parentKey === 0 ?
+                                <img className="currency px-0 mx-0" alt="cash" src={process.env.PUBLIC_URL + '/images/FundsLogos/cash.svg'} />
                                 :
-                                <img className="currency px-0 mx-0" alt="crypto" src={process.env.PUBLIC_URL + '/images/cash.svg'} />
+                                Fund.fund.typeId !== undefined ?
+                                    <img
+                                        alt=""
+                                        className="currency px-0 mx-0"
+                                        onError={({ currentTarget }) => {
+                                            currentTarget.onerror = null;
+                                            currentTarget.src = process.env.PUBLIC_URL + '/images/FundsLogos/1.svg';
+                                        }}
+                                        src={process.env.PUBLIC_URL + '/images/FundsLogos/' + Fund.fund.typeId + '.svg'}
+                                    />
+                                    :
+                                    <img className="currency px-0 mx-0" alt="crypto" src={process.env.PUBLIC_URL + '/images/FundsLogos/1.svg'} />
                         }
                     </div>
                 </Col>

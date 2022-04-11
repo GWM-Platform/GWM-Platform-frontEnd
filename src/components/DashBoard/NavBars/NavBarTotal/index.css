@@ -1,20 +1,20 @@
-.navBarTotal{
-    position: sticky;
-    top: 45px;
-    z-index: 1010;
-    background-color: var(--blue-main)!important;
-    filter: drop-shadow(0px 0px 5px black);
+.navBarTotal {
+	position: sticky;
+	top: 45px;
+	z-index: 1010;
+	background-color: var(--blue-main) !important;
+	filter: drop-shadow(0px 0px 5px black);
 }
 
-.total{
-    font-size: 23px;
-    font-weight: bold;
-    text-align: center;
-    color:white;
-    opacity: 0.87;
+.total {
+	font-size: 23px;
+	font-weight: bold;
+	text-align: center;
+	color: white;
+	opacity: 0.87;
 }
 @media (max-width: 576px) {
-    .total{
-        font-size: 20px
-    }
+	.changePassword {
+		background: white;
+	}
 }

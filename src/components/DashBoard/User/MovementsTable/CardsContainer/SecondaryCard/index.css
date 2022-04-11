@@ -41,10 +41,10 @@
 }
 
 .secondaryCard > .secondary .description {
-	text-transform: capitalize;
-	font-weight: 100;
+	text-transform: uppercase;
+	font-weight: 200;
 	font-size: 20px;
-	color: dimgray;
+	color: black;
 }
 
 .secondaryCard > .secondary .funds {

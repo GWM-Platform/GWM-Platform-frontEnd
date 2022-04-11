@@ -75,7 +75,7 @@ const MobileCard = ({ setItemSelected, isMobile, className, Fund }) => {
                         <Col xs="12" className="px-0">
                             <Card.Title >
                                 <span>
-                                    {Fund.shares} {t("feeParts in possession")}
+                                    {Fund.shares} {t("shares in possession")}
                                 </span>
                             </Card.Title>
                             <Card.Title >

@@ -59,6 +59,12 @@
 .movementsMainCardFund .info .left {
     text-transform: capitalize;
     font-size: 17px;
+    font-weight: 300;
+    color:black
+}
+.movementsMainCardFund .info .description {
+    text-transform: capitalize;
+    font-size: 17px;
     font-weight: 200;
 }
 

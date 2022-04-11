@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Col } from 'react-bootstrap'
+import { Col,Spinner } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
@@ -10,17 +10,14 @@ const FundInfo = ({ Fund }) => {
     const { token } = useContext(DashBoardContext)
 
     const [Hide, setHide] = useState(false)
-    const [Performance, setPerformance] = useState(0)
+    const [Performance, setPerformance] = useState({ value: 0, fetching: true })
     const balanceInCash = (Fund.freeShares * Fund.sharePrice)
-    
-    const { t } = useTranslation()
 
+    const { t } = useTranslation()
     useEffect(() => {
         const getPerformance = async () => {
-            var url = `${process.env.REACT_APP_APIURL}/funds/${Fund.id}/performance?` + new URLSearchParams(
-                {
-                    client: "all"
-                });
+            setPerformance(prevState => ({ ...prevState, ...{ fetching: true, value: 0 } }))
+            var url = `${process.env.REACT_APP_APIURL}/funds/${Fund.id}/performance`
 
             const response = await fetch(url, {
                 method: 'GET',
@@ -33,16 +30,16 @@ const FundInfo = ({ Fund }) => {
 
             if (response.status === 200) {
                 const data = await response.json()
-                setPerformance(data.toFixed(2))
+                setPerformance(prevState => ({ ...prevState, ...{ fetching: false, value: data.toFixed(2) } }))
             } else {
                 switch (response.status) {
                     default:
+                        setPerformance(prevState => ({ ...prevState, ...{ fetching: false, value: 0 } }))
                         console.error(response.status)
                 }
             }
         }
-
-        //getPerformance()
+        getPerformance()
     }, [Fund, token])
 
     return (
@@ -52,7 +49,7 @@ const FundInfo = ({ Fund }) => {
                     {t(Fund.name)}
                 </h1>
                 <h2 className="m-0 left">
-                    {t("FeePart price (Now)")}
+                    {t("Share price (Now)")}
                     <span className="ps-3" style={{ fontWeight: "bolder" }}>
                         ${Fund.sharePrice}
                     </span>
@@ -60,7 +57,7 @@ const FundInfo = ({ Fund }) => {
             </div>
             <div>
                 <h2 className="px-2 left">
-                    {Fund.freeShares}{" "}{t("feeParts in possession")}{" ("}{Fund.shares}{" "}{t("in total")}{")"}
+                    {Fund.freeShares}{" "}{t("Shares in possession")}{" ("}{Fund.shares}{" "}{t("in total")}{")"}
                 </h2>
             </div>
             <div className="d-flex justify-content-between align-items-end pe-2 pb-2 border-bottom-main">
@@ -100,13 +97,18 @@ const FundInfo = ({ Fund }) => {
                 </Col>
                 <Col sm="auto" >
                     {t("Performance")}{": "}
-                    <span
-                        className={{
-                            '1': 'text-green',
-                            '-1': 'text-red'
-                        }[Math.sign(Performance)]}>
-                        {Performance}%
-                    </span>
+                    {
+                        Performance.fetching ?
+                        <Spinner animation="border" size="sm" />
+                            :
+                            <span
+                                className={{
+                                    '1': 'text-green',
+                                    '-1': 'text-red'
+                                }[Math.sign(Performance.value)]}>
+                                {Performance.value}%
+                            </span>
+                    }
                 </Col>
             </div>
         </div>

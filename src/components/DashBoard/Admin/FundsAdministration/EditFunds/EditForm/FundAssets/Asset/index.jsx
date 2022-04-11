@@ -43,7 +43,7 @@ const AssetCard = ({ Asset }) => {
             <Card className={`AssetCard h-100 `}>
                 <Card.Header><strong className="title">{Asset.name}</strong></Card.Header>
                 <Card.Body>
-                    <Card.Text className="mb-1 feePartsInfo">
+                    <Card.Text className="mb-1 sharesInfo">
                         <strong>{AssetDetail.name}</strong>
                         <br/>
                         <strong>${Asset.amount*AssetDetail.value}</strong>

@@ -31,7 +31,7 @@ const FundCard = ({ Fund, ownKey, data, setData, setSome, some, openAccordion })
                     <Container fluid className="px-0">
                         <Row className="d-flex justify-content-between">
                             <Col md="auto">
-                                <Card.Text className="mb-1 feePartsInfo">
+                                <Card.Text className="mb-1 sharesInfo">
                                     <strong>${Fund.fund.sharePrice}</strong> {t(" Each")}
                                 </Card.Text>
                             </Col>

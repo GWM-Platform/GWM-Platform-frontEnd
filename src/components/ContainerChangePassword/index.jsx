@@ -1,130 +1,89 @@
-import React, { useState } from 'react'
-import { useHistory, useParams } from 'react-router-dom';
+import React, { useState, useRef, useEffect } from 'react'
+import { useHistory, useLocation } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faKey, faLock, faUser, } from '@fortawesome/free-solid-svg-icons'
+
+import { faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icons'
+import { faKey, faLock, faUser, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import { useTranslation } from "react-i18next";
 import { Col, Row, Container, Card, Form, Button, InputGroup } from 'react-bootstrap'
+import { passwordStrength } from 'check-password-strength'
 
 const ContainerForgotPassword = () => {
+  const isMountedRef = useRef(null);
+
   const { t } = useTranslation();
   let history = useHistory();
 
   // eslint-disable-next-line 
-  const { user, token } = useParams();
+  function useQuery() {
+    const { search } = useLocation();
 
-  // eslint-disable-next-line 
+    return React.useMemo(() => new URLSearchParams(search), [search]);
+  }
+
+  const email = useQuery().get("email")
+  const token = useQuery().get("token")
+
+  const symbols = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
+
+  const [data, setData] = useState({
+    token: token ? token : "",
+    email: email ? email : "",
+    password: "",
+    passwordConfirm: "",
+  })
+
+  const [ToAPI, setToAPI] = useState({
+    token: token !== undefined ? token : "",
+    email: email !== undefined ? email : "",
+    password: ""
+  })
+
+  const [ButtonDisabled, setButtonDisabled] = useState(true)
+  const [validation, setValidation] = useState(passwordStrength(''))
+  const [validated, setValidated] = useState(false)
+  const [match, setMatch] = useState(true)
+  const [Message, setMessage] = useState("")
+  const [ShowRequirements, setShowRequirements] = useState(false)
+
   const toLogin = () => {
     history.push(`/login`);
   }
 
-  // eslint-disable-next-line
-  const [Message, setMessage] = useState("")
-  const [formData, setFormData] = useState({  token :token,username : user})
-  const [validated, setValidated] = useState(false);
-
-  const [validation] = useState({})
-  const [validationFlag, setValidationFlag] = useState(false)
-  const [match, setMatch] = useState("block")
-  const [checkLenght, setCheckLenght] = useState("none")
-  const [uncheckLenght, setunCheckLenght] = useState("")
-  const [checkNumber, setCheckNumber] = useState("none")
-  const [uncheckNumber, setunCheckNumber] = useState("")
-  const [checkSymbol, setCheckSymbol] = useState("none")
-  const [uncheckSymbol, setunCheckSymbol] = useState("")
-  const [checkCapital, setCheckCapital] = useState("none")
-  const [uncheckCapital, setunCheckCapital] = useState("")
-  const [checkLowercase, setCheckLowercase] = useState("none")
-  const [uncheckLowercase, setunCheckLowercase] = useState("")
-  const [buttonDisabled, setButtonDisabled] = useState(false)
-
   const handleChange = (event) => {
-    if (event.target.id !== "passwordConfirm") {
-      formData[event.target.id] = event.target.value
-    }
-    let aux = formData
+
+    let aux = data
     aux[event.target.id] = event.target.value
 
-    if (event.target.id === "password") {
-      //Validate lenght
-      if (event.target.value.length >= 8) {
-        validation.lenght = true
-        setCheckLenght("")
-        setunCheckLenght("none")
-
-      } else {
-        validation.lenght = false
-        setCheckLenght("none")
-        setunCheckLenght("")
-
-      }
-      //Validate lowecase letters
-      if (event.target.value === event.target.value.toUpperCase()) {
-        validation.lowercase = false
-        setCheckLowercase("none")
-        setunCheckLowercase("")
-      } else {
-        validation.lowercase = true
-        setCheckLowercase("")
-        setunCheckLowercase("none")
-      }
-      //Validate capital letters 
-      if (event.target.value === event.target.value.toLowerCase()) {
-        validation.capitalLetter = false
-        setCheckCapital("none")
-        setunCheckCapital("")
-      } else {
-        validation.capitalLetter = true
-        setCheckCapital("")
-        setunCheckCapital("none")
-      }
-      //Validate Numbers
-      var numbers = /[0-9]/g;
-      if (event.target.value.match(numbers)) {
-        validation.number = true
-        setCheckNumber("")
-        setunCheckNumber("none")
-      } else {
-        validation.number = false
-        setCheckNumber("none")
-        setunCheckNumber("")
-      }
-      //Validate Symbol
-      var symbol = /[!@#$%^&*]/g;
-      if (event.target.value.match(symbol)) {
-        validation.symbol = true
-        setCheckSymbol("")
-        setunCheckSymbol("none")
-      } else {
-        validation.symbol = false
-        setCheckSymbol("none")
-        setunCheckSymbol("")
-      }
-      if (validation.symbol && validation.number && validation.capitalLetter && validation.lenght && validation.lowercase) {
-        setValidationFlag(true)
-      } else {
-        setValidationFlag(false)
-      }
+    if (event.target.id !== "passwordConfirm") {
+      let auxToAPI = {}
+      auxToAPI[event.target.id] = event.target.value
+      setToAPI((prevState) => ({ ...prevState, ...auxToAPI }))
     }
-    if (formData.passwordConfirm === formData.password && validationFlag && formData.username !== "" && formData.token !== "") {
+    if (event.target.id === "password") {
+      setValidation(passwordStrength(event.target.value))
+    }
+    setData((prevState) => ({ ...prevState, ...aux }))
+
+    setMatch(aux.passwordConfirm === aux.password)
+    if (aux.passwordConfirm === aux.password && aux.id !== "" && aux.token !== "" && validation.value === "Medium") {
       setButtonDisabled(false)
-      setMatch("none")
     } else {
-      setMatch("block")
       setButtonDisabled(true)
     }
-    setFormData(aux)
   }
 
   const handleSubmit = (event) => {
+    const form = event.currentTarget;
     event.preventDefault();
     event.stopPropagation();
-    const form = event.currentTarget;
-    if (form.checkValidity() === true) {
-      changePassword(formData)
+    setValidated(true)
+    if (form.checkValidity()) {
+      changePassword()
+      setButtonDisabled(true)
     }
-    setValidated(true);
   }
 
   const changePassword = async () => {
@@ -132,7 +91,7 @@ const ContainerForgotPassword = () => {
     var url = `${process.env.REACT_APP_APIURL}/users/resetPassword`;
     const response = await fetch(url, {
       method: 'POST',
-      body: JSON.stringify({token:formData.token,password:formData.password,id:parseInt(formData.id)}),
+      body: JSON.stringify(ToAPI),
       headers: {
         Accept: "*/*",
         'Content-Type': 'application/json'
@@ -140,47 +99,62 @@ const ContainerForgotPassword = () => {
     })
 
     if (response.status === 200) {
-      setMessage("Su contraseña se ha reestablecido correctamente")
-      setButtonDisabled(false)
+      if (isMountedRef) {
+        setMessage("Your password has been successfully reset")
+        setButtonDisabled(false)
+      }
     } else {
-      setButtonDisabled(false)
+      if (isMountedRef) {
+        setButtonDisabled(false)
+      }
       switch (response.status) {
         case 500:
-          setMessage("Error. Vefique los datos ingresados")
+          if (isMountedRef) {
+            setMessage("Error. Check the entered data")
+          }
           break;
         default:
           console.log(response.status)
-          setMessage("unhandled Message")
+          if (isMountedRef) {
+            setMessage("Error. Check the entered data")
+          }
       }
     }
   }
 
+  const escapeRegExp = (string) => string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => isMountedRef.current = false;
+  }, [])
+
   return (
-    <div className="changePassword min-vh-100 d-flex flex-row align-items-center">
+    <div className="changePassword min-vh-100 p-relative">
+      <Button className="button toLogin" variant="danger" type="button" onClick={() => toLogin()} >
+        <FontAwesomeIcon className="icon" icon={faChevronLeft} />
+        {t("To Login")}
+      </Button>
       <Container fluid>
-        <Row className="justify-content-center">
-          <Col xs="12" sm="8" md="8" lg="5" xl="4">
-            <Card className="p-4">
-              <Card.Body>
-              <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                  <h1 className="pb-2">{t("Change password")}</h1>
-                  {user !== undefined ?
-                    <p className="text-medium-emphasis">{t("Change password for")} {user}</p>
-                    :
-                    <></>}
+        <Row className="justify-content-center pt-3 pt-sm-5">
+          <Col className="cardContainer" xs="12" sm="8" md="8" lg="5" xl="4">
+            <Card className="p-0 p-sm-4">
+              <Card.Body className="px-0 px-sm-3">
+                <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                  <h1 className="mt-0 pb-2">{t("Change password")}</h1>
                   <p className="Message mb-1">{Message}</p>
                   <InputGroup className="mb-2">
                     <InputGroup.Text>
                       <FontAwesomeIcon icon={faUser} />
                     </InputGroup.Text>
                     <Form.Control
-                      placeholder={t("id")}
-                      defaultValue={user}
-                      autoComplete="id"
+                      placeholder={t("e-Mail")}
+                      value={data.email}
+                      autoComplete="email"
                       onChange={handleChange}
                       required
-                      id="id"
-                      type="number"
+                      id="email"
+                      type="mail"
                     />
                   </InputGroup>
                   <InputGroup className="mb-2">
@@ -192,7 +166,7 @@ const ContainerForgotPassword = () => {
                       onChange={handleChange}
                       required
                       id="token"
-                      defaultValue={token}
+                      value={data.token}
                     />
                   </InputGroup>
                   <InputGroup className="mb-2">
@@ -200,38 +174,40 @@ const ContainerForgotPassword = () => {
                       <FontAwesomeIcon icon={faLock} />
                     </InputGroup.Text>
                     <Form.Control
+                      onFocus={() => setShowRequirements(true)}
+                      onBlur={() => setShowRequirements(false)}
                       type="password"
                       placeholder={t("Password")}
                       autoComplete="new-password"
                       required
+                      pattern={`(?=.*[${escapeRegExp(symbols)}])(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}`}
                       onChange={handleChange}
                       id="password"
+                      value={data.password}
                     />
                   </InputGroup>
-                  <Form.Text className="text-muted formText mb-4">
-                    <p className="validation">{t("Make sure at least the new password have")}:
-                      <br />
-                      {t("8 characters lenght")}
-                      <span className="textGreen" style={{ "display": checkLenght }}>✓</span>
-                      <span className="textRed" style={{ "display": uncheckLenght }}>✗</span>
-                      <br />
-                      {t("a number")}
-                      <span className="textGreen" style={{ "display": checkNumber }}>✓</span>
-                      <span className="textRed" style={{ "display": uncheckNumber }}>✗</span>
-                      <br />
-                      {t("a lowercase letter")}
-                      <span className="textGreen" style={{ "display": checkLowercase }}>✓</span>
-                      <span className="textRed" style={{ "display": uncheckLowercase }}>✗</span>
-                      <br />
-                      {t("a capital letter")}
-                      <span className="textGreen" style={{ "display": checkCapital }}>✓</span>
-                      <span className="textRed" style={{ "display": uncheckCapital }}>✗</span>
-                      <br />
-                      {t("a symbol")}
-                      <span className="textGreen" style={{ "display": checkSymbol }}>✓</span>
-                      <span className="textRed" style={{ "display": uncheckSymbol }}>✗</span>
-                    </p>
-                  </Form.Text>
+                  <div className={ShowRequirements ? "expanded" : "collapsed"}>
+                    <Form.Text className={`text-muted formText mb-4`}>
+                      <p className="validation mb-1 ">{t("Your new password must have")}:
+                        <br />
+                        {validationIcon(validation.length > 8)}
+                        {t("8 characters length")}
+                        <br />
+                        {validationIcon(validation.contains.includes('number'))}
+                        {t("A number")}
+                        <br />
+                        {validationIcon(validation.contains.includes('lowercase'))}
+                        {t("A lowercase letter")}
+                        <br />
+                        {validationIcon(validation.contains.includes('uppercase'))}
+                        {t("A capital letter")}
+                        <br />
+                        {validationIcon(validation.contains.includes('symbol'))}
+                        {t("A symbol")} ({symbols})
+                      </p>
+                    </Form.Text>
+                  </div>
+
                   <InputGroup  >
                     <InputGroup.Text>
                       <FontAwesomeIcon icon={faLock} />
@@ -241,13 +217,17 @@ const ContainerForgotPassword = () => {
                       placeholder={t("Confirm password")}
                       autoComplete="new-password"
                       required onChange={handleChange}
+                      pattern={escapeRegExp(data.password)}
                       id="passwordConfirm"
+                      value={data.passwordConfirm}
                     />
                   </InputGroup>
-                  <Form.Text className="mb-4 text-muted formText" style={{ "display": match }}>
-                    <p className="textRed validation">{t("The fields \"password\" and \"confirm password\" don't match")}</p>
+
+                  <Form.Text className="text-muted  formText">
+                    <p className={`${match ? "" : "textRed"} validation`}>{t("The fields \"password\" and \"confirm password\" must match")}</p>
                   </Form.Text>
-                  <Button variant="danger" type="submit" className='button' disabled={buttonDisabled} >
+
+                  <Button className="mt-2 button" variant="danger" type="submit" disabled={ButtonDisabled} >
                     {t("Change password")}
                   </Button>
                 </Form>
@@ -260,3 +240,11 @@ const ContainerForgotPassword = () => {
   )
 }
 export default ContainerForgotPassword
+
+const validationIcon = (valid) => {
+  if (valid) {
+    return <span className="pe-1 textGreen"> <FontAwesomeIcon icon={faCheckCircle} /></span>
+  } else {
+    return <span className="pe-1 textRed"> <FontAwesomeIcon icon={faTimesCircle} /></span>
+  }
+}

@@ -1,55 +1,98 @@
-
-.block{
-    display: block;
-    width: 100%;
+.block {
+	display: block;
+	width: 100%;
 }
-.forgot{
-    padding: 0;
-    float: right;
-}.validation {
-    text-align: left;
-}.textRed{
-    color: var(--red);
-}.textGreen{
-    color: var(--main-color)
-}.error{
-    color: var(--error);
-    font-size: 16px;
-    padding-bottom: 0rem;
-    font-weight: bolder;
+.forgot {
+	padding: 0;
+	float: right;
 }
-
-.changePassword  {
-    background-color:lightgray;    
+.validation {
+	text-align: left;
+	transition: all 0.5s;
 }
-.changePassword  .card{
-    border-radius: 30px;
-    border: none;
+.textRed {
+	color: red;
 }
-.changePassword  .form-check-input:checked{
-    background-color: var(--main-color);
-    border-color: var(--secondary-color);;
+.textGreen {
+	color: green;
 }
-.changePassword  .error{
-    color: var(--error);
-    font-size: 14px;
-    font-weight: bolder;
-    text-align: end;
+.error {
+	color: var(--error);
+	font-size: 16px;
+	padding-bottom: 0rem;
+	font-weight: bolder;
 }
 
-.changePassword  .button{
-    text-transform: uppercase;
-    border-radius:20px;
-    transition: border-radius 0.5s;
+.changePassword {
+	background-color: lightgray;
 }
-.changePassword  .input-group-text{
-    background-color: white;
-    padding-left: 1rem ;
-    border-radius: 30px;
+.changePassword .card {
+	border-radius: 30px;
+	border: none;
 }
-.changePassword  .form-control{
-    border-radius:30px
+.changePassword .form-check-input:checked {
+	background-color: var(--main-color);
+	border-color: var(--secondary-color);
 }
-.changePassword  .mobile{
-    margin-top: 30%;
+.changePassword .error {
+	color: var(--error);
+	font-size: 14px;
+	font-weight: bolder;
+	text-align: end;
+}
+
+.changePassword .button {
+	border-radius: 20px;
+	transition: border-radius 0.5s;
+}
+
+.changePassword .button.toLogin {
+	position: absolute;
+	top: .75rem;
+	left: .75rem;
+}
+.changePassword .button.toLogin .icon {
+	max-width: 0;
+	overflow-x: hidden;
+	transition: all 0.5s;
+}
+
+.changePassword .button.toLogin:hover .icon {
+	margin-right: .3em;
+
+	max-width: 100px;
+	transition: all 0.5s;
+}
+
+.changePassword .input-group-text {
+	background-color: white;
+	padding-left: 1rem;
+	border-radius: 30px;
+}
+.changePassword .form-control {
+	border-radius: 30px;
+}
+.changePassword .mobile {
+	margin-top: 30%;
+}
+
+.changePassword .collapsed {
+	max-height: 0;
+	overflow-y: hidden;
+	transition: all 1s ease-in-out;
+}
+
+.changePassword .expanded {
+	max-height: 1000px;
+	overflow-y: hidden;
+	transition: all 1s ease-in-out;
+}
+
+@media (max-width: 576px) {
+	.containerLogin {
+		background: white;
+	}
+	.changePassword .button.toLogin {
+		position: inherit;
+	}
 }

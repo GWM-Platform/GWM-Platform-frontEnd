@@ -7,9 +7,7 @@ import { useTranslation } from "react-i18next";
 const BuyData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAccordion, Balance, fetching }) => {
 
     const { t } = useTranslation();
-
     const multiplier = 10000
-
     return (
         <Accordion.Item eventKey="0" disabled>
             <Accordion.Header onClick={() => { if (data.FundSelected !== -1) toggleAccordion() }}>
@@ -32,7 +30,6 @@ const BuyData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAcc
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
                     <InputGroup className="mb-3">
                         <InputGroup.Text>U$D</InputGroup.Text>
-
                         <Form.Control
                             onWheel={event => event.currentTarget.blur()}
                             disabled={data.FundSelected === -1}
@@ -61,7 +58,7 @@ const BuyData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAcc
                                             t("You only have") + " $" + Balance + " " + t("available in your account.")
                                             :
                                             data.amount < (Funds[data.FundSelected] ? Funds[data.FundSelected].sharePrice || 1 : 1) ?
-                                                t("At least you must buy 1 feepart") + " ($" + (Funds[data.FundSelected] ? Funds[data.FundSelected].sharePrice || 1 : 1) + ")"
+                                                t("At least you must buy one share") + " ($" + (Funds[data.FundSelected] ? Funds[data.FundSelected].sharePrice || 1 : 1) + ")"
                                                 :
                                                 (data.amount * multiplier) % (0.0001 * multiplier) === 0 ?
                                                     t("You are trying to invest") + t(" $") + data.amount + t(", with you could buy") + t(" ") +
@@ -77,7 +74,13 @@ const BuyData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAcc
                                     t("Please, select a fund to buy")
                                     :
                                     t("You are buying") + " " +
-                                    (data.amount / Funds[data.FundSelected].sharePrice).toFixed(2) + " " + t("shares")
+                                    (data.amount / Funds[data.FundSelected].sharePrice).toFixed(2) + " " +
+                                    (
+                                        (data.amount / Funds[data.FundSelected].sharePrice).toFixed(2) === '1.00' ?
+                                        t("share")
+                                        :
+                                        t("shares")
+                                    )
                             }
                         </Form.Control.Feedback>
                     </InputGroup>

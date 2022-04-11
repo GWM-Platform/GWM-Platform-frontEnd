@@ -33,7 +33,7 @@ const TableLastMovements = ({ content,fetchingMovements }) => {
                                             <th className="tableDescription d-sm-table-cell">{t("Value of the share")}</th>
                                         </tr>
                                         <tr>
-                                            <th className="d-sm-table-cell">{t("in feeParts")}</th>
+                                            <th className="d-sm-table-cell">{t("in shares")}</th>
                                             <th className="tableAmount">{t("In Cash")}</th>
                                         </tr>
                                     </thead>

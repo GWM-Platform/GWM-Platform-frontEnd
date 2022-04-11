@@ -48,22 +48,22 @@ const FilterOptions = ({ Fund, movsPerPage, setPagination, disabled }) => {
         <Accordion flush>
             <Accordion.Item >
                 <Accordion.Header disabled={disabled}>
-                    {t("Filter Options")} {disabled ? t("(Cancel the search to use them)") : ""}
+                    {t("Filters")} {disabled ? t("(Cancel the search to use them)") : ""}
                 </Accordion.Header>
                     <Accordion.Body >
                         <Form onSubmit={updateFilters}>
                             <Row className="align-items-stretch">
                                 <Col>
                                     <Form.Group>
-                                        <Form.Label>{t("Moves per page")}</Form.Label>
-                                        <Form.Control disabled={disabled} required id="moves" onChange={handleChange} value={filterOptions.moves} type="number" min="1" placeholder="Moves per page" />
+                                        <Form.Label>{t("Transactions per page")}</Form.Label>
+                                        <Form.Control disabled={disabled} required id="moves" onChange={handleChange} value={filterOptions.moves} type="number" min="1" placeholder="Transactions per page" />
                                     </Form.Group>
                                 </Col>
                                 {
                                     TransactionStates.fetched && TransactionStates.valid && !TransactionStates.fetching ?
                                         <Col >
                                             <Form.Group controlId="movesPerPage">
-                                                <Form.Label>{t("Moves state")}</Form.Label>
+                                                <Form.Label>{t("Transaction status")}</Form.Label>
                                                 <Form.Select disabled={disabled} value={filterOptions.state} onChange={handleChange} id="state">
                                                     <option value="">{t("All")}</option>
                                                     {TransactionStates.values.map((state, key) => <option key={key} value={state.id}>{t(state.name)}</option>)}
