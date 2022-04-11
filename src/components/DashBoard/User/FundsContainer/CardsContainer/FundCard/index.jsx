@@ -12,7 +12,7 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
 
     let history = useHistory();
 
-    const pendingfeeParts = PendingTransactions.value.filter((transaction) => transaction.fundId === Fund.fund.id && Math.sign(transaction.shares) === +1).map((transaction) => transaction.shares).reduce((a, b) => a + b, 0).toFixed(2)
+    const pendingshares = PendingTransactions.value.filter((transaction) => transaction.fundId === Fund.fund.id && Math.sign(transaction.shares) === +1).map((transaction) => transaction.shares).reduce((a, b) => a + b, 0).toFixed(2)
 
     const toTickets = (operation) => {
         history.push(`${operation}?fund=${Fund.fund.id}`);
@@ -26,10 +26,18 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
                 >
                     <div className="currencyContainer d-flex align-items-center justify-content-center">
                         {
-                            Fund.fund.type !== undefined ?
-                                <img className="currency px-0 mx-0" alt={Fund.fund.type} src={process.env.PUBLIC_URL + '/images/' + Fund.fund.type + '.svg'} />
+                            Fund.fund.typeId !== undefined ?
+                                <img
+                                    alt=""
+                                    className="currency px-0 mx-0"
+                                    onError={({ currentTarget }) => {
+                                        currentTarget.onerror = null;
+                                        currentTarget.src=process.env.PUBLIC_URL + '/images/FundsLogos/1.svg';
+                                      }}
+                                    src={process.env.PUBLIC_URL + '/images/FundsLogos/' + Fund.fund.typeId + '.svg'}
+                                />
                                 :
-                                <img className="currency px-0 mx-0" alt="crypto" src={process.env.PUBLIC_URL + '/images/crypto.svg'} />
+                                <img className="currency px-0 mx-0" alt="crypto" src={process.env.PUBLIC_URL + '/images/FundsLogos/1.svg'} />
                         }
                     </div>
                 </Card.Header>
@@ -86,7 +94,7 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
                                         {t("Balance (shares)")}:<span className="bolder"> {Fund.shares ? Fund.shares : 0}</span><br />
                                         {t("Pending transactions (shares)")}:
                                         <span className={`bolder text-green`}>{" "}
-                                            +{pendingfeeParts}</span><br />
+                                            +{pendingshares}</span><br />
                                     </Card.Text>
                                 </Row>
                             </Container>

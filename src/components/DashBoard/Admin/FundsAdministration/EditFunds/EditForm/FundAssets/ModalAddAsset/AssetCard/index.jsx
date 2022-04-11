@@ -9,7 +9,7 @@ const AssetCard = ({ Asset, ownKey, AssetSelected ,setAssetSelected}) => {
                 className={`AssetCard h-100 ${AssetSelected === ownKey ? "FundSelected" : ""}`}>
                 <Card.Header><strong className="title">{Asset.name}</strong></Card.Header>
                 <Card.Body>
-                    <Card.Text className="mb-1 feePartsInfo">
+                    <Card.Text className="mb-1 sharesInfo">
                         <strong>${Asset.value}</strong>
                     </Card.Text>
                 </Card.Body>

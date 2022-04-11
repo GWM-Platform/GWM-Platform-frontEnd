@@ -19,7 +19,7 @@ const TransactionsTable = ({ UsersInfo, FundInfo, transactions, state, reloadDat
                             <th >{t("Client")}</th>
                             <th >{t("Concept")}</th>
                             <th >{t("Fund name")}</th>
-                            <th >{t("FeeParts")}</th>
+                            <th >{t("Shares")}</th>
                             <th >{t("FeePart Price")}</th>
                             <th >{t("Created at")}</th>
                             {

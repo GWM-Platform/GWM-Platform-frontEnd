@@ -3,12 +3,12 @@ import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEyeSlash, faEye, faThumbtack } from '@fortawesome/free-solid-svg-icons'
+import { faSlash, faEyeSlash, faEye, faThumbtack } from '@fortawesome/free-solid-svg-icons'
 import { useHistory } from 'react-router-dom';
 import './index.css'
 import { DashBoardContext } from 'context/DashBoardContext';
 
-const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,cardsAmount,inScreenFunds }) => {
+const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned, cardsAmount, inScreenFunds }) => {
     const { t } = useTranslation();
     const { token, ClientSelected } = useContext(DashBoardContext)
 
@@ -64,7 +64,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                     ...{
                         fetching: false,
                         fetched: true,
-                        value: data.movements ? data.movements : [] 
+                        value: data.movements ? data.movements : []
                     }
                 }))
 
@@ -93,7 +93,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                         className="header d-flex align-items-center justify-content-center"
                     >
                         <div className="currencyContainer d-flex align-items-center justify-content-center">
-                            <img className="currency px-0 mx-0" alt="cash" src={process.env.PUBLIC_URL + '/images/cash.svg'} />
+                            <img className="currency px-0 mx-0" alt="cash" src={process.env.PUBLIC_URL + '/images/FundsLogos/cash.svg'} />
                         </div>
                     </Card.Header>
                     <Card.Body className="body">
@@ -107,18 +107,15 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                             </h1>
                                         </Col>
                                         {cardsAmount > inScreenFunds ?
-                                            <div className="px-0 hideInfoButton d-flex align-items-center">
+                                            <div className="px-0 hideInfoButton d-flex align-items-center" onClick={() => { setPinned(true) }}                                            >
                                                 <FontAwesomeIcon
-                                                    className={`icon pin ${Pinned ? "active" : ""}`}
-                                                    onClick={() => { setPinned(true) }}
+                                                    className={`icon pin`}
                                                     icon={faThumbtack}
                                                 />
-
                                                 <FontAwesomeIcon
                                                     className="icon placeholder"
                                                     icon={faEyeSlash}
                                                 />
-                                                <div className="line-backwards"></div>
                                             </div>
                                             :
                                             null}
@@ -201,11 +198,16 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                                     </h1>
                                                 </Col>
 
-                                                <div className="px-0 hideInfoButton d-flex align-items-center">
+                                                <div className="px-0 hideInfoButton d-flex align-items-center" onClick={() => { setPinned(false) }}>
                                                     <FontAwesomeIcon
                                                         className={`icon pin ${Pinned ? "active" : ""}`}
-                                                        onClick={() => { setPinned(false) }}
-                                                        icon={faThumbtack}
+                                                        mask={faThumbtack}
+                                                        icon={faSlash}
+                                                        transform="down-2"
+                                                    />
+                                                    <FontAwesomeIcon
+                                                        className={`icon pin`}
+                                                        icon={faSlash}
                                                     />
                                                     <FontAwesomeIcon
                                                         className="icon placeholder"

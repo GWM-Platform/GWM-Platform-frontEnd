@@ -15,11 +15,11 @@ import './index.css'
 const MainCard = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
     const [SelectedTab, setSelectedTab] = useState("0")
     const [Performance, setPerformance] = useState(0)
-    const { PendingTransactions,token,ClientSelected } = useContext(DashBoardContext)
+    const { PendingTransactions, token, ClientSelected } = useContext(DashBoardContext)
     const { t } = useTranslation();
 
     const balanceInCash = Fund.shares ? (Fund.shares * Fund.fund.sharePrice) : 0
-    const pendingfeeParts = PendingTransactions.value.filter((transaction) => transaction.fundId === Fund.fund.id && Math.sign(transaction.shares) === +1).map((transaction) => transaction.shares).reduce((a, b) => a + b, 0).toFixed(2)
+    const pendingshares = PendingTransactions.value.filter((transaction) => transaction.fundId === Fund.fund.id && Math.sign(transaction.shares) === +1).map((transaction) => transaction.shares).reduce((a, b) => a + b, 0).toFixed(2)
 
     useEffect(() => {
         const getPerformance = async () => {
@@ -49,7 +49,7 @@ const MainCard = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchBy
         }
 
         getPerformance()
-    }, [Fund,ClientSelected.id,token])
+    }, [Fund, ClientSelected.id, token])
 
     return (
         <div className="movementsMainCardFund growAnimation mt-2">
@@ -60,33 +60,40 @@ const MainCard = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchBy
                     </h1>
                     <h2 className="m-0 left">
                         {t("Share price")}
-                        <span className="ps-3" style={{ fontWeight: "bolder" }}>
-                            ${Fund.fund.sharePrice}
+                        <span style={{ fontWeight: "bolder" }}>
+                            &nbsp;${Fund.fund.sharePrice}
                         </span>
                     </h2>
                 </div>
 
                 <div>
                     <h2 className="px-2 left">
-                        {t("Balance (Shares)")}:{" "}{Fund.shares ? Fund.shares : 0}
+                        {t("Balance (shares)")}:
+                        <span style={{ fontWeight: "bolder" }}>
+                            {" "}{Fund.shares ? Fund.shares : 0}
+                        </span>
                     </h2>
                 </div>
                 <div className="d-flex justify-content-between align-items-end pe-2">
                     <Col className="d-flex justify-content-between pe-5" sm="auto">
                         <Col className="pe-2">
-                            <div className="containerHideInfo px-2">
-                                <span>{t("Balance ($)")}: $</span>
-                                <span className={`info ${Hide ? "shown" : "hidden"}`}>
-                                    {balanceInCash.toFixed(2).toString().replace(/./g, "*")}
+                            <div className="containerHideInfo px-2 description">
+                                <span>{t("Balance ($)")}</span>
+                                <span style={{ fontWeight: "bolder" }}>
+                                    :&nbsp;$
+                                    <span className={`info ${Hide ? "shown" : "hidden"}`}>
+                                        {balanceInCash.toFixed(2).toString().replace(/./g, "*")}
+                                    </span>
+
+                                    <span className={`info ${Hide ? "hidden" : "shown"}`}>
+                                        {balanceInCash.toFixed(2).toString()}
+                                    </span>
+
+                                    <span className={`info placeholder`}>
+                                        {balanceInCash.toFixed(2).toString()}
+                                    </span>
                                 </span>
 
-                                <span className={`info ${Hide ? "hidden" : "shown"}`}>
-                                    {balanceInCash.toFixed(2).toString()}
-                                </span>
-
-                                <span className={`info placeholder`}>
-                                    {balanceInCash.toFixed(2).toString()}
-                                </span>
                             </div>
                         </Col>
                         <Col sm="auto" className="hideInfoButton d-flex align-items-center">
@@ -119,7 +126,8 @@ const MainCard = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchBy
                 </div>
                 <div className="border-bottom-main pb-2">
                     <h2 className="px-2 left">
-                        {t("Pending transactions (shares)")}{" "}{pendingfeeParts ? pendingfeeParts : 0}{" "}
+                        {t("Pending transactions (shares)")}&nbsp;
+                        <span style={{ fontWeight: "bolder" }}>{pendingshares ? pendingshares : 0}{" "}</span>
                     </h2>
                 </div>
             </div>

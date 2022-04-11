@@ -37,10 +37,6 @@ export const DashBoardProvider = ({ children }) => {
 
     const [itemSelected, setItemSelected] = useState(location.pathname.split('/')[2])
 
-    //Url preffered locations
-    const [AdminPrefferedUrl, setAdminPrefferedUrl] = useState('')
-    const [UserPrefferedUrl, setUserPrefferedUrl] = useState('')
-
     const [PendingTransactions, setPendingTransactions] = useState({
         value: [],
         fetched: false,

@@ -7,7 +7,7 @@ import { Modal, Button } from 'react-bootstrap'
 import { useContext } from 'react';
 import { DashBoardContext } from 'context/DashBoardContext';
 
-const ActionConfirmationModal = ({ setShowModal, show, action, data, Funds, Balance,fetching }) => {
+const ActionConfirmationModal = ({ setShowModal, show, action, data, Funds, Balance, fetching }) => {
     const { t } = useTranslation();
     const { ClientSelected } = useContext(DashBoardContext)
     const handleClose = () => {
@@ -21,21 +21,21 @@ const ActionConfirmationModal = ({ setShowModal, show, action, data, Funds, Bala
                     <h1 className="title"> {t("Ticket summary")} </h1>
                     <ul>
                         <li className="listedInfo">
-                            {t("Account with whom the operation will be made")}: <span className="emphasis">{ClientSelected.alias}</span>
+                            {t("Account")}: <span className="emphasis">{ClientSelected.alias}</span>
                         </li>
                         <li className="listedInfo">
-                            {t("Cash balance")}: <span className="emphasis">${Balance}</span>
+                            {t("Account balance")}: <span className="emphasis">${Balance}</span>
                         </li>
                         <li className="listedInfo">
-                            {t("Fund selected")}: <span className="emphasis">{Funds[data.FundSelected].fund.name}</span>
+                            {t("Product")}: <span className="emphasis">{Funds[data.FundSelected].fund.name}</span>
                         </li>
                         <li className="listedInfo">
-                            {t("Selling (in feeParts)")}:<span className="emphasis"> {data.shares}</span>
+                            {t("Cash amount")}:<span className="emphasis"> {data.shares}</span>
                         </li>
                         <li className="listedInfo">
-                            {t("Selling (in cash)")}:<span className="emphasis"> ${(data.shares * Funds[data.FundSelected].fund.sharePrice).toFixed(2)}</span>
+                            {t("Share amount")}:<span className="emphasis"> ${(data.shares * Funds[data.FundSelected].fund.sharePrice).toFixed(2)}</span>
                         </li>
-                        
+
                     </ul>
                 </div>
             </Modal.Body>

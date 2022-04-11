@@ -18,7 +18,7 @@ const TransactionRow = ({ transaction,user }) => {
       <td >{user.alias}</td>
       <td className={`tableConcept ${Math.sign(transaction.shares) === 1 ? 'text-red' : 'text-green'}`}>
         <span>{Math.sign(transaction.shares) === 1 ? t('Sale of') : t('Purchase of')}{" "}</span>
-        {Math.abs(transaction.shares)} {t("feeParts")}
+        {Math.abs(transaction.shares)} {t("shares")}
       </td>
       <td className={`tableConcept ${transaction.stateId === 3 ? 'text-red' : 'text-green'}`}>
         {t(getMoveStateById(transaction.stateId).name)}

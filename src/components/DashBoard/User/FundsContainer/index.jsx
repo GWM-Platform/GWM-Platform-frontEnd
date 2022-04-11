@@ -4,6 +4,7 @@ import CardsContainer from './CardsContainer';
 import { useTranslation } from "react-i18next";
 import { Spinner, Row, Container, Col } from 'react-bootstrap';
 import { DashBoardContext } from 'context/DashBoardContext';
+
 const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFunds }) => {
 
     const { FetchingFunds, contentReady, PendingWithoutpossession, PendingTransactions, Accounts, Funds } = useContext(DashBoardContext);
@@ -26,7 +27,7 @@ const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFun
                         <Row className="d-flex justify-content-center align-items-center">
                             <Col xs="12" className="d-flex justify-content-center align-items-center">
                                 <Spinner className="me-2" animation="border" variant="danger" />
-                                <span className="loadingText">{t("Loading Content")}</span>
+                                <span className="loadingText">{t("Loading content")}</span>
                             </Col>
                         </Row>
                     </Container>

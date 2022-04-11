@@ -7,6 +7,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 import { DashBoardContext } from 'context/DashBoardContext';
 import Indicators from './Indicators'
+import './index.css'
+
 const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions, PendingWithoutpossession }) => {
     const { width } = useContext(DashBoardContext)
 
@@ -88,12 +90,12 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
                     )
                 }
             </Row>
-            <div className={`arrow  right d-none d-sm-block
+            <div className={`arrow  right d-none d-sm-flex
                                 ${Funds.length + PendingWithoutpossession.length > 2 && showRightChevron ? "opacity-1" : ""}`}
                 onClick={() => { if (showRightChevron) setScrollPositionByOffset(Offset + 1) }}>
                 <FontAwesomeIcon icon={faChevronRight} />
             </div>
-            <div className={` arrow left d-none d-sm-block
+            <div className={` arrow left d-none d-sm-flex
                                 ${Funds.length + PendingWithoutpossession.length > 2 && showLeftChevron ? "opacity-1" : ""}`}
                 onClick={() => { if (showLeftChevron) setScrollPositionByOffset(Offset - 1) }}>
                 <FontAwesomeIcon icon={faChevronLeft} />

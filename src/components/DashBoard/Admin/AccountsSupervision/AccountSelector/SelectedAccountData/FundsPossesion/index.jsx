@@ -15,7 +15,7 @@ const FundsPossesion = ({ stakes }) => {
                     <thead className="verticalTop tableHeader solid-bg">
                         <tr>
                             <th>{t("Fund name")}</th>
-                            <th>{t("feeParts")}</th>
+                            <th>{t("Shares")}</th>
                             <th>{t("Share Price")}</th>
                             <th>{t("In Cash")}</th>
                         </tr>

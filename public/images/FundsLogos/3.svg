@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="186.575"
+   height="180.859"
+   viewBox="0 0 186.575 180.859"
+   version="1.1"
+   id="svg890"
+   sodipodi:docname="3.svg"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)">
+  <metadata
+     id="metadata896">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs894" />
+  <sodipodi:namedview
+     pagecolor="#cb0000"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1366"
+     inkscape:window-height="717"
+     id="namedview892"
+     showgrid="false"
+     inkscape:zoom="1.8453846"
+     inkscape:cx="111.15978"
+     inkscape:cy="14.521135"
+     inkscape:window-x="0"
+     inkscape:window-y="26"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg890" />
+  <path
+     id="Chart-Icon-093nfefe"
+     d="M3.825,179.859a3.825,3.825,0,1,1,0-7.65h8.849v-32.39a10.3,10.3,0,0,1,10.293-10.292H41.729a10.3,10.3,0,0,1,10.29,10.292v32.39H73.342V110.938a10.309,10.309,0,0,1,10.294-10.292h18.757a10.307,10.307,0,0,1,10.294,10.292v61.271h21.324V63.851A10.3,10.3,0,0,1,144.3,53.567h18.761a10.308,10.308,0,0,1,10.3,10.284V172.209h8.394a3.825,3.825,0,1,1,0,7.65ZM141.655,63.851V172.209H165.7V63.851a2.633,2.633,0,0,0-2.639-2.628H144.3A2.636,2.636,0,0,0,141.655,63.851ZM81,110.938v61.271h24.034V110.938a2.642,2.642,0,0,0-2.638-2.639H83.636A2.641,2.641,0,0,0,81,110.938ZM20.326,139.819v32.39H44.361v-32.39a2.638,2.638,0,0,0-2.632-2.638H22.961A2.646,2.646,0,0,0,20.326,139.819Zm-.987-23.654a3.827,3.827,0,0,1,0-5.413l79.509-79.52a3.843,3.843,0,0,1,5.421,0L118.531,45.5,156.378,7.665h-14.3a3.833,3.833,0,0,1,0-7.665h23.16a1.48,1.48,0,0,1,.186.014,3.763,3.763,0,0,1,2.9,1.11,3.84,3.84,0,0,1,1.12,2.9c0,.066,0,.129,0,.187v21.8a3.827,3.827,0,1,1-7.655,0V13.073L121.24,53.613a3.82,3.82,0,0,1-5.416,0l-14.27-14.266L24.747,116.165a3.831,3.831,0,0,1-5.409,0Z"
+     transform="translate(0.5 0.5)"
+     fill="#fff"
+     stroke="#fff"
+     stroke-miterlimit="10"
+     stroke-width="1" />
+  <path
+     style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#ffffff;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:fill markers stroke"
+     d="M 144.71484 53.513672 C 138.69464 53.513672 133.84766 58.119844 133.84766 63.839844 L 133.84766 175.73633 L 174.21875 175.83398 L 174.21875 63.839844 C 174.21875 58.119844 169.37177 53.513672 163.35156 53.513672 L 144.71484 53.513672 z "
+     id="rect1443" />
+  <path
+     style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#ffffff;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:fill markers stroke"
+     d="M 84.046875 101.10352 C 78.026675 101.10352 73.179687 105.70969 73.179688 111.42969 L 73.179688 176.92969 L 113.55078 176.92969 L 113.55078 111.42969 C 113.55078 105.70969 108.7038 101.10352 102.68359 101.10352 L 84.046875 101.10352 z "
+     id="rect1443-7" />
+  <path
+     style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#ffffff;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:fill markers stroke"
+     d="M 23.402344 129.2793 C 17.382144 129.2793 12.535155 133.88547 12.535156 139.60547 L 12.535156 176.54883 L 52.90625 176.54883 L 52.90625 139.60547 C 52.90625 133.88547 48.059273 129.2793 42.039062 129.2793 L 23.402344 129.2793 z "
+     id="rect1443-7-5" />
+</svg>

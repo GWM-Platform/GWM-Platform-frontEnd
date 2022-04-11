@@ -19,7 +19,7 @@ const WithdrawData = ({ data, handleChange, validated, handleSubmit, account,fet
                                     <span className="number">1</span>
                                 </div>
                             </span>
-                            {t("Enter amount you want to withdraw from your account")}
+                            {t("Enter amount you want to withdraw")}
                         </span>
                     </Form.Label>
                 </Row>
@@ -48,7 +48,7 @@ const WithdrawData = ({ data, handleChange, validated, handleSubmit, account,fet
                                 t("You must enter how much you want to withdraw")
                                 :
                                 data.amount > account.balance ?
-                                    t("The amount must be lower or equal to your balance") + " ($" + account.balance + ")"
+                                    t("The amount must be lower or equal to the available cash") + " ($" + account.balance + ")"
                                     :
                                     t("The amount must be greater than 0")
                         }

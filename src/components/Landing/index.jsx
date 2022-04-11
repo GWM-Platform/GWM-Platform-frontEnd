@@ -9,22 +9,20 @@ function Landing() {
 
     let history = useHistory();
 
-    
+
 
     //When the app is opened, it checks if the user has a valid token in their local storage,
     //if it is true, it is redirected to the DashBoard, if not, it is redirected to login
     useEffect(() => {
-        
+
 
         const toLogin = () => {
             sessionStorage.clear();
             history.push(`/login`);
         }
 
-        let token = sessionStorage.getItem('access_token')
-        if (token === null) {
-            toLogin()
-        }
+        toLogin()
+
     }, [history])
 
 

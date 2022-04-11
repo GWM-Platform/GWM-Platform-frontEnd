@@ -115,17 +115,25 @@
 	border-radius: 0px 0px 30px 30px;
 }
 
-.icon.pin{
-    position:absolute
+.icon.pin {
+	position: absolute;
 }
 
 .icon.pin:not(.active) {
 	filter: drop-shadow(0px 0px 0px var(--blue-main));
-	transition: all 0.3s!important;
+	transition: all 0.3s !important;
 }
 
-.icon.pin.active{
-    
+.icon.pin.active {
 	filter: drop-shadow(0px 0px 2px var(--blue-main));
-	transition: all 0.3s!important;
+	transition: all 0.3s !important;
+}
+
+.cashCard .line {
+	height: 0.1em;
+	width: 0;
+	border-radius: 0.05em;
+}
+.cashCard .line.active {
+	width: 100%;
 }
