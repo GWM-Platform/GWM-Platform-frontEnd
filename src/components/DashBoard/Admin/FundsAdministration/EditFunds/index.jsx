@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Col } from 'react-bootstrap'
 
@@ -8,7 +8,8 @@ const EditFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
     const [validated, setValidated] = useState(false);
     const [data, setData] = useState({
         name: Funds[Action.fund].name,
-        spreadsheetId:Funds[Action.fund].spreadsheetId
+        spreadsheetId: Funds[Action.fund].spreadsheetId,
+        imageUrl: Funds[Action.fund].imageUrl ? Funds[Action.fund].imageUrl : ""
     })
 
     const [EditRequest, setEditRequest] = useState({
@@ -17,11 +18,21 @@ const EditFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
         valid: false
     })
 
+    const [ImageUrl, setImageUrl] = useState({
+        fetched: false,
+        fetching: false,
+        valid: false
+    })
+
+    useEffect(() => {
+        if (Funds[Action.fund].imageUrl) checkImage(Funds[Action.fund].imageUrl)
+    }, [Funds,Action.fund])
+
     const handleSubmit = (event) => {
         const form = event.currentTarget;
         event.preventDefault();
         event.stopPropagation();
-        if (form.checkValidity()) {
+        if (form.checkValidity() && ImageUrl.fetched && ImageUrl.valid) {
             editFund()
         }
         setValidated(true);
@@ -83,6 +94,12 @@ const EditFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
         }
     }
 
+    const checkImage = async (url) => {
+        setImageUrl(prevState => ({ ...prevState, ...{ fetching: true, fetched: false } }))
+        const res = await fetch(url);
+        const buff = await res.blob();
+        setImageUrl(prevState => ({ ...prevState, ...{ fetching: false, fetched: true, valid: buff.type.startsWith('image/') } }))
+    }
     return (
         <Col sm="12" md="10">
             {
@@ -91,6 +108,7 @@ const EditFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
                         Funds={Funds} Action={Action} />
                     :
                     <EditForm
+                        ImageUrl={ImageUrl} setImageUrl={setImageUrl} checkImage={checkImage}
                         data={data} handleChange={handleChange} handleSubmit={handleSubmit} EditRequest={EditRequest}
                         Funds={Funds} Action={Action} setAction={setAction} validated={validated} AssetTypes={AssetTypes}
                     />

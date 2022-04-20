@@ -21,24 +21,24 @@
 	font-size: 15px;
 }
 
-.TicketsAdministration .TicketsTable .id {
+.TicketsAdministration .TicketsTable td.id {
 	max-width: 5ch;
 }
-.TicketsAdministration .TicketsTable .Name {
+.TicketsAdministration .TicketsTable td.Name {
 	min-width: 15ch;
 	max-width:20ch
 }
 
-.TicketsAdministration .TicketsTable .Shares {
+.TicketsAdministration .TicketsTable td.Shares {
 	max-width: 10ch;
 }
-.TicketsAdministration .TicketsTable .FreeShares {
+.TicketsAdministration .TicketsTable td.FreeShares {
 	max-width: 10ch;
 }
-.TicketsAdministration .TicketsTable .SharePrice {
+.TicketsAdministration .TicketsTable td.SharePrice {
 	max-width: 10ch;
 }
-.TicketsAdministration .TicketsTable .Actions {
+.TicketsAdministration .TicketsTable td.Actions {
 	max-width: 8ch;
 
 }
@@ -69,10 +69,7 @@
 	border-radius: 0;
 	background-color: rgb(255 255 255 / 70%);
 }
-.TicketsAdministration .noStyle {
-	background-color: transparent;
-	border: none;
-}
+
 .TicketsAdministration .title{
 	font-size: 20px;
 	margin:0.5em 0;

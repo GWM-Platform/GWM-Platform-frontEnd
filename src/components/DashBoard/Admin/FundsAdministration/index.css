@@ -71,35 +71,34 @@
 .FundsAdministration .FundsTable .Type,
 .FundsAdministration .FundsTable .Shares,
 .FundsAdministration .FundsTable .FreeShares,
-.FundsAdministration .FundsTable .SharePrice,
-.FundsAdministration .FundsTable .Actions {
+.FundsAdministration .FundsTable .SharePrice {
 	font-size: 15px;
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	direction: rtl;
-    text-align: left;
+	text-align: left;
 }
 
-.FundsAdministration .FundsTable .Id,
-.FundsAdministration .FundsTable .id {
+.FundsAdministration .FundsTable td.Id,
+.FundsAdministration .FundsTable td.id {
 	max-width: 10ch;
 }
-.FundsAdministration .FundsTable .Name {
+.FundsAdministration .FundsTable td.Name {
 	min-width: 15ch;
 	max-width: 20ch;
 }
 
-.FundsAdministration .FundsTable .Shares {
+.FundsAdministration .FundsTable td.Shares {
 	max-width: 10ch;
 }
-.FundsAdministration .FundsTable .FreeShares {
+.FundsAdministration .FundsTable td.FreeShares {
 	max-width: 10ch;
 }
-.FundsAdministration .FundsTable .SharePrice {
+.FundsAdministration .FundsTable td.SharePrice {
 	max-width: 10ch;
 }
-.FundsAdministration .FundsTable .Actions {
+.FundsAdministration .FundsTable td.Actions {
 	max-width: 8ch;
 }
 
@@ -145,10 +144,7 @@
 	border-radius: 0;
 	background-color: rgb(255 255 255 / 70%);
 }
-.FundsAdministration .noStyle {
-	background-color: transparent;
-	border: none;
-}
+
 @keyframes hover {
 	0% {
 		transform: rotateY(0deg);
@@ -295,4 +291,31 @@
 }
 .firstWithouthPadding .containerCard:first-of-type {
 	padding-left: 0;
+}
+.fundLogo {
+	font-size: 30px;
+	height: 4em;
+	width: 4em;
+	
+	background:#082044;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.fundLogo .border {
+	font-size: 30px;
+	border: white 1px solid;
+	border-radius: 50%;
+	height: 2.7em;
+	width: 2.7em;
+	margin: 0.3em 0em;
+	display:flex;
+	align-items: center;
+	justify-content: center;
+
+}
+
+.fundLogo .logo {
+	width: 30px;
+	display: block;
 }

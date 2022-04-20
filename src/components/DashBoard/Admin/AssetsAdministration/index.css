@@ -78,24 +78,24 @@
 	font-size: 15px;
 }
 
-.AssetsAdministration .AssetsTable .id {
+.AssetsAdministration .AssetsTable td.id {
 	max-width: 5ch;
 }
-.AssetsAdministration .AssetsTable .Name {
+.AssetsAdministration .AssetsTable td.Name {
 	min-width: 15ch;
 	max-width:20ch
 }
 
-.AssetsAdministration .AssetsTable .Shares {
+.AssetsAdministration .AssetsTable td.Shares {
 	max-width: 10ch;
 }
-.AssetsAdministration .AssetsTable .FreeShares {
+.AssetsAdministration .AssetsTable td.FreeShares {
 	max-width: 10ch;
 }
-.AssetsAdministration .AssetsTable .SharePrice {
+.AssetsAdministration .AssetsTable td.SharePrice {
 	max-width: 10ch;
 }
-.AssetsAdministration .AssetsTable .Actions {
+.AssetsAdministration .AssetsTable td.Actions {
 	max-width: 8ch;
 
 }
@@ -143,10 +143,7 @@
 	border-radius: 0;
 	background-color: rgb(255 255 255 / 70%);
 }
-.AssetsAdministration .noStyle {
-	background-color: transparent;
-	border: none;
-}
+
 @keyframes hover {
 	0% {
 		transform: rotateY(0deg);

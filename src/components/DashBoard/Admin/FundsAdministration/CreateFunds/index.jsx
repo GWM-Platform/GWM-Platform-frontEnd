@@ -5,12 +5,22 @@ import { Col } from 'react-bootstrap'
 import CreateForm from './CreateForm'
 import CreateResult from './CreateResult'
 const CreateFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
+
     const [validated, setValidated] = useState(false);
+
     const [data, setData] = useState({
         name: "",
-        shares: 0,
-        typeId: 1,
-        spreadsheetId: ""
+        typeId: "",
+        shares: "",
+        initialSharePrice: "",
+        spreadsheetId: "",
+        imageUrl: "",
+    })
+
+    const [ImageUrl, setImageUrl] = useState({
+        fetched: false,
+        fetching: false,
+        valid: false
     })
 
     const createFund = async () => {
@@ -27,7 +37,7 @@ const CreateFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
         const token = sessionStorage.getItem("access_token")
         const response = await fetch(url, {
             method: 'POST',
-            body: JSON.stringify({...data,spreadsheetId:extractGoogleStyleSpreadSheetID(data.spreadsheetId)}),
+            body: JSON.stringify({ ...data, spreadsheetId: extractGoogleStyleSpreadSheetID(data.spreadsheetId) }),
             headers: {
                 Authorization: `Bearer ${token}`,
                 Accept: "*/*",
@@ -69,29 +79,35 @@ const CreateFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
     })
 
     const extractGoogleStyleSpreadSheetID = (url) => {
-        const urlRegExp = new RegExp((`^https://docs.google.com/spreadsheets/d/[a-zA-Z0-9_-]{1,}/edit#gid[0-9]{1,}`), 'i')
-        if(urlRegExp.test(url)){
-            let id=url.slice(39).split('/')[0]
+        const urlRegExp = new RegExp((`^https://docs.google.com/spreadsheets/d/[a-zA-Z0-9_-]{1,}/edit#gid=[0-9]{1,}`), 'i')
+        if (urlRegExp.test(url)) {
+            let id = url.slice(39).split('/')[0]
             return id ? id : false
-        }else return false
-        
+        } else return false
+
     }
 
     const handleSubmit = (event) => {
         const form = event.currentTarget;
         event.preventDefault();
         event.stopPropagation();
-        if (form.checkValidity()) {
+        if (form.checkValidity() && ImageUrl.fetched && ImageUrl.valid) {
             createFund()
         }
         setValidated(true);
     };
 
     const handleChange = (event) => {
-        if (event.target.id === "spreadsheetId") console.log(extractGoogleStyleSpreadSheetID(event.target.value))
         let aux = data
         aux[event.target.id] = parseInt(event.target.value) || event.target.value
         setData({ ...data, ...aux })
+    }
+
+    const checkImage = async (url) => {
+        setImageUrl(prevState => ({ ...prevState, ...{ fetching: true, fetched: false } }))
+        const res = await fetch(url);
+        const buff = await res.blob();
+        setImageUrl(prevState => ({ ...prevState, ...{ fetching: false, fetched: true, valid: buff.type.startsWith('image/') } }))
     }
 
     return (
@@ -102,6 +118,7 @@ const CreateFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
                         Funds={Funds} Action={Action} />
                     :
                     <CreateForm
+                        ImageUrl={ImageUrl} setImageUrl={setImageUrl} checkImage={checkImage}
                         data={data} handleChange={handleChange} handleSubmit={handleSubmit} CreateRequest={CreateRequest}
                         Funds={Funds} Action={Action} setAction={setAction} validated={validated} AssetTypes={AssetTypes}
                     />

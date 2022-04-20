@@ -20,7 +20,7 @@ const CreateFunds = ({ CreateRequest, setAction, chargeFunds, Funds, Action }) =
                         <div className="descriptionIconContainer green mx-auto">
                             <h1 className="title"><FontAwesomeIcon className="icon green" icon={faCheck} /></h1>
                         </div>
-                        <h2 className="subTitle mt-4">{t("The fund has been Createed succesfully")}</h2>
+                        <h2 className="subTitle mt-4">{t("The fund has been Created succesfully")}</h2>
                     </>
                     :
                     <>

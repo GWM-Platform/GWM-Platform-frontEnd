@@ -28,9 +28,9 @@ const AssetRow = ({ Asset, AssetTypes, chargeAssets, setAction, Action, ownKey }
                         {/*<div className="iconContainer red" onClick={() => { launchDeleteConfirmation() }}>
                             <FontAwesomeIcon className="icon" icon={faTrashAlt} />
                         </div>*/}
-                        <div className="iconContainer green" onClick={() => setAction({ ...Action, ...{ action: 0, Asset: ownKey } })}>
+                        <button className="noStyle iconContainer green" onClick={() => setAction({ ...Action, ...{ action: 0, Asset: ownKey } })}>
                             <FontAwesomeIcon className="icon" icon={faEdit} />
-                        </div>
+                        </button>
                     </div>
                 </td>
             </tr>

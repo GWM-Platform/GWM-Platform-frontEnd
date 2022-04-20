@@ -93,7 +93,7 @@ i18n
           "Internal Transactions": "Transferencias internas",
           "Bank Address": "Dirección del banco",
           "Please, select a source account for the transaction": "Por favor, seleccione una cuenta de origen para la transacción",
-          "Please, enter a short description about the transaction": "Por favor, ingrese una corta descripcion sobre la transferencia",
+          "Please, enter a short description about the transaction": "Por favor, ingrese una corta descripción sobre la transferencia",
           "Please, enter the movement amount": "Por favor, ingrese la cantidad que desea transferir",
           "Please, select the source account to autocomplete this field": "Por favor, seleccione la cuenta de origen para que este campo sea autocompletado"
           , "Currency": "Moneda"
@@ -102,13 +102,13 @@ i18n
             "Por Favor, ingrese por lo menos 3 caracteres para buscar y seleccionar el pais de origen del banco al que pertenece la cuenta destino",
           "Country": "Pais",
           "City": "Ciudad",
-          "Address": "Direccion",
+          "Address": "Dirección",
           "State": "Estado"
           , "Please, enter at least 3 characters to search and select the state of origin of the bank to which the target account belongs":
             "Por favor, ingrese por lo menos 3 caracteres para buscar y seleccionar el estado de origen del banco al que pertenece la cuenta destino"
           , "Please, enter at least 3 characters to search and select the city of origin of the bank to which the target account belongs":
             "Por favor, ingrese por lo menos 3 caracteres para buscar y seleccionar la ciudad de origen del banco al que pertenece la cuenta destino"
-          , "Please, enter the address from the bank to which the target account belongs": "Por favor, ingrese la direccion del banco al que pertenece la cuenta destino"
+          , "Please, enter the address from the bank to which the target account belongs": "Por favor, ingrese la dirección del banco al que pertenece la cuenta destino"
           , "Save target account details to use for future transactions": "Guardar los detalles de la cuenta destino para transferencia futuras"
           , "Target Beneficiary": "Beneficiario destino",
           "Please, enter the name of the owner of source account": "Por favor, ingrese el nombre de la persona a la que pertenece la cuenta destino",
@@ -120,7 +120,8 @@ i18n
           "Target Account": "Cuenta destino",
           "Please, enter the id from the target account": "Por favor, ingrese la ID de la cuenta destino",
           "Please, select the target account": "Por favor, seleccione la cuenta destino",
-          "-- select an option --": "-- Seleccione una opcion --",
+          "-- select an option --": "-- Seleccione una opción --",
+          "Preview":"Previsualizar",
           "Client of Another Bank": "Cliente de otro banco",
           "The external number doesn't match with any Wadiah's account": "El numero de cuenta ingresado no corresponde con ninguna cuenta perteneciente a Wadiah",
           "The external number entered belongs to an account with a currency different from the source account":
@@ -140,10 +141,10 @@ i18n
           "Please, enter the the target account": "Por favor, introduzca la cuenta destino",
           "Please, enter at least 3 characters to search and select the country from the owner of the target account": "Por favor, introduzca al menos 3 caracteres para bucar y seleccionar el pais de origen de la cuenta destino",
           "Transaction details": "Detalles de la transferencia",
-          "Transaction Request Description": "Descripccion de la transferencia",
-          "Target Bank information": "Informacion del banco destino",
+          "Transaction Request Description": "Descripcción de la transferencia",
+          "Target Bank information": "Información del banco destino",
           "Target Bank Number": "Número del banco destino",
-          "Bank Geographic Info": "Informacion geografica del banco",
+          "Bank Geographic Info": "Información geografica del banco",
           "Zip Code": "Codigo postal",
           "Please, enter the zip code from the bank to which the target account belongs": "Por favor, ingrese el codigo postal del banco al qal ue pertenece la cuenta destino",
           "Pending Authorization": "Autorización pendiente",
@@ -260,7 +261,7 @@ i18n
           "You are trying to sell": "Estas intentando vender",
           "shares, equivalent to": "cuotapartes, equivalentes a",
           "You only have": "Tenés",
-          "in position.": "en posesion",
+          "in position.": "en posesión",
           "Please, select a fund to sell": "Por favor, seleccione el fondo a vender",
           "Selling": "Vendiendo",
           "shares from the fund": "cuotapartes del fondo",
@@ -270,7 +271,7 @@ i18n
           "Quantity of shares you want to sell": "Ingrese la cantidad de cuotapartes que desea vender",
           "At least you must sell one share": "Debe vender como minimo 1 cuotaparte",
           "At least you must buy one share": "Debe comprar como minimo 1 cuotaparte",
-          " in posesion": " En posesion",
+          " in posesion": " En posesión",
           " Each": " Cada una",
           "Obtained shares": "Cuotapartes obtenidas",
           "In cash": "En dinero",
@@ -326,7 +327,7 @@ i18n
           "Deposit Cash to an Account": "Depositar dinero a una cuenta",
           "Account selector": "Selector de cuenta a depositar",
           "Select the account to which cash will be deposited": "Seleccione la cuenta a la que se le depositara dinero",
-          "Open this select menu": "Abra este menu de seleccion",
+          "Open this select menu": "Abra este menu de selección",
           "Client Alias": "Alias del cliente",
           "Client Id": "Id del cliente",
           "Account Id": "Id de la cuenta",
@@ -334,15 +335,15 @@ i18n
           "You must enter how much you want to deposit": "Debe ingresar cuanto desea depositar",
           "Search Asset by name": "Buscar activo por nombre",
           "Value": "Valor",
-          "Asset edit form for": "Formulario de edicion del activo ",
-          "Asset Create form": "Formulario de creacion de activos",
+          "Asset edit form for": "Formulario de edición del activo ",
+          "Asset Create form": "Formulario de creación de activos",
           "You must provide a name for the Asset": "Debe especificar un nombre para el activo",
           "The value must be greater than 0": "El valor debe ser mayor a 0",
           "Google SpreadSheet Id": "Id de la hoja de cálculo de Google",
           "SpreadSheet Id": "Id de la hoja de cálculo",
           "Symbol": "Simbolo",
           "The Asset has been Createed succesfully": "El activo fue creado correctamente",
-          "Form Create result": "Resultado del formulario de creacion",
+          "Form Create result": "Resultado del formulario de creación",
           "Failed to edit the Asset": "Fallo al intentar editar el activo",
           "Last movements": "Ultimos movimientos",
           "Pending shares": "Cuotapartes pendientes",
@@ -359,7 +360,7 @@ i18n
           "Select an account": "Seleccione una cuenta",
           "Failed to": "Fallo al",
           "the ticket": "el ticket",
-          "Accounts Supervision": "Supervision de cuentas",
+          "Accounts Supervision": "Supervisión de cuentas",
           "Data from Account with the id ": "Datos de la cuenta con el id ",
           " owned by ": " propiedad de ",
           "Account general data": "Datos generales de la cuenta",
@@ -370,7 +371,7 @@ i18n
           "Account's movements": "Movimientos de la cuenta",
           "Transactions by fund": "Transacciones por fondo",
           "Cash in account": "Dinero en cuenta",
-          "Account with whom the operation will be made": "Cuenta con la que se ejecutara la operacion",
+          "Account with whom the operation will be made": "Cuenta con la que se ejecutara la operación",
           "Available cash": "Saldo disponible",
           "Fund selected": "Fondo seleccionado",
           "Investing (in cash)": "Invirtiendo (en dinero)",
@@ -382,10 +383,16 @@ i18n
           "WITHDRAWAL": "Retiro",
           "STAKE_BUY": "Compra de cuotapartes en un fondo",
           "STAKE_SELL": "Venta de cuotapartes en un fondo",
-          "REPAYMENT": "Devolucion por ticket rechazado",
+          "REPAYMENT": "Devolución por ticket rechazado",
           "Change client": "Cambiar cliente",
           "Google SpreadSheet url (from which the id will be extracted)":
-            "Google SpreadSheet url (de la cual se extraerá la id)",
+            "Url de Google SpreadSheet (de la cual se extraerá la id)",
+          "It seems that the url entered is not valid, please check if I copied it correctly":
+            "Al parecer, la url introducida no es valida, por favor, verifique si la copio correctamente",
+          "Image url to use as the fund logo in the client dashBoard":
+            "Url de imagen para usar como logo del fondo Ien el panel de clientes",
+          "Image url to use as fund logo":
+            "Url de la imagen que se usara como el logo del fondo",
           "Confirm": "Confirmar",
           "loading": "cargando",
           "Show more": "Mostrar más",
@@ -395,7 +402,7 @@ i18n
           "Aprobado": "Aprobado",
           "Denegado": "Denegado",
           "Transactions per page": "Transacciones por pagina",
-          "Transaction status": "Estado de la transaccion",
+          "Transaction status": "Estado de la transacción",
           "Update": "Actualizar",
           "All": "Todos",
           "Filters": "Filtros",
@@ -429,8 +436,8 @@ i18n
           "Enter amount you want to withdraw": "Ingrese el monto que desea retirar",
           "(Cancel the search to use them)": "(Cancele la busqueda para usarlos)",
 
-          "Your password has been successfully reset":"Su contraseña ha sido reestablecida correctamente",
-          "Error. Check the entered data": "Error. Verifique la informacion introducida"
+          "Your password has been successfully reset": "Su contraseña ha sido reestablecida correctamente",
+          "Error. Check the entered data": "Error. Verifique la información introducida"
 
         }
       }

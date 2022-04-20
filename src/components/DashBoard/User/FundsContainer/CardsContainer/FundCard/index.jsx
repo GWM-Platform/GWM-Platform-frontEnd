@@ -32,12 +32,12 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
                                     className="currency px-0 mx-0"
                                     onError={({ currentTarget }) => {
                                         currentTarget.onerror = null;
-                                        currentTarget.src=process.env.PUBLIC_URL + '/images/FundsLogos/1.svg';
+                                        currentTarget.src=process.env.PUBLIC_URL + '/images/FundsLogos/default.svg';
                                       }}
                                     src={process.env.PUBLIC_URL + '/images/FundsLogos/' + Fund.fund.typeId + '.svg'}
                                 />
                                 :
-                                <img className="currency px-0 mx-0" alt="crypto" src={process.env.PUBLIC_URL + '/images/FundsLogos/1.svg'} />
+                                <img className="currency px-0 mx-0" alt="crypto" src={process.env.PUBLIC_URL + '/images/FundsLogos/default.svg'} />
                         }
                     </div>
                 </Card.Header>
