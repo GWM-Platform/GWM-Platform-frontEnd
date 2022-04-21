@@ -80,7 +80,7 @@ const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, se
         }
     }
 
-    const imageOptions = () => [`${process.env.PUBLIC_URL}/images/FundsLogos/default.svg`, ...new Set(Funds.map(Fund => Fund.imageUrl ? Fund.imageUrl : null))].filter(e => e)
+    const imageOptions = () => [...new Set([`${process.env.PUBLIC_URL}/images/FundsLogos/default.svg`, ...Funds.map(Fund => Fund.imageUrl ? Fund.imageUrl : null)])].filter(e => e)
 
     return (
         <div className="editForm">
