@@ -119,7 +119,7 @@ const CreateFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
                     :
                     <CreateForm
                         ImageUrl={ImageUrl} setImageUrl={setImageUrl} checkImage={checkImage}
-                        data={data} handleChange={handleChange} handleSubmit={handleSubmit} CreateRequest={CreateRequest}
+                        data={data} setData={setData} handleChange={handleChange} handleSubmit={handleSubmit} CreateRequest={CreateRequest}
                         Funds={Funds} Action={Action} setAction={setAction} validated={validated} AssetTypes={AssetTypes}
                     />
             }

@@ -18,6 +18,14 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
         history.push(`${operation}?fund=${Fund.fund.id}`);
     }
 
+    const checkImage = async (url) => {
+        const res = await fetch(url);
+        const buff = await res.blob();
+        return buff.type.startsWith('image/')
+    }
+
+    const hasCustomImage = () => Fund.fund.imageUrl ? checkImage(Fund.fund.imageUrl) : false
+
     return (
         <Col className="fund-col growAnimation" sm="6" md="6" lg="4" >
             <Card className="FundCard h-100">
@@ -26,18 +34,13 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
                 >
                     <div className="currencyContainer d-flex align-items-center justify-content-center">
                         {
-                            Fund.fund.typeId !== undefined ?
-                                <img
-                                    alt=""
-                                    className="currency px-0 mx-0"
-                                    onError={({ currentTarget }) => {
-                                        currentTarget.onerror = null;
-                                        currentTarget.src=process.env.PUBLIC_URL + '/images/FundsLogos/default.svg';
-                                      }}
-                                    src={process.env.PUBLIC_URL + '/images/FundsLogos/' + Fund.fund.typeId + '.svg'}
-                                />
-                                :
-                                <img className="currency px-0 mx-0" alt="crypto" src={process.env.PUBLIC_URL + '/images/FundsLogos/default.svg'} />
+
+                            <img className="currency px-0 mx-0" alt=""
+                                onError={({ currentTarget }) => {
+                                    currentTarget.onerror = null;
+                                    currentTarget.src = process.env.PUBLIC_URL + '/images/FundsLogos/default.svg';
+                                }}
+                                src={hasCustomImage() ? Fund.fund.imageUrl : process.env.PUBLIC_URL + '/images/FundsLogos/default.svg'} />
                         }
                     </div>
                 </Card.Header>

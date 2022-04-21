@@ -273,6 +273,40 @@ body {
 	background-color: transparent;
 	border: none;
 }
+#fundLogos {
+	border-top-right-radius: 0;
+	border-top-left-radius: 0;
+}
+#optionsContainer {
+	max-height: calc( (1rem + 23px) * 3.1);
+	overflow: overlay;
+}
+#fundLogos .popover-arrow {
+	display: none !important;
+}
+#fundLogos #optionsContainer > .fundLogos.popover-header {
+	border-radius: 0;
+	font-weight: 200;
+	background: #1153e0;
+}
+#fundLogos #optionsContainer > .fundLogos.popover-header::before {
+	display: none;
+}
+#fundLogos #optionsContainer > .popover-header:first-of-type {
+	border-top-right-radius: 0;
+	border-top-left-radius: 0;
+}
+
+#fundLogos #optionsContainer > .fundLogos.popover-header.focus {
+	background-color: #082044;
+	cursor: pointer;
+}
+
+.input-group:not(.has-validation) > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu) > * {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
 @keyframes growOpacity {
 	0% {
 		opacity: 0;

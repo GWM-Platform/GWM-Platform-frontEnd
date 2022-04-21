@@ -54,7 +54,7 @@ const FundRow = ({ Fund, AssetTypes, chargeFunds, setAction, Action, ownKey }) =
                         <button className="noStyle iconContainer  green" onClick={() => setAction({ ...Action, ...{ action: 0, fund: ownKey } })}>
                             <FontAwesomeIcon className="icon" icon={faEdit} />
                         </button>
-                        <OverlayTrigger placement="left" overlay={popover}>
+                        <OverlayTrigger delay="200" placement="left" overlay={popover}>
                             <button className="noStyle iconContainer  green">
                                 <FontAwesomeIcon className="icon" icon={faEye} />
                             </button>

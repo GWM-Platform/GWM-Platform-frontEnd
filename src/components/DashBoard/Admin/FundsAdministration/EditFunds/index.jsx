@@ -109,7 +109,7 @@ const EditFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
                     :
                     <EditForm
                         ImageUrl={ImageUrl} setImageUrl={setImageUrl} checkImage={checkImage}
-                        data={data} handleChange={handleChange} handleSubmit={handleSubmit} EditRequest={EditRequest}
+                        data={data} setData={setData} handleChange={handleChange} handleSubmit={handleSubmit} EditRequest={EditRequest}
                         Funds={Funds} Action={Action} setAction={setAction} validated={validated} AssetTypes={AssetTypes}
                     />
             }

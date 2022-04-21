@@ -17,6 +17,14 @@ const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownK
     const { t } = useTranslation();
     const balanceInCash = parentKey === 1 ? (Fund.shares ? Fund.shares * Fund.fund.sharePrice : 0) : Fund.balance
 
+    const checkImage = async (url) => {
+        const res = await fetch(url);
+        const buff = await res.blob();
+        return buff.type.startsWith('image/')
+    }
+
+    const hasCustomImage = () => Fund.fund.imageUrl ? checkImage(Fund.fund.imageUrl) : false
+
     return (
         <Container fluid className="pt-0 pb-2 px-1 growAnimation" ref={ref} >
             <Row className={`secondaryCard ${parentKey === categorySelected && selected === ownKey ? "selected" : null} mx-0 px-0`} onClick={select}>
@@ -26,18 +34,12 @@ const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownK
                             parentKey === 0 ?
                                 <img className="currency px-0 mx-0" alt="cash" src={process.env.PUBLIC_URL + '/images/FundsLogos/cash.svg'} />
                                 :
-                                Fund.fund.typeId !== undefined ?
-                                    <img
-                                        alt=""
-                                        className="currency px-0 mx-0"
-                                        onError={({ currentTarget }) => {
-                                            currentTarget.onerror = null;
-                                            currentTarget.src = process.env.PUBLIC_URL + '/images/FundsLogos/default.svg';
-                                        }}
-                                        src={process.env.PUBLIC_URL + '/images/FundsLogos/' + Fund.fund.typeId + '.svg'}
-                                    />
-                                    :
-                                    <img className="currency px-0 mx-0" alt="crypto" src={process.env.PUBLIC_URL + '/images/FundsLogos/default.svg'} />
+                                <img className="currency px-0 mx-0" alt=""
+                                    onError={({ currentTarget }) => {
+                                        currentTarget.onerror = null;
+                                        currentTarget.src = process.env.PUBLIC_URL + '/images/FundsLogos/default.svg';
+                                    }}
+                                    src={hasCustomImage() ? Fund.fund.imageUrl : process.env.PUBLIC_URL + '/images/FundsLogos/default.svg'} />
                         }
                     </div>
                 </Col>
