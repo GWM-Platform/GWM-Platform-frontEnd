@@ -26,12 +26,17 @@ const EditFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
 
     useEffect(() => {
         if (Funds[Action.fund].imageUrl) checkImage(Funds[Action.fund].imageUrl)
-    }, [Funds,Action.fund])
+    }, [Funds, Action.fund])
+
+    console.log(ImageUrl.fetched, ImageUrl.valid)
 
     const handleSubmit = (event) => {
         const form = event.currentTarget;
         event.preventDefault();
         event.stopPropagation();
+        
+        console.log(form.checkValidity(), ImageUrl.fetched, ImageUrl.valid)
+
         if (form.checkValidity() && ImageUrl.fetched && ImageUrl.valid) {
             editFund()
         }

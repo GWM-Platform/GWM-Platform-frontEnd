@@ -179,7 +179,7 @@ const CreateFunds = ({ data, setData, CreateRequest, handleChange, Action, setAc
                                     if (data.imageUrl !== "") checkImage(data.imageUrl)
                                     handleBlur()
                                 }}
-                                placeholder={t("Image url to use as fund logo")} value={data.imageUrl} type="url" id="imageUrl" required
+                                placeholder={t("Image url to use as fund logo")} value={data.imageUrl} type="text" id="imageUrl" required
                                 className={`${ImageUrl.fetched || validated ? ImageUrl.valid ? "hardcoded-valid" : "hardcoded-invalid" : "hardcoded-novalidate"}`}
                                 onChange={(e) => {
                                     setShow(false);
