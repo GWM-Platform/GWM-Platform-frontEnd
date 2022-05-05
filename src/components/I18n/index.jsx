@@ -21,7 +21,8 @@ i18n
           "REPAYMENT": "Refund due to denied ticket",
           "Pendiente": "Pending",
           "Aprobado": "Approved",
-          "Denegado": "Denied"
+          "Denegado": "Denied",
+          "to Transfer": "Transfer",
         }
       },
       es: {
@@ -464,16 +465,20 @@ i18n
           "You must enter how much you want to withdraw from the selected account":
             "Debe ingresar cuanto desea retirar de la cuenta seleccionada",
           //Transfer from client
-          "Transfer": "Transferir",
+          "to Transfer": "Transferir",
           "Specify the target account": "Especifique la cuenta destino",
           "Specify the amount you want to transfer": "Especifique la cantidad que desea transferir",
           "Target account ID": "ID de la cuenta destino",
           "The account id entered does not correspond to any GWM account":
             "El id de cuenta ingresado no corresponde a ninguna cuenta de GWM",
           "You must enter how much you want to transfer": "Debe ingresar cuanto desea transferir",
+          "Operation":"Operación",
+          "Transfer":"Transferencia",
+          "Source account":"Cuenta de origen",
           //common terms
           "transactions":"transacciones",
-          "movements":"movimientos"
+          "movements":"movimientos",
+          "Transfer tickets":"Tickets de transferencias"
         }
       }
     }

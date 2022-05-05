@@ -7,7 +7,7 @@ import { Modal, Button } from 'react-bootstrap'
 import { useContext } from 'react';
 import { DashBoardContext } from 'context/DashBoardContext';
 
-const ActionConfirmationModal = ({ setShowModal, show, action, data, Balance }) => {
+const ActionConfirmationModal = ({ setShowModal, show, action, data, Balance, Transfer }) => {
 
     const { t } = useTranslation();
 
@@ -24,19 +24,19 @@ const ActionConfirmationModal = ({ setShowModal, show, action, data, Balance }) 
                     <h1 className="title"> {t("Ticket summary")} </h1>
                     <ul>
                         <li className="listedInfo">
-                            {t("Account")}: <span className="emphasis">{ClientSelected.alias}</span>
+                            {t("Operation")}: <span className="emphasis">{t("Transfer")}</span>
+                        </li>
+                        <li className="listedInfo">
+                            {t("Source account")}: <span className="emphasis">{ClientSelected.alias}</span>
                         </li>
                         <li className="listedInfo">
                             {t("Account balance")}: <span className="emphasis">${Balance}</span>
                         </li>
                         <li className="listedInfo">
-                            {t("Product")}: <span className="emphasis"></span>
+                            {t("Cash amount")}: <span className="emphasis">${data.amount}</span>
                         </li>
                         <li className="listedInfo">
-                            {t("Cash amount")}:<span className="emphasis"> ${data.amount}</span>
-                        </li>
-                        <li className="listedInfo">
-                            {t("Share amount")}:<span className="emphasis"> </span>
+                            {t("Target Account ID")}: <span className="emphasis">{data.receiverId}</span>
                         </li>
 
                     </ul>
@@ -47,7 +47,7 @@ const ActionConfirmationModal = ({ setShowModal, show, action, data, Balance }) 
                 <Button variant="outline-secondary" onClick={() => handleClose()}>
                     {t("Cancel")}
                 </Button>
-                <Button disabled={false} variant="outline-success" onClick={() => { action() }}>
+                <Button disabled={Transfer.fetching} variant="outline-success" onClick={() => { action() }}>
                     <div className="iconContainer green">
                         <FontAwesomeIcon icon={faCheckCircle} />
                     </div>

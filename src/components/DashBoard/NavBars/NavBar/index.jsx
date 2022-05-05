@@ -142,7 +142,7 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) =>
                                             <NavDropdown.Item
                                                 active={itemSelected === "transfer" || itemSelected === "Transfer"}
                                                 onClick={() => { goTo("Transfer") }}>
-                                                {t("Transfer")}
+                                                {t("to Transfer")}
                                             </NavDropdown.Item>
                                         </NavDropdown>
                                     </>
@@ -279,7 +279,7 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) =>
                                         <NavDropdown.Item
                                             active={itemSelected === "transfer" || itemSelected === "Transfer"}
                                             onClick={() => { goTo("Transfer") }}>
-                                            {t("Transfer")}
+                                            {t("to Transfer")}
                                         </NavDropdown.Item>
                                     </Popover.Body>
                                 </Popover>

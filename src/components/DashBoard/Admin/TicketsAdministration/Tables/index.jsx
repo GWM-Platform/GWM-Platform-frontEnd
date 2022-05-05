@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Message from '../Message'
 import TransactionsTable from './TransactionsTable'
 import MovementsTable from './MovementsTable'
+import TransfersTable from './TransfersTable'
 import PaginationController from 'components/DashBoard/GeneralUse/PaginationController';
 import Loading from 'components/DashBoard/GeneralUse/Loading';
 import NoMovements from 'components/DashBoard/GeneralUse/NoMovements';
@@ -23,7 +24,7 @@ const Transactionslist = ({ state, messageVariants }) => {
 
     const desiredId = useQuery().get("id")
     const desiredType = useQuery().get("type")
-
+    //Transactions
     const [Transactions, setTransactions] = useState({
         fetching: true,
         fetched: false,
@@ -104,7 +105,7 @@ const Transactionslist = ({ state, messageVariants }) => {
             }
         }
     }
-
+    //Movements
     const [Movements, setMovements] = useState({
         fetching: true,
         fetched: false,
@@ -185,7 +186,89 @@ const Transactionslist = ({ state, messageVariants }) => {
             }
         }
     }
+    //Transfers
+    const [Transfers, setTransfers] = useState({
+        fetching: true,
+        fetched: false,
+        valid: false,
+        values: {
+            movements: [],
+            total: 0
+        }
+    })
 
+    const [PaginationTransfers, setPaginationTransfers] = useState({
+        skip: 0,//Offset (in quantity of movements)
+        take: 5,//Movements per page
+        state: null
+    })
+
+    const [searchTransferById, setSearchTransferById] = useState({
+        value: desiredId && desiredType ? desiredType === "t" ? desiredId : "" : "",
+        search: desiredId && desiredType ? desiredType === "t" ? true : false : false
+    })
+
+    const handleTransferSearchChange = (event) => {
+        setSearchTransferById((prevState) => ({ ...prevState, value: event.target.value }))
+    }
+
+    const cancelTransferSearch = () => {
+        setSearchTransferById((prevState) => ({ ...prevState, value: "", search: false }))
+    }
+
+    const TransferById = async (id) => {
+        var url = `${process.env.REACT_APP_APIURL}/transfers/${id}`
+
+        setSearchTransferById((prevState) => ({ ...prevState, search: true }))
+
+        setTransfers({
+            ...Transfers,
+            ...{
+                fetching: true,
+                fetched: false,
+                valid: false,
+            }
+        })
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: "*/*",
+                'Content-Type': 'application/json'
+            }
+        })
+
+        if (response.status === 200) {
+            const data = await response.json()
+            setTransfers({
+                ...Transfers,
+                ...{
+                    fetching: false,
+                    fetched: true,
+                    valid: true,
+                    values: { transfers: [data], total: 1 }
+                }
+            })
+        } else {
+            setTransfers({
+                ...Transfers,
+                ...{
+                    fetching: false,
+                    fetched: true,
+                    valid: true,
+                    values: { transfers: [], total: 0 }
+                }
+            })
+            switch (response.status) {
+                case 500:
+                    break;
+                default:
+                    console.error(response.status)
+            }
+        }
+    }
+
+    /*---------------------------------------------------------------------------------------- */
     const [UsersInfo, SetUsersInfo] = useState({ fetching: true, value: {} })
     const [FundInfo, SetFundInfo] = useState({ fetching: true, value: {} })
     const [AccountInfo, SetAccountInfo] = useState({ fetching: true, value: {} })
@@ -367,12 +450,65 @@ const Transactionslist = ({ state, messageVariants }) => {
         }
     }
 
+    const transfersInState = async () => {
+        var url = `${process.env.REACT_APP_APIURL}/transfers/?` + new URLSearchParams({
+            filterState: state,
+            take: PaginationTransfers.take,
+            skip: PaginationTransfers.skip,
+        });
+        setTransfers(prevState => ({
+            ...prevState,
+            ...{
+                fetching: true,
+                fetched: false,
+                valid: false,
+            }
+        }))
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: "*/*",
+                'Content-Type': 'application/json'
+            }
+        })
+
+        if (response.status === 200) {
+            const data = await response.json()
+            setTransfers(prevState => ({
+                ...prevState,
+                ...{
+                    fetching: false,
+                    fetched: true,
+                    valid: true,
+                    values: data
+                }
+            }))
+        } else {
+            setTransfers(prevState => ({
+                ...prevState,
+                ...{
+                    fetching: false,
+                    fetched: true,
+                    valid: false,
+                }
+            }))
+            switch (response.status) {
+                case 500:
+                    break;
+                default:
+                    console.error(response.status)
+            }
+        }
+    }
+
     useEffect(() => {
         getUsersInfo()
         getFundsInfo()
         getAccounts()
         if (searchTransactionById.search) transactionById(searchTransactionById.value)
         if (searchMovementById.search) movementById(searchMovementById.value)
+        if (searchMovementById.search) TransferById(searchMovementById.value)
         // eslint-disable-next-line
     }, [])
 
@@ -393,6 +529,15 @@ const Transactionslist = ({ state, messageVariants }) => {
                 }
             })
         )
+        setPaginationTransfers(
+            (prevState) => ({
+                ...prevState, ...{
+                    skip: 0,//Offset (in quantity of movements)
+                    take: 5,//Movements per page
+                    state: null
+                }
+            })
+        )
     }, [state])
 
     useEffect(() => {
@@ -405,9 +550,15 @@ const Transactionslist = ({ state, messageVariants }) => {
         // eslint-disable-next-line
     }, [PaginationMovements, state, searchTransactionById.search])
 
+    useEffect(() => {
+        if (!searchTransferById.search) transfersInState()
+        // eslint-disable-next-line
+    }, [PaginationTransfers, state, searchTransferById.search])
+
     const reloadData = () => {
         transactionsInState()
         movementsInState()
+        transfersInState()
     }
 
     const ticketSearchPropsPS = {
@@ -426,6 +577,15 @@ const Transactionslist = ({ state, messageVariants }) => {
         handleSearchChange: handleMovementSearchChange,
         cancelSearch: cancelMovementSearch,
         Search: () => movementById(searchMovementById.value)
+    }
+
+    const ticketSearchPropsTransfer = {
+        fetching: Transfers.fetching,
+        keyWord: "transfer tickets",
+        SearchText: searchTransferById.value,
+        handleSearchChange: handleTransferSearchChange,
+        cancelSearch: cancelTransferSearch,
+        Search: () => TransferById(searchTransferById.value)
     }
 
     return (
@@ -485,6 +645,35 @@ const Transactionslist = ({ state, messageVariants }) => {
                         :
                         null
                 }
+
+                {/*-------------------------------Transfers-------------------------- */}
+                <h1 className="title">{t("Transfer tickets")}:</h1>
+                <TicketSearch
+                    props={ticketSearchPropsTransfer}
+                />
+                {
+                   Transfers.fetching ?
+                        <Loading movements={PaginationTransfers.take} />
+                        :
+                        !Transfers.valid ?
+                            <Message selected={5} messageVariants={messageVariants} />
+                            :
+                            Transfers.values.total === 0 ?
+                                <NoMovements movements={PaginationTransfers.take} />
+                                :
+                                <>
+                                    <TransfersTable AccountInfo={AccountInfo} UsersInfo={UsersInfo}
+                                        reloadData={reloadData} state={state} take={PaginationTransfers.take} movements={Transfers.values.transfers} />
+
+                                </>
+                }
+                {
+                    Transfers.values.total > 0 ?
+                        <PaginationController PaginationData={PaginationTransfers} setPaginationData={setPaginationTransfers} total={Transfers.values.total} />
+                        :
+                        null
+                }
+
             </>
 
 

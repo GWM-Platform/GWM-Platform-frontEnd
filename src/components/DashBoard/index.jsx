@@ -122,7 +122,7 @@ const UserDashBoard = () => {
                                                 <WithdrawForm balanceChanged={() => setBalanceChanged(true)} />
                                             </Route>
                                             <Route path={`${path}/transfer`}>
-                                                <TransferForm />
+                                                <TransferForm balanceChanged={() => setBalanceChanged(true)} />
                                             </Route>
                                             <Route path={`${path}/operationResult`}>
                                                 <OperationStatus setItemSelected={setItemSelected} />

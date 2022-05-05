@@ -27,8 +27,8 @@ const TargetAccountSelector = ({ data, TargetAccount, setTargetAccount, handleCh
     const search = async () => {
         await new Promise(resolve => {
             setTimeout((() => {
-                setTargetAccount(prevState => ({ ...prevState, ...{ fetching: false, fetched: true, valid: data.TargetAccountID === "1234" } }))
-                if (data.TargetAccountID === "1234") {
+                setTargetAccount(prevState => ({ ...prevState, ...{ fetching: false, fetched: true, valid: data.receiverId !== "" } }))
+                if (data.receiverId !== "") {
                     openAccordion()
                 } else {
                     closeAccordion()
@@ -59,10 +59,9 @@ const TargetAccountSelector = ({ data, TargetAccount, setTargetAccount, handleCh
             <Accordion.Body>
 
                 <InputGroup >
-
                     <Form.Control
                         onKeyDown={(e) => handleOnkeyDown(e)}
-                        placeholder={t("Target account ID")} value={data.TargetAccountID} type="number" id="TargetAccountID" required
+                        placeholder={t("Target account ID")} value={data.receiverId} type="number" id="receiverId" required
                         className={`${TargetAccount.fetched || validated ? TargetAccount.valid ? "hardcoded-valid" : "hardcoded-invalid" : "hardcoded-novalidate"}`}
                         onChange={(e) => {
                             handleChange(e);

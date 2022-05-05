@@ -9,16 +9,19 @@ import TransferData from './TransferData'
 import Loading from '../Loading';
 import { DashBoardContext } from 'context/DashBoardContext';
 import ActionConfirmationModal from './ActionConfirmationModal';
+import { useHistory } from 'react-router-dom';
 
-const TransferForm = () => {
+const TransferForm = ({ balanceChanged }) => {
 
-    const { token, contentReady, Accounts } = useContext(DashBoardContext);
+    const { token, contentReady, Accounts, ClientSelected } = useContext(DashBoardContext);
+    const senderId = ClientSelected?.id
+
+    const history = useHistory()
 
     const [data, setData] = useState({
         amount: "",
-        FundSelected: -1,
-        FundSelectedId: -1,
-        TargetAccountID: ""
+        senderId: senderId,
+        receiverId: ""
     })
 
     const [ShowModal, setShowModal] = useState(false)
@@ -31,8 +34,41 @@ const TransferForm = () => {
         valid: false
     })
 
+    const [Transfer, setTransfer] = useState({ fetching: false, valid: false, fetched: false })
+
     const transfer = async () => {
-        console.log("transfer")
+        setTransfer(prevState => ({ ...prevState, fetching: true }))
+        var url = `${process.env.REACT_APP_APIURL}/transfers`
+        const response = await fetch(url, {
+            method: 'POST',
+            body: JSON.stringify(
+                {
+                    senderId: data.senderId,
+                    receiverId: data.receiverId,
+                    amount: data.amount
+                }
+            ),
+            headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: "*/*",
+                'Content-Type': 'application/json'
+            }
+        })
+
+        if (response.status === 201) {
+            balanceChanged()
+            history.push(`/DashBoard/operationResult`);
+        } else {
+            switch (response.status) {
+                case 500:
+                    console.error(response.status)
+                    break
+                default:
+                    console.error(response.status)
+                    break
+            }
+            setTransfer(prevState => ({ ...prevState, fetching: false, fetched: true, valid: false }))
+        }
     }
 
     const handleChange = (event) => {
@@ -91,7 +127,7 @@ const TransferForm = () => {
                 </Container>
                 {
                     contentReady && Accounts.length >= 1 ?
-                        <ActionConfirmationModal setShowModal={setShowModal} show={ShowModal} action={transfer} data={data} Balance={Accounts[0].balance} />
+                        <ActionConfirmationModal setShowModal={setShowModal} show={ShowModal} action={transfer} data={data} Balance={Accounts[0].balance} Transfer={Transfer} />
                         :
                         null
                 }
