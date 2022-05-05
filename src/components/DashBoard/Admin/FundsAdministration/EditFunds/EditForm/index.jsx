@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form, Button, FloatingLabel, Spinner, Popover, InputGroup, Overlay, OverlayTrigger } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronCircleLeft } from '@fortawesome/free-solid-svg-icons'
+import { faChevronCircleLeft,faEye,faEyeSlash,faSearch } from '@fortawesome/free-solid-svg-icons'
 //import FundAssets from './FundAssets'
 
 const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, setAction, validated, handleSubmit, AssetTypes, ImageUrl, setImageUrl, checkImage }) => {
@@ -14,7 +14,7 @@ const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, se
     const [target, setTarget] = useState(null);
 
     const [active, setActive] = useState(0)
-    const [onFocus, setOnFocus] = useState(0)
+    const [onFocus, setOnFocus] = useState(-1)
 
     const ref = useRef(null);
     //For scrolling
@@ -23,13 +23,15 @@ const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, se
     const isNull = () => !popover.current
 
     const handleClick = (event) => {
-        setShow(!show);
-        setTarget(event.target);
+        if(ImageUrl.fetched){
+            setShow(!show);
+            setTarget(event.target);
+        }
     };
 
     const handleBlur = () => {
         setActive("")
-        setOnFocus(0)
+        setOnFocus(-1)
     }
 
     const handleFocus = (e) => {
@@ -80,7 +82,7 @@ const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, se
         }
     }
 
-    const imageOptions = () => [...new Set([`${process.env.PUBLIC_URL}/images/FundsLogos/default.svg`, ...Funds.map(Fund => Fund.imageUrl ? Fund.imageUrl : null)])].filter(e => e)
+    const imageOptions = () => [...new Set([`${process.env.PUBLIC_URL}/images/FundsLogos/default.svg`, ...Funds.map(Fund => Fund.imageUrl)])].filter(e => e)
 
     return (
         <div className="editForm">
@@ -154,7 +156,7 @@ const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, se
                             <Form.Control
                                 onKeyDown={(e) => handleOnkeyDown(e)} onFocus={(e) => handleFocus(e)}
                                 onBlur={() => {
-                                    if (data.imageUrl !== "") checkImage(data.imageUrl)
+                                    if (data.imageUrl !== "" && !ImageUrl.fetched) checkImage(data.imageUrl)
                                     handleBlur()
                                 }}
                                 placeholder={t("Image url to use as fund logo")} value={data.imageUrl} type="text" id="imageUrl" required
@@ -166,8 +168,10 @@ const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, se
                                 }}
                             />
                         </FloatingLabel>
-                        <Button onBlur={() => setShow(false)} onClick={handleClick} variant="danger" disabled={ImageUrl.fetching || !ImageUrl.fetched || (ImageUrl.fetched && !ImageUrl.valid)}>
-                            {t("Preview")}
+                        <Button className="p-relative" onBlur={() => setShow(false)} onClick={handleClick} variant="danger" disabled={ImageUrl.fetching || (ImageUrl.fetched && !ImageUrl.valid)}>
+                            <FontAwesomeIcon className={`inputSearchLogo ${!ImageUrl.fetched ? "active" : "hidden"}`} icon={faSearch} />
+                            <FontAwesomeIcon className={`inputSearchLogo ${ImageUrl.fetched ? "active" : "hidden"}`} icon={ImageUrl.valid ? faEye : faEyeSlash} />
+                            <FontAwesomeIcon className={`inputSearchLogo placeholder`} icon={faEye} />
                         </Button>
 
                         <Overlay
@@ -179,7 +183,7 @@ const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, se
                         >
                             <Popover id="popover-contained">
                                 <Popover.Header className="mt-0" as="h3">{t("Logo Preview")}</Popover.Header>
-                                <Popover.Body>
+                                <Popover.Body className="d-flex justify-content-center">
                                     <div className="fundLogo">
                                         <div className="border">
                                             <img className="logo" alt="" src={data.imageUrl} />

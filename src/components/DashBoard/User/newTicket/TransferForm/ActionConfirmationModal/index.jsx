@@ -7,9 +7,12 @@ import { Modal, Button } from 'react-bootstrap'
 import { useContext } from 'react';
 import { DashBoardContext } from 'context/DashBoardContext';
 
-const ActionConfirmationModal = ({ setShowModal, show, action, data, Funds, Balance, fetching }) => {
+const ActionConfirmationModal = ({ setShowModal, show, action, data, Balance }) => {
+
     const { t } = useTranslation();
+
     const { ClientSelected } = useContext(DashBoardContext)
+
     const handleClose = () => {
         setShowModal(false)
     }
@@ -27,13 +30,13 @@ const ActionConfirmationModal = ({ setShowModal, show, action, data, Funds, Bala
                             {t("Account balance")}: <span className="emphasis">${Balance}</span>
                         </li>
                         <li className="listedInfo">
-                            {t("Product")}: <span className="emphasis">{Funds[data.FundSelected].fund.name}</span>
+                            {t("Product")}: <span className="emphasis"></span>
                         </li>
                         <li className="listedInfo">
-                            {t("Cash amount")}:<span className="emphasis">${(data.shares * Funds[data.FundSelected].fund.sharePrice).toFixed(2)}</span>
+                            {t("Cash amount")}:<span className="emphasis"> ${data.amount}</span>
                         </li>
                         <li className="listedInfo">
-                            {t("Share amount")}:<span className="emphasis">{data.shares}</span>
+                            {t("Share amount")}:<span className="emphasis"> </span>
                         </li>
 
                     </ul>
@@ -44,7 +47,7 @@ const ActionConfirmationModal = ({ setShowModal, show, action, data, Funds, Bala
                 <Button variant="outline-secondary" onClick={() => handleClose()}>
                     {t("Cancel")}
                 </Button>
-                <Button disabled={fetching} variant="outline-success" onClick={() => { action() }}>
+                <Button disabled={false} variant="outline-success" onClick={() => { action() }}>
                     <div className="iconContainer green">
                         <FontAwesomeIcon icon={faCheckCircle} />
                     </div>

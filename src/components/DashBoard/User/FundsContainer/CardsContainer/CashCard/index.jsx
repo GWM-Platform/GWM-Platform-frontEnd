@@ -125,6 +125,9 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
 
                             </Card.Title>
                             <h1 className="title-gray mt-1">
+                                <Card.Text className="invisible subTitle lighter mt-0 mb-2">
+                                    {t("Share price")}:<span className="bolder"></span><br />
+                                </Card.Text>
                                 <Container fluid className="px-0">
                                     <Row className="w-100 mx-0 d-flex justify-content-between gx-0">
                                         <div className="pe-2 containerHideInfo">
@@ -184,7 +187,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                 className="header d-flex align-items-center justify-content-center"
                             >
                                 <div className="currencyContainer d-flex align-items-center justify-content-center">
-                                    <img className="currency px-0 mx-0" alt="cash" src={process.env.PUBLIC_URL + '/images/cash.svg'} />
+                                    <img className="currency px-0 mx-0" alt="cash" src={process.env.PUBLIC_URL + '/images/FundsLogos/cash.svg'} />
                                 </div>
                             </Card.Header>
                             <Card.Body className="body">
@@ -197,6 +200,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                                         {t("Cash")}
                                                     </h1>
                                                 </Col>
+
 
                                                 <div className="px-0 hideInfoButton d-flex align-items-center" onClick={() => { setPinned(false) }}>
                                                     <FontAwesomeIcon
@@ -220,6 +224,9 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
 
                                     </Card.Title>
                                     <h1 className="title-gray mt-1">
+                                        <Card.Text className="invisible subTitle lighter mt-0 mb-2">
+                                            {t("Share price")}:<span className="bolder"></span><br />
+                                        </Card.Text>
                                         <Container fluid className="px-0">
                                             <Row className="w-100 mx-0 d-flex justify-content-between gx-0">
                                                 <div className="pe-2 containerHideInfo">

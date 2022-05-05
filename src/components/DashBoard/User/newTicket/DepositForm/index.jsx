@@ -6,7 +6,7 @@ import { Container, Row, Col } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom';
 import DepositData from './DepositData'
 
-const DepositForm = ({ NavInfoToggled,balanceChanged }) => {
+const DepositForm = ({ balanceChanged }) => {
     const [data, setData] = useState({ amount: "" })
     const [validated, setValidated] = useState(true);
 

@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Col, Row, Container } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 
-const NoFunds = ({ NavInfoToggled, motive }) => {
+const NoFunds = ({  motive }) => {
     //To use the translations from i18n
     const { t } = useTranslation();
 

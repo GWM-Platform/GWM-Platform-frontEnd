@@ -410,6 +410,24 @@ const Transactionslist = ({ state, messageVariants }) => {
         movementsInState()
     }
 
+    const ticketSearchPropsPS = {
+        fetching: Transactions.fetching,
+        keyWord: "purchase and sale tickets",
+        SearchText: searchTransactionById.value,
+        handleSearchChange: handleTransactionSearchChange,
+        cancelSearch: cancelTransactionSearch,
+        Search: () => transactionById(searchTransactionById.value),
+    }
+
+    const ticketSearchPropsW = {
+        fetching: Movements.fetching,
+        keyWord: "withdrawal tickets",
+        SearchText: searchMovementById.value,
+        handleSearchChange: handleMovementSearchChange,
+        cancelSearch: cancelMovementSearch,
+        Search: () => movementById(searchMovementById.value)
+    }
+
     return (
         Transactions.fetching && Movements.fetching ?
             <Message selected={0} messageVariants={messageVariants} />
@@ -417,12 +435,7 @@ const Transactionslist = ({ state, messageVariants }) => {
             <>
                 <h1 className="title">{t("Purchase and sale tickets")}:</h1>
                 <TicketSearch
-                    fetching={Transactions.fetching}
-                    keyWord={"purchase and sale tickets"}
-                    SearchText={searchTransactionById.value}
-                    handleSearchChange={handleTransactionSearchChange}
-                    cancelSearch={cancelTransactionSearch}
-                    Search={() => transactionById(searchTransactionById.value)}
+                    props={ticketSearchPropsPS}
                 />
                 {
                     Transactions.fetching ?
@@ -448,12 +461,7 @@ const Transactionslist = ({ state, messageVariants }) => {
                 }
                 <h1 className="title">{t("Withdrawal tickets")}:</h1>
                 <TicketSearch
-                    fetching={Movements.fetching}
-                    keyWord={"withdrawal tickets"}
-                    SearchText={searchMovementById.value}
-                    handleSearchChange={handleMovementSearchChange}
-                    cancelSearch={cancelMovementSearch}
-                    Search={() => movementById(searchMovementById.value)}
+                    props={ticketSearchPropsW}
                 />
                 {
                     Movements.fetching ?

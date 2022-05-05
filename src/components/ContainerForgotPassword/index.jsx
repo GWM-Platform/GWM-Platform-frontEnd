@@ -56,13 +56,13 @@ const ContainerForgotPassword = () => {
     })
 
     if (response.status === 201) {
-      setMessage("Se ha enviado un mail con un link para reestablecer su contraseña")
+      setMessage("We've sent you an email with a link to reset your password.")
       setButtonDisabled(false)
     } else {
       setButtonDisabled(false)
       switch (response.status) {
         case 500:
-          setMessage("Error. Vefique el mail ingresado")
+          setMessage("Error. Check the email entered")
           break;
         default:
           console.log(response.status)

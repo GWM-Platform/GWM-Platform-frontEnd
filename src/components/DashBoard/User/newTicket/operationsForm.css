@@ -1,7 +1,6 @@
 .newTicket .label {
 	font-size: 20px;
 	font-weight: 400;
-	text-transform: capitalize;
 }
 
 .newTicket .label .numberContainer {

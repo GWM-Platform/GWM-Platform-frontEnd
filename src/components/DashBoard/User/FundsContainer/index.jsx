@@ -35,7 +35,7 @@ const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFun
                     <CardsContainer
                         PendingWithoutpossession={PendingWithoutpossession}
                         PendingTransactions={PendingTransactions}
-                        NavInfoToggled={NavInfoToggled}
+                        
                         setItemSelected={setItemSelected}
                         isMobile={isMobile}
                         Funds={Funds}

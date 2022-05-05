@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Dropdown } from 'react-bootstrap'
 import './index.css'
-import "flag-icon-css/css/flag-icon.min.css"
+
 import { DashBoardContext } from 'context/DashBoardContext';
 import { useTranslation } from "react-i18next";
 

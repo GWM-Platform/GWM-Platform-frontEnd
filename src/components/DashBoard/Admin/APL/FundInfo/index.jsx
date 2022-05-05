@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Col,Spinner } from 'react-bootstrap'
+import { Col, Spinner } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { DashBoardContext } from 'context/DashBoardContext';
-
+import './index.css'
 const FundInfo = ({ Fund }) => {
     const { token } = useContext(DashBoardContext)
 
@@ -43,13 +43,13 @@ const FundInfo = ({ Fund }) => {
     }, [Fund, token])
 
     return (
-        <div className="bg-white info mt-2 ms-0 mb-2 px-0">
+        <div className="APL fundInfo bg-white info mt-2 ms-0 mb-2 px-0">
             <div className="d-flex justify-content-between align-items-end pe-2">
                 <h1 className="m-0 title px-2">
                     {t(Fund.name)}
                 </h1>
                 <h2 className="m-0 left">
-                    {t("Share price (Now)")}
+                    {t("Share price")}
                     <span className="ps-3" style={{ fontWeight: "bolder" }}>
                         ${Fund.sharePrice}
                     </span>
@@ -57,7 +57,10 @@ const FundInfo = ({ Fund }) => {
             </div>
             <div>
                 <h2 className="px-2 left">
-                    {Fund.freeShares}{" "}{t("Shares in possession")}{" ("}{Fund.shares}{" "}{t("in total")}{")"}
+                    {t("Balance (shares)")}:
+                    <span style={{ fontWeight: "bolder" }}>
+                        {Fund.freeShares}{" "}{" ("}{Fund.shares}{" "}{t("in total")}{")"}
+                    </span>
                 </h2>
             </div>
             <div className="d-flex justify-content-between align-items-end pe-2 pb-2 border-bottom-main">
@@ -99,7 +102,7 @@ const FundInfo = ({ Fund }) => {
                     {t("Performance")}{": "}
                     {
                         Performance.fetching ?
-                        <Spinner animation="border" size="sm" />
+                            <Spinner animation="border" size="sm" />
                             :
                             <span
                                 className={{

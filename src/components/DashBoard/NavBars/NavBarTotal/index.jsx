@@ -14,7 +14,7 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
 
     const { token, ClientSelected, itemSelected,contentReady,Accounts } = useContext(DashBoardContext)
 
-    const sectionsCashInAccount = ["buy", "withdraw","sell"]
+    const sectionsCashInAccount = ["buy", "withdraw","sell","transfer"]
 
     useEffect(() => {
         const getAccounts = async () => {
@@ -51,7 +51,7 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
                         <h1 className="total my-0 py-0 d-flex align-items-center growOpacity">
 
                             {
-                                sectionsCashInAccount.includes(itemSelected)?
+                                sectionsCashInAccount.includes(itemSelected.toLowerCase())?
                                 <>
                                     {t("Available cash")}:&nbsp;
                                     {

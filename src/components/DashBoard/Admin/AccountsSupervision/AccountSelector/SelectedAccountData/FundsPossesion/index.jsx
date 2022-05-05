@@ -16,7 +16,7 @@ const FundsPossesion = ({ stakes }) => {
                         <tr>
                             <th>{t("Fund name")}</th>
                             <th>{t("Shares")}</th>
-                            <th>{t("Share Price")}</th>
+                            <th>{t("Share price")}</th>
                             <th>{t("In Cash")}</th>
                         </tr>
                     </thead>

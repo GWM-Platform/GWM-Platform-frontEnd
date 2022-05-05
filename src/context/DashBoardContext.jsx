@@ -309,7 +309,8 @@ export const DashBoardProvider = ({ children }) => {
                 const data = await response.json()
                 const getClientIndexById = (id) => {
                     return data.findIndex(client => {
-                        return client.id.toString() === id})
+                        return client.id.toString() === id
+                    })
                 }
                 setUserClients(data)
                 if (data.length === 1 && !admin) {
@@ -417,11 +418,13 @@ export const DashBoardProvider = ({ children }) => {
             return { name: "-" }
         }
     }
-
+    const toLogin = () => {
+        sessionStorage.clear(); history.push(`/login`);
+    }
     return <DashBoardContext.Provider
         value={{
             token, admin, UserClients, ClientSelected, IndexClientSelected, setIndexClientSelected, balanceChanged, setBalanceChanged, TransactionStates, getMoveStateById,
-            FetchingFunds, contentReady, PendingWithoutpossession, PendingTransactions, Accounts, Funds, itemSelected, setItemSelected, isMobile, width
+            FetchingFunds, contentReady, PendingWithoutpossession, PendingTransactions, Accounts, Funds, itemSelected, setItemSelected, isMobile, width,toLogin,setContentReady
         }}>
         {children}
     </DashBoardContext.Provider>

@@ -28,8 +28,8 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
     const [data, setData] = useState({
         amount: "",
         FundSelected: -1,
-        FundSelectedId:-1,
-     })
+        FundSelectedId: -1,
+    })
     const [ShowModal, setShowModal] = useState(false)
     const [fetching, setFetching] = useState(false)
     const [some, setSome] = useState(false)
@@ -41,34 +41,36 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
     let history = useHistory();
 
     const buy = async () => {
-       if(!fetching){ setFetching(true)
-        var url = `${process.env.REACT_APP_APIURL}/funds/${data.FundSelectedId}/buy/?` + new URLSearchParams({
-            client: ClientSelected.id,
-        });
+        if (!fetching) {
+            setFetching(true)
+            var url = `${process.env.REACT_APP_APIURL}/funds/${data.FundSelectedId}/buy/?` + new URLSearchParams({
+                client: ClientSelected.id,
+            });
 
-        const response = await fetch(url, {
-            method: 'POST',
-            body: JSON.stringify({ amount: parseFloat(data.amount) }),
-            headers: {
-                Authorization: `Bearer ${token}`,
-                Accept: "*/*",
-                'Content-Type': 'application/json'
-            }
-        })
+            const response = await fetch(url, {
+                method: 'POST',
+                body: JSON.stringify({ amount: parseFloat(data.amount) }),
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    Accept: "*/*",
+                    'Content-Type': 'application/json'
+                }
+            })
 
-        if (response.status === 201) {
-            balanceChanged()
-            history.push(`/DashBoard/operationResult`);
-        } else {
-            switch (response.status) {
-                case 500:
-                    console.error(response.status)
-                    break
-                default:
-                    console.error(response.status)
+            if (response.status === 201) {
+                balanceChanged()
+                history.push(`/DashBoard/operationResult`);
+            } else {
+                switch (response.status) {
+                    case 500:
+                        console.error(response.status)
+                        break
+                    default:
+                        console.error(response.status)
+                }
             }
+            setFetching(false)
         }
-        setFetching(false)}
     }
 
     useEffect(() => {

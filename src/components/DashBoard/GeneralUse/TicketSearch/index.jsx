@@ -5,7 +5,14 @@ import { InputGroup, Form, Button, Spinner } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons'
 
-const Search = ({ SearchText, handleSearchChange, cancelSearch, Search, keyWord, fetching }) => {
+const Search = ({ props }) => {
+    
+    const SearchText = props.SearchText
+    const handleSearchChange = props.handleSearchChange
+    const cancelSearch = props.cancelSearch
+    const Search = props.Search
+    const keyWord = props.keyWord
+    const fetching = props.fetching
 
     const { t } = useTranslation();
 
@@ -21,7 +28,7 @@ const Search = ({ SearchText, handleSearchChange, cancelSearch, Search, keyWord,
     return (
         <Form onSubmit={handleSubmit}>
             <Form.Label>{t("Search") + t(" ") + t("by id")}</Form.Label>
-            <InputGroup className={`mb-2 searchBar  ${SearchText.length === 0 ? "" : "search"} `}>
+            <InputGroup className={`searchBar  ${SearchText.length === 0 ? "" : "search"} `}>
                 <Form.Control
                     onChange={handleSearchChange}
                     value={SearchText}
@@ -33,10 +40,10 @@ const Search = ({ SearchText, handleSearchChange, cancelSearch, Search, keyWord,
                 />
                 {SearchText.length > 0 ?
                     <>
-                        <Button className="btn-main" variant="outline-secondary" onClick={() => cancelSearch()} id="basic-addon1">
+                        <Button style={{borderColor:"#ced4da"}} className="btn-main d-flex align-items-center" variant="outline-secondary" onClick={() => cancelSearch()} id="basic-addon1">
                             <FontAwesomeIcon className="icon" icon={faTimes} />
                         </Button>
-                        <Button disabled={fetching} variant="outline-secondary" className="btn-main right" type="submit" id="basic-addon1">
+                        <Button disabled={fetching} variant="outline-secondary"  style={{borderColor:"#ced4da"}}  className="btn-main right d-flex align-items-center" type="submit" id="basic-addon1">
                             {fetching ?
                                 <Spinner animation="border" size="sm" />
                                 :

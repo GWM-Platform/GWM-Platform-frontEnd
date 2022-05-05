@@ -1,10 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Accordion, Form, Row, Col, Button } from 'react-bootstrap';
+
 import { useTranslation } from "react-i18next";
 import { DashBoardContext } from 'context/DashBoardContext';
 
-const FilterOptions = ({ Fund, movsPerPage, setPagination, disabled }) => {
+import { Accordion, Form, Row, Col, Button } from 'react-bootstrap';
+import TicketSearch from 'components/DashBoard/GeneralUse/TicketSearch'
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+const FilterOptions = ({ Fund, movsPerPage, setPagination, disabled, ticketSearch, ticketSearchProps }) => {
     const { t } = useTranslation();
     const { TransactionStates } = useContext(DashBoardContext)
     const [filterOptions, setFilterOptions] = useState({
@@ -50,38 +54,41 @@ const FilterOptions = ({ Fund, movsPerPage, setPagination, disabled }) => {
                 <Accordion.Header disabled={disabled}>
                     {t("Filters")} {disabled ? t("(Cancel the search to use them)") : ""}
                 </Accordion.Header>
-                    <Accordion.Body >
-                        <Form onSubmit={updateFilters}>
-                            <Row className="align-items-stretch">
-                                <Col>
-                                    <Form.Group>
-                                        <Form.Label>{t("Transactions per page")}</Form.Label>
-                                        <Form.Control disabled={disabled} required id="moves" onChange={handleChange} value={filterOptions.moves} type="number" min="1" placeholder="Transactions per page" />
-                                    </Form.Group>
-                                </Col>
-                                {
-                                    TransactionStates.fetched && TransactionStates.valid && !TransactionStates.fetching ?
-                                        <Col >
-                                            <Form.Group controlId="movesPerPage">
-                                                <Form.Label>{t("Transaction status")}</Form.Label>
-                                                <Form.Select disabled={disabled} value={filterOptions.state} onChange={handleChange} id="state">
-                                                    <option value="">{t("All")}</option>
-                                                    {TransactionStates.values.map((state, key) => <option key={key} value={state.id}>{t(state.name)}</option>)}
-                                                </Form.Select>
-                                            </Form.Group>
-                                        </Col>
-                                        :
-                                        null
-                                }
-                                <Col xs="auto" className="d-flex align-items-end">
-                                    <Button type="submit" disabled={filterOptions.moves < 1 || disabled} variant="outline-secondary">
-                                        {t("Update")}
-                                    </Button>
-                                </Col>
-                            </Row>
-                        </Form>
-                    </Accordion.Body>
-                
+                <Accordion.Body >
+                    <Form onSubmit={updateFilters}>
+                        <Row className="align-items-stretch">
+                            <Col>
+                                <Form.Group>
+                                    <Form.Label>{t("Transactions per page")}</Form.Label>
+                                    <Form.Control disabled={disabled} required id="moves" onChange={handleChange} value={filterOptions.moves} type="number" min="1" placeholder="Transactions per page" />
+                                </Form.Group>
+                            </Col>
+                            {
+                                TransactionStates.fetched && TransactionStates.valid && !TransactionStates.fetching ?
+                                    <Col >
+                                        <Form.Group controlId="movesPerPage">
+                                            <Form.Label>{t("Transaction status")}</Form.Label>
+                                            <Form.Select disabled={disabled} value={filterOptions.state} onChange={handleChange} id="state">
+                                                <option value="">{t("All")}</option>
+                                                {TransactionStates.values.map((state, key) => <option key={key} value={state.id}>{t(state.name)}</option>)}
+                                            </Form.Select>
+                                        </Form.Group>
+                                    </Col>
+                                    :
+                                    null
+                            }
+                            {
+                                ticketSearch && <Col> <TicketSearch props={ticketSearchProps} /> </Col>
+                            }
+                            <Col xs="auto" className="d-flex align-items-end">
+                                <Button type="submit" disabled={filterOptions.moves < 1 || disabled} variant="outline-secondary">
+                                    {t("Update")}
+                                </Button>
+                            </Col>
+                        </Row>
+                    </Form>
+                </Accordion.Body>
+
             </Accordion.Item>
         </Accordion>
     )

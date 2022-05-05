@@ -133,7 +133,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, NavInfoToggled, Accoun
                                     <MainCardFund
                                         Fund={FundsWithPending[selected]}
                                         Hide={Hide} setHide={setHide}
-                                        NavInfoToggled={NavInfoToggled}
+                                        
                                         SearchById={SearchById}
                                         setSearchById={setSearchById}
                                         resetSearchById={resetSearchById}
@@ -143,7 +143,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, NavInfoToggled, Accoun
                                     <MainCardAccount
                                         Fund={Accounts[selected]}
                                         Hide={Hide} setHide={setHide}
-                                        NavInfoToggled={NavInfoToggled}
+                                        
                                         SearchById={SearchById}
                                         setSearchById={setSearchById}
                                         resetSearchById={resetSearchById}
@@ -206,7 +206,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, NavInfoToggled, Accoun
                                 <MainCardAccount
                                     Fund={Accounts[0]}
                                     Hide={Hide} setHide={setHide}
-                                    NavInfoToggled={NavInfoToggled}
+                                    
                                     SearchById={SearchById}
                                     setSearchById={setSearchById}
                                     resetSearchById={resetSearchById}
@@ -216,7 +216,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, NavInfoToggled, Accoun
                                 <MainCardFund
                                     Fund={Funds[0]}
                                     Hide={Hide} setHide={setHide}
-                                    NavInfoToggled={NavInfoToggled}
+                                    
                                     SearchById={SearchById}
                                     setSearchById={setSearchById}
                                     resetSearchById={resetSearchById}

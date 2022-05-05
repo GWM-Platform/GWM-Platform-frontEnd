@@ -48,7 +48,7 @@ const SellData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAc
                         <Form.Control.Feedback type="invalid">
                             {
                                 data.FundSelected === -1 ?
-                                    "Please, select a fund to sell"
+                                    t("Please, select a fund to sell")
                                     :
                                     data.shares === "" ?
                                         t("Quantity of shares you want to sell")

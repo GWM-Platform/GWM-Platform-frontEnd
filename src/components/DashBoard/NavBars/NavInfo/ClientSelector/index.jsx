@@ -1,10 +1,12 @@
 import React, { useContext } from 'react'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Dropdown,Col } from 'react-bootstrap'
-import './index.css'
-import "flag-icon-css/css/flag-icon.min.css"
+
 import { DashBoardContext } from 'context/DashBoardContext';
 import { useTranslation } from "react-i18next";
+
+import { Dropdown, Col } from 'react-bootstrap'
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './index.css'
 
 const ClientSelector = () => {
     const { t } = useTranslation();
@@ -17,10 +19,10 @@ const ClientSelector = () => {
                 className="bg-none"
                 id="dropdown-clients">
                 {
-                    IndexClientSelected === -1 ? 
-                    t("Admin Panel")
-                     : 
-                    <>{t("Hi")},&nbsp;{ClientSelected.alias}!</>
+                    IndexClientSelected === -1 ?
+                        t("Admin Panel")
+                        :
+                        <>{t("Hi")},&nbsp;{ClientSelected.alias}!</>
 
                 }
             </Dropdown.Toggle>

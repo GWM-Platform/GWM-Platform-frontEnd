@@ -121,7 +121,7 @@ i18n
           "Please, enter the id from the target account": "Por favor, ingrese la ID de la cuenta destino",
           "Please, select the target account": "Por favor, seleccione la cuenta destino",
           "-- select an option --": "-- Seleccione una opción --",
-          "Preview":"Previsualizar",
+          "Preview": "Previsualizar",
           "Client of Another Bank": "Cliente de otro banco",
           "The external number doesn't match with any Wadiah's account": "El numero de cuenta ingresado no corresponde con ninguna cuenta perteneciente a Wadiah",
           "The external number entered belongs to an account with a currency different from the source account":
@@ -211,6 +211,8 @@ i18n
           "Search fund by name": "Buscar Fondos por nombre",
           "Name": "Nombre",
           "Shares": "Cuotapartes",
+          "Share": "Cuotaparte",
+          "share": "cuotaparte",
           "Free shares": "cuotapartes libres",
           "Share price": "Precio cuotaparte",
           "Actions": "Acciones",
@@ -287,6 +289,7 @@ i18n
           "Please, select a Fund to buy": "Por favor, seleccione el fondo a comprar",
           "shares": "cuotapartes",
           "shares value": "valor de la cuotaparte",
+          "Initial share price": "Valor inicial de la cuotaparte",
           "Available": "Disponibles",
           "in total": "en total",
           "Balance (shares)": "Saldo (cuotapartes)",
@@ -323,8 +326,10 @@ i18n
           "Sale": "Venta",
           "Purchase": "Compra",
           "Accounts Administration": "Administración de Cuentas",
-          "Deposit Cash": "Depositar dinero",
-          "Deposit Cash to an Account": "Depositar dinero a una cuenta",
+          "Deposit cash": "Depositar dinero",
+          "Withdraw cash": "Retirar dinero",
+          "Operation done successfully": "Operación realizada correctamente",
+          "Deposit cash to an Account": "Depositar dinero a una cuenta",
           "Account selector": "Selector de cuenta a depositar",
           "Select the account to which cash will be deposited": "Seleccione la cuenta a la que se le depositara dinero",
           "Open this select menu": "Abra este menu de selección",
@@ -437,8 +442,38 @@ i18n
           "(Cancel the search to use them)": "(Cancele la busqueda para usarlos)",
 
           "Your password has been successfully reset": "Su contraseña ha sido reestablecida correctamente",
-          "Error. Check the entered data": "Error. Verifique la información introducida"
+          "Error. Check the entered data": "Error. Verifique la información introducida",
 
+          "We've sent you an email with a link to reset your password.": "Se ha enviado un mail con un link para reestablecer su contraseña",
+          "Error. Check the email entered": "Error. Vefique el mail ingresado",
+          //Fund Administration
+          "Logo Preview": "Previsualización del Logo",
+
+          //Withdraw from admin
+          "Select the account for which you want to generate a withdrawal ticket": "Seleccione la cuenta para la cual quiere generar un ticket de retiro",
+          "Withdraw cash from an Account": "Retirar Dinero de una Cuenta",
+          "The amount must be less than or equal to the available cash of the selected account":
+            "La cantidad debe ser menor o igual al balance de la cuenta seleccionada",
+          "Date that will appear as when the operation was performed":
+            "Fecha que aparecerá como cuando se realizó la operación",
+          "You must enter the date that will appear as when the operation was performed":
+            "Debe ingresar la fecha que aparecerá como cuando se realizó la operación",
+          "Operation state": "Estado de la operación",
+          "The amount must be lower or equal to the selected account's available cash":
+            "El monto debe ser menor o igual al dinero disponible de la cuenta seleccionada",
+          "You must enter how much you want to withdraw from the selected account":
+            "Debe ingresar cuanto desea retirar de la cuenta seleccionada",
+          //Transfer from client
+          "Transfer": "Transferir",
+          "Specify the target account": "Especifique la cuenta destino",
+          "Specify the amount you want to transfer": "Especifique la cantidad que desea transferir",
+          "Target account ID": "ID de la cuenta destino",
+          "The account id entered does not correspond to any GWM account":
+            "El id de cuenta ingresado no corresponde a ninguna cuenta de GWM",
+          "You must enter how much you want to transfer": "Debe ingresar cuanto desea transferir",
+          //common terms
+          "transactions":"transacciones",
+          "movements":"movimientos"
         }
       }
     }

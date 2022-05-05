@@ -76,7 +76,7 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) =>
                                             {t("Tickets Administration")}
                                         </Nav.Link>
                                         <NavDropdown
-                                            active={itemSelected === "depositCash" || itemSelected === "DepositCash" || itemSelected === "AddAccount" || itemSelected === "addAccount" || itemSelected === "accountsSupervision"}
+                                            active={itemSelected === "withdrawCash" || itemSelected === "WithdrawCash" || itemSelected === "depositCash" || itemSelected === "DepositCash" || itemSelected === "AddAccount" || itemSelected === "addAccount" || itemSelected === "accountsSupervision"}
                                             className="px-0 transactionDropdown" title={t("Accounts Administration")} id="collasible-nav-dropdown">
                                             <NavDropdown.Item
                                                 active={itemSelected === "accountsSupervision" || itemSelected === "accountssupervision"}
@@ -91,7 +91,12 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) =>
                                             <NavDropdown.Item
                                                 active={itemSelected === "depositCash" || itemSelected === "DepositCash"}
                                                 onClick={() => { goTo("DepositCash") }}>
-                                                {t("Deposit Cash")}
+                                                {t("Deposit cash")}
+                                            </NavDropdown.Item>
+                                            <NavDropdown.Item
+                                                active={itemSelected === "withdrawCash" || itemSelected === "WithdrawCash"}
+                                                onClick={() => { goTo("withdrawCash") }}>
+                                                {t("Withdraw cash")}
                                             </NavDropdown.Item>
                                         </NavDropdown>
                                     </>
@@ -111,7 +116,7 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) =>
                                             }}>
                                             {t("History")}
                                         </Nav.Link>
-                                        <NavDropdown className="px-0 transactionDropdown" active={itemSelected === "buy" || itemSelected === "sell" || itemSelected === "deposit" || itemSelected === "withdraw"} title={t("Transactions")} id="collasible-nav-dropdown">
+                                        <NavDropdown className="px-0 transactionDropdown" active={itemSelected === "buy" || itemSelected === "sell" || itemSelected === "deposit" || itemSelected === "withdraw" || itemSelected === "transfer" || itemSelected === "Transfer"} title={t("Transactions")} id="collasible-nav-dropdown">
                                             <NavDropdown.Item
                                                 active={itemSelected === "buy"}
                                                 onClick={() => { goTo("buy") }}>
@@ -133,6 +138,11 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) =>
                                                 active={itemSelected === "withdraw"}
                                                 onClick={() => { goTo("withdraw"); }}>
                                                 {t("Withdraw")}
+                                            </NavDropdown.Item>
+                                            <NavDropdown.Item
+                                                active={itemSelected === "transfer" || itemSelected === "Transfer"}
+                                                onClick={() => { goTo("Transfer") }}>
+                                                {t("Transfer")}
                                             </NavDropdown.Item>
                                         </NavDropdown>
                                     </>
@@ -187,7 +197,7 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) =>
                                 className="ps-4 text-start"
                                 active={itemSelected === "DepositCash" || itemSelected === "depositCash"}
                                 onClick={() => { goTo("DepositCash") }}>
-                                {t("Deposit Cash")}
+                                {t("Deposit cash")}
                             </Nav.Link> </Col>
                         <Col xs="6" className="px-0">
                             <Nav.Link
@@ -266,10 +276,15 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) =>
                                             onClick={() => { goTo("withdraw"); }}>
                                             {t("Withdraw")}
                                         </NavDropdown.Item>
+                                        <NavDropdown.Item
+                                            active={itemSelected === "transfer" || itemSelected === "Transfer"}
+                                            onClick={() => { goTo("Transfer") }}>
+                                            {t("Transfer")}
+                                        </NavDropdown.Item>
                                     </Popover.Body>
                                 </Popover>
                             } popperConfig={1}>
-                                <Button className={`right ${itemSelected === "withdraw" || itemSelected === "deposit" ? "active" : ""}`}>
+                                <Button className={`right ${itemSelected === "withdraw" || itemSelected === "deposit" || itemSelected === "transfer" || itemSelected === "Transfer" ? "active" : ""}`}>
                                     <p className="mb-0" onClick={(e) => { e.target.focus() }}>Cash Operations</p>
                                 </Button>
                             </OverlayTrigger>

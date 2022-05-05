@@ -4,7 +4,9 @@ import { useTranslation } from "react-i18next";
 import i18n from 'components/I18n';
 import { Dropdown } from 'react-bootstrap'
 import './index.css'
-import "flag-icon-css/css/flag-icon.min.css"
+import Es from './flags/es.jsx'
+import En from './flags/en.jsx'
+
 const LanguageSelector = () => {
     const { t } = useTranslation();
 
@@ -46,10 +48,9 @@ const LanguageSelector = () => {
                 className="bg-none"
                 id="dropdown-language">
                 {
-                    selected === "en" ?
-                        <img src={process.env.PUBLIC_URL + '/images/englishFlag.svg'} alt="en" height="16px" style={{ verticalAlign: "sub" }} />
-                        :
-                        <span className={`flag-icon flag-icon-${selected}`}></span>
+                    selected === "es" ?
+                        <Es /> :
+                        <En />
                 }
             </Dropdown.Toggle>
 
@@ -60,13 +61,11 @@ const LanguageSelector = () => {
                             <Dropdown.Item key={lng} active={selected === lng} onClick={() => {setSelected(lng);changeLanguage(lng)}}>
                                 {
                                     languageIsValid(lng) ?
-                                        lng === "en" ?
-                                            <img src={process.env.PUBLIC_URL + '/images/englishFlag.svg'} alt="en" height="16px" style={{ verticalAlign: "sub" }} />
-
-                                            :
-                                            <span className={`flag-icon flag-icon-${lng}`}></span>
+                                        lng === "es" ?
+                                            <Es /> :
+                                            <En />
                                         :
-                                        null
+                                        <En />
                                 }
                                 &nbsp;{languageIsValid(lng) ? t(lngs[lng].nativeName) : ""}
                             </Dropdown.Item>

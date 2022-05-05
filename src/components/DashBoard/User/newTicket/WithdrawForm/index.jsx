@@ -9,7 +9,7 @@ import { DashBoardContext } from 'context/DashBoardContext';
 import WithdrawData from './WithdrawData'
 import Loading from '../Loading';
 import ActionConfirmationModal from './ActionConfirmationModal';
-const WithdrawForm = ({ NavInfoToggled, balanceChanged }) => {
+const WithdrawForm = ({ balanceChanged }) => {
     const [data, setData] = useState({ amount: "" })
     const [ShowModal, setShowModal] = useState(false)
     const [validated, setValidated] = useState(true);
@@ -87,7 +87,7 @@ const WithdrawForm = ({ NavInfoToggled, balanceChanged }) => {
                 </Row>
             </Container>
             {
-                contentReady && contentReady ?
+                contentReady ?
                     <ActionConfirmationModal fetching={fetching} setShowModal={setShowModal} show={ShowModal} action={withdraw} data={data} Balance={Accounts[0].balance} />
                     :
                     null

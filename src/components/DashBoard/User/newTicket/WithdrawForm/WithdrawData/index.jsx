@@ -48,7 +48,7 @@ const WithdrawData = ({ data, handleChange, validated, handleSubmit, account,fet
                                 t("You must enter how much you want to withdraw")
                                 :
                                 data.amount > account.balance ?
-                                    t("The amount must be lower or equal to the available cash") + " ($" + account.balance + ")"
+                                    t("The amount must be less than or equal to the available cash of the selected account") + " ($" + account.balance + ")"
                                     :
                                     t("The amount must be greater than 0")
                         }

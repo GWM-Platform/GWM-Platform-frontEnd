@@ -144,15 +144,6 @@
 	border-radius: 0;
 	background-color: rgb(255 255 255 / 70%);
 }
-
-@keyframes hover {
-	0% {
-		transform: rotateY(0deg);
-	}
-	100% {
-		transform: rotateY(360deg);
-	}
-}
 .deleteModal .hidden {
 	position: absolute;
 	left: 0;
@@ -296,8 +287,8 @@
 	font-size: 30px;
 	height: 4em;
 	width: 4em;
-	
-	background:#082044;
+
+	background: #082044;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -309,13 +300,36 @@
 	height: 2.7em;
 	width: 2.7em;
 	margin: 0.3em 0em;
-	display:flex;
+	display: flex;
 	align-items: center;
 	justify-content: center;
-
 }
 
 .fundLogo .logo {
 	width: 30px;
 	display: block;
+}
+
+.inputSearchLogo {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.inputSearchLogo.active {
+	opacity:1;
+	transition:0.4s all 0.2s
+}
+
+.inputSearchLogo.hidden {
+	opacity:0;
+	transition:0.2s all 0.2s
+}
+
+
+.inputSearchLogo.placeholder {
+	position: static;
+	opacity: 0;
+	cursor:unset
 }

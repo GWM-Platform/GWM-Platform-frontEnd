@@ -33,7 +33,6 @@
 }
 
 .movementsMainCardFund .details .text {
-    text-transform: capitalize;
     font-size: 17px;
     font-weight: 200;
     width: 100%;
@@ -41,7 +40,6 @@
 }
 
 .movementsMainCardFund .details .text>.amount {
-    text-transform: capitalize;
     text-align: end;
     font-size: 17px;
     font-weight: 400;
@@ -57,13 +55,11 @@
 }
 
 .movementsMainCardFund .info .left {
-    text-transform: capitalize;
     font-size: 17px;
     font-weight: 300;
     color:black
 }
 .movementsMainCardFund .info .description {
-    text-transform: capitalize;
     font-size: 17px;
     font-weight: 200;
 }
@@ -76,14 +72,12 @@
 }
 
 .movementsMainCardFund .info .edit {
-    text-transform: capitalize;
     color: black;
     font-weight: 400;
     font-size: 16px;
 }
 
 .movementsMainCardFund .info .content {
-    text-transform: capitalize;
     color: var(--main-color);
     font-weight: 400;
     font-size: 16px;

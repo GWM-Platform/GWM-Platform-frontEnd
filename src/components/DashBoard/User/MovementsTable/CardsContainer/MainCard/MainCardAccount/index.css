@@ -26,7 +26,6 @@
 }
 
 .movementsMainCardAccount .details .text {
-    text-transform: capitalize;
     font-size: 17px;
     font-weight: 200;
     width: 100%;
@@ -34,7 +33,6 @@
 }
 
 .movementsMainCardAccount .details .text>.amount {
-    text-transform: capitalize;
     text-align: end;
     font-size: 17px;
     font-weight: 400;
@@ -50,7 +48,6 @@
 }
 
 .movementsMainCardAccount .info .left {
-    text-transform: capitalize;
     font-size: 17px;
     font-weight: 200;
 }
@@ -63,14 +60,12 @@
 }
 
 .movementsMainCardAccount .info .edit {
-    text-transform: capitalize;
     color: black;
     font-weight: 400;
     font-size: 16px;
 }
 
 .movementsMainCardAccount .info .content {
-    text-transform: capitalize;
     color: var(--main-color);
     font-weight: 400;
     font-size: 16px;

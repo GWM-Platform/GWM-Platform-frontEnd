@@ -190,7 +190,7 @@ const ContainerForgotPassword = () => {
                     <Form.Text className={`text-muted formText mb-4`}>
                       <p className="validation mb-1 ">{t("Your new password must have")}:
                         <br />
-                        {validationIcon(validation.length > 8)}
+                        {validationIcon(validation.length >= 8)}
                         {t("8 characters length")}
                         <br />
                         {validationIcon(validation.contains.includes('number'))}

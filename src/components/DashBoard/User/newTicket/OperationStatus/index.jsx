@@ -8,7 +8,7 @@ import { faClock } from '@fortawesome/free-regular-svg-icons'
 import './index.css'
 import { useTranslation } from 'react-i18next';
 
-const OperationStatus = ({setItemSelected,NavInfoToggled}) => {
+const OperationStatus = ({setItemSelected}) => {
 
     const {t} = useTranslation()
     useEffect(() => {

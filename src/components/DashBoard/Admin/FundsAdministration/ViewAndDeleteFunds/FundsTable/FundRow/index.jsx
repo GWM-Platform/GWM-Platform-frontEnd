@@ -26,7 +26,7 @@ const FundRow = ({ Fund, AssetTypes, chargeFunds, setAction, Action, ownKey }) =
     const popover = (
         <Popover id="popover-basic">
             <Popover.Header className="mt-0" as="h3">{t("Logo Preview")}</Popover.Header>
-            <Popover.Body>
+            <Popover.Body className="d-flex justify-content-center">
                 <div className="fundLogo">
                     <div className="border">
                         <img className="logo" alt="" src={hasCustomImage() ? Fund.imageUrl : process.env.PUBLIC_URL + '/images/FundsLogos/default.svg'} />
@@ -54,7 +54,7 @@ const FundRow = ({ Fund, AssetTypes, chargeFunds, setAction, Action, ownKey }) =
                         <button className="noStyle iconContainer  green" onClick={() => setAction({ ...Action, ...{ action: 0, fund: ownKey } })}>
                             <FontAwesomeIcon className="icon" icon={faEdit} />
                         </button>
-                        <OverlayTrigger delay="200" placement="left" overlay={popover}>
+                        <OverlayTrigger delay={{ show: "200", hide: 0 }} placement="left" overlay={popover}>
                             <button className="noStyle iconContainer  green">
                                 <FontAwesomeIcon className="icon" icon={faEye} />
                             </button>

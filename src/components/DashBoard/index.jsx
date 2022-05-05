@@ -20,6 +20,7 @@ import BuyForm from './User/newTicket/BuyForm';
 import SellForm from './User/newTicket/SellForm';
 import WithdrawForm from './User/newTicket/WithdrawForm';
 import DepositForm from './User/newTicket/DepositForm';
+import TransferForm from './User/newTicket/TransferForm';
 import OperationStatus from './User/newTicket/OperationStatus';
 import SelectClient from './User/SelectClient';
 
@@ -29,6 +30,7 @@ import FundsAdministration from './Admin/FundsAdministration';
 import AssetsAdministration from './Admin/AssetsAdministration';
 import TicketsAdministration from './Admin/TicketsAdministration';
 import DepositCashToClient from './Admin/DepositCashToClient';
+import WithdrawCashFromClient from './Admin/WithdrawCashFromClient';
 import OperationStatusAdmin from './Admin/OperationStatus';
 import Loading from './Loading';
 import AccountsSupervision from './Admin/AccountsSupervision';
@@ -80,8 +82,11 @@ const UserDashBoard = () => {
                                             <Route path={`${path}/depositCash`}>
                                                 <DepositCashToClient />
                                             </Route>
+                                            <Route path={`${path}/withdrawCash`}>
+                                                <WithdrawCashFromClient />
+                                            </Route>
                                             <Route path={`${path}/operationResult`}>
-                                                <OperationStatusAdmin setItemSelected={setItemSelected} NavInfoToggled={NavInfoToggled} />
+                                                <OperationStatusAdmin  />
                                             </Route>
                                         </div>
                                         :
@@ -105,19 +110,22 @@ const UserDashBoard = () => {
                                                 />
                                             </Route>
                                             <Route path={`${path}/buy`}>
-                                                <BuyForm NavInfoToggled={NavInfoToggled} balanceChanged={() => setBalanceChanged(true)} />
+                                                <BuyForm balanceChanged={() => setBalanceChanged(true)} />
                                             </Route>
                                             <Route path={`${path}/sell`}>
-                                                <SellForm NavInfoToggled={NavInfoToggled} balanceChanged={() => setBalanceChanged(true)} />
+                                                <SellForm  balanceChanged={() => setBalanceChanged(true)} />
                                             </Route>
                                             <Route path={`${path}/deposit`}>
-                                                <DepositForm NavInfoToggled={NavInfoToggled} balanceChanged={() => setBalanceChanged(true)} />
+                                                <DepositForm balanceChanged={() => setBalanceChanged(true)} />
                                             </Route>
                                             <Route path={`${path}/withdraw`}>
-                                                <WithdrawForm NavInfoToggled={NavInfoToggled} balanceChanged={() => setBalanceChanged(true)} />
+                                                <WithdrawForm balanceChanged={() => setBalanceChanged(true)} />
+                                            </Route>
+                                            <Route path={`${path}/transfer`}>
+                                                <TransferForm />
                                             </Route>
                                             <Route path={`${path}/operationResult`}>
-                                                <OperationStatus setItemSelected={setItemSelected} NavInfoToggled={NavInfoToggled} />
+                                                <OperationStatus setItemSelected={setItemSelected} />
                                             </Route>
                                         </>
                                 }

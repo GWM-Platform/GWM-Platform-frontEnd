@@ -145,11 +145,11 @@
 }
 
 @keyframes hover {
-	0% {
-		transform: rotateY(0deg);
+	0%,100% {
+		transform: scale(1);
 	}
-	100% {
-		transform: rotateY(360deg);
+	50% {
+		transform: scale(1.1);
 	}
 }
 .deleteModal .hidden,.editModal .hidden {

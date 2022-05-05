@@ -47,7 +47,7 @@ const ActionConfirmationModal = ({ setShowModal, show, action, data, Funds, Bala
                 <Button variant="outline-secondary" onClick={() => handleClose()}>
                     {t("Cancel")}
                 </Button>
-                <Button disabled={fetching} variant="outline-success" onClick={() => { action() }}>
+                <Button disabled={fetching} variant="outline-success" onClick={() => action()}>
                     <div className="iconContainer green">
                         <FontAwesomeIcon icon={faCheckCircle} />
                     </div>

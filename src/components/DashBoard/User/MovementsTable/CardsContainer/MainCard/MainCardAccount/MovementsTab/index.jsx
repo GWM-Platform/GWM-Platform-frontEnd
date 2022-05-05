@@ -10,9 +10,8 @@ import { useHistory } from 'react-router-dom';
 import { DashBoardContext } from 'context/DashBoardContext';
 import PaginationController from 'components/DashBoard/GeneralUse/PaginationController'
 import FilterOptions from 'components/DashBoard/GeneralUse/FilterOptions'
-import TicketSearch from 'components/DashBoard/GeneralUse/TicketSearch'
 
-const MovementsTab = ({ Fund, NavInfoToggled, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
+const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
     const { token, ClientSelected } = useContext(DashBoardContext);
     const history = useHistory();
 
@@ -117,20 +116,21 @@ const MovementsTab = ({ Fund, NavInfoToggled, SearchById, setSearchById, resetSe
         // eslint-disable-next-line
     }, [Fund, Pagination, SearchById.search])
 
+    const ticketSearchProps = {
+        fetching: FetchingMovements,
+        keyWord: "movements",
+        SearchText: SearchById.value,
+        handleSearchChange: handleMovementSearchChange,
+        cancelSearch: resetSearchById,
+        Search: () => getMovementById(SearchById.value)
+    }
+
     return (
 
         <div className="p-0 h-100">
             <div className="d-flex align-items-start justify-content-center flex-column MovementsTableContainer">
                 <div className={`movementsTable growAnimation`}>
-                    <TicketSearch
-                        fetching={FetchingMovements}
-                        keyWord={"movements"}
-                        SearchText={SearchById.value}
-                        handleSearchChange={handleMovementSearchChange}
-                        cancelSearch={resetSearchById}
-                        Search={() => getMovementById(SearchById.value)}
-                    />
-                    <FilterOptions disabled={SearchById.search} Fund={Fund} setPagination={setPagination} movsPerPage={Pagination.take} total={Movements.total} />
+                    <FilterOptions ticketSearch ticketSearchProps={ticketSearchProps} disabled={SearchById.search} Fund={Fund} setPagination={setPagination} movsPerPage={Pagination.take} total={Movements.total} />
                     {
                         FetchingMovements ?
                             <Loading movements={Pagination.take} />

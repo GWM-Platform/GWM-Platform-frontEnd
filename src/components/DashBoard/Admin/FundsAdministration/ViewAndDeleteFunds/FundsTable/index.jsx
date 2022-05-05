@@ -20,7 +20,7 @@ const FundsTable = ({ Funds, AssetTypes, chargeFunds, setAction, Action }) => {
                         <th className="Type">{t("Type")}</th>
                         <th className="Shares">{t("Total shares")}</th>
                         <th className="FreeShares">{t("APL shares")}</th>
-                        <th className="SharePrice">{t("Share Price")}</th>
+                        <th className="SharePrice">{t("Share price")}</th>
                         <th className="Actions">{t("Actions")}</th>
                     </tr>
                 </thead>

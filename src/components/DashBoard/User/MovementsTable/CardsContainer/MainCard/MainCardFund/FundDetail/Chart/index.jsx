@@ -3,7 +3,7 @@ import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ReferenceLine,Re
 import './index.css'
 import moment from 'moment';
 
-const Chart = ({ NavInfoToggled, Height, Width }) => {
+const Chart = ({  Height, Width }) => {
 
 
 

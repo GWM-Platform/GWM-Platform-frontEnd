@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form, Button, FloatingLabel, Spinner, Popover, InputGroup, Overlay, OverlayTrigger } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronCircleLeft } from '@fortawesome/free-solid-svg-icons'
+import { faChevronCircleLeft, faEye, faSearch, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
 const CreateFunds = ({ data, setData, CreateRequest, handleChange, Action, setAction, validated, handleSubmit, AssetTypes, ImageUrl, setImageUrl, checkImage, Funds }) => {
     const { t } = useTranslation();
@@ -12,7 +12,7 @@ const CreateFunds = ({ data, setData, CreateRequest, handleChange, Action, setAc
     const [target, setTarget] = useState(null);
 
     const [active, setActive] = useState(0)
-    const [onFocus, setOnFocus] = useState(0)
+    const [onFocus, setOnFocus] = useState(-1)
 
     const ref = useRef(null);
     //For scrolling
@@ -20,13 +20,15 @@ const CreateFunds = ({ data, setData, CreateRequest, handleChange, Action, setAc
     const isNull = () => !popover.current
 
     const handleClick = (event) => {
-        setShow(!show);
-        setTarget(event.target);
+        if(ImageUrl.fetched){
+            setShow(!show);
+            setTarget(event.target);
+        }
     };
 
     const handleBlur = () => {
         setActive("")
-        setOnFocus(0)
+        setOnFocus(-1)
     }
 
     const handleFocus = (e) => {
@@ -77,7 +79,7 @@ const CreateFunds = ({ data, setData, CreateRequest, handleChange, Action, setAc
         }
     }
 
-    const imageOptions = () => [`${process.env.PUBLIC_URL}/images/FundsLogos/default.svg`, ...new Set(Funds.map(Fund => Fund.imageUrl ? Fund.imageUrl : null))].filter(e => e)
+    const imageOptions = () => [...new Set([`${process.env.PUBLIC_URL}/images/FundsLogos/default.svg`, ...Funds.map(Fund => Fund.imageUrl)])].filter(e => e)
 
     return (
         <div className="editForm">
@@ -125,13 +127,13 @@ const CreateFunds = ({ data, setData, CreateRequest, handleChange, Action, setAc
                 {/*------------------------------------------------------------------------------------------------------------------------------------------ */}
 
                 <FloatingLabel
-                    label={t("Initial Share Price")}
+                    label={t("Initial share price")}
                     className="mb-3"
                 >
                     <Form.Control
                         required onChange={handleChange} id="initialSharePrice"
                         value={data.initialSharePrice} min="0" step="0.01" type="number"
-                        placeholder={t("Initial Share Price")}
+                        placeholder={t("Initial share price")}
                     />
                 </FloatingLabel>
 
@@ -176,7 +178,7 @@ const CreateFunds = ({ data, setData, CreateRequest, handleChange, Action, setAc
                             <Form.Control
                                 onKeyDown={(e) => handleOnkeyDown(e)} onFocus={(e) => handleFocus(e)}
                                 onBlur={() => {
-                                    if (data.imageUrl !== "") checkImage(data.imageUrl)
+                                    if (data.imageUrl !== "" && !ImageUrl.fetched) checkImage(data.imageUrl)
                                     handleBlur()
                                 }}
                                 placeholder={t("Image url to use as fund logo")} value={data.imageUrl} type="text" id="imageUrl" required
@@ -188,8 +190,10 @@ const CreateFunds = ({ data, setData, CreateRequest, handleChange, Action, setAc
                                 }}
                             />
                         </FloatingLabel>
-                        <Button onBlur={() => setShow(false)} onClick={handleClick} variant="danger" disabled={ImageUrl.fetching || !ImageUrl.fetched || (ImageUrl.fetched && !ImageUrl.valid)}>
-                            {t("Preview")}
+                        <Button className="p-relative" onBlur={() => setShow(false)} onClick={handleClick} variant="danger" disabled={ImageUrl.fetching || (ImageUrl.fetched && !ImageUrl.valid)}>
+                            <FontAwesomeIcon className={`inputSearchLogo ${!ImageUrl.fetched ? "active" : "hidden"}`} icon={faSearch} />
+                            <FontAwesomeIcon className={`inputSearchLogo ${ImageUrl.fetched ? "active" : "hidden"}`} icon={ImageUrl.valid ? faEye : faEyeSlash} />
+                            <FontAwesomeIcon className={`inputSearchLogo placeholder`} icon={faEye} />
                         </Button>
 
                         <Overlay
@@ -201,7 +205,7 @@ const CreateFunds = ({ data, setData, CreateRequest, handleChange, Action, setAc
                         >
                             <Popover id="popover-contained">
                                 <Popover.Header className="mt-0" as="h3">{t("Logo Preview")}</Popover.Header>
-                                <Popover.Body>
+                                <Popover.Body className="d-flex justify-content-center">
                                     <div className="fundLogo">
                                         <div className="border">
                                             <img className="logo" alt="" src={data.imageUrl} />

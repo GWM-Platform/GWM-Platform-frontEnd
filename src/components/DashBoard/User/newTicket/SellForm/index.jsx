@@ -11,7 +11,7 @@ import Loading from '../Loading';
 import NoFunds from '../NoFunds';
 import ActionConfirmationModal from './ActionConfirmationModal';
 
-const SellForm = ({ NavInfoToggled, balanceChanged }) => {
+const SellForm = ({ balanceChanged }) => {
     const { token, ClientSelected, contentReady, Accounts } = useContext(DashBoardContext);
 
     function useQuery() {

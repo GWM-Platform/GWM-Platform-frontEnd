@@ -85,7 +85,7 @@ const MainCard = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchBy
                 {
                     {
                         0:
-                            <MovementsTab SearchById={SearchById} setSearchById={setSearchById} NavInfoToggled={NavInfoToggled} Fund={Fund} 
+                            <MovementsTab SearchById={SearchById} setSearchById={setSearchById}  Fund={Fund} 
                             resetSearchById={resetSearchById} handleMovementSearchChange={handleMovementSearchChange}/>,
                         1:
                             <FundDetail />

@@ -42,7 +42,7 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, NavInfoToggl
                     </Container>
                     :
                     <CardsContainer
-                        NavInfoToggled={NavInfoToggled}
+                        
                         setItemSelected={setItemSelected}
                         isMobile={isMobile}
                         Funds={Funds}
