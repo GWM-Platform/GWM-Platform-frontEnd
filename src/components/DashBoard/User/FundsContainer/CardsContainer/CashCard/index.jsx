@@ -3,14 +3,16 @@ import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSlash, faEyeSlash, faEye, faThumbtack } from '@fortawesome/free-solid-svg-icons'
+import { faSlash, faEyeSlash, faEye, faThumbtack, faClipboard } from '@fortawesome/free-solid-svg-icons'
+import { faCheckCircle } from '@fortawesome/free-regular-svg-icons'
 import { useHistory } from 'react-router-dom';
 import './index.css'
 import { DashBoardContext } from 'context/DashBoardContext';
 
 const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned, cardsAmount, inScreenFunds }) => {
     const { t } = useTranslation();
-    const { token, ClientSelected } = useContext(DashBoardContext)
+
+    const { token, ClientSelected, DashboardToastDispatch } = useContext(DashBoardContext)
 
     const [PendingMovements, setPendingMovements] = useState(
         {
@@ -85,6 +87,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
         getPendingMovements()
     }, [token, ClientSelected.id])
 
+
     return (
         <>
             <Col sm="6" md="6" lg="4" className={`fund-col  growAnimation ${Pinned ? "opacity-0" : ""}`}>
@@ -125,8 +128,16 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
 
                             </Card.Title>
                             <h1 className="title-gray mt-1">
-                                <Card.Text className="invisible subTitle lighter mt-0 mb-2">
-                                    {t("Share price")}:<span className="bolder"></span><br />
+                                <Card.Text className="subTitle lighter mt-0 mb-2">
+                                    {t("Alias")}: <span className="bolder">{Fund.alias}</span>
+                                    <button style={{ color: "var(--bs-body-color)" }} className="noStyle float-end">
+                                        <FontAwesomeIcon className="ms-1 clipboardIcon" icon={faClipboard}
+                                            onClick={() => {
+                                                DashboardToastDispatch({ type: "create", toastContent: { Icon: faCheckCircle, Title: "Alias succesfully copied!" } });
+                                                navigator.clipboard.writeText(Fund.alias)
+                                            }} />
+                                    </button>
+                                    <br />
                                 </Card.Text>
                                 <Container fluid className="px-0">
                                     <Row className="w-100 mx-0 d-flex justify-content-between gx-0">

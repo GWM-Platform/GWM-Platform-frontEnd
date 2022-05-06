@@ -1,0 +1,140 @@
+.filter .form-control{
+    border-radius: 20px;
+    border-color:var(--main-color)
+}
+
+.filter .button{
+    border-radius: 20px;
+}
+
+.filter .right{
+    border-left: 1px solid white;
+}
+
+.tableDescription {
+    text-align: end;
+    max-width: 70px;
+
+}
+.tableDate {
+    width: fit-content;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.tableAmount {
+    text-align: end;
+}
+.tableConcept {
+    text-align: start;
+    width: fit-content;
+}
+.movementsTableAccounts {
+    max-height: calc(100vh - 250px);
+    overflow: auto;
+    display: inline-block;
+    width: 100%;
+}
+.movementsTableContainer {
+    min-height: calc( 100vh - 367px  );
+    overflow: auto;
+    display: inline-block;
+    width: 100%;
+}
+.movementsTable {
+    overflow-y: overlay;
+    overflow-x:auto;
+    width: 100%;
+}
+
+.tableMovements {
+    min-height: calc( 100vh - 424px - 52px )
+}
+
+
+
+.movementsTable-navInfoToggled {
+    overflow: auto;
+    width: 100%;
+    min-height: calc( 100vh - 387px  + 76px );
+}
+@media (min-width: 1201px) {
+    .tableDescription {
+        max-width: unset;
+    }
+    .tableDate {
+        width: 15%;
+    }
+    .tableAmount {
+        width: 20%;
+    }
+    .accountsContainerWidth{
+        width: 75%;
+    }
+}
+/*Pantallas grandes (desktops de menos de 1200px) lg 1200px>X≥992px*/
+@media (max-width: 1200px) {
+   
+    .tableDescription {
+        max-width: auto;
+    }
+    .tableDate {
+        width: 20%;
+    }
+    .tableAmount {
+        width: 20%;
+    }
+    
+}
+
+
+/*Pantallas medianas (tablets de menos de 992px) md 992px>X≥768px;*/
+
+@media (max-width: 992px) {
+    
+    .tableDescription {
+        max-width: auto;
+    }
+    .tableDate {
+        width: 25%;
+    }
+    .tableAmount {
+        width: 30%;
+    }
+}
+
+
+/*Pantallas pequeñas (móviles en landscape de menos de 768px)  sm 768px>X≥576px*/
+
+@media (max-width: 768px) {
+    .tableDescription {
+        max-width: auto;
+    }
+    .tableDate {
+        width: 25%;
+    }
+    .tableAmount {
+        width: 30%;
+    }
+}
+
+
+/*Pantallas muy pequeñas (móviles en portrait de menos de 576px) xs 576px>X*/
+
+@media (max-width: 576px) {
+    .tableDescription {
+        max-width: 70px;
+    }
+    .tableDate {
+        width: 40%;
+    }
+    .tableAmount {
+        width: 30%;
+    }
+    .cardTextMain {
+        height: calc(100vh - 130px);
+    }
+    .movementsTableAccounts {
+        max-height: none;
+    }
+}

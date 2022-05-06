@@ -16,6 +16,7 @@ const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFun
         setMounted(true)
     }, []);
 
+    
 
     return (
         <Container fluid
@@ -35,7 +36,7 @@ const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFun
                     <CardsContainer
                         PendingWithoutpossession={PendingWithoutpossession}
                         PendingTransactions={PendingTransactions}
-                        
+
                         setItemSelected={setItemSelected}
                         isMobile={isMobile}
                         Funds={Funds}
@@ -43,6 +44,7 @@ const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFun
                         Accounts={Accounts}
                     />
             }
+            
         </Container>
     )
 }

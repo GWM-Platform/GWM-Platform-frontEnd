@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { DashBoardContext } from 'context/DashBoardContext';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { Row, Form, Accordion, Container, InputGroup, Button, Spinner } from 'react-bootstrap'
@@ -7,34 +9,53 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { useTranslation } from "react-i18next";
 
 const TargetAccountSelector = ({ data, TargetAccount, setTargetAccount, handleChange, validated, openAccordion, closeAccordion }) => {
+    const { token, AccountSelected } = useContext(DashBoardContext)
+    const accountAlias = AccountSelected?.alias
+
     const { t } = useTranslation();
     const handleOnkeyDown = (event) => {
         switch (event.key) {
             case 'Enter':
                 event.preventDefault();
-                searchAccount()
-                event.target.blur()
+                if (data.alias !== "" && data.alias !== accountAlias) {
+                    search()
+                    event.target.blur()
+                }
                 break
             default:
                 break;
         }
     }
 
-    const searchAccount = () => {
-        setTargetAccount(prevState => ({ ...prevState, ...{ fetching: true, fetched: false, valid: false } }))
-        search()
-    }
     const search = async () => {
-        await new Promise(resolve => {
-            setTimeout((() => {
-                setTargetAccount(prevState => ({ ...prevState, ...{ fetching: false, fetched: true, valid: data.receiverId !== "" } }))
-                if (data.receiverId !== "") {
-                    openAccordion()
-                } else {
-                    closeAccordion()
-                }
-            }), 2000);
-        });
+        setTargetAccount(prevState => ({ ...prevState, ...{ fetching: true, fetched: false } }))
+
+        var url = `${process.env.REACT_APP_APIURL}/accounts/byAlias?`+new URLSearchParams({
+            alias: data.alias
+        })
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: "*/*",
+                'Content-Type': 'application/json'
+            }
+        })
+        if (response.status === 200) {
+            let dataFetched = await response.json()
+            setTargetAccount(prevState => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, content: dataFetched } }))
+            openAccordion()
+        } else {
+            setTargetAccount(prevState => ({ ...prevState, ...{ fetching: false, fetched: true, valid: false } }))
+            switch (response.status) {
+                case 500:
+                    console.error(response.status)
+                    break
+                default:
+                    console.error(response.status)
+                    break
+            }
+        }
 
     }
 
@@ -61,7 +82,7 @@ const TargetAccountSelector = ({ data, TargetAccount, setTargetAccount, handleCh
                 <InputGroup >
                     <Form.Control
                         onKeyDown={(e) => handleOnkeyDown(e)}
-                        placeholder={t("Target account ID")} value={data.receiverId} type="number" id="receiverId" required
+                        placeholder={t("Target account alias")} value={data.alias} type="text" id="alias" required
                         className={`${TargetAccount.fetched || validated ? TargetAccount.valid ? "hardcoded-valid" : "hardcoded-invalid" : "hardcoded-novalidate"}`}
                         onChange={(e) => {
                             handleChange(e);
@@ -69,7 +90,7 @@ const TargetAccountSelector = ({ data, TargetAccount, setTargetAccount, handleCh
                             setTargetAccount(prevState => ({ ...prevState, ...{ fetching: false, fetched: false, valid: false } }))
                         }}
                     />
-                    <Button className="p-relative" onClick={() => searchAccount()} variant="danger" disabled={TargetAccount.fetching || TargetAccount.fetched}>
+                    <Button className="p-relative" onClick={() => search()} variant="danger" disabled={TargetAccount.fetching || TargetAccount.fetched}>
                         <FontAwesomeIcon className={`inputSearchLogo ${TargetAccount.fetching ? "hidden" : "active"}`} icon={faSearch} />
 
                         <div className={`inputSearchLogo ${TargetAccount.fetching ? "active" : "hidden"}`}>
@@ -86,7 +107,10 @@ const TargetAccountSelector = ({ data, TargetAccount, setTargetAccount, handleCh
                                     TargetAccount.valid ?
                                         t("Looks good") + "!"
                                         :
-                                        t("The account id entered does not correspond to any GWM account")
+                                        data.alias === accountAlias ?
+                                            t("The target account cannot be your own account")
+                                            :
+                                            t("The alias entered does not correspond to any GWM account")
                                 }
                             </Form.Text>
                             :

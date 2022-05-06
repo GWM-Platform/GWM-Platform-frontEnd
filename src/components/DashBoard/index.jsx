@@ -36,6 +36,9 @@ import Loading from './Loading';
 import AccountsSupervision from './Admin/AccountsSupervision';
 import APL from './Admin/APL'
 
+//General
+import DashboardToast from './DashboardToast'
+
 const UserDashBoard = () => {
 
     const { isMobile, admin, ClientSelected, balanceChanged, setBalanceChanged, itemSelected, setItemSelected, IndexClientSelected, UserClients } = useContext(DashBoardContext);
@@ -86,7 +89,7 @@ const UserDashBoard = () => {
                                                 <WithdrawCashFromClient />
                                             </Route>
                                             <Route path={`${path}/operationResult`}>
-                                                <OperationStatusAdmin  />
+                                                <OperationStatusAdmin />
                                             </Route>
                                         </div>
                                         :
@@ -113,7 +116,7 @@ const UserDashBoard = () => {
                                                 <BuyForm balanceChanged={() => setBalanceChanged(true)} />
                                             </Route>
                                             <Route path={`${path}/sell`}>
-                                                <SellForm  balanceChanged={() => setBalanceChanged(true)} />
+                                                <SellForm balanceChanged={() => setBalanceChanged(true)} />
                                             </Route>
                                             <Route path={`${path}/deposit`}>
                                                 <DepositForm balanceChanged={() => setBalanceChanged(true)} />
@@ -129,6 +132,7 @@ const UserDashBoard = () => {
                                             </Route>
                                         </>
                                 }
+                                <DashboardToast />
                                 <Footer />
                                 <NavBarMobile setItemSelected={setItemSelected} itemSelected={itemSelected} />
                             </>

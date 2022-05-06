@@ -6,7 +6,8 @@ import { useTranslation } from "react-i18next";
 const TransferData = ({ data, handleChange, TargetAccount, toggleAccordion, Balance }) => {
 
     const { t } = useTranslation();
-    
+   
+
     return (
         <Accordion.Item eventKey="0" disabled>
             <Accordion.Header onClick={() => { if (TargetAccount.fetched && !TargetAccount.fetching && TargetAccount.valid) toggleAccordion() }}>

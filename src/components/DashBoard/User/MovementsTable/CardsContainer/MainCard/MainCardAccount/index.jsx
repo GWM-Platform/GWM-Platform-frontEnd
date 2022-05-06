@@ -9,10 +9,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 
 import MovementsTab from './MovementsTab';
+import TransfersTab from './TransfersTab';
 import FundDetail from './FundDetail';
 import './index.css'
 
-const MainCard = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchById,resetSearchById,handleMovementSearchChange }) => {
+const MainCard = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
     const [SelectedTab, setSelectedTab] = useState("0")
     // eslint-disable-next-line 
 
@@ -78,6 +79,9 @@ const MainCard = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchBy
                     <Nav.Item>
                         <Nav.Link eventKey={"0"}>{t("Transactions")}</Nav.Link>
                     </Nav.Item>
+                    <Nav.Item>
+                        <Nav.Link eventKey={"1"}>{t("Transfers")}</Nav.Link>
+                    </Nav.Item>
                 </Nav>
             </Container>
             {/*tabs content */}
@@ -85,10 +89,13 @@ const MainCard = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchBy
                 {
                     {
                         0:
-                            <MovementsTab SearchById={SearchById} setSearchById={setSearchById}  Fund={Fund} 
-                            resetSearchById={resetSearchById} handleMovementSearchChange={handleMovementSearchChange}/>,
+                            <MovementsTab SearchById={SearchById} setSearchById={setSearchById} Fund={Fund}
+                                resetSearchById={resetSearchById} handleMovementSearchChange={handleMovementSearchChange} />,
                         1:
-                            <FundDetail />
+                            <TransfersTab SearchById={SearchById} setSearchById={setSearchById} Fund={Fund}
+                                resetSearchById={resetSearchById} handleMovementSearchChange={handleMovementSearchChange} />,
+                        2:
+                            <FundDetail />,
                     }[SelectedTab]
                 }
             </Container>

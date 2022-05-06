@@ -1,5 +1,5 @@
 import React, { useEffect, createRef, useState, useContext } from 'react'
-import { Row, Container } from 'react-bootstrap';
+import { Row, Container} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import FundCard from './FundCard';
 import CashCard from './CashCard';
@@ -18,7 +18,7 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
     const [showLeftChevron, setShowLeftChevron] = useState(false)
     const [Hide, setHide] = useState(false)
     const [Pinned, setPinned] = useState(false)
-
+    
     //For scrolling
     const FundsContainer = createRef()
 
@@ -89,6 +89,7 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
                             setItemSelected={setItemSelected} Funds={Funds} Fund={j} />
                     )
                 }
+                
             </Row>
             <div className={`arrow  right d-none d-sm-flex
                                 ${Funds.length + PendingWithoutpossession.length > 2 && showRightChevron ? "opacity-1" : ""}`}

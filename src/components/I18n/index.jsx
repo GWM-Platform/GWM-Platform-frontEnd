@@ -468,17 +468,25 @@ i18n
           "to Transfer": "Transferir",
           "Specify the target account": "Especifique la cuenta destino",
           "Specify the amount you want to transfer": "Especifique la cantidad que desea transferir",
-          "Target account ID": "ID de la cuenta destino",
-          "The account id entered does not correspond to any GWM account":
-            "El id de cuenta ingresado no corresponde a ninguna cuenta de GWM",
+          "Target account alias": "Alias de la cuenta destino",
+          "The alias entered does not correspond to any GWM account":
+            "El alias ingresado no corresponde a ninguna cuenta de GWM",
           "You must enter how much you want to transfer": "Debe ingresar cuanto desea transferir",
-          "Operation":"Operación",
-          "Transfer":"Transferencia",
-          "Source account":"Cuenta de origen",
+          "Operation": "Operación",
+          "Transfer": "Transferencia",
+          "Source account": "Cuenta de origen",
+          "The target account cannot be your own account": "La cuenta destino no puede ser su propia cuenta",
           //common terms
-          "transactions":"transacciones",
-          "movements":"movimientos",
-          "Transfer tickets":"Tickets de transferencias"
+          "transactions": "transacciones",
+          "movements": "movimientos",
+          "Transfer tickets": "Tickets de transferencias",
+          "account with id": "cuenta con la id",
+          "received from": "recibida desde",
+          "sent to": "enviada a",
+          "Transfers": "Transferencias",
+
+          //Accounts
+          "Alias succesfully copied!": "Alias copiado correctamete"
         }
       }
     }

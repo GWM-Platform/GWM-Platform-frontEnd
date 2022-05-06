@@ -1,6 +1,24 @@
-import React from 'react'
+import React, { useReducer } from 'react'
 import { createContext, useState, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+
+
+const DashboardToastInitialState = []
+
+const reducerDashboardToast = (state, action) => {
+    let aux = [...state]
+
+    switch (action.type) {
+        case 'create':
+            aux = [...aux, ...[{ Content: action?.toastContent, Show: true }]]
+            return aux
+        case 'hide':
+            aux[action.toastKey] = { ...aux[action?.toastKey], Show: false }
+            return aux;
+        default:
+            throw new Error();
+    }
+}
 
 export const DashBoardContext = createContext();
 
@@ -34,6 +52,7 @@ export const DashBoardProvider = ({ children }) => {
     const [Funds, setFunds] = useState([]);
     const [FetchingFunds, setFetchingFunds] = useState(true);
     const [Accounts, setAccounts] = useState([])
+    const [AccountSelected, setAccountSelected] = useState({})
 
     const [itemSelected, setItemSelected] = useState(location.pathname.split('/')[2])
 
@@ -50,6 +69,8 @@ export const DashBoardProvider = ({ children }) => {
         fetched: false,
         values: []
     })
+
+    const [DashboardToast, DashboardToastDispatch] = useReducer(reducerDashboardToast, DashboardToastInitialState);
 
     function handleWindowSizeChange() {
         setWidth(window.innerWidth);
@@ -76,6 +97,8 @@ export const DashBoardProvider = ({ children }) => {
             setFetchingFunds(true)
             const [resposponseAccounts, resposponseFunds] = await Promise.all([getAccounts(), getFunds()]);
             setAccounts(resposponseAccounts)
+            setAccountSelected(resposponseAccounts[0] ? resposponseAccounts[0] : {})
+
             setFunds(resposponseFunds)
             setFetchingFunds(false)
             getPendingTransactions()
@@ -424,7 +447,8 @@ export const DashBoardProvider = ({ children }) => {
     return <DashBoardContext.Provider
         value={{
             token, admin, UserClients, ClientSelected, IndexClientSelected, setIndexClientSelected, balanceChanged, setBalanceChanged, TransactionStates, getMoveStateById,
-            FetchingFunds, contentReady, PendingWithoutpossession, PendingTransactions, Accounts, Funds, itemSelected, setItemSelected, isMobile, width,toLogin,setContentReady
+            FetchingFunds, contentReady, PendingWithoutpossession, PendingTransactions, Accounts, Funds, itemSelected, setItemSelected, isMobile, width, toLogin, setContentReady,
+            DashboardToast, DashboardToastDispatch, AccountSelected
         }}>
         {children}
     </DashBoardContext.Provider>

@@ -13,7 +13,7 @@ import { useHistory } from 'react-router-dom';
 
 const TransferForm = ({ balanceChanged }) => {
 
-    const { token, contentReady, Accounts, ClientSelected } = useContext(DashBoardContext);
+    const { token, contentReady, Accounts, ClientSelected,AccountSelected } = useContext(DashBoardContext);
     const senderId = ClientSelected?.id
 
     const history = useHistory()
@@ -21,7 +21,8 @@ const TransferForm = ({ balanceChanged }) => {
     const [data, setData] = useState({
         amount: "",
         senderId: senderId,
-        receiverId: ""
+        receiverId: "",
+        alias:""
     })
 
     const [ShowModal, setShowModal] = useState(false)
@@ -31,7 +32,8 @@ const TransferForm = ({ balanceChanged }) => {
     const [TargetAccount, setTargetAccount] = useState({
         fetched: false,
         fetching: false,
-        valid: false
+        valid: false,
+        content:{}
     })
 
     const [Transfer, setTransfer] = useState({ fetching: false, valid: false, fetched: false })
@@ -119,7 +121,7 @@ const TransferForm = ({ balanceChanged }) => {
                                     </Accordion>
                                     <Accordion flush activeKey={CollapsedFields || TargetAccount.fetching || !TargetAccount.fetched || !TargetAccount.valid ? "-1" : "0"}>
                                         <TransferData
-                                            TargetAccount={TargetAccount} handleChange={handleChange} data={data} toggleAccordion={toggleAccordion} Balance={Accounts[0] ? Accounts[0].balance : 0} />
+                                            TargetAccount={TargetAccount} handleChange={handleChange} data={data} toggleAccordion={toggleAccordion} Balance={AccountSelected ? AccountSelected.balance : 0} />
                                     </Accordion>
                                 </Col>
                         }
@@ -127,7 +129,7 @@ const TransferForm = ({ balanceChanged }) => {
                 </Container>
                 {
                     contentReady && Accounts.length >= 1 ?
-                        <ActionConfirmationModal setShowModal={setShowModal} show={ShowModal} action={transfer} data={data} Balance={Accounts[0].balance} Transfer={Transfer} />
+                        <ActionConfirmationModal setShowModal={setShowModal} show={ShowModal} action={transfer} data={data} Balance={AccountSelected.balance} Transfer={Transfer} />
                         :
                         null
                 }
