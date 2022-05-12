@@ -80,12 +80,15 @@ export const DashBoardProvider = ({ children }) => {
 
     useEffect(
         () => {
-            setContentReady(false)
-            setFunds([])
-            setAccounts([])
             const selected = location.pathname.split('/')[2]
-            setItemSelected(selected)
+            if (selected !== itemSelected) {
+                setContentReady(false)
+                setFunds([])
+                setAccounts([])
+                setItemSelected(selected)
+            }
         },
+        //eslint-disable-next-line
         [location])
 
     useEffect(() => {
