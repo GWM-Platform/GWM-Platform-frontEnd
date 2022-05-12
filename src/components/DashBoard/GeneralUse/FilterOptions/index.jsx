@@ -77,9 +77,7 @@ const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, ti
                                     :
                                     null
                             }
-                            {
-                                ticketSearch && <Col> <TicketSearch props={ticketSearchProps} /> </Col>
-                            }
+
                             <Col xs="auto" className="d-flex align-items-end">
                                 <Button type="submit" disabled={filterOptions.moves < 1 || disabled} variant="outline-secondary">
                                     {t("Update")}
@@ -87,6 +85,11 @@ const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, ti
                             </Col>
                         </Row>
                     </Form>
+                    <Row className="align-items-stretch">
+                        {
+                            !!ticketSearch && <Col> <TicketSearch props={ticketSearchProps} /> </Col>
+                        }
+                    </Row>
                 </Accordion.Body>
 
             </Accordion.Item>

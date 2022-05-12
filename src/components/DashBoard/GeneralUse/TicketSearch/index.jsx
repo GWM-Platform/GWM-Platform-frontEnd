@@ -38,21 +38,15 @@ const Search = ({ props }) => {
                     disabled={fetching}
                     required
                 />
-                {SearchText.length > 0 ?
-                    <>
-                        <Button style={{ borderColor: "#ced4da" }} className="btn-main d-flex align-items-center" variant="outline-secondary" onClick={() => cancelSearch()} id="basic-addon1">
-                            <FontAwesomeIcon className="icon" icon={faTimes} />
-                        </Button>
-                        <Button disabled={fetching} variant="outline-secondary" style={{ borderColor: "#ced4da" }} className="btn-main right d-flex align-items-center" type="submit" id="basic-addon1">
-                            {fetching ?
-                                <Spinner animation="border" size="sm" />
-                                :
-                                <FontAwesomeIcon className="icon" icon={faSearch} />}
-                        </Button>
-                    </>
-                    :
-                    null
-                }
+                <Button disabled={fetching || SearchText.length <= 0} style={{ borderColor: "#ced4da" }} className="btn-main d-flex align-items-center" variant="outline-secondary" onClick={() => cancelSearch()} id="basic-addon1">
+                    <FontAwesomeIcon className="icon" icon={faTimes} />
+                </Button>
+                <Button disabled={fetching || SearchText.length <= 0} variant="outline-secondary" style={{ borderColor: "#ced4da" }} className="btn-main right d-flex align-items-center" type="submit" id="basic-addon1">
+                    {fetching ?
+                        <Spinner animation="border" size="sm" />
+                        :
+                        <FontAwesomeIcon className="icon" icon={faSearch} />}
+                </Button>
             </InputGroup>
         </Form>
     )

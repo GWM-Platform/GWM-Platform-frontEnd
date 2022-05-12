@@ -7,7 +7,7 @@ import { DashBoardContext } from 'context/DashBoardContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icons';
 import ActionConfirmationModal from './ActionConfirmationModal';
-const Movement = ({ content,getTransfers }) => {
+const Movement = ({ content, getTransfers }) => {
 
   const { getMoveStateById, ClientSelected } = useContext(DashBoardContext)
   const { t } = useTranslation()
@@ -27,7 +27,7 @@ const Movement = ({ content,getTransfers }) => {
   return (
     <div className='mobileMovement'>
       <div className='d-flex justify-content-between'>
-        <span>{" "}{t(incomingTransfer() ? "Received from" : "Sent to")}{" "}{t("account with the alias")} <span className="text-nowrap"> {" \""}{incomingTransfer() ? content.senderAlias : content.senderAlias}{"\""}</span></span>
+        <span>{" "}{t(incomingTransfer() ? "Received from" : "Sent to")}{" "}{t("account with the alias")} <span className="text-nowrap"> {" \""}{incomingTransfer() ? content.senderAlias : content.receiverAlias}{"\""}</span></span>
         <span className="text-nowrap" >{momentDate.format('D MMM')}</span>
 
       </div>
@@ -40,10 +40,10 @@ const Movement = ({ content,getTransfers }) => {
         !!(content.stateId === 1) &&
         <div className="h-100 d-flex align-items-center justify-content-around">
           <div className="iconContainer green" onClick={() => launchModalConfirmation("approve")}>
-            <FontAwesomeIcon className="icon" icon={faCheckCircle}  /> {t("Approve")}
+            <FontAwesomeIcon className="icon" icon={faCheckCircle} /> {t("Approve")}
           </div>
-          <div className="iconContainer red"  onClick={() => launchModalConfirmation("deny")} >
-            <FontAwesomeIcon className="icon" icon={faTimesCircle}/> {t("Deny")}
+          <div className="iconContainer red" onClick={() => launchModalConfirmation("deny")} >
+            <FontAwesomeIcon className="icon" icon={faTimesCircle} /> {t("Deny")}
           </div>
         </div>
       }

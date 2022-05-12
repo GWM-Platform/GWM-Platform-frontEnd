@@ -29,7 +29,7 @@ const Transfer = ({ content, actions,getTransfers }) => {
       <td className="tableId">{content.id}</td>
       <td className="tableDate">{momentDate.format('DD/MM/YYYY, h:mm a')}</td>
       <td className={`tableConcept ${content.stateId === 3 ? 'text-red' : 'text-green'}`}>{t(getMoveStateById(content.stateId).name)}</td>
-      <td className="tableConcept">{t("Transfer")}{" "}{t( incomingTransfer() ? "received from" : "sent to")}{" "}{t("account with the alias")}{" \""}{incomingTransfer() ? content.senderAlias : content.senderAlias}{"\""}</td>
+      <td className="tableConcept">{t("Transfer")}{" "}{t( incomingTransfer() ? "received from" : "sent to")}{" "}{t("account with the alias")}{" \""}{incomingTransfer() ? content.senderAlias : content.receiverAlias}{"\""}</td>
       <td className={`tableAmount ${content.receiverId === clientId ? 'text-green' : 'text-red'}`}><span>{content.receiverId === clientId ? '+' : '-'}</span><span >$</span>{Math.abs(content.amount)}</td>
       {
         !!actions &&
