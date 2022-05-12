@@ -20,7 +20,7 @@ const MovementsTable = ({ AccountInfo, UsersInfo, movements, state, reloadData, 
                             <th >{t("Amount")}</th>
                             <th >{t("Created at")}</th>
                             {
-                                anyWithActions() ? <th >{t("Action")}</th> : null
+                                anyWithActions() && <th >{t("Action")}</th>
                             }
                         </tr>
                     </thead>

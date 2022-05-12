@@ -8,7 +8,7 @@ import TicketSearch from 'components/DashBoard/GeneralUse/TicketSearch'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const FilterOptions = ({ Fund, movsPerPage, setPagination, disabled, ticketSearch, ticketSearchProps }) => {
+const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, ticketSearch, ticketSearchProps }) => {
     const { t } = useTranslation();
     const { TransactionStates } = useContext(DashBoardContext)
     const [filterOptions, setFilterOptions] = useState({
@@ -59,7 +59,7 @@ const FilterOptions = ({ Fund, movsPerPage, setPagination, disabled, ticketSearc
                         <Row className="align-items-stretch">
                             <Col>
                                 <Form.Group>
-                                    <Form.Label>{t("Transactions per page")}</Form.Label>
+                                    <Form.Label className="capitalizeFirstLetter">{t(keyword) + " " + t(`per page`)}</Form.Label>
                                     <Form.Control disabled={disabled} required id="moves" onChange={handleChange} value={filterOptions.moves} type="number" min="1" placeholder="Transactions per page" />
                                 </Form.Group>
                             </Col>
@@ -67,7 +67,7 @@ const FilterOptions = ({ Fund, movsPerPage, setPagination, disabled, ticketSearc
                                 TransactionStates.fetched && TransactionStates.valid && !TransactionStates.fetching ?
                                     <Col >
                                         <Form.Group controlId="movesPerPage">
-                                            <Form.Label>{t("Transaction status")}</Form.Label>
+                                            <Form.Label className="capitalizeFirstLetter">{t(`${keyword} status`)}</Form.Label>
                                             <Form.Select disabled={disabled} value={filterOptions.state} onChange={handleChange} id="state">
                                                 <option value="">{t("All")}</option>
                                                 {TransactionStates.values.map((state, key) => <option key={key} value={state.id}>{t(state.name)}</option>)}

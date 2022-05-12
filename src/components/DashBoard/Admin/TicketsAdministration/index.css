@@ -43,28 +43,28 @@
 
 }
 
-.TicketsAdministration .transactionRow .iconContainer {
+.Actions .iconContainer {
 	cursor: pointer;
 	transition: all 1s;
 	color: black;
 }
-.TicketsAdministration .transactionRow .iconContainer .icon {
+.Actions .iconContainer .icon {
 	transition: all 1s;
 }
-.TicketsAdministration .transactionRow .iconContainer:hover .icon {
+.Actions .iconContainer:hover .icon {
 	animation: ease hover 0.7s;
 }
-.TicketsAdministration .transactionRow .iconContainer.red:hover .icon{
+.Actions .iconContainer.red:hover .icon{
 	color: red;
 }
-.TicketsAdministration .transactionRow .iconContainer.green:hover .icon {
+.Actions .iconContainer.green:hover .icon {
 	color: green;
 }
-.TicketsAdministration .transactionRow .verticalCenter {
+.Actions .verticalCenter {
 	vertical-align: middle;
 }
-.TicketsAdministration .transactionRow .cellWithoudPadding .form-control,
-.TicketsAdministration .transactionRow .cellWithoudPadding .form-select {
+.Actions .cellWithoudPadding .form-control,
+.Actions .cellWithoudPadding .form-select {
 	border: 0;
 	border-radius: 0;
 	background-color: rgb(255 255 255 / 70%);

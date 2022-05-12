@@ -66,7 +66,7 @@ const TransactionFundTable = ({ Id, UsersInfo, AccountInfo }) => {
 
     return (
         <>
-            <FilterOptions Fund={Id} setPagination={setPagination} movsPerPage={Pagination.take} total={Transactions.content.total} />
+            <FilterOptions keyword={"transactions"} Fund={Id} setPagination={setPagination} movsPerPage={Pagination.take} total={Transactions.content.total} />
             {
                 Transactions.fetching || UsersInfo.fetching || AccountInfo.fetching ?
                     <Loading movements={Pagination.take} />

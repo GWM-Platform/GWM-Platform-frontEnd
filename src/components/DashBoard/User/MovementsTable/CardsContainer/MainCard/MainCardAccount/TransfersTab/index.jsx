@@ -118,7 +118,7 @@ const TransfersTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
 
     const ticketSearchProps = {
         fetching: FetchingTransfers,
-        keyWord: "Transfers",
+        keyWord: "transfer",
         SearchText: SearchById.value,
         handleSearchChange: handleTransferSearchChange,
         cancelSearch: resetSearchById,
@@ -130,15 +130,16 @@ const TransfersTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
         <div className="p-0 h-100">
             <div className="d-flex align-items-start justify-content-center flex-column MovementsTableContainer">
                 <div className={`movementsTable growAnimation`}>
-                    <FilterOptions ticketSearch ticketSearchProps={ticketSearchProps} disabled={SearchById.search} Fund={Fund} setPagination={setPagination} movsPerPage={Pagination.take} total={Transfers.total} />
+                    <FilterOptions keyword={"transfers"} ticketSearch ticketSearchProps={ticketSearchProps} disabled={SearchById.search} Fund={Fund} setPagination={setPagination} movsPerPage={Pagination.take} total={Transfers.total} />
                     {
                         FetchingTransfers ?
-                            <Loading Transfers={Pagination.take} />
+                            <Loading movements={Pagination.take} />
                             :
                             Transfers.total > 0 ?
                                 <TableLastTransfers
-                                    Transfers={Pagination.take}
-                                    content={Transfers.transfers} />
+                                    movements={Pagination.take}
+                                    content={Transfers.transfers} 
+                                    getTransfers={getTransfers}/>
                                 :
                                 <NoMovements Transfers={Pagination.take} />
                     }

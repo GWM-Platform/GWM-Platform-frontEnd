@@ -563,7 +563,7 @@ const Transactionslist = ({ state, messageVariants }) => {
 
     const ticketSearchPropsPS = {
         fetching: Transactions.fetching,
-        keyWord: "purchase and sale tickets",
+        keyWord: "purchase or sale ticket",
         SearchText: searchTransactionById.value,
         handleSearchChange: handleTransactionSearchChange,
         cancelSearch: cancelTransactionSearch,
@@ -572,7 +572,7 @@ const Transactionslist = ({ state, messageVariants }) => {
 
     const ticketSearchPropsW = {
         fetching: Movements.fetching,
-        keyWord: "withdrawal tickets",
+        keyWord: "withdrawal ticket",
         SearchText: searchMovementById.value,
         handleSearchChange: handleMovementSearchChange,
         cancelSearch: cancelMovementSearch,
@@ -581,7 +581,7 @@ const Transactionslist = ({ state, messageVariants }) => {
 
     const ticketSearchPropsTransfer = {
         fetching: Transfers.fetching,
-        keyWord: "transfer tickets",
+        keyWord: "transfer ticket",
         SearchText: searchTransferById.value,
         handleSearchChange: handleTransferSearchChange,
         cancelSearch: cancelTransferSearch,

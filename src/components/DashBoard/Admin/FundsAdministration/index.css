@@ -102,23 +102,7 @@
 	max-width: 8ch;
 }
 
-.FundsAdministration .fundRow .iconContainer {
-	cursor: pointer;
-	transition: all 1s;
-	color: black;
-}
-.FundsAdministration .fundRow .iconContainer .icon {
-	transition: all 1s;
-}
-.FundsAdministration .fundRow .iconContainer:hover .icon {
-	animation: ease hover 0.7s;
-}
-.FundsAdministration .fundRow .iconContainer.red:hover .icon {
-	color: red;
-}
-.FundsAdministration .fundRow .iconContainer.green:hover .icon {
-	color: green;
-}
+
 .FundsAdministration .fundRow.addFund {
 	border: none;
 }

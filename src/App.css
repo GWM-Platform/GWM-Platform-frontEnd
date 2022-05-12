@@ -86,7 +86,7 @@ body,
 }
 
 .tabContent {
-	overflow-y: scroll;
+	overflow-y: overlay;
 	-webkit-overflow-scrolling: touch;
 	flex: auto;
 }
@@ -307,6 +307,14 @@ body {
 	border-bottom-right-radius: 0;
 }
 
+.capitalizeFirstLetter::first-letter {
+	text-transform: uppercase;
+}
+.text-primary {
+	--bs-text-opacity: 1;
+	color: rgba(var(--blue-main), var(--bs-text-opacity)) !important;
+}
+
 @keyframes growOpacity {
 	0% {
 		opacity: 0;
@@ -328,4 +336,8 @@ body {
 	.min-free-area {
 		min-height: calc(100vh - 95px);
 	}
+}
+.break {
+	flex-basis: 100%;
+	height: 0;
 }

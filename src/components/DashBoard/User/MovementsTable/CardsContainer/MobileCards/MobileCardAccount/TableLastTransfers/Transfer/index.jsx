@@ -6,14 +6,18 @@ import { useTranslation } from 'react-i18next';
 import { DashBoardContext } from 'context/DashBoardContext';
 const Movement = ({ content }) => {
   var momentDate = moment(content.createdAt);
-  const { getMoveStateById } = useContext(DashBoardContext)
+
+  const { getMoveStateById, ClientSelected } = useContext(DashBoardContext)
+  const clientId = ClientSelected?.id
 
   const { t } = useTranslation()
+
+  const incomingTransfer = () => content.receiverId === clientId
 
   return (
     <div className='mobileMovement'>
       <div className='d-flex justify-content-between'>
-        <span>{t(content.motive)}</span>
+        <span>{" "}{t(incomingTransfer() ? "Received from" : "Sent to")}{" "}{t("account with the alias")} <span className="text-nowrap"> {" \""}{incomingTransfer() ? content.senderAlias : content.senderAlias}{"\""}</span></span>
         <span className="text-nowrap" >{momentDate.format('D MMM')}</span>
 
       </div>

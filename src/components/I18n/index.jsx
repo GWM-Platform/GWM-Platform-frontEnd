@@ -63,7 +63,6 @@ i18n
           "a symbol": "un símbolo",
           "The fields \"password\" and \"confirm password\" don't match": "Los campos \"contraseña\" y \"confirmar contraseña\" no coinciden",
           //Translation for DashBoard
-          "Loading content": "Cargando contenido",
           "Your user don't have any account": "Su usuario no dispone de ninguna cuenta",
           "Account": "Cuenta",
           "LogOut": "Cerrar Sesión",
@@ -80,7 +79,6 @@ i18n
           "Make sure at least the new password have": "Asegurese de que contenga al menos",
           "English": "Inglés",
           "Spanish": "Español",
-          "There are no records of any movement in this account": "No hay registro de ningún movimiento en esta cuenta",
           //Translation for transfer request
           "Account menu": "Menú de la cuenta",
           "Account Number": "Número de cuenta",
@@ -117,8 +115,9 @@ i18n
           "Please, enter the name from the  bank which the target account belongs": "Por favor, ingrese el nombre del banco al que pertenece la cuenta destino"
           , "Target Routing Number": "Numero de Ruta Bancaria destino",
           "Please, enter the routing number from the bank which the target account belongs": "Por favor, ingrese el numero de ruta bancaria del banco al que pertenece la cuenta destino",
-          "Target Account ID": "ID de la cuenta destino",
+          "Target account ID": "ID de la cuenta destino",
           "Target Account": "Cuenta destino",
+          "Target account": "Cuenta destino",
           "Please, enter the id from the target account": "Por favor, ingrese la ID de la cuenta destino",
           "Please, select the target account": "Por favor, seleccione la cuenta destino",
           "-- select an option --": "-- Seleccione una opción --",
@@ -202,8 +201,7 @@ i18n
           "In Cash": "En dinero",
           "Last Movements": "Ultimos Movimientos",
           "Fund Detail": "Detalle del fondo",
-          "There are no records of any movement in this Fund.": "No hay registros de ningún movimiento en este Fondo.",
-          "There are no movements to show": "No hay movimientos que mostrar",
+         
           "Transactions": "Operaciones",
           "There are no funds available for the operation":
             "No hay fondos disponibles para la operación",
@@ -250,6 +248,7 @@ i18n
           "approve": "aprobar",
           "deny": "rechazar",
           "the ticket with the id": "el ticket con el id",
+          "the transfer with the id": "la transferencia con el id",
           "The ticket has been": "El ticket fue",
           "approved": "aprobado",
           "denied": "rechazado",
@@ -311,7 +310,11 @@ i18n
           "Your new password must have": "Tu nueva contraseña debe contener",
           "Client": "Cliente",
           "Purchase and sale tickets": "Tickets de compra y venta",
+          "Purchase or sale ticket": "Ticket de compra o venta",
+          "purchase or sale ticket": "ticket de compra o venta",
           "Withdrawal tickets": "Tickets de retiro",
+          "Withdrawal ticket": "Ticket de retiro",
+          "withdrawal ticket": "ticket de retiro",
           "Share value": "Valor de la cuotaparte",
           "Concept": "Concepto",
           "Funds": "Fondos",
@@ -387,8 +390,8 @@ i18n
           "Selling (in cash)": "Vendiendo (en dinero)",
           "DEPOSIT": "Deposito",
           "WITHDRAWAL": "Retiro",
-          "STAKE_BUY": "Compra de cuotapartes en un fondo",
-          "STAKE_SELL": "Venta de cuotapartes en un fondo",
+          "STAKE_BUY": "Compra de cuotapartes de un fondo",
+          "STAKE_SELL": "Venta de cuotapartes de un fondo",
           "REPAYMENT": "Devolución por ticket rechazado",
           "Change client": "Cambiar cliente",
           "Google SpreadSheet url (from which the id will be extracted)":
@@ -476,17 +479,55 @@ i18n
           "Transfer": "Transferencia",
           "Source account": "Cuenta de origen",
           "The target account cannot be your own account": "La cuenta destino no puede ser su propia cuenta",
+          "Outgoing transfer": "Transferencia saliente",
+          "Incoming transfer": "Transferencia entrante",
+          "Your account balance": "Saldo de su cuenta",
+          "Cash operation amount": "Monto de la transacción en efectivo",
+          "Your account balance if you approve this transfer": "Saldo de su cuenta si aprueba esta transferencia",
           //common terms
           "transactions": "transacciones",
           "movements": "movimientos",
           "Transfer tickets": "Tickets de transferencias",
-          "account with id": "cuenta con la id",
+          "Transfer ticket": "Tickets de transferencia",
+          "transfer ticket": "tickets de transferencia",
+          "account with the alias": "cuenta con el alias",
           "received from": "recibida desde",
+          "Received from": "Recibida desde",
           "sent to": "enviada a",
-          "Transfers": "Transferencias",
+          "Sent to": "Enviada a",
 
+          "Transfers": "Transferencias",
+          "transfers": "transferencias",
+          "transfer": "transferencia",
+          "movement": "movimiento",
+          "transaction": "transacción",
+          "per page": "por página",
+          "status": "estado",
+          "transfers status": "estado de las transferencias",
+          "movements status": "estado de los movimientos",
+          "transactions status": "estado de las transacciones",
+          "Balance after approving this transfer": "Saldo después de aprobar esta transferencia",
+          "Source account alias": "Alias de cuenta de origen",
+          "Target account (Yours)": "Cuenta destino (suya)",
+          "Source account (Yours) alias": "Cuenta de origen (suya)",
           //Accounts
-          "Alias succesfully copied!": "Alias copiado correctamete"
+          "Alias succesfully copied!": "Alias copiado correctamete",
+
+          //History mobile
+          "Loading movements":"Cargando movimientos",
+          "Loading transactions":"Cargando transacciones",
+          "Loading transfers":"Cargando transferencias",
+          
+          "Last transactions":"Ultimas transacciones",
+          "Last transfers":"Ultimas transferencias",
+
+          "There are no records of any transaction in this fund":"No hay registros de ninguna transaccion en este Fondo.",
+          "There are no records of any movement in this Fund.": "No hay registros de ningún movimiento en este Fondo.",
+          "There are no records of any movement in this account": "No hay registro de ningún movimiento en esta cuenta",
+          "There are no records of any transfer in this account": "No hay registro de ninguna transferencia en esta cuenta",
+          "There are no movements to show": "No hay movimientos que mostrar",
+          "There are no transfers to show": "No hay transferencias que mostrar",
+          " each":" cada una"
         }
       }
     }

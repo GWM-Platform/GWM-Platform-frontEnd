@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons'
 
 const Search = ({ props }) => {
-    
+
     const SearchText = props.SearchText
     const handleSearchChange = props.handleSearchChange
     const cancelSearch = props.cancelSearch
@@ -27,12 +27,12 @@ const Search = ({ props }) => {
 
     return (
         <Form onSubmit={handleSubmit}>
-            <Form.Label>{t("Search") + t(" ") + t("by id")}</Form.Label>
+            <Form.Label>{t("Search") + t(" ") + (keyWord ? t(keyWord) + " " : "") + t("by id")}</Form.Label>
             <InputGroup className={`searchBar  ${SearchText.length === 0 ? "" : "search"} `}>
                 <Form.Control
                     onChange={handleSearchChange}
                     value={SearchText}
-                    placeholder={t("Search") + t(" ") + t(keyWord ? keyWord : "") + t(" ") + t("by id")}
+                    placeholder={t("Search") + t(" ") + (keyWord ? t(keyWord) + " " : "") + t("by id")}
                     aria-label="Search"
                     type="number"
                     disabled={fetching}
@@ -40,10 +40,10 @@ const Search = ({ props }) => {
                 />
                 {SearchText.length > 0 ?
                     <>
-                        <Button style={{borderColor:"#ced4da"}} className="btn-main d-flex align-items-center" variant="outline-secondary" onClick={() => cancelSearch()} id="basic-addon1">
+                        <Button style={{ borderColor: "#ced4da" }} className="btn-main d-flex align-items-center" variant="outline-secondary" onClick={() => cancelSearch()} id="basic-addon1">
                             <FontAwesomeIcon className="icon" icon={faTimes} />
                         </Button>
-                        <Button disabled={fetching} variant="outline-secondary"  style={{borderColor:"#ced4da"}}  className="btn-main right d-flex align-items-center" type="submit" id="basic-addon1">
+                        <Button disabled={fetching} variant="outline-secondary" style={{ borderColor: "#ced4da" }} className="btn-main right d-flex align-items-center" type="submit" id="basic-addon1">
                             {fetching ?
                                 <Spinner animation="border" size="sm" />
                                 :

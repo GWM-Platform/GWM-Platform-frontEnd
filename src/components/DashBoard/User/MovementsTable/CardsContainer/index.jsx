@@ -10,7 +10,7 @@ import MainCardFund from './MainCard/MainCardFund';
 import MainCardAccount from './MainCard/MainCardAccount';
 
 import SecondaryCard from './SecondaryCard';
-import MobileCardFound from './MobileCards/MobileCardFound';
+import MobileCardFund from './MobileCards/MobileCardFound';
 import MobileCardAccount from './MobileCards/MobileCardAccount';
 
 import { DashBoardContext } from 'context/DashBoardContext';
@@ -112,7 +112,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, NavInfoToggled, Accoun
                             (fund, key) => {
                                 ;
                                 return (
-                                    <MobileCardFound key={key} Fund={fund} />
+                                    <MobileCardFund  Hide={Hide} setHide={setHide} key={key} Fund={fund} />
                                 )
                             }
                         )}

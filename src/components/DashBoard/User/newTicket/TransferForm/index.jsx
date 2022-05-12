@@ -13,7 +13,7 @@ import { useHistory } from 'react-router-dom';
 
 const TransferForm = ({ balanceChanged }) => {
 
-    const { token, contentReady, Accounts, ClientSelected,AccountSelected } = useContext(DashBoardContext);
+    const { token, contentReady, Accounts, ClientSelected, AccountSelected, toLogin } = useContext(DashBoardContext);
     const senderId = ClientSelected?.id
 
     const history = useHistory()
@@ -21,8 +21,7 @@ const TransferForm = ({ balanceChanged }) => {
     const [data, setData] = useState({
         amount: "",
         senderId: senderId,
-        receiverId: "",
-        alias:""
+        alias: ""
     })
 
     const [ShowModal, setShowModal] = useState(false)
@@ -33,7 +32,7 @@ const TransferForm = ({ balanceChanged }) => {
         fetched: false,
         fetching: false,
         valid: false,
-        content:{}
+        content: {}
     })
 
     const [Transfer, setTransfer] = useState({ fetching: false, valid: false, fetched: false })
@@ -46,7 +45,7 @@ const TransferForm = ({ balanceChanged }) => {
             body: JSON.stringify(
                 {
                     senderId: data.senderId,
-                    receiverId: data.receiverId,
+                    receiverId: TargetAccount?.content?.id,
                     amount: data.amount
                 }
             ),
@@ -85,8 +84,8 @@ const TransferForm = ({ balanceChanged }) => {
         const form = event.currentTarget;
         if (form.checkValidity()) {
             if (token === null) {
-                console.log("compra")
-            } else {
+                toLogin()
+            } else if (TargetAccount?.content?.id && TargetAccount.fetched && TargetAccount.valid && !TargetAccount.fetching) {
                 setShowModal(true)
             }
         }
@@ -129,7 +128,7 @@ const TransferForm = ({ balanceChanged }) => {
                 </Container>
                 {
                     contentReady && Accounts.length >= 1 ?
-                        <ActionConfirmationModal setShowModal={setShowModal} show={ShowModal} action={transfer} data={data} Balance={AccountSelected.balance} Transfer={Transfer} />
+                        <ActionConfirmationModal TargetAccount={TargetAccount} setShowModal={setShowModal} show={ShowModal} action={transfer} data={data} Balance={AccountSelected.balance} Transfer={Transfer} />
                         :
                         null
                 }

@@ -17,7 +17,7 @@ import './index.css'
 
 const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) => {
     const { admin, IndexClientSelected, UserClients } = useContext(DashBoardContext)
-
+    const itemSelectedLC = itemSelected.toLowerCase()
     const { t } = useTranslation();
 
     const { url } = useRouteMatch()
@@ -51,50 +51,50 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) =>
                                 admin && IndexClientSelected === -1 ?
                                     <>
                                         <NavDropdown
-                                            active={itemSelected === "APL" || itemSelected === "fundsAdministration" || itemSelected === "FundsAdministration" || itemSelected === "assetsAdministration" || itemSelected === "AssetsAdministration"}
+                                            active={itemSelectedLC === "APL" || itemSelectedLC === "fundsAdministration" || itemSelectedLC === "FundsAdministration" || itemSelectedLC === "assetsAdministration" || itemSelectedLC === "AssetsAdministration"}
                                             className="px-0 transactionDropdown" title={t("Funds Administration")} id="collasible-nav-dropdown">
                                             <NavDropdown.Item
-                                                active={itemSelected === "fundsAdministration" || itemSelected === "FundsAdministration"}
+                                                active={itemSelectedLC === "fundsadministration"}
                                                 onClick={() => { goTo("FundsAdministration") }}>
                                                 {t("Funds")}
                                             </NavDropdown.Item>
                                             <NavDropdown.Item
-                                                active={itemSelected === "assetsAdministration" || itemSelected === "AssetsAdministration"}
+                                                active={itemSelectedLC === "assetsAdministration"}
                                                 onClick={() => { goTo("AssetsAdministration") }}>
                                                 {t("Assets")}
                                             </NavDropdown.Item>
                                             <NavDropdown.Item
-                                                active={itemSelected === "APL"}
+                                                active={itemSelectedLC === "apl"}
                                                 onClick={() => { goTo("APL") }}>
                                                 {t("APL")}
                                             </NavDropdown.Item>
                                         </NavDropdown>
                                         <Nav.Link
                                             className="px-2"
-                                            active={itemSelected === "ticketsAdministration" || itemSelected === "TicketsAdministration"}
+                                            active={itemSelectedLC === "ticketsadministration"}
                                             onClick={() => { goTo("ticketsAdministration") }}>
                                             {t("Tickets Administration")}
                                         </Nav.Link>
                                         <NavDropdown
-                                            active={itemSelected === "withdrawCash" || itemSelected === "WithdrawCash" || itemSelected === "depositCash" || itemSelected === "DepositCash" || itemSelected === "AddAccount" || itemSelected === "addAccount" || itemSelected === "accountsSupervision"}
+                                            active={itemSelectedLC === "withdrawcash" || itemSelectedLC === "depositcash" || itemSelectedLC === "addaccount" || itemSelectedLC === "accountssupervision"}
                                             className="px-0 transactionDropdown" title={t("Accounts Administration")} id="collasible-nav-dropdown">
                                             <NavDropdown.Item
-                                                active={itemSelected === "accountsSupervision" || itemSelected === "accountssupervision"}
+                                                active={itemSelectedLC === "accountssupervision"}
                                                 onClick={() => { goTo("accountsSupervision") }}>
                                                 {t("Accounts Supervision")}
                                             </NavDropdown.Item>
                                             <NavDropdown.Item
-                                                active={itemSelected === "addAccount" || itemSelected === "addAccount"}
+                                                active={itemSelectedLC === "account"}
                                                 onClick={() => { goTo("addAccount") }}>
                                                 {t("Add Account")}
                                             </NavDropdown.Item>
                                             <NavDropdown.Item
-                                                active={itemSelected === "depositCash" || itemSelected === "DepositCash"}
+                                                active={itemSelectedLC === "depositcash"}
                                                 onClick={() => { goTo("DepositCash") }}>
                                                 {t("Deposit cash")}
                                             </NavDropdown.Item>
                                             <NavDropdown.Item
-                                                active={itemSelected === "withdrawCash" || itemSelected === "WithdrawCash"}
+                                                active={itemSelectedLC === "withdrawcash"}
                                                 onClick={() => { goTo("withdrawCash") }}>
                                                 {t("Withdraw cash")}
                                             </NavDropdown.Item>
@@ -104,19 +104,19 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) =>
                                     <>
                                         <Nav.Link
                                             className="px-2"
-                                            active={itemSelected === "accounts" || itemSelected === "Accounts"}
+                                            active={itemSelectedLC === "accounts"}
                                             onClick={() => { goTo("accounts") }}>
                                             {t("Accounts")}
                                         </Nav.Link>
                                         <Nav.Link
                                             className="px-2 px-lg-4"
-                                            active={itemSelected === "history"}
+                                            active={itemSelectedLC === "history"}
                                             onClick={() => {
                                                 goTo("history")
                                             }}>
                                             {t("History")}
                                         </Nav.Link>
-                                        <NavDropdown className="px-0 transactionDropdown" active={itemSelected === "buy" || itemSelected === "sell" || itemSelected === "deposit" || itemSelected === "withdraw" || itemSelected === "transfer" || itemSelected === "Transfer"} title={t("Transactions")} id="collasible-nav-dropdown">
+                                        <NavDropdown className="px-0 transactionDropdown" active={itemSelectedLC === "buy" || itemSelectedLC === "sell" || itemSelectedLC === "deposit" || itemSelectedLC === "withdraw" || itemSelectedLC === "transfer"} title={t("Transactions")} id="collasible-nav-dropdown">
                                             <NavDropdown.Item
                                                 active={itemSelected === "buy"}
                                                 onClick={() => { goTo("buy") }}>
@@ -157,11 +157,10 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) =>
                                 <ClientSelector />
                             </div>
 
-
-
                             <div className="d-block d-sm-none d-md-block" style={{ paddingBottom: "5px" }}>
                                 <LanguageSelector />
                             </div>
+                            
                             <Nav.Link className="text-black" onClick={() => logOut()}>
                                 {t("LogOut")}{" "}
                                 <FontAwesomeIcon icon={faSignOutAlt} />
@@ -173,81 +172,81 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) =>
             <Navbar.Toggle style={{ borderColor: "rgba(0,0,0,0)" }} className="ps-2 ms-2 d-none" aria-controls="responsive-navbar-nav" />
             <Nav className={`w-100 d-block d-sm-none`}  >
                 <Container fluid className="px-0">
-                    <Row className={`w-100 justify-content-between align-items-center mx-0 px-0 ${itemSelected === "fundsAdministration" || itemSelected === "assetsAdministration" ? "d-flex" : "d-none"}`}>
+                    <Row className={`w-100 justify-content-between align-items-center mx-0 px-0 ${itemSelectedLC === "fundsadministration" || itemSelectedLC === "assetsadministration" ? "d-flex" : "d-none"}`}>
                         <Col xs="6" className="px-0">
                             <Nav.Link
                                 className="ps-4 text-start"
-                                active={itemSelected === "fundsAdministration" || itemSelected === "FundsAdministration"}
+                                active={itemSelectedLC === "fundsadministration" || itemSelectedLC === "Fundsadministration"}
                                 onClick={() => { goTo("fundsAdministration") }}>
                                 {t("Funds Administration")}
                             </Nav.Link> </Col>
                         <Col xs="6" className="px-0">
                             <Nav.Link
                                 className="pe-4 text-end"
-                                active={itemSelected === "assetsAdministration" || itemSelected === "AssetsAdministration"}
+                                active={itemSelectedLC === "assetsadministration"}
                                 onClick={() => { goTo("assetsAdministration") }}>
                                 {t("Assets Administration")}
                             </Nav.Link>
                         </Col>
                     </Row>
 
-                    <Row className={`w-100 justify-content-between align-items-center mx-0 px-0 ${itemSelected === "addAccount" || itemSelected === "DepositCash" ? "d-flex" : "d-none"}`}>
+                    <Row className={`w-100 justify-content-between align-items-center mx-0 px-0 ${itemSelectedLC === "addaccount" || itemSelectedLC === "depositcash" ? "d-flex" : "d-none"}`}>
                         <Col xs="6" className="px-0">
                             <Nav.Link
                                 className="ps-4 text-start"
-                                active={itemSelected === "DepositCash" || itemSelected === "depositCash"}
+                                active={itemSelectedLC === "depositcash"}
                                 onClick={() => { goTo("DepositCash") }}>
                                 {t("Deposit cash")}
                             </Nav.Link> </Col>
                         <Col xs="6" className="px-0">
                             <Nav.Link
                                 className="pe-4 text-end"
-                                active={itemSelected === "addAccount" || itemSelected === "addAccount"}
+                                active={itemSelectedLC === "addaccount"}
                                 onClick={() => { goTo("addAccount") }}>
                                 {t("Add Account")}
                             </Nav.Link>
                         </Col>
                     </Row>
 
-                    <Row className={`w-100 justify-content-between align-items-center mx-0 px-0 ${itemSelected === "ticketsAdministration" || itemSelected === "TicketsAdministration" ? "d-flex" : "d-none"}`}>
+                    <Row className={`w-100 justify-content-between align-items-center mx-0 px-0 ${itemSelectedLC === "ticketsadministration" ? "d-flex" : "d-none"}`}>
                         <Col xs="12" className="px-0">
                             <Nav.Link
                                 className="text-center"
-                                active={itemSelected === "ticketsAdministration" || itemSelected === "TicketsAdministration"}
+                                active={itemSelectedLC === "ticketsadministration"}
                                 onClick={() => { goTo("ticketsAdministration") }}>
                                 {t("Tickets Administration")}
                             </Nav.Link> </Col>
                     </Row>
 
-                    <Row className={`w-100 justify-content-between align-items-center mx-0 px-0 ${itemSelected === "accounts" || itemSelected === "Accounts" || itemSelected === "history" ? "d-flex" : "d-none"}`}>
+                    <Row className={`w-100 justify-content-between align-items-center mx-0 px-0 ${itemSelectedLC === "accounts" || itemSelectedLC === "history" ? "d-flex" : "d-none"}`}>
                         <Col xs="6" className="px-0">
                             <Nav.Link
                                 className="text-center"
-                                active={itemSelected === "accounts" || itemSelected === "Accounts"}
+                                active={itemSelectedLC === "accounts"}
                                 onClick={() => { goTo("accounts") }}>
                                 {t("Accounts")}
                             </Nav.Link> </Col>
                         <Col xs="6" className="px-0">
                             <Nav.Link
                                 className="text-center"
-                                active={itemSelected === "history"}
+                                active={itemSelectedLC === "history"}
                                 onClick={() => { goTo("history") }}>
                                 {t("History")}
                             </Nav.Link>
                         </Col>
                     </Row>
-                    <Row className={`w-100 justify-content-between align-items-center mx-0 px-0 ${itemSelected === "buy" || itemSelected === "sell" || itemSelected === "deposit" || itemSelected === "withdraw" ? "d-flex" : "d-none"}`}>
+                    <Row className={`w-100 justify-content-between align-items-center mx-0 px-0 ${itemSelectedLC === "buy" || itemSelectedLC === "sell" || itemSelectedLC === "deposit" || itemSelectedLC === "withdraw" || itemSelectedLC === "transfer" ? "d-flex" : "d-none"}`}>
                         <Col xs="6" className="px-0">
                             <OverlayTrigger trigger='focus' placement="bottom" overlay={
                                 <Popover id="popover-funds" className="OverlayNavMobile" >
                                     <Popover.Body>
                                         <NavDropdown.Item
-                                            active={itemSelected === "buy"}
+                                            active={itemSelectedLC === "buy"}
                                             onClick={() => { goTo("buy") }}>
                                             {t("Buy")}
                                         </NavDropdown.Item>
                                         <NavDropdown.Item
-                                            active={itemSelected === "sell"}
+                                            active={itemSelectedLC === "sell"}
                                             onClick={() => {
                                                 goTo("sell")
                                                     ;
@@ -257,7 +256,7 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) =>
                                     </Popover.Body>
                                 </Popover>
                             } popperConfig={1}>
-                                <Button className={`left ${itemSelected === "sell" || itemSelected === "buy" ? "active" : ""}`}>
+                                <Button className={`left ${itemSelectedLC === "sell" || itemSelectedLC === "buy" ? "active" : ""}`}>
                                     <p className="mb-0" >Fund Operations</p>
                                 </Button>
                             </OverlayTrigger>
@@ -272,19 +271,19 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) =>
                                             {t("Deposit")}
                                         </NavDropdown.Item>*/}
                                         <NavDropdown.Item
-                                            active={itemSelected === "withdraw"}
+                                            active={itemSelectedLC === "withdraw"}
                                             onClick={() => { goTo("withdraw"); }}>
                                             {t("Withdraw")}
                                         </NavDropdown.Item>
                                         <NavDropdown.Item
-                                            active={itemSelected === "transfer" || itemSelected === "Transfer"}
+                                            active={itemSelectedLC === "transfer"}
                                             onClick={() => { goTo("Transfer") }}>
                                             {t("to Transfer")}
                                         </NavDropdown.Item>
                                     </Popover.Body>
                                 </Popover>
                             } popperConfig={1}>
-                                <Button className={`right ${itemSelected === "withdraw" || itemSelected === "deposit" || itemSelected === "transfer" || itemSelected === "Transfer" ? "active" : ""}`}>
+                                <Button className={`right ${itemSelectedLC === "withdraw" || itemSelectedLC === "deposit" || itemSelectedLC === "transfer" ? "active" : ""}`}>
                                     <p className="mb-0" onClick={(e) => { e.target.focus() }}>Cash Operations</p>
                                 </Button>
                             </OverlayTrigger>

@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
 import i18n from 'components/I18n';
@@ -58,7 +58,7 @@ const LanguageSelector = () => {
                 {
                     Object.keys(lngs).map((lng) => {
                         return (
-                            <Dropdown.Item key={lng} active={selected === lng} onClick={() => {setSelected(lng);changeLanguage(lng)}}>
+                            <Dropdown.Item key={lng} active={selected === lng} onClick={() => { setSelected(lng); changeLanguage(lng) }}>
                                 {
                                     languageIsValid(lng) ?
                                         lng === "es" ?
@@ -67,7 +67,9 @@ const LanguageSelector = () => {
                                         :
                                         <En />
                                 }
-                                &nbsp;{languageIsValid(lng) ? t(lngs[lng].nativeName) : ""}
+                                <span className="d-none">
+                                    &nbsp;{languageIsValid(lng) ? t(lngs[lng].nativeName) : ""}
+                                </span>
                             </Dropdown.Item>
                         )
                     })

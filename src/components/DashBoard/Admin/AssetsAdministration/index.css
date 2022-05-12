@@ -100,23 +100,6 @@
 
 }
 
-.AssetsAdministration .AssetRow .iconContainer {
-	cursor: pointer;
-	transition: all 1s;
-	color: black;
-}
-.AssetsAdministration .AssetRow .iconContainer .icon {
-	transition: all 1s;
-}
-.AssetsAdministration .AssetRow .iconContainer:hover .icon {
-	animation: ease hover 0.7s;
-}
-.AssetsAdministration .AssetRow .iconContainer.red:hover .icon{
-	color: red;
-}
-.AssetsAdministration .AssetRow .iconContainer.blue:hover .icon {
-	color: var(--blue-main);
-}
 .AssetsAdministration .AssetRow.addAsset {
 	border:none
 }

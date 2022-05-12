@@ -5,13 +5,16 @@ import TableLastMovements from './TableLastMovements';
 import { useTranslation } from "react-i18next";
 import { useHistory } from 'react-router-dom'
 import { DashBoardContext } from 'context/DashBoardContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 
-const MobileCard = ({ setItemSelected, isMobile, className, Fund }) => {
+const MobileCard = ({ Fund, Hide, setHide }) => {
     // eslint-disable-next-line
 
-    const { token, ClientSelected } = useContext(DashBoardContext);
+    const { token, ClientSelected, PendingTransactions } = useContext(DashBoardContext);
     const { t } = useTranslation();
     let history = useHistory();
+
     const [movements, setMovements] = useState([])
     const [fetchingMovements, setFetchingMovements] = useState(true)
 
@@ -20,6 +23,8 @@ const MobileCard = ({ setItemSelected, isMobile, className, Fund }) => {
         history.push(`/login`);
     }
 
+    const balanceInCash = Fund.shares ? (Fund.shares * Fund.fund.sharePrice) : 0
+    const pendingshares = PendingTransactions.value.filter((transaction) => transaction.fundId === Fund.fund.id && Math.sign(transaction.shares) === +1).map((transaction) => transaction.shares).reduce((a, b) => a + b, 0).toFixed(2)
 
     useEffect(() => {
         const getMovements = async () => {
@@ -58,37 +63,89 @@ const MobileCard = ({ setItemSelected, isMobile, className, Fund }) => {
         // eslint-disable-next-line 
     }, [Fund])
 
+    const checkImage = async (url) => {
+        const res = await fetch(url);
+        const buff = await res.blob();
+        return buff.type.startsWith('image/')
+    }
+
+    const hasCustomImage = () => Fund.fund.imageUrl ? checkImage(Fund.fund.imageUrl) : false
+
     return (
         <Card className="movementsCardMobile">
             <Card.Header >
                 <Container fluid className="px-3">
                     <Row className="d-flex justify-content-end align-items-center">
                         <Col className="p-0">
-                            <Card.Title className="mb-0 py-1">{t(Fund.fund.name)}</Card.Title>
+
+                            <Card.Title className="mb-0 py-1">
+                                {t(Fund.fund.name)}
+                                {
+
+                                    <img alt=""
+                                        onError={({ currentTarget }) => {
+                                            currentTarget.onerror = null;
+                                            currentTarget.src = process.env.PUBLIC_URL + '/images/FundsLogos/default.svg';
+                                        }}
+                                        src={hasCustomImage() ? Fund.fund.imageUrl : process.env.PUBLIC_URL + '/images/FundsLogos/default.svg'} />
+                                }
+                            </Card.Title>
                         </Col>
                     </Row>
                 </Container>
             </Card.Header>
-            <Card.Body className={`pb-0`}>
+            <Card.Body className="pb-0 pt-1">
                 <Container fluid className="p-0">
                     <Row className="m-1">
                         <Col xs="12" className="px-0">
-                            <Card.Title >
-                                <span>
-                                    {Fund.shares} {t("shares in possession")}
+                            <span className="left">
+                                {t("Balance (shares)")}:
+                                <span style={{ fontWeight: "bolder" }}>
+                                    {" "}{Fund.shares ? Fund.shares : 0}
                                 </span>
-                            </Card.Title>
-                            <Card.Title >
-                                <span>
-                                    {t("FeePart price (Now)")}
-                                    <span className="ps-1" style={{ fontWeight: "bolder" }}>
-                                        ${Fund.fund.sharePrice}
-                                    </span>
-                                </span>
-                            </Card.Title>
-                            <Card.Text>
-                                <span>{t("Balance")}: <span style={{ fontWeight: "bolder" }}>${Fund.fund.sharePrice}</span></span>
-                            </Card.Text>
+                            </span>
+                            <div className="d-flex justify-content-between px-0" sm="auto">
+                                <Col className="pe-2">
+                                    <div className="containerHideInfo px-0 description">
+                                        <span>{t("Balance ($)")}</span>
+                                        <span style={{ fontWeight: "bolder" }}>
+                                            :&nbsp;$
+                                            <span className={`info ${Hide ? "shown" : "hidden"}`}>
+                                                {balanceInCash.toFixed(2).toString().replace(/./g, "*")}
+                                            </span>
+
+                                            <span className={`info ${Hide ? "hidden" : "shown"}`}>
+                                                {balanceInCash.toFixed(2).toString()}
+                                            </span>
+
+                                            <span className={`info placeholder`}>
+                                                {balanceInCash.toFixed(2).toString()}
+                                            </span>
+                                        </span>
+
+                                    </div>
+                                </Col>
+                                <Col sm="auto" className="hideInfoButton d-flex align-items-center">
+                                    <FontAwesomeIcon
+                                        className={`icon ${Hide ? "hidden" : "shown"}`}
+                                        onClick={() => { setHide(!Hide) }}
+                                        icon={faEye}
+                                    />
+                                    <FontAwesomeIcon
+                                        className={`icon ${!Hide ? "hidden" : "shown"}`}
+                                        onClick={() => { setHide(!Hide) }}
+                                        icon={faEyeSlash}
+                                    />
+                                    <FontAwesomeIcon
+                                        className="icon placeholder"
+                                        icon={faEyeSlash}
+                                    />
+                                </Col>
+                            </div>
+                            <span className="left">
+                                {t("Pending transactions (shares)")}&nbsp;
+                                <span style={{ fontWeight: "bolder" }}>{pendingshares ? pendingshares : 0}{" "}</span>
+                            </span>
                         </Col>
                         <TableLastMovements
                             content={movements} fetchingMovements={fetchingMovements} />

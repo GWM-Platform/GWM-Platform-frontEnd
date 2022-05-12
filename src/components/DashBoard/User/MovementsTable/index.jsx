@@ -12,7 +12,7 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, NavInfoToggl
 
     const { FetchingFunds, Funds, Accounts, contentReady } = useContext(DashBoardContext);
 
-    const [error, setError] = useState("Loading content");
+    const [error, setError] = useState("Loading");
 
 
     useEffect(() => {
@@ -31,10 +31,10 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, NavInfoToggl
             {
                 FetchingFunds || Funds.length + Accounts.length === 0 || !contentReady
                     ?
-                    <Container fluid>
-                        <Row className="d-flex justify-content-center align-items-center">
-                            <Col className="free-area d-flex justify-content-center align-items-center">
-                                <Spinner className={`me-2 ${error === "No tiene participacion en ningun fondo" ? "d-none" : ""}`} animation="border" variant="danger" />
+                    <Container className="h-100"fluid>
+                        <Row className="d-flex justify-content-center align-items-center h-100">
+                            <Col className="d-flex justify-content-center align-items-center">
+                                <Spinner className={`me-2 ${error === "No tiene participacion en ningun fondo" ? "d-none" : ""}`} animation="border" variant="primary" />
                                 <span className="d-none d-md-block loadingText">{t(error)}</span>
                                 <span className="d-block d-md-none loadingText">{t("Loading")}</span>
                             </Col>

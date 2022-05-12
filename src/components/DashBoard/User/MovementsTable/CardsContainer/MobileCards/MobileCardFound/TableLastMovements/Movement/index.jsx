@@ -1,22 +1,31 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from 'moment';
+import { useTranslation } from 'react-i18next';
+import { DashBoardContext } from 'context/DashBoardContext';
 
 const Movement = ({ content }) => {
-  var momentDate = moment(content.date);
+
+  moment.locale(localStorage.getItem('language'))
+  var momentDate = moment(content.createdAt);
+  const { t } = useTranslation();
+  const { getMoveStateById } = useContext(DashBoardContext)
 
   return (
-    <>
-      <tr>
-        <td className="tableDate">{momentDate.format('MMMM DD YYYY')}</td>
-        <td className="tableDescription d-sm-table-cell ">${content.sharePrice}</td>
-      </tr>
-      <tr className="d-table-row d-sm-none descriptionRowMobile">
-        <td className={`tableAmount ${Math.sign(content.shares) === 1 ? 'text-green' : 'text-red'}`}><span>{Math.sign(content.shares) === 1 ? '+' : '-'}</span><span ></span>{Math.abs(content.shares)} shares</td>
-        <td className={`tableAmount ${Math.sign(content.shares) === 1 ? 'text-green' : 'text-red'}`}><span>{Math.sign(content.shares) === 1 ? '+' : '-'}</span><span >$</span>{(Math.abs(content.shares) * content.sharePrice).toFixed(2)}</td>
-      </tr>
-    </>
+    <div className='mobileMovement'>
+    <div className='d-flex justify-content-between'>
+      <span >{Math.sign(content.shares) === 1 ? t('Purchase of') : t('Sale of')}{" "}{Math.abs(content.shares)} {t(Math.abs(content.shares)===1 ? "share":"shares")}, ${content.sharePrice} {t(" each")}</span>
+      <span className="text-nowrap" >{momentDate.format('D MMM')}</span>
 
+    </div>
+    <div className='d-flex justify-content-between'>
+
+      <span className={`${content.stateId === 3 ? 'text-red' : 'text-green'}`}>{t(getMoveStateById(content.stateId).name)}</span>
+      <span className={`${Math.sign(content.shares) === 1 ? 'text-green' : 'text-red'}`}>{Math.sign(content.shares) === 1 ? '+' : '-'}${(Math.abs(content.shares) * content.sharePrice).toFixed(2)}</span>
+    </div >
+  </div >
   )
+
+
 }
 export default Movement

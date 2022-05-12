@@ -118,7 +118,7 @@ const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
 
     const ticketSearchProps = {
         fetching: FetchingMovements,
-        keyWord: "movements",
+        keyWord: "movement",
         SearchText: SearchById.value,
         handleSearchChange: handleMovementSearchChange,
         cancelSearch: resetSearchById,
@@ -130,7 +130,7 @@ const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
         <div className="p-0 h-100">
             <div className="d-flex align-items-start justify-content-center flex-column MovementsTableContainer">
                 <div className={`movementsTable growAnimation`}>
-                    <FilterOptions ticketSearch ticketSearchProps={ticketSearchProps} disabled={SearchById.search} Fund={Fund} setPagination={setPagination} movsPerPage={Pagination.take} total={Movements.total} />
+                    <FilterOptions keyword={"movements"} ticketSearch ticketSearchProps={ticketSearchProps} disabled={SearchById.search} Fund={Fund} setPagination={setPagination} movsPerPage={Pagination.take} total={Movements.total} />
                     {
                         FetchingMovements ?
                             <Loading movements={Pagination.take} />

@@ -3,8 +3,8 @@ import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSlash, faEyeSlash, faEye, faThumbtack, faClipboard } from '@fortawesome/free-solid-svg-icons'
-import { faCheckCircle } from '@fortawesome/free-regular-svg-icons'
+import { faSlash, faEyeSlash, faEye, faThumbtack } from '@fortawesome/free-solid-svg-icons'
+import { faCheckCircle,faClipboard } from '@fortawesome/free-regular-svg-icons'
 import { useHistory } from 'react-router-dom';
 import './index.css'
 import { DashBoardContext } from 'context/DashBoardContext';
@@ -12,7 +12,7 @@ import { DashBoardContext } from 'context/DashBoardContext';
 const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned, cardsAmount, inScreenFunds }) => {
     const { t } = useTranslation();
 
-    const { token, ClientSelected, DashboardToastDispatch } = useContext(DashBoardContext)
+    const { token, ClientSelected, DashboardToastDispatch,isMobile } = useContext(DashBoardContext)
 
     const [PendingMovements, setPendingMovements] = useState(
         {
@@ -90,7 +90,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
 
     return (
         <>
-            <Col sm="6" md="6" lg="4" className={`fund-col  growAnimation ${Pinned ? "opacity-0" : ""}`}>
+            <Col sm="6" md="6" lg="4" className={`fund-col  growAnimation ${Pinned && !isMobile ? "opacity-0" : ""}`}>
                 <Card className="h-100 cashCard">
                     <Card.Header
                         className="header d-flex align-items-center justify-content-center"
@@ -109,7 +109,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                                 {t("Cash")}
                                             </h1>
                                         </Col>
-                                        {cardsAmount > inScreenFunds ?
+                                        {cardsAmount > inScreenFunds && !isMobile ?
                                             <div className="px-0 hideInfoButton d-flex align-items-center" onClick={() => { setPinned(true) }}                                            >
                                                 <FontAwesomeIcon
                                                     className={`icon pin`}
@@ -125,9 +125,6 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
 
                                     </Row>
                                 </Container>
-
-                            </Card.Title>
-                            <h1 className="title-gray mt-1">
                                 <Card.Text className="subTitle lighter mt-0 mb-2">
                                     {t("Alias")}: <span className="bolder">{Fund.alias}</span>
                                     <button style={{ color: "var(--bs-body-color)" }} className="noStyle float-end">
@@ -139,6 +136,8 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                     </button>
                                     <br />
                                 </Card.Text>
+                            </Card.Title>
+                            <h1 className="title-gray mt-1">
                                 <Container fluid className="px-0">
                                     <Row className="w-100 mx-0 d-flex justify-content-between gx-0">
                                         <div className="pe-2 containerHideInfo">
@@ -191,7 +190,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                 </Card>
             </Col>
             {
-                Pinned ?
+                Pinned && !isMobile?
                     <Col sm="6" md="6" lg="4" className="fund-col pinned">
                         <Card className="h-100 cashCard">
                             <Card.Header
@@ -232,12 +231,19 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                                 </div>
                                             </Row>
                                         </Container>
-
+                                        <Card.Text className="subTitle lighter mt-0 mb-2">
+                                    {t("Alias")}: <span className="bolder">{Fund.alias}</span>
+                                    <button style={{ color: "var(--bs-body-color)" }} className="noStyle float-end">
+                                        <FontAwesomeIcon className="ms-1 clipboardIcon" icon={faClipboard}
+                                            onClick={() => {
+                                                DashboardToastDispatch({ type: "create", toastContent: { Icon: faCheckCircle, Title: "Alias succesfully copied!" } });
+                                                navigator.clipboard.writeText(Fund.alias)
+                                            }} />
+                                    </button>
+                                    <br />
+                                </Card.Text>
                                     </Card.Title>
                                     <h1 className="title-gray mt-1">
-                                        <Card.Text className="invisible subTitle lighter mt-0 mb-2">
-                                            {t("Share price")}:<span className="bolder"></span><br />
-                                        </Card.Text>
                                         <Container fluid className="px-0">
                                             <Row className="w-100 mx-0 d-flex justify-content-between gx-0">
                                                 <div className="pe-2 containerHideInfo">

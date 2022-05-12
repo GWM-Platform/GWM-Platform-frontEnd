@@ -7,6 +7,7 @@ import { Navbar, Row, Container, Col } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next';
 import { DashBoardContext } from 'context/DashBoardContext';
 import ClientSelector from './ClientSelector';
+import LanguageSelector from 'components/LanguageSelector';
 
 
 const NavBarInfo = ({ NavInfoToggled }) => {
@@ -47,6 +48,9 @@ const NavBarInfo = ({ NavInfoToggled }) => {
                             :
                             null
                     }
+                    <Col xs="auto" className="d-block d-md-none ms-auto pe-0">
+                        <LanguageSelector />
+                    </Col>
                 </Row>
             </Container>
 
