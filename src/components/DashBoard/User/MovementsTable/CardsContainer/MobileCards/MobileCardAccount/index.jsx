@@ -22,7 +22,42 @@ const MobileCard = ({ Fund }) => {
         history.push(`/login`);
     }
 
+    const getTransfers = async () => {
+        var url = `${process.env.REACT_APP_APIURL}/transfers/?` + new URLSearchParams(
+            Object.fromEntries(Object.entries(
+                {
+                    client: ClientSelected.id,
+                    filterAccount: Fund.id,
+                }
+            ).filter(([_, v]) => v != null))
+        );
+        setFetchingTransfers(true)
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: "*/*",
+                'Content-Type': 'application/json'
+            }
+        })
 
+        if (response.status === 200) {
+            const data = await response.json()
+            setTransfers(
+                data.transfers ?
+                    data.transfers
+                    :
+                    []
+            )
+            setFetchingTransfers(false)
+        } else {
+            switch (response.status) {
+                default:
+                    console.error("Error ", response.status, " account Transfers")
+                    toLogin()
+            }
+        }
+    }
     useEffect(() => {
 
         const getMovements = async () => {
@@ -125,7 +160,7 @@ const MobileCard = ({ Fund }) => {
                         <TableLastMovements
                             content={movements} fetchingMovements={fetchingMovements} />
                         <TableLastTransfers
-                            content={transfers} fetchingTransfers={fetchingTransfers} />
+                            content={transfers} fetchingTransfers={fetchingTransfers} getTransfers={getTransfers}/>
                     </Row>
                 </Container>
             </Card.Body>

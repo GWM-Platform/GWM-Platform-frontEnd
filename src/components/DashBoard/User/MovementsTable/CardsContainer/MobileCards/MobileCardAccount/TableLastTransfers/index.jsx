@@ -4,7 +4,7 @@ import {  Col, Row, Container, Collapse } from 'react-bootstrap';
 import Transfer from './Transfer';
 import { useTranslation } from "react-i18next";
 
-const TableLastTransfers = ({ content, fetchingTransfers }) => {
+const TableLastTransfers = ({ content, fetchingTransfers,getTransfers }) => {
     const { t } = useTranslation();
     const [open, setOpen] = useState(false);
 
@@ -26,7 +26,7 @@ const TableLastTransfers = ({ content, fetchingTransfers }) => {
                         </Container>
                         <Collapse in={open}>
                             <div className="movementsTable mb-3">
-                                {content.map((u, i) => { ; return (<Transfer key={i} content={u} />) })}
+                                {content.map((u, i) => { ; return (<Transfer getTransfers={getTransfers} key={i} content={u} />) })}
                             </div>
                         </Collapse>
                     </div>

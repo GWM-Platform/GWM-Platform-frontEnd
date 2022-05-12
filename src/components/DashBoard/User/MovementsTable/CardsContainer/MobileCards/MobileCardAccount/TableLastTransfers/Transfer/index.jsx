@@ -1,16 +1,26 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from 'moment';
 import './index.css'
 import { useTranslation } from 'react-i18next';
 import { DashBoardContext } from 'context/DashBoardContext';
-const Movement = ({ content }) => {
-  var momentDate = moment(content.createdAt);
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icons';
+import ActionConfirmationModal from './ActionConfirmationModal';
+const Movement = ({ content,getTransfers }) => {
 
   const { getMoveStateById, ClientSelected } = useContext(DashBoardContext)
-  const clientId = ClientSelected?.id
-
   const { t } = useTranslation()
+
+  const clientId = ClientSelected?.id
+  var momentDate = moment(content.createdAt);
+  const [ShowModal, setShowModal] = useState(false)
+  const [Action, setAction] = useState("approve")
+
+  const launchModalConfirmation = (action) => {
+    setAction(action)
+    setShowModal(true)
+  }
 
   const incomingTransfer = () => content.receiverId === clientId
 
@@ -26,6 +36,23 @@ const Movement = ({ content }) => {
         <span className={`${content.stateId === 3 ? 'text-red' : 'text-green'}`}>{t(getMoveStateById(content.stateId).name)}</span>
         <span className={`${Math.sign(content.amount) === 1 ? 'text-green' : 'text-red'}`}>{Math.sign(content.amount) === 1 ? '+' : '-'}${Math.abs(content.amount)}</span>
       </div>
+      {
+        !!(content.stateId === 1) &&
+        <div className="h-100 d-flex align-items-center justify-content-around">
+          <div className="iconContainer green" onClick={() => launchModalConfirmation("approve")}>
+            <FontAwesomeIcon className="icon" icon={faCheckCircle}  /> {t("Approve")}
+          </div>
+          <div className="iconContainer red"  onClick={() => launchModalConfirmation("deny")} >
+            <FontAwesomeIcon className="icon" icon={faTimesCircle}/> {t("Deny")}
+          </div>
+        </div>
+      }
+      {
+        content.stateId === 1 ?
+          <ActionConfirmationModal incomingTransfer={incomingTransfer()} reloadData={getTransfers} movement={content} setShowModal={setShowModal} action={Action} show={ShowModal} />
+          :
+          null
+      }
     </div>
 
   )

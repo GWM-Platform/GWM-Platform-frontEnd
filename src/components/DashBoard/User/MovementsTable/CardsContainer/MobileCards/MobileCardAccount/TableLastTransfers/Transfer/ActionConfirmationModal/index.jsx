@@ -79,22 +79,20 @@ const ActionConfirmationModal = ({ incomingTransfer, movement, setShowModal, act
                     <ul>
                         <li className="listedInfo">
                             {t("Operation")}: <span className="emphasis">{t(`${incomingTransfer ? "Incoming" : "Outgoing"} transfer`)}</span>
-
                             <li className="listedInfo">
                                 {t(`Source account ${!incomingTransfer ? "(Yours) " : ""}alias`)}: <span className="emphasis text-nowrap">{movement.senderAlias}</span>
                             </li>
                             <li className="listedInfo">
                                 {t(`Target account ${incomingTransfer ? "(Yours) " : ""}alias`)}: <span className="emphasis text-nowrap">{movement.receiverAlias}</span>
                             </li>
-
                             <li className="listedInfo">
                                 {t("Cash operation amount")}: <span className="emphasis">${movement.amount}</span>
                             </li>
                             <li className="listedInfo">
-                                {t("Balance after approving this transfer")}:&nbsp;
+                                {t("Balance after approving this transfer")}:&nbsp; 
                                 <span className="emphasis">
                                     ${AccountSelected?.balance + movement.amount * (incomingTransfer ? 1 : -1)}
-                                    <span className={incomingTransfer ? "text-green" : "text-red"}>&nbsp;({incomingTransfer ? "+" : "-"}{movement.amount})</span>
+                                    <span className={incomingTransfer ? "text-green" : "text-red"}>&nbsp;({incomingTransfer ? "+" : "-"}{movement.amount})</span> 
                                 </span>
                             </li>
                         </li>

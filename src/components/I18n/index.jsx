@@ -201,7 +201,7 @@ i18n
           "In Cash": "En dinero",
           "Last Movements": "Ultimos Movimientos",
           "Fund Detail": "Detalle del fondo",
-         
+
           "Transactions": "Operaciones",
           "There are no funds available for the operation":
             "No hay fondos disponibles para la operación",
@@ -359,6 +359,7 @@ i18n
           "Pending Cash": "Pendiente de liquidación",
           "Ticket created successfully": "Ticket creado correctamente",
           "Wait for an administrator to aprove or deny it": "Espere a que un administrador lo apruebe o rechace",
+          "You will receive an email when it is approved/denied":"Recibirá un email cuando se apruebe/rechace",
           "All rights reserved": "Todos los derechos reservados",
           "couldn't fetch states, try again later": "No se pudieron obtener los estados, intente de nuevo luego",
           "there are no states, ask for the administrator to create them": "No hay estados, pidele al administrador que los cree",
@@ -409,7 +410,7 @@ i18n
           "Assets": "Activos",
           "Pendiente": "Pendiente",
           "Aprobado": "Aprobado",
-          "Denegado": "Denegado",
+          "Denegado": "Rechazado",
           "Transactions per page": "Transacciones por pagina",
           "Transaction status": "Estado de la transacción",
           "Update": "Actualizar",
@@ -508,26 +509,31 @@ i18n
           "transactions status": "estado de las transacciones",
           "Balance after approving this transfer": "Saldo después de aprobar esta transferencia",
           "Source account alias": "Alias de cuenta de origen",
-          "Target account (Yours)": "Cuenta destino (suya)",
-          "Source account (Yours) alias": "Cuenta de origen (suya)",
           //Accounts
           "Alias succesfully copied!": "Alias copiado correctamete",
 
           //History mobile
-          "Loading movements":"Cargando movimientos",
-          "Loading transactions":"Cargando transacciones",
-          "Loading transfers":"Cargando transferencias",
-          
-          "Last transactions":"Ultimas transacciones",
-          "Last transfers":"Ultimas transferencias",
+          "Loading movements": "Cargando movimientos",
+          "Loading transactions": "Cargando transacciones",
+          "Loading transfers": "Cargando transferencias",
 
-          "There are no records of any transaction in this fund":"No hay registros de ninguna transaccion en este Fondo.",
+          "Last transactions": "Ultimas transacciones",
+          "Last transfers": "Ultimas transferencias",
+
+          "There are no records of any transaction in this fund": "No hay registros de ninguna transaccion en este Fondo.",
           "There are no records of any movement in this Fund.": "No hay registros de ningún movimiento en este Fondo.",
           "There are no records of any movement in this account": "No hay registro de ningún movimiento en esta cuenta",
           "There are no records of any transfer in this account": "No hay registro de ninguna transferencia en esta cuenta",
           "There are no movements to show": "No hay movimientos que mostrar",
           "There are no transfers to show": "No hay transferencias que mostrar",
-          " each":" cada una"
+          " each": " cada una",
+          "Account Operations": "Operaciones de cuenta",
+          "Fund Operations": "Operaciones de fondo",
+          "Create Tickets": "Crear Tickets",
+          "Approve": "Aprobar",
+          "Deny": "Rechazar",
+          "Source account (Yours) alias": "Alias de la cuenta de origen (suya)",
+          "Target account (Yours) alias": "Alias de la cuenta destino (suya)"
         }
       }
     }

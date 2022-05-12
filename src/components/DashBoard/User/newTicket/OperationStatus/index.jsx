@@ -8,9 +8,9 @@ import { faClock } from '@fortawesome/free-regular-svg-icons'
 import './index.css'
 import { useTranslation } from 'react-i18next';
 
-const OperationStatus = ({setItemSelected}) => {
+const OperationStatus = ({ setItemSelected }) => {
 
-    const {t} = useTranslation()
+    const { t } = useTranslation()
     useEffect(() => {
         setItemSelected("")
     }, [setItemSelected])
@@ -18,9 +18,9 @@ const OperationStatus = ({setItemSelected}) => {
         <Container className="OperationStatus h-100 growAnimation">
             <Row className={`h-100 d-flex align-items-center justify-content-center`}>
                 <Col sm="auto">
-                    <h1 className="statusIcon"><FontAwesomeIcon icon={faClock}/></h1>
-                    <h1  className="title">{t("Ticket created successfully")}</h1>
-                    <h2  className="description">{t("Wait for an administrator to aprove or deny it")}</h2>
+                    <h1 className="statusIcon"><FontAwesomeIcon icon={faClock} /></h1>
+                    <h1 className="title">{t("Ticket created successfully")}</h1>
+                    <h2 className="description">{t("You will receive an email when it is approved/denied")}</h2>
                 </Col>
             </Row>
         </Container>

@@ -32,9 +32,9 @@ const Transfer = ({ content, actions,getTransfers }) => {
       <td className="tableConcept">{t("Transfer")}{" "}{t( incomingTransfer() ? "received from" : "sent to")}{" "}{t("account with the alias")}{" \""}{incomingTransfer() ? content.senderAlias : content.senderAlias}{"\""}</td>
       <td className={`tableAmount ${content.receiverId === clientId ? 'text-green' : 'text-red'}`}><span>{content.receiverId === clientId ? '+' : '-'}</span><span >$</span>{Math.abs(content.amount)}</td>
       {
-        actions &&
+        !!actions &&
         <td className="Actions verticalCenter" >{
-          content.stateId === 1 &&
+          !!(content.stateId === 1) &&
           <div className="h-100 d-flex align-items-center justify-content-around">
             <div className="iconContainer green">
               <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => launchModalConfirmation("approve") } />

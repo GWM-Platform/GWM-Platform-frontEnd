@@ -257,7 +257,7 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) =>
                                 </Popover>
                             } popperConfig={1}>
                                 <Button className={`left ${itemSelectedLC === "sell" || itemSelectedLC === "buy" ? "active" : ""}`}>
-                                    <p className="mb-0" >Fund Operations</p>
+                                    <p className="mb-0" >{t("Fund Operations")}</p>
                                 </Button>
                             </OverlayTrigger>
                         </Col>
@@ -284,7 +284,7 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) =>
                                 </Popover>
                             } popperConfig={1}>
                                 <Button className={`right ${itemSelectedLC === "withdraw" || itemSelectedLC === "deposit" || itemSelectedLC === "transfer" ? "active" : ""}`}>
-                                    <p className="mb-0" onClick={(e) => { e.target.focus() }}>Cash Operations</p>
+                                    <p className="mb-0" onClick={(e) => { e.target.focus() }}>{t("Account Operations")}</p>
                                 </Button>
                             </OverlayTrigger>
                         </Col>
