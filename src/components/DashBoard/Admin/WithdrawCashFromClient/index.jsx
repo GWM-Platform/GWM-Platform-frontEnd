@@ -45,7 +45,7 @@ const WithdrawCashFromClient = () => {
             method: 'POST',
             body: JSON.stringify({
                 amount: parseFloat(data.amount),
-                date: data.date,
+                date: moment(data.date).format(),
                 stateId: parseInt(data.stateId)
             }),
             headers: {

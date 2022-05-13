@@ -543,12 +543,12 @@ const Transactionslist = ({ state, messageVariants }) => {
     useEffect(() => {
         if (!searchMovementById.search) movementsInState()
         // eslint-disable-next-line
-    }, [PaginationTransactions, state, searchMovementById.search])
+    }, [PaginationMovements, state, searchMovementById.search])
 
     useEffect(() => {
         if (!searchTransactionById.search) transactionsInState()
         // eslint-disable-next-line
-    }, [PaginationMovements, state, searchTransactionById.search])
+    }, [PaginationTransactions, state, searchTransactionById.search])
 
     useEffect(() => {
         if (!searchTransferById.search) transfersInState()
@@ -572,7 +572,7 @@ const Transactionslist = ({ state, messageVariants }) => {
 
     const ticketSearchPropsW = {
         fetching: Movements.fetching,
-        keyWord: "withdrawal ticket",
+        keyWord: "withdrawal or deposit ticket",
         SearchText: searchMovementById.value,
         handleSearchChange: handleMovementSearchChange,
         cancelSearch: cancelMovementSearch,
@@ -619,7 +619,7 @@ const Transactionslist = ({ state, messageVariants }) => {
                         :
                         null
                 }
-                <h1 className="title">{t("Withdrawal tickets")}:</h1>
+                <h1 className="title">{t("Withdrawal and deposit tickets")}:</h1>
                 <TicketSearch
                     props={ticketSearchPropsW}
                 />

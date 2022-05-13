@@ -315,6 +315,8 @@ i18n
           "Withdrawal tickets": "Tickets de retiro",
           "Withdrawal ticket": "Ticket de retiro",
           "withdrawal ticket": "ticket de retiro",
+          "withdrawal or deposit ticket": "ticket de retiro o deposito",
+          "Withdrawal and deposit tickets":"Tickets de retiro y deposito",
           "Share value": "Valor de la cuotaparte",
           "Concept": "Concepto",
           "Funds": "Fondos",

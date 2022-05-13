@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col, Form, InputGroup, Button } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
-
-import './operationsForm.css'
+import { DashBoardContext } from 'context/DashBoardContext'
+import moment from 'moment';
 
 const DepositCashToClient = () => {
+    const { toLogin, TransactionStates } = useContext(DashBoardContext)
 
     const [Accounts, setAccounts] = useState(
         {
@@ -26,7 +27,9 @@ const DepositCashToClient = () => {
     const [data, setData] = useState(
         {
             amount: "",
-            idSelected: ""
+            idSelected: "",
+            date: moment().format(moment.HTML5_FMT.DATETIME_LOCAL),
+            stateId: ""
         }
     )
     const [validated, setValidated] = useState(true);
@@ -35,11 +38,15 @@ const DepositCashToClient = () => {
     let history = useHistory();
     const { t } = useTranslation();
 
-    const deposit = async () => {
+    const withdraw = async () => {
         var url = `${process.env.REACT_APP_APIURL}/accounts/${data.idSelected}/deposit`;
         const response = await fetch(url, {
             method: 'POST',
-            body: JSON.stringify({ amount: parseFloat(data.amount) }),
+            body: JSON.stringify({
+                amount: parseFloat(data.amount),
+                date: moment(data.date).format(),
+                stateId: parseInt(data.stateId)
+            }),
             headers: {
                 Authorization: `Bearer ${token}`,
                 Accept: "*/*",
@@ -64,6 +71,7 @@ const DepositCashToClient = () => {
     const handleChange = (event) => {
         let aux = data;
         aux[event.target.id] = event.target.value;
+
         setData({ ...data, ...aux });
     }
 
@@ -73,9 +81,9 @@ const DepositCashToClient = () => {
         const form = event.currentTarget;
         if (form.checkValidity() === true) {
             if (token === null) {
-
+                toLogin()
             } else {
-                deposit()
+                withdraw()
             }
         }
         setValidated(true);
@@ -133,10 +141,10 @@ const DepositCashToClient = () => {
 
         const getClients = async () => {
             const token = sessionStorage.getItem('access_token')
-             var url = `${process.env.REACT_APP_APIURL}/Clients/?` + new URLSearchParams({
-                all:true,
+            var url = `${process.env.REACT_APP_APIURL}/Clients/?` + new URLSearchParams({
+                all: true,
             });
-            
+
             setClients(
                 {
                     ...Clients,
@@ -206,7 +214,7 @@ const DepositCashToClient = () => {
                             <option disabled value="">{t("Open this select menu")}</option>
                             {Accounts.value.map((Account, key) => {
                                 return (
-                                    <option key={key} value={Account.id}>
+                                    <option disabled={Account.balance === 0} key={key + "-account"} value={Account.id}>
                                         {
                                             Clients.fetched ?
                                                 getClientNameById(Account.clientId) ?
@@ -220,6 +228,33 @@ const DepositCashToClient = () => {
                                 )
                             })}
                         </Form.Select>
+
+                        <Form.Group className="mb-3">
+                            <Form.Label>{t("Date that will appear as when the operation was performed")}</Form.Label>
+                            <Form.Control
+                                onWheel={event => event.currentTarget.blur()}
+                                value={data.date}
+                                onChange={handleChange}
+                                id="date"
+                                type="datetime-local"
+                                required
+                                placeholder={t("Date")}
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                {
+                                    data.date === "" ?
+                                        t("You must enter the date that will appear as when the operation was performed")
+                                        :
+                                        t("Please, enter the date in a valid format")
+                                }
+                            </Form.Control.Feedback>
+                            <Form.Control.Feedback type="valid">
+                                {
+                                    t("Looks good") + "!"
+                                }
+                            </Form.Control.Feedback>
+                        </Form.Group>
+
                         <Form.Label>{t("Amount")}</Form.Label>
                         <InputGroup className="mb-3">
                             <InputGroup.Text>U$D</InputGroup.Text>
@@ -249,6 +284,15 @@ const DepositCashToClient = () => {
                                 }
                             </Form.Control.Feedback>
                         </InputGroup>
+
+                        <Form.Label>{t("Operation state")}</Form.Label>
+                        <Form.Select id="stateId" onChange={handleChange} required className="mb-3" value={data.stateId} aria-label="Select State Id">
+                            <option disabled value="">{t("Open this select menu")}</option>
+                            {TransactionStates.values.map((state, key) =>
+                                <option key={key + "-state"} value={state.id}>{state.id + " - " + state.name}</option>
+                            )}
+                        </Form.Select>
+
                         <Button disabled={data.amount === "" || data.amount <= 0}
                             variant="danger" type="submit">{t("Submit")}</Button>
                     </Form>
