@@ -3,9 +3,6 @@ import { useTranslation } from "react-i18next";
 import { Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
-
 import MainCardFund from './MainCard/MainCardFund';
 import MainCardAccount from './MainCard/MainCardAccount';
 
@@ -86,7 +83,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, NavInfoToggled, Accoun
         value: performSearch() ? desiredId : "",
         search: performSearch()
     })
-    
+
     const resetSearchById = () => {
         setSearchById((prevState) => ({ ...prevState, ...{ value: "", search: false } }))
     }
@@ -98,21 +95,21 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, NavInfoToggled, Accoun
     return (
         <Row className="HistoryCardsContainer d-flex align-items-stretch flex-md-nowrap ">
             {isMobile ?
-                Accounts.length >= 1 || Funds.length >= 1 ?
+                Accounts.length >= 1 || FundsWithPending.length >= 1 ?
                     <Col md="12" className="ps-2 ps-sm-2 ps-md-2 ps-md-0 ps-lg-0 pe-2 pt-0 growAnimation" >
                         {Accounts.map(
-                            (j, k) => {
+                            (account, key) => {
                                 ;
                                 return (
-                                    <MobileCardAccount Fund={j} />
+                                    <MobileCardAccount key={"account-" + key} account={account} />
                                 )
                             }
                         )}
-                        {Funds.map(
+                        {FundsWithPending.map(
                             (fund, key) => {
                                 ;
                                 return (
-                                    <MobileCardFund  Hide={Hide} setHide={setHide} key={key} Fund={fund} />
+                                    <MobileCardFund Hide={Hide} setHide={setHide} key={"fund-" + key} Fund={fund} />
                                 )
                             }
                         )}
@@ -124,16 +121,14 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, NavInfoToggled, Accoun
                 :
                 numberOfFunds > 1 ?
                     <>
-                        <Col className="px-2 p-relative mainCardCol growAnimation"
-                            md="12"
-                            lg={collapseSecondary ? "12" : "8"}
-                            xl={collapseSecondary ? "12" : "9"} >
+                        <Col className="px-2 p-relative mainCardCol growAnimation" md="12"
+                            lg={collapseSecondary ? "12" : "8"} xl={collapseSecondary ? "12" : "9"} >
                             {
                                 categorySelected === 1 ?
                                     <MainCardFund
                                         Fund={FundsWithPending[selected]}
                                         Hide={Hide} setHide={setHide}
-                                        
+
                                         SearchById={SearchById}
                                         setSearchById={setSearchById}
                                         resetSearchById={resetSearchById}
@@ -143,7 +138,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, NavInfoToggled, Accoun
                                     <MainCardAccount
                                         Fund={Accounts[selected]}
                                         Hide={Hide} setHide={setHide}
-                                        
+
                                         SearchById={SearchById}
                                         setSearchById={setSearchById}
                                         resetSearchById={resetSearchById}
@@ -152,7 +147,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, NavInfoToggled, Accoun
                             }
                             <div className={`d-none d-sm-block collapser ${collapseSecondary ? "expanded" : "collapsed"}`}
                                 onClick={() => { setCollapseSecondary(!collapseSecondary) }}>
-                                <FontAwesomeIcon icon={faChevronRight} />
+                                <img className="chevron" src={`${process.env.PUBLIC_URL}/images/chevron/chevron-right.svg`} alt='collapse' />
                             </div>
                         </Col>
                         <Col sm="4" md="4" lg="4" xl="3"
@@ -179,24 +174,28 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, NavInfoToggled, Accoun
                                     )
                                 }
                             )}
-                            {Funds.length > 0 ?
-                                <div className="CategoryLabel">
-                                    <h1 className="title">{t("Funds")}</h1>
-                                </div>
-                                :
-                                null}
-                            {FundsWithPending.map(
-                                (Fund, key) => {
-                                    ;
-                                    return (
-                                        <SecondaryCard
-                                            Hide={Hide} Fund={Fund} parentKey={1} ownKey={key} key={key}
-                                            categorySelected={categorySelected} setCategorySelected={setCategorySelected}
-                                            selected={selected} setSelected={setSelected} resetSearchById={resetSearchById}
-                                        />
-                                    )
-                                }
-                            )}
+                            {
+                                Funds.length > 0 ?
+                                    <div className="CategoryLabel">
+                                        <h1 className="title">{t("Funds")}</h1>
+                                    </div>
+                                    :
+                                    null
+                            }
+                            {
+                                FundsWithPending.map(
+                                    (Fund, key) => {
+                                        ;
+                                        return (
+                                            <SecondaryCard
+                                                Hide={Hide} Fund={Fund} parentKey={1} ownKey={key} key={key}
+                                                categorySelected={categorySelected} setCategorySelected={setCategorySelected}
+                                                selected={selected} setSelected={setSelected} resetSearchById={resetSearchById}
+                                            />
+                                        )
+                                    }
+                                )
+                            }
                         </Col>
                     </>
                     :
@@ -206,7 +205,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, NavInfoToggled, Accoun
                                 <MainCardAccount
                                     Fund={Accounts[0]}
                                     Hide={Hide} setHide={setHide}
-                                    
+
                                     SearchById={SearchById}
                                     setSearchById={setSearchById}
                                     resetSearchById={resetSearchById}
@@ -216,7 +215,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, NavInfoToggled, Accoun
                                 <MainCardFund
                                     Fund={Funds[0]}
                                     Hide={Hide} setHide={setHide}
-                                    
+
                                     SearchById={SearchById}
                                     setSearchById={setSearchById}
                                     resetSearchById={resetSearchById}

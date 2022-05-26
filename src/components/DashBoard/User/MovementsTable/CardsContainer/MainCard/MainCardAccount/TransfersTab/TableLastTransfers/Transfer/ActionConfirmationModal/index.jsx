@@ -72,7 +72,7 @@ const ActionConfirmationModal = ({ incomingTransfer, movement, setShowModal, act
             <Modal.Body className="body">
                 <div className={!ActionFetch.fetched && !ActionFetch.fetching ? "show" : "hidden"}>
                     <div className="descriptionIconContainer red mx-auto">
-                        <h1 className="title"><FontAwesomeIcon className="icon red" icon={faExclamation} /></h1>
+                        <h1 className="title my-0"><FontAwesomeIcon className="icon red" icon={faExclamation} /></h1>
                     </div>
                     <h1 className="title"> {t("Are you sure?")}</h1>
                     <h2 className="subTitle">{t("You are about to")} {t(action)} {t("the transfer with the id")} {movement.id}</h2>
@@ -106,14 +106,14 @@ const ActionConfirmationModal = ({ incomingTransfer, movement, setShowModal, act
                         ActionFetch.valid ?
                             <>
                                 <div className="descriptionIconContainer green mx-auto">
-                                    <h1 className="title"><FontAwesomeIcon className="icon green" icon={faCheck} /></h1>
+                                    <h1 className="title my-0"><FontAwesomeIcon className="icon green" icon={faCheck} /></h1>
                                 </div>
                                 <h2 className="subTitle mt-4">{t("The ticket has been")} {t(action === "approve" ? "approved" : "denied")} {t("succesfully")}</h2>
                             </>
                             :
                             <>
                                 <div className="descriptionIconContainer green mx-auto">
-                                    <h1 className="title"><FontAwesomeIcon className="icon green" icon={faTimes} /></h1>
+                                    <h1 className="title my-0"><FontAwesomeIcon className="icon green" icon={faTimes} /></h1>
                                 </div>
                                 <h2 className="subTitle mt-4">{t("Failed to")}{" "}{t(action)}{" "}{t("the ticket")}</h2>
                             </>
@@ -122,7 +122,7 @@ const ActionConfirmationModal = ({ incomingTransfer, movement, setShowModal, act
                 </div>
                 <div className="placeHolder">
                     <div className="descriptionIconContainer red mx-auto">
-                        <h1 className="title"><FontAwesomeIcon className="icon red" icon={faExclamation} /></h1>
+                        <h1 className="title my-0"><FontAwesomeIcon className="icon red" icon={faExclamation} /></h1>
                     </div>
                     <h1 className="title"> {t("Are you sure?")}</h1>
                     <h2 className="subTitle">{t("You are about to")} {t(action)} {t("the transfer with the id")} {movement.id}</h2>

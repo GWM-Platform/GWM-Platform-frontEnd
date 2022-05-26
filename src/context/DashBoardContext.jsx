@@ -218,7 +218,6 @@ export const DashBoardProvider = ({ children }) => {
         }
 
         const addPendingFundsWithoutPosesion = async () => {
-            setPendingWithoutpossession([])
             let FundsWithPendingTransactions = new Set(PendingTransactions.value.map(transaction => transaction.fundId))
             let FundsWithPosession = new Set(Funds.map(Funds => Funds.fundId))
 
@@ -251,11 +250,14 @@ export const DashBoardProvider = ({ children }) => {
             });
 
             const responses = await Promise.all(promises);
-
+            
+            let aux = []
+            
             responses.forEach((response) => {
-                setPendingWithoutpossession(prevState => [...prevState, { fund: response }])
+                aux = [...aux, { fund: response }]
             })
 
+            setPendingWithoutpossession([...aux])
             setContentReady(true)
         }
         if (!FetchingFunds && PendingTransactions.fetched && Accounts.length > 0 && !contentReady && ClientSelected.id) {

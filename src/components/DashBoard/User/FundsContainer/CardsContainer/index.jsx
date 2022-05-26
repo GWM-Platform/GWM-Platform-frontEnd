@@ -3,8 +3,6 @@ import { Row, Container} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import FundCard from './FundCard';
 import CashCard from './CashCard';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 import { DashBoardContext } from 'context/DashBoardContext';
 import Indicators from './Indicators'
 import './index.css'
@@ -94,12 +92,12 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
             <div className={`arrow  right d-none d-sm-flex
                                 ${Funds.length + PendingWithoutpossession.length > 2 && showRightChevron ? "opacity-1" : ""}`}
                 onClick={() => { if (showRightChevron) setScrollPositionByOffset(Offset + 1) }}>
-                <FontAwesomeIcon icon={faChevronRight} />
+                <img className="chevron" src={`${process.env.PUBLIC_URL}/images/chevron/chevron-right.svg`} alt='right' />
             </div>
             <div className={` arrow left d-none d-sm-flex
                                 ${Funds.length + PendingWithoutpossession.length > 2 && showLeftChevron ? "opacity-1" : ""}`}
                 onClick={() => { if (showLeftChevron) setScrollPositionByOffset(Offset - 1) }}>
-                <FontAwesomeIcon icon={faChevronLeft} />
+                <img className="chevron" src={`${process.env.PUBLIC_URL}/images/chevron/chevron-left.svg`} alt='left' />
             </div>
             <Indicators
                 cardsAmount={Funds.length + PendingWithoutpossession.length + 1}

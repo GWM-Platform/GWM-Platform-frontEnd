@@ -6,13 +6,27 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 import './index.css'
 import { useHistory } from 'react-router-dom';
+import Decimal from 'decimal.js'
 
 const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
     const { t } = useTranslation();
 
     let history = useHistory();
 
-    const pendingshares = PendingTransactions.value.filter((transaction) => transaction.fundId === Fund.fund.id && Math.sign(transaction.shares) === +1).map((transaction) => transaction.shares).reduce((a, b) => a + b, 0).toFixed(2)
+    Decimal.set({ precision: 6 })
+
+    const pendingShares = () => {
+        //Filtro de todos los movimientos pendientes solo los del fondo correspondiente
+        const fundPendingTransactions = PendingTransactions.value.filter(
+            transaction => transaction.fundId === Fund.fund.id && Math.sign(transaction.shares) === +1
+        )
+
+        //Sumatoria de los movimientos pendientes del fondo
+        return fundPendingTransactions.map((transaction) => transaction.shares).reduce(
+            (previousValue, currentValue) => new Decimal(previousValue).plus(new Decimal(currentValue)), 0).toString()
+    }
+
+    const HoldingInCash = () => new Decimal(Fund?.shares).times(Fund?.fund?.sharePrice).toFixed(2).toString()
 
     const toTickets = (operation) => {
         history.push(`${operation}?fund=${Fund.fund.id}`);
@@ -63,15 +77,15 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
                                                 <div className="pe-2 containerHideInfo">
                                                     <span>$</span>
                                                     <span className={`info ${Hide ? "shown" : "hidden"}`}>
-                                                        {Fund.shares ? (Fund.shares * Fund.fund.sharePrice).toFixed(2).toString().replace(/./g, "*") : 0}
+                                                        {Fund.shares ? HoldingInCash().replace(/./g, "*") : 0}
                                                     </span>
 
                                                     <span className={`info ${Hide ? "hidden" : "shown"}`}>
-                                                        {Fund.shares ? (Fund.shares * Fund.fund.sharePrice).toFixed(2).toString() : 0}
+                                                        {Fund.shares ? HoldingInCash() : 0}
                                                     </span>
 
                                                     <span className={`info placeholder`}>
-                                                        {Fund.shares ? (Fund.shares * Fund.fund.sharePrice).toFixed(2).toString() : 0}
+                                                        {Fund.shares ? HoldingInCash() : 0}
                                                     </span>
                                                 </div>
                                                 <div className="ps-0 hideInfoButton d-flex align-items-center">
@@ -95,9 +109,11 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
                                     </h1>
                                     <Card.Text className="subTitle lighter mt-0 mb-2">
                                         {t("Balance (shares)")}:<span className="bolder"> {Fund.shares ? Fund.shares : 0}</span><br />
-                                        {t("Pending transactions (shares)")}:
-                                        <span className={`bolder text-green`}>{" "}
-                                            +{pendingshares}</span><br />
+                                        <span className="text-nowrap">{t("Pending transactions")}&nbsp;</span>
+                                        <span className="text-nowrap">
+                                            ({t("shares")}):
+                                            <span className={`bolder text-green`}>&nbsp;+{pendingShares()}</span>
+                                        </span>
                                     </Card.Text>
                                 </Row>
                             </Container>

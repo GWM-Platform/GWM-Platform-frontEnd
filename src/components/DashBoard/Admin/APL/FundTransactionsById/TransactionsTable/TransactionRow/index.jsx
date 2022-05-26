@@ -16,7 +16,7 @@ const TransactionRow = ({ transaction,user }) => {
     <tr>
       <td className="tableDate">{momentDate.format('DD/MM/YYYY, h:mm a')}</td>
       <td >{user.alias}</td>
-      <td className={`tableConcept ${Math.sign(transaction.shares) === 1 ? 'text-red' : 'text-green'}`}>
+      <td className={`tableConcept `}>
         <span>{Math.sign(transaction.shares) === 1 ? t('Sale of') : t('Purchase of')}{" "}</span>
         {Math.abs(transaction.shares)} {t("shares")}
       </td>
@@ -26,7 +26,7 @@ const TransactionRow = ({ transaction,user }) => {
       <td className="tableDescription d-none d-sm-table-cell ">
         ${transaction.sharePrice}
       </td>
-      <td className={`tableAmount ${Math.sign(transaction.shares) === 1 ? 'text-green' : 'text-red'}`}>
+      <td className={`tableAmount ${Math.sign(transaction.shares) === 1 ? 'text-red' : 'text-green'}`}>
         <span>{Math.sign(transaction.shares) === 1 ? '-' : '+'}</span>
         <span >$</span>
         {(Math.abs(transaction.shares) * transaction.sharePrice).toFixed(2)}

@@ -80,7 +80,7 @@ const MainCard = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchBy
                         <Nav.Link eventKey={"0"}>{t("Transactions")}</Nav.Link>
                     </Nav.Item>
                     <Nav.Item>
-                        <Nav.Link eventKey={"1"}>{t("Transfers")}</Nav.Link>
+                        <Nav.Link eventKey={"1"}>{t("Transfer activity")}</Nav.Link>
                     </Nav.Item>
                 </Nav>
             </Container>

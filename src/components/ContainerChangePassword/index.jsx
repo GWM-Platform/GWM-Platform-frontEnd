@@ -56,7 +56,7 @@ const ContainerForgotPassword = () => {
 
     let aux = data
     aux[event.target.id] = event.target.value
-
+    
     if (event.target.id !== "passwordConfirm") {
       let auxToAPI = {}
       auxToAPI[event.target.id] = event.target.value
@@ -68,7 +68,7 @@ const ContainerForgotPassword = () => {
     setData((prevState) => ({ ...prevState, ...aux }))
 
     setMatch(aux.passwordConfirm === aux.password)
-    if (aux.passwordConfirm === aux.password && aux.id !== "" && aux.token !== "" && validation.value === "Medium") {
+    if (aux.passwordConfirm === aux.password && aux.email !== "" && aux.token !== "" && validation.value === "Medium") {
       setButtonDisabled(false)
     } else {
       setButtonDisabled(true)

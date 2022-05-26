@@ -10,7 +10,7 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, NavInfoToggl
 
     const { t } = useTranslation();
 
-    const { FetchingFunds, Funds, Accounts, contentReady } = useContext(DashBoardContext);
+    const { FetchingFunds, Funds, Accounts, contentReady,PendingWithoutpossession } = useContext(DashBoardContext);
 
     const [error, setError] = useState("Loading");
 
@@ -21,10 +21,10 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, NavInfoToggl
 
     useEffect(() => {
         if (!FetchingFunds && contentReady) {
-            setNumberOfFunds(Accounts.length + Funds.length)
+            setNumberOfFunds(Accounts.length + Funds.length + PendingWithoutpossession.length)
             if (Accounts.length + Funds.length === 0 && !FetchingFunds && contentReady) setError("No tiene participacion en ningun fondo")
         }
-    }, [Accounts, Funds, setNumberOfFunds, FetchingFunds, contentReady])
+    }, [Accounts, Funds, setNumberOfFunds, FetchingFunds, contentReady,PendingWithoutpossession])
 
     return (
         <Container fluid className="tabContent">

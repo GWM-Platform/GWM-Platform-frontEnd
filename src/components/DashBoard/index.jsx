@@ -41,7 +41,7 @@ import DashboardToast from './DashboardToast'
 
 const UserDashBoard = () => {
 
-    const { isMobile, admin, ClientSelected, balanceChanged, setBalanceChanged, itemSelected, setItemSelected, IndexClientSelected, UserClients } = useContext(DashBoardContext);
+    const { isMobile, admin, ClientSelected, balanceChanged, setBalanceChanged, setItemSelected, IndexClientSelected, UserClients } = useContext(DashBoardContext);
 
     const { path } = useRouteMatch()
     const [NavInfoToggled, setNavInfoToggled] = useState(false)
@@ -59,7 +59,7 @@ const UserDashBoard = () => {
                             <>
                                 <NavInfo NavInfoToggled={NavInfoToggled} />
                                 <NavBar NavInfoToggled={NavInfoToggled} setNavInfoToggled={setNavInfoToggled}
-                                    setItemSelected={setItemSelected} itemSelected={itemSelected}
+                                    setItemSelected={setItemSelected}
                                 />
                                 {
                                     admin && IndexClientSelected === -1 ?
@@ -134,7 +134,7 @@ const UserDashBoard = () => {
                                 }
                                 <DashboardToast />
                                 <Footer />
-                                <NavBarMobile setItemSelected={setItemSelected} itemSelected={itemSelected} />
+                                <NavBarMobile setItemSelected={setItemSelected}/>
                             </>
                             :
                             <Loading />

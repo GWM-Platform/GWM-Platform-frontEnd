@@ -15,8 +15,8 @@ import ClientSelector from './ClientSelector';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css'
 
-const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) => {
-    const { admin, IndexClientSelected, UserClients } = useContext(DashBoardContext)
+const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
+    const { admin, IndexClientSelected, UserClients, itemSelected } = useContext(DashBoardContext)
     const itemSelectedLC = itemSelected.toLowerCase()
     const { t } = useTranslation();
 
@@ -38,6 +38,8 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) =>
 
     return (
         <Navbar sticky="top" className={`py-0 mb-0 navBarDesktop`} collapseOnSelect expand="sm" variant="dark" >
+            
+            {/*====================================================Desktop==================================================== */}
             <Container fluid className="bottomInnerBorder px-0 d-none d-sm-block">
                 <Row className="w-100 d-flex align-items-center mx-0">
                     <Col sm="auto" md={1} lg={admin && UserClients.length > 0 && IndexClientSelected === -1 ? "auto" : 2} style={{ paddingBottom: "5px" }}>
@@ -51,7 +53,7 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) =>
                                 admin && IndexClientSelected === -1 ?
                                     <>
                                         <NavDropdown
-                                            active={itemSelectedLC === "apl" || itemSelectedLC === "fundsadministration" || itemSelectedLC === "assetsadministration" }
+                                            active={itemSelectedLC === "apl" || itemSelectedLC === "fundsadministration" || itemSelectedLC === "assetsadministration"}
                                             className="px-0 transactionDropdown" title={t("Funds Administration")} id="collasible-nav-dropdown">
                                             <NavDropdown.Item
                                                 active={itemSelectedLC === "fundsadministration"}
@@ -160,9 +162,9 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) =>
                             <div className="d-block d-sm-none d-md-block" style={{ paddingBottom: "5px" }}>
                                 <LanguageSelector />
                             </div>
-                            
+
                             <Nav.Link className="text-black" onClick={() => logOut()}>
-                                {t("LogOut")}{" "}
+                                {t("LogOut")}&nbsp;
                                 <FontAwesomeIcon icon={faSignOutAlt} />
                             </Nav.Link>
                         </Nav>
@@ -170,41 +172,70 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) =>
                 </Row>
             </Container>
             <Navbar.Toggle style={{ borderColor: "rgba(0,0,0,0)" }} className="ps-2 ms-2 d-none" aria-controls="responsive-navbar-nav" />
+
+            {/*====================================================Mobile==================================================== */}
             <Nav className={`w-100 d-block d-sm-none`}  >
                 <Container fluid className="px-0">
+                    {/*----------------------------------------------------------Admin----------------------------------------------------------*/}
                     <Row className={`w-100 justify-content-between align-items-center mx-0 px-0 ${itemSelectedLC === "fundsadministration" || itemSelectedLC === "assetsadministration" ? "d-flex" : "d-none"}`}>
                         <Col xs="6" className="px-0">
                             <Nav.Link
-                                className="ps-4 text-start"
+                                className="ps-4 text-center"
                                 active={itemSelectedLC === "fundsadministration" || itemSelectedLC === "Fundsadministration"}
                                 onClick={() => { goTo("fundsAdministration") }}>
-                                {t("Funds Administration")}
+                                {t("Funds")}
                             </Nav.Link> </Col>
                         <Col xs="6" className="px-0">
                             <Nav.Link
-                                className="pe-4 text-end"
+                                className="pe-4 text-center"
                                 active={itemSelectedLC === "assetsadministration"}
                                 onClick={() => { goTo("assetsAdministration") }}>
-                                {t("Assets Administration")}
+                                {t("Assets")}
                             </Nav.Link>
                         </Col>
                     </Row>
 
-                    <Row className={`w-100 justify-content-between align-items-center mx-0 px-0 ${itemSelectedLC === "addaccount" || itemSelectedLC === "depositcash" ? "d-flex" : "d-none"}`}>
+                    <Row className={`w-100 justify-content-between align-items-center mx-0 px-0 ${itemSelectedLC === "addaccount" || itemSelectedLC === "depositcash" || itemSelectedLC === "withdrawcash" || itemSelectedLC === "accountssupervision" ? "d-flex" : "d-none"}`}>
                         <Col xs="6" className="px-0">
-                            <Nav.Link
-                                className="ps-4 text-start"
-                                active={itemSelectedLC === "depositcash"}
-                                onClick={() => { goTo("DepositCash") }}>
-                                {t("Deposit cash")}
-                            </Nav.Link> </Col>
+                            <OverlayTrigger  placement="bottom" overlay={
+                                <Popover id="popover-funds" className="OverlayNavMobile" >
+                                    <Popover.Body>
+                                        <NavDropdown.Item
+                                            active={itemSelectedLC === "depositcash"} onClick={() => goTo("depositCash")}>
+                                            {t("Deposit cash")}
+                                        </NavDropdown.Item>
+                                        <NavDropdown.Item
+                                            active={itemSelectedLC === "withdrawcash"} onClick={() => goTo("withdrawCash")}>
+                                            {t("Withdraw cash")}
+                                        </NavDropdown.Item>
+                                    </Popover.Body>
+                                </Popover>
+                            } popperConfig={1}>
+                                <Button className={`dropdownButton ${itemSelectedLC === "withdrawcash" || itemSelectedLC === "depositcash" ? "active" : ""}`}>
+                                    <p className="mobile-dropdown mb-0" >{t("Operations")}</p>
+                                </Button>
+                            </OverlayTrigger>
+                        </Col>
                         <Col xs="6" className="px-0">
-                            <Nav.Link
-                                className="pe-4 text-end"
-                                active={itemSelectedLC === "addaccount"}
-                                onClick={() => { goTo("addAccount") }}>
-                                {t("Add Account")}
-                            </Nav.Link>
+                            <OverlayTrigger  placement="bottom" overlay={
+                                <Popover id="popover-funds" className="OverlayNavMobile" >
+                                    <Popover.Body>
+                                        <NavDropdown.Item
+                                            active={itemSelectedLC === "accountssupervision"}
+                                            onClick={() => { goTo("accountsSupervision") }}>
+                                            {t("Accounts Supervision")}
+                                        </NavDropdown.Item>
+                                        <NavDropdown.Item
+                                            active={itemSelectedLC === "addaccount"} onClick={() => { goTo("addAccount") }}>
+                                            {t("Add Account")}
+                                        </NavDropdown.Item>
+                                    </Popover.Body>
+                                </Popover>
+                            } popperConfig={1}>
+                                <Button className={`dropdownButton ${itemSelectedLC === "addaccount" || itemSelectedLC === "accountssupervision" ? "active" : ""}`}>
+                                    <p className="mobile-dropdown mb-0" >{t("Accounts")}</p>
+                                </Button>
+                            </OverlayTrigger>
                         </Col>
                     </Row>
 
@@ -215,9 +246,11 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) =>
                                 active={itemSelectedLC === "ticketsadministration"}
                                 onClick={() => { goTo("ticketsAdministration") }}>
                                 {t("Tickets Administration")}
-                            </Nav.Link> </Col>
+                            </Nav.Link>
+                        </Col>
                     </Row>
 
+                    {/*----------------------------------------------------------Client----------------------------------------------------------*/}
                     <Row className={`w-100 justify-content-between align-items-center mx-0 px-0 ${itemSelectedLC === "accounts" || itemSelectedLC === "history" ? "d-flex" : "d-none"}`}>
                         <Col xs="6" className="px-0">
                             <Nav.Link
@@ -237,61 +270,50 @@ const NavBarDashBoard = ({ itemSelected, NavInfoToggled, setNavInfoToggled }) =>
                     </Row>
                     <Row className={`w-100 justify-content-between align-items-center mx-0 px-0 ${itemSelectedLC === "buy" || itemSelectedLC === "sell" || itemSelectedLC === "deposit" || itemSelectedLC === "withdraw" || itemSelectedLC === "transfer" ? "d-flex" : "d-none"}`}>
                         <Col xs="6" className="px-0">
-                            <OverlayTrigger trigger='focus' placement="bottom" overlay={
+                            <OverlayTrigger  placement="bottom" overlay={
                                 <Popover id="popover-funds" className="OverlayNavMobile" >
                                     <Popover.Body>
-                                        <NavDropdown.Item
-                                            active={itemSelectedLC === "buy"}
-                                            onClick={() => { goTo("buy") }}>
+                                        <NavDropdown.Item active={itemSelectedLC === "buy"} onClick={() => goTo("buy")}>
                                             {t("Buy")}
                                         </NavDropdown.Item>
-                                        <NavDropdown.Item
-                                            active={itemSelectedLC === "sell"}
-                                            onClick={() => {
-                                                goTo("sell")
-                                                    ;
-                                            }}>
+                                        <NavDropdown.Item active={itemSelectedLC === "sell"} onClick={() => goTo("sell")}>
                                             {t("Sell")}
                                         </NavDropdown.Item>
                                     </Popover.Body>
                                 </Popover>
                             } popperConfig={1}>
-                                <Button className={`left ${itemSelectedLC === "sell" || itemSelectedLC === "buy" ? "active" : ""}`}>
-                                    <p className="mb-0" >{t("Fund Operations")}</p>
+                                <Button className={`dropdownButton ${itemSelectedLC === "sell" || itemSelectedLC === "buy" ? "active" : ""}`}>
+                                    <p className="mb-0 mobile-dropdown" >{t("Funds")}</p>
                                 </Button>
                             </OverlayTrigger>
                         </Col>
                         <Col xs="6" className="px-0">
-                            <OverlayTrigger trigger='focus' placement="bottom" overlay={
-                                <Popover id="popover-cash" className="OverlayNavMobile">
-                                    <Popover.Body>
-                                        {/*<NavDropdown.Item
-                                            active={itemSelected === "deposit"}
-                                            onClick={() => { toDeposit(); }}>
-                                            {t("Deposit")}
-                                        </NavDropdown.Item>*/}
-                                        <NavDropdown.Item
-                                            active={itemSelectedLC === "withdraw"}
-                                            onClick={() => { goTo("withdraw"); }}>
-                                            {t("Withdraw")}
-                                        </NavDropdown.Item>
-                                        <NavDropdown.Item
-                                            active={itemSelectedLC === "transfer"}
-                                            onClick={() => { goTo("Transfer") }}>
-                                            {t("to Transfer")}
-                                        </NavDropdown.Item>
-                                    </Popover.Body>
-                                </Popover>
-                            } popperConfig={1}>
-                                <Button className={`right ${itemSelectedLC === "withdraw" || itemSelectedLC === "deposit" || itemSelectedLC === "transfer" ? "active" : ""}`}>
-                                    <p className="mb-0" onClick={(e) => { e.target.focus() }}>{t("Account Operations")}</p>
+                            <OverlayTrigger 
+                                placement="bottom" overlay={
+                                    <Popover id="popover-cash" className="OverlayNavMobile">
+                                        <Popover.Body>
+                                            <NavDropdown.Item
+                                                active={itemSelectedLC === "withdraw"}
+                                                onClick={() => { goTo("withdraw"); }}>
+                                                {t("Withdraw")}
+                                            </NavDropdown.Item>
+                                            <NavDropdown.Item
+                                                active={itemSelectedLC === "transfer"}
+                                                onClick={() => { goTo("Transfer") }}>
+                                                {t("to Transfer")}
+                                            </NavDropdown.Item>
+                                        </Popover.Body>
+                                    </Popover>
+                                } popperConfig={1}>
+                                <Button className={`dropdownButton ${itemSelectedLC === "withdraw" || itemSelectedLC === "deposit" || itemSelectedLC === "transfer" ? "active" : ""}`}>
+                                    <p className="mb-0 mobile-dropdown" onClick={(e) => { e.target.focus() }}>{t("Account")}</p>
                                 </Button>
                             </OverlayTrigger>
                         </Col>
                     </Row>
                 </Container>
-            </Nav>
-        </Navbar>
+            </Nav >
+        </Navbar >
     )
 }
 export default NavBarDashBoard

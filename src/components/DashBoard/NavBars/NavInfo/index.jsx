@@ -13,7 +13,7 @@ import LanguageSelector from 'components/LanguageSelector';
 const NavBarInfo = ({ NavInfoToggled }) => {
 
     const { t } = useTranslation();
-    const { ClientSelected } = useContext(DashBoardContext)
+    const { ClientSelected, admin, IndexClientSelected } = useContext(DashBoardContext)
 
     return (
         <Navbar className={`${NavInfoToggled ? "toggled" : ""} py-0 navBarInfo d-flex justify-content-center`} collapseOnSelect expand="lg" variant="dark">
@@ -29,25 +29,24 @@ const NavBarInfo = ({ NavInfoToggled }) => {
                             />
                         </Navbar.Brand>
                     </Col>
-                    {
-                        ClientSelected ?
-                            ClientSelected.firstName ?
 
-                                <Col className="d-flex align-items-center px-0">
-                                    <div className="d-none d-md-block">
-                                        <h1 className="greeting p-0 my-0" >
-                                            {t("Hi")},
-                                            {` ${ClientSelected.firstName === undefined ? "" : ClientSelected.firstName === "-" ? "" : ClientSelected.firstName} 
-                                ${ClientSelected.lastName === undefined ? "" : ClientSelected.lastName === "-" ? "" : ClientSelected.lastName}`}!
-                                        </h1>
-                                    </div>
-                                    <ClientSelector />
-                                </Col>
-                                :
-                                null
-                            :
-                            null
-                    }
+                    <Col className="d-flex align-items-center px-0">
+                        <div className="d-none d-md-block">
+                            <h1 className="greeting p-0 my-0" >
+                                {
+                                    admin && IndexClientSelected === -1 ?
+                                        t("Admin Panel")
+                                        :
+                                        <>
+                                            {t("Hi")},&nbsp;
+                                            {`${ClientSelected?.firstName===undefined ? "" : ClientSelected?.firstName === "-" ? "" : ClientSelected?.firstName} 
+                                            ${ClientSelected?.lastName===undefined ? "" : ClientSelected.lastName === "-" ? "" : ClientSelected.lastName}`}!</>
+                                }
+                            </h1>
+                        </div>
+                        <ClientSelector />
+                    </Col>
+
                     <Col xs="auto" className="d-block d-md-none ms-auto pe-0">
                         <LanguageSelector />
                     </Col>

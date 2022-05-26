@@ -26,6 +26,7 @@
 		"buffer": "^6.0.3",
 		"check-password-strength": "^2.0.3",
 		"chokidar": "^3.5.2",
+		"decimal.js": "^10.3.1",
 		"html2canvas": "^1.0.0",
 		"i18next": "^20.3.2",
 		"i18next-browser-languagedetector": "^6.1.2",
@@ -43,6 +44,7 @@
 		"react-router-dom": "^5.2.0",
 		"react-scripts": "5.0.0",
 		"recharts": "^2.1.6",
+		"sass": "^1.52.1",
 		"stream-browserify": "^3.0.0",
 		"util": "^0.12.4",
 		"web-vitals": "^1.1.2"

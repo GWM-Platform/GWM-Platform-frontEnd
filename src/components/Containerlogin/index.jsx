@@ -88,8 +88,6 @@ const ContainerLogin = () => {
             destination = `FundsAdministration`
           }
         } else {
-          console.log(desiredLocation, desiredId, desiredType, desiredClient)
-
           if (desiredLocation && desiredId && desiredType && desiredClient) {
             destination = `Accounts?loc=${desiredLocation}&id=${desiredId}&type=${desiredType}&client=${desiredClient}${desiredFundId ? `&fundId=${desiredFundId}` : ""}`
             console.log(destination)

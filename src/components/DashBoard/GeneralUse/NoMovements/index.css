@@ -1,0 +1,8 @@
+.emptyTable .icon{
+    font-size: 30px;
+    display: block;
+    text-align: center;
+}
+.emptyTable .text{
+    font-size: 15px;
+}

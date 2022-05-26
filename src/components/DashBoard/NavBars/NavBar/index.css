@@ -87,7 +87,7 @@
     color:var(--blue-main);
     transform: rotate(180deg);
 }
-.navBarDesktop .left,.navBarDesktop .right{
+.navBarDesktop .dropdownButton{
     font-size: 1rem;
     display: block;
     width: 100%;
@@ -97,19 +97,14 @@
     border-radius: 0;
     border-color: transparent;
 }
-.navBarDesktop .left{
+
+.navBarDesktop .dropdownButton{
     color:black;
     text-align: center;
-    padding: .5em .5em .5em 1.5rem;
-
-}
-.navBarDesktop .right{
-    color:black;
-    text-align: center;
-    padding: .5em 1.5rem .5em .5em;
+    padding: .5em;
 }
 
-.navBarDesktop .left.active,.navBarDesktop .right.active{
+z.navBarDesktop .dropdownButton.active{
     border-bottom: 5px solid;
     border-color: var(--selected-underline-section-color);
     color:rgba(0,0,0,0.7)
@@ -139,6 +134,17 @@
 }
 .OverlayNavMobile .popover-body{
     padding: 0;
+}
+
+
+.navBarDesktop .mobile-dropdown::after{
+    content: "";
+	background-image: url("data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27 fill=%27%23082044%27><path fill-rule=%27evenodd%27 d=%27M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z%27/></svg>");
+    border: none!important;
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    margin-left: 10px;
 }
 
 @media (min-width: 992px) {

@@ -10,17 +10,17 @@ const FundsTable = ({ Funds, AssetTypes, chargeFunds, setAction, Action }) => {
     const { t } = useTranslation();
 
     return (
-        <div style={{overflowX:"auto"}}>
+        <div style={{overflowX:"auto",scrollSnapType:"both mandatory"}}>
             <Table className="FundsTable" striped bordered hover>
 
                 <thead className="verticalTop tableHeader solid-bg">
                     <tr>
-                        <th className="id">{t("Id")}</th>
                         <th className="Name">{t("Name")}</th>
                         <th className="Type">{t("Type")}</th>
                         <th className="Shares">{t("Total shares")}</th>
                         <th className="FreeShares">{t("APL shares")}</th>
                         <th className="SharePrice">{t("Share price")}</th>
+                        <th className="id">{t("Id")}</th>
                         <th className="Actions">{t("Actions")}</th>
                     </tr>
                 </thead>

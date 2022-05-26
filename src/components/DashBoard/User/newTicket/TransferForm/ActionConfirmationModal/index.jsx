@@ -28,22 +28,14 @@ const accountAlias = AccountSelected?.alias
                             {t("Operation")}: <span className="emphasis">{t("Transfer")}</span>
                         </li>
                         <li className="listedInfo">
-                            {t("Source account")}: <span className="emphasis">{accountAlias}</span>
+                            {t("Transfer from")}: <span className="emphasis">{accountAlias}</span>
                         </li>
                         <li className="listedInfo">
-                            {t("Target account alias")}: <span className="emphasis">{TargetAccount?.content?.alias}</span>
-                        </li>
-                        <li className="listedInfo">
-                            {t("Target account ID")}: <span className="emphasis">{TargetAccount?.content?.id}</span>
-                        </li>
-                        <li className="listedInfo">
-                            {t("Your account balance")}: <span className="emphasis">${Balance}</span>
+                            {t("Transfer to")}: <span className="emphasis">{TargetAccount?.content?.alias}</span>
                         </li>
                         <li className="listedInfo">
                             {t("Cash operation amount")}: <span className="emphasis">${data.amount}</span>
                         </li>
-                        
-
                     </ul>
                 </div>
             </Modal.Body>

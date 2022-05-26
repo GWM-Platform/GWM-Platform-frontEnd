@@ -46,7 +46,7 @@ const SetPassword = () => {
             }
         })
 
-        if (response.status === 200) {
+        if (response.status === 201) {
             setData({ ...Data, ...{ passwordChanged: true } })
         } else {
             switch (response.status) {
@@ -76,6 +76,8 @@ const SetPassword = () => {
         }
     }
 
+    const [ShowRequirements, setShowRequirements] = useState(false)
+    const symbols = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
 
     return (
 
@@ -90,7 +92,7 @@ const SetPassword = () => {
                                         <FontAwesomeIcon icon={faCheckCircle} />
                                     </h1>
                                     <h2 className="label">
-                                        {t("Password, has been changed successfully.")}
+                                        {t("Password has been changed successfully.")}
                                     </h2>
                                     <Col xs="12" className="d-flex justify-content-center">
                                         <Button variant="danger" onClick={() => toDashBoard()} className='btn mainColor mt-4'>
@@ -118,42 +120,31 @@ const SetPassword = () => {
                                                         onChange={handleChange}
                                                         isValid={validation.value === "Medium" || validation.value === "Strong"}
                                                         isInvalid={validation.value !== "Medium" && validation.value !== "Strong"}
+                                                        onFocus={() => setShowRequirements(true)}
+                                                        onBlur={() => setShowRequirements(false)}
                                                     />
                                                     <Form.Control.Feedback>{t("Looks good")}!</Form.Control.Feedback>
-                                                    <Form.Control.Feedback type="invalid">
-                                                        <p className="validation">{t("Your new password must have")}:
-                                                            <br />
-                                                            <span className={`pe-1 ${validation.length > 8 ? "textGreen" : "textRed"}`}>
-                                                                <FontAwesomeIcon icon={validation.length > 8 ? faCheckCircle : faTimesCircle} />
-                                                                {" "}
-                                                                {t("8 characters lenght")}
-                                                            </span>
-                                                            <br />
-                                                            <span className={`pe-1 ${validation.contains.includes('number') ? "textGreen" : "textRed"}`}>
-                                                                <FontAwesomeIcon icon={validation.contains.includes('number') ? faCheckCircle : faTimesCircle} />
-                                                                {" "}
-                                                                {t("a number")}
-                                                            </span>
-                                                            <br />
-                                                            <span className={`pe-1 ${validation.contains.includes('lowercase') ? "textGreen" : "textRed"}`}>
-                                                                <FontAwesomeIcon icon={validation.contains.includes('lowercase') ? faCheckCircle : faTimesCircle} />
-                                                                {" "}
-                                                                {t("a lowercase letter")}
-                                                            </span>
-                                                            <br />
-                                                            <span className={`pe-1 ${validation.contains.includes('uppercase') ? "textGreen" : "textRed"}`}>
-                                                                <FontAwesomeIcon icon={validation.contains.includes('uppercase') ? faCheckCircle : faTimesCircle} />
-                                                                {" "}
-                                                                {t("a capital letter")}
-                                                            </span>
-                                                            <br />
-                                                            <span className={`pe-1 ${validation.contains.includes('symbol') ? "textGreen" : "textRed"}`}>
-                                                                <FontAwesomeIcon icon={validation.contains.includes('symbol') ? faCheckCircle : faTimesCircle} />
-                                                                {" "}
-                                                                {t("a symbol")}
-                                                            </span>
-                                                        </p>
-                                                    </Form.Control.Feedback>
+                                                    <div className={ShowRequirements ? "expanded" : "collapsed"}>
+                                                        <Form.Text className={`text-muted formText mb-4`}>
+                                                            <p className="validation mb-1 ">{t("Your new password must have")}:
+                                                                <br />
+                                                                {validationIcon(validation.length >= 8)}
+                                                                {t("8 characters length")}
+                                                                <br />
+                                                                {validationIcon(validation.contains.includes('number'))}
+                                                                {t("A number")}
+                                                                <br />
+                                                                {validationIcon(validation.contains.includes('lowercase'))}
+                                                                {t("A lowercase letter")}
+                                                                <br />
+                                                                {validationIcon(validation.contains.includes('uppercase'))}
+                                                                {t("A capital letter")}
+                                                                <br />
+                                                                {validationIcon(validation.contains.includes('symbol'))}
+                                                                {t("A symbol")} ({symbols})
+                                                            </p>
+                                                        </Form.Text>
+                                                    </div>
                                                 </Form.Group>
                                                 <Form.Group>
                                                     <Form.Label>{t("Password Confirmation")}</Form.Label>
@@ -164,7 +155,7 @@ const SetPassword = () => {
                                                         value={Data.passwordConfirm}
                                                         onChange={handleChange}
                                                         isInvalid={Data.password !== Data.passwordConfirm || (validation.value !== "Medium" && validation.value !== "Strong")}
-                                                        isValid={Data.password === Data.passwordConfirm && (validation.value === "Medium" || validation.value === "Strong") }
+                                                        isValid={Data.password === Data.passwordConfirm && (validation.value === "Medium" || validation.value === "Strong")}
                                                     />
                                                     <Form.Control.Feedback type="valid">{t("Looks good")}!</Form.Control.Feedback>
                                                     <Form.Control.Feedback type="invalid">
@@ -196,3 +187,11 @@ const SetPassword = () => {
 }
 
 export default SetPassword
+
+const validationIcon = (valid) => {
+    if (valid) {
+        return <span className="pe-1 textGreen"> <FontAwesomeIcon icon={faCheckCircle} /></span>
+    } else {
+        return <span className="pe-1 textRed"> <FontAwesomeIcon icon={faTimesCircle} /></span>
+    }
+}

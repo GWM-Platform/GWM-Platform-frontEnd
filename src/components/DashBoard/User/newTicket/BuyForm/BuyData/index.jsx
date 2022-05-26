@@ -2,12 +2,21 @@ import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form, InputGroup, Row, Button, Accordion, Container } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
+import Decimal from 'decimal.js';
 
 
 const BuyData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAccordion, Balance, fetching }) => {
 
     const { t } = useTranslation();
     const multiplier = 10000
+
+
+    const amountDecimal = new Decimal(data.amount.length === 0 ? 0 : data.amount)
+ 
+    const sharePriceDecimal = new Decimal(Funds[data.FundSelected]?.sharePrice || 1)
+
+    const sharesToBuy = new Decimal(amountDecimal).div(sharePriceDecimal).toFixed(5)
+
     return (
         <Accordion.Item eventKey="0" disabled>
             <Accordion.Header onClick={() => { if (data.FundSelected !== -1) toggleAccordion() }}>
@@ -34,7 +43,7 @@ const BuyData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAcc
                             onWheel={event => event.currentTarget.blur()}
                             disabled={data.FundSelected === -1}
                             value={data.amount}
-                            step=".0001"
+                            step=".01"
                             onChange={handleChange}
                             min={Funds[data.FundSelected] ? Funds[data.FundSelected].sharePrice || 1 : 1}
                             max={data.FundSelected === -1 ?
@@ -55,17 +64,17 @@ const BuyData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAcc
                                         t("You must enter how much you want to invest")
                                         :
                                         data.amount > Balance ?
-                                            t("You only have") + " $" + Balance + " " + t("available in your account.")
+                                            t("You only have") + " U$D " + Balance + " " + t("available in your account.")
                                             :
                                             data.amount < (Funds[data.FundSelected] ? Funds[data.FundSelected].sharePrice || 1 : 1) ?
-                                                t("At least you must buy one share") + " ($" + (Funds[data.FundSelected] ? Funds[data.FundSelected].sharePrice || 1 : 1) + ")"
+                                                t("At least you must buy one share") + " (U$D " + (Funds[data.FundSelected] ? Funds[data.FundSelected].sharePrice || 1 : 1) + ")"
                                                 :
-                                                (data.amount * multiplier) % (0.0001 * multiplier) === 0 ?
-                                                    t("You are trying to invest") + t(" $") + data.amount + t(", with you could buy") + t(" ") +
-                                                    (data.amount / Funds[data.FundSelected].sharePrice).toFixed(4) + " " + t("shares, but there are only") + t(" ") +
+                                                (data.amount * multiplier) % (0.01 * multiplier) === 0 ?
+                                                    t("You are trying to invest") + t(" U$D ") + data.amount + t(", with you could buy") + t(" ") +
+                                                    sharesToBuy.toString() + " " + t("shares, but there are only") + t(" ") +
                                                     Funds[data.FundSelected].freeShares + t(" free.")
                                                     :
-                                                    t("The min step is 0.0001")
+                                                    t("The min step is 0.01")
                             }
                         </Form.Control.Feedback>
                         <Form.Control.Feedback type="valid">
@@ -74,12 +83,12 @@ const BuyData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAcc
                                     t("Please, select a fund to buy")
                                     :
                                     t("You are buying") + " " +
-                                    (data.amount / Funds[data.FundSelected].sharePrice).toFixed(2) + " " +
+                                    sharesToBuy.toString() + " " +
                                     (
-                                        (data.amount / Funds[data.FundSelected].sharePrice).toFixed(2) === '1.00' ?
-                                        t("share")
-                                        :
-                                        t("shares")
+                                        sharesToBuy.toString() === '1.00' ?
+                                            t("share")
+                                            :
+                                            t("shares")
                                     )
                             }
                         </Form.Control.Feedback>

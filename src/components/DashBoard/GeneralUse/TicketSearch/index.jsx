@@ -11,7 +11,6 @@ const Search = ({ props }) => {
     const handleSearchChange = props.handleSearchChange
     const cancelSearch = props.cancelSearch
     const Search = props.Search
-    const keyWord = props.keyWord
     const fetching = props.fetching
 
     const { t } = useTranslation();
@@ -27,12 +26,12 @@ const Search = ({ props }) => {
 
     return (
         <Form onSubmit={handleSubmit}>
-            <Form.Label>{t("Search") + t(" ") + (keyWord ? t(keyWord) + " " : "") + t("by id")}</Form.Label>
+            <Form.Label>{t("Ticket N°")}</Form.Label>
             <InputGroup className={`searchBar  ${SearchText.length === 0 ? "" : "search"} `}>
                 <Form.Control
                     onChange={handleSearchChange}
                     value={SearchText}
-                    placeholder={t("Search") + t(" ") + (keyWord ? t(keyWord) + " " : "") + t("by id")}
+                    placeholder={t("Ticket N°")}
                     aria-label="Search"
                     type="number"
                     disabled={fetching}

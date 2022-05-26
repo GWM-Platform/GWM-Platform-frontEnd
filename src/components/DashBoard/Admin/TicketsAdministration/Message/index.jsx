@@ -11,7 +11,7 @@ const Message = ({ messageVariants, selected }) => {
             <h1 className="p-0 m-0 text d-flex align-items-center">
                 {
                     messageVariants[selected].needSpinner ?
-                        <Spinner className="me-2 " animation="border" variant="danger" />
+                        <Spinner className="me-2" animation="border" variant="primary" />
                         :
                         null
                 }

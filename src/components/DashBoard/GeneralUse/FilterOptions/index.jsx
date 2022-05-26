@@ -11,6 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, ticketSearch, ticketSearchProps }) => {
     const { t } = useTranslation();
     const { TransactionStates } = useContext(DashBoardContext)
+
     const [filterOptions, setFilterOptions] = useState({
         moves: movsPerPage,
         state: ""
@@ -50,7 +51,7 @@ const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, ti
 
     return (
         <Accordion flush>
-            <Accordion.Item >
+            <Accordion.Item eventKey="0">
                 <Accordion.Header disabled={disabled}>
                     {t("Filters")} {disabled ? t("(Cancel the search to use them)") : ""}
                 </Accordion.Header>
@@ -59,23 +60,21 @@ const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, ti
                         <Row className="align-items-stretch">
                             <Col>
                                 <Form.Group>
-                                    <Form.Label className="capitalizeFirstLetter">{t(keyword) + " " + t(`per page`)}</Form.Label>
-                                    <Form.Control disabled={disabled} required id="moves" onChange={handleChange} value={filterOptions.moves} type="number" min="1" placeholder="Transactions per page" />
+                                    <Form.Label className="capitalizeFirstLetter">{t(keyword + " per page")}</Form.Label>
+                                    <Form.Control disabled={disabled} required id="moves" onChange={handleChange} value={filterOptions.moves} type="number" min="1" placeholder={t(keyword + " per page")} />
                                 </Form.Group>
                             </Col>
                             {
-                                TransactionStates.fetched && TransactionStates.valid && !TransactionStates.fetching ?
-                                    <Col >
-                                        <Form.Group controlId="movesPerPage">
-                                            <Form.Label className="capitalizeFirstLetter">{t(`${keyword} status`)}</Form.Label>
-                                            <Form.Select disabled={disabled} value={filterOptions.state} onChange={handleChange} id="state">
-                                                <option value="">{t("All")}</option>
-                                                {TransactionStates.values.map((state, key) => <option key={key} value={state.id}>{t(state.name)}</option>)}
-                                            </Form.Select>
-                                        </Form.Group>
-                                    </Col>
-                                    :
-                                    null
+                                !!(TransactionStates.fetched && TransactionStates.valid && !TransactionStates.fetching) &&
+                                <Col >
+                                    <Form.Group controlId="movesPerPage">
+                                        <Form.Label className="capitalizeFirstLetter">{t(`status`)}</Form.Label>
+                                        <Form.Select disabled={disabled} value={filterOptions.state} onChange={handleChange} id="state">
+                                            <option value="">{t("All")}</option>
+                                            {TransactionStates.values.map((state, key) => <option key={key} value={state.id}>{t(state.name)}</option>)}
+                                        </Form.Select>
+                                    </Form.Group>
+                                </Col>
                             }
 
                             <Col xs="auto" className="d-flex align-items-end">

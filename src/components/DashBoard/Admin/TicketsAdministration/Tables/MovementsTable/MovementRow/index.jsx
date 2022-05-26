@@ -66,20 +66,26 @@ const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }) =>
     return (
         <>
             <tr className="transactionRow">
-                <td>{Movement.id}</td>
                 <td>
-                    {
-                        ClientAccountInfo.fetching ?
-                            <Spinner animation="border" size="sm" />
-                            :
-                            ClientAccountInfo.valid ?
-                                ClientAccountInfo.value.alias
+                    <span className='text-nowrap'>
+                        {
+                            ClientAccountInfo.fetching ?
+                                <Spinner animation="border" size="sm" />
                                 :
-                                t("Undefined Client")
-                    }
+                                ClientAccountInfo.valid ?
+                                    ClientAccountInfo.value.alias
+                                    :
+                                    t("Undefined Client")
+                        }
+                    </span>
                 </td>
                 <td>${Movement.amount}</td>
-                <td>{momentDate.format('MMMM Do YYYY, h:mm:ss a')}</td>
+                <td>
+                    <span className='text-nowrap'>
+                        {momentDate.format('MMMM Do YYYY, h:mm:ss a')}
+                    </span>
+                </td>
+                <td>{Movement.id}</td>
                 {
                     Movement.stateId === 1 ?
                         <td className="Actions verticalCenter" >

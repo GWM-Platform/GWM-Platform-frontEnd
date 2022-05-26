@@ -1,80 +1,87 @@
 .movementsMainCardAccount .history-tabs {
-    border: none;
-    background-color: rgb(243, 244, 246);
-    color: rgb(111, 111, 111)
+	border: none;
+	background-color: rgb(243, 244, 246);
+	color: rgb(111, 111, 111);
 }
 
-.movementsMainCardAccount .history-tabs .nav-item>.active {
-    border-radius: 0;
-    border: none;
-    border-top: var(--blue-main) 3px solid;
+.movementsMainCardAccount .history-tabs .nav-item .nav-link {
+	border-radius: 0;
+	border: none;
+    border-top: transparent 3px solid;
+}
+
+.movementsMainCardAccount .history-tabs .nav-item .nav-link.active {
+	border-radius: 0;
+	border: none;
+	border-top: var(--blue-main) 3px solid;
 }
 
 .movementsMainCardAccount .nav-link:hover {
-    color: black;
+	color: black;
+	border-color: transparent;
 }
 
 .movementsMainCardAccount .filter .form-control {
-    border-radius: 20px;
+	border-radius: 20px;
 }
 
 .movementsMainCardAccount .details .title {
-    text-transform: capitalize;
-    font-size: 20px;
-    font-weight: 400;
-    color: var(--main-color)
+	text-transform: capitalize;
+	font-size: 20px;
+	font-weight: 400;
+	color: var(--main-color);
 }
 
 .movementsMainCardAccount .details .text {
-    font-size: 17px;
-    font-weight: 200;
-    width: 100%;
-    border-bottom: var(--main-color) 1px solid;
+	font-size: 17px;
+	font-weight: 200;
+	width: 100%;
+	border-bottom: var(--main-color) 1px solid;
 }
 
-.movementsMainCardAccount .details .text>.amount {
-    text-align: end;
-    font-size: 17px;
-    font-weight: 400;
-    color: var(--main-color)
+.movementsMainCardAccount .details .text > .amount {
+	text-align: end;
+	font-size: 17px;
+	font-weight: 400;
+	color: var(--main-color);
 }
 
 .movementsMainCardAccount .border-bottom-main {
-    border-bottom: var(--main-color) 1px solid;
+	border-bottom: var(--main-color) 1px solid;
 }
 
 .movementsMainCardFund .border-bottom-none {
-    border-bottom: none!important;
+	border-bottom: none !important;
 }
 
 .movementsMainCardAccount .info .left {
-    font-size: 17px;
-    font-weight: 200;
+	font-size: 17px;
+	font-weight: 200;
 }
 
 .movementsMainCardAccount .info .title {
-    text-transform: uppercase;
-    color: black;
-    font-weight: 600;
-    font-size: 23px;
+	text-transform: uppercase;
+	color: black;
+	font-weight: 600;
+	font-size: 23px;
 }
 
 .movementsMainCardAccount .info .edit {
-    color: black;
-    font-weight: 400;
-    font-size: 16px;
+	color: black;
+	font-weight: 400;
+	font-size: 16px;
 }
 
 .movementsMainCardAccount .info .content {
-    color: var(--main-color);
-    font-weight: 400;
-    font-size: 16px;
+	color: var(--main-color);
+	font-weight: 400;
+	font-size: 16px;
 }
 
 .movementsMainCardAccount .loadingMovements {
-    height: calc( 100vh - 465px )
+	height: calc(100vh - 465px);
 }
 
 .movementsMainCardAccount .loadingMovements.navInfoToggled {
-    height: calc( 100vh - 465px +  76px )
+	height: calc(100vh - 465px + 76px);
 }

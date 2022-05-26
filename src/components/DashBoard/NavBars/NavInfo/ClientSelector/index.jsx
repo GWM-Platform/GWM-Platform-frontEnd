@@ -49,7 +49,7 @@ const ClientSelector = () => {
         </Dropdown>
         :
         <Col className="d-flex d-md-none align-items-center px-0">
-            <div className="d-none d-md-block">
+            <div>
                 <h1 className="greeting p-0 my-0" >
                     {t("Hi")},
                     {` ${ClientSelected.firstName === undefined ? "" : ClientSelected.firstName === "-" ? "" : ClientSelected.firstName} 

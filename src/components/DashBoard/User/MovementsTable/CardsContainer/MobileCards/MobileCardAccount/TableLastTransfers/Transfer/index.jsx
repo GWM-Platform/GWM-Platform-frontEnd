@@ -7,7 +7,8 @@ import { DashBoardContext } from 'context/DashBoardContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icons';
 import ActionConfirmationModal from './ActionConfirmationModal';
-const Movement = ({ content, getTransfers }) => {
+
+const Transfer = ({ content, getTransfers }) => {
 
   const { getMoveStateById, ClientSelected } = useContext(DashBoardContext)
   const { t } = useTranslation()
@@ -57,4 +58,4 @@ const Movement = ({ content, getTransfers }) => {
 
   )
 }
-export default Movement
+export default Transfer

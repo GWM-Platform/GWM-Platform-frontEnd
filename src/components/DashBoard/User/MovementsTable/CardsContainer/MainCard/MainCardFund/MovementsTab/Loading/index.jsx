@@ -15,7 +15,7 @@ const Loading = ({ NavInfoToggled }) => {
       <Col
         className="d-flex justify-content-center align-items-center"
       >
-        <Spinner className="me-2" animation="border" variant="success" />
+        <Spinner className="me-2" animation="border" variant="primary" />
         <span className="loadingText">{t("Loading")}</span>
       </Col>
     </Row>

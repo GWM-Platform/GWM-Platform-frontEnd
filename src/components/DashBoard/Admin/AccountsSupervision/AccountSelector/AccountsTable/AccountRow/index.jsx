@@ -3,9 +3,9 @@ import { useTranslation } from 'react-i18next';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Spinner } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {  faChevronRight } from '@fortawesome/free-solid-svg-icons'
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
 
-const AccountRow = ({ Account, Client,setSelectedAccountId }) => {
+const AccountRow = ({ Account, Client, setSelectedAccountId }) => {
 
     const { t } = useTranslation();
 
@@ -27,14 +27,14 @@ const AccountRow = ({ Account, Client,setSelectedAccountId }) => {
 
             if (response.status === 200) {
                 const dataFetched = await response.json()
-                setBalanceTotal((prevState) => ({...prevState,...{ fetching: false, fetched: false ,value:dataFetched}}))
+                setBalanceTotal((prevState) => ({ ...prevState, ...{ fetching: false, fetched: false, value: dataFetched } }))
             } else {
                 switch (response.status) {
                     case 500:
-                        setBalanceTotal((prevState) => ({...prevState,...{ fetching: false, fetched: false }}))
+                        setBalanceTotal((prevState) => ({ ...prevState, ...{ fetching: false, fetched: false } }))
                         break;
                     default:
-                        setBalanceTotal((prevState) => ({...prevState,...{ fetching: false, fetched: false }}))
+                        setBalanceTotal((prevState) => ({ ...prevState, ...{ fetching: false, fetched: false } }))
                         console.error(response.status)
                 }
             }
@@ -45,17 +45,21 @@ const AccountRow = ({ Account, Client,setSelectedAccountId }) => {
 
     return (
         <tr className="AccountRow">
-            <td className="Id">{t(Account.id)}</td>
+            <td className="Id">{Account.id}</td>
             <td className="Alias">{t(Client.alias)}</td>
             <td className="Alias">
                 {
                     balanceTotal.fetching ?
                         <Spinner animation="border" size="sm" />
                         :
-                        "$"+balanceTotal.value
+                        "$" + balanceTotal.value
                 }
             </td>
-            <td onClick={()=>setSelectedAccountId(Account.id)} className="toDetails">{t("Go to details")}<FontAwesomeIcon className="chevron" icon={faChevronRight}/></td>
+            <td onClick={() => setSelectedAccountId(Account.id)} className="toDetails">
+                <span className="d-inline d-md-none">{t("Details")}</span>
+                <span className="d-none d-md-inline">{t("Go to details")}</span>
+                <FontAwesomeIcon className="chevron" icon={faChevronRight} />
+            </td>
         </tr>
     )
 }

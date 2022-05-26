@@ -48,7 +48,7 @@ const TransferData = ({ data, handleChange, TargetAccount, toggleAccordion, Bala
                                 t("You must enter how much you want to transfer")
                                 :
                                 data.amount > Balance ?
-                                    t("The amount must be less than or equal to the available cash of the selected account") + " ($" + Balance + ")"
+                                    t("The amount must be less than or equal to the available cash of the selected account") + " (U$D " + Balance + ")"
                                     :
                                     t("The amount must be greater than 0")
                         }

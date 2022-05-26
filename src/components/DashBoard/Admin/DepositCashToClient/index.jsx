@@ -196,11 +196,7 @@ const DepositCashToClient = () => {
         // eslint-disable-next-line
     }, [])
 
-    const getClientNameById = (searchedId) => {
-        let index = Clients.value.findIndex((client) => client.id === searchedId)
-        return index === -1 ? false : Clients.value[index].alias
-    }
-
+    console.log(Accounts)
     return (
         <Container className="h-100 AssetsAdministration">
             <Row className="h-100 d-flex justify-content-center">
@@ -214,16 +210,8 @@ const DepositCashToClient = () => {
                             <option disabled value="">{t("Open this select menu")}</option>
                             {Accounts.value.map((Account, key) => {
                                 return (
-                                    <option disabled={Account.balance === 0} key={key + "-account"} value={Account.id}>
-                                        {
-                                            Clients.fetched ?
-                                                getClientNameById(Account.clientId) ?
-                                                    t("Client Alias") + ": " + getClientNameById(Account.clientId) :
-                                                    t("Client Id") + ": " + Account.clientId
-                                                :
-                                                "Client Id: " + Account.clientId
-                                        }
-                                        / {t("Account Id")} {Account.id} / {t("Actual Balance")}: {Account.balance}
+                                    <option key={key + "-account"} value={Account.id}>
+                                        {t("Account Alias")}: {Account.alias}&nbsp;/ {t("Account Id")}: {Account.id} / {t("Actual Balance")}: {Account.balance}
                                     </option>
                                 )
                             })}

@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useContext } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, Container, Col, Row } from 'react-bootstrap';
 import TableLastMovements from './TableLastMovements';
 import { useTranslation } from "react-i18next";
-import { useHistory } from 'react-router-dom'
 import { DashBoardContext } from 'context/DashBoardContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
@@ -11,57 +10,15 @@ import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 const MobileCard = ({ Fund, Hide, setHide }) => {
     // eslint-disable-next-line
 
-    const { token, ClientSelected, PendingTransactions } = useContext(DashBoardContext);
+    const { PendingTransactions } = useContext(DashBoardContext);
     const { t } = useTranslation();
-    let history = useHistory();
 
-    const [movements, setMovements] = useState([])
-    const [fetchingMovements, setFetchingMovements] = useState(true)
 
-    const toLogin = () => {
-        sessionStorage.clear();
-        history.push(`/login`);
-    }
-
+    
     const balanceInCash = Fund.shares ? (Fund.shares * Fund.fund.sharePrice) : 0
     const pendingshares = PendingTransactions.value.filter((transaction) => transaction.fundId === Fund.fund.id && Math.sign(transaction.shares) === +1).map((transaction) => transaction.shares).reduce((a, b) => a + b, 0).toFixed(2)
 
-    useEffect(() => {
-        const getMovements = async () => {
-            setFetchingMovements(true)
-            var url = `${process.env.REACT_APP_APIURL}/transactions/?` + new URLSearchParams({
-                client: ClientSelected.id,
-                filterFund: Fund.fundId
-            });
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    Accept: "*/*",
-                    'Content-Type': 'application/json'
-                }
-            })
 
-            if (response.status === 200) {
-                const data = await response.json()
-                setMovements(
-                    data.transactions ?
-                        data.transactions.sort((a, b) => (a.createdAt > b.createdAt) ? -1 : ((a.createdAt < b.createdAt) ? 1 : 0))
-                        :
-                        []
-                )
-            } else {
-                switch (response.status) {
-                    default:
-                        console.error(response.status)
-                        toLogin()
-                }
-            }
-            setFetchingMovements(false)
-        }
-        getMovements()
-        // eslint-disable-next-line 
-    }, [Fund])
 
     const checkImage = async (url) => {
         const res = await fetch(url);
@@ -147,8 +104,7 @@ const MobileCard = ({ Fund, Hide, setHide }) => {
                                 <span style={{ fontWeight: "bolder" }}>{pendingshares ? pendingshares : 0}{" "}</span>
                             </span>
                         </Col>
-                        <TableLastMovements
-                            content={movements} fetchingMovements={fetchingMovements} />
+                        <TableLastMovements Fund={Fund} />
                     </Row>
                 </Container>
             </Card.Body>

@@ -31,7 +31,7 @@ function Landing() {
         <Container>
             <Row className="d-flex justify-content-center align-items-center">
                 <Col style={{ height: "calc(100vh - 64px)" }} className="d-flex justify-content-center align-items-center">
-                    <Spinner className="me-2" animation="border" variant="danger" />
+                    <Spinner className="me-2" animation="border" variant="primary" />
                     <span className="loadingText">{t("Loading")}</span>
                 </Col>
             </Row>

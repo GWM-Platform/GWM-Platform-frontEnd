@@ -196,11 +196,6 @@ const WithdrawCashFromClient = () => {
         // eslint-disable-next-line
     }, [])
 
-    const getClientNameById = (searchedId) => {
-        let index = Clients.value.findIndex((client) => client.id === searchedId)
-        return index === -1 ? false : Clients.value[index].alias
-    }
-
     const getAccountPropertyById = (searchedId, property) => {
         let index = Accounts.value.findIndex((account) => account.id.toString() === searchedId.toString())
         return index === -1 ? false : Accounts.value[index][property]
@@ -219,15 +214,7 @@ const WithdrawCashFromClient = () => {
                             {Accounts.value.map((Account, key) => {
                                 return (
                                     <option disabled={Account.balance === 0} key={key + "-account"} value={Account.id}>
-                                        {
-                                            Clients.fetched ?
-                                                getClientNameById(Account.clientId) ?
-                                                    t("Client Alias") + ": " + getClientNameById(Account.clientId) :
-                                                    t("Client Id") + ": " + Account.clientId
-                                                :
-                                                "Client Id: " + Account.clientId
-                                        }
-                                        / {t("Account Id")} {Account.id} / {t("Actual Balance")}: {Account.balance}
+                                        {t("Account Alias")}:{Account.alias}&nbsp;/ {t("Account Id")}: {Account.id} / {t("Actual Balance")}: {Account.balance}
                                     </option>
                                 )
                             })}

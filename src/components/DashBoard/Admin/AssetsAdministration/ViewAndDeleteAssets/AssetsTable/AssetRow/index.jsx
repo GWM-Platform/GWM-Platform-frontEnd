@@ -17,11 +17,11 @@ const AssetRow = ({ Asset, AssetTypes, chargeAssets, setAction, Action, ownKey }
     return (
         <>
             <tr className="AssetRow">
-                <td className="Id">{t(Asset.id)}</td>
                 <td className="Name">{t(Asset.name)}</td>
                 <td className="Type">{t(AssetTypes[getAssetTypeById(AssetTypes, Asset.typeId)].name)}</td>
                 <td className="SharePrice">{t(Asset.symbol)}</td>
                 <td className="SharePrice">${t(Asset.value)}</td>
+                <td className="Id">{Asset.id}</td>
 
                 <td className="Actions verticalCenter" >
                     <div className="h-100 d-flex align-items-center justify-content-around">

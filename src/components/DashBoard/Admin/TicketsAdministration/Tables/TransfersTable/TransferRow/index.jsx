@@ -12,8 +12,6 @@ const TransferRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }) =>
     const [ShowModal, setShowModal] = useState(false)
     const [Action, setAction] = useState("approve")
 
-
-
     const launchModalConfirmation = (action) => {
         setAction(action)
         setShowModal(true)
@@ -22,21 +20,29 @@ const TransferRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }) =>
     return (
         <>
             <tr className="transactionRow">
-                <td>{Movement.id}</td>
                 <td>
-                    {
-                        Movement.senderAlias
-                    }
+                    <span className='text-nowrap'>
+                        {
+                            Movement?.senderAlias
+                        }
+                    </span>
                 </td>
                 <td>
-                    {
-                        Movement.receiverAlias
-                    }
+                    <span className='text-nowrap'>
+                        {
+                            Movement?.receiverAlias
+                        }
+                    </span>
                 </td>
                 <td>${Movement.amount}</td>
-                <td>{momentDate.format('MMMM Do YYYY, h:mm:ss a')}</td>
+                <td>
+                    <span className='text-nowrap'>
+                        {momentDate.format('MMMM Do YYYY, h:mm:ss a')}
+                    </span>
+                </td>
+                <td>{Movement.id}</td>
                 {
-                    (Movement.stateId === 1 && false) &&
+                    !!(Movement.stateId === 1 && false) &&
                     <td className="Actions verticalCenter" >
                         <div className="h-100 d-flex align-items-center justify-content-around">
                             <div className="iconContainer green">

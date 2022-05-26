@@ -22,11 +22,16 @@
 .collapser {
 	position: absolute;
 	top: calc( (100vh - 206px) / 2);
-	right: 5px;
+	right: 0px;
 	transform: translateY(-50%);
 	font-size: 30px;
 	cursor: pointer;
 	transition: ease all 1.5s;
+}
+.collapser .chevron{
+	font-size: 30px;
+    height: 1em;
+    display: block;
 }
 .collapser:hover {
 	animation: 1s bounce ease 2;
@@ -42,6 +47,9 @@
 .movementsCardMobile:first-of-type {
 	margin-top: 10%;
 }
+.movementsCardMobile .buttonFilter{
+	font-size: 12px;
+} 
 .movementsCardMobile {
 	border: none;
 	margin-left: 2%;
@@ -84,10 +92,10 @@
 @keyframes bounce {
 	0%,
 	100% {
-		right: 5px;
+		right: 0px;
 	}
 	50% {
-		right: 0px;
+		right: -5px;
 	}
 }
 

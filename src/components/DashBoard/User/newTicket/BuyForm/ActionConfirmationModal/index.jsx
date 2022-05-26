@@ -6,6 +6,7 @@ import { faCheckCircle } from '@fortawesome/free-regular-svg-icons'
 import { Modal, Button } from 'react-bootstrap'
 import { useContext } from 'react';
 import { DashBoardContext } from 'context/DashBoardContext';
+import Decimal from 'decimal.js';
 
 const ActionConfirmationModal = ({ setShowModal, show, action, data, Funds, Balance, fetching }) => {
 
@@ -16,6 +17,10 @@ const ActionConfirmationModal = ({ setShowModal, show, action, data, Funds, Bala
     const handleClose = () => {
         setShowModal(false)
     }
+
+    const amountDecimal = new Decimal(data.amount.length === 0 ? 0 : data.amount)
+    const sharePriceDecimal = new Decimal(Funds[data.FundSelected]?.sharePrice || 1)
+    const sharesToBuy = new Decimal(amountDecimal).div(sharePriceDecimal).toFixed(5)
 
     return (
         <Modal className="confirmationModal" size="auto" show={show} onHide={handleClose}>
@@ -33,10 +38,10 @@ const ActionConfirmationModal = ({ setShowModal, show, action, data, Funds, Bala
                             {t("Product")}: <span className="emphasis">{Funds[data.FundSelected].name}</span>
                         </li>
                         <li className="listedInfo">
-                            {t("Cash amount")}:<span className="emphasis"> ${data.amount}</span>
+                            {t("Cash amount")}:<span className="emphasis"> U$D {data.amount}</span>
                         </li>
                         <li className="listedInfo">
-                            {t("Share amount")}:<span className="emphasis"> {(data.amount / Funds[data.FundSelected].sharePrice).toFixed(2)}</span>
+                            {t("Share amount")}:<span className="emphasis"> {sharesToBuy.toString()}</span>
                         </li>
 
                     </ul>

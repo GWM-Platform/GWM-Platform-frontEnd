@@ -76,33 +76,42 @@ const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData })
     return (
         <>
             <tr className="transactionRow">
-                <td>{Transaction.id}</td>
                 <td>
-                    {
-                        UserTicketInfo.fetching ?
-                            <Spinner animation="border" size="sm" />
-                            :
-                            UserTicketInfo.valid ?
-                                UserTicketInfo.value.alias
+                    <span className='text-nowrap'>
+
+                        {
+                            UserTicketInfo.fetching ?
+                                <Spinner animation="border" size="sm" />
                                 :
-                                t("Undefined Client")
-                    }
+                                UserTicketInfo.valid ?
+                                    UserTicketInfo.value.alias
+                                    :
+                                    t("Undefined Client")
+                        }
+                    </span>
                 </td>
                 <td>{Math.sign(Transaction.shares) === -1 ? t("Sale") : t("Purchase")}</td>
                 <td>
-                    {
-                        FundTicketInfo.fetching ?
-                            <Spinner animation="border" size="sm" />
-                            :
-                            FundTicketInfo.valid ?
-                                FundTicketInfo.value.name
+                    <span className='text-nowrap'>
+                        {
+                            FundTicketInfo.fetching ?
+                                <Spinner animation="border" size="sm" />
                                 :
-                                t("Undefined Fund")
-                    }
+                                FundTicketInfo.valid ?
+                                    FundTicketInfo.value.name
+                                    :
+                                    t("Undefined Fund")
+                        }
+                    </span>
                 </td>
                 <td>{Transaction.shares}</td>
                 <td>${Transaction.sharePrice}</td>
-                <td>{momentDate.format('MMMM Do YYYY, h:mm:ss a')}</td>
+                <td>
+                    <span className='text-nowrap'>
+                        {momentDate.format('MMMM Do YYYY, h:mm:ss a')}
+                    </span>
+                </td>
+                <td>{Transaction.id}</td>
                 {
                     Transaction.stateId === 1 ?
                         <td className="Actions verticalCenter" >

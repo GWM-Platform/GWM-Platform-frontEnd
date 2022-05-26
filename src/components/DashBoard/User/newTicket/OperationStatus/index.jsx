@@ -20,7 +20,6 @@ const OperationStatus = ({ setItemSelected }) => {
                 <Col sm="auto">
                     <h1 className="statusIcon"><FontAwesomeIcon icon={faClock} /></h1>
                     <h1 className="title">{t("Ticket created successfully")}</h1>
-                    <h2 className="description">{t("You will receive an email when it is approved/denied")}</h2>
                 </Col>
             </Row>
         </Container>

@@ -34,7 +34,7 @@ const SellData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAc
                             value={data.shares}
                             onChange={handleChange}
                             min="1"
-                            step="0.0001"
+                            step="0.00001"
                             max={data.FundSelected === -1 ?
                                 1
                                 :

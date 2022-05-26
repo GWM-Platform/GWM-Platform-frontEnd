@@ -11,19 +11,28 @@ const TransactionsTable = ({ UsersInfo, FundInfo, transactions, state, reloadDat
 
     return (
         <Col xs="12">
-            <div style={{ overflowX: "auto", minHeight: `calc( .5rem + ( 0.5rem * 2 + 25.5px ) * ${take + 1} )` }}>
+            <div style={{ overflowX: "overlay", minHeight: `calc( .5rem + ( 0.5rem * 2 + 25.5px ) * ${take + 1} )`, scrollSnapType: "both mandatory" }}>
                 <Table className="TicketsTable table table-striped table-bordered table-hover growAnimation mb-0 mt-2">
                     <thead className="tableHeader solid-bg">
                         <tr>
-                            <th >{t("#id")}</th>
                             <th >{t("Client")}</th>
                             <th >{t("Concept")}</th>
-                            <th >{t("Fund name")}</th>
+                            <th >
+                                <span className="d-inline d-md-none">{t("Fund")}</span>
+                                <span className="d-none d-md-inline">{t("Fund name")}</span>
+                            </th>
                             <th >{t("Shares")}</th>
-                            <th >{t("FeePart Price")}</th>
-                            <th >{t("Created at")}</th>
+                            <th >
+                                <span className="d-inline d-md-none">{t("Price")}</span>
+                                <span className="d-none d-md-inline">{t("Share Price")}</span>
+                            </th>
+                            <th >
+                                <span className="d-inline d-md-none">{t("Date")}</span>
+                                <span className="d-none d-md-inline">{t("Created at")}</span>
+                            </th>
+                            <th >{t("#id")}</th>
                             {
-                                anyWithActions() ? <th >{t("Action")}</th> : null
+                                anyWithActions() ? <th className='Actions' >{t("Action")}</th> : null
                             }
                         </tr>
                     </thead>

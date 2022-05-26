@@ -64,10 +64,6 @@
 .AssetsAdministration .AssetsTable {
 	position:relative
 }
-.AssetsAdministration .AssetsTable .tableHeader {
-	{/*position:sticky;
-	top:0*/}
-}
 .AssetsAdministration .AssetsTable .id,
 .AssetsAdministration .AssetsTable .Name,
 .AssetsAdministration .AssetsTable .Type,
@@ -78,26 +74,8 @@
 	font-size: 15px;
 }
 
-.AssetsAdministration .AssetsTable td.id {
-	max-width: 5ch;
-}
-.AssetsAdministration .AssetsTable td.Name {
-	min-width: 15ch;
-	max-width:20ch
-}
-
-.AssetsAdministration .AssetsTable td.Shares {
-	max-width: 10ch;
-}
-.AssetsAdministration .AssetsTable td.FreeShares {
-	max-width: 10ch;
-}
-.AssetsAdministration .AssetsTable td.SharePrice {
-	max-width: 10ch;
-}
 .AssetsAdministration .AssetsTable td.Actions {
-	max-width: 8ch;
-
+	width: 3em;
 }
 
 .AssetsAdministration .AssetRow.addAsset {
@@ -107,8 +85,7 @@
 	border:none
 }
 .AssetsAdministration .AssetRow.addAsset  .Actions{
-	border:1px solid;
-	border-color: grey;
+	box-shadow: inset 0px 0px 0px 1px grey;
 	background-color: rgba(0, 0, 0, 0.025);
 }
 

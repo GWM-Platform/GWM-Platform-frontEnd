@@ -120,12 +120,10 @@
 }
 
 .icon.pin:not(.active) {
-	filter: drop-shadow(0px 0px 0px var(--blue-main));
 	transition: all 0.3s !important;
 }
 
 .icon.pin.active {
-	filter: drop-shadow(0px 0px 2px var(--blue-main));
 	transition: all 0.3s !important;
 }
 
@@ -136,4 +134,7 @@
 }
 .cashCard .line.active {
 	width: 100%;
+}
+button{
+	color: dimgray;
 }

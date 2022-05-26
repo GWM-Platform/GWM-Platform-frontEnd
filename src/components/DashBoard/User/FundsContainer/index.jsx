@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Spinner, Row, Container, Col } from 'react-bootstrap';
 import { DashBoardContext } from 'context/DashBoardContext';
 
-const FundsContainer = ({ NavInfoToggled, isMobile, setItemSelected, numberOfFunds }) => {
+const FundsContainer = ({ isMobile, setItemSelected, numberOfFunds }) => {
 
     const { FetchingFunds, contentReady, PendingWithoutpossession, PendingTransactions, Accounts, Funds } = useContext(DashBoardContext);
     const { t } = useTranslation();

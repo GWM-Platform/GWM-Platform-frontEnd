@@ -22,3 +22,9 @@
 	left: 0;
 	transform: translate(-1rem, -50%);
 }
+
+.cardsContainer .arrow .chevron{
+    font-size: 30px;
+    height: 1em;
+    display: block;
+}

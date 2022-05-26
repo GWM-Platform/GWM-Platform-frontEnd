@@ -11,7 +11,7 @@ const Loading = () => {
         <Container className="h-100">
             <Row className="h-100 d-flex align-items-center">
                 <Col xs="12" className="d-flex justify-content-center align-items-center">
-                    <Spinner className="me-2" animation="border" variant="success" />
+                    <Spinner className="me-2" animation="border" variant="primary" />
                     <span className="loadingText">{t("Loading")}</span>
                 </Col>
             </Row>
