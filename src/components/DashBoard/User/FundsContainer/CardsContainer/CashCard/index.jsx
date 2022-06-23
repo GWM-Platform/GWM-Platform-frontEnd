@@ -39,18 +39,25 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
     }
 
     const pendingCash = () => {
-        //Solo las ventas, las compras se ven reflejadas en el pendiente de cada fondo como cuotapartes
         if (PendingMovements.fetched && PendingTransactions.fetched && PendingTransfers.fetched && !(PendingMovements.fetching || PendingTransactions.fetching || PendingTransfers.fetching)) {
 
+            //Solo las ventas, las compras se ven reflejadas en el pendiente de cada fondo como cuotapartes
             const PendingSales = PendingTransactions.value.filter((transaction) => Math.sign(transaction.shares) === -1)
             const pendingCashFromTransactions = PendingSales.map(
                 (transaction) => new Decimal(transaction.shares).abs().times(transaction.sharePrice)
             ).reduce((previousValue, currentValue) => new Decimal(previousValue).plus(new Decimal(currentValue)), 0)
 
-            const PendingWithdrawalsAndDeposits = PendingMovements.value.filter((movement) => movement.motive === "WITHDRAWAL" || movement.motive === "DEPOSIT")
-            const pendingCashFromWithdrawalsAndDeposits = PendingWithdrawalsAndDeposits.map((movement) => new Decimal(movement.amount))
+            //Retiros unicamente, compra y venta se ven reflejados en otro lado
+            const PendingWithdrawals = PendingMovements.value.filter((movement) => movement.motive === "WITHDRAWAL")
+            const pendingCashFromWithdrawals = PendingWithdrawals.map((movement) => new Decimal(movement.amount))
                 .reduce((previousValue, currentValue) => new Decimal(previousValue).plus(new Decimal(currentValue)), 0)
 
+            //Depositos unicamente, compra y venta se ven reflejados en otro lado
+            const PendingDeposits = PendingMovements.value.filter((movement) => movement.motive === "DEPOSIT")
+            const pendingCashFromDeposits = PendingDeposits.map((movement) => new Decimal(movement.amount))
+                .reduce((previousValue, currentValue) => new Decimal(previousValue).plus(new Decimal(currentValue)), 0)
+
+            //Transferencias
             const PendingSentAndReceivedTransfers = PendingTransfers.value
             const clientId = ClientSelected?.id
             const pendingCashFromTransfers = PendingSentAndReceivedTransfers.map((transfer) => {
@@ -60,7 +67,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                 )
             }).reduce((previousValue, currentValue) => new Decimal(previousValue).plus(new Decimal(currentValue)), 0)
 
-            const total = (new Decimal(pendingCashFromTransactions).add(pendingCashFromWithdrawalsAndDeposits).add(pendingCashFromTransfers))
+            const total = (new Decimal(pendingCashFromTransactions).add(pendingCashFromWithdrawals).add(pendingCashFromDeposits).add(pendingCashFromTransfers))
             return {
                 valueAbs: total.abs().toFixed(2).toString(),
                 isPositive: total.isPositive(),
@@ -70,9 +77,13 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                         valueAbs: new Decimal(pendingCashFromTransactions).abs().toFixed(2).toString(),
                         isPositive: new Decimal(pendingCashFromTransactions).isPositive(),
                     },
-                    WithdrawalsAndDeposits: {
-                        valueAbs: new Decimal(pendingCashFromWithdrawalsAndDeposits).abs().toFixed(2).toString(),
-                        isPositive: new Decimal(pendingCashFromWithdrawalsAndDeposits).isPositive(),
+                    Withdrawals: {
+                        valueAbs: new Decimal(pendingCashFromWithdrawals).abs().toFixed(2).toString(),
+                        isPositive: new Decimal(pendingCashFromWithdrawals).isPositive(),
+                    },
+                    Deposits: {
+                        valueAbs: new Decimal(pendingCashFromDeposits).abs().toFixed(2).toString(),
+                        isPositive: new Decimal(pendingCashFromDeposits).isPositive(),
                     },
                     Transfers: {
                         valueAbs: new Decimal(pendingCashFromTransfers).abs().toFixed(2).toString(),
@@ -188,6 +199,8 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
         getPendingTransfers()
     }, [token, ClientSelected.id])
 
+
+
     return (
         <>
             <Col sm="6" md="6" lg="4" className={`fund-col  growAnimation ${Pinned && !isMobile ? "opacity-0" : ""}`}>
@@ -195,9 +208,9 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                     <Card.Header
                         className="header d-flex align-items-center justify-content-center"
                     >
-                        <div className="currencyContainer d-flex align-items-center justify-content-center">
+                        <span className="currencyContainer d-flex align-items-center justify-content-center">
                             <img className="currency px-0 mx-0" alt="cash" src={process.env.PUBLIC_URL + '/images/FundsLogos/cash.svg'} />
-                        </div>
+                        </span>
                     </Card.Header>
                     <Card.Body className="body">
                         <Row >
@@ -209,8 +222,9 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                                 {t("Cash")}
                                             </h1>
                                         </Col>
-                                        {cardsAmount > inScreenFunds && !isMobile ?
-                                            <button className="noStyle px-0 hideInfoButton d-flex align-items-center" onClick={() => { setPinned(true);setShow(false) }}                                            >
+                                        {
+                                            !!(cardsAmount > inScreenFunds && !isMobile) &&
+                                            <button className="noStyle px-0 hideInfoButton d-flex align-items-center" onClick={() => { setPinned(true); setShow(false) }}                                            >
                                                 <FontAwesomeIcon
                                                     className="icon pin"
                                                     icon={faThumbtack}
@@ -220,16 +234,14 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                                     icon={faEyeSlash}
                                                 />
                                             </button>
-                                            :
-                                            null}
-
+                                        }
                                     </Row>
                                 </Container>
                                 <Card.Text className="subTitle lighter mt-0 mb-2">
-                                    <div className='d-flex justify-content-between'>
-                                        <div>
+                                    <span className='d-flex justify-content-between'>
+                                        <span>
                                             {t("Alias")}: <span className="bolder">{Fund.alias}</span>
-                                        </div>
+                                        </span>
                                         <button className="noStyle px-0 hideInfoButton d-inline-flex align-items-center" onClick={() => {
                                             DashboardToastDispatch({ type: "create", toastContent: { Icon: faCheckCircle, Title: "Alias succesfully copied!" } });
                                             navigator.clipboard.writeText(Fund.alias)
@@ -240,13 +252,13 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                                 icon={faEyeSlash}
                                             />
                                         </button>
-                                    </div>
+                                    </span>
                                 </Card.Text>
                             </Card.Title>
                             <h1 className="title-gray mt-1">
                                 <Container fluid className="px-0">
                                     <Row className="w-100 mx-0 d-flex justify-content-between gx-0">
-                                        <div className="pe-2 containerHideInfo">
+                                        <span className="pe-2 containerHideInfo">
                                             <span>$</span>
                                             <span className={`info ${Hide ? "shown" : "hidden"}`}>
                                                 {parseFloat(Fund.balance).toString().replace(/./g, "*")}
@@ -259,7 +271,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                             <span className={`info placeholder`}>
                                                 {parseFloat(Fund.balance).toString()}
                                             </span>
-                                        </div>
+                                        </span>
                                         <button onClick={() => setHide(prevState => !prevState)} className="noStyle ps-0 hideInfoButton d-flex align-items-center">
                                             <FontAwesomeIcon
                                                 className={`icon ${Hide ? "hidden" : "shown"}`}
@@ -277,16 +289,16 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                     </Row>
                                 </Container>
                             </h1>
-                            <Card.Text className="subTitle lighter mt-0 mb-2">
+                            <div className="subTitle lighter mt-0 mb-2">
                                 <span className='invisible'>{t("Balance (shares)")}:<span className="bolder"></span></span> <br />
-                                <div className='d-flex justify-content-between'>
+                                <span className='d-flex justify-content-between'>
                                     {
                                         pendingCash().calculated ?
                                             <>
-                                                <div>{t("Pending transactions")}:<span className={`bolder ${pendingCash().isPositive ? "text-green" : "text-red"}`}>
+                                                <span>{t("Pending transactions")}:<span className={`bolder ${pendingCash().isPositive ? "text-green" : "text-red"}`}>
                                                     &nbsp;{pendingCash().isPositive ? "+" : "-"}${pendingCash().valueAbs}</span>
-                                                </div>
-                                                <OverlayTrigger show={show}trigger="click" placement="auto" overlay={
+                                                </span>
+                                                <OverlayTrigger show={show} trigger="click" placement="auto" overlay={
                                                     <Popover id="popover-overview-cash" style={{ maxWidth: "unset" }}>
                                                         <Popover.Header>{t("Overview of pending transactions")}</Popover.Header>
                                                         <Popover.Body className="pt-1 pb-2">
@@ -294,9 +306,13 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                                             <span className={`bolder ${pendingCash().overView.Transactions.isPositive ? "text-green" : "text-red"}`}>
                                                                 {pendingCash().overView.Transactions.isPositive ? "+" : "-"}${pendingCash().overView.Transactions.valueAbs}
                                                             </span><br />
-                                                            {t("Pending withdrawals and deposits")}:&nbsp;
-                                                            <span className={`bolder ${pendingCash().overView.WithdrawalsAndDeposits.isPositive ? "text-green" : "text-red"}`}>
-                                                                {pendingCash().overView.WithdrawalsAndDeposits.isPositive ? "+" : "-"}${pendingCash().overView.WithdrawalsAndDeposits.valueAbs}
+                                                            {t("Pending withdrawals")}:&nbsp;
+                                                            <span className={`bolder ${pendingCash().overView.Withdrawals.isPositive ? "text-green" : "text-red"}`}>
+                                                                {pendingCash().overView.Withdrawals.isPositive ? "+" : "-"}${pendingCash().overView.Withdrawals.valueAbs}
+                                                            </span><br />
+                                                            {t("Pending deposits")}:&nbsp;
+                                                            <span className={`bolder ${pendingCash().overView.Deposits.isPositive ? "text-green" : "text-red"}`}>
+                                                                {pendingCash().overView.Deposits.isPositive ? "+" : "-"}${pendingCash().overView.Deposits.valueAbs}
                                                             </span><br />
                                                             {t("Pending transfers")}:&nbsp;
                                                             <span className={`bolder ${pendingCash().overView.Transfers.isPositive ? "text-green" : "text-red"}`}>
@@ -309,7 +325,8 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                                         </Popover.Body>
                                                     </Popover>
                                                 }>
-                                                    <button onClick={()=>setShow(prevState=>!prevState)}className="noStyle px-0 hideInfoButton d-inline-flex align-items-center">
+                                                    <button  onBlur={()=>setShow(false)}  onClick={() => setShow(prevState => !prevState)}
+                                                        className="noStyle px-0 hideInfoButton d-inline-flex align-items-center">
                                                         <FontAwesomeIcon className="icon pin" icon={faInfoCircle} />
                                                         <FontAwesomeIcon
                                                             className="icon placeholder"
@@ -323,8 +340,8 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                                 {t("Pending transactions")}:<span className={`bolder text-green`}>&nbsp;<Spinner className="ms-2" animation="border" size="sm" /></span>
                                             </>
                                     }
-                                </div>
-                            </Card.Text>
+                                </span>
+                            </div>
                         </Row>
                     </Card.Body>
                     <Card.Footer className="footer mt-2 m-0 p-0">
@@ -345,9 +362,9 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                         <Card.Header
                             className="header d-flex align-items-center justify-content-center"
                         >
-                            <div className="currencyContainer d-flex align-items-center justify-content-center">
+                            <span className="currencyContainer d-flex align-items-center justify-content-center">
                                 <img className="currency px-0 mx-0" alt="cash" src={process.env.PUBLIC_URL + '/images/FundsLogos/cash.svg'} />
-                            </div>
+                            </span>
                         </Card.Header>
                         <Card.Body className="body">
                             <Row >
@@ -359,7 +376,8 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                                     {t("Cash")}
                                                 </h1>
                                             </Col>
-                                            <button className="noStyle px-0 hideInfoButton d-flex align-items-center" onClick={() => { setPinned(false);setShow(false)}}>
+
+                                            <button className="noStyle px-0 hideInfoButton d-flex align-items-center" onClick={() => { setPinned(false); setShow(false) }}>
                                                 <FontAwesomeIcon
                                                     className={`icon pin ${Pinned ? "active" : ""}`}
                                                     mask={faThumbtack}
@@ -374,15 +392,15 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                                     className="icon placeholder"
                                                     icon={faEyeSlash}
                                                 />
-                                                <div className="line"></div>
+                                                <span className="line"></span>
                                             </button>
                                         </Row>
                                     </Container>
                                     <Card.Text className="subTitle lighter mt-0 mb-2">
-                                        <div className='d-flex justify-content-between'>
-                                            <div>
+                                        <span className='d-flex justify-content-between'>
+                                            <span>
                                                 {t("Alias")}: <span className="bolder">{Fund.alias}</span>
-                                            </div>
+                                            </span>
                                             <button className="noStyle px-0 hideInfoButton d-inline-flex align-items-center" onClick={() => {
                                                 DashboardToastDispatch({ type: "create", toastContent: { Icon: faCheckCircle, Title: "Alias succesfully copied!" } });
                                                 navigator.clipboard.writeText(Fund.alias)
@@ -393,13 +411,13 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                                     icon={faEyeSlash}
                                                 />
                                             </button>
-                                        </div>
+                                        </span>
                                     </Card.Text>
                                 </Card.Title>
                                 <h1 className="title-gray mt-1">
                                     <Container fluid className="px-0">
                                         <Row className="w-100 mx-0 d-flex justify-content-between gx-0">
-                                            <div className="pe-2 containerHideInfo">
+                                            <span className="pe-2 containerHideInfo">
                                                 <span>$</span>
                                                 <span className={`info ${Hide ? "shown" : "hidden"}`}>
                                                     {parseFloat(Fund.balance).toString().replace(/./g, "*")}
@@ -412,7 +430,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                                 <span className={`info placeholder`}>
                                                     {parseFloat(Fund.balance).toString()}
                                                 </span>
-                                            </div>
+                                            </span>
                                             <button onClick={() => setHide(prevState => !prevState)} className="noStyle ps-0 hideInfoButton d-flex align-items-center">
                                                 <FontAwesomeIcon
                                                     className={`icon ${Hide ? "hidden" : "shown"}`}
@@ -430,16 +448,16 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                         </Row>
                                     </Container>
                                 </h1>
-                                <Card.Text className="subTitle lighter mt-0 mb-2">
+                                <div className="subTitle lighter mt-0 mb-2">
                                     <span className='invisible'>{t("Balance (shares)")}:<span className="bolder"></span></span> <br />
-                                    <div className='d-flex justify-content-between'>
+                                    <span className='d-flex justify-content-between'>
                                         {
                                             pendingCash().calculated ?
                                                 <>
-                                                    <div>{t("Pending transactions")}:<span className={`bolder ${pendingCash().isPositive ? "text-green" : "text-red"}`}>
+                                                    <span>{t("Pending transactions")}:<span className={`bolder ${pendingCash().isPositive ? "text-green" : "text-red"}`}>
                                                         &nbsp;{pendingCash().isPositive ? "+" : "-"}${pendingCash().valueAbs}</span>
-                                                    </div>
-                                                    <OverlayTrigger trigger="click" placement="auto" overlay={
+                                                    </span>
+                                                    <OverlayTrigger show={show} trigger="click" placement="auto" overlay={
                                                         <Popover id="popover-overview-cash" style={{ maxWidth: "unset" }}>
                                                             <Popover.Header>{t("Overview of pending transactions")}</Popover.Header>
                                                             <Popover.Body className="pt-1 pb-2">
@@ -447,9 +465,13 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                                                 <span className={`bolder ${pendingCash().overView.Transactions.isPositive ? "text-green" : "text-red"}`}>
                                                                     {pendingCash().overView.Transactions.isPositive ? "+" : "-"}${pendingCash().overView.Transactions.valueAbs}
                                                                 </span><br />
-                                                                {t("Pending withdrawals and deposits")}:&nbsp;
-                                                                <span className={`bolder ${pendingCash().overView.WithdrawalsAndDeposits.isPositive ? "text-green" : "text-red"}`}>
-                                                                    {pendingCash().overView.WithdrawalsAndDeposits.isPositive ? "+" : "-"}${pendingCash().overView.WithdrawalsAndDeposits.valueAbs}
+                                                                {t("Pending withdrawals")}:&nbsp;
+                                                                <span className={`bolder ${pendingCash().overView.Withdrawals.isPositive ? "text-green" : "text-red"}`}>
+                                                                    {pendingCash().overView.Withdrawals.isPositive ? "+" : "-"}${pendingCash().overView.Withdrawals.valueAbs}
+                                                                </span><br />
+                                                                {t("Pending deposits")}:&nbsp;
+                                                                <span className={`bolder ${pendingCash().overView.Deposits.isPositive ? "text-green" : "text-red"}`}>
+                                                                    {pendingCash().overView.Deposits.isPositive ? "+" : "-"}${pendingCash().overView.Deposits.valueAbs}
                                                                 </span><br />
                                                                 {t("Pending transfers")}:&nbsp;
                                                                 <span className={`bolder ${pendingCash().overView.Transfers.isPositive ? "text-green" : "text-red"}`}>
@@ -462,7 +484,8 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                                             </Popover.Body>
                                                         </Popover>
                                                     }>
-                                                        <button className="noStyle px-0 hideInfoButton d-inline-flex align-items-center">
+                                                        <button onBlur={()=>setShow(false)} onClick={() => setShow(prevState => !prevState)}
+                                                            className="noStyle px-0 hideInfoButton d-inline-flex align-items-center">
                                                             <FontAwesomeIcon className="icon pin" icon={faInfoCircle} />
                                                             <FontAwesomeIcon
                                                                 className="icon placeholder"
@@ -476,8 +499,8 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                                     {t("Pending transactions")}:<span className={`bolder text-green`}>&nbsp;<Spinner className="ms-2" animation="border" size="sm" /></span>
                                                 </>
                                         }
-                                    </div>
-                                </Card.Text>
+                                    </span>
+                                </div>
                             </Row>
                         </Card.Body>
                         <Card.Footer className="footer mt-2 m-0 p-0">

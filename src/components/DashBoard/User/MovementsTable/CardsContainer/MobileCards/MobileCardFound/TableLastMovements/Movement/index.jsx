@@ -5,8 +5,6 @@ import { useTranslation } from 'react-i18next';
 import { DashBoardContext } from 'context/DashBoardContext';
 
 const Movement = ({ content }) => {
-
-  moment.locale(localStorage.getItem('language'))
   var momentDate = moment(content.createdAt);
   const { t } = useTranslation();
   const { getMoveStateById } = useContext(DashBoardContext)

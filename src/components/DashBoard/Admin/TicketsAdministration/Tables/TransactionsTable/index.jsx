@@ -30,7 +30,7 @@ const TransactionsTable = ({ UsersInfo, FundInfo, transactions, state, reloadDat
                                 <span className="d-inline d-md-none">{t("Date")}</span>
                                 <span className="d-none d-md-inline">{t("Created at")}</span>
                             </th>
-                            <th >{t("#id")}</th>
+                            <th >{t("Ticket #")}</th>
                             {
                                 anyWithActions() ? <th className='Actions' >{t("Action")}</th> : null
                             }

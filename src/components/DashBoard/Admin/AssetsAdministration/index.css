@@ -62,7 +62,7 @@
 	vertical-align: top;
 }
 .AssetsAdministration .AssetsTable {
-	position:relative
+	position: relative;
 }
 .AssetsAdministration .AssetsTable .id,
 .AssetsAdministration .AssetsTable .Name,
@@ -75,20 +75,19 @@
 }
 
 .AssetsAdministration .AssetsTable td.Actions {
-	width: 3em;
+	width: 1%;
 }
 
 .AssetsAdministration .AssetRow.addAsset {
-	border:none
+	border: none;
 }
-.AssetsAdministration .AssetRow.addAsset  td{
-	border:none
+.AssetsAdministration .AssetRow.addAsset td {
+	border: none;
 }
-.AssetsAdministration .AssetRow.addAsset  .Actions{
+.AssetsAdministration .AssetRow.addAsset .Actions {
 	box-shadow: inset 0px 0px 0px 1px grey;
 	background-color: rgba(0, 0, 0, 0.025);
 }
-
 
 .AssetsAdministration .AssetRow.addAsset .cellWithoudPadding {
 	padding: 0;
@@ -105,51 +104,64 @@
 }
 
 @keyframes hover {
-	0%,100% {
+	0%,
+	100% {
 		transform: scale(1);
 	}
 	50% {
 		transform: scale(1.1);
 	}
 }
-.deleteModal .hidden,.editModal .hidden {
+.deleteModal .hidden,
+.editModal .hidden {
 	position: absolute;
 	left: 0;
 	right: 0;
 	opacity: 0;
 	transition: ease opacity 0.5s;
 }
-.deleteModal .show,.editModal .show {
+.deleteModal .show,
+.editModal .show {
 	position: absolute;
 	left: 0;
 	right: 0;
 	opacity: 1;
 	transition: ease 0.5s opacity 0.5s;
 }
-.deleteModal .placeHolder,.editModal .placeHolder {
-	opacity: 0;
+.deleteModal .placeHolder,
+.editModal .placeHolder {
+	pointer-events: none;
+	opacity: 0!important;
 }
-.deleteModal .header,.editModal .header,
-.deleteModal .body,.editModal .body,
-.deleteModal .footer,.editModal .footer {
+.deleteModal .header,
+.editModal .header,
+.deleteModal .body,
+.editModal .body,
+.deleteModal .footer,
+.editModal .footer {
 	background-color: white !important;
 }
-.deleteModal .body,.editModal .body {
+.deleteModal .body,
+.editModal .body {
 	border-radius: 30px 30px 0 0;
 }
 
-.deleteModal .title,.editModal .title {
+.deleteModal .title,
+.editModal .title {
 	color: black !important;
 	text-align: center;
 	font-weight: 300;
 
 	font-size: 40px;
 }
-.AssetsAdministration .editResult,.AssetsAdministration .editForm,.AssetsAdministration .ViewDeleteAndCreateAssets{
+.editResult,
+.editForm,
+.AssetsAdministration .ViewDeleteAndCreateAssets {
 	animation: ease growOpacity 1s;
 }
 
-.deleteModal .descriptionIconContainer,.editResult .descriptionIconContainer {
+.deleteModal .descriptionIconContainer,
+.editResult .descriptionIconContainer {
 	font-size: 60px;
 	width: 1.5em;
 	height: 1.5em;
@@ -159,81 +171,89 @@
 	align-items: center;
 	justify-content: center;
 }
-.deleteModal .descriptionIconContainer.red,.editResult .descriptionIconContainer.red{
+.deleteModal .descriptionIconContainer.red,
+.editResult .descriptionIconContainer.red {
 	border-color: red;
 }
-.deleteModal .descriptionIconContainer.green,.editResult .descriptionIconContainer.green {
+.deleteModal .descriptionIconContainer.green,
+.editResult .descriptionIconContainer.green {
 	border-color: green;
 }
 
-.deleteModal .icon,.editResult .icon {
+.deleteModal .icon,
+.editResult .icon {
 	text-align: center;
 	font-size: 60px;
 }
-.deleteModal .icon.red,.editResult .icon.red{
+.deleteModal .icon.red,
+.editResult .icon.red {
 	color: red !important;
 }
-.deleteModal .icon.green,.editResult .icon.green {
+.deleteModal .icon.green,
+.editResult .icon.green {
 	color: green !important;
 }
-.deleteModal .subTitle,.editResult .subTitle {
+.deleteModal .subTitle,
+.editResult .subTitle {
 	color: black !important;
 	font-weight: 500;
 	text-align: center;
 	font-size: 20px;
 }
-.deleteModal .heading,.editResult .heading {
+.deleteModal .heading,
+.editResult .heading {
 	color: black !important;
 	text-align: center;
 	font-weight: 300;
 	font-size: 15px;
 }
-.AssetsAdministration .editForm .header,
-.AssetsAdministration .editResult .header{
+.editForm .header,
+.editResult .header {
 	position: relative;
 	font-size: 30px;
 	padding: 0.5em 0;
 	margin: 0.5em 0;
 	border-bottom: 1px solid;
 }
-.AssetsAdministration .editForm .header .title,
-.AssetsAdministration .editResult .header .title{
+.editForm .header .title,
+.editResult .header .title {
 	font-size: 30px;
 	font-weight: 300;
 	padding: 0;
-	margin:0
+	margin: 0;
 }
-.AssetsAdministration .editForm .header .button,
-.AssetsAdministration .editResult .header .button{
+.editForm .header .button,
+.editResult .header .button {
 	font-size: 20px;
 	position: absolute;
 	bottom: 0;
-	left:1ch;
+	left: 1ch;
 	transform: translateY(50%);
 	cursor: pointer;
 	transition: 0.5s all;
 }
-.AssetsAdministration .editForm .header .button.icon,
-.AssetsAdministration .editResult .header .button.icon{
+.editForm .header .button.icon,
+.editResult .header .button.icon {
 	font-size: 20px;
 	color: var(--blue-main);
 	background-color: lightgrey;
 	border-radius: 50%;
 }
-.AssetsAdministration .editForm .header .button.icon:hover,
-.AssetsAdministration .editResult .header .button.icon:hover{
+.editForm .header .button.icon:hover,
+.editResult .header .button.icon:hover {
 	animation: ease bounceLeft 0.5s 2;
 }
 
 @keyframes bounceLeft {
-	0%,100%{
+	0%,
+	100% {
 		transform: translateY(50%) translateX(0%);
 	}
-	50%{
+	50% {
 		transform: translateY(50%) translateX(-25%);
 	}
 }
-.AssetsAdministration .editForm .littleSpinner{
-	width: 1em!important;
-	height: 1em!important;
+.editForm .littleSpinner {
+	width: 1em !important;
+	height: 1em !important;
 }

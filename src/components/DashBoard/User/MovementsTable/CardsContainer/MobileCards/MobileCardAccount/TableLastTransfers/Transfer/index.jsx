@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { DashBoardContext } from 'context/DashBoardContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icons';
-import ActionConfirmationModal from './ActionConfirmationModal';
+import ActionConfirmationModal from 'components/DashBoard/User/MovementsTable/GeneralUse/TransferConfirmation'
 
 const Transfer = ({ content, getTransfers }) => {
 

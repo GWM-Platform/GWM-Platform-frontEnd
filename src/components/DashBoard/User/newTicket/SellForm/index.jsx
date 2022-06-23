@@ -129,10 +129,13 @@ const SellForm = ({ balanceChanged }) => {
     const toggleAccordion = () => {
         setCollapsedFields(!CollapsedFields)
     }
+
     const openAccordion = () => {
         setCollapsedFields(false)
     }
 
+    const sellAll = () => setData(prevState=>({...prevState,shares:Funds[data.FundSelected]?.shares || 0 }))
+    
     return (
         <div className="tabContent">
             <Container className="h-100">
@@ -149,7 +152,7 @@ const SellForm = ({ balanceChanged }) => {
                                     </Accordion>
                                     <Accordion flush activeKey={CollapsedFields ? "-1" : "0"}>
                                         <SellData fetching={fetching} toggleAccordion={toggleAccordion} handleSubmit={handleSubmit} validated={validated}
-                                            handleChange={handleChange} Funds={Funds} data={data} />
+                                            handleChange={handleChange} Funds={Funds} data={data} sellAll={sellAll}/>
                                     </Accordion>
                                 </Col>
                                 :

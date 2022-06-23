@@ -4,7 +4,7 @@ import { Table, Col } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next';
 import TransferRow from './TransferRow'
 
-const MovementsTable = ({ AccountInfo, UsersInfo, movements, state, reloadData, take }) => {
+const TransfersTable = ({ AccountInfo, UsersInfo, movements, state, reloadData, take }) => {
     const { t } = useTranslation();
 
     const anyWithActions = () => Object.values(movements).some((field) => field.stateId === 1) && false
@@ -18,7 +18,8 @@ const MovementsTable = ({ AccountInfo, UsersInfo, movements, state, reloadData, 
                             <th >
                                 <span className="d-inline d-md-none">{t("Sender")}</span>
                                 <span className="d-none d-md-inline">{t("Source account")}</span>
-                            </th>                            <th >
+                            </th>
+                            <th >
                                 <span className="d-inline d-md-none">{t("Receiver")}</span>
                                 <span className="d-none d-md-inline">{t("Target account")}</span>
                             </th>
@@ -27,9 +28,9 @@ const MovementsTable = ({ AccountInfo, UsersInfo, movements, state, reloadData, 
                                 <span className="d-inline d-md-none">{t("Date")}</span>
                                 <span className="d-none d-md-inline">{t("Created at")}</span>
                             </th>
-                            <th >{t("#id")}</th>
+                            <th >{t("Ticket #")}</th>
                             {
-                                anyWithActions() ? <th className='Actions' >{t("Action")}</th> : null
+                                anyWithActions() ? <th className='Actions'>{t("Action")}</th> : null
                             }
                         </tr>
                     </thead>
@@ -46,6 +47,6 @@ const MovementsTable = ({ AccountInfo, UsersInfo, movements, state, reloadData, 
         </Col>
     )
 }
-export default MovementsTable
+export default TransfersTable
 
 

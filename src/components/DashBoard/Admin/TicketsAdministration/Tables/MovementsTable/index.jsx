@@ -7,7 +7,8 @@ import MovementRow from './MovementRow'
 const MovementsTable = ({ AccountInfo, UsersInfo, movements, state, reloadData, take }) => {
     const { t } = useTranslation();
 
-    const anyWithActions = () => Object.values(movements).some((field) => field.stateId === 1)
+    const couldLiquidate = (movement) => movement.motive === "WITHDRAWAL" && movement.stateId === 2
+    const anyWithActions = () => Object.values(movements).some((movement) => movement.stateId === 1 || couldLiquidate(movement))
 
     return (
         <Col xs="12">
@@ -16,20 +17,21 @@ const MovementsTable = ({ AccountInfo, UsersInfo, movements, state, reloadData, 
                     <thead className="tableHeader solid-bg">
                         <tr>
                             <th >{t("Client")}</th>
+                            <th className="tableHeader">{t("Description")}</th>
                             <th >{t("Amount")}</th>
                             <th >
                                 <span className="d-inline d-md-none">{t("Date")}</span>
                                 <span className="d-none d-md-inline">{t("Created at")}</span>
                             </th>
-                            <th >{t("#id")}</th>
+                            <th >{t("Ticket #")}</th>
                             {!!anyWithActions() && <th className='Actions'>{t("Action")}</th>}
                         </tr>
                     </thead>
                     <tbody>
                         {
                             movements.map((movement, key) =>
-                                <MovementRow AccountInfo={AccountInfo} UsersInfo={UsersInfo}
-                                    reloadData={reloadData} key={key} Movement={movement} state={state} />
+                                <MovementRow AccountInfo={AccountInfo} UsersInfo={UsersInfo} couldLiquidate={couldLiquidate}
+                                    reloadData={reloadData} key={key} Movement={movement} state={state} anyWithActions={anyWithActions()} />
                             )
                         }
                     </tbody>

@@ -2,6 +2,9 @@ import React, { useEffect } from 'react'
 import { DashBoardProvider } from 'context/DashBoardContext';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
+import 'moment/locale/es'
+
 import Landing from 'components/Landing';
 import Containerlogin from 'components/Containerlogin';
 import ContainerForgotPassword from 'components/ContainerForgotPassword';
@@ -10,16 +13,19 @@ import ActivateAccount from 'components/ActivateAccount'
 import DashBoard from 'components/DashBoard';
 import NotFound from 'components/NotFound';
 import SetPassword from 'components/SetPassword';
-import { useTranslation } from "react-i18next";
-import './App.css';
 import RotateDevice from 'components/RotateDevice';
+
+import './App.css';
+import moment from 'moment';
 
 function App() {
   const { i18n } = useTranslation();
+  moment.locale(i18n.language)
 
   useEffect(() => {
     let prefferedLanguage = localStorage.getItem("language")
     i18n.changeLanguage(prefferedLanguage ? prefferedLanguage : "es");
+
     // eslint-disable-next-line
   }, [])
 

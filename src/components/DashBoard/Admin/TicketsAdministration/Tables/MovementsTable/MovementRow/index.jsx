@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 import ActionConfirmationModal from './ActionConfirmationModal'
 
-const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }) => {
+const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, couldLiquidate, anyWithActions }) => {
 
     const { t } = useTranslation();
 
@@ -63,6 +63,7 @@ const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }) =>
         //eslint-disable-next-line
     }, [Movement, state, AccountInfo, UsersInfo])
 
+
     return (
         <>
             <tr className="transactionRow">
@@ -79,6 +80,7 @@ const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }) =>
                         }
                     </span>
                 </td>
+                <td className="tableConcept">{t(Movement.motive)}</td>
                 <td>${Movement.amount}</td>
                 <td>
                     <span className='text-nowrap'>
@@ -87,26 +89,36 @@ const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }) =>
                 </td>
                 <td>{Movement.id}</td>
                 {
-                    Movement.stateId === 1 ?
-                        <td className="Actions verticalCenter" >
-                            <div className="h-100 d-flex align-items-center justify-content-around">
-                                <div className="iconContainer green">
-                                    <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => { launchModalConfirmation("approve") }} />
+                    !!(anyWithActions) &&
+                    <td className="Actions verticalCenter" >
+                        {
+                            couldLiquidate(Movement) ?
+                                <div className="h-100 d-flex align-items-center justify-content-around">
+                                    <div className="iconContainer green">
+                                        <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => { launchModalConfirmation("liquidate") }} />
+                                    </div>
                                 </div>
-                                <div className="iconContainer red">
-                                    <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => { launchModalConfirmation("deny") }} />
+                                :
+                                !!(Movement.stateId === 1) &&
+                                <div className="h-100 d-flex align-items-center justify-content-around">
+                                    <div className="iconContainer green">
+                                        <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => { launchModalConfirmation("approve") }} />
+                                    </div>
+                                    <div className="iconContainer red">
+                                        <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => { launchModalConfirmation("deny") }} />
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                        :
-                        null
+                        }
+                    </td>
+
                 }
             </tr>
             {
-                Movement.stateId === 1 ?
+                Movement.stateId === 1 || couldLiquidate(Movement) ?
                     <ActionConfirmationModal reloadData={reloadData} movement={Movement} setShowModal={setShowModal} action={Action} show={ShowModal} />
                     :
-                    null}
+                    null
+            }
         </>
     )
 }

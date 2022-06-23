@@ -80,7 +80,7 @@ const ActionConfirmationModal = ({ movement, setShowModal, action, show, reloadD
                                 <div className="descriptionIconContainer green mx-auto">
                                     <h1 className="title"><FontAwesomeIcon className="icon green" icon={faCheck} /></h1>
                                 </div>
-                                <h2 className="subTitle mt-4">{t("The ticket has been")} {t(action === "approve" ? "approved" : "denied")} {t("succesfully")}</h2>
+                                <h2 className="subTitle mt-4">{t("The ticket has been")} {t(action === "approve" ? "approved" : action === "liquidate" ? "liquidated" : "denied")} {t("succesfully")}</h2>
                             </>
                             :
                             <>

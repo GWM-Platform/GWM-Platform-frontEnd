@@ -4,10 +4,10 @@ import { Form, InputGroup, Row, Button, Accordion, Container } from 'react-boots
 import { useTranslation } from "react-i18next";
 
 
-const SellData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAccordion, fetching }) => {
+const SellData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAccordion, fetching, sellAll }) => {
 
     const { t } = useTranslation();
-
+    console.log(sellAll)
     return (
         <Accordion.Item eventKey="0">
             <Accordion.Header onClick={() => { if (data.FundSelected !== -1) toggleAccordion() }}>
@@ -28,46 +28,43 @@ const SellData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAc
             </Accordion.Header>
             <Accordion.Body>
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                    <InputGroup className="mb-1">
-                        <Form.Control
-                            onWheel={event => event.currentTarget.blur()}
-                            value={data.shares}
-                            onChange={handleChange}
-                            min="1"
-                            step="0.00001"
-                            max={data.FundSelected === -1 ?
-                                1
-                                :
-                                Funds[data.FundSelected].shares
-                            }
-                            id="shares"
-                            type="number"
-                            required
-                            placeholder={t("Shares")}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                            {
-                                data.FundSelected === -1 ?
-                                    t("Please, select a fund to sell")
+                    <Form.Group className="mb-1" controlId="shares">
+                        <InputGroup hasValidation>
+                            <Form.Control
+                                onWheel={event => event.currentTarget.blur()}
+                                value={data.shares}
+                                onChange={handleChange}
+                                min="1"
+                                step="0.00001"
+                                max={data.FundSelected === -1 ?
+                                    1
                                     :
-                                    data.shares === "" ?
-                                        t("Quantity of shares you want to sell")
+                                    Funds[data.FundSelected].shares
+                                }
+                                type="number"
+                                required
+                                placeholder={t("Shares")}
+                            />
+                            <Button variant="outline-secondary" onClick={() => sellAll()}
+                                disabled={Funds[data.FundSelected]?.shares === data?.shares}>
+                                {t("All")}
+                            </Button>
+                            <Form.Control.Feedback type="invalid">
+                                {
+                                    data.FundSelected === -1 ?
+                                        t("Please, select a fund to sell")
                                         :
-                                        data.shares < 1 ?
-                                            t("At least you must sell one share")
+                                        data.shares === "" ?
+                                            t("Quantity of shares you want to sell")
                                             :
-                                            t("There are only") + " " + Funds[data.FundSelected].shares + " " + t("available shares")
-                            }
-                        </Form.Control.Feedback>
-                        <Form.Control.Feedback type="valid">
-                            {
-                                data.FundSelected === -1 ?
-                                    t("Please, select a fund to sell")
-                                    :
-                                    ""
-                            }
-                        </Form.Control.Feedback>
-                    </InputGroup>
+                                            data.shares < 1 ?
+                                                t("At least you must sell one share")
+                                                :
+                                                t("There are only") + " " + Funds[data.FundSelected].shares + " " + t("available shares")
+                                }
+                            </Form.Control.Feedback>
+                        </InputGroup>
+                    </Form.Group>
                     <Button
                         disabled={fetching ||
                             (data.FundSelected === -1 ? true : data.shares > Funds[data.FundSelected].shares || data.shares <= 0)}

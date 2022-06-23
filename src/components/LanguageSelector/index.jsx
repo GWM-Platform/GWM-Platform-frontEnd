@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
 import i18n from 'components/I18n';
 import { Dropdown } from 'react-bootstrap'
-import './index.css'
+import './index.scss'
 import Es from './flags/es.jsx'
 import En from './flags/en.jsx'
 
@@ -19,6 +19,7 @@ const LanguageSelector = () => {
 
     const changeLanguage = (language) => {
         i18n.changeLanguage(language);
+     
         localStorage.setItem("language", language);
     }
 

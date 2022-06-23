@@ -74,32 +74,39 @@ const TableLastMovements = ({ account }) => {
         <Col md="12" className="p-0 mt-2">
             {fetchingMovements && (movements.movements.length === 0 || movements === null) ?
                 <h2 className='my-2 p-0'>{t("Loading movements")}</h2> :
-                movements.movements.length === 0 || movements === null ?
-                    <h2>{t("There are no records of any movement in this Account")}</h2> :
-                    <div>
-                        <Container fluid className="p-0"
-                            onClick={() => setOpen(!open)}
-                            aria-expanded={open}>
-                            <Row className="d-flex justify-content-end">
-                                <Col className={fetchingMovements ? "d-flex justify-content-between align-items-center" : ""}>
-                                    <h2 className={`my-2 toggler-mobile ${!!(fetchingMovements) ? "loading" : ""} ${open ? "toggled" : ""}`}>{t("Last movements")}</h2>
-                                    {!!(fetchingMovements) && <Spinner className="ms-2" animation="border" size="sm" />}
-                                </Col>
-                            </Row>
-                        </Container>
-                        <Collapse in={open}>
-                            <div className="movementsTable mb-3">
-                                <div className='py-1 d-flex justify-content-end'>
-                                    <Button className="ms-1 buttonFilter" variant="danger" onClick={() => handleShow()}>
-                                        <FontAwesomeIcon icon={faFilter}  />
-                                    </Button>
-                                </div>
-                                {movements.movements.map((u, i) => { ; return (<Movement key={i} content={u} />) })}
-                                <MoreAndLess InScreen={Options.take} total={movements.total} setOptions={setOptions} />
+                <div>
+                    <Container fluid className="p-0"
+                        onClick={() => setOpen(!open)}
+                        aria-expanded={open}>
+                        <Row className="d-flex justify-content-end">
+                            <Col className={fetchingMovements ? "d-flex justify-content-between align-items-center" : ""}>
+                                <h2 className={`my-2 toggler-mobile ${!!(fetchingMovements) ? "loading" : ""} ${open ? "toggled" : ""}`}>{t("Last movements")}</h2>
+                                {!!(fetchingMovements) && <Spinner className="ms-2" animation="border" size="sm" />}
+                            </Col>
+                        </Row>
+                    </Container>
+                    <Collapse in={open}>
+                        <div className="movementsTable mb-3">
+                            <div className='py-1 d-flex justify-content-end'>
+                                <Button className="ms-1 buttonFilter" variant="danger" onClick={() => handleShow()}>
+                                    <FontAwesomeIcon icon={faFilter} />
+                                </Button>
                             </div>
-                        </Collapse>
-                        <FilterOptionsMobile show={show} handleClose={handleClose} setOptions={setOptions} />
-                    </div>
+                            {
+                                movements.movements.length === 0 || movements === null ?
+                                    <h2 className="text-center">{t("There are no records in the selected state")}</h2>
+                                    :
+                                    <>
+                                        {
+                                            movements.movements.map((u, i) => <Movement key={i} content={u} />)
+                                        }
+                                    </>
+                            }
+                            <MoreAndLess InScreen={Options.take} total={movements.total} setOptions={setOptions} />
+                        </div>
+                    </Collapse>
+                    <FilterOptionsMobile show={show} handleClose={handleClose} setOptions={setOptions} />
+                </div>
             }
         </Col>
     )

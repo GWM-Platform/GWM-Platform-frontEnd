@@ -8,7 +8,7 @@ const AddFundRow = ({ Action,setAction }) => {
 
     return (
         <>
-            <tr className="fundRow addFund">
+            <tr className="fundRow add">
                 <td className="verticalCenter Id" >            
                 </td>
                 <td className="cellWithoudPadding Name">

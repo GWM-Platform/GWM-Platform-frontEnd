@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react'
+import React, { useReducer, useRef } from 'react'
 import { createContext, useState, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
@@ -25,6 +25,7 @@ export const DashBoardContext = createContext();
 export const DashBoardProvider = ({ children }) => {
     const history = useHistory();
     let location = useLocation()
+    const isMountedRef = useRef(null);
 
     function useQuery() {
         const { search } = useLocation();
@@ -250,9 +251,9 @@ export const DashBoardProvider = ({ children }) => {
             });
 
             const responses = await Promise.all(promises);
-            
+
             let aux = []
-            
+
             responses.forEach((response) => {
                 aux = [...aux, { fund: response }]
             })
@@ -268,22 +269,24 @@ export const DashBoardProvider = ({ children }) => {
     }, [Funds, PendingTransactions, ClientSelected]);
 
     useEffect(() => {
+        isMountedRef.current = true;
         const toLogin = () => {
             sessionStorage.clear(); history.push(`/login`);
         }
 
         const transactionsStates = async () => {
             var url = `${process.env.REACT_APP_APIURL}/states`;
+            if (isMountedRef) {
 
-            setTransactionStates((prevState) => ({
-                ...prevState, ...{
-                    fetching: true,
-                    fetched: false,
-                    valid: false,
-                    values: []
-                }
-            }))
-
+                setTransactionStates((prevState) => ({
+                    ...prevState, ...{
+                        fetching: true,
+                        fetched: false,
+                        valid: false,
+                        values: []
+                    }
+                }))
+            }
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -295,23 +298,26 @@ export const DashBoardProvider = ({ children }) => {
 
             if (response.status === 200) {
                 const data = await response.json()
-
-                setTransactionStates((prevState) => ({
-                    ...prevState, ...{
-                        fetching: false,
-                        fetched: true,
-                        valid: true,
-                        values: data
-                    }
-                }))
+                if (isMountedRef) {
+                    setTransactionStates((prevState) => ({
+                        ...prevState, ...{
+                            fetching: false,
+                            fetched: true,
+                            valid: true,
+                            values: data
+                        }
+                    }))
+                }
             } else {
-                setTransactionStates((prevState) => ({
-                    ...prevState, ...{
-                        fetching: false,
-                        fetched: true,
-                        valid: false,
-                    }
-                }))
+                if (isMountedRef) {
+                    setTransactionStates((prevState) => ({
+                        ...prevState, ...{
+                            fetching: false,
+                            fetched: true,
+                            valid: false,
+                        }
+                    }))
+                }
 
                 switch (response.status) {
                     case 500:
@@ -369,6 +375,7 @@ export const DashBoardProvider = ({ children }) => {
         transactionsStates()
 
         return () => {
+            isMountedRef.current = false;
             window.removeEventListener('resize', handleWindowSizeChange);
         }
         //eslint-disable-next-line

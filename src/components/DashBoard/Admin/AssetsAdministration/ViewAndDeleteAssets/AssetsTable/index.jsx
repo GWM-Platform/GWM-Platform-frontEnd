@@ -18,7 +18,7 @@ const AssetsTable = ({ Assets, AssetTypes, chargeAssets, setAction, Action }) =>
                         <th className="Type">{t("Type")}</th>
                         <th className="SharePrice">{t("Symbol")}</th>
                         <th className="SharePrice">{t("Value")}</th>
-                        <th className="id">{t("#id")}</th>
+                        <th className="id">{t("Ticket #")}</th>
                         <th className="Actions">{t("Actions")}</th>
                     </tr>
                 </thead>

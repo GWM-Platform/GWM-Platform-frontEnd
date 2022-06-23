@@ -12,7 +12,7 @@ import TicketSearch from 'components/DashBoard/GeneralUse/TicketSearch'
 
 import { useTranslation } from 'react-i18next';
 
-const Transactionslist = ({ state, messageVariants }) => {
+const Tables = ({ state, messageVariants }) => {
 
     const token = sessionStorage.getItem('access_token')
 
@@ -679,6 +679,6 @@ const Transactionslist = ({ state, messageVariants }) => {
 
     )
 }
-export default Transactionslist
+export default Tables
 
 

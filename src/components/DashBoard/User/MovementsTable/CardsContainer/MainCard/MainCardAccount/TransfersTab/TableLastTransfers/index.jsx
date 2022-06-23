@@ -15,13 +15,13 @@ const TableLastMovements = ({ content, movements,getTransfers }) => {
             <Table striped bordered hover className="mb-auto m-0  mt-2" >
                 <thead >
                     <tr>
-                        <th className="tableId">{t("#Id")}</th>
+                        <th className="tableId">{t("Ticket #")}</th>
                         <th className="tableHeader">{t("Date")}</th>
                         <th className="d-none d-sm-table-cell">{t("Status")}</th>
                         <th className="tableHeader">{t("Description")}</th>
                         <th className="tableDescription d-none d-sm-table-cell">{t("Amount")}</th>
                         {
-                            anyWithActions() && <th >{t("Action")}</th>
+                            anyWithActions() && <th className='Actions'>{t("Action")}</th>
                         }
                     </tr>
                 </thead>

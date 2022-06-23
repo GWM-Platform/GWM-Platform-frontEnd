@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCommentsDollar, faUser, faSignOutAlt, faTicketAlt, faChartLine } from '@fortawesome/free-solid-svg-icons'
-import { Row, Container, Col } from 'react-bootstrap'
+import { Row, Container } from 'react-bootstrap'
 import { useRouteMatch, useHistory } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
 import { useContext } from 'react';
@@ -47,7 +47,7 @@ const NavBarMobile = () => {
                 {
                     admin && IndexClientSelected === -1 ?
                         <>
-                            <Col
+                            <div
                                 xs="auto"
                                 onClick={() => { toTickets(); }}
                                 className={`section ${itemSelectedLC === "ticketsadministration" ? "selected" : ""}`}>
@@ -55,9 +55,9 @@ const NavBarMobile = () => {
                                     <FontAwesomeIcon className="icon" icon={faTicketAlt} />
                                 </div>
                                 <h1 className="section-label  mb-0 pb-0" >{t("Tickets")}</h1>
-                            </Col>
+                            </div>
 
-                            <Col
+                            <div
                                 xs="auto"
                                 onClick={() => { toFunds() }}
                                 className={`section ${itemSelectedLC === "fundsadministration" || itemSelectedLC === "assetsadministration" ? "selected" : ""}`}>
@@ -65,27 +65,27 @@ const NavBarMobile = () => {
                                     <FontAwesomeIcon className="icon" icon={faChartLine} />
                                 </div>
                                 <h1 className="section-label  mb-0 pb-0  pb-0" >{t("Funds and Assets")}</h1>
-                            </Col>
+                            </div>
 
-                            <Col
+                            <div
                                 onClick={() => toAccountsAdmin()} xs="auto"
                                 className={`section ${itemSelectedLC === "depositcash" || itemSelectedLC === "withdrawcash" || itemSelectedLC === "accountssupervision" || itemSelectedLC === "addaccount" ? "selected" : ""}`}>
                                 <div className="d-flex justify-content-center">
                                     <FontAwesomeIcon className="icon" icon={faUser} />
                                 </div>
                                 <h1 className="section-label  mb-0 pb-0  " >{t("Accounts")}</h1>
-                            </Col>
+                            </div>
 
-                            <Col className="section" onClick={() => toLogin()} xs="auto">
+                            <div className="section" onClick={() => toLogin()} xs="auto">
                                 <div className="d-flex justify-content-center">
                                     <FontAwesomeIcon className="icon" icon={faSignOutAlt} />
                                 </div>
                                 <h1 className="section-label  mb-0 pb-0  " >{t("Logout")}</h1>
-                            </Col>
+                            </div>
                         </>
                         :
                         <>
-                            <Col
+                            <div
                                 xs="auto"
                                 onClick={() => { toAccounts() }}
                                 className={`section ${itemSelectedLC === "accounts" || itemSelectedLC === "history" ? "selected" : ""}`}>
@@ -93,8 +93,8 @@ const NavBarMobile = () => {
                                     <FontAwesomeIcon className="icon" icon={faUser} />
                                 </div>
                                 <h1 className="section-label  mb-0 pb-0  pb-0" >{t("Funds")}</h1>
-                            </Col>
-                            <Col
+                            </div>
+                            <div
                                 xs="auto"
                                 onClick={() => { toBuy(); }}
                                 className={`section ${itemSelectedLC === "buy" || itemSelectedLC === "sell" || itemSelectedLC === "deposit" || itemSelectedLC === "withdraw" || itemSelectedLC === "transfer" ? "selected" : ""}`}>
@@ -102,13 +102,13 @@ const NavBarMobile = () => {
                                     <FontAwesomeIcon className="icon" icon={faCommentsDollar} />
                                 </div>
                                 <h1 className="section-label  mb-0 pb-0  " >{t("Operations")}</h1>
-                            </Col>
-                            <Col className="section" onClick={() => toLogin()} xs="auto">
+                            </div>
+                            <div className="section" onClick={() => toLogin()} xs="auto">
                                 <div className="d-flex justify-content-center">
                                     <FontAwesomeIcon className="icon" icon={faSignOutAlt} />
                                 </div>
                                 <h1 className="section-label  mb-0 pb-0  " >{t("Logout")}</h1>
-                            </Col>
+                            </div>
                         </>
                 }
             </Row>

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Col, Row, Container, Collapse, Spinner,Button } from 'react-bootstrap';
+import { Col, Row, Container, Collapse, Spinner, Button } from 'react-bootstrap';
 import Movement from './Movement';
 import { useTranslation } from "react-i18next";
 import { DashBoardContext } from 'context/DashBoardContext';
@@ -62,38 +62,45 @@ const TableLastMovements = ({ Fund }) => {
         }
         getMovements()
         // eslint-disable-next-line 
-    }, [Fund,Options])
+    }, [Fund, Options])
 
     return (
         <Col md="12" className="p-0 mt-2">
             {fetchingMovements && (movements.transactions.length === 0 || movements === null) ?
                 <h2 className='my-2 p-0'>{t("Loading transactions")}</h2> :
-                movements.transactions.length === 0 || movements === null ?
-                    <h2>{t("There are no records of any movement in this fund")}</h2> :
-                    <div>
-                        <Container fluid className="p-0"
-                            onClick={() => setOpen(!open)}
-                            aria-expanded={open}>
-                            <Row className="d-flex justify-content-end">
-                                <Col className={fetchingMovements ? "d-flex justify-content-between align-items-center" : ""}>
-                                    <h2 className={`my-2 toggler-mobile ${!!(fetchingMovements) ? "loading" : ""} ${open ? "toggled" : ""}`}>{t("Last transactions")}</h2>
-                                    {!!(fetchingMovements) && <Spinner className="ms-2" animation="border" size="sm" />}
-                                </Col>
-                            </Row>
-                        </Container>
-                        <Collapse in={open}>
-                            <div className="movementsTable mb-3">
-                                <div className='py-1 d-flex justify-content-end'>
-                                    <Button className="buttonFilter" variant="danger" onClick={() => handleShow()}>
-                                        <FontAwesomeIcon icon={faFilter} />
-                                    </Button>
-                                </div>
-                                {movements.transactions.map((u, i) => { ; return (<Movement key={i} content={u} />) })}
-                                <MoreAndLess InScreen={Options.take} total={movements.total} setOptions={setOptions} />
+
+                <div>
+                    <Container fluid className="p-0"
+                        onClick={() => setOpen(!open)}
+                        aria-expanded={open}>
+                        <Row className="d-flex justify-content-end">
+                            <Col className={fetchingMovements ? "d-flex justify-content-between align-items-center" : ""}>
+                                <h2 className={`my-2 toggler-mobile ${!!(fetchingMovements) ? "loading" : ""} ${open ? "toggled" : ""}`}>{t("Last transactions")}</h2>
+                                {!!(fetchingMovements) && <Spinner className="ms-2" animation="border" size="sm" />}
+                            </Col>
+                        </Row>
+                    </Container>
+                    <Collapse in={open}>
+                        <div className="movementsTable mb-3">
+                            <div className='py-1 d-flex justify-content-end'>
+                                <Button className="buttonFilter" variant="danger" onClick={() => handleShow()}>
+                                    <FontAwesomeIcon icon={faFilter} />
+                                </Button>
                             </div>
-                        </Collapse>
-                        <FilterOptionsMobile show={show} handleClose={handleClose} setOptions={setOptions} />
-                    </div>
+                            {
+                                movements.transactions.length === 0 || movements === null ?
+                                    <h2 className="text-center">{t("There are no records in the selected state")}</h2> :
+                                    <>
+                                        {
+                                            movements.transactions.map((u, i) => <Movement key={i} content={u} />)
+                                        }
+                                    </>
+                            }
+                            <MoreAndLess InScreen={Options.take} total={movements.total} setOptions={setOptions} />
+                        </div>
+                    </Collapse>
+                    <FilterOptionsMobile show={show} handleClose={handleClose} setOptions={setOptions} />
+                </div>
             }
         </Col>
     )

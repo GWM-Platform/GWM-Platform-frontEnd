@@ -16,10 +16,10 @@ const MoreAndLess = ({ InScreen, total, setOptions }) => {
 
     return (
         <div className="d-flex justify-content-between p-1">
-            <Button disabled={total <= 5 || 5 >= InScreen}
+            <Button className="ps-0" disabled={total <= 5 || 5 >= InScreen}
                 onClick={() => showLess(5)} variant="link">{t("Show less")}</Button>
 
-            <Button disabled={total < InScreen}
+            <Button className="pe-0" disabled={total < InScreen}
                 onClick={() => showMore(5)} variant="link">{t("Show more")}</Button>
         </div>
     )

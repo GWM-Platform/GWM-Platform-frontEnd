@@ -4,7 +4,6 @@ import moment from 'moment';
 import { useTranslation } from "react-i18next";
 
 const Movement = ({ Movement }) => {
-    moment.locale(localStorage.getItem('language'))
     var momentDate = moment(Movement.createdAt);
     const { t } = useTranslation();
     

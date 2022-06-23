@@ -34,7 +34,7 @@ const accountAlias = AccountSelected?.alias
                             {t("Transfer to")}: <span className="emphasis">{TargetAccount?.content?.alias}</span>
                         </li>
                         <li className="listedInfo">
-                            {t("Cash operation amount")}: <span className="emphasis">${data.amount}</span>
+                            {t("Transfer amount")}: <span className="emphasis">${data.amount}</span>
                         </li>
                     </ul>
                 </div>

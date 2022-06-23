@@ -55,7 +55,7 @@ const AccountRow = ({ Account, Client, setSelectedAccountId }) => {
                         "$" + balanceTotal.value
                 }
             </td>
-            <td onClick={() => setSelectedAccountId(Account.id)} className="toDetails">
+            <td onClick={() => setSelectedAccountId(Account.id)} className="toDetails text-nowrap">
                 <span className="d-inline d-md-none">{t("Details")}</span>
                 <span className="d-none d-md-inline">{t("Go to details")}</span>
                 <FontAwesomeIcon className="chevron" icon={faChevronRight} />

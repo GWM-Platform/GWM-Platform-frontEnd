@@ -18,7 +18,7 @@ const AccountsTable = ({ FilteredAccounts, Clients,setSelectedAccountId }) => {
             <Table className="AccountsTable" striped bordered hover>
                 <thead className="verticalTop tableHeader solid-bg">
                     <tr>
-                        <th className="id">{t("#id")}</th>
+                        <th className="id">{t("Ticket #")}</th>
                         <th className="Alias">{t("Alias")}</th>
                         <th className="Balance">{t("Balance")}</th>
                         <th ></th>

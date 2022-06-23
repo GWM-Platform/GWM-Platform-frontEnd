@@ -28,6 +28,7 @@
 .tableConcept {
     text-align: start;
     width: fit-content;
+    white-space: nowrap;
 }
 .movementsTableAccounts {
     max-height: calc(100vh - 250px);

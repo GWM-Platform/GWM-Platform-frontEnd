@@ -99,22 +99,21 @@
 	max-width: 10ch;
 }
 .FundsAdministration .FundsTable td.Actions {
-	max-width: 8ch;
+	max-width: 1%;
 }
 
-
-.FundsAdministration .fundRow.addFund {
+.table .add  {
 	border: none;
 }
-.FundsAdministration .fundRow.addFund td {
+.table .add  td {
 	border: none;
 }
-.FundsAdministration .fundRow.addFund .Actions {
+.table .add .Actions {
 	box-shadow: inset 0px 0px 0px 1px grey;
 	background-color: rgba(0, 0, 0, 0.025);
 }
 
-.FundsAdministration .fundRow.addFund .cellWithoudPadding {
+.table .add .cellWithoudPadding {
 	padding: 0;
 	height: 0;
 }
@@ -142,6 +141,7 @@
 	transition: ease 0.5s opacity 0.5s;
 }
 .deleteModal .placeHolder {
+	pointer-events: none;
 	opacity: 0;
 }
 .deleteModal .header,
@@ -301,18 +301,17 @@
 }
 
 .inputSearchLogo.active {
-	opacity:1;
-	transition:0.4s all 0.2s
+	opacity: 1;
+	transition: 0.4s all 0.2s;
 }
 
 .inputSearchLogo.hidden {
-	opacity:0;
-	transition:0.2s all 0.2s
+	opacity: 0;
+	transition: 0.2s all 0.2s;
 }
-
 
 .inputSearchLogo.placeholder {
 	position: static;
 	opacity: 0;
-	cursor:unset
+	cursor: unset;
 }

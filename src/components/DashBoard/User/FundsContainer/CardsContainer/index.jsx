@@ -6,6 +6,7 @@ import CashCard from './CashCard';
 import { DashBoardContext } from 'context/DashBoardContext';
 import Indicators from './Indicators'
 import './index.css'
+import TimeDepositCard from './TimeDepositCard';
 
 const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions, PendingWithoutpossession }) => {
     const { width } = useContext(DashBoardContext)
@@ -87,6 +88,7 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
                             setItemSelected={setItemSelected} Funds={Funds} Fund={j} />
                     )
                 }
+                <TimeDepositCard Hide={Hide} setHide={setHide} />
                 
             </Row>
             <div className={`arrow  right d-none d-sm-flex

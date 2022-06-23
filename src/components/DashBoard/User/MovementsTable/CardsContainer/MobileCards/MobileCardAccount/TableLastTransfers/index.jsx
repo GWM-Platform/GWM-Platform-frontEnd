@@ -108,33 +108,37 @@ const TableLastTransfers = ({ account }) => {
         <Col md="12" className="p-0 mt-2">
             {fetchingTransfers && (transfers.transfers.length === 0 || transfers === null) ?
                 <h2 className='my-2 p-0'>{t("Loading transfers")}</h2> :
-                transfers.transfers.length === 0 || transfers === null ?
-                    <h2>{t("There are no records of any movement in this Account")}</h2> :
-                    <div>
-                        <Container fluid className="p-0"
-                            onClick={() => setOpen(!open)}
-                            aria-expanded={open}>
-                            <Row className="d-flex justify-content-end">
-                                <Col className={fetchingTransfers ? "d-flex justify-content-between align-items-center" : ""}>
-                                    <h2 className={`my-2 toggler-mobile ${!!(fetchingTransfers) ? "loading" : ""} ${open ? "toggled" : ""}`}>{t("Last transfers")}</h2>
-                                    {!!(fetchingTransfers) && <Spinner className="ms-2" animation="border" size="sm" />}
-                                </Col>
-                            </Row>
-                        </Container>
-                        <Collapse in={open}>
-
-                            <div className="movementsTable mb-3">
-                                <div className='py-1 d-flex justify-content-end'>
-                                    <Button className="buttonFilter" variant="danger" onClick={() => handleShow()}>
-                                        <FontAwesomeIcon icon={faFilter} />
-                                    </Button>
-                                </div>
-                                {transfers.transfers.map((u, i) => { ; return (<Transfer getTransfers={getTransfers} key={i} content={u} />) })}
-                                <MoreAndLess InScreen={Options.take} total={transfers.total} setOptions={setOptions} />
+                <div>
+                    <Container fluid className="p-0"
+                        onClick={() => setOpen(!open)}
+                        aria-expanded={open}>
+                        <Row className="d-flex justify-content-end">
+                            <Col className={fetchingTransfers ? "d-flex justify-content-between align-items-center" : ""}>
+                                <h2 className={`my-2 toggler-mobile ${!!(fetchingTransfers) ? "loading" : ""} ${open ? "toggled" : ""}`}>{t("Last transfers")}</h2>
+                                {!!(fetchingTransfers) && <Spinner className="ms-2" animation="border" size="sm" />}
+                            </Col>
+                        </Row>
+                    </Container>
+                    <Collapse in={open}>
+                        <div className="movementsTable mb-3">
+                            <div className='py-1 d-flex justify-content-end'>
+                                <Button className="buttonFilter" variant="danger" onClick={() => handleShow()}>
+                                    <FontAwesomeIcon icon={faFilter} />
+                                </Button>
                             </div>
-                        </Collapse>
-                        <FilterOptionsMobile show={show} handleClose={handleClose} setOptions={setOptions} />
-                    </div>
+                            {
+                                transfers.transfers.length === 0 || transfers === null ?
+                                    <h2 className="text-center">{t("There are no records in the selected state")}</h2>
+                                    :
+                                    <>{
+                                        transfers.transfers.map((u, i) => <Transfer getTransfers={getTransfers} key={i} content={u} />)}
+                                    </>
+                            }
+                            <MoreAndLess InScreen={Options.take} total={transfers.total} setOptions={setOptions} />
+                        </div>
+                    </Collapse>
+                    <FilterOptionsMobile show={show} handleClose={handleClose} setOptions={setOptions} />
+                </div>
             }
         </Col>
     )

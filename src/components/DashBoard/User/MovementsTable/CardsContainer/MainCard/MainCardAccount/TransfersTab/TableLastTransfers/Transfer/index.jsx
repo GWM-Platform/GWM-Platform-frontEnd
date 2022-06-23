@@ -1,15 +1,13 @@
 import React, { useContext,useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from 'moment';
-import 'moment/locale/es'
 import { useTranslation } from "react-i18next";
 import { DashBoardContext } from 'context/DashBoardContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icons';
-import ActionConfirmationModal from './ActionConfirmationModal'
+import ActionConfirmationModal from 'components/DashBoard/User/MovementsTable/GeneralUse/TransferConfirmation'
 
 const Transfer = ({ content, actions,getTransfers }) => {
-  moment.locale(localStorage.getItem('language'))
   var momentDate = moment(content.createdAt);
   const { t } = useTranslation();
   const { getMoveStateById, ClientSelected } = useContext(DashBoardContext)
@@ -29,7 +27,7 @@ const Transfer = ({ content, actions,getTransfers }) => {
       <td className="tableId">{content.id}</td>
       <td className="tableDate">{momentDate.format('DD/MM/YYYY, h:mm a')}</td>
       <td className={`tableConcept ${content.stateId === 3 ? 'text-red' : 'text-green'}`}>{t(getMoveStateById(content.stateId).name)}</td>
-      <td className="tableConcept">{t("Transfer")}{" "}{t( incomingTransfer() ? "received from" : "sent to")}{" "}{t("account with the alias")}{" \""}{incomingTransfer() ? content.senderAlias : content.receiverAlias}{"\""}</td>
+      <td className="tableConcept">{t("Transfer")}{" "}{t( incomingTransfer() ? "received from account" : "sent to account")}{t("")}{" \""}{incomingTransfer() ? content.senderAlias : content.receiverAlias}{"\""}</td>
       <td className={`tableAmount ${content.receiverId === clientId ? 'text-green' : 'text-red'}`}><span>{content.receiverId === clientId ? '+' : '-'}</span><span >$</span>{Math.abs(content.amount)}</td>
       {
         !!actions &&

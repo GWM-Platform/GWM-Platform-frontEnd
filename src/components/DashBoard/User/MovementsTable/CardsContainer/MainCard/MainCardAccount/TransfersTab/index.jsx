@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react'
-
-import './index.css'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import TableLastTransfers from './TableLastTransfers';
-//import TransfersPagination from './TransfersPagination';
-import NoMovements from 'components/DashBoard/GeneralUse/NoMovements';
-import Loading from 'components/DashBoard/GeneralUse/Loading';
 import { useHistory } from 'react-router-dom';
 import { DashBoardContext } from 'context/DashBoardContext';
+
+import TableLastTransfers from './TableLastTransfers';
+import NoMovements from 'components/DashBoard/GeneralUse/NoMovements';
+import Loading from 'components/DashBoard/GeneralUse/Loading';
 import PaginationController from 'components/DashBoard/GeneralUse/PaginationController'
 import FilterOptions from 'components/DashBoard/GeneralUse/FilterOptions'
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../MovementsTab/index.css'
 
 const TransfersTab = ({ Fund, SearchById, setSearchById, resetSearchById, handleTransferSearchChange }) => {
     const { token, ClientSelected } = useContext(DashBoardContext);
@@ -130,7 +130,7 @@ const TransfersTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
         <div className="p-0 h-100">
             <div className="d-flex align-items-start justify-content-center flex-column MovementsTableContainer">
                 <div className={`movementsTable growAnimation`}>
-                    <FilterOptions keyword={"transfers"} ticketSearch ticketSearchProps={ticketSearchProps} disabled={SearchById.search} Fund={Fund} setPagination={setPagination} movsPerPage={Pagination.take} total={Transfers.total} />
+                    <FilterOptions keyword={"transactions"} ticketSearch ticketSearchProps={ticketSearchProps} disabled={SearchById.search} Fund={Fund} setPagination={setPagination} movsPerPage={Pagination.take} total={Transfers.total} />
                     {
                         FetchingTransfers ?
                             <Loading movements={Pagination.take} />

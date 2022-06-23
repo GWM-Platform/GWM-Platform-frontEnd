@@ -1,11 +1,9 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from 'moment';
-import 'moment/locale/es'
 import { useTranslation } from "react-i18next";
 
 const TransactionRow = ({ transaction }) => {
-  moment.locale(localStorage.getItem('language'))
   var momentDate = moment(transaction.createdAt);
   const { t } = useTranslation();
 

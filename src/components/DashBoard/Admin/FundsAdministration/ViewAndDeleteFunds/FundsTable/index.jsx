@@ -12,7 +12,6 @@ const FundsTable = ({ Funds, AssetTypes, chargeFunds, setAction, Action }) => {
     return (
         <div style={{overflowX:"auto",scrollSnapType:"both mandatory"}}>
             <Table className="FundsTable" striped bordered hover>
-
                 <thead className="verticalTop tableHeader solid-bg">
                     <tr>
                         <th className="Name">{t("Name")}</th>

@@ -20,6 +20,8 @@ import BuyForm from './User/newTicket/BuyForm';
 import SellForm from './User/newTicket/SellForm';
 import WithdrawForm from './User/newTicket/WithdrawForm';
 import DepositForm from './User/newTicket/DepositForm';
+import TimeDepositClient from './User/newTicket/TimeDeposit';
+
 import TransferForm from './User/newTicket/TransferForm';
 import OperationStatus from './User/newTicket/OperationStatus';
 import SelectClient from './User/SelectClient';
@@ -35,6 +37,8 @@ import OperationStatusAdmin from './Admin/OperationStatus';
 import Loading from './Loading';
 import AccountsSupervision from './Admin/AccountsSupervision';
 import APL from './Admin/APL'
+import TimeDeposit from './Admin/TimeDeposit';
+
 
 //General
 import DashboardToast from './DashboardToast'
@@ -63,6 +67,7 @@ const UserDashBoard = () => {
                                 />
                                 {
                                     admin && IndexClientSelected === -1 ?
+                                        /*----------------------------------------------------------Admin----------------------------------------------------------*/
                                         <div className={`adminContainer tabContent`}>
                                             <Route path={`${path}/addAccount`}>
                                                 <AddAccount />
@@ -79,6 +84,9 @@ const UserDashBoard = () => {
                                             <Route path={`${path}/assetsAdministration`}>
                                                 <AssetsAdministration />
                                             </Route>
+                                            <Route path={`${path}/TimeDeposit`}>
+                                                <TimeDeposit />
+                                            </Route>
                                             <Route path={`${path}/ticketsAdministration`}>
                                                 <TicketsAdministration />
                                             </Route>
@@ -93,6 +101,7 @@ const UserDashBoard = () => {
                                             </Route>
                                         </div>
                                         :
+                                        /*----------------------------------------------------------Client----------------------------------------------------------*/
                                         <>
                                             <NavBarTotal balanceChanged={balanceChanged} setBalanceChanged={setBalanceChanged} />
                                             <Route path={`${path}/accounts`}>
@@ -127,6 +136,9 @@ const UserDashBoard = () => {
                                             <Route path={`${path}/transfer`}>
                                                 <TransferForm balanceChanged={() => setBalanceChanged(true)} />
                                             </Route>
+                                            <Route path={`${path}/TimeDeposit`}>
+                                                <TimeDepositClient />
+                                            </Route>
                                             <Route path={`${path}/operationResult`}>
                                                 <OperationStatus setItemSelected={setItemSelected} />
                                             </Route>
@@ -134,7 +146,7 @@ const UserDashBoard = () => {
                                 }
                                 <DashboardToast />
                                 <Footer />
-                                <NavBarMobile setItemSelected={setItemSelected}/>
+                                <NavBarMobile setItemSelected={setItemSelected} />
                             </>
                             :
                             <Loading />

@@ -122,6 +122,9 @@ body,
 .p-relative {
 	position: relative;
 }
+.p-absolute {
+	position: absolute;
+}
 .overflowXhidden {
 	overflow-x: hidden;
 }
@@ -351,6 +354,7 @@ table .Actions {
 	position: sticky;
 	right: 0;
 	background-color: white;
+	width: 1%;
 }
 
 .accordion-button {
@@ -365,7 +369,12 @@ table .Actions {
 	display: none;
 }
 
-@media (min-width: 400px) and (max-width: 800px) and (min-aspect-ratio: 13/9) {
+.dropdown-item.active,
+.dropdown-item:active {
+	background-color: gray;
+}
+
+@media (min-width: 600px) and (max-width: 800px) and (min-aspect-ratio: 13/9) {
 	.appContainer {
 		display: none;
 	}

@@ -1,12 +1,10 @@
 import React, { useContext } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from 'moment';
-import 'moment/locale/es'
 import { useTranslation } from "react-i18next";
 import { DashBoardContext } from 'context/DashBoardContext';
 
 const TransactionRow = ({ transaction,user }) => {
-  moment.locale(localStorage.getItem('language'))
   var momentDate = moment(transaction.createdAt);
   const { t } = useTranslation();
   const { getMoveStateById } = useContext(DashBoardContext)

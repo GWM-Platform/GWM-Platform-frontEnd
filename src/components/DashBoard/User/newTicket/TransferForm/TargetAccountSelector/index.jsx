@@ -71,7 +71,7 @@ const TargetAccountSelector = ({ data, TargetAccount, setTargetAccount, handleCh
                                         <span className="number">1</span>
                                     </div>
                                 </span>
-                                {t("Specify the target account")}
+                                {t("To transfer to")}:
                             </span>
                         </Form.Label>
                     </Row>
@@ -82,7 +82,7 @@ const TargetAccountSelector = ({ data, TargetAccount, setTargetAccount, handleCh
                 <InputGroup >
                     <Form.Control
                         onKeyDown={(e) => handleOnkeyDown(e)}
-                        placeholder={t("Target account alias")} value={data.alias} type="text" id="alias" required
+                        placeholder={t("Enter account alias")} value={data.alias} type="text" id="alias" required
                         className={`${TargetAccount.fetched || validated ? TargetAccount.valid ? "hardcoded-valid" : "hardcoded-invalid" : "hardcoded-novalidate"}`}
                         onChange={(e) => {
                             handleChange(e);
