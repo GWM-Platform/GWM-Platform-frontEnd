@@ -1,56 +1,68 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import EditForm from './EditForm'
 import EditResult from './EditResult'
+import { DashBoardContext } from 'context/DashBoardContext';
+import axios from 'axios';
 
-const EditRule = ({ ActionDispatch, rule, setTimeDeposit }) => {
+const EditRule = ({ ActionDispatch, rule, TimeDeposit, getFixedDepositPlans }) => {
+
     const [validated, setValidated] = useState(false);
     const [data, setData] = useState({
         days: rule.days,
         rate: rule.rate,
     })
 
-    const editRule = async () => {
-        setTimeDeposit(prevState => {
-            let aux = [...prevState?.content?.rules]
-            const index = prevState.content.rules.findIndex(ruleFI => ruleFI.id === rule.id)
-            aux[index] = { ...aux[index], ...data }
-            return { ...prevState, content: { ...prevState.content, rules: aux } }
-        })
-        setEditRequest(
-            {
-                ...EditRequest, ...{
-                    fetching: true,
-                    fetched: false,
-                    valid: false
-                }
-            }
-        )
+    const { toLogin } = useContext(DashBoardContext)
 
-        if (true) {
-            setEditRequest(
-                {
+    const editRule = () => {
+        setEditRequest({
+            ...EditRequest,
+            fetching: true,
+            fetched: false,
+            valid: false
+        })
+
+        let TimeDepositEdited = { ...TimeDeposit, interest: { ...TimeDeposit.interest, [data.days]: data.rate } }
+
+        axios.put(`/fixed-deposits/plans/${TimeDeposit?.id}`, TimeDepositEdited).then(function (response) {
+            if (response.status < 300 && response.status >= 200) {
+                setEditRequest({
                     ...EditRequest, ...{
                         fetching: false,
                         fetched: true,
                         valid: true
                     }
+                })
+            } else {
+                switch (response.status) {
+                    case 401:
+                        toLogin();
+                        break;
+                    default:
+                        setEditRequest({
+                            ...EditRequest, ...{
+                                fetching: false,
+                                fetched: true,
+                                valid: false
+                            }
+                        })
+                        break;
                 }
-            )
-        } else {
-            setEditRequest(
-                {
+            }
+        }).catch((err) => {
+            if (err.message !== "canceled") {
+                setEditRequest({
                     ...EditRequest, ...{
                         fetching: false,
                         fetched: true,
                         valid: false
                     }
-                }
-            )
-        }
+                })
+            }
+        });
     }
-
 
     const [EditRequest, setEditRequest] = useState({
         fetching: false,
@@ -78,7 +90,7 @@ const EditRule = ({ ActionDispatch, rule, setTimeDeposit }) => {
         <>
             {
                 EditRequest.fetched ?
-                    <EditResult ActionDispatch={ActionDispatch} EditRequest={EditRequest} />
+                    <EditResult ActionDispatch={ActionDispatch} EditRequest={EditRequest} getFixedDepositPlans={getFixedDepositPlans}/>
                     :
                     <EditForm
                         fetchingEditRequest={EditRequest?.fetching} ActionDispatch={ActionDispatch}

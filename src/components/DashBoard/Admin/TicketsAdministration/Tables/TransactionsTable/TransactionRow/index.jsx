@@ -24,8 +24,6 @@ const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData })
         setShowModal(true)
     }
 
-
-
     useEffect(() => {
         const userInfoById = (clientId) => {
             let indexClientTransaction = UsersInfo.value.findIndex((client) => client.id === clientId)
@@ -78,7 +76,6 @@ const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData })
             <tr className="transactionRow">
                 <td>
                     <span className='text-nowrap'>
-
                         {
                             UserTicketInfo.fetching ?
                                 <Spinner animation="border" size="sm" />

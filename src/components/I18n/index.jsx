@@ -624,7 +624,22 @@ i18n
           "Actual period () rate": "Tasa del periodo actual ({{period}})",
           "At the end of the period": "Al finalizar el periodo",
           "Enter account alias": "Ingresá el alias",
-          "You":"Usted"
+          "You": "Usted",
+          "There was an error, try again later": "Ha ocurrido un error, intentalo de nuevo mas tarde",
+          "You are about to delete the rule for": "Estas a punto de eliminar la regla para",
+          "Failed to delete the rule": "Fallo al intentar eliminar la regla",
+          "The rule has been removed succesfully": "La regla ha sido eliminada correctamente",
+          "The minimum duration is 365 days": "La duración mínima de de 365 días",
+          "The maximum duration is 730 days": "La duración máxima de de 730 días",
+          "There was an error, try it again later": "Hubo un error, por favor intentalo de nuevo mas tarde",
+          "Time deposits": "Plazos fijos",
+          "Investment": "Inversion",
+          "Duration": "Duración",
+          "Profit": "Ganancia",
+          "At the end of the term": "Al final del plazo",
+          "Pending approval": "Aprobación pendiente",
+          "0 days": "0 días",
+          "To be confirmed": "A confirmar"
         }
       }
     }

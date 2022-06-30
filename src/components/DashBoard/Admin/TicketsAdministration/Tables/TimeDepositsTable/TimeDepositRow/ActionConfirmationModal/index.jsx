@@ -2,12 +2,12 @@ import React, { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
 import { faExclamation, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { Modal, Button } from 'react-bootstrap'
 import { faCircle } from '@fortawesome/free-regular-svg-icons';
 
-const TransferConfirmation = ({ incomingTransfer, movement, setShowModal, action, show, reloadData }) => {
+
+const ActionConfirmationModal = ({ movement, setShowModal, action, show, reloadData }) => {
     const { t } = useTranslation();
     const [ActionFetch, setActionFetch] = useState({ fetched: false, fetching: false, valid: false })
 
@@ -22,7 +22,7 @@ const TransferConfirmation = ({ incomingTransfer, movement, setShowModal, action
     }
 
 
-    const changeTransferState = async () => {
+    const changeTransactionState = async () => {
         setActionFetch({
             ...ActionFetch,
             fetching: true,
@@ -30,7 +30,7 @@ const TransferConfirmation = ({ incomingTransfer, movement, setShowModal, action
             valid: false
         })
 
-        const url = `${process.env.REACT_APP_APIURL}/transfers/${movement.id}/${action}`;
+        const url = `${process.env.REACT_APP_APIURL}/fixed-deposits/${movement.id}/${action}`;
         const token = sessionStorage.getItem("access_token")
 
         const response = await fetch(url, {
@@ -64,7 +64,7 @@ const TransferConfirmation = ({ incomingTransfer, movement, setShowModal, action
     }
 
     return (
-        <Modal className="deleteModal" show={show} onHide={handleClose}>
+        <Modal className="deleteModal" size="sm" show={show} onHide={handleClose}>
             <Modal.Body className="body">
                 <div className={!ActionFetch.fetched && !ActionFetch.fetching ? "show" : "hidden"}>
                     <div className="d-flex justify-content-center align-items-center">
@@ -94,19 +94,7 @@ const TransferConfirmation = ({ incomingTransfer, movement, setShowModal, action
                         </h1>
                     </div>
                     <h1 className="title"> {t("Are you sure?")}</h1>
-                    <h2 className="subTitle">{t("You are about to")} {t(action)} {t("transfer #")} {movement.id}</h2>
-                    <ul>
-                        <li className="listedInfo">
-                            {t("Operation")}: <span className="emphasis">{t(`${incomingTransfer ? "Incoming" : "Outgoing"} transfer`)}</span>
-
-                            <li className="listedInfo">
-                                {t(`Transfer from`)}: <span className="emphasis text-nowrap">{movement.senderAlias}{!incomingTransfer ? <>&nbsp;({t("You")})</> : ""}</span>
-                            </li>
-                            <li className="listedInfo">
-                                {t(`Transfer to`)}: <span className="emphasis text-nowrap">{movement.receiverAlias}{incomingTransfer ? <>&nbsp;({t("You")})</> : ""}</span>
-                            </li>
-                        </li>
-                    </ul>
+                    <h2 className="subTitle">{t("You are about to")} {t(action)} {t("the ticket with the id")} {movement.id}</h2>
                     <h3 className="heading">{t("This action cannot be undone")}</h3>
                 </div>
                 <div className={ActionFetch.fetched && !ActionFetch.fetching ? "show" : "hidden"}>
@@ -202,18 +190,7 @@ const TransferConfirmation = ({ incomingTransfer, movement, setShowModal, action
                         </h1>
                     </div>
                     <h1 className="title"> {t("Are you sure?")}</h1>
-                    <h2 className="subTitle">{t("You are about to")} {t(action)} {t("transfer #")} {movement.id}</h2>
-                    <ul>
-                        <li className="listedInfo">
-                            {t("Operation")}: <span className="emphasis">{t(`${incomingTransfer ? "Incoming" : "Outgoing"} transfer`)}</span>
-                            <li className="listedInfo">
-                                {t(`Transfer from`)}: <span className="emphasis text-nowrap">{movement.senderAlias}{!incomingTransfer ? <>&nbsp;({t("You")})</> : ""}</span>
-                            </li>
-                            <li className="listedInfo">
-                                {t(`Transfer to`)}: <span className="emphasis text-nowrap">{movement.receiverAlias}{incomingTransfer ? <>&nbsp;({t("You")})</> : ""}</span>
-                            </li>
-                        </li>
-                    </ul>
+                    <h2 className="subTitle">{t("You are about to")} {t(action)} {t("the ticket with the id")} {t(movement.id)}</h2>
                     <h3 className="heading">{t("This action cannot be undone")}</h3>
                 </div>
             </Modal.Body>
@@ -230,7 +207,7 @@ const TransferConfirmation = ({ incomingTransfer, movement, setShowModal, action
                             <Button variant="outline-secondary" onClick={() => handleClose()}>
                                 {t("Cancel")}
                             </Button>
-                            <Button variant="outline-success" onClick={() => { if (!ActionFetch.fetching) changeTransferState() }}>
+                            <Button variant="outline-success" onClick={() => { if (!ActionFetch.fetching) changeTransactionState() }}>
                                 <div className="iconContainer green">
                                     {t("Confirm")}
                                 </div>
@@ -242,4 +219,4 @@ const TransferConfirmation = ({ incomingTransfer, movement, setShowModal, action
         </Modal>
     )
 }
-export default TransferConfirmation
+export default ActionConfirmationModal

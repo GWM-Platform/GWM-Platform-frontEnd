@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronCircleLeft } from '@fortawesome/free-solid-svg-icons'
 
-const EditForm = ({ data, fetchingCreateRequest, handleChange, ActionDispatch, validated, handleSubmit, AssetTypes }) => {
+const EditForm = ({ data, fetchingEditRequest, handleChange, ActionDispatch, validated, handleSubmit, AssetTypes }) => {
     const { t } = useTranslation();
     return (
         <div className="editForm">
@@ -20,10 +20,7 @@ const EditForm = ({ data, fetchingCreateRequest, handleChange, ActionDispatch, v
                     label={t("Days")}
                     className="mb-3"
                 >
-                    <Form.Control required onChange={handleChange} id="days" value={data.days} type="number" placeholder={t("Days")} />
-                    <Form.Control.Feedback type="invalid">
-                        {t("You must provide a name for the Asset")}
-                    </Form.Control.Feedback>
+                    <Form.Control disabled required onChange={handleChange} id="days" value={data.days} type="number" placeholder={t("Days")} />
                 </FloatingLabel>
 
                 <FloatingLabel
@@ -32,14 +29,14 @@ const EditForm = ({ data, fetchingCreateRequest, handleChange, ActionDispatch, v
                 >
                     <Form.Control required onChange={handleChange} id="rate" value={data.rate} min="0.01" step="0.01" type="number" placeholder={t("Rate")} />
                     <Form.Control.Feedback type="invalid">
-                        {t("The value must be greater than 0")}
+                        {t("The rate must be greater than 0")}
                     </Form.Control.Feedback>
                 </FloatingLabel>
 
                 <div className="d-flex justify-content-end">
                     <Button variant="danger" type="submit" className="mb-3">
                         <Spinner animation="border" variant="light"
-                            className={`${fetchingCreateRequest ? "d-inline-block" : "d-none"} littleSpinner ms-1`} />
+                            className={`${fetchingEditRequest ? "d-inline-block" : "d-none"} littleSpinner me-2`} />
                         {t("Submit")}
                     </Button>
                 </div>

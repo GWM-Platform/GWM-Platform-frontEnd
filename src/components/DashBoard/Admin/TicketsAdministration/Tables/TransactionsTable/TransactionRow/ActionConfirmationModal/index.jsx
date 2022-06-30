@@ -4,9 +4,10 @@ import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExclamation, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { Modal, Button } from 'react-bootstrap'
+import { faCircle } from '@fortawesome/free-regular-svg-icons';
 
 
-const ActionConfirmationModal = ({ transaction, setShowModal, action,show,reloadData }) => {
+const ActionConfirmationModal = ({ transaction, setShowModal, action, show, reloadData }) => {
     const { t } = useTranslation();
 
     const [ActionFetch, setActionFetch] = useState({ fetched: false, fetching: false, valid: false })
@@ -67,8 +68,31 @@ const ActionConfirmationModal = ({ transaction, setShowModal, action,show,reload
         <Modal className="deleteModal" size="sm" show={show} onHide={handleClose}>
             <Modal.Body className="body">
                 <div className={!ActionFetch.fetched && !ActionFetch.fetching ? "show" : "hidden"}>
-                    <div className="descriptionIconContainer red mx-auto">
-                        <h1 className="title"><FontAwesomeIcon className="icon red" icon={faExclamation} /></h1>
+                    <div className="d-flex justify-content-center align-items-center">
+                        <h1 className='p-relative' style={{ fontSize: "4rem" }}>
+                            <FontAwesomeIcon
+                                className="p-absolute"
+                                color="red"
+                                icon={faExclamation}
+                                style={{
+                                    transform: "translate(-50%, -50%)",
+                                    top: "50%",
+                                    left: "50%"
+                                }}
+                            />
+                            <FontAwesomeIcon
+
+                                color="red"
+                                icon={faCircle}
+                                className="p-absolute"
+                                style={{
+                                    transform: "translate(-50%, -50%) scale(1.5)",
+                                    top: "50%",
+                                    left: "50%"
+                                }}
+                            />
+                            <FontAwesomeIcon className="placeHolder" icon={faCircle} style={{ transform: "scale(1.5)" }} />
+                        </h1>
                     </div>
                     <h1 className="title"> {t("Are you sure?")}</h1>
                     <h2 className="subTitle">{t("You are about to")} {t(action)} {t("the ticket with the id")} {t(transaction.id)}</h2>
@@ -78,15 +102,61 @@ const ActionConfirmationModal = ({ transaction, setShowModal, action,show,reload
                     {
                         ActionFetch.valid ?
                             <>
-                                <div className="descriptionIconContainer green mx-auto">
-                                    <h1 className="title"><FontAwesomeIcon className="icon green" icon={faCheck} /></h1>
+                                <div className="d-flex justify-content-center align-items-center">
+                                    <h1 className='p-relative' style={{ fontSize: "4rem" }}>
+                                        <FontAwesomeIcon
+                                            className="p-absolute"
+                                            color="red"
+                                            icon={faCheck}
+                                            style={{
+                                                transform: "translate(-50%, -50%)",
+                                                top: "50%",
+                                                left: "50%"
+                                            }}
+                                        />
+                                        <FontAwesomeIcon
+
+                                            color="red"
+                                            icon={faCircle}
+                                            className="p-absolute"
+                                            style={{
+                                                transform: "translate(-50%, -50%) scale(1.5)",
+                                                top: "50%",
+                                                left: "50%"
+                                            }}
+                                        />
+                                        <FontAwesomeIcon className="placeHolder" icon={faCircle} style={{ transform: "scale(1.5)" }} />
+                                    </h1>
                                 </div>
-                                <h2 className="subTitle mt-4">{t("The ticket has been")} {t(action==="approve" ? "approved" : "denied")} {t("succesfully")}</h2>
+                                <h2 className="subTitle mt-4">{t("The ticket has been")} {t(action === "approve" ? "approved" : "denied")} {t("succesfully")}</h2>
                             </>
                             :
                             <>
-                                <div className="descriptionIconContainer red mx-auto">
-                                    <h1 className="title"><FontAwesomeIcon className="icon red" icon={faTimes} /></h1>
+                                <div className="d-flex justify-content-center align-items-center">
+                                    <h1 className='p-relative' style={{ fontSize: "4rem" }}>
+                                        <FontAwesomeIcon
+                                            className="p-absolute"
+                                            color="red"
+                                            icon={faTimes}
+                                            style={{
+                                                transform: "translate(-50%, -50%)",
+                                                top: "50%",
+                                                left: "50%"
+                                            }}
+                                        />
+                                        <FontAwesomeIcon
+
+                                            color="red"
+                                            icon={faTimes}
+                                            className="p-absolute"
+                                            style={{
+                                                transform: "translate(-50%, -50%) scale(1.5)",
+                                                top: "50%",
+                                                left: "50%"
+                                            }}
+                                        />
+                                        <FontAwesomeIcon className="placeHolder" icon={faCircle} style={{ transform: "scale(1.5)" }} />
+                                    </h1>
                                 </div>
                                 <h2 className="subTitle mt-4">{t("Failed to")}{" "}{t(action)}{" "}{t("the ticket")}</h2>
                             </>
@@ -94,8 +164,31 @@ const ActionConfirmationModal = ({ transaction, setShowModal, action,show,reload
 
                 </div>
                 <div className="placeHolder">
-                    <div className="descriptionIconContainer red mx-auto">
-                        <h1 className="title"><FontAwesomeIcon className="icon red" icon={faExclamation} /></h1>
+                    <div className="d-flex justify-content-center align-items-center">
+                        <h1 className='p-relative' style={{ fontSize: "4rem" }}>
+                            <FontAwesomeIcon
+                                className="p-absolute"
+                                color="red"
+                                icon={faExclamation}
+                                style={{
+                                    transform: "translate(-50%, -50%)",
+                                    top: "50%",
+                                    left: "50%"
+                                }}
+                            />
+                            <FontAwesomeIcon
+
+                                color="red"
+                                icon={faCircle}
+                                className="p-absolute"
+                                style={{
+                                    transform: "translate(-50%, -50%) scale(1.5)",
+                                    top: "50%",
+                                    left: "50%"
+                                }}
+                            />
+                            <FontAwesomeIcon className="placeHolder" icon={faCircle} style={{ transform: "scale(1.5)" }} />
+                        </h1>
                     </div>
                     <h1 className="title"> {t("Are you sure?")}</h1>
                     <h2 className="subTitle">{t("You are about to")} {t(action)} {t("the ticket with the id")} {t(transaction.id)}</h2>
@@ -106,7 +199,7 @@ const ActionConfirmationModal = ({ transaction, setShowModal, action,show,reload
             <Modal.Footer className="footer justify-content-center">
                 {
                     ActionFetch.fetched ?
-                        <Button variant="outline-secondary" onClick={() => {reloadData();handleClose()}}>
+                        <Button variant="outline-secondary" onClick={() => { reloadData(); handleClose() }}>
                             {t("Close")}
                         </Button>
                         :
@@ -115,7 +208,7 @@ const ActionConfirmationModal = ({ transaction, setShowModal, action,show,reload
                             <Button variant="outline-secondary" onClick={() => handleClose()}>
                                 {t("Cancel")}
                             </Button>
-                            <Button variant="outline-success" onClick={() => { if(!ActionFetch.fetching) changeTransactionState() }}>
+                            <Button variant="outline-success" onClick={() => { if (!ActionFetch.fetching) changeTransactionState() }}>
                                 <div className="iconContainer green">
                                     {t("Confirm")}
                                 </div>

@@ -2,17 +2,17 @@ import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronCircleLeft,faTimes,faCheck } from '@fortawesome/free-solid-svg-icons'
+import { faChevronCircleLeft, faTimes, faCheck } from '@fortawesome/free-solid-svg-icons'
 
-const EditResult = ({ EditRequest,ActionDispatch }) => {
+const EditResult = ({ EditRequest, ActionDispatch, getFixedDepositPlans }) => {
     const { t } = useTranslation();
     return (
         <div className="editResult">
             <div className="header">
                 <h1 className="title">
-                   {t("Form edit result")}
+                    {t("Form edit result")}
                 </h1>
-                <FontAwesomeIcon className="button icon" onClick={() => {ActionDispatch({type:"view"})}} icon={faChevronCircleLeft} />
+                <FontAwesomeIcon className="button icon" onClick={() => { getFixedDepositPlans(); ActionDispatch({ type: "view" }) }} icon={faChevronCircleLeft} />
             </div>
             {
                 EditRequest?.valid ?

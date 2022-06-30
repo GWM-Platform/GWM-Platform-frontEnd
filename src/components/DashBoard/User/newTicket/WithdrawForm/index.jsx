@@ -39,10 +39,10 @@ const WithdrawForm = ({ balanceChanged }) => {
         } else {
             switch (response.status) {
                 case 500:
-                    console.error(response.status)
+                    history.push(`/DashBoard/operationResult?result=failed`);
                     break;
                 default:
-                    console.error(response.status)
+                    history.push(`/DashBoard/operationResult?result=failed`);
             }
         }
         setFetching(false)

@@ -1,47 +1,85 @@
-import React from 'react'
-import { Container, Row, Col, Card, Button } from 'react-bootstrap';
+import React, { useContext, useEffect, useState } from 'react'
+import { Container, Row, Col, Card, Spinner } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faEye, faPiggyBank } from '@fortawesome/free-solid-svg-icons'
 import moment from 'moment';
 import Decimal from 'decimal.js';
+import axios from 'axios';
+import { DashBoardContext } from 'context/DashBoardContext';
 
-const TimeDepositCard = ({ Hide, setHide }) => {
+const TimeDepositCard = ({ Hide, setHide, TimeDeposit, ownKey }) => {
+    const { toLogin } = useContext(DashBoardContext);
     const { t } = useTranslation();
     Decimal.set({ precision: 6 })
 
-    const timeDeposit = {
-        from: moment().subtract(265, "days"),
-        to: moment().add(100, "days"),
-        initialInvestment: 100,
-        rule: {
-            days: 365,
-            rate: 0.02
+    const getAnualRate = () => {
+        if (TimeDeposit.duration >= 365 && TimeDeposit.initialAmount) {
+            return TimeDeposit?.interest[Object.keys(TimeDeposit?.interest).filter(ruleDays => ruleDays <= TimeDeposit.duration).reduce((prev, curr) => Math.abs(curr - TimeDeposit.duration) < Math.abs(prev - TimeDeposit.duration) ? curr : prev)] || 0
+        }
+        return 0
+    }
+
+    const [profit, setProfit] = useState({ fetching: false, fetched: false, valid: false, value: 0 })
+    const [actualProfit, setActualProfit] = useState({ fetching: false, fetched: false, valid: false, value: 0 })
+
+    const calculateActualProfit = (signal) => {
+        if (TimeDeposit.duration >= 365 && TimeDeposit.stateId === 2 && TimeDeposit.startDate) {
+            const elapsedTime = moment(TimeDeposit?.startDate).diff(moment(), "days")
+            const ratePerDay = new Decimal((new Decimal(getAnualRate()).div(100)).toString()).div(365).toString()
+            const gain = new Decimal(new Decimal(ratePerDay).times(elapsedTime).toString()).times(TimeDeposit.initialAmount).toString()
+            setActualProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: new Decimal(TimeDeposit.initialAmount).add(gain).toString() } }))
+        } else {
+            setActualProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: TimeDeposit.initialAmount } }))
         }
     }
-    const ratePercentaje=()=>new Decimal(0.02).times(100).toString()
 
-    const daysPercentajeFromTotal = ({ fixed = false }) => {
-        const daysFromInvestment = moment().diff(timeDeposit.from, "days")
-        const daysPercentajeFromTotal = new Decimal(daysFromInvestment).times(100).div(timeDeposit.rule.days)
-        return fixed ? daysPercentajeFromTotal.toFixed(2).toString() : daysPercentajeFromTotal.toString()
+    const calculateProfit = (signal) => {
+        if (TimeDeposit.duration >= 365 && TimeDeposit.initialAmount) {
+            axios.post(`/fixed-deposits/profit`,
+                {
+                    initialAmount: TimeDeposit.initialAmount,
+                    interest: TimeDeposit?.interest,
+                    startDate: moment().format(),
+                    endDate: moment().add(TimeDeposit.duration, 'days').format()
+                }, { signal: signal }).then(function (response) {
+                    if (response.status < 300 && response.status >= 200) {
+                        setProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: response.data || TimeDeposit.initialAmount } }))
+                    } else {
+                        switch (response.status) {
+                            case 401:
+                                toLogin();
+                                break;
+                            default:
+                                setProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: TimeDeposit.initialAmount } }))
+                                break
+                        }
+                    }
+                }).catch((err) => {
+                    if (err.message !== "canceled") {
+                        setProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: TimeDeposit.initialAmount } }))
+                    }
+                });
+        }
     }
-    const gainInTheEnd = () => new Decimal(timeDeposit.initialInvestment).times(timeDeposit.rule.rate).toString()
 
-    const actualGain = ({ fixed = false }) => {
-        const actualGain = new Decimal(gainInTheEnd()).times(daysPercentajeFromTotal({ fixed: false })).div(100)
-        return fixed ? actualGain.toFixed(3).toString() : actualGain.toString()
-    }
-    const investmentAtTheEnd = () => new Decimal(timeDeposit.initialInvestment).add(gainInTheEnd()).toString()
+    useEffect(() => {
+        const controller = new AbortController();
+        const signal = controller.signal;
 
-    const actualValueOfInvestment = () => {
-        return new Decimal(actualGain({ fixed: false })).add(timeDeposit.initialInvestment).toString()
-    }
+        calculateProfit(signal)
+        calculateActualProfit()
+
+        return () => {
+            controller.abort();
+        };
+        //eslint-disable-next-line
+    }, [])
 
     return (
         <Col className="fund-col growAnimation" sm="6" md="6" lg="4" >
-            <Card className="FundCard h-100">
+            <Card className="FundCard TimeDeposit h-100">
                 <Card.Header
                     className="header d-flex align-items-center justify-content-center"
                 >
@@ -54,12 +92,12 @@ const TimeDepositCard = ({ Hide, setHide }) => {
                         <Row className="mx-0 w-100 gx-0">
                             <Card.Title >
                                 <h1 className="title mt-0">
-                                    {t("Time Deposit")}
+                                    {t("Time Deposit")}&nbsp;{ownKey + 1}&nbsp;{!!(TimeDeposit?.stateId === 1) && <span style={{ textTransform: "none" }}>({t("Pending approval")})</span>}
                                 </h1>
                                 <Card.Text className="subTitle lighter mt-0 mb-2">
                                     {t("Elapsed")}:
-                                    <span className="bolder">&nbsp;{timeDeposit.from.fromNow(true)}&nbsp;{t("out of")}&nbsp;
-                                        {moment().add(timeDeposit.rule.days, "days").fromNow(true)}&nbsp;({daysPercentajeFromTotal({ fixed: true })}%)
+                                    <span className="bolder">&nbsp;{TimeDeposit.stateId === 2 ? moment(TimeDeposit?.startDate).fromNow(true) : t("0 days")}&nbsp;{t("out of")}&nbsp;
+                                        {moment().add(TimeDeposit.duration, "days").fromNow(true)}
                                     </span>
                                 </Card.Text>
                             </Card.Title>
@@ -71,15 +109,15 @@ const TimeDepositCard = ({ Hide, setHide }) => {
                                                 <div className="pe-2 containerHideInfo">
                                                     <span>$</span>
                                                     <span className={`info ${Hide ? "shown" : "hidden"}`}>
-                                                        {(actualValueOfInvestment() + " (+$" + actualGain({ fixed: true }) + ")").replace(/./g, "*")}
+                                                        {(actualProfit.fetched ? actualProfit.value.toString() : TimeDeposit?.initialAmount.toString()).replace(/./g, "*")}
                                                     </span>
 
                                                     <span className={`info ${Hide ? "hidden" : "shown"}`}>
-                                                        {actualValueOfInvestment() + " (+$" + actualGain({ fixed: true }) + ")"}
+                                                        {actualProfit.fetched ? actualProfit.value.toString() : TimeDeposit?.initialAmount.toString()}
                                                     </span>
 
                                                     <span className={`info placeholder`}>
-                                                        {actualValueOfInvestment() + " (+$" + actualGain({ fixed: true }) + ")"}
+                                                        {actualProfit.fetched ? actualProfit.value.toString() : TimeDeposit?.initialAmount.toString()}
                                                     </span>
                                                 </div>
                                                 <div className="ps-0 hideInfoButton d-flex align-items-center">
@@ -102,11 +140,24 @@ const TimeDepositCard = ({ Hide, setHide }) => {
                                         </Container>
                                     </h1>
                                     <Card.Text className="subTitle lighter mt-0 mb-2">
-                                        {t("From")}:<span className="bolder"> {timeDeposit?.from?.format('LL')}</span><br />
-                                        {t("To")}:<span className="bolder"> {timeDeposit?.to?.format('LL')}</span><br />
-                                        {t("Actual period () rate", { period: moment().add(timeDeposit.rule.days, "days").fromNow(true) })}:<span className="bolder">&nbsp;{ratePercentaje()}%</span><br />
-                                        {t("Initial investment")}:<span className="bolder">&nbsp;${timeDeposit.initialInvestment}</span>,&nbsp;
-                                        {t("At the end of the period")}:<span className="bolder">&nbsp;${investmentAtTheEnd()}</span>
+                                        {t("From")}:
+                                        <span className="bolder">&nbsp;
+                                            {TimeDeposit?.startDate ? TimeDeposit?.startDate.format('LL') : <>{moment().format('LL')}&nbsp;({t("To be confirmed")})</>}
+                                        </span><br />
+                                        {t("To")}:
+                                        <span className="bolder">&nbsp;
+                                            {TimeDeposit?.startDate ? TimeDeposit?.endDate.format('LL') : <>{moment().add(TimeDeposit.duration, "days").format('LL')}&nbsp;({t("To be confirmed")})</>}
+                                        </span><br />
+                                        {t("Anual rate")}:<span className="bolder">&nbsp;{getAnualRate()}%</span><br />
+                                        {t("Initial investment")}:<span className="bolder">&nbsp;${TimeDeposit.initialAmount}</span>,&nbsp;
+                                        {t("At the end of the term")}:
+                                        <span className="bolder">&nbsp;
+                                            {profit.fetching ?
+                                                <Spinner className="ms-2" animation="border" size="sm" />
+                                                :
+                                                <>${profit.value}</>
+                                            }
+                                        </span>
                                         <br />
                                     </Card.Text>
                                 </Row>
@@ -114,17 +165,8 @@ const TimeDepositCard = ({ Hide, setHide }) => {
                         </Row>
                     </Container>
                 </Card.Body>
-                <Card.Footer className="footer mt-2 m-0 p-0">
-                    <Row className="d-flex justify-content-center m-0">
-                        <Col xs="12" className="d-flex justify-content-center p-0 m-0">
-                            <Button className="me-1 button" style={{ borderRadius: "0px 0px 30px 30px" }}>
-                                <span className="label">{t("Action")}</span>
-                            </Button>
-                        </Col>
-                    </Row>
-                </Card.Footer>
-            </Card>
-        </Col>
+            </Card >
+        </Col >
 
 
     )

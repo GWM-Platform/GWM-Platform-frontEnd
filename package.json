@@ -21,6 +21,7 @@
 		"@testing-library/user-event": "^12.8.3",
 		"@trendmicro/react-sidenav": "^0.5.0",
 		"assert": "^2.0.0",
+		"axios": "^0.27.2",
 		"bootstrap": "^5.0.2",
 		"browserify-zlib": "^0.2.0",
 		"buffer": "^6.0.3",

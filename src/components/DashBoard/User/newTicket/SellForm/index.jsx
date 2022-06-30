@@ -54,9 +54,11 @@ const SellForm = ({ balanceChanged }) => {
         } else {
             switch (response.status) {
                 case 500:
+                    history.push(`/DashBoard/operationResult?result=failed`);
                     console.error(response.status)
                     break
                 default:
+                    history.push(`/DashBoard/operationResult?result=failed`);
                     console.error(response.status)
                     break
             }

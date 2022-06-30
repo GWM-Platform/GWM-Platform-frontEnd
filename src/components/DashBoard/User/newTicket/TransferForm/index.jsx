@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../operationsForm.css'
@@ -13,14 +13,13 @@ import { useHistory } from 'react-router-dom';
 
 const TransferForm = ({ balanceChanged }) => {
 
-    const { token, contentReady, Accounts, ClientSelected, AccountSelected, toLogin } = useContext(DashBoardContext);
-    const senderId = ClientSelected?.id
+    const { token, contentReady, Accounts, AccountSelected, toLogin } = useContext(DashBoardContext);
 
     const history = useHistory()
 
     const [data, setData] = useState({
         amount: "",
-        senderId: senderId,
+        senderId: Accounts[0]?.id,
         alias: ""
     })
 
@@ -62,10 +61,10 @@ const TransferForm = ({ balanceChanged }) => {
         } else {
             switch (response.status) {
                 case 500:
-                    console.error(response.status)
+                    history.push(`/DashBoard/operationResult?result=failed`);
                     break
                 default:
-                    console.error(response.status)
+                    history.push(`/DashBoard/operationResult?result=failed`);
                     break
             }
             setTransfer(prevState => ({ ...prevState, fetching: false, fetched: true, valid: false }))
@@ -101,6 +100,10 @@ const TransferForm = ({ balanceChanged }) => {
     const closeAccordion = () => {
         setCollapsedFields(true)
     }
+
+    useEffect(() => {
+        setData(prevState => ({ ...prevState, senderId: Accounts[0]?.id || 0 }))
+    }, [Accounts])
 
     return (
         <div className="tabContent">

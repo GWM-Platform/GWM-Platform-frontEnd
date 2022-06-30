@@ -1,24 +1,21 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import CreateForm from './CreateForm'
 import CreateResult from './CreateResult'
+import axios from 'axios';
+import { DashBoardContext } from 'context/DashBoardContext';
 
-const CreateRules = ({ ActionDispatch, setTimeDeposit }) => {
+const CreateRules = ({ ActionDispatch, TimeDeposit,getFixedDepositPlans }) => {
     const [validated, setValidated] = useState(false);
     const [data, setData] = useState({
         days: "",
         rate: ""
     })
 
-    const createRule = async () => {
-        setTimeDeposit(prevState => {
-            let aux = [...prevState?.content?.rules]
-            aux = [...aux, ...[{
-                ...data, id: Math.max(...prevState?.content?.rules?.map(rule => rule?.id)) + 1
-            }]]
-            return { ...prevState, content: { ...prevState.content, rules: aux } }
-        })
+    const { toLogin } = useContext(DashBoardContext)
+
+    const createRule = () => {
         setCreateRequest(
             {
                 ...CreateRequest, ...{
@@ -29,28 +26,52 @@ const CreateRules = ({ ActionDispatch, setTimeDeposit }) => {
             }
         )
 
-        if (true) {
-            setCreateRequest(
-                {
-                    ...CreateRequest, ...{
-                        fetching: false,
-                        fetched: true,
-                        valid: true
+        let TimeDepositEdited = { ...TimeDeposit, interest: { ...TimeDeposit.interest, [data.days]: data.rate } }
+
+        axios.put(`/fixed-deposits/plans/${TimeDeposit?.id}`, TimeDepositEdited).then(function (response) {
+            if (response.status < 300 && response.status >= 200) {
+                setCreateRequest(
+                    {
+                        ...CreateRequest, ...{
+                            fetching: false,
+                            fetched: true,
+                            valid: true
+                        }
                     }
+                )
+            } else {
+                switch (response.status) {
+                    case 401:
+                        toLogin();
+                        break;
+                    default:
+                        setCreateRequest(
+                            {
+                                ...CreateRequest, ...{
+                                    fetching: false,
+                                    fetched: true,
+                                    valid: false
+                                }
+                            }
+                        )
+                        break;
                 }
-            )
-        } else {
-            setCreateRequest(
-                {
-                    ...CreateRequest, ...{
-                        fetching: false,
-                        fetched: true,
-                        valid: false
+            }
+        }).catch((err) => {
+            if (err.message !== "canceled") {
+                setCreateRequest(
+                    {
+                        ...CreateRequest, ...{
+                            fetching: false,
+                            fetched: true,
+                            valid: false
+                        }
                     }
-                }
-            )
-        }
+                )
+            }
+        });
     }
+
 
     const [CreateRequest, setCreateRequest] = useState({
         fetching: false,
@@ -78,7 +99,7 @@ const CreateRules = ({ ActionDispatch, setTimeDeposit }) => {
         <>
             {
                 CreateRequest.fetched ?
-                    <CreateResult ActionDispatch={ActionDispatch} CreateRequest={CreateRequest} />
+                    <CreateResult ActionDispatch={ActionDispatch} CreateRequest={CreateRequest} getFixedDepositPlans={getFixedDepositPlans}/>
                     :
                     <CreateForm
                         fetchingCreateRequest={CreateRequest?.fetching} ActionDispatch={ActionDispatch}

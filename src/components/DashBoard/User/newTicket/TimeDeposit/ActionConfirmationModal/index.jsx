@@ -3,12 +3,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheckCircle } from '@fortawesome/free-regular-svg-icons'
-import { Modal, Button } from 'react-bootstrap'
+import { Modal, Button, Spinner } from 'react-bootstrap'
 import { useContext } from 'react';
 import { DashBoardContext } from 'context/DashBoardContext';
-import Decimal from 'decimal.js';
 
-const ActionConfirmationModal = ({ setShowModal, show, action, data, Balance, fetching }) => {
+const ActionConfirmationModal = ({ setShowModal, show, action, data, Balance, fetching, anualRate, profit }) => {
 
     const { t } = useTranslation();
 
@@ -37,15 +36,17 @@ const ActionConfirmationModal = ({ setShowModal, show, action, data, Balance, fe
                             {t("Cash amount")}:<span className="emphasis"> U$D {data.amount}</span>
                         </li>
                         <li className="listedInfo">
-                            {t("Anual rate")}:<span className="emphasis"> 2%</span>
+                            {t("Anual rate")}:<span className="emphasis"> {anualRate}%</span>
                         </li>
                         <li className="listedInfo">
-                            {t("Investment after")}&nbsp;{data.days}&nbsp;{t("days")}:<span className="emphasis"> U$D
-                                {(
-                                    new Decimal(data.amount || 0).add(
-                                        new Decimal(data.amount || 0).times(new Decimal(data.days|| 0).times(0.02).div(365).toString()).toString()
-                                    ).toString()
-                                )}</span>
+                            {t("Investment after")}&nbsp;{data.days}&nbsp;{t("days")}:<span className="emphasis">&nbsp;
+                                {
+                                    profit.fetching ?
+                                        <Spinner className="ms-2" animation="border" size="sm" />
+                                        :
+                                        <>U$D{profit.value}</>
+                                }
+                            </span>
                         </li>
 
                     </ul>

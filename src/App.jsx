@@ -17,6 +17,7 @@ import RotateDevice from 'components/RotateDevice';
 
 import './App.css';
 import moment from 'moment';
+import axios from 'axios';
 
 function App() {
   const { i18n } = useTranslation();
@@ -28,6 +29,9 @@ function App() {
 
     // eslint-disable-next-line
   }, [])
+
+  axios.defaults.baseURL = process.env.REACT_APP_APIURL;
+  axios.defaults.headers.post['Content-Type'] = '*/*';
 
   return (
     <div className="App" style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/backGround/background.jpg)` }}>

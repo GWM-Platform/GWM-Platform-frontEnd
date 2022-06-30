@@ -13,6 +13,7 @@ const TargetAccountSelector = ({ data, TargetAccount, setTargetAccount, handleCh
     const accountAlias = AccountSelected?.alias
 
     const { t } = useTranslation();
+
     const handleOnkeyDown = (event) => {
         switch (event.key) {
             case 'Enter':
@@ -58,7 +59,7 @@ const TargetAccountSelector = ({ data, TargetAccount, setTargetAccount, handleCh
         }
 
     }
-
+    
     return (
         <Accordion.Item eventKey="0">
             <Accordion.Header>

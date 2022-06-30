@@ -42,8 +42,10 @@ import TimeDeposit from './Admin/TimeDeposit';
 
 //General
 import DashboardToast from './DashboardToast'
+import axios from 'axios';
 
 const UserDashBoard = () => {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${sessionStorage.getItem("access_token")}`
 
     const { isMobile, admin, ClientSelected, balanceChanged, setBalanceChanged, setItemSelected, IndexClientSelected, UserClients } = useContext(DashBoardContext);
 
@@ -137,7 +139,7 @@ const UserDashBoard = () => {
                                                 <TransferForm balanceChanged={() => setBalanceChanged(true)} />
                                             </Route>
                                             <Route path={`${path}/TimeDeposit`}>
-                                                <TimeDepositClient />
+                                                <TimeDepositClient balanceChanged={() => setBalanceChanged(true)} />
                                             </Route>
                                             <Route path={`${path}/operationResult`}>
                                                 <OperationStatus setItemSelected={setItemSelected} />

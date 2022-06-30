@@ -7,6 +7,7 @@ import FormDesktop from './FormDesktop';
 import { Col, Row, Container } from 'react-bootstrap'
 import FormMobile from './FormMobile';
 import LanguageSelector from 'components/LanguageSelector'
+import axios from 'axios';
 
 const ContainerLogin = () => {
   function useQuery() {
@@ -74,6 +75,7 @@ const ContainerLogin = () => {
 
     if (response.status === 200) {
       const data = await response.json()
+      axios.defaults.headers.common['Authorization'] = `Bearer ${data?.access_token}`
       sessionStorage.setItem("access_token", data.access_token)
       sessionStorage.setItem("admin", data.user.isAdmin)
 
@@ -90,7 +92,6 @@ const ContainerLogin = () => {
         } else {
           if (desiredLocation && desiredId && desiredType && desiredClient) {
             destination = `Accounts?loc=${desiredLocation}&id=${desiredId}&type=${desiredType}&client=${desiredClient}${desiredFundId ? `&fundId=${desiredFundId}` : ""}`
-            console.log(destination)
           } else {
             destination = `Accounts`
           }

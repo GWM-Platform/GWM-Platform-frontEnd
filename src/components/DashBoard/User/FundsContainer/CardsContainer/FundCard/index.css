@@ -127,6 +127,10 @@
 	border-radius: 0px 0px 30px 0px;
 }
 
+.cardsContainer .FundCard.TimeDeposit .body  {
+	border-radius: 0 0 30px 30px;
+}
+
 .modal .modal-content {
 	background-color: transparent;
 	border: transparent;

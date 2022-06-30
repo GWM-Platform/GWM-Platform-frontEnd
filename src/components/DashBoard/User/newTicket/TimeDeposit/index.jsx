@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useCallback, useEffect } from 'react'
 import { useHistory } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -12,12 +12,12 @@ import NoFunds from '../NoFunds';
 import { DashBoardContext } from 'context/DashBoardContext';
 import ActionConfirmationModal from './ActionConfirmationModal';
 import moment from 'moment';
-import InvestmentPreview from './InvestmentPreview';
+import axios from 'axios';
+import Decimal from 'decimal.js';
 
-const TimeDeposit = ({ NavInfoToggled, balanceChanged }) => {
+const TimeDeposit = ({ balanceChanged }) => {
 
-    const { token, contentReady, Accounts } = useContext(DashBoardContext);
-
+    const { token, contentReady, Accounts, toLogin, ClientSelected } = useContext(DashBoardContext);
 
     //If the user came from an specific fund, we use the query to auto select that one
 
@@ -30,21 +30,39 @@ const TimeDeposit = ({ NavInfoToggled, balanceChanged }) => {
     const [ShowModal, setShowModal] = useState(false)
     const [fetching, setFetching] = useState(false)
     const [validated, setValidated] = useState(true);
-    const [CollapsedFields, setCollapsedFields] = useState(true);
 
-    const [TimeDeposit] = useState({ fetching: false, fetched: true, content: { rules: [{ id: 1, days: 365, rate: 2 }, { id: 2, days: 730, rate: 4 }] } })
+    const [profit, setProfit] = useState({ fetching: false, fetched: false, valid: false, value: 0 })
 
     let history = useHistory();
 
-    const invest = async () => {
+    const invest = () => {
         if (!fetching) {
             setFetching(true)
-
-            if (true) {
-                setFetching(false)
-                balanceChanged()
-                history.push(`/DashBoard/operationResult`);
-            }
+            axios.post('fixed-deposits', {
+                initialAmount: data.days,
+                interest: TimeDeposit?.content?.interest,
+                clientId: ClientSelected.id,
+                duration: data.days
+            }).then(function (response) {
+                if (response.status < 300 && response.status >= 200) {
+                    setFetching(false)
+                    balanceChanged()
+                    history.push(`/DashBoard/operationResult`);
+                } else {
+                    switch (response.status) {
+                        case 401:
+                            toLogin();
+                            break;
+                        default:
+                            history.push(`/DashBoard/operationResult?result=failed`);
+                            break
+                    }
+                }
+            }).catch((err) => {
+                if (err.message !== "canceled") {
+                    history.push(`/DashBoard/operationResult?result=failed`);
+                }
+            });
         }
     }
 
@@ -81,9 +99,89 @@ const TimeDeposit = ({ NavInfoToggled, balanceChanged }) => {
         setValidated(true);
     }
 
-    const toggleAccordion = () => {
-        setCollapsedFields(!CollapsedFields)
+    const [TimeDeposit, setTimeDeposit] = useState({ fetching: true, fetched: false, valid: false, content: {} })
+
+    const getFixedDepositPlans = useCallback((signal) => {
+        setTimeDeposit((prevState) => ({ fetching: true, fetched: false }))
+        axios.get(`/fixed-deposits/plans`, {
+            signal: signal,
+        }).then(function (response) {
+            if (response.status < 300 && response.status >= 200) {
+                setTimeDeposit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, content: response?.data[0] || {} } }))
+            } else {
+                switch (response.status) {
+                    case 401:
+                        toLogin();
+                        break;
+                    default:
+                        setTimeDeposit((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
+                        break
+                }
+            }
+        }).catch((err) => {
+            if (err.message !== "canceled") {
+                setTimeDeposit((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
+            }
+        });
+    }, [toLogin]);
+
+    const getAnualRate = () => {
+        if (data.amount.length > 0 && data.days.length > 0 && Number(data.days) >= 365 && TimeDeposit.fetched) {
+            const investmentDays = Number(data.days)
+            return TimeDeposit?.content?.interest[Object.keys(TimeDeposit?.content?.interest).filter(ruleDays => ruleDays <= investmentDays).reduce((prev, curr) => Math.abs(curr - investmentDays) < Math.abs(prev - investmentDays) ? curr : prev)] || 0
+        }
+        return 0
     }
+
+    const calculateProfitFE = () => {
+        const investmentDays = Number(data.days)
+        const correspondingRule = Object.keys(TimeDeposit?.content?.interest).filter(ruleDays => ruleDays <= investmentDays).reduce((prev, curr) => Math.abs(curr - investmentDays) < Math.abs(prev - investmentDays) ? curr : prev)
+        const ratePerDay = new Decimal(TimeDeposit.content.interest).div(TimeDeposit.content.interest[correspondingRule]).toString()
+        const profit = new Decimal(investmentDays).times(new Decimal(ratePerDay).times(investmentDays).toString()).toString()
+        return (new Decimal(profit).add(data.amount).toString()) || "0"
+    }
+
+    const calculateProfit = () => {
+        if (data.amount.length > 0 && data.days.length > 0 && Number(data.days) >= 365 && TimeDeposit.fetched) {
+            axios.post(`/fixed-deposits/profit`,
+                {
+                    initialAmount: data.amount,
+                    interest: TimeDeposit?.content?.interest,
+                    startDate: moment().format(),
+                    endDate: moment().add(data.days, 'days').format()
+                }).then(function (response) {
+                    if (response.status < 300 && response.status >= 200) {
+                        setProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: response.data || 0 } }))
+                    } else {
+                        switch (response.status) {
+                            case 401:
+                                toLogin();
+                                break;
+                            default:
+                                setProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: calculateProfitFE() } }))
+                                break
+                        }
+                    }
+                }).catch((err) => {
+                    if (err.message !== "canceled") {
+                        setProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: calculateProfitFE() } }))
+                    }
+                });
+        }
+    }
+
+    useEffect(() => {
+
+        const controller = new AbortController();
+        const signal = controller.signal;
+
+        getFixedDepositPlans(signal)
+
+        return () => {
+            controller.abort();
+        };
+        //eslint-disable-next-line
+    }, [getFixedDepositPlans])
 
     return (
         <div className="tabContent">
@@ -100,19 +198,14 @@ const TimeDeposit = ({ NavInfoToggled, balanceChanged }) => {
 
                                             <Accordion flush defaultActiveKey="0">
                                                 <InvestmentData
+                                                    calculateProfit={calculateProfit}
                                                     handleSubmit={handleSubmit} validated={validated}
                                                     handleChange={handleChange} data={data}
                                                     Balance={Accounts[0].balance} fetching={fetching} />
                                             </Accordion>
                                             <Accordion flush >
-                                                <DurationData handleChange={handleChange} data={data} setData={setData} Account={Accounts[0]} />
+                                                <DurationData calculateProfit={calculateProfit} handleChange={handleChange} data={data} setData={setData} Account={Accounts[0]} />
                                             </Accordion>
-                                            {
-                                                false &&
-                                                <Accordion flush activeKey={CollapsedFields || !(data.days >= 1 && data.amount >= 1 && data.amount <= Accounts[0].balance) ? "-1" : "0"}>
-                                                    <InvestmentPreview toggleAccordion={toggleAccordion} data={data} />
-                                                </Accordion>
-                                            }
                                         </Form>
                                     </Col>
                                     :
@@ -121,8 +214,8 @@ const TimeDeposit = ({ NavInfoToggled, balanceChanged }) => {
                     </Row>
                 </Container>
                 {
-                    data.FundSelected !== -1 && contentReady ?
-                        <ActionConfirmationModal fetching={fetching} setShowModal={setShowModal} show={ShowModal} action={invest} data={data} Balance={Accounts[0].balance} />
+                    TimeDeposit.fetched && contentReady ?
+                        <ActionConfirmationModal anualRate={getAnualRate()} profit={profit} fetching={fetching} setShowModal={setShowModal} show={ShowModal} action={invest} data={data} Balance={Accounts[0].balance} />
                         :
                         null
                 }

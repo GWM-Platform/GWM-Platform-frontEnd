@@ -10,10 +10,9 @@ import ActionConfirmationModal from 'components/DashBoard/User/MovementsTable/Ge
 
 const Transfer = ({ content, getTransfers }) => {
 
-  const { getMoveStateById, ClientSelected } = useContext(DashBoardContext)
+  const { getMoveStateById,Accounts } = useContext(DashBoardContext)
   const { t } = useTranslation()
 
-  const clientId = ClientSelected?.id
   var momentDate = moment(content.createdAt);
   const [ShowModal, setShowModal] = useState(false)
   const [Action, setAction] = useState("approve")
@@ -23,7 +22,7 @@ const Transfer = ({ content, getTransfers }) => {
     setShowModal(true)
   }
 
-  const incomingTransfer = () => content.receiverId === clientId
+  const incomingTransfer = () => content.receiverId === Accounts[0]?.id
 
   return (
     <div className='mobileMovement'>
@@ -38,7 +37,7 @@ const Transfer = ({ content, getTransfers }) => {
         <span className={`${Math.sign(content.amount) === 1 ? 'text-green' : 'text-red'}`}>{Math.sign(content.amount) === 1 ? '+' : '-'}${Math.abs(content.amount)}</span>
       </div>
       {
-        !!(content.stateId === 1) &&
+        !!(content.stateId === 1  && incomingTransfer()) &&
         <div className="h-100 d-flex align-items-center justify-content-around">
           <div className="iconContainer green" onClick={() => launchModalConfirmation("approve")}>
             <FontAwesomeIcon className="icon" icon={faCheckCircle} /> {t("Approve")}
@@ -49,10 +48,8 @@ const Transfer = ({ content, getTransfers }) => {
         </div>
       }
       {
-        content.stateId === 1 ?
-          <ActionConfirmationModal incomingTransfer={incomingTransfer()} reloadData={getTransfers} movement={content} setShowModal={setShowModal} action={Action} show={ShowModal} />
-          :
-          null
+        !!(content.stateId === 1 && incomingTransfer()) &&
+        <ActionConfirmationModal incomingTransfer={incomingTransfer()} reloadData={getTransfers} movement={content} setShowModal={setShowModal} action={Action} show={ShowModal} />
       }
     </div>
 

@@ -453,9 +453,11 @@ export const DashBoardProvider = ({ children }) => {
             return { name: "-" }
         }
     }
+
     const toLogin = () => {
         sessionStorage.clear(); history.push(`/login`);
     }
+    
     return <DashBoardContext.Provider
         value={{
             token, admin, UserClients, ClientSelected, IndexClientSelected, setIndexClientSelected, balanceChanged, setBalanceChanged, TransactionStates, getMoveStateById,

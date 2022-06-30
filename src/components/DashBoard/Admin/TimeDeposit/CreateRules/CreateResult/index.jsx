@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronCircleLeft,faTimes,faCheck } from '@fortawesome/free-solid-svg-icons'
 
-const CreateAssets = ({ CreateRequest,ActionDispatch }) => {
+const CreateAssets = ({ CreateRequest,ActionDispatch,getFixedDepositPlans }) => {
     const { t } = useTranslation();
     return (
         <div className="editResult">
@@ -12,7 +12,7 @@ const CreateAssets = ({ CreateRequest,ActionDispatch }) => {
                 <h1 className="title">
                    {t("Form create result")}
                 </h1>
-                <FontAwesomeIcon className="button icon" onClick={() => {ActionDispatch({type:"view"})}} icon={faChevronCircleLeft} />
+                <FontAwesomeIcon className="button icon" onClick={() => {getFixedDepositPlans();ActionDispatch({type:"view"})}} icon={faChevronCircleLeft} />
             </div>
             {
                 CreateRequest.valid ?

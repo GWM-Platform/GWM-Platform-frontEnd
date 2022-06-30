@@ -11,6 +11,7 @@ import NoMovements from 'components/DashBoard/GeneralUse/NoMovements';
 import TicketSearch from 'components/DashBoard/GeneralUse/TicketSearch'
 
 import { useTranslation } from 'react-i18next';
+import TimeDepositTable from './TimeDepositsTable';
 
 const Tables = ({ state, messageVariants }) => {
 
@@ -24,6 +25,8 @@ const Tables = ({ state, messageVariants }) => {
 
     const desiredId = useQuery().get("id")
     const desiredType = useQuery().get("type")
+
+    /*--------------------------------------------------------------------------------OPERATIONS-------------------------------------------------------------------------------- */
     //Transactions
     const [Transactions, setTransactions] = useState({
         fetching: true,
@@ -105,6 +108,7 @@ const Tables = ({ state, messageVariants }) => {
             }
         }
     }
+
     //Movements
     const [Movements, setMovements] = useState({
         fetching: true,
@@ -186,6 +190,7 @@ const Tables = ({ state, messageVariants }) => {
             }
         }
     }
+
     //Transfers
     const [Transfers, setTransfers] = useState({
         fetching: true,
@@ -257,6 +262,88 @@ const Tables = ({ state, messageVariants }) => {
                     fetched: true,
                     valid: true,
                     values: { transfers: [], total: 0 }
+                }
+            })
+            switch (response.status) {
+                case 500:
+                    break;
+                default:
+                    console.error(response.status)
+            }
+        }
+    }
+
+    //Time-deposits
+    const [TimeDeposits, setTimeDeposits] = useState({
+        fetching: true,
+        fetched: false,
+        valid: false,
+        values: {
+            timeDeposits: [],
+            total: 0
+        }
+    })
+
+    const [PaginationTimeDeposits, setPaginationTimeDeposits] = useState({
+        skip: 0,//Offset (in quantity of movements)
+        take: 5,//Movements per page
+        state: null
+    })
+
+    const [searchTimeDepositById, setSearchTimeDepositById] = useState({
+        value: "",
+        search: false
+    })
+
+    const handleTimeDepositsSearchChange = (event) => {
+        setSearchTimeDepositById((prevState) => ({ ...prevState, value: event.target.value }))
+    }
+
+    const cancelTimeDepositSearch = () => {
+        setSearchTimeDepositById((prevState) => ({ ...prevState, value: "", search: false }))
+    }
+
+    const TimeDepositById = async (id) => {
+        var url = `${process.env.REACT_APP_APIURL}/fixed-deposits/${id}`
+
+        setSearchTimeDepositById((prevState) => ({ ...prevState, search: true }))
+
+        setTimeDeposits({
+            ...TimeDeposits,
+            ...{
+                fetching: true,
+                fetched: false,
+                valid: false,
+            }
+        })
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: "*/*",
+                'Content-Type': 'application/json'
+            }
+        })
+
+        if (response.status === 200) {
+            const data = await response.json()
+            setTimeDeposits({
+                ...TimeDeposits,
+                ...{
+                    fetching: false,
+                    fetched: true,
+                    valid: true,
+                    values: { deposits: [data], total: 1 }
+                }
+            })
+        } else {
+            setTimeDeposits({
+                ...TimeDeposits,
+                ...{
+                    fetching: false,
+                    fetched: true,
+                    valid: true,
+                    values: { deposits: [], total: 0 }
                 }
             })
             switch (response.status) {
@@ -502,13 +589,66 @@ const Tables = ({ state, messageVariants }) => {
         }
     }
 
+    const timeDepositsInState = async () => {
+        var url = `${process.env.REACT_APP_APIURL}/fixed-deposits/?` + new URLSearchParams({
+            filterState: state,
+            take: PaginationTimeDeposits.take,
+            skip: PaginationTimeDeposits.skip,
+        });
+        setTimeDeposits(prevState => ({
+            ...prevState,
+            ...{
+                fetching: true,
+                fetched: false,
+                valid: false,
+            }
+        }))
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: "*/*",
+                'Content-Type': 'application/json'
+            }
+        })
+
+        if (response.status === 200) {
+            const data = await response.json()
+            setTimeDeposits(prevState => ({
+                ...prevState,
+                ...{
+                    fetching: false,
+                    fetched: true,
+                    valid: true,
+                    values: data
+                }
+            }))
+        } else {
+            setTimeDeposits(prevState => ({
+                ...prevState,
+                ...{
+                    fetching: false,
+                    fetched: true,
+                    valid: false,
+                }
+            }))
+            switch (response.status) {
+                case 500:
+                    break;
+                default:
+                    console.error(response.status)
+            }
+        }
+    }
+
     useEffect(() => {
         getUsersInfo()
         getFundsInfo()
         getAccounts()
         if (searchTransactionById.search) transactionById(searchTransactionById.value)
         if (searchMovementById.search) movementById(searchMovementById.value)
-        if (searchMovementById.search) TransferById(searchMovementById.value)
+        if (searchTransferById.search) TransferById(searchTransferById.value)
+        if (searchTimeDepositById.search) TimeDepositById(searchTimeDepositById.value)
         // eslint-disable-next-line
     }, [])
 
@@ -538,6 +678,15 @@ const Tables = ({ state, messageVariants }) => {
                 }
             })
         )
+        setPaginationTimeDeposits(
+            (prevState) => ({
+                ...prevState, ...{
+                    skip: 0,//Offset (in quantity of movements)
+                    take: 5,//Movements per page
+                    state: null
+                }
+            })
+        )
     }, [state])
 
     useEffect(() => {
@@ -555,10 +704,16 @@ const Tables = ({ state, messageVariants }) => {
         // eslint-disable-next-line
     }, [PaginationTransfers, state, searchTransferById.search])
 
+    useEffect(() => {
+        if (!searchTimeDepositById.search) timeDepositsInState()
+        // eslint-disable-next-line
+    }, [PaginationTimeDeposits, state, searchTimeDepositById.search])
+
     const reloadData = () => {
         transactionsInState()
         movementsInState()
         transfersInState()
+        timeDepositsInState()
     }
 
     const ticketSearchPropsPS = {
@@ -588,11 +743,21 @@ const Tables = ({ state, messageVariants }) => {
         Search: () => TransferById(searchTransferById.value)
     }
 
+    const ticketSearchPropsTimeDeposits = {
+        fetching: TimeDeposits.fetching,
+        keyWord: "Time deposit ticket",
+        SearchText: searchTimeDepositById.value,
+        handleSearchChange: handleTimeDepositsSearchChange,
+        cancelSearch: cancelTimeDepositSearch,
+        Search: () => TimeDepositById(searchTimeDepositById.value)
+    }
+
     return (
-        Transactions.fetching && Movements.fetching ?
+        Transactions.fetching && Movements.fetching && TimeDeposits.fetching && Transfers.fetching ?
             <Message selected={0} messageVariants={messageVariants} />
             :
             <>
+                {/*-------------------------------Purchase and sale-------------------------- */}
                 <h1 className="title">{t("Purchase and sale tickets")}:</h1>
                 <TicketSearch
                     props={ticketSearchPropsPS}
@@ -619,6 +784,7 @@ const Tables = ({ state, messageVariants }) => {
                         :
                         null
                 }
+                {/*-------------------------------Withdrawal and deposit-------------------------- */}
                 <h1 className="title">{t("Withdrawal and deposit tickets")}:</h1>
                 <TicketSearch
                     props={ticketSearchPropsW}
@@ -652,7 +818,7 @@ const Tables = ({ state, messageVariants }) => {
                     props={ticketSearchPropsTransfer}
                 />
                 {
-                   Transfers.fetching ?
+                    Transfers.fetching ?
                         <Loading movements={PaginationTransfers.take} />
                         :
                         !Transfers.valid ?
@@ -674,6 +840,32 @@ const Tables = ({ state, messageVariants }) => {
                         null
                 }
 
+                {/*-------------------------------Time Deposits-------------------------- */}
+                <h1 className="title">{t("Time deposits")}:</h1>
+                <TicketSearch
+                    props={ticketSearchPropsTimeDeposits}
+                />
+                {
+                    TimeDeposits.fetching ?
+                        <Loading movements={PaginationTimeDeposits.take} />
+                        :
+                        !TimeDeposits.valid ?
+                            <Message selected={5} messageVariants={messageVariants} />
+                            :
+                            TimeDeposits.values.total === 0 ?
+                                <NoMovements movements={PaginationTimeDeposits.take} />
+                                :
+                                <>
+                                    <TimeDepositTable AccountInfo={AccountInfo} UsersInfo={UsersInfo}
+                                        reloadData={reloadData} state={state} take={PaginationTimeDeposits.take} movements={TimeDeposits.values.deposits} />
+                                </>
+                }
+                {
+                    TimeDeposits.values.total > 0 ?
+                        <PaginationController PaginationData={PaginationTimeDeposits} setPaginationData={setPaginationTimeDeposits} total={TimeDeposits.values.total} />
+                        :
+                        null
+                }
             </>
 
 

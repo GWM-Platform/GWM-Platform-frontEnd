@@ -6,7 +6,7 @@ import { faTrashAlt, faEdit } from '@fortawesome/free-regular-svg-icons'
 import DeleteConfirmationModal from './DeleteConfirmationModal'
 import Decimal from 'decimal.js';
 
-const RuleRow = ({ rule, ActionDispatch}) => {
+const RuleRow = ({ rule, ActionDispatch,TimeDeposit,getFixedDepositPlans}) => {
 
     const { t } = useTranslation();
     const [ShowModal, setShowModal] = useState(false)
@@ -24,13 +24,13 @@ const RuleRow = ({ rule, ActionDispatch}) => {
                         <button className="noStyle iconContainer red" onClick={() => { launchDeleteConfirmation() }}>
                             <FontAwesomeIcon className="icon" icon={faTrashAlt} />
                         </button>
-                        <button className="noStyle iconContainer  green" onClick={() => ActionDispatch({ type: "edit", ruleId: rule.id })}>
+                        <button className="noStyle iconContainer  green" onClick={() => ActionDispatch({ type: "edit", ruleDays: rule.days })}>
                             <FontAwesomeIcon className="icon" icon={faEdit} />
                         </button>
                     </div>
                 </td>
             </tr>
-            <DeleteConfirmationModal show={ShowModal} setShowModal={setShowModal}/>
+            <DeleteConfirmationModal TimeDeposit={TimeDeposit} rule={rule.days} show={ShowModal} setShowModal={setShowModal} getFixedDepositPlans={getFixedDepositPlans}/>
         </>
     )
 }

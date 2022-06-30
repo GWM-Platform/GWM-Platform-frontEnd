@@ -1,13 +1,17 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Table } from 'react-bootstrap';
 import Transfer from './Transfer';
 import { useTranslation } from "react-i18next";
+import { DashBoardContext } from 'context/DashBoardContext';
 
 const TableLastMovements = ({ content, movements,getTransfers }) => {
     const { t } = useTranslation();
+    const {  Accounts } = useContext(DashBoardContext)
 
-    const anyWithActions = () => Object.values(content).some((movement) => movement.stateId === 1)
+    const incomingTransfer = (movement) => movement.receiverId === Accounts[0]?.id
+
+    const anyWithActions = () => Object.values(content).some((movement) => movement.stateId === 1 &&  incomingTransfer(movement))
 
     return (
         <div style={{ minHeight: `calc( ( 0.5rem * 2 + 25.5px ) * ${movements + 1} )` }}

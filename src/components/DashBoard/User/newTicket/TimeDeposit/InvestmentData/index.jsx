@@ -4,7 +4,7 @@ import { Form, InputGroup, Row, Accordion, Container } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
 
 
-const InvestmentData = ({ data, handleChange, Balance }) => {
+const InvestmentData = ({ data, handleChange, Balance, calculateProfit }) => {
 
     const { t } = useTranslation();
 
@@ -30,6 +30,7 @@ const InvestmentData = ({ data, handleChange, Balance }) => {
                 <InputGroup className="mb-3">
                     <InputGroup.Text>U$D</InputGroup.Text>
                     <Form.Control
+                        onBlur={() => calculateProfit()}
                         onWheel={event => event.currentTarget.blur()}
                         value={data.amount}
                         step=".01"
@@ -48,7 +49,7 @@ const InvestmentData = ({ data, handleChange, Balance }) => {
                                 t("You must enter how much you want to invest")
                                 :
                                 data.amount <= 0 ?
-                                     t("The value must be greater than 0") 
+                                    t("The value must be greater than 0")
                                     :
                                     data.amount > Balance ?
                                         t("You only have") + " U$D " + Balance + " " + t("available in your account.")

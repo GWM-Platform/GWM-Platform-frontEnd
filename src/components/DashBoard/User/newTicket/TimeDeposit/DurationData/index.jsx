@@ -5,7 +5,7 @@ import { Row, Form, Accordion, Container, Button, InputGroup } from 'react-boots
 import { useTranslation } from "react-i18next";
 import moment from 'moment';
 
-const FundSelector = ({ data, Balance, fetching, handleChange }) => {
+const FundSelector = ({ data, Balance, fetching, handleChange, calculateProfit }) => {
     const { t } = useTranslation();
 
     return (
@@ -30,23 +30,25 @@ const FundSelector = ({ data, Balance, fetching, handleChange }) => {
                 <div className="formSection">
                     <InputGroup className="mb-3">
                         <Form.Control
+                            onBlur={() => calculateProfit()}
                             onWheel={event => event.currentTarget.blur()}
                             value={data.days}
                             step=".01"
                             onChange={handleChange}
-                            min="1"
-                            max="10000"
+                            min="365"
+                            max="730"
                             id="days"
                             type="number"
                             required
                             placeholder={t("Days")}
                         />
                         <Form.Control
+                            onBlur={() => calculateProfit()}
                             onWheel={event => event.currentTarget.blur()}
                             value={data.until}
-                            step=".01"
                             onChange={handleChange}
-                            min={moment().add(1,"days").format("YYYY-MM-DD")}
+                            min={moment().add(365, "days").format("YYYY-MM-DD")}
+                            max={moment().add(730, "days").format("YYYY-MM-DD")}
                             id="until"
                             type="date"
                             required
@@ -57,7 +59,11 @@ const FundSelector = ({ data, Balance, fetching, handleChange }) => {
                                 data.days === "" ?
                                     t("You must enter how long your investment will last")
                                     :
-                                    t("The minimum duration is one day")
+                                    data.days < 365 ?
+                                        t("The minimum duration is 365 days")
+                                        :
+                                        t("The maximum duration is 730 days")
+
                             }
                         </Form.Control.Feedback>
                     </InputGroup>

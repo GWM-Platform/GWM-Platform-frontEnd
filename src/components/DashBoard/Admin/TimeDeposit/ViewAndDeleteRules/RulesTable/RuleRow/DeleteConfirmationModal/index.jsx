@@ -3,12 +3,18 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt } from '@fortawesome/free-regular-svg-icons'
-import { faExclamation, faCheck,faTimes } from '@fortawesome/free-solid-svg-icons'
+import { faExclamation, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { Modal, Button } from 'react-bootstrap'
+import axios from 'axios';
+import { useContext } from 'react';
+import { DashBoardContext } from 'context/DashBoardContext';
 
 
-const DeleteConfirmationModal = ({ show, setShowModal}) => {
+const DeleteConfirmationModal = ({ show, setShowModal, rule, TimeDeposit ,getFixedDepositPlans}) => {
+    
     const { t } = useTranslation();
+
+    const { toLogin } = useContext(DashBoardContext)
 
     const [DeleteFetch, setDeleteFetch] = useState({ fetched: false, fetching: false, valid: false })
 
@@ -20,6 +26,7 @@ const DeleteConfirmationModal = ({ show, setShowModal}) => {
             valid: false
         })
         setShowModal(false)
+        getFixedDepositPlans()
     }
 
     const closeModalWithoutReloading = () => {
@@ -32,29 +39,49 @@ const DeleteConfirmationModal = ({ show, setShowModal}) => {
         setShowModal(false)
     }
 
-    const deleteFund = async () => {
+    const deleteRule = () => {
         setDeleteFetch({
             ...DeleteFetch,
             fetching: true,
             fetched: false,
             valid: false
         })
-
-        if (true) {
-            setDeleteFetch({
-                ...DeleteFetch,
-                fetching: false,
-                fetched: true,
-                valid: true
-            })
-        } else {
-            setDeleteFetch({
-                ...DeleteFetch,
-                fetching: false,
-                fetched: true,
-                valid: false
-            })
-        }
+    
+        let TimeDepositEdited = { ...TimeDeposit }
+        delete TimeDepositEdited.interest[rule]
+        axios.put(`/fixed-deposits/plans/${TimeDeposit?.id}`, TimeDepositEdited).then(function (response) {
+            if (response.status < 300 && response.status >= 200) {
+                setDeleteFetch({
+                    ...DeleteFetch,
+                    fetching: false,
+                    fetched: true,
+                    valid: true
+                })
+            } else {
+                switch (response.status) {
+                    case 401:
+                        toLogin();
+                        break;
+                    default:
+                        setDeleteFetch({
+                            ...DeleteFetch,
+                            fetching: false,
+                            fetched: true,
+                            valid: false
+                        })
+                        break;
+                }
+            }
+        }).catch((err) => {
+            if (err.message !== "canceled") {
+                setDeleteFetch({
+                    ...DeleteFetch,
+                    fetching: false,
+                    fetched: true,
+                    valid: false
+                })
+            }
+        });
     }
 
     return (
@@ -65,7 +92,7 @@ const DeleteConfirmationModal = ({ show, setShowModal}) => {
                         <h1 className="title"><FontAwesomeIcon className="icon red" icon={faExclamation} /></h1>
                     </div>
                     <h1 className="title"> {t("Are you sure?")}</h1>
-                    <h2 className="subTitle">{t("You are about to delete the rule")}</h2>
+                    <h2 className="subTitle">{t("You are about to delete the rule for")}&nbsp;{rule}&nbsp;{t("days")}</h2>
                     <h3 className="heading">{t("This action cannot be undone")}</h3>
                 </div>
                 <div className={DeleteFetch.fetched && !DeleteFetch.fetching ? "show" : "hidden"}>
@@ -75,7 +102,7 @@ const DeleteConfirmationModal = ({ show, setShowModal}) => {
                                 <div className="descriptionIconContainer green mx-auto">
                                     <h1 className="title"><FontAwesomeIcon className="icon green" icon={faCheck} /></h1>
                                 </div>
-                                <h2 className="subTitle mt-4">{t("The rule")}&nbsp;{t("has been removed succesfully")}</h2>
+                                <h2 className="subTitle mt-4">{t("The rule has been removed succesfully")}</h2>
                             </>
                             :
                             <>
@@ -92,7 +119,7 @@ const DeleteConfirmationModal = ({ show, setShowModal}) => {
                         <h1 className="title"><FontAwesomeIcon className="icon red" icon={faExclamation} /></h1>
                     </div>
                     <h1 className="title"> {t("Are you sure?")}</h1>
-                    <h2 className="subTitle">{t("You are about to delete the rule")}</h2>
+                    <h2 className="subTitle">{t("You are about to delete the rule for")}&nbsp;{rule}&nbsp;{t("days")}</h2>
                     <h3 className="heading">{t("This action cannot be undone")}</h3>
                 </div>
             </Modal.Body>
@@ -109,7 +136,7 @@ const DeleteConfirmationModal = ({ show, setShowModal}) => {
                             <Button variant="outline-secondary" onClick={() => closeModalWithoutReloading()}>
                                 {t("Cancel")}
                             </Button>
-                            <Button variant="outline-danger" onClick={() => { deleteFund() }}>
+                            <Button variant="outline-danger" onClick={() => { deleteRule() }}>
                                 <div className="iconContainer red">
                                     <FontAwesomeIcon icon={faTrashAlt} />
                                 </div>

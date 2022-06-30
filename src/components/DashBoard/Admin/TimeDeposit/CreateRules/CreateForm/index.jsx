@@ -39,7 +39,7 @@ const CreateForm = ({ data, fetchingCreateRequest, handleChange, ActionDispatch,
                 <div className="d-flex justify-content-end">
                     <Button variant="danger" type="submit" className="mb-3">
                         <Spinner animation="border" variant="light"
-                            className={`${fetchingCreateRequest ? "d-inline-block" : "d-none"} littleSpinner ms-1`} />
+                            className={`${fetchingCreateRequest ? "d-inline-block" : "d-none"} littleSpinner me-2`} />
                         {t("Submit")}
                     </Button>
                 </div>
