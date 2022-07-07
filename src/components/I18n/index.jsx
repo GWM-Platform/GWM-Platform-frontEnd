@@ -19,9 +19,11 @@ i18n
           "STAKE_BUY": "Purchase of a fund's shares",
           "STAKE_SELL": "Sale of a fund's shares",
           "REPAYMENT": "Refund due to denied ticket",
+          "FIXED_DEPOSIT_CREATE":"Time deposit investment",
           "Pendiente": "Pending",
           "Aprobado": "Approved",
           "Denegado": "Denied",
+          "Liquidada": "Settled",
           "to Transfer": "Transfer",
           "To transfer to": "Transfer to",
           "Actual period () rate": "Actual period ({{period}}) rate"
@@ -412,6 +414,7 @@ i18n
           "STAKE_BUY": "Compra de cuotapartes de un fondo",
           "STAKE_SELL": "Venta de cuotapartes de un fondo",
           "REPAYMENT": "Devolución por ticket rechazado",
+          "FIXED_DEPOSIT_CREATE":"Inversión en plazo fijo",
           "Change client": "Cambiar cliente",
           "Google SpreadSheet url (from which the id will be extracted)":
             "Url de Google SpreadSheet (de la cual se extraerá la id)",
@@ -639,7 +642,14 @@ i18n
           "At the end of the term": "Al final del plazo",
           "Pending approval": "Aprobación pendiente",
           "0 days": "0 días",
-          "To be confirmed": "A confirmar"
+          "To be confirmed": "A confirmar",
+          "close":"cerrar",
+          "closed":"cerrado",
+          "opened":"abierto",
+          "Closed":"Cerrado",
+          "Opened":"Abierto",
+          "Approved tickets pending settlement":"Tickets aprobados pendientes de liquidación"
+
         }
       }
     }

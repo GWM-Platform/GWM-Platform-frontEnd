@@ -12,6 +12,7 @@ import { DashBoardContext } from 'context/DashBoardContext';
 const TimeDepositCard = ({ Hide, setHide, TimeDeposit, ownKey }) => {
     const { toLogin } = useContext(DashBoardContext);
     const { t } = useTranslation();
+
     Decimal.set({ precision: 6 })
 
     const getAnualRate = () => {
@@ -142,11 +143,11 @@ const TimeDepositCard = ({ Hide, setHide, TimeDeposit, ownKey }) => {
                                     <Card.Text className="subTitle lighter mt-0 mb-2">
                                         {t("From")}:
                                         <span className="bolder">&nbsp;
-                                            {TimeDeposit?.startDate ? TimeDeposit?.startDate.format('LL') : <>{moment().format('LL')}&nbsp;({t("To be confirmed")})</>}
+                                            {TimeDeposit?.startDate ? moment(TimeDeposit?.startDate).format('LL') : <>{moment().format('LL')}&nbsp;({t("To be confirmed")})</>}
                                         </span><br />
                                         {t("To")}:
                                         <span className="bolder">&nbsp;
-                                            {TimeDeposit?.startDate ? TimeDeposit?.endDate.format('LL') : <>{moment().add(TimeDeposit.duration, "days").format('LL')}&nbsp;({t("To be confirmed")})</>}
+                                            {TimeDeposit?.endDate ?  moment(TimeDeposit?.endDate).format('LL') : <>{moment().add(TimeDeposit.duration, "days").format('LL')}&nbsp;({t("To be confirmed")})</>}
                                         </span><br />
                                         {t("Anual rate")}:<span className="bolder">&nbsp;{getAnualRate()}%</span><br />
                                         {t("Initial investment")}:<span className="bolder">&nbsp;${TimeDeposit.initialAmount}</span>,&nbsp;

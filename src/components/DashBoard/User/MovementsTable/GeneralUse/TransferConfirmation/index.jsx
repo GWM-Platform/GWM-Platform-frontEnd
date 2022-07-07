@@ -42,7 +42,7 @@ const TransferConfirmation = ({ incomingTransfer, movement, setShowModal, action
             }
         })
 
-        if (response.status === 201) {
+        if (response.status >= 200 && response.status < 300) {
             setActionFetch({
                 ...ActionFetch,
                 fetching: false,
@@ -158,7 +158,7 @@ const TransferConfirmation = ({ incomingTransfer, movement, setShowModal, action
                                         <FontAwesomeIcon
 
                                             color="red"
-                                            icon={faTimes}
+                                            icon={faCircle}
                                             className="p-absolute"
                                             style={{
                                                 transform: "translate(-50%, -50%) scale(1.5)",

@@ -39,7 +39,7 @@ const TimeDeposit = ({ balanceChanged }) => {
         if (!fetching) {
             setFetching(true)
             axios.post('fixed-deposits', {
-                initialAmount: data.days,
+                initialAmount: data.amount,
                 interest: TimeDeposit?.content?.interest,
                 clientId: ClientSelected.id,
                 duration: data.days

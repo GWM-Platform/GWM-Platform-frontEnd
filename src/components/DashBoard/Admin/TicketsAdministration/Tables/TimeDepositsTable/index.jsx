@@ -7,8 +7,9 @@ import TimeDepositRow from './TimeDepositRow'
 const TimeDepositsTable = ({ AccountInfo, UsersInfo, movements, state, reloadData, take }) => {
     const { t } = useTranslation();
 
-    //===1 pending, the admin could aprove or deny, ===2 closed, the admin could close it
-    const anyWithActions = () => Object.values(movements).some((field) => field.stateId === 1 || field.stateId === 2)
+    //===1 pending, the admin could aprove or deny, ===2 aproved,if it isn't already the admin could close it
+    const anyWithActions = () => Object.values(movements).some((field) => field.stateId === 1 || (field.stateId === 2 && !field.closed))
+    const anyApproved = () => Object.values(movements).some((field) => field.stateId === 2)
 
     return (
 
@@ -29,6 +30,12 @@ const TimeDepositsTable = ({ AccountInfo, UsersInfo, movements, state, reloadDat
                             <th >
                                 <span className="d-inline">{t("Profit")}</span>
                             </th>
+                            {
+                                anyApproved() &&
+                                <th >
+                                    <span className="d-inline">{t("Status")}</span>
+                                </th>
+                            }
                             <th >{t("Ticket #")}</th>
                             {
                                 anyWithActions() ? <th className='Actions'>{t("Action")}</th> : null

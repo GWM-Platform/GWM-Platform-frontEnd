@@ -121,6 +121,12 @@ const TimeDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData })
                         }
                     </span>
                 </td>
+                {
+                    !!(Movement.stateId===2) &&
+                    <td>
+                        {t(Movement.closed ? "Closed" : "Opened")}
+                    </td>
+                }
                 <td>
                     {Movement?.id}
                 </td>
@@ -138,10 +144,10 @@ const TimeDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData })
                     </td>
                 }
                 {
-                    !!(Movement.stateId === 2) &&
+                    !!(Movement.stateId === 2 && !Movement.closed) &&
                     <td className="Actions verticalCenter" >
                         <div className="h-100 d-flex align-items-center justify-content-around">
-                            
+
                             <div className="iconContainer red">
                                 <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => { launchModalConfirmation("close") }} />
                             </div>
@@ -150,7 +156,7 @@ const TimeDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData })
                 }
             </tr>
             {
-                Movement.stateId === 1 ?
+                Movement.stateId === 1 || (Movement.stateId === 2 && !Movement.closed) ?
                     <ActionConfirmationModal reloadData={reloadData} movement={Movement} setShowModal={setShowModal} action={Action} show={ShowModal} />
                     :
                     null}

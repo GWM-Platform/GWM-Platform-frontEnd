@@ -43,7 +43,7 @@ const ActionConfirmationModal = ({ transaction, setShowModal, action, show, relo
             }
         })
 
-        if (response.status === 201) {
+        if (response.status >= 200 && response.status < 300) {
             setActionFetch({
                 ...ActionFetch,
                 fetching: false,
@@ -106,7 +106,7 @@ const ActionConfirmationModal = ({ transaction, setShowModal, action, show, relo
                                     <h1 className='p-relative' style={{ fontSize: "4rem" }}>
                                         <FontAwesomeIcon
                                             className="p-absolute"
-                                            color="red"
+                                            color="green"
                                             icon={faCheck}
                                             style={{
                                                 transform: "translate(-50%, -50%)",
@@ -116,7 +116,7 @@ const ActionConfirmationModal = ({ transaction, setShowModal, action, show, relo
                                         />
                                         <FontAwesomeIcon
 
-                                            color="red"
+                                            color="green"
                                             icon={faCircle}
                                             className="p-absolute"
                                             style={{
@@ -147,7 +147,7 @@ const ActionConfirmationModal = ({ transaction, setShowModal, action, show, relo
                                         <FontAwesomeIcon
 
                                             color="red"
-                                            icon={faTimes}
+                                            icon={faCircle}
                                             className="p-absolute"
                                             style={{
                                                 transform: "translate(-50%, -50%) scale(1.5)",

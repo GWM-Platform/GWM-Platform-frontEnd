@@ -42,7 +42,7 @@ const ActionConfirmationModal = ({ movement, setShowModal, action, show, reloadD
             }
         })
 
-        if (response.status === 201) {
+        if (response.status >= 200 && response.status < 300) {
             setActionFetch({
                 ...ActionFetch,
                 fetching: false,
@@ -127,7 +127,7 @@ const ActionConfirmationModal = ({ movement, setShowModal, action, show, reloadD
                                         <FontAwesomeIcon className="placeHolder" icon={faCircle} style={{ transform: "scale(1.5)" }} />
                                     </h1>
                                 </div>
-                                <h2 className="subTitle mt-4">{t("The ticket has been")} {t(action === "approve" ? "approved" : "denied")} {t("succesfully")}</h2>
+                                <h2 className="subTitle mt-4">{t("The ticket has been")} {t(action === "approve" ? "approved" : action === "deny" ? "denied" : "closed")} {t("succesfully")}</h2>
                             </>
                             :
                             <>
@@ -144,9 +144,8 @@ const ActionConfirmationModal = ({ movement, setShowModal, action, show, reloadD
                                             }}
                                         />
                                         <FontAwesomeIcon
-
                                             color="red"
-                                            icon={faTimes}
+                                            icon={faCircle}
                                             className="p-absolute"
                                             style={{
                                                 transform: "translate(-50%, -50%) scale(1.5)",

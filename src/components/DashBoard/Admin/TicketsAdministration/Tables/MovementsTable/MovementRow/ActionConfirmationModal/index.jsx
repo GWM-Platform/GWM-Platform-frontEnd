@@ -42,7 +42,7 @@ const ActionConfirmationModal = ({ movement, setShowModal, action, show, reloadD
             }
         })
 
-        if (response.status === 201) {
+        if (response.status >= 200 && response.status < 300) {
             setActionFetch({
                 ...ActionFetch,
                 fetching: false,
@@ -146,7 +146,7 @@ const ActionConfirmationModal = ({ movement, setShowModal, action, show, reloadD
                                         <FontAwesomeIcon
 
                                             color="red"
-                                            icon={faTimes}
+                                            icon={faCircle}
                                             className="p-absolute"
                                             style={{
                                                 transform: "translate(-50%, -50%) scale(1.5)",

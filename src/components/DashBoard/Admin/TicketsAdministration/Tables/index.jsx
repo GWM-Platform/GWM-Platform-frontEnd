@@ -191,6 +191,88 @@ const Tables = ({ state, messageVariants }) => {
         }
     }
 
+    //PendingSettlements
+    const [PendingSettlements, setPendingSettlements] = useState({
+        fetching: true,
+        fetched: false,
+        valid: false,
+        values: {
+            movements: [],
+            total: 0
+        }
+    })
+
+    const [PaginationPendingSettlements, setPaginationPendingSettlements] = useState({
+        skip: 0,//Offset (in quantity of movements)
+        take: 5,//Movements per page
+        state: null
+    })
+
+    const [searchPendingSettlementById, setSearchPendingSettlementById] = useState({
+        value: desiredId && desiredType ? desiredType === "m" ? desiredId : "" : "",
+        search: desiredId && desiredType ? desiredType === "m" ? true : false : false
+    })
+
+    const handlePendingSettlementSearchChange = (event) => {
+        setSearchPendingSettlementById((prevState) => ({ ...prevState, value: event.target.value }))
+    }
+
+    const cancelPendingSettlementSearch = () => {
+        setSearchPendingSettlementById((prevState) => ({ ...prevState, value: "", search: false }))
+    }
+
+    const PendingSettlementById = async (id) => {
+        var url = `${process.env.REACT_APP_APIURL}/movements/${id}`
+
+        setSearchPendingSettlementById((prevState) => ({ ...prevState, search: true }))
+
+        setPendingSettlements({
+            ...Movements,
+            ...{
+                fetching: true,
+                fetched: false,
+                valid: false,
+            }
+        })
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: "*/*",
+                'Content-Type': 'application/json'
+            }
+        })
+
+        if (response.status === 200) {
+            const data = await response.json()
+            setPendingSettlements({
+                ...PendingSettlements,
+                ...{
+                    fetching: false,
+                    fetched: true,
+                    valid: true,
+                    values: { movements: [data], total: 1 }
+                }
+            })
+        } else {
+            setPendingSettlements({
+                ...PendingSettlements,
+                ...{
+                    fetching: false,
+                    fetched: true,
+                    valid: true,
+                    values: { movements: [], total: 0 }
+                }
+            })
+            switch (response.status) {
+                case 500:
+                    break;
+                default:
+                    console.error(response.status)
+            }
+        }
+    }
+
     //Transfers
     const [Transfers, setTransfers] = useState({
         fetching: true,
@@ -537,6 +619,67 @@ const Tables = ({ state, messageVariants }) => {
         }
     }
 
+    const movementsPendingSettlement = async () => {
+        var url = `${process.env.REACT_APP_APIURL}/movements/?` + new URLSearchParams({
+            filterState: 2,//Only search for approved
+            take: 100,//Does not have pagination, take as much as possible
+            skip: 0,//Does not have pagination
+        });
+        setPendingSettlements({
+            ...PendingSettlements,
+            ...{
+                fetching: true,
+                fetched: false,
+                valid: false
+            }
+        })
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: "*/*",
+                'Content-Type': 'application/json'
+            }
+        })
+
+        if (response.status === 200) {
+            const data = await response.json()
+            setPendingSettlements(
+                prevState => {
+                    //only withdrawals
+                    const withdrawals = data.movements.filter(movement => movement.motive === "WITHDRAWAL")
+                    return ({
+                        ...prevState,
+                        ...{
+                            fetching: false,
+                            fetched: true,
+                            valid: true,
+                            values: {
+                                movements: withdrawals,
+                                total: withdrawals.length,
+                            }
+                        }
+                    })
+                }
+            )
+        } else {
+            setPendingSettlements({
+                ...PendingSettlements,
+                ...{
+                    fetching: false,
+                    fetched: true,
+                    valid: false,
+                }
+            })
+            switch (response.status) {
+                case 500:
+                    break;
+                default:
+                    console.error(response.status)
+            }
+        }
+    }
+
     const transfersInState = async () => {
         var url = `${process.env.REACT_APP_APIURL}/transfers/?` + new URLSearchParams({
             filterState: state,
@@ -647,6 +790,7 @@ const Tables = ({ state, messageVariants }) => {
         getAccounts()
         if (searchTransactionById.search) transactionById(searchTransactionById.value)
         if (searchMovementById.search) movementById(searchMovementById.value)
+        if (searchPendingSettlementById.search) PendingSettlementById(searchTimeDepositById.value)
         if (searchTransferById.search) TransferById(searchTransferById.value)
         if (searchTimeDepositById.search) TimeDepositById(searchTimeDepositById.value)
         // eslint-disable-next-line
@@ -654,6 +798,13 @@ const Tables = ({ state, messageVariants }) => {
 
     useEffect(() => {
         setPaginationMovements((prevState) => ({
+            ...prevState, ...{
+                skip: 0,//Offset (in quantity of movements)
+                take: 5,//Movements per page
+                state: null
+            }
+        }))
+        setPaginationPendingSettlements((prevState) => ({
             ...prevState, ...{
                 skip: 0,//Offset (in quantity of movements)
                 take: 5,//Movements per page
@@ -709,6 +860,11 @@ const Tables = ({ state, messageVariants }) => {
         // eslint-disable-next-line
     }, [PaginationTimeDeposits, state, searchTimeDepositById.search])
 
+    useEffect(() => {
+        if (!searchPendingSettlementById.search) movementsPendingSettlement()
+        // eslint-disable-next-line
+    }, [PaginationPendingSettlements, searchPendingSettlementById.search])
+
     const reloadData = () => {
         transactionsInState()
         movementsInState()
@@ -716,7 +872,7 @@ const Tables = ({ state, messageVariants }) => {
         timeDepositsInState()
     }
 
-    const ticketSearchPropsPS = {
+    const ticketSearchPropsTransfers = {
         fetching: Transactions.fetching,
         keyWord: "purchase or sale ticket",
         SearchText: searchTransactionById.value,
@@ -725,13 +881,22 @@ const Tables = ({ state, messageVariants }) => {
         Search: () => transactionById(searchTransactionById.value),
     }
 
-    const ticketSearchPropsW = {
+    const ticketSearchPropsMovements = {
         fetching: Movements.fetching,
         keyWord: "withdrawal or deposit ticket",
         SearchText: searchMovementById.value,
         handleSearchChange: handleMovementSearchChange,
         cancelSearch: cancelMovementSearch,
         Search: () => movementById(searchMovementById.value)
+    }
+
+    const ticketSearchPropsPendingSettlement = {
+        fetching: PendingSettlements.fetching,
+        keyWord: "withdrawal pending settlement",
+        SearchText: searchPendingSettlementById.value,
+        handleSearchChange: handlePendingSettlementSearchChange,
+        cancelSearch: cancelPendingSettlementSearch,
+        Search: () => PendingSettlementById(searchPendingSettlementById.value)
     }
 
     const ticketSearchPropsTransfer = {
@@ -760,7 +925,7 @@ const Tables = ({ state, messageVariants }) => {
                 {/*-------------------------------Purchase and sale-------------------------- */}
                 <h1 className="title">{t("Purchase and sale tickets")}:</h1>
                 <TicketSearch
-                    props={ticketSearchPropsPS}
+                    props={ticketSearchPropsTransfers}
                 />
                 {
                     Transactions.fetching ?
@@ -787,7 +952,7 @@ const Tables = ({ state, messageVariants }) => {
                 {/*-------------------------------Withdrawal and deposit-------------------------- */}
                 <h1 className="title">{t("Withdrawal and deposit tickets")}:</h1>
                 <TicketSearch
-                    props={ticketSearchPropsW}
+                    props={ticketSearchPropsMovements}
                 />
                 {
                     Movements.fetching ?
@@ -811,7 +976,27 @@ const Tables = ({ state, messageVariants }) => {
                         :
                         null
                 }
+                {/*-------------------------------Approved tickets pending settlement-------------------------- */}
+                <h1 className="title">{t("Approved tickets pending settlement")}:</h1>
+                <TicketSearch
+                    props={ticketSearchPropsPendingSettlement}
+                />
+                {
+                    PendingSettlements.fetching ?
+                        <Loading movements={PaginationPendingSettlements.take} />
+                        :
+                        !PendingSettlements.valid ?
+                            <Message selected={5} messageVariants={messageVariants} />
+                            :
+                            PendingSettlements.values.total === 0 ?
+                                <NoMovements movements={PaginationPendingSettlements.take} />
+                                :
+                                <>
+                                    <MovementsTable AccountInfo={AccountInfo} UsersInfo={UsersInfo}
+                                        reloadData={reloadData} state={state} take={PaginationPendingSettlements.take} movements={PendingSettlements.values.movements} />
 
+                                </>
+                }
                 {/*-------------------------------Transfers-------------------------- */}
                 <h1 className="title">{t("Transfer tickets")}:</h1>
                 <TicketSearch

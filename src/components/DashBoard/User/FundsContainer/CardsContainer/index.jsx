@@ -17,10 +17,10 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
     const [showLeftChevron, setShowLeftChevron] = useState(false)
     const [Hide, setHide] = useState(false)
     const [Pinned, setPinned] = useState(false)
-    
+
     //Only shows aproved or pending timeDeposits
     const shownTimeDeposits = () => {
-        return TimeDeposits?.deposits.filter(TimeDeposits => TimeDeposits.stateId === 2 || TimeDeposits.stateId === 1)
+        return TimeDeposits?.deposits.filter(TimeDeposits => (TimeDeposits.stateId === 2 || TimeDeposits.stateId === 1) && !TimeDeposits.closed)
     }
 
     //For scrolling
@@ -66,8 +66,6 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
         }
     }, [width])
 
-   
-
     return (
         <Container className="px-0 d-flex justify-content-center FundsContainerWidth cardsContainer p-relative">
             <Row ref={FundsContainer}
@@ -75,11 +73,13 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
                 ${Funds.length + PendingWithoutpossession.length < 3 ?
                         "justify-content-center" : ""}
                  pb-2 flex-wrap flex-sm-nowrap overflow-hidden `}>
-                {Accounts.map((account, key) =>
-                    <CashCard cardsAmount={Funds.length + PendingWithoutpossession.length + 1}
-                        inScreenFunds={CardWidth} Pinned={Pinned} setPinned={setPinned}
-                        PendingTransactions={PendingTransactions} key={key} Hide={Hide} setHide={setHide} Fund={account} />
-                )
+                {
+                    Accounts.map(
+                        (account, key) =>
+                            <CashCard cardsAmount={Funds.length + PendingWithoutpossession.length + 1}
+                                inScreenFunds={CardWidth} Pinned={Pinned} setPinned={setPinned}
+                                PendingTransactions={PendingTransactions} key={key} Hide={Hide} setHide={setHide} Fund={account} />
+                    )
                 }
                 {
                     Funds.map((j, k) =>
@@ -102,12 +102,12 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
                 }
             </Row>
             <div className={`arrow  right d-none d-sm-flex
-                                ${Funds.length + PendingWithoutpossession.length > 2 && showRightChevron ? "opacity-1" : ""}`}
+                                ${Funds.length + PendingWithoutpossession.length + shownTimeDeposits().length > 2 && showRightChevron ? "opacity-1" : ""}`}
                 onClick={() => { if (showRightChevron) setScrollPositionByOffset(Offset + 1) }}>
                 <img className="chevron" src={`${process.env.PUBLIC_URL}/images/chevron/chevron-right.svg`} alt='right' />
             </div>
             <div className={` arrow left d-none d-sm-flex
-                                ${Funds.length + PendingWithoutpossession.length > 2 && showLeftChevron ? "opacity-1" : ""}`}
+                                ${Funds.length + PendingWithoutpossession.length + shownTimeDeposits().length > 2 && showLeftChevron ? "opacity-1" : ""}`}
                 onClick={() => { if (showLeftChevron) setScrollPositionByOffset(Offset - 1) }}>
                 <img className="chevron" src={`${process.env.PUBLIC_URL}/images/chevron/chevron-left.svg`} alt='left' />
             </div>
