@@ -9,6 +9,7 @@ import { useHistory } from 'react-router-dom';
 import './index.css'
 import { DashBoardContext } from 'context/DashBoardContext';
 import Decimal from 'decimal.js'
+import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
 const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned, cardsAmount, inScreenFunds }) => {
     const { t } = useTranslation();
@@ -22,6 +23,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
             value: []
         }
     )
+
     const [PendingTransfers, setPendingTransfers] = useState(
         {
             fetching: true,
@@ -200,7 +202,6 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
     }, [token, ClientSelected.id])
 
 
-
     return (
         <>
             <Col sm="6" md="6" lg="4" className={`fund-col  growAnimation ${Pinned && !isMobile ? "opacity-0" : ""}`}>
@@ -259,18 +260,9 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                 <Container fluid className="px-0">
                                     <Row className="w-100 mx-0 d-flex justify-content-between gx-0">
                                         <span className="pe-2 containerHideInfo">
-                                            <span>$</span>
-                                            <span className={`info ${Hide ? "shown" : "hidden"}`}>
-                                                {parseFloat(Fund.balance).toString().replace(/./g, "*")}
-                                            </span>
-
-                                            <span className={`info ${Hide ? "hidden" : "shown"}`}>
-                                                {parseFloat(Fund.balance).toString()}
-                                            </span>
-
-                                            <span className={`info placeholder`}>
-                                                {parseFloat(Fund.balance).toString()}
-                                            </span>
+                                            <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={parseFloat(Fund.balance).toString()} prefix="$" fixedDecimals={2} />
+                                            <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={parseFloat(Fund.balance).toString()} prefix="$" fixedDecimals={2} />
+                                            <FormattedNumber className={`info placeholder`} value={parseFloat(Fund.balance).toString()} prefix="$" fixedDecimals={2} />
                                         </span>
                                         <button onClick={() => setHide(prevState => !prevState)} className="noStyle ps-0 hideInfoButton d-flex align-items-center">
                                             <FontAwesomeIcon
@@ -295,8 +287,11 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                     {
                                         pendingCash().calculated ?
                                             <>
-                                                <span>{t("Pending transactions")}:<span className={`bolder ${pendingCash().isPositive ? "text-green" : "text-red"}`}>
-                                                    &nbsp;{pendingCash().isPositive ? "+" : "-"}${pendingCash().valueAbs}</span>
+                                                <span>{t("Pending transactions")}:&nbsp;
+                                                    <span className={`bolder ${pendingCash().isPositive ? "text-green" : "text-red"}`}>
+                                                        {pendingCash().isPositive ? "+" : "-"}
+                                                        <FormattedNumber value={pendingCash().valueAbs} prefix="$" fixedDecimals={2} />
+                                                    </span>
                                                 </span>
                                                 <OverlayTrigger show={show} trigger="click" placement="auto" overlay={
                                                     <Popover id="popover-overview-cash" style={{ maxWidth: "unset" }}>
@@ -304,28 +299,33 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                                         <Popover.Body className="pt-1 pb-2">
                                                             {t("Pending share sales")}:&nbsp;
                                                             <span className={`bolder ${pendingCash().overView.Transactions.isPositive ? "text-green" : "text-red"}`}>
-                                                                {pendingCash().overView.Transactions.isPositive ? "+" : "-"}${pendingCash().overView.Transactions.valueAbs}
+                                                                {pendingCash().overView.Transactions.isPositive ? "+" : "-"}
+                                                                <FormattedNumber value={pendingCash().overView.Transactions.valueAbs} prefix="$" fixedDecimals={2} />
                                                             </span><br />
                                                             {t("Pending withdrawals")}:&nbsp;
                                                             <span className={`bolder ${pendingCash().overView.Withdrawals.isPositive ? "text-green" : "text-red"}`}>
-                                                                {pendingCash().overView.Withdrawals.isPositive ? "+" : "-"}${pendingCash().overView.Withdrawals.valueAbs}
+                                                                {pendingCash().overView.Withdrawals.isPositive ? "+" : "-"}
+                                                                <FormattedNumber value={pendingCash().overView.Withdrawals.valueAbs} prefix="$" fixedDecimals={2} />
                                                             </span><br />
                                                             {t("Pending deposits")}:&nbsp;
                                                             <span className={`bolder ${pendingCash().overView.Deposits.isPositive ? "text-green" : "text-red"}`}>
-                                                                {pendingCash().overView.Deposits.isPositive ? "+" : "-"}${pendingCash().overView.Deposits.valueAbs}
+                                                                {pendingCash().overView.Deposits.isPositive ? "+" : "-"}
+                                                                <FormattedNumber value={pendingCash().overView.Deposits.valueAbs} prefix="$" fixedDecimals={2} />
                                                             </span><br />
                                                             {t("Pending transfers")}:&nbsp;
                                                             <span className={`bolder ${pendingCash().overView.Transfers.isPositive ? "text-green" : "text-red"}`}>
-                                                                {pendingCash().overView.Transfers.isPositive ? "+" : "-"}${pendingCash().overView.Transfers.valueAbs}
+                                                                {pendingCash().overView.Transfers.isPositive ? "+" : "-"}
+                                                                <FormattedNumber value={pendingCash().overView.Transfers.valueAbs} prefix="$" fixedDecimals={2} />
                                                             </span><br />
                                                             {t("Pending total")}:&nbsp;
                                                             <span className={`bolder ${pendingCash().isPositive ? "text-green" : "text-red"}`}>
-                                                                &nbsp;{pendingCash().isPositive ? "+" : "-"}${pendingCash().valueAbs}
+                                                                {pendingCash().isPositive ? "+" : "-"}
+                                                                <FormattedNumber value={pendingCash().valueAbs} prefix="$" fixedDecimals={2} />
                                                             </span>
                                                         </Popover.Body>
                                                     </Popover>
                                                 }>
-                                                    <button  onBlur={()=>setShow(false)}  onClick={() => setShow(prevState => !prevState)}
+                                                    <button onBlur={() => setShow(false)} onClick={() => setShow(prevState => !prevState)}
                                                         className="noStyle px-0 hideInfoButton d-inline-flex align-items-center">
                                                         <FontAwesomeIcon className="icon pin" icon={faInfoCircle} />
                                                         <FontAwesomeIcon
@@ -418,18 +418,9 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                     <Container fluid className="px-0">
                                         <Row className="w-100 mx-0 d-flex justify-content-between gx-0">
                                             <span className="pe-2 containerHideInfo">
-                                                <span>$</span>
-                                                <span className={`info ${Hide ? "shown" : "hidden"}`}>
-                                                    {parseFloat(Fund.balance).toString().replace(/./g, "*")}
-                                                </span>
-
-                                                <span className={`info ${Hide ? "hidden" : "shown"}`}>
-                                                    {parseFloat(Fund.balance).toString()}
-                                                </span>
-
-                                                <span className={`info placeholder`}>
-                                                    {parseFloat(Fund.balance).toString()}
-                                                </span>
+                                                <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={parseFloat(Fund.balance).toString()} prefix="$" fixedDecimals={2} />
+                                                <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={parseFloat(Fund.balance).toString()} prefix="$" fixedDecimals={2} />
+                                                <FormattedNumber className={`info placeholder`} value={parseFloat(Fund.balance).toString()} prefix="$" fixedDecimals={2} />
                                             </span>
                                             <button onClick={() => setHide(prevState => !prevState)} className="noStyle ps-0 hideInfoButton d-flex align-items-center">
                                                 <FontAwesomeIcon
@@ -454,8 +445,11 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                         {
                                             pendingCash().calculated ?
                                                 <>
-                                                    <span>{t("Pending transactions")}:<span className={`bolder ${pendingCash().isPositive ? "text-green" : "text-red"}`}>
-                                                        &nbsp;{pendingCash().isPositive ? "+" : "-"}${pendingCash().valueAbs}</span>
+                                                    <span>{t("Pending transactions")}:&nbsp;
+                                                        <span className={`bolder ${pendingCash().isPositive ? "text-green" : "text-red"}`}>
+                                                            {pendingCash().isPositive ? "+" : "-"}
+                                                            <FormattedNumber value={pendingCash().valueAbs} prefix="$" fixedDecimals={2} />
+                                                        </span>
                                                     </span>
                                                     <OverlayTrigger show={show} trigger="click" placement="auto" overlay={
                                                         <Popover id="popover-overview-cash" style={{ maxWidth: "unset" }}>
@@ -463,28 +457,33 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                                             <Popover.Body className="pt-1 pb-2">
                                                                 {t("Pending share sales")}:&nbsp;
                                                                 <span className={`bolder ${pendingCash().overView.Transactions.isPositive ? "text-green" : "text-red"}`}>
-                                                                    {pendingCash().overView.Transactions.isPositive ? "+" : "-"}${pendingCash().overView.Transactions.valueAbs}
+                                                                    {pendingCash().overView.Transactions.isPositive ? "+" : "-"}
+                                                                    <FormattedNumber value={pendingCash().overView.Transactions.valueAbs} prefix="$" fixedDecimals={2} />
                                                                 </span><br />
                                                                 {t("Pending withdrawals")}:&nbsp;
                                                                 <span className={`bolder ${pendingCash().overView.Withdrawals.isPositive ? "text-green" : "text-red"}`}>
-                                                                    {pendingCash().overView.Withdrawals.isPositive ? "+" : "-"}${pendingCash().overView.Withdrawals.valueAbs}
+                                                                    {pendingCash().overView.Withdrawals.isPositive ? "+" : "-"}
+                                                                    <FormattedNumber value={pendingCash().overView.Withdrawals.valueAbs} prefix="$" fixedDecimals={2} />
                                                                 </span><br />
                                                                 {t("Pending deposits")}:&nbsp;
                                                                 <span className={`bolder ${pendingCash().overView.Deposits.isPositive ? "text-green" : "text-red"}`}>
-                                                                    {pendingCash().overView.Deposits.isPositive ? "+" : "-"}${pendingCash().overView.Deposits.valueAbs}
+                                                                    {pendingCash().overView.Deposits.isPositive ? "+" : "-"}
+                                                                    <FormattedNumber value={pendingCash().overView.Deposits.valueAbs} prefix="$" fixedDecimals={2} />
                                                                 </span><br />
                                                                 {t("Pending transfers")}:&nbsp;
                                                                 <span className={`bolder ${pendingCash().overView.Transfers.isPositive ? "text-green" : "text-red"}`}>
-                                                                    {pendingCash().overView.Transfers.isPositive ? "+" : "-"}${pendingCash().overView.Transfers.valueAbs}
+                                                                    {pendingCash().overView.Transfers.isPositive ? "+" : "-"}
+                                                                    <FormattedNumber value={pendingCash().overView.Transfers.valueAbs} prefix="$" fixedDecimals={2} />
                                                                 </span><br />
                                                                 {t("Pending total")}:&nbsp;
                                                                 <span className={`bolder ${pendingCash().isPositive ? "text-green" : "text-red"}`}>
-                                                                    &nbsp;{pendingCash().isPositive ? "+" : "-"}${pendingCash().valueAbs}
+                                                                    {pendingCash().isPositive ? "+" : "-"}
+                                                                    <FormattedNumber value={pendingCash().valueAbs} prefix="$" fixedDecimals={2} />
                                                                 </span>
                                                             </Popover.Body>
                                                         </Popover>
                                                     }>
-                                                        <button onBlur={()=>setShow(false)} onClick={() => setShow(prevState => !prevState)}
+                                                        <button onBlur={() => setShow(false)} onClick={() => setShow(prevState => !prevState)}
                                                             className="noStyle px-0 hideInfoButton d-inline-flex align-items-center">
                                                             <FontAwesomeIcon className="icon pin" icon={faInfoCircle} />
                                                             <FontAwesomeIcon

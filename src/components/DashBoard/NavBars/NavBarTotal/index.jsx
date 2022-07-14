@@ -6,7 +6,7 @@ import { Navbar, Container, Col, Row, Spinner } from 'react-bootstrap';
 
 import './index.css'
 import { DashBoardContext } from 'context/DashBoardContext';
-import TwoDecimalsFormattedNumber from 'components/DashBoard/GeneralUse/TwoDecimalsFormattedNumber';
+import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
 const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
     const { t } = useTranslation();
@@ -57,7 +57,7 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
                                         {t("Available cash")}:&nbsp;
                                         {
                                             contentReady && Accounts[0] ?
-                                                <TwoDecimalsFormattedNumber className="growOpacity" value={Accounts[0].balance} prefix="$" fixedDecimals={2} />
+                                                <FormattedNumber className="growOpacity" value={Accounts[0].balance} prefix="$" fixedDecimals={2} />
                                                 :
                                                 <Spinner className="ms-2" animation="border" size="sm" />
                                         }
@@ -70,7 +70,7 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
                                                 <Spinner className="ms-2" animation="border" size="sm" />
 
                                                 :
-                                                <TwoDecimalsFormattedNumber className="growOpacity" value={Balance.value} prefix="$" fixedDecimals={2} />
+                                                <FormattedNumber className="growOpacity" value={Balance.value} prefix="$" fixedDecimals={2} />
                                         }
                                     </>
                             }

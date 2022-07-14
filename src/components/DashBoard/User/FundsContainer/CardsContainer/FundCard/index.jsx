@@ -7,6 +7,7 @@ import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 import './index.css'
 import { useHistory } from 'react-router-dom';
 import Decimal from 'decimal.js'
+import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
 const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
     const { t } = useTranslation();
@@ -65,8 +66,8 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
                                 <h1 className="title mt-0">
                                     {t(Fund.fund.name)}
                                 </h1>
-                                <Card.Text className="subTitle lighter mt-0 mb-2">
-                                    {t("Share price")}:<span className="bolder"> ${Fund.fund.sharePrice}</span><br />
+                                <Card.Text className="subTitle lighter mt-0 mb-2">{t("Share price")}:&nbsp;
+                                    <FormattedNumber className="bolder" value={Fund.fund.sharePrice} prefix="$" fixedDecimals={2} /><br />
                                 </Card.Text>
                             </Card.Title>
                             <Container>
@@ -75,18 +76,9 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
                                         <Container fluid className="px-0">
                                             <Row className="mx-0 w-100 gx-0 d-flex justify-content-between">
                                                 <div className="pe-2 containerHideInfo">
-                                                    <span>$</span>
-                                                    <span className={`info ${Hide ? "shown" : "hidden"}`}>
-                                                        {Fund.shares ? HoldingInCash().replace(/./g, "*") : 0}
-                                                    </span>
-
-                                                    <span className={`info ${Hide ? "hidden" : "shown"}`}>
-                                                        {Fund.shares ? HoldingInCash() : 0}
-                                                    </span>
-
-                                                    <span className={`info placeholder`}>
-                                                        {Fund.shares ? HoldingInCash() : 0}
-                                                    </span>
+                                                    <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={Fund.shares ? HoldingInCash() : 0} prefix="$" fixedDecimals={2} />
+                                                    <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={Fund.shares ? HoldingInCash() : 0} prefix="$" fixedDecimals={2} />
+                                                    <FormattedNumber className={`info placeholder`} value={Fund.shares ? HoldingInCash() : 0} prefix="$" fixedDecimals={2} />
                                                 </div>
                                                 <div className="ps-0 hideInfoButton d-flex align-items-center">
                                                     <FontAwesomeIcon
@@ -108,11 +100,12 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
                                         </Container>
                                     </h1>
                                     <Card.Text className="subTitle lighter mt-0 mb-2">
-                                        {t("Balance (shares)")}:<span className="bolder"> {Fund.shares ? Fund.shares : 0}</span><br />
+                                        {t("Balance (shares)")}:&nbsp;
+                                        <FormattedNumber className="bolder" value={Fund.shares ? Fund.shares : 0} prefix="" fixedDecimals={2} /><br />
                                         <span className="text-nowrap">{t("Pending transactions")}&nbsp;</span>
                                         <span className="text-nowrap">
-                                            ({t("shares")}):
-                                            <span className={`bolder text-green`}>&nbsp;+{pendingShares()}</span>
+                                            ({t("shares")}):&nbsp;+
+                                            <FormattedNumber className="bolder text-green" value={pendingShares()} prefix="$" fixedDecimals={2} /><br />
                                         </span>
                                     </Card.Text>
                                 </Row>

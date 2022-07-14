@@ -78,7 +78,7 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
                 {
                     Accounts.map(
                         (account, key) =>
-                            <CashCard cardsAmount={Funds.length + PendingWithoutpossession.length + 1}
+                            <CashCard cardsAmount={Funds.length + PendingWithoutpossession.length + shownTimeDeposits().length + 1}
                                 inScreenFunds={CardWidth} Pinned={Pinned} setPinned={setPinned}
                                 PendingTransactions={PendingTransactions} key={key} Hide={Hide} setHide={setHide} Fund={account} />
                     )

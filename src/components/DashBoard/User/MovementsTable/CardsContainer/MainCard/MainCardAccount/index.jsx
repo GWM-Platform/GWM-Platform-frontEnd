@@ -12,6 +12,7 @@ import MovementsTab from './MovementsTab';
 import TransfersTab from './TransfersTab';
 import FundDetail from './FundDetail';
 import './index.css'
+import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
 const MainCard = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
     const [SelectedTab, setSelectedTab] = useState("0")
@@ -40,18 +41,10 @@ const MainCard = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchBy
                     <Col className="d-flex justify-content-between pe-5" sm="auto">
                         <Col className="pe-2">
                             <div className="containerHideInfo px-2">
-                                <span>{t("Balance")}: $</span>
-                                <span className={`info ${Hide ? "shown" : "hidden"}`}>
-                                    {balanceInCash.toString().replace(/./g, "*")}
-                                </span>
-
-                                <span className={`info ${Hide ? "hidden" : "shown"}`}>
-                                    {balanceInCash.toString()}
-                                </span>
-
-                                <span className={`info placeholder`}>
-                                    {balanceInCash.toString()}
-                                </span>
+                                <span>{t("Balance")}:&nbsp;</span>
+                                <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={balanceInCash.toString()} prefix="$" fixedDecimals={2} />
+                                <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={balanceInCash.toString()} prefix="$" fixedDecimals={2} />
+                                <FormattedNumber className={`info placeholder`} value={balanceInCash.toString()} prefix="$" fixedDecimals={2} />
                             </div>
                         </Col>
                         <Col sm="auto" className="hideInfoButton d-flex align-items-center">

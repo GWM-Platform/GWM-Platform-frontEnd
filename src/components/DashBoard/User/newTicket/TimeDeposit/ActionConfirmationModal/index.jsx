@@ -6,6 +6,7 @@ import { faCheckCircle } from '@fortawesome/free-regular-svg-icons'
 import { Modal, Button, Spinner } from 'react-bootstrap'
 import { useContext } from 'react';
 import { DashBoardContext } from 'context/DashBoardContext';
+import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
 const ActionConfirmationModal = ({ setShowModal, show, action, data, Balance, fetching, anualRate, profit }) => {
 
@@ -24,19 +25,24 @@ const ActionConfirmationModal = ({ setShowModal, show, action, data, Balance, fe
                     <h1 className="title"> {t("Ticket summary")} </h1>
                     <ul>
                         <li className="listedInfo">
-                            {t("Account")}: <span className="emphasis">{ClientSelected.alias}</span>
+                            {t("Account")}:&nbsp;
+                            <span className="emphasis">{ClientSelected.alias}</span>
                         </li>
                         <li className="listedInfo">
-                            {t("Account balance")}: <span className="emphasis">${Balance}</span>
+                            {t("Account balance")}:&nbsp;
+                            <FormattedNumber className="emphasis" value={Balance} prefix="U$D" fixedDecimals={2} />
                         </li>
                         <li className="listedInfo">
-                            {t("Product")}: <span className="emphasis">{t("Time deposit")}</span>
+                            {t("Product")}:&nbsp;
+                            <span className="emphasis">{t("Time deposit")}</span>
                         </li>
                         <li className="listedInfo">
-                            {t("Cash amount")}:<span className="emphasis"> U$D {data.amount}</span>
+                            {t("Cash amount")}:&nbsp;
+                            <FormattedNumber className="emphasis" value={data.amount} prefix="$" fixedDecimals={2} />
                         </li>
                         <li className="listedInfo">
-                            {t("Anual rate")}:<span className="emphasis"> {anualRate}%</span>
+                            {t("Anual rate")}:&nbsp;
+                            <FormattedNumber className="emphasis" value={anualRate} suffix="%" fixedDecimals={2} />
                         </li>
                         <li className="listedInfo">
                             {t("Investment after")}&nbsp;{data.days}&nbsp;{t("days")}:<span className="emphasis">&nbsp;
@@ -44,7 +50,7 @@ const ActionConfirmationModal = ({ setShowModal, show, action, data, Balance, fe
                                     profit.fetching ?
                                         <Spinner className="ms-2" animation="border" size="sm" />
                                         :
-                                        <>U$D{profit.value}</>
+                                        <FormattedNumber className="emphasis" value={profit.value} prefix="U$D" fixedDecimals={2} />
                                 }
                             </span>
                         </li>
