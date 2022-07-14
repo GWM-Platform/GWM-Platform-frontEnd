@@ -141,7 +141,7 @@ const TransfersTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
                                     content={Transfers.transfers} 
                                     getTransfers={getTransfers}/>
                                 :
-                                <NoMovements Transfers={Pagination.take} />
+                                <NoMovements movements={Pagination.take} />
                     }
                     {
                         Transfers.total > 0 ?
