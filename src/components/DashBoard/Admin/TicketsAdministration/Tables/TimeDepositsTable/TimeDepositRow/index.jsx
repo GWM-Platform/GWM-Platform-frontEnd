@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icons'
-import moment from 'moment';
 import ActionConfirmationModal from './ActionConfirmationModal'
 import { Spinner } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
@@ -48,9 +47,8 @@ const TimeDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData })
             axios.post(`/fixed-deposits/profit`,
                 {
                     initialAmount: Movement?.initialAmount,
-                    interest: Movement?.interest,
-                    startDate: moment().format(),
-                    endDate: moment().add(Movement?.duration, 'days').format()
+                    interestRate: Movement?.interestRate,
+                    duration: Movement?.duration,
                 }).then(function (response) {
                     if (response.status < 300 && response.status >= 200) {
                         setProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: response.data || 0 } }))

@@ -737,6 +737,7 @@ const Tables = ({ state, messageVariants }) => {
             filterState: state,
             take: PaginationTimeDeposits.take,
             skip: PaginationTimeDeposits.skip,
+            client:"all"
         });
         setTimeDeposits(prevState => ({
             ...prevState,

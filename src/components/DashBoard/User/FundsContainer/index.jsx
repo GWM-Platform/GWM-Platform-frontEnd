@@ -20,8 +20,9 @@ const FundsContainer = ({ isMobile, setItemSelected, numberOfFunds }) => {
             axios.get(`/fixed-deposits`, {
                 params: {
                     limit: 50,
-                    offset: 0,
+                    skip: 0,
                     client: ClientSelected.id,
+                    stateId:0
                 }
             }).then(function (response) {
                 if (response.status < 300 && response.status >= 200) {

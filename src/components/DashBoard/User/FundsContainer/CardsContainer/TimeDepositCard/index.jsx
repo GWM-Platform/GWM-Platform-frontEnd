@@ -15,19 +15,14 @@ const TimeDepositCard = ({ Hide, setHide, TimeDeposit, ownKey }) => {
 
     Decimal.set({ precision: 6 })
 
-    const getAnualRate = () => {
-        if (TimeDeposit.duration >= 365 && TimeDeposit.initialAmount) {
-            return TimeDeposit?.interest[Object.keys(TimeDeposit?.interest).filter(ruleDays => ruleDays <= TimeDeposit.duration).reduce((prev, curr) => Math.abs(curr - TimeDeposit.duration) < Math.abs(prev - TimeDeposit.duration) ? curr : prev)] || 0
-        }
-        return 0
-    }
+    const getAnualRate = () => TimeDeposit.interestRate ?? 0
 
     const [profit, setProfit] = useState({ fetching: false, fetched: false, valid: false, value: 0 })
     const [actualProfit, setActualProfit] = useState({ fetching: false, fetched: false, valid: false, value: 0 })
 
     const calculateActualProfit = (signal) => {
         if (TimeDeposit.duration >= 365 && TimeDeposit.stateId === 2 && TimeDeposit.startDate) {
-            const elapsedTime = moment(TimeDeposit?.startDate).diff(moment(), "days")
+            const elapsedTime = Math.abs(moment(TimeDeposit?.startDate).diff(moment(), "days"))
             const ratePerDay = new Decimal((new Decimal(getAnualRate()).div(100)).toString()).div(365).toString()
             const gain = new Decimal(new Decimal(ratePerDay).times(elapsedTime).toString()).times(TimeDeposit.initialAmount).toString()
             setActualProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: new Decimal(TimeDeposit.initialAmount).add(gain).toString() } }))
@@ -37,13 +32,12 @@ const TimeDepositCard = ({ Hide, setHide, TimeDeposit, ownKey }) => {
     }
 
     const calculateProfit = (signal) => {
-        if (TimeDeposit.duration >= 365 && TimeDeposit.initialAmount) {
+        if (TimeDeposit.initialAmount) {
             axios.post(`/fixed-deposits/profit`,
                 {
-                    initialAmount: TimeDeposit.initialAmount,
-                    interest: TimeDeposit?.interest,
-                    startDate: moment().format(),
-                    endDate: moment().add(TimeDeposit.duration, 'days').format()
+                    duration: TimeDeposit?.duration,
+                    initialAmount: TimeDeposit?.initialAmount,
+                    interestRate: getAnualRate()
                 }, { signal: signal }).then(function (response) {
                     if (response.status < 300 && response.status >= 200) {
                         setProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: response.data || TimeDeposit.initialAmount } }))
@@ -96,9 +90,16 @@ const TimeDepositCard = ({ Hide, setHide, TimeDeposit, ownKey }) => {
                                     {t("Time Deposit")}&nbsp;{ownKey + 1}&nbsp;{!!(TimeDeposit?.stateId === 1) && <span style={{ textTransform: "none" }}>({t("Pending approval")})</span>}
                                 </h1>
                                 <Card.Text className="subTitle lighter mt-0 mb-2">
-                                    {t("Elapsed")}:
-                                    <span className="bolder">&nbsp;{TimeDeposit.stateId === 2 ? moment(TimeDeposit?.startDate).fromNow(true) : t("0 days")}&nbsp;{t("out of")}&nbsp;
-                                        {moment().add(TimeDeposit.duration, "days").fromNow(true)}
+                                    {t("Elapsed")}:&nbsp;
+                                    <span className="bolder">
+                                        {
+                                            TimeDeposit.stateId === 2 ?
+                                                Math.abs(moment(TimeDeposit?.startDate).diff(moment(), "days"))
+                                                :
+                                                0
+                                        }
+                                        &nbsp;{t("out of")}&nbsp;
+                                        {TimeDeposit?.duration}&nbsp;{t("days")}
                                     </span>
                                 </Card.Text>
                             </Card.Title>
@@ -147,7 +148,7 @@ const TimeDepositCard = ({ Hide, setHide, TimeDeposit, ownKey }) => {
                                         </span><br />
                                         {t("To")}:
                                         <span className="bolder">&nbsp;
-                                            {TimeDeposit?.endDate ?  moment(TimeDeposit?.endDate).format('LL') : <>{moment().add(TimeDeposit.duration, "days").format('LL')}&nbsp;({t("To be confirmed")})</>}
+                                            {TimeDeposit?.endDate ? moment(TimeDeposit?.endDate).format('LL') : <>{moment().add(TimeDeposit.duration, "days").format('LL')}&nbsp;({t("To be confirmed")})</>}
                                         </span><br />
                                         {t("Anual rate")}:<span className="bolder">&nbsp;{getAnualRate()}%</span><br />
                                         {t("Initial investment")}:<span className="bolder">&nbsp;${TimeDeposit.initialAmount}</span>,&nbsp;

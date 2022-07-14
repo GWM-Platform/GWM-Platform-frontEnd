@@ -19,7 +19,8 @@ i18n
           "STAKE_BUY": "Purchase of a fund's shares",
           "STAKE_SELL": "Sale of a fund's shares",
           "REPAYMENT": "Refund due to denied ticket",
-          "FIXED_DEPOSIT_CREATE":"Time deposit investment",
+          "FIXED_DEPOSIT_CREATE": "Time deposit investment",
+          "FIXED_DEPOSIT_CLOSE": "Time deposit closing",
           "Pendiente": "Pending",
           "Aprobado": "Approved",
           "Denegado": "Denied",
@@ -414,7 +415,8 @@ i18n
           "STAKE_BUY": "Compra de cuotapartes de un fondo",
           "STAKE_SELL": "Venta de cuotapartes de un fondo",
           "REPAYMENT": "Devolución por ticket rechazado",
-          "FIXED_DEPOSIT_CREATE":"Inversión en plazo fijo",
+          "FIXED_DEPOSIT_CREATE": "Inversión en plazo fijo",
+          "FIXED_DEPOSIT_CLOSE": "Cierre de plazo fijo",
           "Change client": "Cambiar cliente",
           "Google SpreadSheet url (from which the id will be extracted)":
             "Url de Google SpreadSheet (de la cual se extraerá la id)",
@@ -432,6 +434,7 @@ i18n
           "Pendiente": "Pendiente",
           "Aprobado": "Aprobado",
           "Denegado": "Rechazado",
+          "Liquidada": "Liquidado",
           "Transactions per page": "Transacciones por pagina",
           "Transaction status": "Estado de la transacción",
           "Update": "Actualizar",
@@ -643,12 +646,12 @@ i18n
           "Pending approval": "Aprobación pendiente",
           "0 days": "0 días",
           "To be confirmed": "A confirmar",
-          "close":"cerrar",
-          "closed":"cerrado",
-          "opened":"abierto",
-          "Closed":"Cerrado",
-          "Opened":"Abierto",
-          "Approved tickets pending settlement":"Tickets aprobados pendientes de liquidación"
+          "close": "cerrar",
+          "closed": "cerrado",
+          "opened": "abierto",
+          "Closed": "Cerrado",
+          "Opened": "Abierto",
+          "Approved tickets pending settlement": "Tickets aprobados pendientes de liquidación"
 
         }
       }

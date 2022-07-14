@@ -2117,6 +2117,11 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@osdiab/react-currency-input-field@^3.6.2":
+  version "3.6.2"
+  resolved "https://registry.yarnpkg.com/@osdiab/react-currency-input-field/-/react-currency-input-field-3.6.2.tgz#326aa6163badbab67ccaae5687acb17fb1eabfeb"
+  integrity sha512-VNxJk4o201QRnetxa8VC2y/2NKaT+P+WVlxkXLvZjHoeZrz13lR1AKvHuA8KK/iHQH82y5bHzirodADN6aCK3Q==
+
 "@pmmmwh/react-refresh-webpack-plugin@^0.5.3":
   version "0.5.4"
   resolved "https://registry.npmjs.org/@pmmmwh/react-refresh-webpack-plugin/-/react-refresh-webpack-plugin-0.5.4.tgz"

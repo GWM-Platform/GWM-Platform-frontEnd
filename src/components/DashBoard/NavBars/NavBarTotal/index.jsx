@@ -6,15 +6,16 @@ import { Navbar, Container, Col, Row, Spinner } from 'react-bootstrap';
 
 import './index.css'
 import { DashBoardContext } from 'context/DashBoardContext';
+import TwoDecimalsFormattedNumber from 'components/DashBoard/GeneralUse/TwoDecimalsFormattedNumber';
 
 const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
     const { t } = useTranslation();
-
+    
     const [Balance, setBalance] = useState({ fetching: false, value: 0 })
-
-    const { token, ClientSelected, itemSelected,contentReady,Accounts } = useContext(DashBoardContext)
-
-    const sectionsCashInAccount = ["buy", "withdraw","sell","transfer","timedeposit"]
+    
+    const { token, ClientSelected, itemSelected, contentReady, Accounts } = useContext(DashBoardContext)
+    
+    const sectionsCashInAccount = ["buy", "withdraw", "sell", "transfer", "timedeposit"]
 
     useEffect(() => {
         const getAccounts = async () => {
@@ -51,27 +52,27 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
                         <h1 className="total my-0 py-0 d-flex align-items-center growOpacity">
 
                             {
-                                sectionsCashInAccount.includes(itemSelected.toLowerCase())?
-                                <>
-                                    {t("Available cash")}:&nbsp;
-                                    {
-                                        contentReady && Accounts[0] ?
-                                            <span className="growOpacity">${Accounts[0].balance}</span>
-                                            :
-                                            <Spinner className="ms-2" animation="border" size="sm" />
-                                    }
-                                </>
-                                :
-                            <>
-                                {t("Total balance")}
-                                {
-                                    Balance.fetching ?
-                                        <Spinner className="ms-2" animation="border" size="sm" />
+                                sectionsCashInAccount.includes(itemSelected.toLowerCase()) ?
+                                    <>
+                                        {t("Available cash")}:&nbsp;
+                                        {
+                                            contentReady && Accounts[0] ?
+                                                <TwoDecimalsFormattedNumber className="growOpacity" value={Accounts[0].balance} prefix="$" fixedDecimals={2} />
+                                                :
+                                                <Spinner className="ms-2" animation="border" size="sm" />
+                                        }
+                                    </>
+                                    :
+                                    <>
+                                        {t("Total balance")}:&nbsp;
+                                        {
+                                            Balance.fetching ?
+                                                <Spinner className="ms-2" animation="border" size="sm" />
 
-                                        :
-                                        <span className="growOpacity">{": $" + Balance.value.toFixed(2)}</span>
-                                }
-                            </>
+                                                :
+                                                <TwoDecimalsFormattedNumber className="growOpacity" value={Balance.value} prefix="$" fixedDecimals={2} />
+                                        }
+                                    </>
                             }
                         </h1>
                     </Col>

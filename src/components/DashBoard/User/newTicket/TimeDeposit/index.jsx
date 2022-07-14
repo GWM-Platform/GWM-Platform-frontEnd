@@ -15,7 +15,7 @@ import moment from 'moment';
 import axios from 'axios';
 import Decimal from 'decimal.js';
 
-const TimeDeposit = ({ balanceChanged }) => {
+const TimeDepositTicket = ({ balanceChanged }) => {
 
     const { token, contentReady, Accounts, toLogin, ClientSelected } = useContext(DashBoardContext);
 
@@ -40,7 +40,7 @@ const TimeDeposit = ({ balanceChanged }) => {
             setFetching(true)
             axios.post('fixed-deposits', {
                 initialAmount: data.amount,
-                interest: TimeDeposit?.content?.interest,
+                depositPlanId: TimeDeposit?.content?.id,
                 clientId: ClientSelected.id,
                 duration: data.days
             }).then(function (response) {
@@ -145,10 +145,9 @@ const TimeDeposit = ({ balanceChanged }) => {
         if (data.amount.length > 0 && data.days.length > 0 && Number(data.days) >= 365 && TimeDeposit.fetched) {
             axios.post(`/fixed-deposits/profit`,
                 {
-                    initialAmount: data.amount,
-                    interest: TimeDeposit?.content?.interest,
-                    startDate: moment().format(),
-                    endDate: moment().add(data.days, 'days').format()
+                    duration: data?.days,
+                    initialAmount: data?.amount,
+                    interestRate: getAnualRate()
                 }).then(function (response) {
                     if (response.status < 300 && response.status >= 200) {
                         setProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: response.data || 0 } }))
@@ -224,4 +223,4 @@ const TimeDeposit = ({ balanceChanged }) => {
 
     )
 }
-export default TimeDeposit
+export default TimeDepositTicket

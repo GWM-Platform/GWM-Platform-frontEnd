@@ -20,7 +20,7 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
 
     //Only shows aproved or pending timeDeposits
     const shownTimeDeposits = () => {
-        return TimeDeposits?.deposits.filter(TimeDeposits => (TimeDeposits.stateId === 2 || TimeDeposits.stateId === 1) && !TimeDeposits.closed)
+        return TimeDeposits?.deposits.filter(TimeDeposits => (TimeDeposits.stateId === 2 || TimeDeposits.stateId === 1) && !TimeDeposits.closed) || []
     }
 
     //For scrolling
@@ -66,11 +66,13 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
         }
     }, [width])
 
+    const totalCards = () => Funds.length + PendingWithoutpossession.length + shownTimeDeposits().length + 1//+1 cta cte
+
     return (
-        <Container className="px-0 d-flex justify-content-center FundsContainerWidth cardsContainer p-relative">
+        <Container className={`px-0 d-flex justify-content-center FundsContainerWidth cardsContainer p-relative`}>
             <Row ref={FundsContainer}
                 className={`d-flex align-items-stretch mx-0 w-100 
-                ${Funds.length + PendingWithoutpossession.length < 3 ?
+                ${totalCards() < CardWidth ?
                         "justify-content-center" : ""}
                  pb-2 flex-wrap flex-sm-nowrap overflow-hidden `}>
                 {

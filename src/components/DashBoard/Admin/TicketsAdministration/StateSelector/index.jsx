@@ -14,6 +14,7 @@ const StateSelector = ({ handleChange, TransactionStates }) => {
                     {
                         TransactionStates.values.map(
                             (state, key) => {
+                                console.log(state.name,t(state.name))
                                 return <option value={state.id} key={key}>{state.id}. {t(state.name)} </option>
                             }
                         )
