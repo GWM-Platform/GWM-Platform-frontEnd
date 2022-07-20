@@ -6,6 +6,7 @@ import { DashBoardContext } from 'context/DashBoardContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icons';
 import ActionConfirmationModal from 'components/DashBoard/User/MovementsTable/GeneralUse/TransferConfirmation'
+import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
 const Transfer = ({ content, actions, getTransfers }) => {
   var momentDate = moment(content.createdAt);
@@ -28,7 +29,10 @@ const Transfer = ({ content, actions, getTransfers }) => {
       <td className="tableDate">{momentDate.format('DD/MM/YYYY, h:mm a')}</td>
       <td className={`tableConcept ${content.stateId === 3 ? 'text-red' : 'text-green'}`}>{t(getMoveStateById(content.stateId).name)}</td>
       <td className="tableConcept">{t("Transfer")}{" "}{t(incomingTransfer() ? "received from account" : "sent to account")}{t("")}{" \""}{incomingTransfer() ? content.senderAlias : content.receiverAlias}{"\""}</td>
-      <td className={`tableAmount ${content.receiverId === Accounts[0]?.id ? 'text-green' : 'text-red'}`}><span>{content.receiverId === Accounts[0]?.id ? '+' : '-'}</span><span >$</span>{Math.abs(content.amount)}</td>
+      <td className={`tableAmount ${content.receiverId === Accounts[0]?.id ? 'text-green' : 'text-red'}`}>
+        <span>{content.receiverId === Accounts[0]?.id ? '+' : '-'}</span>
+        <FormattedNumber value={Math.abs(content.amount)} prefix="$" fixedDecimals={2} />
+      </td>
       {
         !!actions &&
         <td className="Actions verticalCenter" >{
@@ -46,7 +50,7 @@ const Transfer = ({ content, actions, getTransfers }) => {
       }
       {
         !!(content.stateId === 1 && incomingTransfer()) &&
-          <ActionConfirmationModal incomingTransfer={incomingTransfer()} reloadData={getTransfers} movement={content} setShowModal={setShowModal} action={Action} show={ShowModal} />
+        <ActionConfirmationModal incomingTransfer={incomingTransfer()} reloadData={getTransfers} movement={content} setShowModal={setShowModal} action={Action} show={ShowModal} />
       }
     </tr >
 

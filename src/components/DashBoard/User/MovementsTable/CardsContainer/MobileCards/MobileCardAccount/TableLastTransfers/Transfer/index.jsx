@@ -7,10 +7,11 @@ import { DashBoardContext } from 'context/DashBoardContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icons';
 import ActionConfirmationModal from 'components/DashBoard/User/MovementsTable/GeneralUse/TransferConfirmation'
+import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
 const Transfer = ({ content, getTransfers }) => {
 
-  const { getMoveStateById,Accounts } = useContext(DashBoardContext)
+  const { getMoveStateById, Accounts } = useContext(DashBoardContext)
   const { t } = useTranslation()
 
   var momentDate = moment(content.createdAt);
@@ -34,10 +35,12 @@ const Transfer = ({ content, getTransfers }) => {
       <div className='d-flex justify-content-between'>
 
         <span className={`${content.stateId === 3 ? 'text-red' : 'text-green'}`}>{t(getMoveStateById(content.stateId).name)}</span>
-        <span className={`${Math.sign(content.amount) === 1 ? 'text-green' : 'text-red'}`}>{Math.sign(content.amount) === 1 ? '+' : '-'}${Math.abs(content.amount)}</span>
+        <span className={`${Math.sign(content.amount) === 1 ? 'text-green' : 'text-red'}`}>{Math.sign(content.amount) === 1 ? '+' : '-'}
+          <FormattedNumber value={Math.abs(content.amount)} prefix="$" fixedDecimals={2} />
+        </span>
       </div>
       {
-        !!(content.stateId === 1  && incomingTransfer()) &&
+        !!(content.stateId === 1 && incomingTransfer()) &&
         <div className="h-100 d-flex align-items-center justify-content-around">
           <div className="iconContainer green" onClick={() => launchModalConfirmation("approve")}>
             <FontAwesomeIcon className="icon" icon={faCheckCircle} /> {t("Approve")}

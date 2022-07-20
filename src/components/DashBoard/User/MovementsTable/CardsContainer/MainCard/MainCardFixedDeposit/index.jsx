@@ -4,47 +4,37 @@ import { Container, Col, Nav } from 'react-bootstrap';
 
 import { useTranslation } from "react-i18next";
 import { useState } from 'react';
-import { useHistory } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 
 import MovementsTab from './MovementsTab';
-import TransfersTab from './TransfersTab';
-import FundDetail from './FundDetail';
-import './index.css'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
-const MainCardAccount = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
+const MainCardFixedDeposit = ({ FixedDeposits, Hide, setHide }) => {
     const [SelectedTab, setSelectedTab] = useState("0")
-    // eslint-disable-next-line 
-
     const { t } = useTranslation();
-    let history = useHistory();
-
-    // eslint-disable-next-line 
-    const toLogin = () => {
-        sessionStorage.clear();
-        history.push(`/login`);
-    }
-
-    const balanceInCash = Fund.balance
+    const Performance = 0
+    const ActiveFixedDeposits = 0
 
     return (
-        <div className="movementsMainCardAccount growAnimation mt-2">
+        <div className="movementsMainCardFund growAnimation mt-2">
             <div className="bg-white info ms-0 mb-2 px-0">
                 <div className="d-flex justify-content-between align-items-end pe-2">
                     <h1 className="m-0 title px-2">
-                        {t("Cash")}
+                        {t("Fixed deposits")}
                     </h1>
                 </div>
-                <div className="d-flex justify-content-between align-items-end pe-2 pb-2 border-bottom-main">
+                <div className="d-flex justify-content-between align-items-end pe-2">
                     <Col className="d-flex justify-content-between pe-5" sm="auto">
                         <Col className="pe-2">
-                            <div className="containerHideInfo px-2">
-                                <span>{t("Balance")}:&nbsp;</span>
-                                <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={balanceInCash.toString()} prefix="$" fixedDecimals={2} />
-                                <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={balanceInCash.toString()} prefix="$" fixedDecimals={2} />
-                                <FormattedNumber className={`info placeholder`} value={balanceInCash.toString()} prefix="$" fixedDecimals={2} />
+                            <div className="containerHideInfo px-2 description">
+                                <span>{t("Balance ($)")}:&nbsp;</span>
+                                <span style={{ fontWeight: "bolder" }}>
+                                    <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={0} prefix="" fixedDecimals={2} />
+                                    <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={0} prefix="" fixedDecimals={2} />
+                                    <FormattedNumber className={`info placeholder`} value={0} prefix="" fixedDecimals={2} />
+                                </span>
+
                             </div>
                         </Col>
                         <Col sm="auto" className="hideInfoButton d-flex align-items-center">
@@ -64,36 +54,39 @@ const MainCardAccount = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setS
                             />
                         </Col>
                     </Col>
+                    <Col sm="auto" >
+                        {t("Performance")}:&nbsp;
+                        <FormattedNumber value={0} suffix="%" fixedDecimals={2} />
+                        &nbsp;(
+                            <FormattedNumber value={0} prefix="$" fixedDecimals={2} />
+                        )
+                    </Col>
+                </div>
+                <div className="d-flex justify-content-between align-items-end px-2">
+                    <Col className="d-flex justify-content-between pe-5" sm="auto">
+                        {t("Active fixed deposits")}:&nbsp;
+                        {ActiveFixedDeposits}
+                    </Col>
                 </div>
             </div>
             {/*tabs controller*/}
             <Container fluid className="px-0">
                 <Nav className="history-tabs" variant="tabs" activeKey={SelectedTab} onSelect={(e) => { setSelectedTab(e) }}>
                     <Nav.Item>
-                        <Nav.Link eventKey={"0"}>{t("Transactions")}</Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                        <Nav.Link eventKey={"1"}>{t("Transfer activity")}</Nav.Link>
+                        <Nav.Link eventKey={"0"}>{t("Fixed Deposits history")}</Nav.Link>
                     </Nav.Item>
                 </Nav>
             </Container>
             {/*tabs content */}
-            <Container fluid className="p-3 pb-2 bg-white historyContent">
+            <Container fluid className="p-3 pb-2  bg-white historyContent">
                 {
                     {
                         0:
-                            <MovementsTab SearchById={SearchById} setSearchById={setSearchById} Fund={Fund}
-                                resetSearchById={resetSearchById} handleMovementSearchChange={handleMovementSearchChange} />,
-                        1:
-                            <TransfersTab SearchById={SearchById} setSearchById={setSearchById} Fund={Fund}
-                                resetSearchById={resetSearchById} handleMovementSearchChange={handleMovementSearchChange} />,
-                        2:
-                            <FundDetail />,
+                            <MovementsTab FixedDeposits={FixedDeposits} />,
                     }[SelectedTab]
                 }
             </Container>
-        </div>
-    )
+        </div>)
 }
-export default MainCardAccount
+export default MainCardFixedDeposit
 

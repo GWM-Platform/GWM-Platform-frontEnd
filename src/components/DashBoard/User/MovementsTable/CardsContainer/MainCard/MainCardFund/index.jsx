@@ -11,8 +11,9 @@ import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 import MovementsTab from './MovementsTab';
 import FundDetail from './FundDetail';
 import './index.css'
+import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
-const MainCard = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
+const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
     const [SelectedTab, setSelectedTab] = useState("0")
     const [Performance, setPerformance] = useState(0)
     const { PendingTransactions, token, ClientSelected } = useContext(DashBoardContext)
@@ -59,39 +60,26 @@ const MainCard = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchBy
                         {t(Fund.fund.name)}
                     </h1>
                     <h2 className="m-0 left">
-                        {t("Share price")}
-                        <span style={{ fontWeight: "bolder" }}>
-                            &nbsp;${Fund.fund.sharePrice}
-                        </span>
+                        {t("Share price")}:&nbsp;
+                        <FormattedNumber style={{ fontWeight: "bolder" }} value={Fund.fund.sharePrice} prefix="$" suffix="" fixedDecimals={2} />
                     </h2>
                 </div>
 
                 <div>
                     <h2 className="px-2 left">
-                        {t("Balance (shares)")}:
-                        <span style={{ fontWeight: "bolder" }}>
-                            {" "}{Fund.shares ? Fund.shares : 0}
-                        </span>
+                        {t("Balance (shares)")}:&nbsp;
+                        <FormattedNumber style={{ fontWeight: "bolder" }} value={Fund.shares ? Fund.shares : 0} fixedDecimals={2} />
                     </h2>
                 </div>
                 <div className="d-flex justify-content-between align-items-end pe-2">
                     <Col className="d-flex justify-content-between pe-5" sm="auto">
                         <Col className="pe-2">
                             <div className="containerHideInfo px-2 description">
-                                <span>{t("Balance ($)")}</span>
+                                <span>{t("Balance ($)")}:&nbsp;</span>
                                 <span style={{ fontWeight: "bolder" }}>
-                                    :&nbsp;$
-                                    <span className={`info ${Hide ? "shown" : "hidden"}`}>
-                                        {balanceInCash.toFixed(2).toString().replace(/./g, "*")}
-                                    </span>
-
-                                    <span className={`info ${Hide ? "hidden" : "shown"}`}>
-                                        {balanceInCash.toFixed(2).toString()}
-                                    </span>
-
-                                    <span className={`info placeholder`}>
-                                        {balanceInCash.toFixed(2).toString()}
-                                    </span>
+                                    <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={balanceInCash.toFixed(2)} prefix="" fixedDecimals={2} />
+                                    <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={balanceInCash.toFixed(2)} prefix="" fixedDecimals={2} />
+                                    <FormattedNumber className={`info placeholder`} value={balanceInCash.toFixed(2)} prefix="" fixedDecimals={2} />
                                 </span>
 
                             </div>
@@ -114,20 +102,18 @@ const MainCard = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchBy
                         </Col>
                     </Col>
                     <Col sm="auto" >
-                        {t("Performance")}{": "}
-                        <span
-                            className={{
-                                '1': 'text-green',
-                                '-1': 'text-red'
-                            }[Math.sign(Performance)]}>
-                            {Performance}%
-                        </span>
+                        {t("Performance")}:&nbsp;
+                        <FormattedNumber className={{
+                            '1': 'text-green',
+                            '-1': 'text-red'
+                        }[Math.sign(Performance)]}
+                            value={Performance} suffix="%" fixedDecimals={2} />
                     </Col>
                 </div>
                 <div className="border-bottom-main pb-2">
                     <h2 className="px-2 left">
                         {t("Pending transactions (shares)")}&nbsp;
-                        <span style={{ fontWeight: "bolder" }}>{pendingshares ? pendingshares : 0}{" "}</span>
+                        <FormattedNumber  style={{ fontWeight: "bolder" }} value={pendingshares ? pendingshares : 0} fixedDecimals={2}/>
                     </h2>
                 </div>
             </div>
@@ -157,5 +143,5 @@ const MainCard = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchBy
             </Container>
         </div>)
 }
-export default MainCard
+export default MainCardFund
 

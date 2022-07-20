@@ -12,11 +12,11 @@ const FundsContainer = ({ isMobile, setItemSelected, numberOfFunds }) => {
     const { t } = useTranslation();
 
     const [Mounted, setMounted] = useState(false);
-    const [TimeDeposits, setTimeDeposits] = useState({ fetching: true, fetched: false, valid: false, content: {} })
+    const [FixedDeposits, setFixedDeposits] = useState({ fetching: true, fetched: false, valid: false, content: {} })
 
     useEffect(() => {
-        const getTimeDeposits = () => {
-            setTimeDeposits((prevState) => ({ fetching: true, fetched: false }))
+        const getFixedDeposits = () => {
+            setFixedDeposits((prevState) => ({ fetching: true, fetched: false }))
             axios.get(`/fixed-deposits`, {
                 params: {
                     limit: 50,
@@ -26,26 +26,26 @@ const FundsContainer = ({ isMobile, setItemSelected, numberOfFunds }) => {
                 }
             }).then(function (response) {
                 if (response.status < 300 && response.status >= 200) {
-                    setTimeDeposits((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, content: response?.data || {} } }))
+                    setFixedDeposits((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, content: response?.data || {} } }))
                 } else {
                     switch (response.status) {
                         case 401:
                             toLogin();
                             break;
                         default:
-                            setTimeDeposits((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
+                            setFixedDeposits((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
                             break
                     }
                 }
             }).catch((err) => {
                 if (err.message !== "canceled") {
-                    setTimeDeposits((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
+                    setFixedDeposits((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
                 }
             });
         }
         setMounted(true)
         if (contentReady) {
-            getTimeDeposits()
+            getFixedDeposits()
         }
         //eslint-disable-next-line
     }, [contentReady]);
@@ -54,7 +54,7 @@ const FundsContainer = ({ isMobile, setItemSelected, numberOfFunds }) => {
         <Container fluid
             className={`accountParent tabContent px-0  d-flex align-items-start align-items-md-center`}>
             {
-                FetchingFunds || !contentReady || !Mounted || TimeDeposits.fetching
+                FetchingFunds || !contentReady || !Mounted || FixedDeposits.fetching
                     ?
                     <Container className="h-100 d-flex align-items-center px-0" fluid>
                         <Row className="w-100 mx-0 d-flex justify-content-center align-items-center">
@@ -66,7 +66,7 @@ const FundsContainer = ({ isMobile, setItemSelected, numberOfFunds }) => {
                     </Container>
                     :
                     <CardsContainer
-                        TimeDeposits={TimeDeposits.content}
+                        FixedDeposits={FixedDeposits.content}
                         PendingWithoutpossession={PendingWithoutpossession}
                         PendingTransactions={PendingTransactions}
 

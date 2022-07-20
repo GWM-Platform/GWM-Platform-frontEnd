@@ -1,33 +1,18 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, Container, Col, Row } from 'react-bootstrap';
-import TableLastMovements from './TableLastMovements';
 import { useTranslation } from "react-i18next";
-import { DashBoardContext } from 'context/DashBoardContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
+import { faEyeSlash, faEye, faPiggyBank } from '@fortawesome/free-solid-svg-icons'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
-const MobileCard = ({ Fund, Hide, setHide }) => {
+const MobileCardFixedDeposits = ({ FixdedDeposits, Hide, setHide }) => {
     // eslint-disable-next-line
-
-    const { PendingTransactions } = useContext(DashBoardContext);
     const { t } = useTranslation();
 
-
-
-    const balanceInCash = Fund.shares ? (Fund.shares * Fund.fund.sharePrice) : 0
-    const pendingshares = PendingTransactions.value.filter((transaction) => transaction.fundId === Fund.fund.id && Math.sign(transaction.shares) === +1).map((transaction) => transaction.shares).reduce((a, b) => a + b, 0).toFixed(2)
-
-
-
-    const checkImage = async (url) => {
-        const res = await fetch(url);
-        const buff = await res.blob();
-        return buff.type.startsWith('image/')
-    }
-
-    const hasCustomImage = () => Fund.fund.imageUrl ? checkImage(Fund.fund.imageUrl) : false
+    const Performance = 0
+    const ActiveFixedDeposits = 0
+    const balanceInCash = 0
 
     return (
         <Card className="movementsCardMobile">
@@ -35,18 +20,9 @@ const MobileCard = ({ Fund, Hide, setHide }) => {
                 <Container fluid className="px-3">
                     <Row className="d-flex justify-content-end align-items-center">
                         <Col className="p-0">
-
                             <Card.Title className="mb-0 py-1">
-                                {t(Fund.fund.name)}
-                                {
-
-                                    <img alt=""
-                                        onError={({ currentTarget }) => {
-                                            currentTarget.onerror = null;
-                                            currentTarget.src = process.env.PUBLIC_URL + '/images/FundsLogos/default.svg';
-                                        }}
-                                        src={hasCustomImage() ? Fund.fund.imageUrl : process.env.PUBLIC_URL + '/images/FundsLogos/default.svg'} />
-                                }
+                                {t("Fixed deposits")}
+                                <FontAwesomeIcon color='white' icon={faPiggyBank} />
                             </Card.Title>
                         </Col>
                     </Row>
@@ -56,21 +32,15 @@ const MobileCard = ({ Fund, Hide, setHide }) => {
                 <Container fluid className="p-0">
                     <Row className="m-1">
                         <Col xs="12" className="px-0">
-                            <span className="left">
-                                {t("Balance (shares)")}:&nbsp;
-                                <FormattedNumber style={{ fontWeight: "bolder" }} value={Fund.shares ? Fund.shares : 0} prefix="$" fixedDecimals={2} />
-                            </span>
                             <div className="d-flex justify-content-between px-0" sm="auto">
                                 <Col className="pe-2">
                                     <div className="containerHideInfo px-0 description">
-                                        <span>{t("Balance ($)")}</span>
+                                        <span>{t("Balance")}:&nbsp;</span>
                                         <span style={{ fontWeight: "bolder" }}>
-                                            :&nbsp;
                                             <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={balanceInCash} prefix="$" fixedDecimals={2} />
                                             <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={balanceInCash} prefix="$" fixedDecimals={2} />
                                             <FormattedNumber className={`info placeholder`} value={balanceInCash} prefix="$" fixedDecimals={2} />
                                         </span>
-
                                     </div>
                                 </Col>
                                 <Col sm="auto" className="hideInfoButton d-flex align-items-center">
@@ -91,16 +61,21 @@ const MobileCard = ({ Fund, Hide, setHide }) => {
                                 </Col>
                             </div>
                             <span className="left">
-                                {t("Pending transactions (shares)")}:&nbsp;
-                                <FormattedNumber   style={{ fontWeight: "bolder" }} value={pendingshares ? pendingshares : 0} prefix="$" fixedDecimals={2} />
+                                {t("Performance")}:&nbsp;{Performance}%&nbsp;(${Performance})
+                            </span>
+                            <br />
+                            <span className="left">
+                                {t("Active fixed deposits")}:&nbsp;{ActiveFixedDeposits}
                             </span>
                         </Col>
-                        <TableLastMovements Fund={Fund} />
+                        {/*
+                            <TableLastMovements Fund={Fund} />
+                        */}
                     </Row>
                 </Container>
             </Card.Body>
         </Card>
     )
 }
-export default MobileCard
+export default MobileCardFixedDeposits
 

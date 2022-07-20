@@ -4,6 +4,7 @@ import moment from 'moment';
 import './index.css'
 import { useTranslation } from 'react-i18next';
 import { DashBoardContext } from 'context/DashBoardContext';
+import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 const Movement = ({ content }) => {
   var momentDate = moment(content.createdAt);
   const { getMoveStateById } = useContext(DashBoardContext)
@@ -20,7 +21,10 @@ const Movement = ({ content }) => {
       <div className='d-flex justify-content-between'>
 
         <span className={`${content.stateId === 3 ? 'text-red' : 'text-green'}`}>{t(getMoveStateById(content.stateId).name)}</span>
-        <span className={`${Math.sign(content.amount) === 1 ? 'text-green' : 'text-red'}`}>{Math.sign(content.amount) === 1 ? '+' : '-'}${Math.abs(content.amount)}</span>
+        <span className={`${Math.sign(content.amount) === 1 ? 'text-green' : 'text-red'}`}>
+          {Math.sign(content.amount) === 1 ? '+' : '-'}
+          <FormattedNumber value={Math.abs(content.amount)} prefix="$" fixedDecimals={2} />
+        </span>
       </div>
     </div>
 

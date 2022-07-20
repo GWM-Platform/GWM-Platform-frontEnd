@@ -4,6 +4,7 @@ import { Card, Container, Col, Row } from 'react-bootstrap';
 import TableLastMovements from './TableLastMovements';
 import { useTranslation } from "react-i18next";
 import TableLastTransfers from './TableLastTransfers';
+import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
 const MobileCard = ({ account }) => {
     const { t } = useTranslation();
@@ -28,11 +29,13 @@ const MobileCard = ({ account }) => {
                         <Row className="m-1">
                             <Col xs="12" className="px-0">
                                 <Card.Text>
-                                    <span>{t("Balance")}: <span style={{ fontWeight: "bolder" }}>$</span>{account.balance}</span>
+                                    <span>{t("Balance")}:&nbsp;
+                                        <FormattedNumber value={account.balance} prefix="$" fixedDecimals={2} />
+                                    </span>
                                 </Card.Text>
                             </Col>
-                            <TableLastMovements account={account}/>
-                            <TableLastTransfers account={account}/>
+                            <TableLastMovements account={account} />
+                            <TableLastTransfers account={account} />
                         </Row>
                     </Container>
                 </Card.Body>

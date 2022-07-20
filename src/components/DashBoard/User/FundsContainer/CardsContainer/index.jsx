@@ -6,9 +6,9 @@ import CashCard from './CashCard';
 import { DashBoardContext } from 'context/DashBoardContext';
 import Indicators from './Indicators'
 import './index.css'
-import TimeDepositCard from './TimeDepositCard';
+import FixedDepositCard from './FixedDepositCard';
 
-const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions, PendingWithoutpossession, TimeDeposits }) => {
+const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions, PendingWithoutpossession, FixedDeposits }) => {
     const { width } = useContext(DashBoardContext)
 
     const [CardWidth, setCardWidth] = useState(false)
@@ -18,9 +18,9 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
     const [Hide, setHide] = useState(false)
     const [Pinned, setPinned] = useState(false)
 
-    //Only shows aproved or pending timeDeposits
-    const shownTimeDeposits = () => {
-        return TimeDeposits?.deposits.filter(TimeDeposits => (TimeDeposits.stateId === 2 || TimeDeposits.stateId === 1) && !TimeDeposits.closed) || []
+    //Only shows aproved or pending fixedDeposits
+    const shownFixedDeposits = () => {
+        return FixedDeposits?.deposits.filter(FixedDeposits => (FixedDeposits.stateId === 2 || FixedDeposits.stateId === 1) && !FixedDeposits.closed) || []
     }
 
     //For scrolling
@@ -43,7 +43,7 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
                 left: scroll,
                 behavior: 'smooth'
             })
-            let maxOffset = Funds.length + PendingWithoutpossession.length + shownTimeDeposits().length + 1 - CardWidth
+            let maxOffset = Funds.length + PendingWithoutpossession.length + shownFixedDeposits().length + 1 - CardWidth
             let toSetOffset = offset > maxOffset ? maxOffset : offset
             setShowRightChevron(toSetOffset !== maxOffset)
             setShowLeftChevron(toSetOffset !== 0)
@@ -66,7 +66,7 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
         }
     }, [width])
 
-    const totalCards = () => Funds.length + PendingWithoutpossession.length + shownTimeDeposits().length + 1//+1 cta cte
+    const totalCards = () => Funds.length + PendingWithoutpossession.length + shownFixedDeposits().length + 1//+1 cta cte
 
     return (
         <Container className={`px-0 d-flex justify-content-center FundsContainerWidth cardsContainer p-relative`}>
@@ -78,7 +78,7 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
                 {
                     Accounts.map(
                         (account, key) =>
-                            <CashCard cardsAmount={Funds.length + PendingWithoutpossession.length + shownTimeDeposits().length + 1}
+                            <CashCard cardsAmount={Funds.length + PendingWithoutpossession.length + shownFixedDeposits().length + 1}
                                 inScreenFunds={CardWidth} Pinned={Pinned} setPinned={setPinned}
                                 PendingTransactions={PendingTransactions} key={key} Hide={Hide} setHide={setHide} Fund={account} />
                     )
@@ -98,23 +98,23 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
                     )
                 }
                 {
-                    shownTimeDeposits().map((timeDeposit, key) =>
-                        <TimeDepositCard ownKey={key} key={`${key}-timeDeposit`} TimeDeposit={timeDeposit} Hide={Hide} setHide={setHide} />
+                    shownFixedDeposits().map((fixedDeposit, key) =>
+                        <FixedDepositCard ownKey={key} key={`${key}-fixedDeposit`} FixedDeposit={fixedDeposit} Hide={Hide} setHide={setHide} />
                     )
                 }
             </Row>
             <div className={`arrow  right d-none d-sm-flex
-                                ${Funds.length + PendingWithoutpossession.length + shownTimeDeposits().length > 2 && showRightChevron ? "opacity-1" : ""}`}
+                                ${Funds.length + PendingWithoutpossession.length + shownFixedDeposits().length > 2 && showRightChevron ? "opacity-1" : ""}`}
                 onClick={() => { if (showRightChevron) setScrollPositionByOffset(Offset + 1) }}>
                 <img className="chevron" src={`${process.env.PUBLIC_URL}/images/chevron/chevron-right.svg`} alt='right' />
             </div>
             <div className={` arrow left d-none d-sm-flex
-                                ${Funds.length + PendingWithoutpossession.length + shownTimeDeposits().length > 2 && showLeftChevron ? "opacity-1" : ""}`}
+                                ${Funds.length + PendingWithoutpossession.length + shownFixedDeposits().length > 2 && showLeftChevron ? "opacity-1" : ""}`}
                 onClick={() => { if (showLeftChevron) setScrollPositionByOffset(Offset - 1) }}>
                 <img className="chevron" src={`${process.env.PUBLIC_URL}/images/chevron/chevron-left.svg`} alt='left' />
             </div>
             <Indicators
-                cardsAmount={Funds.length + PendingWithoutpossession.length + shownTimeDeposits().length + 1}
+                cardsAmount={Funds.length + PendingWithoutpossession.length + shownFixedDeposits().length + 1}
                 inScreenFunds={CardWidth}
                 offset={Offset} setScrollPositionByOffset={setScrollPositionByOffset}
             />

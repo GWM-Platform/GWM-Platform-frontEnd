@@ -4,6 +4,7 @@ import Decimal from "decimal.js";
 
 
 const FormattedNumber = ({ style, className, value = 0, prefix = "", suffix = "", fixedDecimals = 0, hidden }) => {
+
     const FormattedValue = () => formatValue({
         value: new Decimal(value).toFixed(fixedDecimals),
         groupSeparator: '.',

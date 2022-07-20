@@ -20,7 +20,7 @@ import BuyForm from './User/newTicket/BuyForm';
 import SellForm from './User/newTicket/SellForm';
 import WithdrawForm from './User/newTicket/WithdrawForm';
 import DepositForm from './User/newTicket/DepositForm';
-import TimeDepositClient from './User/newTicket/TimeDeposit';
+import FixedDepositClient from './User/newTicket/FixedDeposit';
 
 import TransferForm from './User/newTicket/TransferForm';
 import OperationStatus from './User/newTicket/OperationStatus';
@@ -37,7 +37,7 @@ import OperationStatusAdmin from './Admin/OperationStatus';
 import Loading from './Loading';
 import AccountsSupervision from './Admin/AccountsSupervision';
 import APL from './Admin/APL'
-import TimeDeposit from './Admin/TimeDeposit';
+import FixedDeposit from './Admin/FixedDeposit';
 
 
 //General
@@ -86,8 +86,8 @@ const UserDashBoard = () => {
                                             <Route path={`${path}/assetsAdministration`}>
                                                 <AssetsAdministration />
                                             </Route>
-                                            <Route path={`${path}/TimeDeposit`}>
-                                                <TimeDeposit />
+                                            <Route path={`${path}/FixedDeposit`}>
+                                                <FixedDeposit />
                                             </Route>
                                             <Route path={`${path}/ticketsAdministration`}>
                                                 <TicketsAdministration />
@@ -138,8 +138,8 @@ const UserDashBoard = () => {
                                             <Route path={`${path}/transfer`}>
                                                 <TransferForm balanceChanged={() => setBalanceChanged(true)} />
                                             </Route>
-                                            <Route path={`${path}/TimeDeposit`}>
-                                                <TimeDepositClient balanceChanged={() => setBalanceChanged(true)} />
+                                            <Route path={`${path}/FixedDeposit`}>
+                                                <FixedDepositClient balanceChanged={() => setBalanceChanged(true)} />
                                             </Route>
                                             <Route path={`${path}/operationResult`}>
                                                 <OperationStatus setItemSelected={setItemSelected} />

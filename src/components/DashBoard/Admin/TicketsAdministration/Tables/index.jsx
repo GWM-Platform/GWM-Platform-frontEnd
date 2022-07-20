@@ -11,7 +11,7 @@ import NoMovements from 'components/DashBoard/GeneralUse/NoMovements';
 import TicketSearch from 'components/DashBoard/GeneralUse/TicketSearch'
 
 import { useTranslation } from 'react-i18next';
-import TimeDepositTable from './TimeDepositsTable';
+import FixedDepositTable from './FixedDepositsTable';
 
 const Tables = ({ state, messageVariants }) => {
 
@@ -356,42 +356,42 @@ const Tables = ({ state, messageVariants }) => {
     }
 
     //Time-deposits
-    const [TimeDeposits, setTimeDeposits] = useState({
+    const [FixedDeposits, setFixedDeposits] = useState({
         fetching: true,
         fetched: false,
         valid: false,
         values: {
-            timeDeposits: [],
+            fixedDeposits: [],
             total: 0
         }
     })
 
-    const [PaginationTimeDeposits, setPaginationTimeDeposits] = useState({
+    const [PaginationFixedDeposits, setPaginationFixedDeposits] = useState({
         skip: 0,//Offset (in quantity of movements)
         take: 5,//Movements per page
         state: null
     })
 
-    const [searchTimeDepositById, setSearchTimeDepositById] = useState({
+    const [searchFixedDepositById, setSearchFixedDepositById] = useState({
         value: "",
         search: false
     })
 
-    const handleTimeDepositsSearchChange = (event) => {
-        setSearchTimeDepositById((prevState) => ({ ...prevState, value: event.target.value }))
+    const handleFixedDepositsSearchChange = (event) => {
+        setSearchFixedDepositById((prevState) => ({ ...prevState, value: event.target.value }))
     }
 
-    const cancelTimeDepositSearch = () => {
-        setSearchTimeDepositById((prevState) => ({ ...prevState, value: "", search: false }))
+    const cancelFixedDepositSearch = () => {
+        setSearchFixedDepositById((prevState) => ({ ...prevState, value: "", search: false }))
     }
 
-    const TimeDepositById = async (id) => {
+    const FixedDepositById = async (id) => {
         var url = `${process.env.REACT_APP_APIURL}/fixed-deposits/${id}`
 
-        setSearchTimeDepositById((prevState) => ({ ...prevState, search: true }))
+        setSearchFixedDepositById((prevState) => ({ ...prevState, search: true }))
 
-        setTimeDeposits({
-            ...TimeDeposits,
+        setFixedDeposits({
+            ...FixedDeposits,
             ...{
                 fetching: true,
                 fetched: false,
@@ -409,8 +409,8 @@ const Tables = ({ state, messageVariants }) => {
 
         if (response.status === 200) {
             const data = await response.json()
-            setTimeDeposits({
-                ...TimeDeposits,
+            setFixedDeposits({
+                ...FixedDeposits,
                 ...{
                     fetching: false,
                     fetched: true,
@@ -419,8 +419,8 @@ const Tables = ({ state, messageVariants }) => {
                 }
             })
         } else {
-            setTimeDeposits({
-                ...TimeDeposits,
+            setFixedDeposits({
+                ...FixedDeposits,
                 ...{
                     fetching: false,
                     fetched: true,
@@ -732,14 +732,14 @@ const Tables = ({ state, messageVariants }) => {
         }
     }
 
-    const timeDepositsInState = async () => {
+    const fixedDepositsInState = async () => {
         var url = `${process.env.REACT_APP_APIURL}/fixed-deposits/?` + new URLSearchParams({
             filterState: state,
-            take: PaginationTimeDeposits.take,
-            skip: PaginationTimeDeposits.skip,
+            take: PaginationFixedDeposits.take,
+            skip: PaginationFixedDeposits.skip,
             client:"all"
         });
-        setTimeDeposits(prevState => ({
+        setFixedDeposits(prevState => ({
             ...prevState,
             ...{
                 fetching: true,
@@ -758,7 +758,7 @@ const Tables = ({ state, messageVariants }) => {
 
         if (response.status === 200) {
             const data = await response.json()
-            setTimeDeposits(prevState => ({
+            setFixedDeposits(prevState => ({
                 ...prevState,
                 ...{
                     fetching: false,
@@ -768,7 +768,7 @@ const Tables = ({ state, messageVariants }) => {
                 }
             }))
         } else {
-            setTimeDeposits(prevState => ({
+            setFixedDeposits(prevState => ({
                 ...prevState,
                 ...{
                     fetching: false,
@@ -791,9 +791,9 @@ const Tables = ({ state, messageVariants }) => {
         getAccounts()
         if (searchTransactionById.search) transactionById(searchTransactionById.value)
         if (searchMovementById.search) movementById(searchMovementById.value)
-        if (searchPendingSettlementById.search) PendingSettlementById(searchTimeDepositById.value)
+        if (searchPendingSettlementById.search) PendingSettlementById(searchFixedDepositById.value)
         if (searchTransferById.search) TransferById(searchTransferById.value)
-        if (searchTimeDepositById.search) TimeDepositById(searchTimeDepositById.value)
+        if (searchFixedDepositById.search) FixedDepositById(searchFixedDepositById.value)
         // eslint-disable-next-line
     }, [])
 
@@ -830,7 +830,7 @@ const Tables = ({ state, messageVariants }) => {
                 }
             })
         )
-        setPaginationTimeDeposits(
+        setPaginationFixedDeposits(
             (prevState) => ({
                 ...prevState, ...{
                     skip: 0,//Offset (in quantity of movements)
@@ -857,9 +857,9 @@ const Tables = ({ state, messageVariants }) => {
     }, [PaginationTransfers, state, searchTransferById.search])
 
     useEffect(() => {
-        if (!searchTimeDepositById.search) timeDepositsInState()
+        if (!searchFixedDepositById.search) fixedDepositsInState()
         // eslint-disable-next-line
-    }, [PaginationTimeDeposits, state, searchTimeDepositById.search])
+    }, [PaginationFixedDeposits, state, searchFixedDepositById.search])
 
     useEffect(() => {
         if (!searchPendingSettlementById.search) movementsPendingSettlement()
@@ -870,7 +870,7 @@ const Tables = ({ state, messageVariants }) => {
         transactionsInState()
         movementsInState()
         transfersInState()
-        timeDepositsInState()
+        fixedDepositsInState()
     }
 
     const ticketSearchPropsTransfers = {
@@ -909,17 +909,17 @@ const Tables = ({ state, messageVariants }) => {
         Search: () => TransferById(searchTransferById.value)
     }
 
-    const ticketSearchPropsTimeDeposits = {
-        fetching: TimeDeposits.fetching,
-        keyWord: "Time deposit ticket",
-        SearchText: searchTimeDepositById.value,
-        handleSearchChange: handleTimeDepositsSearchChange,
-        cancelSearch: cancelTimeDepositSearch,
-        Search: () => TimeDepositById(searchTimeDepositById.value)
+    const ticketSearchPropsFixedDeposits = {
+        fetching: FixedDeposits.fetching,
+        keyWord: "Fixed deposit ticket",
+        SearchText: searchFixedDepositById.value,
+        handleSearchChange: handleFixedDepositsSearchChange,
+        cancelSearch: cancelFixedDepositSearch,
+        Search: () => FixedDepositById(searchFixedDepositById.value)
     }
 
     return (
-        Transactions.fetching && Movements.fetching && TimeDeposits.fetching && Transfers.fetching ?
+        Transactions.fetching && Movements.fetching && FixedDeposits.fetching && Transfers.fetching ?
             <Message selected={0} messageVariants={messageVariants} />
             :
             <>
@@ -1026,29 +1026,29 @@ const Tables = ({ state, messageVariants }) => {
                         null
                 }
 
-                {/*-------------------------------Time Deposits-------------------------- */}
-                <h1 className="title">{t("Time deposits")}:</h1>
+                {/*-------------------------------Fixed Deposits-------------------------- */}
+                <h1 className="title">{t("Fixed deposits")}:</h1>
                 <TicketSearch
-                    props={ticketSearchPropsTimeDeposits}
+                    props={ticketSearchPropsFixedDeposits}
                 />
                 {
-                    TimeDeposits.fetching ?
-                        <Loading movements={PaginationTimeDeposits.take} />
+                    FixedDeposits.fetching ?
+                        <Loading movements={PaginationFixedDeposits.take} />
                         :
-                        !TimeDeposits.valid ?
+                        !FixedDeposits.valid ?
                             <Message selected={5} messageVariants={messageVariants} />
                             :
-                            TimeDeposits.values.total === 0 ?
-                                <NoMovements movements={PaginationTimeDeposits.take} />
+                            FixedDeposits.values.total === 0 ?
+                                <NoMovements movements={PaginationFixedDeposits.take} />
                                 :
                                 <>
-                                    <TimeDepositTable AccountInfo={AccountInfo} UsersInfo={UsersInfo}
-                                        reloadData={reloadData} state={state} take={PaginationTimeDeposits.take} movements={TimeDeposits.values.deposits} />
+                                    <FixedDepositTable AccountInfo={AccountInfo} UsersInfo={UsersInfo}
+                                        reloadData={reloadData} state={state} take={PaginationFixedDeposits.take} movements={FixedDeposits.values.deposits} />
                                 </>
                 }
                 {
-                    TimeDeposits.values.total > 0 ?
-                        <PaginationController PaginationData={PaginationTimeDeposits} setPaginationData={setPaginationTimeDeposits} total={TimeDeposits.values.total} />
+                    FixedDeposits.values.total > 0 ?
+                        <PaginationController PaginationData={PaginationFixedDeposits} setPaginationData={setPaginationFixedDeposits} total={FixedDeposits.values.total} />
                         :
                         null
                 }

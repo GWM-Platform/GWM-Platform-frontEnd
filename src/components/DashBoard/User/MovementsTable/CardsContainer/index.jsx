@@ -14,8 +14,10 @@ import { DashBoardContext } from 'context/DashBoardContext';
 import { useLocation } from 'react-router-dom';
 
 import './index.css'
+import MainCardFixedDeposit from './MainCard/MainCardFixedDeposit';
+import MobileCardFixedDeposits from './MobileCards/MobileCardFixedDeposits';
 
-const CardsContainer = ({ isMobile, Funds, numberOfFunds, NavInfoToggled, Accounts }) => {
+const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposits }) => {
     const { t } = useTranslation();
 
     function useQuery() {
@@ -98,21 +100,14 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, NavInfoToggled, Accoun
                 Accounts.length >= 1 || FundsWithPending.length >= 1 ?
                     <Col md="12" className="ps-2 ps-sm-2 ps-md-2 ps-md-0 ps-lg-0 pe-2 pt-0 growAnimation" >
                         {Accounts.map(
-                            (account, key) => {
-                                ;
-                                return (
-                                    <MobileCardAccount key={"account-" + key} account={account} />
-                                )
-                            }
+                            (account, key) =>
+                                <MobileCardAccount key={"account-" + key} account={account} />
                         )}
                         {FundsWithPending.map(
-                            (fund, key) => {
-                                ;
-                                return (
-                                    <MobileCardFund Hide={Hide} setHide={setHide} key={"fund-" + key} Fund={fund} />
-                                )
-                            }
+                            (fund, key) =>
+                                <MobileCardFund Hide={Hide} setHide={setHide} key={"fund-" + key} Fund={fund} />
                         )}
+                        {!!(FixedDeposits?.content?.deposits?.length > 0) && <MobileCardFixedDeposits Hide={Hide} setHide={setHide} FixedDeposits={FixedDeposits} />}
                     </Col>
                     :
                     <Col className="h-100">
@@ -123,28 +118,34 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, NavInfoToggled, Accoun
                     <>
                         <Col className="px-2 p-relative mainCardCol growAnimation" md="12"
                             lg={collapseSecondary ? "12" : "8"} xl={collapseSecondary ? "12" : "9"} >
-                            {
-                                categorySelected === 1 ?
-                                    <MainCardFund
-                                        Fund={FundsWithPending[selected]}
-                                        Hide={Hide} setHide={setHide}
+                            {(() => {
+                                switch (categorySelected) {
+                                    case 0:
+                                        return <MainCardAccount
+                                            Fund={Accounts[selected]}
+                                            Hide={Hide} setHide={setHide}
 
-                                        SearchById={SearchById}
-                                        setSearchById={setSearchById}
-                                        resetSearchById={resetSearchById}
-                                        handleMovementSearchChange={handleMovementSearchChange}
-                                    />
-                                    :
-                                    <MainCardAccount
-                                        Fund={Accounts[selected]}
-                                        Hide={Hide} setHide={setHide}
+                                            SearchById={SearchById}
+                                            setSearchById={setSearchById}
+                                            resetSearchById={resetSearchById}
+                                            handleMovementSearchChange={handleMovementSearchChange}
+                                        />
+                                    case 1:
+                                        return <MainCardFund
+                                            Fund={FundsWithPending[selected]}
+                                            Hide={Hide} setHide={setHide}
 
-                                        SearchById={SearchById}
-                                        setSearchById={setSearchById}
-                                        resetSearchById={resetSearchById}
-                                        handleMovementSearchChange={handleMovementSearchChange}
-                                    />
-                            }
+                                            SearchById={SearchById}
+                                            setSearchById={setSearchById}
+                                            resetSearchById={resetSearchById}
+                                            handleMovementSearchChange={handleMovementSearchChange}
+                                        />
+                                    case 2:
+                                        return <MainCardFixedDeposit FixedDeposits={FixedDeposits} Hide={Hide} setHide={setHide} />
+                                    default:
+                                        return <h1>Default</h1>
+                                }
+                            })()}
                             <div className={`d-none d-sm-block collapser ${collapseSecondary ? "expanded" : "collapsed"}`}
                                 onClick={() => { setCollapseSecondary(!collapseSecondary) }}>
                                 <img className="chevron" src={`${process.env.PUBLIC_URL}/images/chevron/chevron-right.svg`} alt='collapse' />
@@ -155,32 +156,28 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, NavInfoToggled, Accoun
                                 `secondaryCardContainer growAnimation
                                 ${collapseSecondary ? "collapsed" : "expanded"} px-0 pe-2 pt-0 h-100`
                             }>
-                            {Accounts.length > 0 ?
+
+                            {
+                                !!(Accounts.length > 0) &&
                                 <div className="CategoryLabel">
                                     <h1 className="title">{t("Cash")}</h1>
                                 </div>
-                                :
-                                null}
-                            {Accounts.map(
-                                (Account, key) => {
-                                    ;
-                                    return (
+                            }
+                            {
+                                Accounts.map(
+                                    (Account, key) =>
                                         <SecondaryCard
                                             Hide={Hide} Fund={Account} parentKey={0} ownKey={key} key={key}
                                             categorySelected={categorySelected} setCategorySelected={setCategorySelected}
                                             selected={selected} setSelected={setSelected} resetSearchById={resetSearchById}
 
                                         />
-                                    )
-                                }
-                            )}
+                                )}
                             {
-                                Funds.length > 0 ?
-                                    <div className="CategoryLabel">
-                                        <h1 className="title">{t("Funds")}</h1>
-                                    </div>
-                                    :
-                                    null
+                                !!(Funds.length > 0) &&
+                                <div className="CategoryLabel">
+                                    <h1 className="title">{t("Funds")}</h1>
+                                </div>
                             }
                             {
                                 FundsWithPending.map(
@@ -196,36 +193,47 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, NavInfoToggled, Accoun
                                     }
                                 )
                             }
+
+                            {
+                                !!(FixedDeposits?.content?.deposits?.length > 0) &&
+                                <>
+                                    <div className="CategoryLabel">
+                                        <h1 className="title">{t("Fixed deposits")}</h1>
+                                    </div>
+                                    <SecondaryCard
+                                        Hide={Hide} Fund={{}} parentKey={2}
+                                        categorySelected={categorySelected} setCategorySelected={setCategorySelected}
+                                        selected={selected} setSelected={setSelected} resetSearchById={resetSearchById}
+                                    />
+                                </>
+                            }
                         </Col>
                     </>
                     :
-                    (numberOfFunds === 1 ?
-                        <Col className="px-2 pb-2 growAnimation" xs="12" xl="12" >
-                            {Accounts.length === 1 ?
-                                <MainCardAccount
-                                    Fund={Accounts[0]}
-                                    Hide={Hide} setHide={setHide}
+                    <Col className="px-2 pb-2 growAnimation" xs="12" xl="12" >
+                        {Accounts.length === 1 ?
+                            <MainCardAccount
+                                Fund={Accounts[0]}
+                                Hide={Hide} setHide={setHide}
 
-                                    SearchById={SearchById}
-                                    setSearchById={setSearchById}
-                                    resetSearchById={resetSearchById}
-                                    handleMovementSearchChange={handleMovementSearchChange}
-                                />
-                                :
-                                <MainCardFund
-                                    Fund={Funds[0]}
-                                    Hide={Hide} setHide={setHide}
+                                SearchById={SearchById}
+                                setSearchById={setSearchById}
+                                resetSearchById={resetSearchById}
+                                handleMovementSearchChange={handleMovementSearchChange}
+                            />
+                            :
+                            <MainCardFund
+                                Fund={Funds[0]}
+                                Hide={Hide} setHide={setHide}
 
-                                    SearchById={SearchById}
-                                    setSearchById={setSearchById}
-                                    resetSearchById={resetSearchById}
-                                    handleMovementSearchChange={handleMovementSearchChange}
-                                />
-                            }
-                        </Col>
-                        :
-                        null
-                    )}
+                                SearchById={SearchById}
+                                setSearchById={setSearchById}
+                                resetSearchById={resetSearchById}
+                                handleMovementSearchChange={handleMovementSearchChange}
+                            />
+                        }
+                    </Col>
+            }
         </Row>
     )
 }

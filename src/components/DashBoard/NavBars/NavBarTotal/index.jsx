@@ -15,7 +15,7 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
     
     const { token, ClientSelected, itemSelected, contentReady, Accounts } = useContext(DashBoardContext)
     
-    const sectionsCashInAccount = ["buy", "withdraw", "sell", "transfer", "timedeposit"]
+    const sectionsCashInAccount = ["buy", "withdraw", "sell", "transfer", "fixeddeposit"]
 
     useEffect(() => {
         const getAccounts = async () => {
