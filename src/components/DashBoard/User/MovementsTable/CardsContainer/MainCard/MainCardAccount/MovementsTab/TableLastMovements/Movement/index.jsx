@@ -9,7 +9,7 @@ const Movement = ({ content }) => {
   var momentDate = moment(content.createdAt);
   const { t } = useTranslation();
   const { getMoveStateById } = useContext(DashBoardContext)
-  console.log(t(getMoveStateById(content.stateId).name, { fund: content.fundName }))
+
   return (
     <tr>
       <td className="tableId">{content.id}</td>

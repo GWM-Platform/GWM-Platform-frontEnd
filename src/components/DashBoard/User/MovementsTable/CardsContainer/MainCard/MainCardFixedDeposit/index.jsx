@@ -13,7 +13,7 @@ import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 const MainCardFixedDeposit = ({ FixedDepositsStats, Hide, setHide }) => {
     const [SelectedTab, setSelectedTab] = useState("0")
     const { t } = useTranslation();
-
+    console.log(FixedDepositsStats)
     return (
         <div className="movementsMainCardFund growAnimation mt-2">
             <div className="bg-white info ms-0 mb-2 px-0">
@@ -54,9 +54,9 @@ const MainCardFixedDeposit = ({ FixedDepositsStats, Hide, setHide }) => {
                     </Col>
                     <Col sm="auto" >
                         {t("Performance")}:&nbsp;
-                        <FormattedNumber value={FixedDepositsStats?.performancePercentage} suffix="%" fixedDecimals={2} />
+                        <FormattedNumber value={FixedDepositsStats?.performancePercentage ? FixedDepositsStats?.performancePercentage : 0} suffix="%" fixedDecimals={2} />
                         &nbsp;(
-                        <FormattedNumber value={FixedDepositsStats?.performanceCash} prefix="$" fixedDecimals={2} />
+                        <FormattedNumber value={FixedDepositsStats?.performanceCash ? FixedDepositsStats?.performanceCash : 0} prefix="$" fixedDecimals={2} />
                         )
                     </Col>
                 </div>

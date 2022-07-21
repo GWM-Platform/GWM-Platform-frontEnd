@@ -6,7 +6,7 @@ import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 const AccountGeneralData = ({ Account, Client }) => {
     const { t } = useTranslation();
     const [balanceTotal, setBalanceTotal] = useState({ fetching: true, fetched: true, value: 0 })
-    console.table(Account.balance)
+
     useEffect(() => {
         const token = sessionStorage.getItem('access_token')
 
