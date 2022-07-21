@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { DashBoardContext } from 'context/DashBoardContext';
 import './index.css'
+import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 const FundInfo = ({ Fund }) => {
     const { token } = useContext(DashBoardContext)
 
@@ -57,9 +58,11 @@ const FundInfo = ({ Fund }) => {
             </div>
             <div>
                 <h2 className="px-2 left">
-                    {t("Balance (shares)")}:
+                    {t("Balance (shares)")}:&nbsp;
                     <span style={{ fontWeight: "bolder" }}>
-                        {Fund.freeShares}{" "}{" ("}{Fund.shares}{" "}{t("in total")}{")"}
+                        <FormattedNumber value={Fund.freeShares} fixedDecimals={2} />
+                        &nbsp;
+                        {"("}<FormattedNumber value={Fund.shares} fixedDecimals={2} />&nbsp;{t("in total")}{")"}
                     </span>
                 </h2>
             </div>
@@ -67,18 +70,10 @@ const FundInfo = ({ Fund }) => {
                 <Col className="d-flex justify-content-between pe-5" sm="auto">
                     <Col className="pe-2">
                         <div className="containerHideInfo px-2">
-                            <span>{t("Balance ($)")}: $</span>
-                            <span className={`info ${Hide ? "shown" : "hidden"}`}>
-                                {balanceInCash.toFixed(2).toString().replace(/./g, "*")}
-                            </span>
-
-                            <span className={`info ${Hide ? "hidden" : "shown"}`}>
-                                {balanceInCash.toFixed(2).toString()}
-                            </span>
-
-                            <span className={`info placeholder`}>
-                                {balanceInCash.toFixed(2).toString()}
-                            </span>
+                            <span>{t("Balance ($)")}:&nbsp;</span>
+                            <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={balanceInCash} prefix="$" fixedDecimals={2} />
+                            <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={balanceInCash} prefix="$" fixedDecimals={2} />
+                            <FormattedNumber className={`info placeholder`} value={balanceInCash} prefix="$" fixedDecimals={2} />
                         </div>
                     </Col>
                     <Col sm="auto" className="hideInfoButton d-flex align-items-center">
@@ -109,7 +104,7 @@ const FundInfo = ({ Fund }) => {
                                     '1': 'text-green',
                                     '-1': 'text-red'
                                 }[Math.sign(Performance.value)]}>
-                                {Performance.value}%
+                                <FormattedNumber value={Performance.value} suffix="%" fixedDecimals={2} />
                             </span>
                     }
                 </Col>

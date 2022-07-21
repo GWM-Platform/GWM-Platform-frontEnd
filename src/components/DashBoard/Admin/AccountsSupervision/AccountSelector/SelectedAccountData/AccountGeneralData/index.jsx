@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
-import { Accordion, Spinner,Container,Row,Col } from 'react-bootstrap'
+import { Accordion, Spinner, Container, Row, Col } from 'react-bootstrap'
+import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 const AccountGeneralData = ({ Account, Client }) => {
     const { t } = useTranslation();
     const [balanceTotal, setBalanceTotal] = useState({ fetching: true, fetched: true, value: 0 })
@@ -54,10 +55,10 @@ const AccountGeneralData = ({ Account, Client }) => {
                                 balanceTotal.fetching ?
                                     <Spinner animation="border" size="sm" />
                                     :
-                                    <span className='emphasis'>{"$" + balanceTotal.value}</span>
+                                    <FormattedNumber className="emphasis" value={balanceTotal.value} prefix="$" fixedDecimals={2} />
                             }
                             </h1>
-                            <h1 className="Info text-end">{t("Cash balance")}: <span className='emphasis'>${Account.balance}</span></h1>
+                            <h1 className="Info text-end">{t("Cash balance")}: <FormattedNumber className="emphasis" value={Account.balance} prefix="$" fixedDecimals={2} /></h1>
                         </Col>
                     </Row>
                 </Container>

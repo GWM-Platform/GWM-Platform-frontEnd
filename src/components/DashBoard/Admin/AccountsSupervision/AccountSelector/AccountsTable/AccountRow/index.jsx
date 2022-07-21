@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Spinner } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
+import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
 const AccountRow = ({ Account, Client, setSelectedAccountId }) => {
 
@@ -49,10 +50,11 @@ const AccountRow = ({ Account, Client, setSelectedAccountId }) => {
             <td className="Alias">{t(Client.alias)}</td>
             <td className="Alias">
                 {
+
                     balanceTotal.fetching ?
                         <Spinner animation="border" size="sm" />
                         :
-                        "$" + balanceTotal.value
+                        <FormattedNumber value={balanceTotal.value} prefix="$" fixedDecimals={2} />
                 }
             </td>
             <td onClick={() => setSelectedAccountId(Account.id)} className="toDetails text-nowrap">

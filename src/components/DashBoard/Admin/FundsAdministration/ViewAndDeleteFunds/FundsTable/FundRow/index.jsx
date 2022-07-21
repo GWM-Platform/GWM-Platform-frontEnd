@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt, faEdit, faEye } from '@fortawesome/free-regular-svg-icons'
 import DeleteConfirmationModal from './DeleteConfirmationModal'
 import { OverlayTrigger, Popover } from 'react-bootstrap';
+import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
 const FundRow = ({ Fund, AssetTypes, chargeFunds, setAction, Action, ownKey }) => {
 
@@ -41,9 +42,15 @@ const FundRow = ({ Fund, AssetTypes, chargeFunds, setAction, Action, ownKey }) =
             <tr className="fundRow">
                 <td className="Name">{t(Fund.name)}</td>
                 <td className="Type">{t(AssetTypes[getAssetTypeById(AssetTypes, Fund.typeId)].name)}</td>
-                <td className="Shares">{t(Fund.shares)}</td>
-                <td className="FreeShares">{t(Fund.freeShares)}</td>
-                <td className="SharePrice">${t(Fund.sharePrice)}</td>
+                <td className="Shares">
+                    <FormattedNumber value={Fund.shares} prefix="" fixedDecimals={2} />
+                </td>
+                <td className="FreeShares">
+                    <FormattedNumber value={Fund.freeShares} prefix="" fixedDecimals={2} />
+                </td>
+                <td className="SharePrice">
+                    <FormattedNumber value={Fund.sharePrice} prefix="$" fixedDecimals={2} />
+                </td>
                 <td className="Id">{t(Fund.spreadsheetId)}</td>
                 <td className="Actions verticalCenter" >
                     <div className="h-100 d-flex align-items-center justify-content-around">
