@@ -22,7 +22,7 @@ const FundsContainer = ({ isMobile, setItemSelected, numberOfFunds }) => {
                     limit: 50,
                     skip: 0,
                     client: ClientSelected.id,
-                    stateId:0
+                    filterState:null
                 }
             }).then(function (response) {
                 if (response.status < 300 && response.status >= 200) {

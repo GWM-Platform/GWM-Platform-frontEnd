@@ -7,7 +7,7 @@ import FixedDepositRow from './FixedDepositRow'
 const FixedDepositsTable = ({ AccountInfo, UsersInfo, movements, state, reloadData, take }) => {
     const { t } = useTranslation();
 
-    //===1 pending, the admin could aprove or deny, ===2 aproved,if it isn't already the admin could close it
+    //===1 pending, the admin could approve or deny, ===2 approved,if it isn't already the admin could close it
     const anyWithActions = () => Object.values(movements).some((field) => field.stateId === 1 || (field.stateId === 2 && !field.closed))
     const anyApproved = () => Object.values(movements).some((field) => field.stateId === 2)
 

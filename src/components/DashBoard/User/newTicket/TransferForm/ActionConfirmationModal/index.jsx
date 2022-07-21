@@ -6,13 +6,14 @@ import { faCheckCircle } from '@fortawesome/free-regular-svg-icons'
 import { Modal, Button } from 'react-bootstrap'
 import { useContext } from 'react';
 import { DashBoardContext } from 'context/DashBoardContext';
+import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
-const ActionConfirmationModal = ({ TargetAccount,setShowModal, show, action, data, Balance, Transfer }) => {
+const ActionConfirmationModal = ({ TargetAccount, setShowModal, show, action, data, Balance, Transfer }) => {
 
     const { t } = useTranslation();
 
     const { AccountSelected } = useContext(DashBoardContext)
-const accountAlias = AccountSelected?.alias
+    const accountAlias = AccountSelected?.alias
 
     const handleClose = () => {
         setShowModal(false)
@@ -25,16 +26,20 @@ const accountAlias = AccountSelected?.alias
                     <h1 className="title"> {t("Ticket summary")} </h1>
                     <ul>
                         <li className="listedInfo">
-                            {t("Operation")}: <span className="emphasis">{t("Transfer")}</span>
+                            {t("Operation")}:&nbsp;
+                            <span className="emphasis">{t("Transfer")}</span>
                         </li>
                         <li className="listedInfo">
-                            {t("Transfer from")}: <span className="emphasis">{accountAlias}</span>
+                            {t("Transfer from")}:&nbsp;
+                            <span className="emphasis">{accountAlias}</span>
                         </li>
                         <li className="listedInfo">
-                            {t("Transfer to")}: <span className="emphasis">{TargetAccount?.content?.alias}</span>
+                            {t("Transfer to")}:&nbsp;
+                            <span className="emphasis">{TargetAccount?.content?.alias}</span>
                         </li>
                         <li className="listedInfo">
-                            {t("Transfer amount")}: <span className="emphasis">${data.amount}</span>
+                            {t("Transfer amount")}:&nbsp;
+                            <FormattedNumber className="emphasis" prefix="U$D" value={data.amount.toString()} fixedDecimals={2} />
                         </li>
                     </ul>
                 </div>

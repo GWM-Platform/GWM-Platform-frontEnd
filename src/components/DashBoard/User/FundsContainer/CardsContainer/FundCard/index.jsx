@@ -70,7 +70,7 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
                                     <FormattedNumber className="bolder" value={Fund.fund.sharePrice} prefix="$" fixedDecimals={2} /><br />
                                 </Card.Text>
                             </Card.Title>
-                            <Container>
+                            <Container fluid className="px-0">
                                 <Row className="d-flex justify-content-between">
                                     <h1 className="title-gray mt-1">
                                         <Container fluid className="px-0">

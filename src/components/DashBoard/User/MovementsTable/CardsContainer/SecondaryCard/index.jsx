@@ -19,8 +19,6 @@ const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownK
 
     const { t } = useTranslation();
 
-    const calcualteFixedDepositBalance = () => 0
-
     const balanceInCash = () => {
         switch (parentKey) {
             case 0:
@@ -28,7 +26,7 @@ const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownK
             case 1:
                 return Fund.shares ? Fund.shares * Fund.fund.sharePrice : 0
             case 2:
-                return calcualteFixedDepositBalance()
+                return Fund.balance
             default:
                 return 0
         }

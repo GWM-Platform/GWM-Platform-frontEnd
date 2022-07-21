@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from 'moment';
-import './index.css'
 import { useTranslation } from 'react-i18next';
 import { DashBoardContext } from 'context/DashBoardContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

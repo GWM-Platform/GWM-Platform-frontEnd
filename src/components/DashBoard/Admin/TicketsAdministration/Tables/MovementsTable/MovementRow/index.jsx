@@ -80,7 +80,9 @@ const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, coul
                         }
                     </span>
                 </td>
-                <td className="tableConcept">{t(Movement.motive)}</td>
+                <td className="tableConcept">
+                    {t(Movement.motive + (Movement.motive === "REPAYMENT" ? Movement.fundName ? "_" + Movement.fundName : "_" + Movement.fixedDepositId : ""), { fund: Movement.fundName, fixedDeposit: Movement.fixedDepositId })}
+                </td>
                 <td>${Movement.amount}</td>
                 <td>
                     <span className='text-nowrap'>

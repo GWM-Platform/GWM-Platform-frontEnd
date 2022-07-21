@@ -6,6 +6,7 @@ import { faCheckCircle } from '@fortawesome/free-regular-svg-icons'
 import { Modal, Button } from 'react-bootstrap'
 import { useContext } from 'react';
 import { DashBoardContext } from 'context/DashBoardContext';
+import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
 const ActionConfirmationModal = ({ setShowModal, show, action, data, Funds, Balance, fetching }) => {
     const { t } = useTranslation();
@@ -21,19 +22,26 @@ const ActionConfirmationModal = ({ setShowModal, show, action, data, Funds, Bala
                     <h1 className="title"> {t("Ticket summary")} </h1>
                     <ul>
                         <li className="listedInfo">
-                            {t("Account")}: <span className="emphasis">{ClientSelected.alias}</span>
+                            {t("Account")}:&nbsp;
+                            <span className="emphasis">{ClientSelected.alias}</span>
                         </li>
                         <li className="listedInfo">
-                            {t("Account balance")}: <span className="emphasis">${Balance}</span>
+                            {t("Account balance")}:&nbsp;
+                            <span className="emphasis"><FormattedNumber prefix="U$D" value={Balance} fixedDecimals={2} /></span>
                         </li>
                         <li className="listedInfo">
-                            {t("Product")}: <span className="emphasis">{Funds[data.FundSelected].fund.name}</span>
+                            {t("Product")}:&nbsp;
+                            <span className="emphasis">{Funds[data.FundSelected].fund.name}</span>
                         </li>
                         <li className="listedInfo">
-                            {t("Cash amount")}:<span className="emphasis">${(data.shares * Funds[data.FundSelected].fund.sharePrice).toFixed(2)}</span>
+                            {t("Cash amount")}:&nbsp;
+                            <span className="emphasis"><FormattedNumber prefix="U$D" value={(data.shares * Funds[data.FundSelected].fund.sharePrice)} fixedDecimals={2} /></span>
                         </li>
                         <li className="listedInfo">
-                            {t("Share amount")}:<span className="emphasis">{data.shares}</span>
+                            {t("Share amount")}:&nbsp;
+                            <span className="emphasis">
+                                <FormattedNumber value={data.shares} fixedDecimals={2} />
+                            </span>
                         </li>
 
                     </ul>

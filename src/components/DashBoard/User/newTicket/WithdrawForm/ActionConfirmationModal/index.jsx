@@ -6,6 +6,7 @@ import { faCheckCircle } from '@fortawesome/free-regular-svg-icons'
 import { Modal, Button } from 'react-bootstrap'
 import { useContext } from 'react';
 import { DashBoardContext } from 'context/DashBoardContext';
+import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
 const ActionConfirmationModal = ({ setShowModal, show, action, data, Balance ,fetching}) => {
     const { t } = useTranslation();
@@ -24,10 +25,10 @@ const ActionConfirmationModal = ({ setShowModal, show, action, data, Balance ,fe
                             {t("Account with whom the operation will be made")}: <span className="emphasis">{ClientSelected.alias}</span>
                         </li>
                         <li className="listedInfo">
-                            {t("Cash balance")}: <span className="emphasis">${Balance}</span>
+                            {t("Cash balance")}: <FormattedNumber className="emphasis" prefix="U$D" value={Balance.toString()} fixedDecimals={2} />
                         </li>
                         <li className="listedInfo">
-                            {t("Withdrawing")}:<span className="emphasis"> ${data.amount}</span>
+                            {t("Withdrawing")}: <FormattedNumber className="emphasis" prefix="U$D" value={data.amount.toString()} fixedDecimals={2} />
                         </li>
                     </ul>
                 </div>

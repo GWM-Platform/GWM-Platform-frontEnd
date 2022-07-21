@@ -9,7 +9,7 @@ import Loading from 'components/DashBoard/GeneralUse/Loading';
 import PaginationController from 'components/DashBoard/GeneralUse/PaginationController'
 import FilterOptions from 'components/DashBoard/GeneralUse/FilterOptions'
 
-const MovementsTab = ({ Fund, setPerformance, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
+const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
     const history = useHistory();
     const { token, ClientSelected } = useContext(DashBoardContext)
 

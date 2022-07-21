@@ -4,6 +4,7 @@ import DonutChart from 'react-donut-chart';
 import './index.css'
 import { Col, Card } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
+import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
 const FundCard = ({ Fund, ownKey, data, setData, openAccordion, Account }) => {
     const { t } = useTranslation();
@@ -28,7 +29,7 @@ const FundCard = ({ Fund, ownKey, data, setData, openAccordion, Account }) => {
                 onClick={() => { if (Fund.freeShares > 0) setFundSelected(setData, Fund.id, ownKey, openAccordion) }}>
                 <Card.Header><strong className="title">{Fund.name}</strong></Card.Header>
                 <Card.Body>
-                    <Card.Title>{t("Share price")}: <strong>${Fund.sharePrice}</strong></Card.Title>
+                    <Card.Title>{t("Share price")}: <strong><FormattedNumber prefix="$" value={Fund.sharePrice} fixedDecimals={2} /></strong></Card.Title>
                     {
                         Fund.composition !== undefined
                             ?

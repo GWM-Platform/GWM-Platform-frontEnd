@@ -85,7 +85,8 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
         const signal = controller.signal;
 
         calculateProfit(signal)
-        calculateActualProfit()
+        //If its approved
+        if (FixedDeposit.stateId !== 1) calculateActualProfit(signal)
 
         return () => {
             controller.abort();
@@ -108,7 +109,7 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
                         <Row className="mx-0 w-100 gx-0">
                             <Card.Title >
                                 <h1 className="title mt-0">
-                                    {t("Fixed deposit")}&nbsp;{ownKey + 1}&nbsp;{!!(FixedDeposit?.stateId === 1) && <span style={{ textTransform: "none" }}>({t("Pending approval")})</span>}
+                                    {t("Fixed deposit")}&nbsp;{FixedDeposit.id}&nbsp;{!!(FixedDeposit?.stateId === 1) && <span style={{ textTransform: "none" }}>({t("Pending approval")})</span>}
                                 </h1>
                                 <Card.Text className="subTitle lighter mt-0 mb-2">
                                     {t("Elapsed")}:&nbsp;
@@ -121,7 +122,7 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
                                     </span>
                                 </Card.Text>
                             </Card.Title>
-                            <Container>
+                            <Container fluid className="px-0">
                                 <Row className="d-flex justify-content-between">
                                     <h1 className="title-gray mt-1">
                                         <Container fluid className="px-0">

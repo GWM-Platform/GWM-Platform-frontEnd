@@ -5,14 +5,16 @@ import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEyeSlash, faEye, faPiggyBank } from '@fortawesome/free-solid-svg-icons'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
+import TableLastFixedDeposits from './TableLastFixedDeposits';
 
-const MobileCardFixedDeposits = ({ FixdedDeposits, Hide, setHide }) => {
+const MobileCardFixedDeposits = ({ FixdedDeposits, FixedDepositsStats, Hide, setHide }) => {
     // eslint-disable-next-line
     const { t } = useTranslation();
 
-    const Performance = 0
-    const ActiveFixedDeposits = 0
-    const balanceInCash = 0
+    const Performance = FixedDepositsStats?.performancePercentage
+    const PerformanceInCash = FixedDepositsStats?.performanceCash
+    const ActiveFixedDeposits = FixedDepositsStats?.activeDeposits
+    const balanceInCash = FixedDepositsStats?.balance
 
     return (
         <Card className="movementsCardMobile">
@@ -22,7 +24,8 @@ const MobileCardFixedDeposits = ({ FixdedDeposits, Hide, setHide }) => {
                         <Col className="p-0">
                             <Card.Title className="mb-0 py-1">
                                 {t("Fixed deposits")}
-                                <FontAwesomeIcon color='white' icon={faPiggyBank} />
+
+                                <FontAwesomeIcon className="float-end me-1" color='white' icon={faPiggyBank} />
                             </Card.Title>
                         </Col>
                     </Row>
@@ -61,16 +64,16 @@ const MobileCardFixedDeposits = ({ FixdedDeposits, Hide, setHide }) => {
                                 </Col>
                             </div>
                             <span className="left">
-                                {t("Performance")}:&nbsp;{Performance}%&nbsp;(${Performance})
+                                {t("Performance")}:&nbsp;{Performance}%&nbsp;(${PerformanceInCash})
                             </span>
                             <br />
                             <span className="left">
                                 {t("Active fixed deposits")}:&nbsp;{ActiveFixedDeposits}
                             </span>
                         </Col>
-                        {/*
-                            <TableLastMovements Fund={Fund} />
-                        */}
+                        {
+                            <TableLastFixedDeposits />
+                        }
                     </Row>
                 </Container>
             </Card.Body>

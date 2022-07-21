@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import DonutChart from 'react-donut-chart';
 import { Col, Card, Container, Row } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
+import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
 const FundCard = ({ Fund, ownKey, data, setData, setSome, some, openAccordion }) => {
     const { t } = useTranslation();
@@ -26,13 +27,15 @@ const FundCard = ({ Fund, ownKey, data, setData, setSome, some, openAccordion })
                 onClick={() => { setFundSelected(data, setData, ownKey, setSome, some, openAccordion) }}>
                 <Card.Header><strong className="title">{Fund.fund.name}</strong></Card.Header>
                 <Card.Body>
-                    <Card.Title> {t("Shares")}{": "} <strong>{(Fund.shares).toFixed(5)}</strong></Card.Title>
-                    <Card.Title> {t("Holdings value")}{": "} <strong>${(Fund.fund.sharePrice * Fund.shares).toFixed(0)}</strong></Card.Title>
+                    <Card.Title> {t("Shares")}{": "} <strong>{<FormattedNumber value={(Fund.shares)} fixedDecimals={2} />}</strong></Card.Title>
+                    <Card.Title> {t("Holdings value")}{": "} <strong><FormattedNumber prefix="$" value={(Fund.fund.sharePrice * Fund.shares)} fixedDecimals={2} /></strong></Card.Title>
                     <Container fluid className="px-0">
                         <Row className="d-flex justify-content-between">
                             <Col md="auto">
                                 <Card.Text className="mb-1 sharesInfo">
-                                    <strong>${Fund.fund.sharePrice}</strong> {t(" Each")}
+                                    <strong>
+                                        <FormattedNumber prefix="$" value={Fund.fund.sharePrice} fixedDecimals={2} />
+                                    </strong> {t(" Each")}
                                 </Card.Text>
                             </Col>
                         </Row>

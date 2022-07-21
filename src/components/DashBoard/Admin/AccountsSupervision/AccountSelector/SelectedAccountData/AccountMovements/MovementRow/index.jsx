@@ -10,7 +10,7 @@ const Movement = ({ Movement }) => {
     return (
         <tr className="AccountRow">
             <td className='tableDate'>{momentDate.format('MMMM Do YYYY, h:mm:ss a')}</td>
-            <td className="tableConcept">{t(Movement.motive)}</td>
+            <td className="tableConcept">{t(Movement.motive + (Movement.motive === "REPAYMENT" ? Movement.fundName ? "_" + Movement.fundName : "_" + Movement.fixedDepositId : ""), { fund: Movement.fundName, fixedDeposit: Movement.fixedDepositId })}</td>
             <td className='tableAmount'>${Movement.amount}</td>
         </tr>
     )

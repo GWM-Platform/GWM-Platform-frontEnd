@@ -17,7 +17,7 @@ import './index.css'
 import MainCardFixedDeposit from './MainCard/MainCardFixedDeposit';
 import MobileCardFixedDeposits from './MobileCards/MobileCardFixedDeposits';
 
-const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposits }) => {
+const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposits, FixedDepositsStats }) => {
     const { t } = useTranslation();
 
     function useQuery() {
@@ -107,7 +107,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
                             (fund, key) =>
                                 <MobileCardFund Hide={Hide} setHide={setHide} key={"fund-" + key} Fund={fund} />
                         )}
-                        {!!(FixedDeposits?.content?.deposits?.length > 0) && <MobileCardFixedDeposits Hide={Hide} setHide={setHide} FixedDeposits={FixedDeposits} />}
+                        {!!(FixedDepositsStats?.fetched) && <MobileCardFixedDeposits Hide={Hide} setHide={setHide} FixedDepositsStats={FixedDepositsStats.content} FixedDeposits={FixedDeposits} />}
                     </Col>
                     :
                     <Col className="h-100">
@@ -141,7 +141,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
                                             handleMovementSearchChange={handleMovementSearchChange}
                                         />
                                     case 2:
-                                        return <MainCardFixedDeposit FixedDeposits={FixedDeposits} Hide={Hide} setHide={setHide} />
+                                        return <MainCardFixedDeposit FixedDepositsStats={FixedDepositsStats.content} Hide={Hide} setHide={setHide} />
                                     default:
                                         return <h1>Default</h1>
                                 }
@@ -195,13 +195,13 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
                             }
 
                             {
-                                !!(FixedDeposits?.content?.deposits?.length > 0) &&
+                                !!(FixedDepositsStats?.content?.hasDeposits > 0) &&
                                 <>
                                     <div className="CategoryLabel">
                                         <h1 className="title">{t("Fixed deposits")}</h1>
                                     </div>
                                     <SecondaryCard
-                                        Hide={Hide} Fund={{}} parentKey={2}
+                                        Hide={Hide} Fund={FixedDepositsStats.content} parentKey={2}
                                         categorySelected={categorySelected} setCategorySelected={setCategorySelected}
                                         selected={selected} setSelected={setSelected} resetSearchById={resetSearchById}
                                     />

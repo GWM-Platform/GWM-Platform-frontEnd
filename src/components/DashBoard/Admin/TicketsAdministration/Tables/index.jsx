@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Message from '../Message'
@@ -12,6 +12,7 @@ import TicketSearch from 'components/DashBoard/GeneralUse/TicketSearch'
 
 import { useTranslation } from 'react-i18next';
 import FixedDepositTable from './FixedDepositsTable';
+import { Button } from 'react-bootstrap';
 
 const Tables = ({ state, messageVariants }) => {
 
@@ -737,7 +738,7 @@ const Tables = ({ state, messageVariants }) => {
             filterState: state,
             take: PaginationFixedDeposits.take,
             skip: PaginationFixedDeposits.skip,
-            client:"all"
+            client: "all"
         });
         setFixedDeposits(prevState => ({
             ...prevState,
@@ -918,13 +919,29 @@ const Tables = ({ state, messageVariants }) => {
         Search: () => FixedDepositById(searchFixedDepositById.value)
     }
 
+
+    const PurchaseAndSale = useRef(null)
+    const AccountMovementsRef = useRef(null)
+    const PendingSettlementRef = useRef(null)
+    const TransferRef = useRef(null)
+    const FixedDepositsRef = useRef(null)
+
+    const executeScroll = (ref) => ref?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    
     return (
         Transactions.fetching && Movements.fetching && FixedDeposits.fetching && Transfers.fetching ?
             <Message selected={0} messageVariants={messageVariants} />
             :
             <>
+                <div className='d-flex justify-content-between'>
+                    <Button variant="link" onClick={()=>executeScroll(PurchaseAndSale)}>{t("Purchase and sale tickets")}</Button>
+                    <Button variant="link" onClick={()=>executeScroll(AccountMovementsRef)}>{t("Account movements tickets")}</Button>
+                    <Button variant="link" onClick={()=>executeScroll(PendingSettlementRef)}>{t("Approved tickets pending settlement")}</Button>
+                    <Button variant="link" onClick={()=>executeScroll(TransferRef)}>{t("Transfer tickets")}</Button>
+                    <Button variant="link" onClick={()=>executeScroll(FixedDepositsRef)}>{t("Fixed deposits")}</Button>
+                </div>
                 {/*-------------------------------Purchase and sale-------------------------- */}
-                <h1 className="title">{t("Purchase and sale tickets")}:</h1>
+                <h1 ref={PurchaseAndSale} className="title">{t("Purchase and sale tickets")}:</h1>
                 <TicketSearch
                     props={ticketSearchPropsTransfers}
                 />
@@ -951,7 +968,7 @@ const Tables = ({ state, messageVariants }) => {
                         null
                 }
                 {/*-------------------------------Withdrawal and deposit-------------------------- */}
-                <h1 className="title">{t("Withdrawal and deposit tickets")}:</h1>
+                <h1 className="title" ref={AccountMovementsRef}>{t("Account movements tickets")}:</h1>
                 <TicketSearch
                     props={ticketSearchPropsMovements}
                 />
@@ -978,7 +995,7 @@ const Tables = ({ state, messageVariants }) => {
                         null
                 }
                 {/*-------------------------------Approved tickets pending settlement-------------------------- */}
-                <h1 className="title">{t("Approved tickets pending settlement")}:</h1>
+                <h1 className="title" ref={PendingSettlementRef}>{t("Approved tickets pending settlement")}:</h1>
                 <TicketSearch
                     props={ticketSearchPropsPendingSettlement}
                 />
@@ -999,7 +1016,7 @@ const Tables = ({ state, messageVariants }) => {
                                 </>
                 }
                 {/*-------------------------------Transfers-------------------------- */}
-                <h1 className="title">{t("Transfer tickets")}:</h1>
+                <h1 className="title" ref={TransferRef}>{t("Transfer tickets")}:</h1>
                 <TicketSearch
                     props={ticketSearchPropsTransfer}
                 />
@@ -1027,7 +1044,7 @@ const Tables = ({ state, messageVariants }) => {
                 }
 
                 {/*-------------------------------Fixed Deposits-------------------------- */}
-                <h1 className="title">{t("Fixed deposits")}:</h1>
+                <h1 className="title" ref={FixedDepositsRef}>{t("Fixed deposits")}:</h1>
                 <TicketSearch
                     props={ticketSearchPropsFixedDeposits}
                 />

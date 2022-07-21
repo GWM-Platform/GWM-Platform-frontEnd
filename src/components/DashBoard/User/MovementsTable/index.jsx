@@ -16,6 +16,7 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, setNumberOfF
 
     const [error, setError] = useState("Loading");
     const [FixedDeposits, setFixedDeposits] = useState({ fetching: true, fetched: false, valid: false, content: { deposits: [], total: 0 } })
+    const [FixedDepositsStats, setFixedDepositsStats] = useState({ fetching: true, fetched: false, valid: false, content: {} })
 
     useEffect(() => {
         setNumberOfFunds(0)
@@ -37,7 +38,7 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, setNumberOfF
                     limit: 50,
                     skip: 0,
                     client: ClientSelected.id,
-                    stateId: 0
+                    filterState: null
                 }
             }).then(function (response) {
                 if (response.status < 300 && response.status >= 200) {
@@ -59,8 +60,35 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, setNumberOfF
             });
         }
 
+        const getFixedDepositsStats = () => {
+            setFixedDepositsStats((prevState) => ({ ...prevState, fetching: true, fetched: false }))
+            axios.get(`/fixed-deposits/stats`, {
+                params: {
+                    client: ClientSelected.id
+                }
+            }).then(function (response) {
+                if (response.status < 300 && response.status >= 200) {
+                    setFixedDepositsStats((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, content: response?.data || {} } }))
+                } else {
+                    switch (response.status) {
+                        case 401:
+                            toLogin();
+                            break;
+                        default:
+                            setFixedDepositsStats((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
+                            break
+                    }
+                }
+            }).catch((err) => {
+                if (err.message !== "canceled") {
+                    setFixedDepositsStats((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
+                }
+            });
+        }
+
         if (contentReady) {
             getFixedDeposits()
+            getFixedDepositsStats()
         }
         //eslint-disable-next-line
     }, [contentReady]);
@@ -68,7 +96,7 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, setNumberOfF
     return (
         <Container fluid className="tabContent">
             {
-                FetchingFunds || Funds.length + Accounts.length === 0 || !contentReady
+                FetchingFunds || Funds.length + Accounts.length === 0 || FixedDepositsStats.fetching || !contentReady
                     ?
                     <Container className="h-100" fluid>
                         <Row className="d-flex justify-content-center align-items-center h-100">
@@ -82,6 +110,7 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, setNumberOfF
                     :
                     <CardsContainer
                         FixedDeposits={FixedDeposits}
+                        FixedDepositsStats={FixedDepositsStats}
                         setItemSelected={setItemSelected}
                         isMobile={isMobile}
                         Funds={Funds}

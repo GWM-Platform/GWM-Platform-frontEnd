@@ -7,6 +7,7 @@ import { Modal, Button } from 'react-bootstrap'
 import { useContext } from 'react';
 import { DashBoardContext } from 'context/DashBoardContext';
 import Decimal from 'decimal.js';
+import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
 const ActionConfirmationModal = ({ setShowModal, show, action, data, Funds, Balance, fetching }) => {
 
@@ -32,16 +33,16 @@ const ActionConfirmationModal = ({ setShowModal, show, action, data, Funds, Bala
                             {t("Account")}: <span className="emphasis">{ClientSelected.alias}</span>
                         </li>
                         <li className="listedInfo">
-                            {t("Account balance")}: <span className="emphasis">${Balance}</span>
+                            {t("Account balance")}: <FormattedNumber className="emphasis" prefix="U$D" value={Balance} fixedDecimals={2}/>
                         </li>
                         <li className="listedInfo">
                             {t("Product")}: <span className="emphasis">{Funds[data.FundSelected].name}</span>
                         </li>
                         <li className="listedInfo">
-                            {t("Cash amount")}:<span className="emphasis"> U$D {data.amount}</span>
+                            {t("Cash amount")}:<span className="emphasis"> <FormattedNumber prefix="U$D" value={data.amount} fixedDecimals={2}/></span>
                         </li>
                         <li className="listedInfo">
-                            {t("Share amount")}:<span className="emphasis"> {sharesToBuy.toString()}</span>
+                            {t("Share amount")}:<span className="emphasis"> <FormattedNumber prefix="U$D" value={sharesToBuy.toString()} fixedDecimals={2}/></span>
                         </li>
 
                     </ul>

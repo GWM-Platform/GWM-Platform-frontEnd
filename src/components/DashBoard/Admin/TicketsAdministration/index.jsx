@@ -25,10 +25,10 @@ const TicketsAdministration = () => {
             needSpinner: false
         }
         , {
-            message: "couldn't fetch retire tickets, try again later",
+            message: "couldn't fetch account movements tickets, try again later",
             needSpinner: false
         }, {
-            message: "There are no retire tickets in the state selected",
+            message: "There are no account movements tickets in the state selected",
             needSpinner: false
         }
     ]

@@ -10,11 +10,9 @@ import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 import MovementsTab from './MovementsTab';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
-const MainCardFixedDeposit = ({ FixedDeposits, Hide, setHide }) => {
+const MainCardFixedDeposit = ({ FixedDepositsStats, Hide, setHide }) => {
     const [SelectedTab, setSelectedTab] = useState("0")
     const { t } = useTranslation();
-    const Performance = 0
-    const ActiveFixedDeposits = 0
 
     return (
         <div className="movementsMainCardFund growAnimation mt-2">
@@ -30,9 +28,9 @@ const MainCardFixedDeposit = ({ FixedDeposits, Hide, setHide }) => {
                             <div className="containerHideInfo px-2 description">
                                 <span>{t("Balance ($)")}:&nbsp;</span>
                                 <span style={{ fontWeight: "bolder" }}>
-                                    <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={0} prefix="" fixedDecimals={2} />
-                                    <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={0} prefix="" fixedDecimals={2} />
-                                    <FormattedNumber className={`info placeholder`} value={0} prefix="" fixedDecimals={2} />
+                                    <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={FixedDepositsStats?.balance} prefix="" fixedDecimals={2} />
+                                    <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={FixedDepositsStats?.balance} prefix="" fixedDecimals={2} />
+                                    <FormattedNumber className={`info placeholder`} value={FixedDepositsStats?.balance} prefix="" fixedDecimals={2} />
                                 </span>
 
                             </div>
@@ -56,16 +54,16 @@ const MainCardFixedDeposit = ({ FixedDeposits, Hide, setHide }) => {
                     </Col>
                     <Col sm="auto" >
                         {t("Performance")}:&nbsp;
-                        <FormattedNumber value={0} suffix="%" fixedDecimals={2} />
+                        <FormattedNumber value={FixedDepositsStats?.performancePercentage} suffix="%" fixedDecimals={2} />
                         &nbsp;(
-                            <FormattedNumber value={0} prefix="$" fixedDecimals={2} />
+                        <FormattedNumber value={FixedDepositsStats?.performanceCash} prefix="$" fixedDecimals={2} />
                         )
                     </Col>
                 </div>
                 <div className="d-flex justify-content-between align-items-end px-2">
                     <Col className="d-flex justify-content-between pe-5" sm="auto">
                         {t("Active fixed deposits")}:&nbsp;
-                        {ActiveFixedDeposits}
+                        {FixedDepositsStats?.activeDeposits}
                     </Col>
                 </div>
             </div>
@@ -82,7 +80,7 @@ const MainCardFixedDeposit = ({ FixedDeposits, Hide, setHide }) => {
                 {
                     {
                         0:
-                            <MovementsTab FixedDeposits={FixedDeposits} />,
+                            <MovementsTab />,
                     }[SelectedTab]
                 }
             </Container>

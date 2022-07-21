@@ -17,13 +17,24 @@ const Movement = ({ content }) => {
 
   const getAnualRate = () => content.interestRate ?? 0
 
-  const ellapsedDays = () => content.closed ?
-    Math.abs(moment(content?.startDate).diff(moment(), "days"))
-    :
-    content.stateId === 1 ?
-      0
-      :
-      Math.abs(moment(content?.startDate).diff(content?.endDate, "days"))
+  const ellapsedDays = () => {
+    switch (content.stateId) {
+
+      case 1://pending
+        return 0
+      case 2://Approved
+        if (content.closed) {
+          return Math.abs(moment(content?.updatedAt).diff(moment(content.startDate), "days"))
+        } else {
+          return Math.abs(moment(content?.startDate).diff(moment(), "days"))
+        }
+      case 3://Denied
+        return 0
+      default:
+        return 0
+    }
+  }
+
 
   const calculateActualProfit = (signal) => {
     if (content.initialAmount) {
@@ -98,6 +109,7 @@ const Movement = ({ content }) => {
     <tr>
       <td className="tableId">{content.id}</td>
       <td className="tableDate">{t(getMoveStateById(content.stateId).name)}</td>
+      <td className="tableDate">{t(content.closed ? "Closed" : "Opened")}</td>
       <td className="tableDate">{moment(content.createdAt).format('DD/MM/YYYY')}</td>
       <td className={`tableAmount`}>
         <FormattedNumber value={content.initialAmount} prefix="$" fixedDecimals={2} />
@@ -111,7 +123,9 @@ const Movement = ({ content }) => {
       <td className="tableDate">{content.duration} {t("days")}</td>
       <td className={`tableAmount`}>
         {
-          content.closed ?
+          content.stateId === 3 /* Denied */
+            ||
+            content.stateId === 1 /* Pending */ ?
             "-"
             :
             actualProfit.fetching ?
@@ -128,7 +142,6 @@ const Movement = ({ content }) => {
             <FormattedNumber value={profit.value} prefix="$" fixedDecimals={2} />
         }
       </td>
-      <td className="tableDate">{t(content.closed ? "Closed" : "Opened")}</td>
       <td className="tableDate">{content.startDate ? moment(content.startDate).format('DD/MM/YYYY') : "-"}</td>
       <td className="tableDate">{content.endDate ? moment(content.endDate).format('DD/MM/YYYY') : "-"}</td>
     </tr>
