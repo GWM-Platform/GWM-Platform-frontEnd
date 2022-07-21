@@ -6,6 +6,7 @@ import { Spinner } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 import ActionConfirmationModal from './ActionConfirmationModal'
+import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
 const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, couldLiquidate, anyWithActions }) => {
 
@@ -83,7 +84,9 @@ const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, coul
                 <td className="tableConcept">
                     {t(Movement.motive + (Movement.motive === "REPAYMENT" ? Movement.fundName ? "_" + Movement.fundName : "_" + Movement.fixedDepositId : ""), { fund: Movement.fundName, fixedDeposit: Movement.fixedDepositId })}
                 </td>
-                <td>${Movement.amount}</td>
+                <td>
+                    <FormattedNumber value={Movement.amount} prefix="$" fixedDecimals={2} />
+                </td>
                 <td>
                     <span className='text-nowrap'>
                         {momentDate.format('MMMM Do YYYY, h:mm:ss a')}

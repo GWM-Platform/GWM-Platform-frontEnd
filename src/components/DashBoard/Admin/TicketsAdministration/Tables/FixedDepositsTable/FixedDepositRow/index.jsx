@@ -3,10 +3,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icons'
 import ActionConfirmationModal from './ActionConfirmationModal'
-import { Spinner } from 'react-bootstrap';
+import { Badge, Spinner } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { DashBoardContext } from 'context/DashBoardContext';
+import moment from 'moment';
+import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
 const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }) => {
     const { t } = useTranslation();
@@ -17,72 +19,206 @@ const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }
     const [Action, setAction] = useState("approve")
 
     const [UserTicketInfo, SetUserTicketInfo] = useState({ fetching: true, valid: false, value: {} })
-    const [profit, setProfit] = useState({ fetching: false, fetched: false, valid: false, value: 0 })
 
     const launchModalConfirmation = (action) => {
         setAction(action)
         setShowModal(true)
     }
 
-    useEffect(() => {
-        const userInfoById = (clientId) => {
-            let indexClientTransaction = UsersInfo.value.findIndex((client) => client.id === clientId)
-            if (indexClientTransaction >= 0) {
-                SetUserTicketInfo((prevState) => ({
-                    ...prevState,
-                    valid: true,
-                    fetching: false,
-                    value: UsersInfo.value[indexClientTransaction]
-                }))
-            } else {
-                SetUserTicketInfo((prevState) => ({
-                    ...prevState,
-                    valid: false,
-                    fetching: false,
-                }))
-            }
+    const status = () => {
+        switch (Movement.stateId) {
+            case 1://pending
+                return {
+                    bg: "info",
+                    text: "Pending"
+                }
+            case 2://Approved
+                if (Movement.closed) {
+                    if (closedAtTheEnd()) {
+                        return {
+                            bg: "success",
+                            text: "Closed (Term completed)"
+                        }
+                    } else {
+                        return {
+                            bg: "success",
+                            text: "Closed (Out of term)"
+                        }
+                    }
+                } else {
+                    return {
+                        bg: "primary",
+                        text: "Ongoing"
+                    }
+                }
+            case 3://Denied
+                return {
+                    bg: "danger",
+                    text: "Denied"
+                }
+            default:
+                return {
+                    bg: "danger",
+                    text: "Denied"
+                }
         }
+    }
 
-        const calculateProfit = () => {
+    const [ProfitAtTheEnd, setProfitAtTheEnd] = useState({ fetching: false, fetched: false, valid: false, value: 0 })
+    const [ActualProfit, setActualProfit] = useState({ fetching: false, fetched: false, valid: false, value: 0 })
+    const [RefundedProfit, setRefundedProfit] = useState({ fetching: false, fetched: false, valid: false, value: 0 })
+
+    const getAnualRate = () => Movement.interestRate ?? 0
+
+    const ellapsedDays = () => {
+        switch (Movement.stateId) {
+
+            case 1://pending
+                return 0
+            case 2://Approved
+                if (Movement.closed) {
+                    if (closedAtTheEnd()) {
+                        return Movement.duration
+                    } else {
+                        return Math.abs(moment(Movement?.updatedAt).diff(moment(Movement.startDate), "days"))
+                    }
+                } else {
+                    return Math.abs(moment(Movement?.startDate).diff(moment(), "days"))
+                }
+            case 3://Denied
+                return 0
+            default:
+                return 0
+        }
+    }
+
+    const calculateActualProfit = (signal) => {
+        if (Movement.initialAmount) {
             axios.post(`/fixed-deposits/profit`,
                 {
+                    duration: ellapsedDays(),
                     initialAmount: Movement?.initialAmount,
-                    interestRate: Movement?.interestRate,
-                    duration: Movement?.duration,
-                }).then(function (response) {
+                    interestRate: getAnualRate()
+                }, { signal: signal }).then(function (response) {
                     if (response.status < 300 && response.status >= 200) {
-                        setProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: response.data || 0 } }))
+                        setActualProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: response.data || Movement.initialAmount } }))
                     } else {
                         switch (response.status) {
                             case 401:
                                 toLogin();
                                 break;
                             default:
-                                setProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: 0 } }))
+                                setActualProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: Movement.initialAmount } }))
                                 break
                         }
                     }
                 }).catch((err) => {
                     if (err.message !== "canceled") {
-                        setProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: 0 } }))
+                        setActualProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: Movement.initialAmount } }))
                     }
                 });
         }
+    }
 
-        if (!UsersInfo.fetching) {
-            userInfoById(Movement.clientId)
+    const calculateProfitAtTheEnd = (signal) => {
+        if (Movement.initialAmount) {
+            axios.post(`/fixed-deposits/profit`,
+                {
+                    duration: Movement?.duration,
+                    initialAmount: Movement?.initialAmount,
+                    interestRate: getAnualRate()
+                }, { signal: signal }).then(function (response) {
+                    if (response.status < 300 && response.status >= 200) {
+                        setProfitAtTheEnd((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: response.data || Movement.initialAmount } }))
+                    } else {
+                        switch (response.status) {
+                            case 401:
+                                toLogin();
+                                break;
+                            default:
+                                setProfitAtTheEnd((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: Movement.initialAmount } }))
+                                break
+                        }
+                    }
+                }).catch((err) => {
+                    if (err.message !== "canceled") {
+                        setProfitAtTheEnd((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: Movement.initialAmount } }))
+                    }
+                });
         }
-        if (!profit.fetching) {
-            calculateProfit()
+    }
+
+    const calculateRefundedProfit = (signal) => {
+        if (Movement.initialAmount) {
+            axios.post(`/fixed-deposits/profit`,
+                {
+                    duration: ellapsedDays(),
+                    initialAmount: Movement?.initialAmount,
+                    interestRate: getAnualRate()
+                }, { signal: signal }).then(function (response) {
+                    if (response.status < 300 && response.status >= 200) {
+                        setRefundedProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: response.data || Movement.initialAmount } }))
+                    } else {
+                        switch (response.status) {
+                            case 401:
+                                toLogin();
+                                break;
+                            default:
+                                setRefundedProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: Movement.initialAmount } }))
+                                break
+                        }
+                    }
+                }).catch((err) => {
+                    if (err.message !== "canceled") {
+                        setRefundedProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: Movement.initialAmount } }))
+                    }
+                });
         }
+    }
+
+    const userInfoById = (clientId) => {
+        let indexClientTransaction = UsersInfo.value.findIndex((client) => client.id === clientId)
+        if (indexClientTransaction >= 0) {
+            SetUserTicketInfo((prevState) => ({
+                ...prevState,
+                valid: true,
+                fetching: false,
+                value: UsersInfo.value[indexClientTransaction]
+            }))
+        } else {
+            SetUserTicketInfo((prevState) => ({
+                ...prevState,
+                valid: false,
+                fetching: false,
+            }))
+        }
+    }
+
+    const closedAtTheEnd = () => moment(Movement.endDate).isBefore(moment.updatedAt)
+
+    const validState = (states = []) => states.includes(status().text)
+
+    useEffect(() => {
+        const controller = new AbortController();
+        const signal = controller.signal;
+
+        if (validState(["Pending", "Ongoing", "Denied", "Closed (Out of term)"])) calculateProfitAtTheEnd(signal)
+        if (validState(["Ongoing"])) calculateActualProfit(signal)
+        if (validState(["Closed (Out of term)", "Closed (Term completed)"])) calculateRefundedProfit(signal)
+        userInfoById(Movement.clientId)
+        return () => {
+            controller.abort();
+        };
         //eslint-disable-next-line
-    }, [Movement, UsersInfo])
+    }, [])
 
     return (
         <>
-            <tr className="transactionRow">
-                <td>
-                    <span className='text-nowrap'>
+            <div className='mobileMovement'>
+                <div className='d-flex py-1 align-items-center' >
+                    <span class="h4 mb-0 me-1 me-md-2">{t("Fixed deposit")}&nbsp;#{Movement.id}</span>
+                    <div className='me-auto px-1 px-md-2' style={{borderLeft:"1px solid lightgray",borderRight:"1px solid lightgray"}}>
+                        <span className="d-none d-md-inline">{t("Client")}:&nbsp;</span>
                         {
                             UserTicketInfo.fetching ?
                                 <Spinner animation="border" size="sm" />
@@ -92,67 +228,110 @@ const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }
                                     :
                                     t("Undefined Client")
                         }
-                    </span>
-                </td>
-                <td>
-                    <span className='text-nowrap'>
-                        ${
-                            Movement?.initialAmount
-                        }
-                    </span>
-                </td>
-                <td>
-                    <span className='text-nowrap'>
-                        {Movement?.duration}&nbsp;{t("days")}
-                    </span>
-                </td>
-                <td>
-                    <span className='text-nowrap'>
-                        {
-                            profit.fetching ?
-                                <Spinner animation="border" size="sm" />
-                                :
-                                profit.valid ?
-                                    "$" + profit.value
-                                    :
-                                    t("Undefined Profit")
-                        }
-                    </span>
-                </td>
-                {
-                    !!(Movement.stateId===2) &&
-                    <td>
-                        {t(Movement.closed ? "Closed" : "Opened")}
-                    </td>
-                }
-                <td>
-                    {Movement?.id}
-                </td>
-                {
-                    !!(Movement.stateId === 1) &&
-                    <td className="Actions verticalCenter" >
-                        <div className="h-100 d-flex align-items-center justify-content-around">
-                            <div className="iconContainer green">
-                                <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => { launchModalConfirmation("approve") }} />
-                            </div>
-                            <div className="iconContainer red">
-                                <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => { launchModalConfirmation("deny") }} />
-                            </div>
-                        </div>
-                    </td>
-                }
-                {
-                    !!(Movement.stateId === 2 && !Movement.closed) &&
-                    <td className="Actions verticalCenter" >
-                        <div className="h-100 d-flex align-items-center justify-content-around">
-
-                            <div className="iconContainer red">
+                    </div>
+                    {
+                        !!(Movement.stateId === 2 && !Movement.closed) &&
+                        <div className="h-100 d-flex align-items-center justify-content-around Actions">
+                            <div className="iconContainer red me-1">
                                 <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => { launchModalConfirmation("close") }} />
                             </div>
                         </div>
-                    </td>
+                    }
+                    {
+                        !!(Movement.stateId === 1) &&
+                        <div className="h-100 d-flex align-items-center justify-content-around Actions">
+                            <div className="iconContainer green me-1">
+                                <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => { launchModalConfirmation("approve") }} />
+                            </div>
+                            <div className="iconContainer red me-1">
+                                <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => { launchModalConfirmation("deny") }} />
+                            </div>
+                        </div>
+                    }
+                    <Badge className='ms-1 ms-md-2' bg={status()?.bg}>{t(status().text)}</Badge>
+                </div >
+                <div className='w-100 d-flex' style={{ borderBottom: "1px solid lightgray" }} />
+
+                <div className='d-flex justify-content-between'>
+                    <span >{t("Investment initial amount")}:&nbsp;<FormattedNumber value={Movement.initialAmount} prefix="$" fixedDecimals={2} /></span>
+                </div >
+                {
+                    !!(validState(["Ongoing"])) &&
+                    <div className='d-flex justify-content-between'>
+                        <span >{t("Investment current amount")}:&nbsp;
+                            {ActualProfit.fetching ?
+                                <Spinner animation="border" size="sm" />
+                                :
+                                <FormattedNumber value={ActualProfit.value} prefix="$" fixedDecimals={2} />}
+                        </span>
+                    </div >
                 }
-            </tr>
+                {
+                    !!(validState(["Pending", "Ongoing", "Denied", "Closed (Out of term)"])) &&
+                    <div className='d-flex justify-content-between' >
+                        <span >{t("Investment upon closing within the agreed term")}:&nbsp;
+                            {ProfitAtTheEnd.fetching ?
+                                <Spinner animation="border" size="sm" />
+                                :
+                                <FormattedNumber value={ProfitAtTheEnd.value} prefix="$" fixedDecimals={2} />}
+                        </span>
+                    </div >
+                }
+                {!!(validState(["Closed (Out of term)", "Closed (Term completed)"])) &&
+                    <div className='d-flex justify-content-between' >
+                        <span >{t("Refund on closed")}:&nbsp;
+                            {RefundedProfit.fetching ?
+                                <Spinner animation="border" size="sm" />
+                                :
+                                <FormattedNumber value={RefundedProfit.value} prefix="$" fixedDecimals={2} />}
+                        </span>
+                    </div >
+                }
+                <div className='w-100 d-flex' style={{ borderBottom: "1px solid lightgray" }} />
+                <div className='d-flex justify-content-between' style={{ borderBottom: "1px solid 1px solid rgb(240,240,240)" }}>
+                    <span >{t("Duration (Agreed)")}:&nbsp;
+                        {Movement.duration}
+                    </span>
+                </div >
+
+                {!!(validState(["Closed (Term completed)", "Closed (Out of term)", "Ongoing"])) &&
+                    <div className='d-flex justify-content-between'>
+                        <span >{t("Start date")}:&nbsp;
+                            {moment(Movement.startDate).format('D MMM YY')}
+                        </span>
+                    </div >}
+
+                {!!(validState(["Closed (Term completed)", "Closed (Out of term)", "Ongoing"])) &&
+                    <div className='d-flex justify-content-between' style={{ borderBottom: "1px solid 1px solid rgb(240,240,240)" }}>
+                        <span >{t("End date (Agreed)")}:&nbsp;
+                            {moment(Movement.endDate).format('D MMM YY')}
+                        </span>
+                    </div >}
+
+                {!!(validState(["Closed (Term completed)", "Closed (Out of term)", "Ongoing"])) &&
+                    <div className='d-flex justify-content-between'>
+                        <span >{t("Elapsed")}:&nbsp;
+                            {ellapsedDays()}&nbsp;{t("days")}
+                        </span>
+                    </div >}
+
+                {!!(validState(["Closed (Term completed)", "Closed (Out of term)"])) &&
+                    <div className='d-flex justify-content-between'>
+                        <span >{t("Close date")}:&nbsp;
+                            {moment(Movement.updatedAt).format('D MMM YY')}
+                        </span>
+                    </div >}
+
+                <div className='w-100 d-flex' style={{ borderBottom: "1px solid lightgray" }} />
+                <div className='d-flex justify-content-between'>
+                    <span >{t("Anual rate")}:&nbsp;
+                        <FormattedNumber value={getAnualRate()} suffix="%" fixedDecimals={2} />
+                    </span>
+                </div >
+
+
+
+            </div >
             {
                 Movement.stateId === 1 || (Movement.stateId === 2 && !Movement.closed) ?
                     <ActionConfirmationModal reloadData={reloadData} movement={Movement} setShowModal={setShowModal} action={Action} show={ShowModal} />

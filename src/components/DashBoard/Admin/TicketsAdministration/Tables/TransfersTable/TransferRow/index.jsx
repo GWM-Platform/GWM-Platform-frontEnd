@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icons'
 import moment from 'moment';
 import ActionConfirmationModal from './ActionConfirmationModal'
+import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
 const TransferRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }) => {
 
@@ -34,7 +35,9 @@ const TransferRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }) =>
                         }
                     </span>
                 </td>
-                <td>${Movement.amount}</td>
+                <td>
+                    <FormattedNumber value={Movement.amount} prefix="$" fixedDecimals={2} />
+                </td>
                 <td>
                     <span className='text-nowrap'>
                         {momentDate.format('MMMM Do YYYY, h:mm:ss a')}

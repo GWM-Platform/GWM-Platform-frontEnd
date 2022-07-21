@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 
 import moment from 'moment';
 import ActionConfirmationModal from './ActionConfirmationModal'
+import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
 const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData }) => {
     const { t } = useTranslation();
@@ -101,8 +102,12 @@ const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData })
                         }
                     </span>
                 </td>
-                <td>{Transaction.shares}</td>
-                <td>${Transaction.sharePrice}</td>
+                <td>
+                    <FormattedNumber value={Transaction.shares} fixedDecimals={2} />
+                </td>
+                <td>
+                    <FormattedNumber value={Transaction.sharePrice} prefix="$" fixedDecimals={2} />
+                </td>
                 <td>
                     <span className='text-nowrap'>
                         {momentDate.format('MMMM Do YYYY, h:mm:ss a')}
