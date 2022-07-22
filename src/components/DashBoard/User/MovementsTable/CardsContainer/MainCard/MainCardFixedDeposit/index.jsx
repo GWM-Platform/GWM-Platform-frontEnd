@@ -13,7 +13,7 @@ import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 const MainCardFixedDeposit = ({ FixedDepositsStats, Hide, setHide }) => {
     const [SelectedTab, setSelectedTab] = useState("0")
     const { t } = useTranslation();
-    console.log(FixedDepositsStats)
+
     return (
         <div className="movementsMainCardFund growAnimation mt-2">
             <div className="bg-white info ms-0 mb-2 px-0">

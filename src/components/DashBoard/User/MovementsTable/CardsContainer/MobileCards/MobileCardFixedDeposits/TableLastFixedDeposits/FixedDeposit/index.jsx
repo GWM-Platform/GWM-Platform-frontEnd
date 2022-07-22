@@ -162,7 +162,7 @@ const FixedDeposit = ({ content }) => {
     }
   }
 
-  const closedAtTheEnd = () => moment(content.endDate).isBefore(moment.updatedAt)
+  const closedAtTheEnd = () => moment(content.endDate).isBefore(moment(content.updatedAt))
 
   const validState = (states = []) => states.includes(status().text)
 
@@ -184,7 +184,7 @@ const FixedDeposit = ({ content }) => {
   return (
     <div className='mobileMovement'>
       <div className='d-flex justify-content-between py-1 align-items-center' >
-        <span class="h5 mb-0">{t("Fixed deposit")}&nbsp;#{content.id}</span>
+        <span className="h5 mb-0">{t("Fixed deposit")}&nbsp;#{content.id}</span>
         <Badge bg={status()?.bg}>{t(status().text)}</Badge>
       </div >
       <div className='w-100 d-flex' style={{ borderBottom: "1px solid lightgray" }} />
