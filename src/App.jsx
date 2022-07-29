@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { Suspense, useEffect } from 'react'
 import { DashBoardProvider } from 'context/DashBoardContext';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
@@ -14,10 +14,12 @@ import DashBoard from 'components/DashBoard';
 import NotFound from 'components/NotFound';
 import SetPassword from 'components/SetPassword';
 import RotateDevice from 'components/RotateDevice';
+import ErrorNotice from 'components/ErrorNotice';
 
 import './App.css';
 import moment from 'moment';
 import axios from 'axios';
+import { ErrorBoundary } from 'react-error-boundary';
 
 function App() {
   const { i18n } = useTranslation();
@@ -35,51 +37,49 @@ function App() {
 
   return (
     <div className="App" style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/backGround/background.jpg)` }}>
-      <div className="appContainer">
-        <BrowserRouter>
-          <Switch>
-            <Route exact path="/">
-              <Landing />
-            </Route>
-
-            <Route exact path="/login">
-              <Containerlogin />
-            </Route>
-
-            <Route exact path="/forgotPassword">
-              <ContainerForgotPassword />
-            </Route>
-
-            <Route exact path="/changePassword/:user/:token">
-              <ContainerChangePassword />
-            </Route>
-
-            <Route exact path="/changePassword">
-              <ContainerChangePassword />
-            </Route>
-
-            <Route exact path="/activate">
-              <ActivateAccount />
-            </Route>
-
-            <Route exact path="/setPassword">
-              <SetPassword />
-            </Route>
-
-            <DashBoardProvider>
-              <Route path="/DashBoard">
-                <DashBoard />
-              </Route>
-            </DashBoardProvider>
-            
-            <Route>
-              <NotFound />
-            </Route>
-
-          </Switch>
-        </BrowserRouter>
-      </div>
-      <RotateDevice />
+      <ErrorBoundary fallback={<ErrorNotice />}>
+        <Suspense>
+          <>
+          <div className="appContainer">
+            <BrowserRouter>
+              <Switch>
+                <Route exact path="/">
+                  <Landing />
+                </Route>
+                <Route exact path="/login">
+                  <Containerlogin />
+                </Route>
+                <Route exact path="/forgotPassword">
+                  <ContainerForgotPassword />
+                </Route>
+                <Route exact path="/changePassword/:user/:token">
+                  <ContainerChangePassword />
+                </Route>
+                <Route exact path="/changePassword">
+                  <ContainerChangePassword />
+                </Route>
+                <Route exact path="/activate">
+                  <ActivateAccount />
+                </Route>
+                <Route exact path="/setPassword">
+                  <SetPassword />
+                </Route>
+                <DashBoardProvider>
+                  <Route path="/DashBoard">
+                    <DashBoard />
+                  </Route>
+                </DashBoardProvider>
+        
+                <Route>
+                  <NotFound />
+                </Route>
+              </Switch>
+            </BrowserRouter>
+          </div>
+          <RotateDevice />
+          </>
+        </Suspense>
+      </ErrorBoundary>
     </div>
   );
 }

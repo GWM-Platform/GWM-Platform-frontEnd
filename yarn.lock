@@ -8244,6 +8244,13 @@ react-donut-chart@^1.1.8:
   resolved "https://registry.yarnpkg.com/react-donut-chart/-/react-donut-chart-1.3.1.tgz#4940a92a24d2e974f1ab33e19b0571268f3a5b98"
   integrity sha512-z2VXdmlO1io0xzvZJCDQinHOa3UnlDdcCpYqb9ERw4I2/mTe4FShUgxIJYdOlsOJchz2pN9CpMoCfyc4umMQOA==
 
+react-error-boundary@^3.1.4:
+  version "3.1.4"
+  resolved "https://registry.yarnpkg.com/react-error-boundary/-/react-error-boundary-3.1.4.tgz#255db92b23197108757a888b01e5b729919abde0"
+  integrity sha512-uM9uPzZJTF6wRQORmSrvOIgt4lJ9MC1sNgEOj2XGsDTRE4kmpWxg7ENK9EWNKJRMAOY9z0MuF4yIfl6gp4sotA==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+
 react-error-overlay@^6.0.11:
   version "6.0.11"
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.11.tgz#92835de5841c5cf08ba00ddd2d677b6d17ff9adb"
