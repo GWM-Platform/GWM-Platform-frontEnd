@@ -7,7 +7,7 @@ import MainCardFund from './MainCard/MainCardFund';
 import MainCardAccount from './MainCard/MainCardAccount';
 
 import SecondaryCard from './SecondaryCard';
-import MobileCardFund from './MobileCards/MobileCardFound';
+import MobileCardFund from './MobileCards/MobileCardFund';
 import MobileCardAccount from './MobileCards/MobileCardAccount';
 
 import { DashBoardContext } from 'context/DashBoardContext';

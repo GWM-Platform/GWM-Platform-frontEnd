@@ -6,10 +6,14 @@ import { DashBoardContext } from 'context/DashBoardContext';
 import { Badge, Spinner } from 'react-bootstrap';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import axios from 'axios';
+import FixedDepositReceipt from 'Receipts/FixedDepositReceipt';
+import ReactPDF from '@react-pdf/renderer';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilePdf } from '@fortawesome/free-regular-svg-icons';
 
 const FixedDeposit = ({ content }) => {
   const { t } = useTranslation();
-  const { toLogin } = useContext(DashBoardContext)
+  const { toLogin,AccountSelected } = useContext(DashBoardContext)
 
   const status = () => {
     switch (content.stateId) {
@@ -50,6 +54,7 @@ const FixedDeposit = ({ content }) => {
     }
   }
 
+  const [GeneratingPDF, setGeneratingPDF] = useState(false)
   const [ProfitAtTheEnd, setProfitAtTheEnd] = useState({ fetching: false, fetched: false, valid: false, value: 0 })
   const [ActualProfit, setActualProfit] = useState({ fetching: false, fetched: false, valid: false, value: 0 })
   const [RefundedProfit, setRefundedProfit] = useState({ fetching: false, fetched: false, valid: false, value: 0 })
@@ -180,11 +185,46 @@ const FixedDeposit = ({ content }) => {
     //eslint-disable-next-line
   }, [])
 
-
+  const renderAndDownloadPDF = async () => {
+    setGeneratingPDF(true)
+    const blob = await ReactPDF.pdf(<FixedDepositReceipt FixedDeposit={{
+      ...content, ...{
+        accountAlias: AccountSelected.alias,
+        ActualProfit: { ...ActualProfit },
+        ProfitAtTheEnd: { ...ProfitAtTheEnd },
+        RefundedProfit: { ...RefundedProfit },
+        ellapsedDays: ellapsedDays(),
+        AnualRate: getAnualRate(),
+        state: status()
+      }
+    }} />).toBlob()
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', `${AccountSelected.alias} - ${t("Fixed deposit")} #${content.id}.pdf`)
+    // 3. Append to html page
+    document.body.appendChild(link)
+    // 4. Force download
+    link.click()
+    // 5. Clean up and remove the link
+    link.parentNode.removeChild(link)
+    setGeneratingPDF(false)
+  }
   return (
     <div className='mobileMovement'>
       <div className='d-flex justify-content-between py-1 align-items-center' >
         <span className="h5 mb-0">{t("Fixed deposit")}&nbsp;#{content.id}</span>
+
+        <div className='ms-auto me-2'>
+          {
+            GeneratingPDF ?
+              <Spinner animation="border" size="sm" />
+              :
+              <button className='noStyle py-0' style={{ cursor: "pointer" }} onClick={() => renderAndDownloadPDF()}>
+                <FontAwesomeIcon icon={faFilePdf} />
+              </button>
+          }
+        </div>
         <Badge bg={status()?.bg}>{t(status().text)}</Badge>
       </div >
       <div className='w-100 d-flex' style={{ borderBottom: "1px solid lightgray" }} />

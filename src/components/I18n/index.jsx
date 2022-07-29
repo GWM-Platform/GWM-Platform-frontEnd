@@ -692,7 +692,8 @@ i18n
           "Receipt of transaction #": "Comprobante de la transacción #",
           "Operation date": "Fecha de la operación",
           "Apparently, there is no fixed-term plan created": "Al parecer, no hay ningun plan de plazo fijo creado",
-          "Create one": "Crear uno"
+          "Create one": "Crear uno",
+          "Receipt":"Comprobante"
         }
       }
     }

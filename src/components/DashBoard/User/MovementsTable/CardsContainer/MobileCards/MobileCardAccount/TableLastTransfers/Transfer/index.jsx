@@ -4,13 +4,16 @@ import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 import { DashBoardContext } from 'context/DashBoardContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icons';
+import { faCheckCircle, faFilePdf, faTimesCircle } from '@fortawesome/free-regular-svg-icons';
 import ActionConfirmationModal from 'components/DashBoard/User/MovementsTable/GeneralUse/TransferConfirmation'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
+import ReactPDF from '@react-pdf/renderer';
+import TransferReceipt from 'Receipts/TransferReceipt';
+import { Spinner } from 'react-bootstrap';
 
 const Transfer = ({ content, getTransfers }) => {
 
-  const { getMoveStateById, Accounts } = useContext(DashBoardContext)
+  const { getMoveStateById, Accounts, AccountSelected } = useContext(DashBoardContext)
   const { t } = useTranslation()
 
   var momentDate = moment(content.createdAt);
@@ -24,6 +27,31 @@ const Transfer = ({ content, getTransfers }) => {
 
   const incomingTransfer = () => content.receiverId === Accounts[0]?.id
 
+  const [GeneratingPDF, setGeneratingPDF] = useState(false)
+
+  const renderAndDownloadPDF = async () => {
+    setGeneratingPDF(true)
+    const blob = await ReactPDF.pdf(<TransferReceipt Transfer={{
+      ...content, ...{
+        state: t(getMoveStateById(content.stateId).name),
+        accountAlias: AccountSelected.alias,
+        incomingTransfer: incomingTransfer(),
+        AccountId: AccountSelected.id
+      }
+    }} />).toBlob()
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', `${AccountSelected.alias} - ${t("Transfer")} #${content.id}.pdf`)
+    // 3. Append to html page
+    document.body.appendChild(link)
+    // 4. Force download
+    link.click()
+    // 5. Clean up and remove the link
+    link.parentNode.removeChild(link)
+    setGeneratingPDF(false)
+  }
+
   return (
     <div className='mobileMovement'>
       <div className='d-flex justify-content-between'>
@@ -31,6 +59,21 @@ const Transfer = ({ content, getTransfers }) => {
         <span className="text-nowrap" >{momentDate.format('D MMM')}</span>
 
       </div>
+
+      <button disabled={GeneratingPDF} className="noStyle px-0" style={{ cursor: "pointer" }} onClick={() => renderAndDownloadPDF()}>
+        <span>
+          {t("Receipt")}&nbsp;
+        </span>
+        {
+          GeneratingPDF ?
+            <Spinner animation="border" size="sm" />
+            :
+
+            <FontAwesomeIcon icon={faFilePdf} />
+
+        }
+      </button>
+      
       <div className='d-flex justify-content-between'>
 
         <span className={`${content.stateId === 3 ? 'text-red' : 'text-green'}`}>{t(getMoveStateById(content.stateId).name)}</span>
