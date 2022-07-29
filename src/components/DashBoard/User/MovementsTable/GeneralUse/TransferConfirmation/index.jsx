@@ -94,7 +94,7 @@ const TransferConfirmation = ({ incomingTransfer, movement, setShowModal, action
                         </h1>
                     </div>
                     <h1 className="title"> {t("Are you sure?")}</h1>
-                    <h2 className="subTitle">{t("You are about to")} {t(action)} {t("transfer #")} {movement.id}</h2>
+                    <h2 className="subTitle">{t("You are about to")} {t(action)} {t("transfer #")}{movement.id}</h2>
                     <ul>
                         <li className="listedInfo">
                             {t("Operation")}: <span className="emphasis">{t(`${incomingTransfer ? "Incoming" : "Outgoing"} transfer`)}</span>

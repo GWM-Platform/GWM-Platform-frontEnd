@@ -66,10 +66,10 @@ const FixedDeposit = ({ content }) => {
           if (closedAtTheEnd()) {
             return content.duration
           } else {
-            return Math.abs(moment(content?.updatedAt).diff(moment(content.startDate), "days"))
+            return Math.abs(moment(content?.updatedAt).startOf("day").diff(moment(content.startDate).startOf("day"), "days"))
           }
         } else {
-          return Math.abs(moment(content?.startDate).diff(moment(), "days"))
+          return Math.abs(moment(content?.startDate).startOf("day").diff(moment().startOf("day"), "days"))
         }
       case 3://Denied
         return 0

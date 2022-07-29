@@ -7,6 +7,7 @@ import CreateRules from "./CreateRules";
 import EditRule from "./EditRules";
 import { DashBoardContext } from "context/DashBoardContext";
 import axios from "axios";
+import PlanCreation from "./PlanCreation";
 
 const ActionInitialState = { action: -1, ruleDays: -1 }
 
@@ -26,16 +27,43 @@ const reducerAction = (state, action) => {
 const FixedDeposit = () => {
     const { toLogin } = useContext(DashBoardContext)
 
-    const [FixedDeposit, setFixedDeposit] = useState({ fetching: false, fetched: false, valid: false, content: {} })
+    const [FixedDeposit, setFixedDeposit] = useState({ fetching: true, fetched: false, valid: false, content: {}, mustCreate: false })
     const [Action, ActionDispatch] = useReducer(reducerAction, ActionInitialState);//Action.action===-1 -> view;Action.action===0 -> edit; Action.action===1 -> create
 
     const getFixedDepositPlans = useCallback((signal) => {
-        setFixedDeposit((prevState) => ({ ...prevState, fetching: true, fetched: false }))
+        setFixedDeposit((prevState) => ({ ...prevState, fetching: true, fetched: false, mustCreate: false }))
         axios.get(`/fixed-deposits/plans`, {
             signal: signal,
         }).then(function (response) {
             if (response.status < 300 && response.status >= 200) {
-                setFixedDeposit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, content: response?.data[0] || {} } }))
+
+                setFixedDeposit((prevState) => (
+                    {
+                        ...prevState,
+                        ...(
+                            response?.data[0] ?
+                                {
+                                    fetching: false,
+                                    fetched: true,
+                                    valid: true,
+                                    content: response?.data[0] ||
+                                    {
+                                        id: 2,
+                                        interest: { 365: 6, 543: 8, 730: 9 },
+                                        name: "string",
+                                    },
+                                    mustCreate: false
+                                }
+                                :
+                                {
+                                    fetching: false,
+                                    fetched: true,
+                                    valid: true,
+                                    content: {},
+                                    mustCreate: true
+                                }
+                        )
+                    }))
             } else {
                 switch (response.status) {
                     case 401:
@@ -73,11 +101,13 @@ const FixedDeposit = () => {
                     <Loading />
                     :
                     FixedDeposit.valid ?
+
                         <Container>
                             <Row>
                                 <Col>
-                                    {
-
+                                    {FixedDeposit.mustCreate ?
+                                        <PlanCreation getFixedDepositPlans={getFixedDepositPlans}/>
+                                        :
                                         {
                                             "-1":
                                                 <ViewAndDeleteRules FixedDeposit={FixedDeposit?.content} ActionDispatch={ActionDispatch} getFixedDepositPlans={getFixedDepositPlans} />,
@@ -87,6 +117,7 @@ const FixedDeposit = () => {
                                             1:
                                                 <CreateRules FixedDeposit={FixedDeposit?.content} ActionDispatch={ActionDispatch} getFixedDepositPlans={getFixedDepositPlans} />
                                         }[Action.action]
+
                                     }
                                 </Col>
                             </Row>

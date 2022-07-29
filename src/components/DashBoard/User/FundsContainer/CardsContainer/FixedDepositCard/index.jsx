@@ -18,7 +18,7 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
 
     const getAnualRate = () => FixedDeposit.interestRate ?? 0
 
-    const ellapsedDays = () => Math.abs(moment(FixedDeposit?.startDate).diff(moment(), "days")) ?? 0
+    const ellapsedDays = () => Math.abs(moment(FixedDeposit?.startDate).startOf("day").diff(moment().startOf("day"), "days")) ?? 0
 
 
     const [profit, setProfit] = useState({ fetching: false, fetched: false, valid: false, value: 0 })

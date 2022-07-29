@@ -19,11 +19,11 @@ i18n
           "STAKE_BUY": "Purchase of shares of the fund\"{{fund}}\"",
           "STAKE_SELL": "Sale of shares of the fund\"{{fund}}\"",
           "REPAYMENT_FUND": "Refund due to denied ticket (Fund \"{{fund}}\")",
-          "REPAYMENT_FIXED_DEPOSIT": "Refund due to denied ticket (Plazo fijo \"{{fixedDeposit}}\")",
+          "REPAYMENT_FIXED_DEPOSIT": "Refund due to denied ticket (Fixed deposit #{{fixedDeposit}})",
           "REPAYMENT": "Refund due to denied ticket",
-          "FIXED_DEPOSIT_CREATE": "Investment in the fixed deposit \"{{fixedDeposit}}\"",
-          "FIXED_DEPOSIT_CLOSE": "Close of the fixed deposit \"{{fixedDeposit}}\"",
-          
+          "FIXED_DEPOSIT_CREATE": "Investment in the fixed deposit #{{fixedDeposit}}",
+          "FIXED_DEPOSIT_CLOSE": "Close of the fixed deposit #{{fixedDeposit}}",
+
           "Pendiente": "Pending",
           "Aprobado": "Approved",
           "Denegado": "Denied",
@@ -418,10 +418,10 @@ i18n
           "STAKE_BUY": "Compra de cuotapartes del fondo \"{{fund}}\"",
           "STAKE_SELL": "Venta de cuotapartes del fondo \"{{fund}}\"",
           "REPAYMENT_FUND": "Devolución por ticket rechazado (Fondo \"{{fund}}\")",
-          "REPAYMENT_FIXED_DEPOSIT": "Devolución por ticket rechazado (Plazo fijo \"{{fixedDeposit}}\")",
+          "REPAYMENT_FIXED_DEPOSIT": "Devolución por ticket rechazado (Plazo fijo #{{fixedDeposit}})",
           "REPAYMENT": "Devolución por ticket rechazado",
-          "FIXED_DEPOSIT_CREATE": "Inversión en el plazo fijo \"{{fixedDeposit}}\"",
-          "FIXED_DEPOSIT_CLOSE": "Cierre del plazo fijo \"{{fixedDeposit}}\"",
+          "FIXED_DEPOSIT_CREATE": "Inversión en el plazo fijo #{{fixedDeposit}}",
+          "FIXED_DEPOSIT_CLOSE": "Cierre del plazo fijo #{{fixedDeposit}}",
           "Change client": "Cambiar cliente",
           "Google SpreadSheet url (from which the id will be extracted)":
             "Url de Google SpreadSheet (de la cual se extraerá la id)",
@@ -525,6 +525,8 @@ i18n
           "Received from": "Recibida desde",
           "sent to": "enviada a",
           "Sent to": "Enviada a",
+          "Received from account": "Recibida desde la cuenta",
+          "Sent to account": "Enviada a la cuenta",
 
           //Transfers
           "Transfers": "Transferencias",
@@ -680,10 +682,17 @@ i18n
           "Start date": "Fecha de inicio",
           "End date (Agreed)": "Fecha de fin (acordada)",
           "Close date": "Fecha de cierre",
-          "There are no account movements tickets in the state selected":"No hay tickets de movimientos de cuenta en el estado seleccionado",
-          "couldn't fetch account movements tickets, try again later":"No se pudieron obtener los tickets de movimientos de cuenta",
-          "Account movements tickets":"Tickets de movimientos de cuenta"
-
+          "There are no account movements tickets in the state selected": "No hay tickets de movimientos de cuenta en el estado seleccionado",
+          "couldn't fetch account movements tickets, try again later": "No se pudieron obtener los tickets de movimientos de cuenta",
+          "Account movements tickets": "Tickets de movimientos de cuenta",
+          "Receipt of movement #": "Comprobante del movimiento #",
+          "Receipts": "Comprobantes",
+          "Receipt of fixed deposit #": "Comprobante del plazo fijo #",
+          "Receipt of transfer #": "Comprobante de la transferencia #",
+          "Receipt of transaction #": "Comprobante de la transacción #",
+          "Operation date": "Fecha de la operación",
+          "Apparently, there is no fixed-term plan created": "Al parecer, no hay ningun plan de plazo fijo creado",
+          "Create one": "Crear uno"
         }
       }
     }

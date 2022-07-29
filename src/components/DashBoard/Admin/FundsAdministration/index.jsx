@@ -35,6 +35,8 @@ const FundsAdministration = () => {
             setFunds(data)
             setFilteredFunds(data)
             setFetchingFunds(false)
+            //If there are no funds, go to creation form
+            if(data.length===0) setAction({...Action,...{action:1,fund:-1}})
             //setCategorySearched(Object.keys(data[0])[0])
         } else {
             switch (response.status) {
@@ -71,6 +73,7 @@ const FundsAdministration = () => {
 
         setFetchingFunds(true)
         getTypes()
+        //eslint-disable-next-line
     }, [])
 
     const handleSearch = (event) => {

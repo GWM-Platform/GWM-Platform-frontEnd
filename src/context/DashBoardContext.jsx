@@ -350,6 +350,7 @@ export const DashBoardProvider = ({ children }) => {
                 if (data.length === 1 && !admin) {
                     setIndexClientSelected(0)
                 }
+                console.log(desiredClient)
                 if (desiredClient) {
                     if (getClientIndexById(desiredClient) >= 0) {
                         setIndexClientSelected(getClientIndexById(desiredClient))

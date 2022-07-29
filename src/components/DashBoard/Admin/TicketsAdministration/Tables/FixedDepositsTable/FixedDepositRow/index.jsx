@@ -80,10 +80,10 @@ const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }
                     if (closedAtTheEnd()) {
                         return Movement.duration
                     } else {
-                        return Math.abs(moment(Movement?.updatedAt).diff(moment(Movement.startDate), "days"))
+                        return Math.abs(moment(Movement?.updatedAt).startOf("day").diff(moment(Movement.startDate).startOf("day"), "days"))
                     }
                 } else {
-                    return Math.abs(moment(Movement?.startDate).diff(moment(), "days"))
+                    return Math.abs(moment(Movement?.startDate).startOf("day").diff(moment().startOf("day"), "days"))
                 }
             case 3://Denied
                 return 0

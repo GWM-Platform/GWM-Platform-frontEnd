@@ -34,6 +34,8 @@ const AssetsAdministration = () => {
             setAssets(data)
             setFilteredAssets(data)
             setFetchingAssets(false)
+            //If there are no assets, go to creation form
+            if(data.length===0) setAction({...Action,...{action:1,fund:-1}})
         } else {
             switch (response.status) {
                 default:
@@ -68,6 +70,7 @@ const AssetsAdministration = () => {
 
         setFetchingAssets(true)
         getTypes()
+        //eslint-disable-next-line
     }, [])
 
     const handleSearch = (event) => {

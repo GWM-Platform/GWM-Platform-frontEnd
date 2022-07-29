@@ -6,10 +6,14 @@ import { DashBoardContext } from 'context/DashBoardContext';
 import { Badge, Spinner } from 'react-bootstrap';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import axios from 'axios';
+import ReactPDF from '@react-pdf/renderer';
+import FixedDepositReceipt from 'Receipts/FixedDepositReceipt';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilePdf } from '@fortawesome/free-regular-svg-icons';
 
 const FixedDeposit = ({ content }) => {
   const { t } = useTranslation();
-  const { toLogin } = useContext(DashBoardContext)
+  const { toLogin, AccountSelected } = useContext(DashBoardContext)
 
   const status = () => {
     switch (content.stateId) {
@@ -50,7 +54,7 @@ const FixedDeposit = ({ content }) => {
     }
   }
 
-
+  const [GeneratingPDF, setGeneratingPDF] = useState(false)
   const [ProfitAtTheEnd, setProfitAtTheEnd] = useState({ fetching: false, fetched: false, valid: false, value: 0 })
   const [ActualProfit, setActualProfit] = useState({ fetching: false, fetched: false, valid: false, value: 0 })
   const [RefundedProfit, setRefundedProfit] = useState({ fetching: false, fetched: false, valid: false, value: 0 })
@@ -67,10 +71,10 @@ const FixedDeposit = ({ content }) => {
           if (closedAtTheEnd()) {
             return content.duration
           } else {
-            return Math.abs(moment(content?.updatedAt).diff(moment(content.startDate), "days"))
+            return Math.abs(moment(content?.updatedAt).startOf("day").diff(moment(content.startDate).startOf("day"), "days"))
           }
         } else {
-          return Math.abs(moment(content?.startDate).diff(moment(), "days"))
+          return Math.abs(moment(content?.startDate).startOf("day").diff(moment().startOf("day"), "days"))
         }
       case 3://Denied
         return 0
@@ -163,6 +167,33 @@ const FixedDeposit = ({ content }) => {
     }
   }
 
+
+  const renderAndDownloadPDF = async () => {
+    setGeneratingPDF(true)
+    const blob = await ReactPDF.pdf(<FixedDepositReceipt FixedDeposit={{
+      ...content, ...{
+        accountAlias: AccountSelected.alias,
+        ActualProfit: { ...ActualProfit },
+        ProfitAtTheEnd: { ...ProfitAtTheEnd },
+        RefundedProfit: { ...RefundedProfit },
+        ellapsedDays: ellapsedDays(),
+        AnualRate: getAnualRate(),
+        state: status()
+      }
+    }} />).toBlob()
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', `${AccountSelected.alias} - ${t("Fixed deposit")} #${content.id}.pdf`)
+    // 3. Append to html page
+    document.body.appendChild(link)
+    // 4. Force download
+    link.click()
+    // 5. Clean up and remove the link
+    link.parentNode.removeChild(link)
+    setGeneratingPDF(false)
+  }
+
   const closedAtTheEnd = () => moment(content.endDate).isBefore(moment(content.updatedAt))
 
   const validState = (states = []) => states.includes(status().text)
@@ -184,8 +215,18 @@ const FixedDeposit = ({ content }) => {
 
   return (
     <div className='mobileMovement'>
-      <div className='d-flex justify-content-between py-1 align-items-center' >
+      <div className='d-flex  py-1 align-items-center' >
         <span className="h4 mb-0">{t("Fixed deposit")}&nbsp;#{content.id}</span>
+        <div className='ms-auto me-2'>
+          {
+            GeneratingPDF ?
+              <Spinner animation="border" size="sm" />
+              :
+              <button className='noStyle py-0' style={{ cursor: "pointer" }} onClick={() => renderAndDownloadPDF()}>
+                <FontAwesomeIcon icon={faFilePdf} />
+              </button>
+          }
+        </div>
         <Badge bg={status()?.bg}>{t(status().text)}</Badge>
       </div >
       <div className='w-100 d-flex' style={{ borderBottom: "1px solid lightgray" }} />
@@ -215,6 +256,7 @@ const FixedDeposit = ({ content }) => {
           </span>
         </div >
       }
+
       {!!(validState(["Closed (Out of term)", "Closed (Term completed)"])) &&
         <div className='d-flex justify-content-between' >
           <span >{t("Refund on closed")}:&nbsp;
@@ -225,6 +267,7 @@ const FixedDeposit = ({ content }) => {
           </span>
         </div >
       }
+
       <div className='w-100 d-flex' style={{ borderBottom: "1px solid lightgray" }} />
       <div className='d-flex justify-content-between' style={{ borderBottom: "1px solid 1px solid rgb(240,240,240)" }}>
         <span >{t("Duration (Agreed)")}:&nbsp;
