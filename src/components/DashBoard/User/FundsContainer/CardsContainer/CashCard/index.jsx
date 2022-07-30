@@ -215,9 +215,9 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                     </Card.Header>
                     <Card.Body className="body">
                         <Row >
-                            <Card.Title >
+                            <Card.Title className="mb-2 mt-0" >
                                 <Container fluid className="px-0">
-                                    <Row className="mx-0 w-100 mb-2">
+                                    <Row className="mx-0 w-100 my-0">
                                         <Col className="ps-0">
                                             <h1 className="title my-0">
                                                 {t("Cash")}
@@ -238,7 +238,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                         }
                                     </Row>
                                 </Container>
-                                <Card.Text className="subTitle lighter mt-0 mb-2">
+                                <Card.Text className="subTitle lighter mt-0 mb-0">
                                     <span className='d-flex justify-content-between'>
                                         <span>
                                             {t("Alias")}: <span className="bolder">{Fund.alias}</span>
@@ -256,7 +256,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                     </span>
                                 </Card.Text>
                             </Card.Title>
-                            <h1 className="title-gray mt-1">
+                            <h1 className="title-gray mt-0">
                                 <Container fluid className="px-0">
                                     <Row className="w-100 mx-0 d-flex justify-content-between gx-0">
                                         <span className="pe-2 containerHideInfo">
@@ -281,7 +281,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                     </Row>
                                 </Container>
                             </h1>
-                            <div className="subTitle lighter mt-0 mb-2">
+                            <div className="subTitle lighter mt-0 mb-0">
                                 <span className='invisible'>{t("Balance (shares)")}:<span className="bolder"></span></span> <br />
                                 <span className='d-flex justify-content-between'>
                                     {
@@ -293,8 +293,8 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                                         <FormattedNumber value={pendingCash().valueAbs} prefix="$" fixedDecimals={2} />
                                                     </span>
                                                 </span>
-                                                <OverlayTrigger show={show} trigger="click" placement="auto" overlay={
-                                                    <Popover id="popover-overview-cash" style={{ maxWidth: "unset" }}>
+                                                <OverlayTrigger show={show} trigger="click" placement="auto-start" overlay={
+                                                    <Popover id="popover-overview-cash" >
                                                         <Popover.Header>{t("Overview of pending transactions")}</Popover.Header>
                                                         <Popover.Body className="pt-1 pb-2">
                                                             {t("Pending share sales")}:&nbsp;

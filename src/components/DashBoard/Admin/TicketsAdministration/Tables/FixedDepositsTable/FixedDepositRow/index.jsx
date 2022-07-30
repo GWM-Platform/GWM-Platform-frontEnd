@@ -290,7 +290,7 @@ const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }
                 <div className='w-100 d-flex' style={{ borderBottom: "1px solid lightgray" }} />
                 <div className='d-flex justify-content-between' style={{ borderBottom: "1px solid 1px solid rgb(240,240,240)" }}>
                     <span >{t("Duration (Agreed)")}:&nbsp;
-                        {Movement.duration}
+                        {Movement.duration}&nbsp;{t("days")}
                     </span>
                 </div >
 

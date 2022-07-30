@@ -108,10 +108,10 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
                     <Container fluid className="px-0">
                         <Row className="mx-0 w-100 gx-0">
                             <Card.Title >
-                                <h1 className="title mt-0">
+                                <h1 className="title m-0">
                                     {t("Fixed deposit")}&nbsp;{FixedDeposit.id}&nbsp;{!!(FixedDeposit?.stateId === 1) && <span style={{ textTransform: "none" }}>({t("Pending approval")})</span>}
                                 </h1>
-                                <Card.Text className="subTitle lighter mt-0 mb-2">
+                                <Card.Text className="subTitle lighter mt-0 my-0">
                                     {t("Elapsed")}:&nbsp;
                                     <span className="bolder">
                                         <span className="growOpacity" >
@@ -124,7 +124,7 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
                             </Card.Title>
                             <Container fluid className="px-0">
                                 <Row className="d-flex justify-content-between">
-                                    <h1 className="title-gray mt-1">
+                                    <h1 className="title-gray my-0">
                                         <Container fluid className="px-0">
                                             <Row className="mx-0 w-100 gx-0 d-flex justify-content-between">
                                                 <div className="pe-2 containerHideInfo">
@@ -151,20 +151,26 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
                                             </Row>
                                         </Container>
                                     </h1>
-                                    <Card.Text className="subTitle lighter mt-0 mb-2">
+                                    <Card.Text className="subTitle lighter my-0">
                                         {t("From")}:&nbsp;
                                         <span className="bolder">
                                             {FixedDeposit?.startDate ? moment(FixedDeposit?.startDate).format('LL') : <>{moment().format('LL')}&nbsp;({t("To be confirmed")})</>}
                                         </span><br />
+                                    </Card.Text>
+                                    <Card.Text className="subTitle lighter my-0">
+
+
 
                                         {t("To")}:&nbsp;
                                         <span className="bolder">
                                             {FixedDeposit?.endDate ? moment(FixedDeposit?.endDate).format('LL') : <>{moment().add(FixedDeposit.duration, "days").format('LL')}&nbsp;({t("To be confirmed")})</>}
-                                        </span><br />
-
+                                        </span>
+                                    </Card.Text>
+                                    <Card.Text className="subTitle lighter my-0">
                                         {t("Anual rate")}:&nbsp;
                                         <FormattedNumber className={`bolder`} value={getAnualRate()} suffix="%" fixedDecimals={2} /><br />
-
+                                    </Card.Text>
+                                    <Card.Text className="subTitle lighter my-0">
                                         {t("Initial investment")}:&nbsp;
                                         <FormattedNumber className={`bolder`} value={FixedDeposit.initialAmount} prefix="$" fixedDecimals={2} />,&nbsp;
                                         {t("At the end of the term")}:
@@ -176,7 +182,6 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
                                                     <FormattedNumber value={profit.value} prefix="$" fixedDecimals={2} />
                                             }
                                         </span>
-                                        <br />
                                     </Card.Text>
                                 </Row>
                             </Container>

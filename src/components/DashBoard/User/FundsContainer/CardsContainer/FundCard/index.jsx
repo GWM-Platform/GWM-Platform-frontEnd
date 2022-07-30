@@ -44,9 +44,7 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
     return (
         <Col className="fund-col growAnimation" sm="6" md="6" lg="4" >
             <Card className="FundCard h-100">
-                <Card.Header
-                    className="header d-flex align-items-center justify-content-center"
-                >
+                <Card.Header className="header d-flex align-items-center justify-content-center">
                     <div className="currencyContainer d-flex align-items-center justify-content-center">
                         {
 
@@ -62,17 +60,16 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
                 <Card.Body className="body">
                     <Container fluid className="px-0">
                         <Row className="mx-0 w-100 gx-0">
-                            <Card.Title >
-                                <h1 className="title mt-0">
+                            <Card.Title className="mb-2 mt-0" >
+                                <h1 className="title my-0">
                                     {t(Fund.fund.name)}
                                 </h1>
-                                <Card.Text className="subTitle lighter mt-0 mb-2">{t("Share price")}:&nbsp;
+                                <Card.Text className="subTitle lighter my-0">{t("Share price")}:&nbsp;
                                     <FormattedNumber className="bolder" value={Fund.fund.sharePrice} prefix="$" fixedDecimals={2} /><br />
                                 </Card.Text>
                             </Card.Title>
                             <Container fluid className="px-0">
-                                <Row className="d-flex justify-content-between">
-                                    <h1 className="title-gray mt-1">
+                                    <h1 className="title-gray mt-0">
                                         <Container fluid className="px-0">
                                             <Row className="mx-0 w-100 gx-0 d-flex justify-content-between">
                                                 <div className="pe-2 containerHideInfo">
@@ -99,16 +96,13 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
                                             </Row>
                                         </Container>
                                     </h1>
-                                    <Card.Text className="subTitle lighter mt-0 mb-2">
+                                    <Card.Text className="subTitle lighter mt-0 mb-0">
                                         {t("Balance (shares)")}:&nbsp;
-                                        <FormattedNumber className="bolder" value={Fund.shares ? Fund.shares : 0} prefix="" fixedDecimals={2} /><br />
-                                        <span className="text-nowrap">{t("Pending transactions")}&nbsp;</span>
-                                        <span className="text-nowrap">
-                                            ({t("shares")}):&nbsp;+
-                                            <FormattedNumber className="bolder text-green" value={pendingShares()} prefix="$" fixedDecimals={2} /><br />
-                                        </span>
+                                        <FormattedNumber className="bolder" value={Fund.shares ? Fund.shares : 0} prefix="" fixedDecimals={2} />
                                     </Card.Text>
-                                </Row>
+                                    <Card.Text className="subTitle lighter mt-0 mb-0">
+                                        {t("Pending transactions")}&nbsp;({t("shares")}):&nbsp;<FormattedNumber className="bolder text-green" value={pendingShares()} prefix="+" fixedDecimals={2} />
+                                    </Card.Text>
                             </Container>
                         </Row>
                     </Container>
