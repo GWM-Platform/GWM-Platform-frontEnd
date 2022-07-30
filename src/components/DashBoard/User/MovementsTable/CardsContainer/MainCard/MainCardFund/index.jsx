@@ -48,8 +48,11 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
                 }
             }
         }
-
+        
+        /*
+        TODO - Show again when the backend is fixed
         getPerformance()
+        */
     }, [Fund, ClientSelected.id, token])
 
     return (
@@ -101,6 +104,7 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
                             />
                         </Col>
                     </Col>
+                    {/*
                     <Col sm="auto" >
                         {t("Performance")}:&nbsp;
                         <FormattedNumber className={{
@@ -109,11 +113,12 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
                         }[Math.sign(Performance)]}
                             value={Performance} suffix="%" fixedDecimals={2} />
                     </Col>
+                    */}
                 </div>
                 <div className="border-bottom-main pb-2">
                     <h2 className="px-2 left">
                         {t("Pending transactions (shares)")}&nbsp;
-                        <FormattedNumber  style={{ fontWeight: "bolder" }} value={pendingshares ? pendingshares : 0} fixedDecimals={2}/>
+                        <FormattedNumber style={{ fontWeight: "bolder" }} value={pendingshares ? pendingshares : 0} fixedDecimals={2} />
                     </h2>
                 </div>
             </div>
@@ -133,7 +138,7 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
                 {
                     {
                         0:
-                            <MovementsTab 
+                            <MovementsTab
                                 Fund={Fund} SearchById={SearchById} setSearchById={setSearchById}
                                 resetSearchById={resetSearchById} handleMovementSearchChange={handleMovementSearchChange} />,
                         1:

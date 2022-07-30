@@ -40,7 +40,8 @@ const FundInfo = ({ Fund }) => {
                 }
             }
         }
-        getPerformance()
+        /*TODO - Show again when the backend is fixed*/
+        //getPerformance()
     }, [Fund, token])
 
     return (
@@ -93,6 +94,7 @@ const FundInfo = ({ Fund }) => {
                         />
                     </Col>
                 </Col>
+                {/*
                 <Col sm="auto" >
                     {t("Performance")}{": "}
                     {
@@ -108,6 +110,7 @@ const FundInfo = ({ Fund }) => {
                             </span>
                     }
                 </Col>
+                */}
             </div>
         </div>
     )

@@ -19,8 +19,6 @@ const MobileCard = ({ Fund, Hide, setHide }) => {
     const balanceInCash = Fund.shares ? (Fund.shares * Fund.fund.sharePrice) : 0
     const pendingshares = PendingTransactions.value.filter((transaction) => transaction.fundId === Fund.fund.id && Math.sign(transaction.shares) === +1).map((transaction) => transaction.shares).reduce((a, b) => a + b, 0).toFixed(2)
 
-
-
     const checkImage = async (url) => {
         const res = await fetch(url);
         const buff = await res.blob();
@@ -28,6 +26,8 @@ const MobileCard = ({ Fund, Hide, setHide }) => {
     }
 
     const hasCustomImage = () => Fund.fund.imageUrl ? checkImage(Fund.fund.imageUrl) : false
+
+    //TODO - Add Performance
 
     return (
         <Card className="movementsCardMobile">
