@@ -56,7 +56,7 @@ const Transfer = ({ content, getTransfers }) => {
     <div className='mobileMovement'>
       <div className='d-flex justify-content-between'>
         <span>{" "}{t(incomingTransfer() ? "Received from" : "Sent to")}{" "}{t("account with the alias")} <span className="text-nowrap"> {" \""}{incomingTransfer() ? content.senderAlias : content.receiverAlias}{"\""}</span></span>
-        <span className="text-nowrap" >{momentDate.format('D MMM')}</span>
+        <span className="text-nowrap" >{momentDate.format('L')}</span>
 
       </div>
 

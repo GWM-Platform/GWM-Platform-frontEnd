@@ -56,7 +56,7 @@ const Movement = ({ content }) => {
             </button>
         }
       </td>
-      <td className="tableDate">{momentDate.format('DD/MM/YYYY, h:mm a')}</td>
+      <td className="tableDate">{momentDate.format('L')}</td>
       <td className={`tableConcept ${content.stateId === 3 ? 'text-red' : 'text-green'}`}>{t(getMoveStateById(content.stateId).name)}</td>
       <td className={`tableConcept ${Math.sign(content.shares) === 1 ? 'text-green' : 'text-red'}`}>
         <span>{Math.sign(content.shares) === 1 ? t('Purchase of') : t('Sale of')}{" "}</span>

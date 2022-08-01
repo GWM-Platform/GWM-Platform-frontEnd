@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSlash, faEyeSlash, faEye, faThumbtack, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import { faCheckCircle, faClipboard } from '@fortawesome/free-regular-svg-icons'
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import './index.css'
 import { DashBoardContext } from 'context/DashBoardContext';
 import Decimal from 'decimal.js'
@@ -312,7 +312,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                                                 {pendingCash().overView.Deposits.isPositive ? "+" : "-"}
                                                                 <FormattedNumber value={pendingCash().overView.Deposits.valueAbs} prefix="$" fixedDecimals={2} />
                                                             </span><br />
-                                                            {t("Pending transfers")}:&nbsp;
+                                                            <Link to="history?SelectedTab=Transfers">{t("Pending transfers")}</Link>:&nbsp;
                                                             <span className={`bolder ${pendingCash().overView.Transfers.isPositive ? "text-green" : "text-red"}`}>
                                                                 {pendingCash().overView.Transfers.isPositive ? "+" : "-"}
                                                                 <FormattedNumber value={pendingCash().overView.Transfers.valueAbs} prefix="$" fixedDecimals={2} />

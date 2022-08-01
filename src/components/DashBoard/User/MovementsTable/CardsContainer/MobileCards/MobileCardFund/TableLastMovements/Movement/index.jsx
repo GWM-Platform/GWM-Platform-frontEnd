@@ -45,7 +45,7 @@ const Movement = ({ content }) => {
           <FormattedNumber style={{ fontWeight: "bolder" }} value={Math.abs(content.shares)} prefix="" fixedDecimals={2} />&nbsp;   
           {t(Math.abs(content.shares) === 1 ? "share" : "shares")}, <FormattedNumber style={{ fontWeight: "bolder" }} value={content.sharePrice} prefix="$" fixedDecimals={2} />
           {t(" each")}</span>
-        <span className="text-nowrap" >{momentDate.format('D MMM')}</span>
+        <span className="text-nowrap" >{momentDate.format('L')}</span>
 
       </div>
     

@@ -144,7 +144,7 @@ const FixedDepositReceipt = ({ FixedDeposit }) => {
                             !!(validState(["Closed (Term completed)", "Closed (Out of term)", "Ongoing"])) &&
                             <View style={styles.body.section}>
                                 <Text style={styles.body.label}>
-                                    {t("Start date")}:
+                                    {t("Fixed deposit Start date")}:
                                 </Text>
                                 <Text style={styles.body.data}>
                                     {moment(FixedDeposit?.startDate).format('D MMM YY')}

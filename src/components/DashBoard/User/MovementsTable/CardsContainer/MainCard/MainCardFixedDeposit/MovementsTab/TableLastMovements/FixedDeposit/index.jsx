@@ -277,15 +277,15 @@ const FixedDeposit = ({ content }) => {
 
       {!!(validState(["Closed (Term completed)", "Closed (Out of term)", "Ongoing"])) &&
         <div className='d-flex justify-content-between'>
-          <span >{t("Start date")}:&nbsp;
-            {moment(content.startDate).format('D MMM YY')}
+          <span >{t("Fixed deposit Start date")}:&nbsp;
+            {moment(content.startDate).format('L')}
           </span>
         </div >}
 
       {!!(validState(["Closed (Term completed)", "Closed (Out of term)", "Ongoing"])) &&
         <div className='d-flex justify-content-between' style={{ borderBottom: "1px solid 1px solid rgb(240,240,240)" }}>
           <span >{t("End date (Agreed)")}:&nbsp;
-            {moment(content.endDate).format('D MMM YY')}
+            {moment(content.endDate).format('L')}
           </span>
         </div >}
 
@@ -299,7 +299,7 @@ const FixedDeposit = ({ content }) => {
       {!!(validState(["Closed (Term completed)", "Closed (Out of term)"])) &&
         <div className='d-flex justify-content-between'>
           <span >{t("Close date")}:&nbsp;
-            {moment(content.updatedAt).format('D MMM YY')}
+            {moment(content.updatedAt).format('L')}
           </span>
         </div >}
 

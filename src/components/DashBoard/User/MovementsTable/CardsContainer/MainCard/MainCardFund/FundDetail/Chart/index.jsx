@@ -12,7 +12,7 @@ const Chart = ({  Height, Width }) => {
 
         for (let index = amount; index > 0; index--) {
             let todayMoment = moment()
-            const date = todayMoment.subtract(index, "days").format('MMM DD YY')
+            const date = todayMoment.subtract(index, "days").format('L')
             const price = (Math.random() * (max - min) + min).toFixed(2);;
 
             data.push({

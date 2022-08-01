@@ -152,18 +152,18 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
                                         </Container>
                                     </h1>
                                     <Card.Text className="subTitle lighter my-0">
-                                        {t("From")}:&nbsp;
+                                        {t("Fixed deposit Start date")}:&nbsp;
                                         <span className="bolder">
-                                            {FixedDeposit?.startDate ? moment(FixedDeposit?.startDate).format('LL') : <>{moment().format('LL')}&nbsp;({t("To be confirmed")})</>}
+                                            {FixedDeposit?.startDate ? moment(FixedDeposit?.startDate).format('L') : moment().format('L')}
                                         </span><br />
                                     </Card.Text>
                                     <Card.Text className="subTitle lighter my-0">
 
 
 
-                                        {t("To")}:&nbsp;
+                                        {t("Due date")}:&nbsp;
                                         <span className="bolder">
-                                            {FixedDeposit?.endDate ? moment(FixedDeposit?.endDate).format('LL') : <>{moment().add(FixedDeposit.duration, "days").format('LL')}&nbsp;({t("To be confirmed")})</>}
+                                            {FixedDeposit?.endDate ? moment(FixedDeposit?.endDate).format('L') : moment().add(FixedDeposit.duration, "days").format('L')}
                                         </span>
                                     </Card.Text>
                                     <Card.Text className="subTitle lighter my-0">
@@ -173,7 +173,7 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
                                     <Card.Text className="subTitle lighter my-0">
                                         {t("Initial investment")}:&nbsp;
                                         <FormattedNumber className={`bolder`} value={FixedDeposit.initialAmount} prefix="$" fixedDecimals={2} />,&nbsp;
-                                        {t("At the end of the term")}:
+                                        {t("Amount on due date")}:
                                         <span className="bolder">&nbsp;
                                             {
                                                 profit.fetching ?

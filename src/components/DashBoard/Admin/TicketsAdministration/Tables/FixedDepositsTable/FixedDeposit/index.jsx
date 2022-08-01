@@ -233,7 +233,7 @@ const FixedDeposit = ({ content }) => {
 
       {!!(validState(["Closed (Term completed)", "Closed (Out of term)", "Ongoing"])) &&
         <div className='d-flex justify-content-between'>
-          <span >{t("Start date")}:&nbsp;
+          <span >{t("Fixed deposit Start date")}:&nbsp;
             {moment(content.startDate).format('D MMM YY')}
           </span>
         </div >}

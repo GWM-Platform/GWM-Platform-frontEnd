@@ -202,7 +202,7 @@ const FixedDepositTicket = ({ balanceChanged }) => {
                                                     handleChange={handleChange} data={data}
                                                     Balance={Accounts[0].balance} fetching={fetching} />
                                             </Accordion>
-                                            <Accordion flush >
+                                            <Accordion flush defaultActiveKey="0" >
                                                 <DurationData calculateProfit={calculateProfit} handleChange={handleChange} data={data} setData={setData} Account={Accounts[0]} />
                                             </Accordion>
                                         </Form>

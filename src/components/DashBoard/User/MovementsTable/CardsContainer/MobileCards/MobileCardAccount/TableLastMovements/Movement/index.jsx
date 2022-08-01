@@ -46,7 +46,7 @@ const Movement = ({ content }) => {
         <span>
           {t(content.motive + (content.motive === "REPAYMENT" ? content.fundName ? "_" + content.fundName : "_" + content.fixedDepositId : ""), { fund: content.fundName, fixedDeposit: content.fixedDepositId })}
         </span>
-        <span className="text-nowrap" >{momentDate.format('D MMM')}</span>
+        <span className="text-nowrap" >{momentDate.format('L')}</span>
 
       </div>
 

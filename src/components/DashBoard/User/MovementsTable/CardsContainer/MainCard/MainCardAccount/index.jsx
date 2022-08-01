@@ -4,7 +4,7 @@ import { Container, Col, Nav } from 'react-bootstrap';
 
 import { useTranslation } from "react-i18next";
 import { useState } from 'react';
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 
@@ -14,12 +14,25 @@ import FundDetail from './FundDetail';
 import './index.css'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
-const MainCardAccount = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
-    const [SelectedTab, setSelectedTab] = useState("0")
+const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
+
+    function useQuery() {
+        const { search } = useLocation();
+
+        return React.useMemo(() => new URLSearchParams(search), [search]);
+    }
+
+    const DesiredSelectedTab = useQuery().get("SelectedTab")
+
+    const validTabs = ["Movements", "Transfers"]
+
+    const [SelectedTab, setSelectedTab] = useState(DesiredSelectedTab ? validTabs.includes(DesiredSelectedTab) ? DesiredSelectedTab : validTabs[0] : validTabs[0])
+
     // eslint-disable-next-line 
 
     const { t } = useTranslation();
-    let history = useHistory();
+    const history = useHistory();
+    const location = useLocation()
 
     // eslint-disable-next-line 
     const toLogin = () => {
@@ -68,12 +81,19 @@ const MainCardAccount = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setS
             </div>
             {/*tabs controller*/}
             <Container fluid className="px-0">
-                <Nav className="history-tabs" variant="tabs" activeKey={SelectedTab} onSelect={(e) => { setSelectedTab(e) }}>
+                <Nav className="history-tabs" variant="tabs" activeKey={SelectedTab}
+                    onSelect={(e) => {
+                        const params = new URLSearchParams({ SelectedTab:e })
+                        history.replace({ pathname: location.pathname, search: params.toString() })
+                        setSelectedTab(e)
+                    }}
+
+                >
                     <Nav.Item>
-                        <Nav.Link eventKey={"0"}>{t("Transactions")}</Nav.Link>
+                        <Nav.Link eventKey={"Movements"}>{t("Transactions")}</Nav.Link>
                     </Nav.Item>
                     <Nav.Item>
-                        <Nav.Link eventKey={"1"}>{t("Transfer activity")}</Nav.Link>
+                        <Nav.Link eventKey={"Transfers"}>{t("Transfer activity")}</Nav.Link>
                     </Nav.Item>
                 </Nav>
             </Container>
@@ -81,13 +101,13 @@ const MainCardAccount = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setS
             <Container fluid className="p-3 pb-2 bg-white historyContent">
                 {
                     {
-                        0:
+                        Movements:
                             <MovementsTab SearchById={SearchById} setSearchById={setSearchById} Fund={Fund}
                                 resetSearchById={resetSearchById} handleMovementSearchChange={handleMovementSearchChange} />,
-                        1:
+                        Transfers:
                             <TransfersTab SearchById={SearchById} setSearchById={setSearchById} Fund={Fund}
                                 resetSearchById={resetSearchById} handleMovementSearchChange={handleMovementSearchChange} />,
-                        2:
+                        Detail:
                             <FundDetail />,
                     }[SelectedTab]
                 }

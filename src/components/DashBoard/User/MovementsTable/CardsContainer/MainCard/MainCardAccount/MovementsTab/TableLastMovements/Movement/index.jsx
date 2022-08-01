@@ -28,7 +28,7 @@ const Movement = ({ content }) => {
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
-    link.setAttribute('download',`${AccountSelected.alias} - ${t("Movement")} #${content.id}.pdf`)
+    link.setAttribute('download', `${AccountSelected.alias} - ${t("Movement")} #${content.id}.pdf`)
     // 3. Append to html page
     document.body.appendChild(link)
     // 4. Force download
@@ -47,12 +47,14 @@ const Movement = ({ content }) => {
           GeneratingPDF ?
             <Spinner animation="border" size="sm" />
             :
-            <button className='noStyle py-0' style={{ cursor: "pointer" }} onClick={()=>renderAndDownloadPDF()}>
+            <button className='noStyle py-0' style={{ cursor: "pointer" }} onClick={() => renderAndDownloadPDF()}>
               <FontAwesomeIcon icon={faFilePdf} />
             </button>
         }
       </td>
-      <td className="tableDate">{momentDate.format('DD/MM/YYYY, h:mm a')}</td>
+      <td className="tableDate">
+        {momentDate.format('L')}
+      </td>
       <td className={`tableConcept ${content.stateId === 3 ? 'text-red' : 'text-green'}`}>{t(getMoveStateById(content.stateId).name)}</td>
       <td className="tableConcept">
         {t(content.motive + (content.motive === "REPAYMENT" ? content.fundName ? "_" + content.fundName : "_" + content.fixedDepositId : ""), { fund: content.fundName, fixedDeposit: content.fixedDepositId })}
