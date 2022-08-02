@@ -8,6 +8,8 @@ import { formatValue } from '@osdiab/react-currency-input-field'
 import Decimal from 'decimal.js'
 
 const TransferReceipt = ({ Transfer }) => {
+  Decimal.set({ precision: 100 })
+
   const { t } = useTranslation();
 
   return (

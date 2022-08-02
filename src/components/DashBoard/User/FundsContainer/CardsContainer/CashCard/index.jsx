@@ -12,6 +12,8 @@ import Decimal from 'decimal.js'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
 const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned, cardsAmount, inScreenFunds }) => {
+    Decimal.set({ precision: 100 })
+
     const { t } = useTranslation();
 
     const { token, ClientSelected, DashboardToastDispatch, isMobile } = useContext(DashBoardContext)

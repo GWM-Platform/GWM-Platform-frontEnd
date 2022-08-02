@@ -6,6 +6,7 @@ import Decimal from 'decimal.js';
 
 
 const BuyData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAccordion, Balance, fetching }) => {
+    Decimal.set({ precision: 100 })
 
     const { t } = useTranslation();
     const multiplier = 10000

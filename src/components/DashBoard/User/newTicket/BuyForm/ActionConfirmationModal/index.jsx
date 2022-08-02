@@ -10,6 +10,7 @@ import Decimal from 'decimal.js';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
 const ActionConfirmationModal = ({ setShowModal, show, action, data, Funds, Balance, fetching }) => {
+    Decimal.set({ precision: 100 })
 
     const { t } = useTranslation();
 

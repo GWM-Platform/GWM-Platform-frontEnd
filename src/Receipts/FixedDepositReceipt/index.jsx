@@ -8,6 +8,8 @@ import { formatValue } from '@osdiab/react-currency-input-field'
 import Decimal from 'decimal.js'
 
 const FixedDepositReceipt = ({ FixedDeposit }) => {
+    Decimal.set({ precision: 100 })
+
     const { t } = useTranslation();
 
     const validState = (states = []) => states.includes(FixedDeposit.state.text)

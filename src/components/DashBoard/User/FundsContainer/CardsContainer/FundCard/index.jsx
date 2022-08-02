@@ -10,6 +10,8 @@ import Decimal from 'decimal.js'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
 const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
+    Decimal.set({ precision: 100 })
+
     const { t } = useTranslation();
 
     let history = useHistory();

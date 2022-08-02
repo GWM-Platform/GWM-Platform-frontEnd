@@ -110,7 +110,7 @@ const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData })
                 </td>
                 <td>
                     <span className='text-nowrap'>
-                        {momentDate.format('MMMM Do YYYY, h:mm:ss a')}
+                        {momentDate.format('L')}
                     </span>
                 </td>
                 <td>{Transaction.id}</td>

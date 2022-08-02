@@ -40,7 +40,7 @@ const TransferRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }) =>
                 </td>
                 <td>
                     <span className='text-nowrap'>
-                        {momentDate.format('MMMM Do YYYY, h:mm:ss a')}
+                        {momentDate.format('L')}
                     </span>
                 </td>
                 <td>{Movement.id}</td>

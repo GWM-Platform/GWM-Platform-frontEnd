@@ -16,6 +16,7 @@ import axios from 'axios';
 import Decimal from 'decimal.js';
 
 const FixedDepositTicket = ({ balanceChanged }) => {
+    Decimal.set({ precision: 100 })
 
     const { token, contentReady, Accounts, toLogin, ClientSelected } = useContext(DashBoardContext);
 

@@ -11,6 +11,8 @@ import { DashBoardContext } from 'context/DashBoardContext';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
 const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
+    Decimal.set({ precision: 100 })
+
     const { toLogin } = useContext(DashBoardContext);
     const { t } = useTranslation();
 

@@ -44,9 +44,9 @@ const AccountsSupervision = () => {
         const getClients = async () => {
             setClients((prevState) => ({ fetching: true, fetched: true, content: [] }))
             var url = `${process.env.REACT_APP_APIURL}/Clients/?` + new URLSearchParams({
-                all:true,
+                all: true,
             });
-            
+
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -78,7 +78,7 @@ const AccountsSupervision = () => {
         const token = sessionStorage.getItem('access_token')
 
         const getTransactions = async () => {
-            setTransactions((prevState) => ({ fetching: true, fetched: true, content: [] }))
+            setTransactions((prevState) => ({ ...prevState, fetching: true, fetched: true, content: [] }))
             var url = `${process.env.REACT_APP_APIURL}/transactions/`
             const response = await fetch(url, {
                 method: 'GET',

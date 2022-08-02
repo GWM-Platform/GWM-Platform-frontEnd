@@ -18,7 +18,7 @@ const TransactionsByFund = ({ stakes, transactions }) => {
             setTransactionsFundSelected(transactions.filter((transaction) => transaction.fundId === stakes[FundSelected].fund.id))
         }
     }, [FundSelected, transactions, stakes])
-
+    
     return (
         <Accordion.Item eventKey="4">
             <Accordion.Header>{t("Transactions by fund")}</Accordion.Header>

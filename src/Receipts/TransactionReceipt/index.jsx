@@ -8,6 +8,8 @@ import { formatValue } from '@osdiab/react-currency-input-field'
 import Decimal from 'decimal.js'
 
 const TransactionReceipt = ({ Transaction }) => {
+  Decimal.set({ precision: 100 })
+
   const { t } = useTranslation();
 
   const decimalSharesAbs = new Decimal(Transaction?.shares || 0).abs()

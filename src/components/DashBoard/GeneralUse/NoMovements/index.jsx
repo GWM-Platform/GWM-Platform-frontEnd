@@ -8,6 +8,8 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import './index.css'
 import Decimal from 'decimal.js';
 const NoMovements = ({ movements }) => {
+  Decimal.set({ precision: 100 })
+
   //To use the translations from i18n
   const { t } = useTranslation();
   return (

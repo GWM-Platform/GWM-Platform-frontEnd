@@ -26,6 +26,19 @@ const TableLastMovements = ({ content, movements }) => {
                     {content.map((u, i) =>
                         <Movement key={i} content={u} />
                     )}
+                    
+                    <Movement key={1} content={{
+                        "id": 13,
+                        "clientId": 4,
+                        "fundId": 3,
+                        "stateId": 2,
+                        "shares": 60.85,
+                        "sharePrice": 328.56,
+                        "createdAt": "2022-02-17T00:00:00.000Z",
+                        "updatedAt": "2022-07-30T16:53:27.884Z"
+                    }} />
+
+
                 </tbody>
             </Table>
         </div>

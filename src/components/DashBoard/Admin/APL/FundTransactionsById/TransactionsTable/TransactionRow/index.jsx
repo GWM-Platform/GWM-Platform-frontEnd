@@ -7,6 +7,8 @@ import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import Decimal from 'decimal.js';
 
 const TransactionRow = ({ transaction, user }) => {
+  Decimal.set({ precision: 100 })
+
   var momentDate = moment(transaction.createdAt);
   const { t } = useTranslation();
   const { getMoveStateById } = useContext(DashBoardContext)
@@ -14,7 +16,7 @@ const TransactionRow = ({ transaction, user }) => {
   return (
 
     <tr>
-      <td className="tableDate">{momentDate.format('DD/MM/YYYY, h:mm a')}</td>
+      <td className="tableDate">{momentDate.format('L')}</td>
       <td >{user.alias}</td>
       <td className={`tableConcept`}>
         <span>{Math.sign(transaction.shares) === 1 ? t('Sale of') : t('Purchase of')}{" "}</span>

@@ -350,7 +350,6 @@ export const DashBoardProvider = ({ children }) => {
                 if (data.length === 1 && !admin) {
                     setIndexClientSelected(0)
                 }
-                console.log(desiredClient)
                 if (desiredClient) {
                     if (getClientIndexById(desiredClient) >= 0) {
                         setIndexClientSelected(getClientIndexById(desiredClient))
@@ -358,7 +357,7 @@ export const DashBoardProvider = ({ children }) => {
                         setIndexClientSelected(parseInt(localStorage.getItem(data[0].alias)))
                     }
                 }
-                else if (localStorage.getItem(data[0].alias)) {
+                else if (localStorage.getItem(data[0]?.alias)) {
                     setIndexClientSelected(parseInt(localStorage.getItem(data[0].alias)))
                 }
 

@@ -12,6 +12,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf } from '@fortawesome/free-regular-svg-icons';
 
 const Movement = ({ content }) => {
+
+  Decimal.set({ precision: 100 })
+
   var momentDate = moment(content.createdAt);
   const { t } = useTranslation();
   const { getMoveStateById,AccountSelected } = useContext(DashBoardContext)
@@ -67,7 +70,7 @@ const Movement = ({ content }) => {
       </td>
       <td className={`tableAmount ${Math.sign(content.shares) === 1 ? 'text-green' : 'text-red'}`}>
         {Math.sign(content.shares) === 1 ? '+' : '-'}
-        <FormattedNumber prefix="$" value={amount.toFixed(2).toString()} fixedDecimals={2} />
+        <FormattedNumber prefix="$" value={amount.toString()} fixedDecimals={2} />
       </td>
     </tr>
   )
