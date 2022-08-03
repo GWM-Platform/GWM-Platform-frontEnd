@@ -75,7 +75,7 @@ const TableLastFixedDeposits = () => {
                         aria-expanded={open}>
                         <Row className="d-flex justify-content-end">
                             <Col className={FixedDeposits.fetching ? "d-flex justify-content-between align-items-center" : ""}>
-                                <h2 className={`my-2 toggler-mobile ${!!(FixedDeposits.fetching) ? "loading" : ""} ${open ? "toggled" : ""}`}>{t("Fixed deposits")}</h2>
+                                <h2 className={`my-2 toggler-mobile ${!!(FixedDeposits.fetching) ? "loading" : ""} ${open ? "toggled" : ""}`}>{t("Time deposits")}</h2>
                                 {!!(FixedDeposits.fetching) && <Spinner className="ms-2" animation="border" size="sm" />}
                             </Col>
                         </Row>

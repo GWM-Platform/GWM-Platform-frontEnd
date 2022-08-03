@@ -138,7 +138,7 @@ const UserDashBoard = () => {
                                             <Route path={`${path}/transfer`}>
                                                 <TransferForm balanceChanged={() => setBalanceChanged(true)} />
                                             </Route>
-                                            <Route path={`${path}/FixedDeposit`}>
+                                            <Route path={`${path}/TimeDeposit`}>
                                                 <FixedDepositClient balanceChanged={() => setBalanceChanged(true)} />
                                             </Route>
                                             <Route path={`${path}/operationResult`}>

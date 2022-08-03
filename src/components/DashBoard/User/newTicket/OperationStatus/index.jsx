@@ -32,7 +32,7 @@ const OperationStatus = ({ setItemSelected }) => {
                         result === "failed" ? 
                         <>
                                 <h1 className="statusIcon"><FontAwesomeIcon icon={faTimesCircle} /></h1>
-                                <h1 className="title">{t("There was an error, try it again later")}</h1>
+                                <h1 className="title">{t("There was an error, try again later")}</h1>
                             </>
                         :
                             <>

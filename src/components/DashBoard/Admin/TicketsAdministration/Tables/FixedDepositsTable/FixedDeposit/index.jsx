@@ -184,7 +184,7 @@ const FixedDeposit = ({ content }) => {
   return (
     <div className='mobileMovement'>
       <div className='d-flex justify-content-between py-1 align-items-center' >
-        <span className="h4 mb-0">{t("Fixed deposit")}&nbsp;#{content.id}</span>
+        <span className="h4 mb-0">{t("Time deposit")}&nbsp;#{content.id}</span>
         <Badge bg={status()?.bg}>{t(status().text)}</Badge>
       </div >
       <div className='w-100 d-flex' style={{ borderBottom: "1px solid lightgray" }} />
@@ -233,7 +233,7 @@ const FixedDeposit = ({ content }) => {
 
       {!!(validState(["Closed (Term completed)", "Closed (Out of term)", "Ongoing"])) &&
         <div className='d-flex justify-content-between'>
-          <span >{t("Fixed deposit Start date")}:&nbsp;
+          <span >{t("Time deposit Start date")}:&nbsp;
             {moment(content.startDate).format('L')}
           </span>
         </div >}

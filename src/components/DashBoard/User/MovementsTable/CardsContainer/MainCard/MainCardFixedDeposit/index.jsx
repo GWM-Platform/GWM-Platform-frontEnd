@@ -19,7 +19,7 @@ const MainCardFixedDeposit = ({ FixedDepositsStats, Hide, setHide }) => {
             <div className="bg-white info ms-0 mb-2 px-0">
                 <div className="d-flex justify-content-between align-items-end pe-2">
                     <h1 className="m-0 title px-2">
-                        {t("Fixed deposits")}
+                        {t("Time deposits")}
                     </h1>
                 </div>
                 <div className="d-flex justify-content-between align-items-end pe-2">
@@ -62,7 +62,7 @@ const MainCardFixedDeposit = ({ FixedDepositsStats, Hide, setHide }) => {
                 </div>
                 <div className="d-flex justify-content-between align-items-end px-2">
                     <Col className="d-flex justify-content-between pe-5" sm="auto">
-                        {t("Active fixed deposits")}:&nbsp;
+                        {t("Active time deposits")}:&nbsp;
                         {FixedDepositsStats?.activeDeposits}
                     </Col>
                 </div>
@@ -71,7 +71,7 @@ const MainCardFixedDeposit = ({ FixedDepositsStats, Hide, setHide }) => {
             <Container fluid className="px-0">
                 <Nav className="history-tabs" variant="tabs" activeKey={SelectedTab} onSelect={(e) => { setSelectedTab(e) }}>
                     <Nav.Item>
-                        <Nav.Link eventKey={"0"}>{t("Fixed Deposits history")}</Nav.Link>
+                        <Nav.Link eventKey={"0"}>{t("Time Deposits history")}</Nav.Link>
                     </Nav.Item>
                 </Nav>
             </Container>

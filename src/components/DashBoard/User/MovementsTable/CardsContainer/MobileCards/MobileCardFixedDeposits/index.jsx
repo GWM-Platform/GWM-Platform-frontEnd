@@ -23,7 +23,7 @@ const MobileCardFixedDeposits = ({ FixdedDeposits, FixedDepositsStats, Hide, set
                     <Row className="d-flex justify-content-end align-items-center">
                         <Col className="p-0">
                             <Card.Title className="mb-0 py-1">
-                                {t("Fixed deposits")}
+                                {t("Time deposits")}
 
                                 <FontAwesomeIcon className="float-end me-1" color='white' icon={faPiggyBank} />
                             </Card.Title>
@@ -68,7 +68,7 @@ const MobileCardFixedDeposits = ({ FixdedDeposits, FixedDepositsStats, Hide, set
                             </span>
                             <br />
                             <span className="left">
-                                {t("Active fixed deposits")}:&nbsp;{ActiveFixedDeposits}
+                                {t("Active time deposits")}:&nbsp;{ActiveFixedDeposits}
                             </span>
                         </Col>
                         {

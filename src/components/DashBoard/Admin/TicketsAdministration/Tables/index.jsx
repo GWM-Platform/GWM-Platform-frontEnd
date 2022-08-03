@@ -938,7 +938,7 @@ const Tables = ({ state, messageVariants }) => {
                     <Button variant="link" onClick={()=>executeScroll(AccountMovementsRef)}>{t("Account movements tickets")}</Button>
                     <Button variant="link" onClick={()=>executeScroll(PendingSettlementRef)}>{t("Approved tickets pending settlement")}</Button>
                     <Button variant="link" onClick={()=>executeScroll(TransferRef)}>{t("Transfer tickets")}</Button>
-                    <Button variant="link" onClick={()=>executeScroll(FixedDepositsRef)}>{t("Fixed deposits")}</Button>
+                    <Button variant="link" onClick={()=>executeScroll(FixedDepositsRef)}>{t("Time deposits")}</Button>
                 </div>
                 {/*-------------------------------Purchase and sale-------------------------- */}
                 <h1 ref={PurchaseAndSale} className="title">{t("Purchase and sale tickets")}:</h1>
@@ -1044,7 +1044,7 @@ const Tables = ({ state, messageVariants }) => {
                 }
 
                 {/*-------------------------------Fixed Deposits-------------------------- */}
-                <h1 className="title" ref={FixedDepositsRef}>{t("Fixed deposits")}:</h1>
+                <h1 className="title" ref={FixedDepositsRef}>{t("Time deposits")}:</h1>
                 <TicketSearch
                     props={ticketSearchPropsFixedDeposits}
                 />

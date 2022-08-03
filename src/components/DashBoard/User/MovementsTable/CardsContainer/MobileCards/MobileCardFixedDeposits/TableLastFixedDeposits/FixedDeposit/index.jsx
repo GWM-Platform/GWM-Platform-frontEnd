@@ -201,7 +201,7 @@ const FixedDeposit = ({ content }) => {
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
-    link.setAttribute('download', `${AccountSelected.alias} - ${t("Fixed deposit")} #${content.id}.pdf`)
+    link.setAttribute('download', `${AccountSelected.alias} - ${t("Time deposit")} #${content.id}.pdf`)
     // 3. Append to html page
     document.body.appendChild(link)
     // 4. Force download
@@ -213,7 +213,7 @@ const FixedDeposit = ({ content }) => {
   return (
     <div className='mobileMovement'>
       <div className='d-flex justify-content-between py-1 align-items-center' >
-        <span className="h5 mb-0">{t("Fixed deposit")}&nbsp;#{content.id}</span>
+        <span className="h5 mb-0">{t("Time deposit")}&nbsp;#{content.id}</span>
 
         <div className='ms-auto me-2'>
           {
@@ -273,7 +273,7 @@ const FixedDeposit = ({ content }) => {
 
       {!!(validState(["Closed (Term completed)", "Closed (Out of term)", "Ongoing"])) &&
         <div className='d-flex justify-content-between'>
-          <span >{t("Fixed deposit Start date")}:&nbsp;
+          <span >{t("Time deposit Start date")}:&nbsp;
             {moment(content.startDate).format('L')}
           </span>
         </div >}

@@ -25,7 +25,7 @@ const FixedDepositReceipt = ({ FixedDeposit }) => {
                         style={styles.header}
                     >
                         <View style={styles.header.textContainer}>
-                            <Text style={styles.header.textContainer.text}>{t("Receipt of fixed deposit #")}{FixedDeposit?.id}</Text>
+                            <Text style={styles.header.textContainer.text}>{t("Receipt of time deposit #")}{FixedDeposit?.id}</Text>
                             <Text style={styles.header.textContainer.date}>{moment().format("DD MMM YYYY")}</Text>
                         </View>
                         <Image src={`${process.env.PUBLIC_URL}/images/PDF/logo.png`} style={styles.header.image} />
@@ -146,7 +146,7 @@ const FixedDepositReceipt = ({ FixedDeposit }) => {
                             !!(validState(["Closed (Term completed)", "Closed (Out of term)", "Ongoing"])) &&
                             <View style={styles.body.section}>
                                 <Text style={styles.body.label}>
-                                    {t("Fixed deposit Start date")}:
+                                    {t("Time deposit Start date")}:
                                 </Text>
                                 <Text style={styles.body.data}>
                                     {moment(FixedDeposit?.startDate).format('D MMM YY')}

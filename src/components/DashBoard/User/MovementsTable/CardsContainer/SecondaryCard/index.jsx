@@ -72,7 +72,7 @@ const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownK
                                     {
                                         0: "Cash",
                                         1: Fund?.fund?.name,
-                                        2: "Fixed deposits"
+                                        2: "Time deposits"
                                     }[parentKey]
                                 )
                             }

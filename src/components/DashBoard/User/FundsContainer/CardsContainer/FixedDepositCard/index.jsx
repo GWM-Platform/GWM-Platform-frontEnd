@@ -111,7 +111,7 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
                         <Row className="mx-0 w-100 gx-0">
                             <Card.Title >
                                 <h1 className="title m-0">
-                                    {t("Fixed deposit")}&nbsp;{FixedDeposit.id}&nbsp;{!!(FixedDeposit?.stateId === 1) && <span style={{ textTransform: "none" }}>({t("Pending approval")})</span>}
+                                    {t("Time deposit")}&nbsp;{FixedDeposit.id}&nbsp;{!!(FixedDeposit?.stateId === 1) && <span style={{ textTransform: "none" }}>({t("Pending approval")})</span>}
                                 </h1>
                                 <Card.Text className="subTitle lighter mt-0 my-0">
                                     {t("Elapsed")}:&nbsp;
@@ -154,7 +154,7 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
                                         </Container>
                                     </h1>
                                     <Card.Text className="subTitle lighter my-0">
-                                        {t("Fixed deposit Start date")}:&nbsp;
+                                        {t("Time deposit Start date")}:&nbsp;
                                         <span className="bolder">
                                             {FixedDeposit?.startDate ? moment(FixedDeposit?.startDate).format('L') : moment().format('L')}
                                         </span><br />

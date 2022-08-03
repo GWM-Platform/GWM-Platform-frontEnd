@@ -198,7 +198,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
                                 !!(FixedDepositsStats?.content?.hasDeposits > 0) &&
                                 <>
                                     <div className="CategoryLabel">
-                                        <h1 className="title">{t("Fixed deposits")}</h1>
+                                        <h1 className="title">{t("Time deposits")}</h1>
                                     </div>
                                     <SecondaryCard
                                         Hide={Hide} Fund={FixedDepositsStats.content} parentKey={2}

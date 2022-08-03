@@ -8,7 +8,7 @@ const NoFunds = () => {
     return (
         <div className="h-100 d-flex align-items-center justify-content-center">
             <h1>
-                {t("Apparently, there is no fixed-term plan created")}
+                {t("Apparently, there is no time deposit plan created")}
             </h1>
         </div>
     )

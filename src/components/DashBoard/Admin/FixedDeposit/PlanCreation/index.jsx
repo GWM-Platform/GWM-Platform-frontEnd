@@ -20,7 +20,7 @@ const PlanCreation = ({ getFixedDepositPlans }) => {
         }))
         axios.post(`/fixed-deposits/plans`, {
             interest: {},
-            name: "Fixed Deposit"
+            name: "Time deposit"
         }
         ).then(function (response) {
             if (response.status < 300 && response.status >= 200) {
@@ -60,7 +60,7 @@ const PlanCreation = ({ getFixedDepositPlans }) => {
 
     return (
         <div className="d-flex align-items-center justify-content-center flex-column" style={{ height: "50vh" }}>
-            <h1 style={{ maxWidth: "25ch", textAlign: "center" }}>{t("Apparently, there is no fixed-term plan created")}</h1>
+            <h1 style={{ maxWidth: "25ch", textAlign: "center" }}>{t("Apparently, there is no time deposit plan created")}</h1>
             <Button className="mt-3" disabled={Creation.fetching} onClick={() => CreateFixedDeposit()}>
                 {t("Create one")}
                 {

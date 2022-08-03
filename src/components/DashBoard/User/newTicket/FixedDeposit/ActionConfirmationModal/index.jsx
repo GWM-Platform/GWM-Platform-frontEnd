@@ -34,7 +34,7 @@ const ActionConfirmationModal = ({ setShowModal, show, action, data, Balance, fe
                         </li>
                         <li className="listedInfo">
                             {t("Product")}:&nbsp;
-                            <span className="emphasis">{t("Fixed deposit")}</span>
+                            <span className="emphasis">{t("Time deposit")}</span>
                         </li>
                         <li className="listedInfo">
                             {t("Cash amount")}:&nbsp;

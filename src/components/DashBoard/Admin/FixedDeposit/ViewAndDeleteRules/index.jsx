@@ -7,7 +7,7 @@ const ViewAndDeleteRules = ({ FixedDeposit, ActionDispatch ,getFixedDepositPlans
 
     return (
         <div className="growOpacity">
-            <h1>{t("Fixed deposit rules administration")}</h1>
+            <h1>{t("Time deposit rules administration")}</h1>
             <RulesTable ActionDispatch={ActionDispatch} FixedDeposit={FixedDeposit}  getFixedDepositPlans={getFixedDepositPlans}/>
         </div>
     );
