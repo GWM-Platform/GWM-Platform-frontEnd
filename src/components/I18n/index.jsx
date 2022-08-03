@@ -631,6 +631,7 @@ i18n
           "Specify the duration of your investment": "Ingrese la duración de su inversión",
           "You must enter how long your investment will last": "Debe ingresar cuanto durara su inversión",
           "The minimum duration is one day": "La duración minima es de un día",
+          "The minimum duration is () days": "La duración minima es de {{days}} días",
           "Anual rate": "Tasa anual",
           "Investment after": "Inversion luego de",
           "days": "días",
@@ -655,6 +656,7 @@ i18n
           "The rule has been removed succesfully": "La regla ha sido eliminada correctamente",
           "The minimum duration is 365 days": "La duración mínima de de 365 días",
           "The maximum duration is 730 days": "La duración máxima de de 730 días",
+          "The maximum duration is () days": "La duración máxima de de {{days}} días",
           "There was an error, try it again later": "Hubo un error, por favor intentalo de nuevo mas tarde",
           "Fixed deposits": "Plazos fijos",
           "Investment": "Inversion",
@@ -694,7 +696,8 @@ i18n
           "Operation date": "Fecha de la operación",
           "Apparently, there is no fixed-term plan created": "Al parecer, no hay ningun plan de plazo fijo creado",
           "Create one": "Crear uno",
-          "Receipt":"Comprobante"
+          "Receipt":"Comprobante",
+          "Decimal values ​​are not allowed":"No se admiten valores decimales"
         }
       }
     }

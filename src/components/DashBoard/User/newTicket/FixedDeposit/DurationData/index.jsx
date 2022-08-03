@@ -4,9 +4,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Row, Form, Accordion, Container, Button, InputGroup } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
 import moment from 'moment';
+import Decimal from 'decimal.js';
 
-const FundSelector = ({ data, Balance, fetching, handleChange, calculateProfit }) => {
+const FundSelector = ({ data, Balance, fetching, handleChange, calculateProfit, FixedDepositRules }) => {
     const { t } = useTranslation();
+
+    const maxDuration = Decimal.max(...[...FixedDepositRules.map(string => parseInt(string)), 730])
+
+    const minDuration = Decimal.min(...[...FixedDepositRules.map(string => parseInt(string)), 365])
 
     return (
         <Accordion.Item eventKey="0">
@@ -33,10 +38,12 @@ const FundSelector = ({ data, Balance, fetching, handleChange, calculateProfit }
                             onBlur={() => calculateProfit()}
                             onWheel={event => event.currentTarget.blur()}
                             value={data.days}
-                            step=".01"
+                            step="1"
                             onChange={handleChange}
-                            min="365"
-                            max="730"
+
+                            min={minDuration}
+                            max={maxDuration}
+
                             id="days"
                             type="number"
                             required
@@ -47,8 +54,8 @@ const FundSelector = ({ data, Balance, fetching, handleChange, calculateProfit }
                             onWheel={event => event.currentTarget.blur()}
                             value={data.until}
                             onChange={handleChange}
-                            min={moment().add(365, "days").format("YYYY-MM-DD")}
-                            max={moment().add(730, "days").format("YYYY-MM-DD")}
+                            min={moment().add(minDuration, "days").format("YYYY-MM-DD")}
+                            max={moment().add(maxDuration, "days").format("YYYY-MM-DD")}
                             id="until"
                             type="date"
                             required
@@ -59,10 +66,13 @@ const FundSelector = ({ data, Balance, fetching, handleChange, calculateProfit }
                                 data.days === "" ?
                                     t("You must enter how long your investment will last")
                                     :
-                                    data.days < 365 ?
-                                        t("The minimum duration is 365 days")
+                                    data.days < minDuration ?
+                                        t("The minimum duration is () days", { days: minDuration })
                                         :
-                                        t("The maximum duration is 730 days")
+                                        data.days>maxDuration ? 
+                                        t("The maximum duration is () days", { days: maxDuration })
+                                        :
+                                        t("Decimal values ​​are not allowed")
 
                             }
                         </Form.Control.Feedback>

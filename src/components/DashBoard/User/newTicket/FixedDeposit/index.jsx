@@ -182,7 +182,6 @@ const FixedDepositTicket = ({ balanceChanged }) => {
         };
         //eslint-disable-next-line
     }, [getFixedDepositPlans])
-
     return (
         <div className="tabContent">
             <div className={`d-flex flex-column h-100`}>
@@ -204,7 +203,9 @@ const FixedDepositTicket = ({ balanceChanged }) => {
                                                     Balance={Accounts[0].balance} fetching={fetching} />
                                             </Accordion>
                                             <Accordion flush defaultActiveKey="0" >
-                                                <DurationData calculateProfit={calculateProfit} handleChange={handleChange} data={data} setData={setData} Account={Accounts[0]} />
+                                                <DurationData
+                                                    FixedDepositRules={Object.keys(FixedDeposit?.content?.interest ?? [])}
+                                                    calculateProfit={calculateProfit} handleChange={handleChange} data={data} setData={setData} Account={Accounts[0]} />
                                             </Accordion>
                                         </Form>
                                     </Col>
