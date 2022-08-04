@@ -29,7 +29,6 @@ const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
     const toLogin = () => {
         sessionStorage.clear(); history.push(`/login`);
     }
-
     const getMovements = async () => {
         setFetchingMovements(true)
 
@@ -145,6 +144,7 @@ const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
                                 <TableLastMovements
                                     content={Movements.transactions}
                                     movements={Pagination.take}
+                                    fundName={Fund.fund.name}
                                 />
                                 :
                                 <NoMovements movements={Pagination.take} />

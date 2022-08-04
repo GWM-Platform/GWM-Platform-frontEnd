@@ -370,7 +370,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                         </Card.Header>
                         <Card.Body className="body">
                             <Row >
-                                <Card.Title >
+                                <Card.Title className="mb-2 mt-0">
                                     <Container fluid className="px-0">
                                         <Row className="mx-0 w-100 mb-2">
                                             <Col className="ps-0">
@@ -416,7 +416,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                         </span>
                                     </Card.Text>
                                 </Card.Title>
-                                <h1 className="title-gray mt-1">
+                                <h1  className="title-gray mt-0">
                                     <Container fluid className="px-0">
                                         <Row className="w-100 mx-0 d-flex justify-content-between gx-0">
                                             <span className="pe-2 containerHideInfo">
@@ -441,7 +441,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                         </Row>
                                     </Container>
                                 </h1>
-                                <div className="subTitle lighter mt-0 mb-2">
+                                <div className="subTitle lighter mt-0 mb-0">
                                     <span className='invisible'>{t("Balance (shares)")}:<span className="bolder"></span></span> <br />
                                     <span className='d-flex justify-content-between'>
                                         {

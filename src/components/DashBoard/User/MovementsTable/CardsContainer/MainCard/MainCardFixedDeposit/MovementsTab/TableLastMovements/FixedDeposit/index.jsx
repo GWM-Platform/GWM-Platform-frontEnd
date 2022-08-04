@@ -15,6 +15,8 @@ const FixedDeposit = ({ content }) => {
   const { t } = useTranslation();
   const { toLogin, AccountSelected } = useContext(DashBoardContext)
 
+  const closedAtTheEnd = () => moment(content.endDate).isBefore(moment(content.updatedAt))
+
   const status = () => {
     switch (content.stateId) {
       case 1://pending
@@ -194,8 +196,6 @@ const FixedDeposit = ({ content }) => {
     setGeneratingPDF(false)
   }
 
-  const closedAtTheEnd = () => moment(content.endDate).isBefore(moment(content.updatedAt))
-
   const validState = (states = []) => states.includes(status().text)
 
   useEffect(() => {
@@ -259,7 +259,7 @@ const FixedDeposit = ({ content }) => {
 
       {!!(validState(["Closed (Out of term)", "Closed (Term completed)"])) &&
         <div className='d-flex justify-content-between' >
-          <span >{t("Refund on closed")}:&nbsp;
+          <span >{t("Refund on close")}:&nbsp;
             {RefundedProfit.fetching ?
               <Spinner animation="border" size="sm" />
               :

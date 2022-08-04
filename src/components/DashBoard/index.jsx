@@ -86,7 +86,7 @@ const UserDashBoard = () => {
                                             <Route path={`${path}/assetsAdministration`}>
                                                 <AssetsAdministration />
                                             </Route>
-                                            <Route path={`${path}/FixedDeposit`}>
+                                            <Route path={`${path}/TimeDeposit`}>
                                                 <FixedDeposit />
                                             </Route>
                                             <Route path={`${path}/ticketsAdministration`}>

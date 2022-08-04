@@ -174,8 +174,10 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
                                     </Card.Text>
                                     <Card.Text className="subTitle lighter my-0">
                                         {t("Initial investment")}:&nbsp;
-                                        <FormattedNumber className={`bolder`} value={FixedDeposit.initialAmount} prefix="$" fixedDecimals={2} />,&nbsp;
-                                        {t("Amount on due date")}:
+                                        <FormattedNumber className={`bolder`} value={FixedDeposit.initialAmount} prefix="$" fixedDecimals={2} />
+                                    </Card.Text>
+                                    <Card.Text className="subTitle lighter my-0">
+                                        {t("Amount on due date")}:&nbsp;
                                         <span className="bolder">&nbsp;
                                             {
                                                 profit.fetching ?

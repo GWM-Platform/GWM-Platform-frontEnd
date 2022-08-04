@@ -142,7 +142,7 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                                 {t("Withdraw")}
                                             </NavDropdown.Item>
                                             <NavDropdown.Item
-                                                active={itemSelectedLC === "transfer" }
+                                                active={itemSelectedLC === "transfer"}
                                                 onClick={() => { goTo("Transfer") }}>
                                                 {t("to Transfer")}
                                             </NavDropdown.Item>
@@ -207,10 +207,12 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                 <Popover id="popover-funds" className="OverlayNavMobile" >
                                     <Popover.Body>
                                         <NavDropdown.Item
+                                            className="p-2"
                                             active={itemSelectedLC === "depositcash"} onClick={() => goTo("depositCash")}>
                                             {t("Deposit cash")}
                                         </NavDropdown.Item>
                                         <NavDropdown.Item
+                                            className="p-2"
                                             active={itemSelectedLC === "withdrawcash"} onClick={() => goTo("withdrawCash")}>
                                             {t("Withdraw cash")}
                                         </NavDropdown.Item>
@@ -227,11 +229,13 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                 <Popover id="popover-funds" className="OverlayNavMobile" >
                                     <Popover.Body>
                                         <NavDropdown.Item
+                                            className="p-2"
                                             active={itemSelectedLC === "accountssupervision"}
                                             onClick={() => { goTo("accountsSupervision") }}>
                                             {t("Accounts Supervision")}
                                         </NavDropdown.Item>
                                         <NavDropdown.Item
+                                            className="p-2"
                                             active={itemSelectedLC === "addaccount"} onClick={() => { goTo("addAccount") }}>
                                             {t("Add Account")}
                                         </NavDropdown.Item>
@@ -279,10 +283,12 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                             <OverlayTrigger placement="bottom" overlay={
                                 <Popover id="popover-funds" className="OverlayNavMobile" >
                                     <Popover.Body>
-                                        <NavDropdown.Item active={itemSelectedLC === "buy"} onClick={() => goTo("buy")}>
+                                        <NavDropdown.Item className="p-2"
+                                            active={itemSelectedLC === "buy"} onClick={() => goTo("buy")}>
                                             {t("Buy")}
                                         </NavDropdown.Item>
-                                        <NavDropdown.Item active={itemSelectedLC === "sell"} onClick={() => goTo("sell")}>
+                                        <NavDropdown.Item className="p-2"
+                                            active={itemSelectedLC === "sell"} onClick={() => goTo("sell")}>
                                             {t("Sell")}
                                         </NavDropdown.Item>
                                     </Popover.Body>
@@ -299,11 +305,13 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                     <Popover id="popover-cash" className="OverlayNavMobile">
                                         <Popover.Body>
                                             <NavDropdown.Item
+                                                className="p-2"
                                                 active={itemSelectedLC === "withdraw"}
                                                 onClick={() => { goTo("withdraw"); }}>
                                                 {t("Withdraw")}
                                             </NavDropdown.Item>
                                             <NavDropdown.Item
+                                                className="p-2"
                                                 active={itemSelectedLC === "transfer"}
                                                 onClick={() => { goTo("Transfer") }}>
                                                 {t("to Transfer")}

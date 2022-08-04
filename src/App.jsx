@@ -20,6 +20,7 @@ import './App.css';
 import moment from 'moment';
 import axios from 'axios';
 import { ErrorBoundary } from 'react-error-boundary';
+import TestPDF from 'components/TestPDF';
 
 function App() {
   const { i18n } = useTranslation();
@@ -40,43 +41,44 @@ function App() {
       <ErrorBoundary fallback={<ErrorNotice />}>
         <Suspense>
           <>
-          <div className="appContainer">
-            <BrowserRouter>
-              <Switch>
-                <Route exact path="/">
-                  <Landing />
-                </Route>
-                <Route exact path="/login">
-                  <Containerlogin />
-                </Route>
-                <Route exact path="/forgotPassword">
-                  <ContainerForgotPassword />
-                </Route>
-                <Route exact path="/changePassword/:user/:token">
-                  <ContainerChangePassword />
-                </Route>
-                <Route exact path="/changePassword">
-                  <ContainerChangePassword />
-                </Route>
-                <Route exact path="/activate">
-                  <ActivateAccount />
-                </Route>
-                <Route exact path="/setPassword">
-                  <SetPassword />
-                </Route>
-                <DashBoardProvider>
-                  <Route path="/DashBoard">
-                    <DashBoard />
+            <div className="appContainer">
+              <BrowserRouter>
+                <Switch>
+
+                  <Route exact path="/">
+                    <Landing />
                   </Route>
-                </DashBoardProvider>
-        
-                <Route>
-                  <NotFound />
-                </Route>
-              </Switch>
-            </BrowserRouter>
-          </div>
-          <RotateDevice />
+                  <Route exact path="/login">
+                    <Containerlogin />
+                  </Route>
+                  <Route exact path="/forgotPassword">
+                    <ContainerForgotPassword />
+                  </Route>
+                  <Route exact path="/changePassword/:user/:token">
+                    <ContainerChangePassword />
+                  </Route>
+                  <Route exact path="/changePassword">
+                    <ContainerChangePassword />
+                  </Route>
+                  <Route exact path="/activate">
+                    <ActivateAccount />
+                  </Route>
+                  <Route exact path="/setPassword">
+                    <SetPassword />
+                  </Route>
+                  <DashBoardProvider>
+                    <Route path="/DashBoard">
+                      <DashBoard />
+                    </Route>
+                  </DashBoardProvider>
+
+                  <Route>
+                    <NotFound />
+                  </Route>
+                </Switch>
+              </BrowserRouter>
+            </div>
+            <RotateDevice />
           </>
         </Suspense>
       </ErrorBoundary>

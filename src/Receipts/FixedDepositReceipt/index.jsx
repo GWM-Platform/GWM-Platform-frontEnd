@@ -16,196 +16,201 @@ const FixedDepositReceipt = ({ FixedDeposit }) => {
 
     return (
         <Document>
-            <Page size="A4" style={{ display: 'block', height: '100%', width: '100%' }}>
+            <Page size={[841.89, 450]} style={{ display: 'block', height: '100%', width: '100%' }}>
+
                 <Image fixed src={`${process.env.PUBLIC_URL}/images/PDF/background.jpg`} style={styles.pageBackground} />
                 <View
                     style={styles.container}
                 >
-                    <View
-                        style={styles.header}
-                    >
-                        <View style={styles.header.textContainer}>
-                            <Text style={styles.header.textContainer.text}>{t("Receipt of time deposit #")}{FixedDeposit?.id}</Text>
-                            <Text style={styles.header.textContainer.date}>{moment().format("DD MMM YYYY")}</Text>
-                        </View>
+                    <View style={styles.header}>
                         <Image src={`${process.env.PUBLIC_URL}/images/PDF/logo.png`} style={styles.header.image} />
+                        <View style={styles.header.textContainer}>
+                            <Text style={styles.header.textContainer.text}>{t("Transaction receipt")}</Text>
+                        </View>
                     </View>
-                    <View
-                        style={styles.body}
-                    >
-                        <View style={styles.body.cuentaYEstado}>
-                            <View >
+                    <View style={styles.body} >
+                        <View style={styles.body.biggerCol}>
+
+                            <View style={styles.body.section}>
                                 <Text style={styles.body.label}>
                                     {t("Account")}:
                                 </Text>
-                                <Text style={styles.body.data}>
+                                <Text style={styles.body.data} >
                                     {t(FixedDeposit.accountAlias)}
                                 </Text>
-                            </View>
-                            <View style={styles.body.cuentaYEstado.estado[FixedDeposit?.state.bg]} >
-                                <Text>
+                            </View >
+
+                            <View style={styles.body.section}>
+                                <Text style={styles.body.label}>
+                                    {t("Operation status")}
+                                </Text>
+                                <Text style={styles.body.data} >
                                     {t(FixedDeposit.state.text)}
                                 </Text>
+                            </View >
+
+                            <View style={styles.body.section}>
+                                <Text style={styles.body.label}>
+                                    {t("Investment initial amount")}:
+                                </Text>
+                                <Text style={styles.body.data} >
+                                    {
+                                        formatValue({
+                                            value: new Decimal(FixedDeposit?.initialAmount || 0).abs().toFixed(2),
+                                            groupSeparator: '.',
+                                            decimalSeparator: ',',
+                                            prefix: "U$D"
+                                        })
+                                    }
+                                </Text>
+                            </View >
+
+                            {
+                                !!(validState([])) &&
+                                <View style={styles.body.section}>
+                                    <Text style={styles.body.label}>
+                                        {t("Investment current amount")}:
+                                    </Text>
+                                    <Text style={styles.body.data}>
+                                        {
+                                            formatValue({
+                                                value: new Decimal(FixedDeposit?.ActualProfit.value || 0).abs().toFixed(2),
+                                                groupSeparator: '.',
+                                                decimalSeparator: ',',
+                                                prefix: "U$D"
+                                            })
+                                        }
+                                    </Text>
+                                </View>
+                            }
+
+                            {
+                                !!(validState(["Pending", "Ongoing", "Denied", "Closed (Out of term)"])) &&
+                                <View style={styles.body.section}>
+                                    <Text style={styles.body.label}>
+                                        {t("Investment upon closing within the agreed term")}:
+                                    </Text>
+                                    <Text style={styles.body.data}>
+                                        {
+                                            formatValue({
+                                                value: new Decimal(FixedDeposit?.ProfitAtTheEnd.value || 0).abs().toFixed(2),
+                                                groupSeparator: '.',
+                                                decimalSeparator: ',',
+                                                prefix: "U$D"
+                                            })
+                                        }
+                                    </Text>
+                                </View>
+                            }
+
+
+                            {
+                                !!(validState(["Closed (Out of term)", "Closed (Term completed)"])) &&
+                                <View style={styles.body.section}>
+                                    <Text style={styles.body.label}>
+                                        {t("Refund on close")}:
+                                    </Text>
+                                    <Text style={styles.body.data}>
+                                        {
+                                            formatValue({
+                                                value: new Decimal(FixedDeposit?.RefundedProfit.value || 0).abs().toFixed(2),
+                                                groupSeparator: '.',
+                                                decimalSeparator: ',',
+                                                prefix: "U$D"
+                                            })
+                                        }
+                                    </Text>
+                                </View>
+
+                            }
+
+                            <View style={styles.body.section}>
+                                <Text style={styles.body.label}>
+                                    {t("Duration (Agreed)")}:
+                                </Text>
+                                <Text style={styles.body.data}>
+                                    {FixedDeposit?.duration}&nbsp;{t("days")}
+                                </Text>
+                            </View>
+
+                            {
+                                !!(validState(["Closed (Term completed)", "Closed (Out of term)", "Ongoing"])) &&
+                                <View style={styles.body.section}>
+                                    <Text style={styles.body.label}>
+                                        {t("Time deposit Start date")}:
+                                    </Text>
+                                    <Text style={styles.body.data}>
+                                        {moment(FixedDeposit?.startDate).format('l')}
+                                    </Text>
+                                </View>
+                            }
+
+                            {
+                                !!(validState(["Closed (Term completed)", "Closed (Out of term)", "Ongoing"])) &&
+                                <View style={styles.body.section}>
+                                    <Text style={styles.body.label}>
+                                        {t("End date (Agreed)")}:
+                                    </Text>
+                                    <Text style={styles.body.data}>
+                                        {moment(FixedDeposit?.endDate).format('l')}
+                                    </Text>
+                                </View>
+                            }
+
+                            {
+                                !!(validState(["Closed (Term completed)", "Closed (Out of term)"])) &&
+                                <View style={styles.body.section}>
+                                    <Text style={styles.body.label}>
+                                        {t("Close date")}:
+                                    </Text>
+                                    <Text style={styles.body.data}>
+                                        {moment(FixedDeposit?.updatedAt).format('D MMM YY')}
+
+                                    </Text>
+                                </View>
+                            }
+
+                            <View style={styles.body.section}>
+                                <Text style={styles.body.label}>
+                                    {t("Anual rate")}:
+                                </Text>
+                                <Text style={styles.body.data}>
+                                    {
+                                        formatValue({
+                                            value: new Decimal(FixedDeposit?.AnualRate || 0).abs().toFixed(2),
+                                            groupSeparator: '.',
+                                            decimalSeparator: ',',
+                                            suffix: "%"
+                                        })
+                                    }
+                                </Text>
                             </View>
                         </View>
-
-                        <View style={styles.body.section}>
-                            <Text style={styles.body.label}>
-                                {t("Operation date")}:
-                            </Text>
-                            <Text style={styles.body.data} >
-                                {moment(FixedDeposit?.createdAt).format("DD MMM YYYY")}
-                            </Text>
-                        </View >
-
-                        <View style={styles.body.section}>
-                            <Text style={styles.body.label}>
-                                {t("Investment initial amount")}:
-                            </Text>
-                            <Text style={styles.body.data} >
-                                {
-                                    formatValue({
-                                        value: new Decimal(FixedDeposit?.initialAmount || 0).abs().toFixed(2),
-                                        groupSeparator: '.',
-                                        decimalSeparator: ',',
-                                        prefix: "U$D"
-                                    })
-                                }
-                            </Text>
-                        </View >
-
-                        {
-                            !!(validState([])) &&
-                            <View style={styles.body.section}>
-                                <Text style={styles.body.label}>
-                                    {t("Investment current amount")}:
+                        <View style={styles.body.smallerCol}>
+                            <View style={styles.body.smallerCol.section}>
+                                <Text style={styles.body.smallerCol.label}>
+                                    {t("Ticket N°")}
                                 </Text>
-                                <Text style={styles.body.data}>
-                                    {
-                                        formatValue({
-                                            value: new Decimal(FixedDeposit?.ActualProfit.value || 0).abs().toFixed(2),
-                                            groupSeparator: '.',
-                                            decimalSeparator: ',',
-                                            prefix: "U$D"
-                                        })
-                                    }
+                                <Text style={styles.body.smallerCol.data} >
+                                    {t("Time deposit")} #{FixedDeposit?.id}
                                 </Text>
-                            </View>
-                        }
-
-                        {
-                            !!(validState(["Pending", "Ongoing", "Denied", "Closed (Out of term)"])) &&
-                            <View style={styles.body.section}>
-                                <Text style={styles.body.label}>
-                                    {t("Investment upon closing within the agreed term")}:
+                            </View >
+                            <View style={styles.body.smallerCol.section}>
+                                <Text style={styles.body.smallerCol.label}>
+                                    {t("Operation date")}
                                 </Text>
-                                <Text style={styles.body.data}>
-                                    {
-                                        formatValue({
-                                            value: new Decimal(FixedDeposit?.ProfitAtTheEnd.value || 0).abs().toFixed(2),
-                                            groupSeparator: '.',
-                                            decimalSeparator: ',',
-                                            prefix: "U$D"
-                                        })
-                                    }
+                                <Text style={styles.body.smallerCol.data} >
+                                    {moment(FixedDeposit?.createdAt).format("l")}
                                 </Text>
-                            </View>
-                        }
-
-
-                        {
-                            !!(validState(["Closed (Out of term)", "Closed (Term completed)"])) &&
-                            <View style={styles.body.section}>
-                                <Text style={styles.body.label}>
-                                    {t("Refund on closed")}:
+                            </View >
+                            <View style={styles.body.smallerCol.section}>
+                                <Text style={styles.body.smallerCol.label}>
+                                    {t("Operation time")}
                                 </Text>
-                                <Text style={styles.body.data}>
-                                    {
-                                        formatValue({
-                                            value: new Decimal(FixedDeposit?.RefundedProfit.value || 0).abs().toFixed(2),
-                                            groupSeparator: '.',
-                                            decimalSeparator: ',',
-                                            prefix: "U$D"
-                                        })
-                                    }
+                                <Text style={styles.body.smallerCol.data} >
+                                    {moment(FixedDeposit?.createdAt).format("HH:mm:ss")}
                                 </Text>
-                            </View>
-
-                        }
-
-                        <View style={styles.body.section}>
-                            <Text style={styles.body.label}>
-                                {t("Duration (Agreed)")}:
-                            </Text>
-                            <Text style={styles.body.data}>
-                                {FixedDeposit?.duration}&nbsp;{t("days")}
-                            </Text>
-                        </View>
-
-                        {
-                            !!(validState(["Closed (Term completed)", "Closed (Out of term)", "Ongoing"])) &&
-                            <View style={styles.body.section}>
-                                <Text style={styles.body.label}>
-                                    {t("Time deposit Start date")}:
-                                </Text>
-                                <Text style={styles.body.data}>
-                                    {moment(FixedDeposit?.startDate).format('D MMM YY')}
-                                </Text>
-                            </View>
-
-                        }
-
-                        {
-                            !!(validState(["Closed (Term completed)", "Closed (Out of term)", "Ongoing"])) &&
-                            <View style={styles.body.section}>
-                                <Text style={styles.body.label}>
-                                    {t("End date (Agreed)")}:
-                                </Text>
-                                <Text style={styles.body.data}>
-                                    {moment(FixedDeposit?.endDate).format('D MMM YY')}
-                                </Text>
-                            </View>
-                        }
-
-                        {
-                            !!(validState(["Closed (Term completed)", "Closed (Out of term)", "Ongoing"])) &&
-                            <View style={styles.body.section}>
-                                <Text style={styles.body.label}>
-                                    {t("Elapsed")}:
-                                </Text>
-                                <Text style={styles.body.data}>
-                                    {FixedDeposit?.ellapsedDays}&nbsp;{t("days")}
-                                </Text>
-                            </View>
-                        }
-
-                        {
-                            !!(validState(["Closed (Term completed)", "Closed (Out of term)"])) &&
-                            <View style={styles.body.section}>
-                                <Text style={styles.body.label}>
-                                    {t("Close date")}:
-                                </Text>
-                                <Text style={styles.body.data}>
-                                    {moment(FixedDeposit?.updatedAt).format('D MMM YY')}
-
-                                </Text>
-                            </View>
-                        }
-
-                        <View style={styles.body.section}>
-                            <Text style={styles.body.label}>
-                                {t("Anual rate")}:
-                            </Text>
-                            <Text style={styles.body.data}>
-                                {
-                                    formatValue({
-                                        value: new Decimal(FixedDeposit?.AnualRate || 0).abs().toFixed(2),
-                                        groupSeparator: '.',
-                                        decimalSeparator: ',',
-                                        suffix: "%"
-                                    })
-                                }
-                            </Text>
+                            </View >
                         </View>
                     </View>
                 </View>
@@ -215,8 +220,6 @@ const FixedDepositReceipt = ({ FixedDeposit }) => {
 }
 
 export default FixedDepositReceipt
-
-
 
 const styles = {
     pageBackground: {
@@ -232,29 +235,25 @@ const styles = {
         height: '100%',
         width: '100%',
         backgroundColor: 'transparent',
-        padding: '50px 50px 0px 50px'
+        padding: '50px 50px 50px 50px'
     },
     header: {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         flexDirection: 'row',
-        height: '100px',
+        height: '70px',
         width: '100%',
         backgroundColor: '#082044',
         padding: '20px',
         image: {
-            height: '50px',
-            width: '50px',
+            height: '35px',
+            width: '35px',
             backgroundColor: 'white',
             borderRadius: '50%',
-            padding: '8px'
+            padding: '5px'
         },
         textContainer: {
-            height: "90%",
-            display: 'flex',
-            justifyContent: 'space-between',
-            flexDirection: 'column',
             text: {
                 fontSize: "16px",
                 color: "rgba(255,255,255,.95)"
@@ -266,19 +265,46 @@ const styles = {
         }
     },
     body: {
-        display: 'block',
-        height: 'calc( 100% - 100px )',
+        display: 'flex',
+        flexDirection: 'row',
+        height: 'calc( 100% - 70px )',
         width: '100%',
         padding: "20px",
         backgroundColor: 'rgba(245,245,245)',
+        biggerCol: {
+            flex: "5 1 auto",
+            height: "100%",
+        },
+        smallerCol: {
+            flex: "3 1 auto",
+            height: "100%",
+            label: {
+                fontSize: "14px",
+                textAlign: "right",
+                marginBottom: "5px"
+            },
+            data: {
+                fontSize: "14px",
+                textAlign: "right"
+            },
+            section: {
+
+                marginBottom: "15px"
+            }
+        },
         label: {
-            fontSize: "14px"
+            fontSize: "14px",
         },
         data: {
-            fontSize: "20px"
+            fontSize: "14px",
+            textAlign: "right"
         },
         section: {
-            marginBottom: "20px"
+            width: "100%",
+            display: "flex",
+            justifyContent: "space-between",
+            flexDirection: "row",
+            marginBottom: "10px"
         },
         cuentaYEstado: {
             marginBottom: "20px",

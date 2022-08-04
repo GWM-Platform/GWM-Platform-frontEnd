@@ -36,8 +36,10 @@ i18n
       },
       es: {
         translation: {
+          "Time deposit Start date":"Desde",
           //Translations in Spanish
           //Translations for login
+          "Aprobado": "Aprobado",
           "Username or Email": "Nombre de usuario o email",
           "Password": "Contraseña",
           "Forgot Password?": "¿Olvidaste tu contraseña?",
@@ -269,6 +271,7 @@ i18n
           "transfer #": "la transferencia #",
           "The ticket has been": "El ticket fue",
           "approved": "aprobado",
+          "Approved": "Aprobado",
           "denied": "rechazado",
           "succesfully": "exitosamente",
           "There are no tickets in the state selected": "No hay tickets en el estado seleccionado",
@@ -492,7 +495,11 @@ i18n
             "Fecha que aparecerá como cuando se realizó la operación",
           "You must enter the date that will appear as when the operation was performed":
             "Debe ingresar la fecha que aparecerá como cuando se realizó la operación",
-          "Operation state": "Estado de la operación",
+          "Operation status": "Estado de la operación",
+          "Operation type": "Tipo de operación",
+          "Transaction":"Transacción",
+          "Shares transaction":"Transacción de cuotapartes",
+          "Amount (Shares)":"Monto (Cuotapartes)",
           "The amount must be lower or equal to the selected account's available cash":
             "El monto debe ser menor o igual al dinero disponible de la cuenta seleccionada",
           "You must enter how much you want to withdraw from the selected account":
@@ -601,7 +608,6 @@ i18n
           "Pending total": "Total pendiente",
 
           //Time deposit
-          "Time deposits": "Plazos Fijos",
           "Time Deposits history": "Historial de plazos fijos",
           "Actual Profit": "Ganancia actual",
           "Profit at the end": "Ganancia al final",
@@ -679,7 +685,7 @@ i18n
           "Investment initial amount": "Monto inicial de la inversión",
           "Investment current amount": "Monto actual de la inversión",
           "Investment upon closing within the agreed term": "Inversión al cerrar (en el plazo acordado)",
-          "Refund on closed": "Reintegrado en el cierre",
+          "Refund on close": "Reintegrado en el cierre",
           "Duration (Agreed)": "Duración (acordada)",
           "Start date": "Fecha de inicio",
           "End date (Agreed)": "Fecha de fin (acordada)",
@@ -693,10 +699,13 @@ i18n
           "Receipt of transfer #": "Comprobante de la transferencia #",
           "Receipt of transaction #": "Comprobante de la transacción #",
           "Operation date": "Fecha de la operación",
+          "Operation time": "Hora de la operación",
           "Apparently, there is no time deposit plan created": "Al parecer, no hay ningun plan de plazo fijo creado",
           "Create one": "Crear uno",
           "Receipt":"Comprobante",
-          "Decimal values ​​are not allowed":"No se admiten valores decimales"
+          "Transaction receipt":"Comprobante de operación",
+          "Decimal values ​​are not allowed":"No se admiten valores decimales",
+          "Operation receipt":"Comprobante de operación"
         }
       }
     }

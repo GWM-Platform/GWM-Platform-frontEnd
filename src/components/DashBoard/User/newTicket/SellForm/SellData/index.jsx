@@ -7,7 +7,6 @@ import { useTranslation } from "react-i18next";
 const SellData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAccordion, fetching, sellAll }) => {
 
     const { t } = useTranslation();
-    console.log(sellAll)
     return (
         <Accordion.Item eventKey="0">
             <Accordion.Header onClick={() => { if (data.FundSelected !== -1) toggleAccordion() }}>

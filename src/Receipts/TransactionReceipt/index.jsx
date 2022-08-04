@@ -18,97 +18,142 @@ const TransactionReceipt = ({ Transaction }) => {
 
   return (
     <Document>
-      <Page size="A4" style={{ display: 'block', height: '100%', width: '100%' }}>
+      <Page size={[841.89,450 ]} style={{ display: 'block', height: '100%', width: '100%' }}>
         <Image fixed src={`${process.env.PUBLIC_URL}/images/PDF/background.jpg`} style={styles.pageBackground} />
         <View
           style={styles.container}
         >
-          <View
-            style={styles.header}
-          >
-            <View style={styles.header.textContainer}>
-              <Text style={styles.header.textContainer.text}>{t("Receipt of transaction #")}{Transaction?.id}</Text>
-              <Text style={styles.header.textContainer.date}>{moment().format("DD MMM YYYY")}</Text>
-            </View>
+          <View style={styles.header}>
             <Image src={`${process.env.PUBLIC_URL}/images/PDF/logo.png`} style={styles.header.image} />
-          </View>
-          <View
-            style={styles.body}
-          >
-            <View style={styles.body.cuentaYEstado}>
-              <View >
-                <Text style={styles.body.label}>
-                  {t("Account")}:
-                </Text>
-                <Text style={styles.body.data}>
-                  {t(Transaction?.accountAlias)}
-                </Text>
-              </View>
-              <View style={styles.body.cuentaYEstado.estado[{ "1": "info", "2": "success", "3": "danger", "4": "success" }[Transaction?.stateId.toString()]]} >
-                <Text>
-                  {t(Transaction?.state)}
-                </Text>
-              </View>
+            <View style={styles.header.textContainer}>
+              <Text style={styles.header.textContainer.text}>{t("Transaction receipt")}</Text>
             </View>
+          </View>
+          <View style={styles.body} >
+            <View style={styles.body.biggerCol}>
+              <View style={styles.body.section}>
+                <Text style={styles.body.label}>
+                  {t("Account")}
+                </Text>
+                <Text style={styles.body.data} >
+                  {Transaction?.accountAlias}
+                </Text>
+              </View >
 
-            <View style={styles.body.section}>
-              <Text style={styles.body.label}>
-                {t("Concept")}:
-              </Text>
-              <Text style={styles.body.data} >
-                {Math.sign(Transaction?.shares) === 1 ? t('Purchase of') : t('Sale of')}&nbsp;
-                {
-                  formatValue({
-                    value: new Decimal(Transaction?.shares || 0).abs().toFixed(2),
-                    groupSeparator: '.',
-                    decimalSeparator: ','
-                  })
-                }&nbsp;
-                {t(Math.abs(Transaction?.shares) === 1 ? "share" : "shares")}
-              </Text>
-            </View >
+              <View style={styles.body.section}>
+                <Text style={styles.body.label}>
+                  {t("Operation status")}
+                </Text>
+                <Text style={styles.body.data} >
+                  <View style={styles.body.cuentaYEstado.estado[{ "1": "info", "2": "success", "3": "danger", "4": "success" }[Transaction?.stateId.toString()]]} >
+                    <Text>
+                      {t(Transaction?.state)}
+                    </Text>
+                  </View>
+                </Text>
+              </View >
 
-            <View style={styles.body.section}>
-              <Text style={styles.body.label}>
-                {t("Operation date")}:
-              </Text>
-              <Text style={styles.body.data} >
-                {moment(Transaction?.createdAt).format("DD MMM YYYY")}
-              </Text>
-            </View >
+              <View style={styles.body.section}>
+                <Text style={styles.body.label}>
+                  {t("Operation type")}
+                </Text>
+                <Text style={styles.body.data} >
+                  {t("Shares transaction")}
+                </Text>
+              </View >
 
-            <View style={styles.body.section}>
-              <Text style={styles.body.label}>
-                {t("Share price")}:
-              </Text>
-              <Text style={styles.body.data} >
-                {
-                  formatValue({
-                    value: new Decimal(Transaction?.sharePrice || 0).toFixed(2),
-                    groupSeparator: '.',
-                    decimalSeparator: ',',
-                    prefix: "U$D"
-                  })
-                }
-              </Text>
-            </View >
+              <View style={styles.body.section}>
+                <Text style={styles.body.label}>
+                  {t("Fund")}
+                </Text>
+                <Text style={styles.body.data} >
+                  {Transaction.fundName}
+                </Text>
+              </View >
 
-            <View style={styles.body.section}>
-              <Text style={styles.body.label}>
-                {t("Amount")}:
-              </Text>
-              <Text style={styles.body.data} >
-                {Transaction?.receiverId === Transaction?.AccountId ? '+' : '-'}
-                {
-                  formatValue({
-                    value: new Decimal(amount || 0).abs().toFixed(2),
-                    groupSeparator: '.',
-                    decimalSeparator: ',',
-                    prefix: "U$D"
-                  })
-                }
-              </Text>
-            </View >
+              <View style={styles.body.section}>
+                <Text style={styles.body.label}>
+                  {t("Concept")}:
+                </Text>
+                <Text style={styles.body.data} >
+                  {Math.sign(Transaction?.shares) === 1 ? t('Purchase') : t('Sale')}
+                </Text>
+              </View >
+
+              <View style={styles.body.section}>
+                <Text style={styles.body.label}>
+                  {t("Amount (Shares)")}
+                </Text>
+                <Text style={styles.body.data} >
+                  {
+                    formatValue({
+                      value: new Decimal(Transaction?.shares || 0).abs().toFixed(2),
+                      groupSeparator: '.',
+                      decimalSeparator: ','
+                    })
+                  }
+                </Text>
+              </View >
+
+              <View style={styles.body.section}>
+                <Text style={styles.body.label}>
+                  {t("Share price")}
+                </Text>
+                <Text style={styles.body.data} >
+                  {
+                    formatValue({
+                      value: new Decimal(Transaction?.sharePrice || 0).toFixed(2),
+                      groupSeparator: '.',
+                      decimalSeparator: ',',
+                      prefix: "U$D"
+                    })
+                  }
+                </Text>
+              </View >
+
+              <View style={styles.body.section}>
+                <Text style={styles.body.label}>
+                  {t("Amount")}
+                </Text>
+                <Text style={styles.body.data} >
+                  {Transaction?.receiverId === Transaction?.AccountId ? '+' : '-'}
+                  {
+                    formatValue({
+                      value: new Decimal(amount || 0).abs().toFixed(2),
+                      groupSeparator: '.',
+                      decimalSeparator: ',',
+                      prefix: "U$D"
+                    })
+                  }
+                </Text>
+              </View >
+            </View>
+            <View style={styles.body.smallerCol}>
+              <View style={styles.body.smallerCol.section}>
+                <Text style={styles.body.smallerCol.label}>
+                  {t("Ticket N°")}
+                </Text>
+                <Text style={styles.body.smallerCol.data} >
+                  {t("Transaction")} #{Transaction?.id}
+                </Text>
+              </View >
+              <View style={styles.body.smallerCol.section}>
+                <Text style={styles.body.smallerCol.label}>
+                  {t("Operation date")}
+                </Text>
+                <Text style={styles.body.smallerCol.data} >
+                  {moment(Transaction?.createdAt).format("l")}
+                </Text>
+              </View >
+              <View style={styles.body.smallerCol.section}>
+                <Text style={styles.body.smallerCol.label}>
+                  {t("Operation time")}
+                </Text>
+                <Text style={styles.body.smallerCol.data} >
+                  {moment(Transaction?.createdAt).format("HH:mm:ss")}
+                </Text>
+              </View >
+            </View>
           </View>
         </View>
       </Page >
@@ -117,8 +162,6 @@ const TransactionReceipt = ({ Transaction }) => {
 }
 
 export default TransactionReceipt
-
-
 
 const styles = {
   pageBackground: {
@@ -134,29 +177,25 @@ const styles = {
     height: '100%',
     width: '100%',
     backgroundColor: 'transparent',
-    padding: '50px 50px 0px 50px'
+    padding: '50px 50px 50px 50px'
   },
   header: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    height: '100px',
+    height: '70px',
     width: '100%',
     backgroundColor: '#082044',
     padding: '20px',
     image: {
-      height: '50px',
-      width: '50px',
+      height: '35px',
+      width: '35px',
       backgroundColor: 'white',
       borderRadius: '50%',
-      padding: '8px'
+      padding: '5px'
     },
     textContainer: {
-      height: "90%",
-      display: 'flex',
-      justifyContent: 'space-between',
-      flexDirection: 'column',
       text: {
         fontSize: "16px",
         color: "rgba(255,255,255,.95)"
@@ -168,19 +207,46 @@ const styles = {
     }
   },
   body: {
-    display: 'block',
-    height: 'calc( 100% - 100px )',
+    display: 'flex',
+    flexDirection: 'row',
+    height: 'calc( 100% - 70px )',
     width: '100%',
     padding: "20px",
     backgroundColor: 'rgba(245,245,245)',
+    biggerCol: {
+      flex: "5 1 auto",
+      height: "100%",
+    },
+    smallerCol: {
+      flex: "3 1 auto",
+      height: "100%",
+      label: {
+        fontSize: "14px",
+        textAlign: "right",
+        marginBottom: "5px"
+      },
+      data: {
+        fontSize: "14px",
+        textAlign: "right"
+      },
+      section: {
+
+        marginBottom: "15px"
+      }
+    },
     label: {
-      fontSize: "14px"
+      fontSize: "14px",
     },
     data: {
-      fontSize: "20px"
+      fontSize: "14px",
+      textAlign: "right"
     },
     section: {
-      marginBottom: "20px"
+      width: "100%",
+      display: "flex",
+      justifyContent: "space-between",
+      flexDirection: "row",
+      marginBottom: "10px"
     },
     cuentaYEstado: {
       marginBottom: "20px",

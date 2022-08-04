@@ -11,7 +11,7 @@ import { Spinner } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf } from '@fortawesome/free-regular-svg-icons';
 
-const Movement = ({ content }) => {
+const Movement = ({ content,fundName }) => {
 
   Decimal.set({ precision: 100 })
 
@@ -30,7 +30,8 @@ const Movement = ({ content }) => {
     const blob = await ReactPDF.pdf(<TransactionReceipt Transaction={{
       ...content, ...{
         state: t(getMoveStateById(content.stateId).name),
-        accountAlias: AccountSelected.alias
+        accountAlias: AccountSelected.alias,
+        fundName:fundName
       }
     }} />).toBlob()
     const url = URL.createObjectURL(blob)

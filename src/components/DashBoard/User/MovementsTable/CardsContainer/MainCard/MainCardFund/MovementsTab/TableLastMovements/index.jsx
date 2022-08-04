@@ -4,7 +4,7 @@ import { Table } from 'react-bootstrap';
 import Movement from './Movement';
 import { useTranslation } from "react-i18next";
 
-const TableLastMovements = ({ content, movements }) => {
+const TableLastMovements = ({ content, movements,fundName }) => {
     const { t } = useTranslation();
 
     return (
@@ -23,22 +23,9 @@ const TableLastMovements = ({ content, movements }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {content.map((u, i) =>
-                        <Movement key={i} content={u} />
+                    {content.map((movement, key) =>
+                        <Movement key={key} content={movement} fundName={fundName}/>
                     )}
-                    
-                    <Movement key={1} content={{
-                        "id": 13,
-                        "clientId": 4,
-                        "fundId": 3,
-                        "stateId": 2,
-                        "shares": 60.85,
-                        "sharePrice": 328.56,
-                        "createdAt": "2022-02-17T00:00:00.000Z",
-                        "updatedAt": "2022-07-30T16:53:27.884Z"
-                    }} />
-
-
                 </tbody>
             </Table>
         </div>

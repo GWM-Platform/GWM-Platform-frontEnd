@@ -279,7 +279,7 @@ const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }
                 }
                 {!!(validState(["Closed (Out of term)", "Closed (Term completed)"])) &&
                     <div className='d-flex justify-content-between' >
-                        <span >{t("Refund on closed")}:&nbsp;
+                        <span >{t("Refund on close")}:&nbsp;
                             {RefundedProfit.fetching ?
                                 <Spinner animation="border" size="sm" />
                                 :

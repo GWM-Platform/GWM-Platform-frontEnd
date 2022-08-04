@@ -38,7 +38,6 @@ const Movement = ({ content }) => {
     setGeneratingPDF(false)
   }
 
-
   return (
     <tr>
       <td className="tableId">{content.id}</td>
