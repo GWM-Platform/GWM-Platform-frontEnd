@@ -541,6 +541,7 @@ i18n
           "transfers": "transferencias",
           "transfer": "transferencia",
           "movement": "movimiento",
+          "Movement": "Movimiento",
           "transaction": "transacción",
           "per page": "por página",
           "status": "estado",
