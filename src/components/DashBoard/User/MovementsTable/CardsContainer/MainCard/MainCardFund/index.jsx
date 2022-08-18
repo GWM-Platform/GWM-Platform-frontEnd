@@ -15,6 +15,7 @@ import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
 const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
     const [SelectedTab, setSelectedTab] = useState("0")
+    //eslint-disable-next-line
     const [Performance, setPerformance] = useState(0)
     const { PendingTransactions, token, ClientSelected } = useContext(DashBoardContext)
     const { t } = useTranslation();
@@ -23,6 +24,7 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
     const pendingshares = PendingTransactions.value.filter((transaction) => transaction.fundId === Fund.fund.id && Math.sign(transaction.shares) === +1).map((transaction) => transaction.shares).reduce((a, b) => a + b, 0).toFixed(2)
 
     useEffect(() => {
+        //eslint-disable-next-line
         const getPerformance = async () => {
             var url = `${process.env.REACT_APP_APIURL}/funds/${Fund.fund.id}/performance?` + new URLSearchParams(
                 {
@@ -48,7 +50,7 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
                 }
             }
         }
-        
+
         /*
         TODO - Show again when the backend is fixed
         getPerformance()

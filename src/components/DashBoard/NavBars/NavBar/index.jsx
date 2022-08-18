@@ -38,7 +38,6 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
 
     return (
         <Navbar sticky="top" className={`py-0 mb-0 navBarDesktop`} collapseOnSelect expand="sm" variant="dark" >
-
             {/*====================================================Desktop==================================================== */}
             <Container fluid className="bottomInnerBorder px-0 d-none d-sm-block">
                 <Row className="w-100 d-flex align-items-center mx-0">

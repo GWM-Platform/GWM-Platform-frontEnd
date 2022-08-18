@@ -16,7 +16,7 @@ i18n
           //Translations in English
           "DEPOSIT": "Deposit",
           "WITHDRAWAL": "Withdrawal",
-          "STAKE_BUY": "Purchase of {{fund}} shares", 
+          "STAKE_BUY": "Purchase of {{fund}} shares",
           "STAKE_SELL": "Sale of {{fund}} shares",
           "REPAYMENT_FUND": "Refund due to denied ticket (Fund {{fund}})",
           "REPAYMENT_FIXED_DEPOSIT": "Refund due to denied ticket (Time deposit #{{fixedDeposit}})",
@@ -31,12 +31,12 @@ i18n
           "to Transfer": "Transfer",
           "To transfer to": "Transfer to",
           "Actual period () rate": "Actual period ({{period}}) rate",
-          "Time deposit Start date":"Start date"
+          "Time deposit Start date": "Start date"
         }
       },
       es: {
         translation: {
-          "Time deposit Start date":"Desde",
+          "Time deposit Start date": "Desde",
           //Translations in Spanish
           //Translations for login
           "Aprobado": "Aprobado",
@@ -271,7 +271,6 @@ i18n
           "transfer #": "la transferencia #",
           "The ticket has been": "El ticket fue",
           "approved": "aprobado",
-          "Approved": "Aprobado",
           "denied": "rechazado",
           "succesfully": "exitosamente",
           "There are no tickets in the state selected": "No hay tickets en el estado seleccionado",
@@ -441,7 +440,6 @@ i18n
           "Show less": "Mostrar menos",
           "Assets": "Activos",
           "Pendiente": "Pendiente",
-          "Aprobado": "Aprobado",
           "Denegado": "Rechazado",
           "Liquidada": "Liquidado",
           "Transactions per page": "Transacciones por pagina",
@@ -497,9 +495,9 @@ i18n
             "Debe ingresar la fecha que aparecerá como cuando se realizó la operación",
           "Operation status": "Estado de la operación",
           "Operation type": "Tipo de operación",
-          "Transaction":"Transacción",
-          "Shares transaction":"Transacción de cuotapartes",
-          "Amount (Shares)":"Monto (Cuotapartes)",
+          "Transaction": "Transacción",
+          "Shares transaction": "Transacción de cuotapartes",
+          "Amount (Shares)": "Monto (Cuotapartes)",
           "The amount must be lower or equal to the selected account's available cash":
             "El monto debe ser menor o igual al dinero disponible de la cuenta seleccionada",
           "You must enter how much you want to withdraw from the selected account":
@@ -703,10 +701,15 @@ i18n
           "Operation time": "Hora de la operación",
           "Apparently, there is no time deposit plan created": "Al parecer, no hay ningun plan de plazo fijo creado",
           "Create one": "Crear uno",
-          "Receipt":"Comprobante",
-          "Transaction receipt":"Comprobante de operación",
-          "Decimal values ​​are not allowed":"No se admiten valores decimales",
-          "Operation receipt":"Comprobante de operación"
+          "Receipt": "Comprobante",
+          "Transaction receipt": "Comprobante de operación",
+          "Decimal values ​​are not allowed": "No se admiten valores decimales",
+          "Operation receipt": "Comprobante de operación",
+          "Looks like there was a problem": "Parece que hubo un problema",
+          "Sorry, something went wrong": "Lo sentimos, algo salió mal",
+          "Our team has been notified. Reload the page or, if this keeps happening, try again later": "Nuestro equipo ya ha sido notificado. Vuelva a cargar la página o, si esto sigue sucediendo, vuelva a intentarlo más tarde",
+          "Report an issue": "Reportar un problema",
+          "Reload page": "Recargar la página"
         }
       }
     }

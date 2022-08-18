@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
+//eslint-disable-next-line
 import { Col, Spinner } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,11 +12,13 @@ const FundInfo = ({ Fund }) => {
     const { token } = useContext(DashBoardContext)
 
     const [Hide, setHide] = useState(false)
+    //eslint-disable-next-line
     const [Performance, setPerformance] = useState({ value: 0, fetching: true })
     const balanceInCash = (Fund.freeShares * Fund.sharePrice)
 
     const { t } = useTranslation()
     useEffect(() => {
+        //eslint-disable-next-line
         const getPerformance = async () => {
             setPerformance(prevState => ({ ...prevState, ...{ fetching: true, value: 0 } }))
             var url = `${process.env.REACT_APP_APIURL}/funds/${Fund.id}/performance`
