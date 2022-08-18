@@ -7,7 +7,7 @@ import './index.scss'
 import { faExclamation } from '@fortawesome/free-solid-svg-icons';
 import { faCircle } from '@fortawesome/free-regular-svg-icons';
 
-const ErrorNotice = ({ dialogOptions }) => {
+const ErrorNotice = () => {
     const { t } = useTranslation();
     function refreshPage() {
         window.location.reload(false);
