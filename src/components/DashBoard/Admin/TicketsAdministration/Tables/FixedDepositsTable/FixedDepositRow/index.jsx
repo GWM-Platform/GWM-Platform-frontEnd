@@ -79,12 +79,12 @@ const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }
                     if (closedAtTheEnd()) {
                         return Movement.duration
                     } else {
-                        return (Math.floor(moment(Movement?.updatedAt).toDate().getTime() / 1000 / 60 / 60 / 24) -
-                            Math.floor(moment(Movement?.startDate).toDate().getTime() / 1000 / 60 / 60 / 24)) ?? 0
+                        return (Math.floor(new Date(Movement?.updatedAt).getTime() / 1000 / 60 / 60 / 24) -
+                            Math.floor(new Date(Movement?.startDate).getTime() / 1000 / 60 / 60 / 24)) ?? 0
                     }
                 } else {
-                    return (Math.floor(moment().toDate().getTime() / 1000 / 60 / 60 / 24) -
-                        Math.floor(moment(Movement?.startDate).toDate().getTime() / 1000 / 60 / 60 / 24)) ?? 0
+                    return (Math.floor(new Date().getTime() / 1000 / 60 / 60 / 24) -
+                        Math.floor(new Date(Movement?.startDate).getTime() / 1000 / 60 / 60 / 24)) ?? 0
                 }
             case 3://Denied
                 return 0

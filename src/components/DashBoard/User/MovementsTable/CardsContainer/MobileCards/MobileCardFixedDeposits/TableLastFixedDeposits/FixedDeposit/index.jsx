@@ -13,7 +13,7 @@ import { faFilePdf } from '@fortawesome/free-regular-svg-icons';
 
 const FixedDeposit = ({ content }) => {
   const { t } = useTranslation();
-  const { toLogin,AccountSelected } = useContext(DashBoardContext)
+  const { toLogin, AccountSelected } = useContext(DashBoardContext)
 
   const status = () => {
     switch (content.stateId) {
@@ -70,12 +70,12 @@ const FixedDeposit = ({ content }) => {
           if (closedAtTheEnd()) {
             return content.duration
           } else {
-            return (Math.floor(moment(content?.updatedAt).toDate().getTime() / 1000 / 60 / 60 / 24) -
-              Math.floor(moment(content?.startDate).toDate().getTime() / 1000 / 60 / 60 / 24)) ?? 0
+            return (Math.floor(new Date(content?.updatedAt).getTime() / 1000 / 60 / 60 / 24) -
+              Math.floor(new Date(content?.startDate).getTime() / 1000 / 60 / 60 / 24)) ?? 0
           }
         } else {
-          return (Math.floor(moment().toDate().getTime() / 1000 / 60 / 60 / 24) -
-            Math.floor(moment(content?.startDate).toDate().getTime() / 1000 / 60 / 60 / 24)) ?? 0
+          return (Math.floor(new Date().getTime() / 1000 / 60 / 60 / 24) -
+            Math.floor(new Date(content?.startDate).getTime() / 1000 / 60 / 60 / 24)) ?? 0
         }
       case 3://Denied
         return 0

@@ -72,12 +72,12 @@ const FixedDeposit = ({ content }) => {
           if (closedAtTheEnd()) {
             return content.duration
           } else {
-            return (Math.floor(moment(content?.updatedAt).toDate().getTime() / 1000 / 60 / 60 / 24) -
-              Math.floor(moment(content?.startDate).toDate().getTime() / 1000 / 60 / 60 / 24)) ?? 0
+            return (Math.floor(new Date(content?.updatedAt).getTime() / 1000 / 60 / 60 / 24) -
+              Math.floor(new Date(content?.startDate).getTime() / 1000 / 60 / 60 / 24)) ?? 0
           }
         } else {
-          return (Math.floor(moment().toDate().getTime() / 1000 / 60 / 60 / 24) -
-            Math.floor(moment(content?.startDate).toDate().getTime() / 1000 / 60 / 60 / 24)) ?? 0
+          return (Math.floor(new Date().getTime() / 1000 / 60 / 60 / 24) -
+            Math.floor(new Date(content?.startDate).getTime() / 1000 / 60 / 60 / 24)) ?? 0
         }
       case 3://Denied
         return 0
@@ -85,8 +85,6 @@ const FixedDeposit = ({ content }) => {
         return 0
     }
   }
-  
-
 
   const calculateActualProfit = (signal) => {
     if (content.initialAmount) {
