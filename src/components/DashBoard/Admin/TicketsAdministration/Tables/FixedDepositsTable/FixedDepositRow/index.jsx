@@ -72,7 +72,6 @@ const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }
 
     const ellapsedDays = () => {
         switch (Movement.stateId) {
-
             case 1://pending
                 return 0
             case 2://Approved
@@ -80,10 +79,12 @@ const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }
                     if (closedAtTheEnd()) {
                         return Movement.duration
                     } else {
-                        return Math.abs(moment(Movement?.updatedAt).startOf("day").diff(moment(Movement.startDate).startOf("day"), "days"))
+                        return (Math.floor(moment(Movement?.updatedAt).toDate().getTime() / 1000 / 60 / 60 / 24) -
+                            Math.floor(moment(Movement?.startDate).toDate().getTime() / 1000 / 60 / 60 / 24)) ?? 0
                     }
                 } else {
-                    return Math.abs(moment(Movement?.startDate).startOf("day").diff(moment().startOf("day"), "days"))
+                    return (Math.floor(moment().toDate().getTime() / 1000 / 60 / 60 / 24) -
+                        Math.floor(moment(Movement?.startDate).toDate().getTime() / 1000 / 60 / 60 / 24)) ?? 0
                 }
             case 3://Denied
                 return 0
@@ -217,7 +218,7 @@ const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }
             <div className='mobileMovement'>
                 <div className='d-flex py-1 align-items-center' >
                     <span className="h4 mb-0 me-1 me-md-2">{t("Time deposit")}&nbsp;#{Movement.id}</span>
-                    <div className='me-auto px-1 px-md-2' style={{borderLeft:"1px solid lightgray",borderRight:"1px solid lightgray"}}>
+                    <div className='me-auto px-1 px-md-2' style={{ borderLeft: "1px solid lightgray", borderRight: "1px solid lightgray" }}>
                         <span className="d-none d-md-inline">{t("Client")}:&nbsp;</span>
                         {
                             UserTicketInfo.fetching ?

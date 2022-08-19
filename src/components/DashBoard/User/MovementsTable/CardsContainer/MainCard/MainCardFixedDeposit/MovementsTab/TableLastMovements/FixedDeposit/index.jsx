@@ -65,7 +65,6 @@ const FixedDeposit = ({ content }) => {
 
   const ellapsedDays = () => {
     switch (content.stateId) {
-
       case 1://pending
         return 0
       case 2://Approved
@@ -73,10 +72,12 @@ const FixedDeposit = ({ content }) => {
           if (closedAtTheEnd()) {
             return content.duration
           } else {
-            return Math.abs(moment(content?.updatedAt).startOf("day").diff(moment(content.startDate).startOf("day"), "days"))
+            return (Math.floor(moment(content?.updatedAt).toDate().getTime() / 1000 / 60 / 60 / 24) -
+              Math.floor(moment(content?.startDate).toDate().getTime() / 1000 / 60 / 60 / 24)) ?? 0
           }
         } else {
-          return Math.abs(moment(content?.startDate).startOf("day").diff(moment().startOf("day"), "days"))
+          return (Math.floor(moment().toDate().getTime() / 1000 / 60 / 60 / 24) -
+            Math.floor(moment(content?.startDate).toDate().getTime() / 1000 / 60 / 60 / 24)) ?? 0
         }
       case 3://Denied
         return 0
@@ -84,6 +85,8 @@ const FixedDeposit = ({ content }) => {
         return 0
     }
   }
+  
+
 
   const calculateActualProfit = (signal) => {
     if (content.initialAmount) {
