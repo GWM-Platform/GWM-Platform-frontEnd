@@ -83,7 +83,7 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                             {t("Tickets administration")}
                                         </Nav.Link>
                                         <NavDropdown
-                                            active={itemSelectedLC === "withdrawcash" || itemSelectedLC === "depositcash" || itemSelectedLC === "addaccount" || itemSelectedLC === "accountssupervision"}
+                                            active={itemSelectedLC === "withdrawcash" || itemSelectedLC === "depositcash" || itemSelectedLC === "addaccount" || itemSelectedLC === "accountssupervision" || itemSelectedLC === "connectusertoclient"}
                                             className="px-0 transactionDropdown" title={t("Accounts administration")} id="collasible-nav-dropdown">
                                             <NavDropdown.Item
                                                 active={itemSelectedLC === "accountssupervision"}
@@ -104,6 +104,11 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                                 active={itemSelectedLC === "withdrawcash"}
                                                 onClick={() => { goTo("withdrawCash") }}>
                                                 {t("Withdraw cash")}
+                                            </NavDropdown.Item>
+                                            <NavDropdown.Item
+                                                active={itemSelectedLC === "connectusertoclient"}
+                                                onClick={() => { goTo("connectUserToClient") }}>
+                                                {t("Connect user to client")}
                                             </NavDropdown.Item>
                                         </NavDropdown>
                                     </>
@@ -200,7 +205,7 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                         </Col>
                     </Row>
 
-                    <Row className={`w-100 justify-content-between align-items-center mx-0 px-0 ${itemSelectedLC === "addaccount" || itemSelectedLC === "depositcash" || itemSelectedLC === "withdrawcash" || itemSelectedLC === "accountssupervision" ? "d-flex" : "d-none"}`}>
+                    <Row className={`w-100 justify-content-between align-items-center mx-0 px-0 ${itemSelectedLC === "addaccount" || itemSelectedLC === "depositcash" || itemSelectedLC === "withdrawcash" || itemSelectedLC === "accountssupervision" || itemSelectedLC === "connectusertoclient" ? "d-flex" : "d-none"}`}>
                         <Col xs="6" className="px-0">
                             <OverlayTrigger placement="bottom" overlay={
                                 <Popover id="popover-funds" className="OverlayNavMobile" >
@@ -236,12 +241,17 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                         <NavDropdown.Item
                                             className="p-2"
                                             active={itemSelectedLC === "addaccount"} onClick={() => { goTo("addAccount") }}>
-                                            {t("Add Account")}
+                                            {t("Add account")}
+                                        </NavDropdown.Item>
+                                        <NavDropdown.Item
+                                            className="p-2"
+                                            active={itemSelectedLC === "connectusertoClient"} onClick={() => { goTo("connectUserToClient") }}>
+                                            {t("Connect user to client")}
                                         </NavDropdown.Item>
                                     </Popover.Body>
                                 </Popover>
                             } popperConfig={1}>
-                                <Button className={`dropdownButton nav-link ${itemSelectedLC === "addaccount" || itemSelectedLC === "accountssupervision" ? "active" : ""}`}>
+                                <Button className={`dropdownButton nav-link ${itemSelectedLC === "addaccount" || itemSelectedLC === "accountssupervision" || itemSelectedLC === "connectusertoclient" ? "active" : ""}`}>
                                     <p className="mobile-dropdown mb-0" >{t("Accounts")}</p>
                                 </Button>
                             </OverlayTrigger>

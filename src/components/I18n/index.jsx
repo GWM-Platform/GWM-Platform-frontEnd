@@ -359,7 +359,7 @@ i18n
           "Deposit cash": "Depositar dinero",
           "Withdraw cash": "Retirar dinero",
           "Operation done successfully": "Operación realizada correctamente",
-          "Deposit cash to an Account": "Depositar dinero a una cuenta",
+          "Deposit cash to an account": "Depositar dinero a una cuenta",
           "Account selector": "Selector de cuenta a depositar",
           "Select the account to which cash will be deposited": "Seleccione la cuenta a la que se le depositara dinero",
           "Open this select menu": "Abra este menu de selección",
@@ -486,7 +486,7 @@ i18n
 
           //Withdraw from admin
           "Select the account for which you want to generate a withdrawal ticket": "Seleccione la cuenta para la cual quiere generar un ticket de retiro",
-          "Withdraw cash from an Account": "Retirar Dinero de una Cuenta",
+          "Withdraw cash from an account": "Retirar Dinero de una Cuenta",
           "The amount must be less than or equal to the available cash of the selected account":
             "La cantidad debe ser menor o igual al balance de la cuenta seleccionada",
           "Date that will appear as when the operation was performed":
@@ -709,7 +709,14 @@ i18n
           "Sorry, something went wrong": "Lo sentimos, algo salió mal",
           "Our team has been notified. Reload the page or, if this keeps happening, try again later": "Nuestro equipo ya ha sido notificado. Vuelva a cargar la página o, si esto sigue sucediendo, vuelva a intentarlo más tarde",
           "Report an issue": "Reportar un problema",
-          "Reload page": "Recargar la página"
+          "Reload page": "Recargar la página",
+          "Connect user to client": "Vincular usuario a cliente",
+          "Number": "Número",
+          "Select the client to witch you want to connect the user": "Seleccione el cliente con el que desea vincular el usuario",
+          "Select the user you want to connect to the selected client":
+            "Seleccione el usuario que desea vincular con el cliente seleccionado",
+          "User connected to the client selected successfully": "Usuario vinculado al cliente correctamente",
+          "The user could not be connected to the client": "El ususario no pudo ser vinculado al cliente"
         }
       }
     }

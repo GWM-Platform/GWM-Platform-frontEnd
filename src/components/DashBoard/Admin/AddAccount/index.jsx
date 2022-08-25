@@ -67,8 +67,8 @@ const AddAccount = () => {
     return (
         <Container className="h-100">
             <Row className="h-100 d-flex justify-content-center">
-                <Col sm="12" md="9">
-                    <h1 className="pb-2">{t("Add Account")}</h1>
+                <Col>
+                    <h1 className="pb-2">{t("Add account")}</h1>
                     <Form noValidate validated={validated} onSubmit={handleSubmit}>
                         <FloatingLabel
                             label={t("Email")}

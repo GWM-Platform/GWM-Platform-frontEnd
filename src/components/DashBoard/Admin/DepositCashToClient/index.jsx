@@ -196,12 +196,11 @@ const DepositCashToClient = () => {
         // eslint-disable-next-line
     }, [])
 
-    console.log(Accounts)
     return (
         <Container className="h-100 AssetsAdministration">
             <Row className="h-100 d-flex justify-content-center">
-                <Col className="newTicket h-100 growAnimation" sm="12" md="9">
-                    <h1>{t("Deposit cash to an Account")}</h1>
+                <Col className="newTicket h-100 growAnimation" sm="12">
+                    <h1>{t("Deposit cash to an account")}</h1>
                     <Form noValidate validated={validated} onSubmit={handleSubmit}>
                         <Form.Label>{t("Select the account to which cash will be deposited")}</Form.Label>
                         <Form.Select
