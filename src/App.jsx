@@ -5,6 +5,7 @@ import { withTranslation } from 'react-i18next';
 import { useTranslation } from "react-i18next";
 import 'moment/locale/es'
 import * as Sentry from "@sentry/react";
+import ReactGA from "react-ga4";
 import { BrowserTracing } from "@sentry/tracing";
 
 import Landing from 'components/Landing';
@@ -36,59 +37,68 @@ function App() {
   axios.defaults.baseURL = process.env.REACT_APP_APIURL;
   axios.defaults.headers.post['Content-Type'] = '*/*';
 
-  Sentry.init({ 
-    dsn: process.env.REACT_APP_SENTRYDSN,
-    integrations: [new BrowserTracing()],
-    tracesSampleRate: 1.0,
-  });
+  useEffect(() => {
+    Sentry.init({
+      dsn: process.env.REACT_APP_SENTRYDSN,
+      integrations: [new BrowserTracing()],
+      tracesSampleRate: 1.0,
+    })
+  }, [])
+
+  useEffect(() => {
+    ReactGA.initialize(process.env.REACT_APP_GATAGID);
+    ReactGA.send("pageview");
+  }, [])
+
+
 
 
   return (
     <div className="App" style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/backGround/background.jpg)` }}>
-      <Sentry.ErrorBoundary fallback={<ErrorNotice  dialogOptions={{lang: localStorage.getItem("language") || "En"}}/>} >
-      <>
-        <div className="appContainer">
-          <BrowserRouter>
-            <Switch>
-              <Route exact path="/">
-                <Landing />
-              </Route>
-
-              <Route exact path="/login">
-                <Containerlogin />
-              </Route>
-
-              <Route exact path="/forgotPassword">
-                <ContainerForgotPassword />
-              </Route>
-              <Route exact path="/changePassword/:user/:token">
-                <ContainerChangePassword />
-              </Route>
-              <Route exact path="/changePassword">
-                <ContainerChangePassword />
-              </Route>
-
-              <Route exact path="/activate">
-                <ActivateAccount />
-              </Route>
-              <Route exact path="/setPassword">
-                <SetPassword />
-              </Route>
-              <DashBoardProvider>
-                <Route path="/DashBoard">
-                  <DashBoard />
+      <Sentry.ErrorBoundary fallback={<ErrorNotice dialogOptions={{ lang: localStorage.getItem("language") || "En" }} />} >
+        <>
+          <div className="appContainer">
+            <BrowserRouter>
+              <Switch>
+                <Route exact path="/">
+                  <Landing />
                 </Route>
-              </DashBoardProvider>
 
-              <Route>
-                <NotFound />
-              </Route>
-            </Switch>
-          </BrowserRouter>
-        </div>
-        <RotateDevice />
-      </>
-    </Sentry.ErrorBoundary>
+                <Route exact path="/login">
+                  <Containerlogin />
+                </Route>
+
+                <Route exact path="/forgotPassword">
+                  <ContainerForgotPassword />
+                </Route>
+                <Route exact path="/changePassword/:user/:token">
+                  <ContainerChangePassword />
+                </Route>
+                <Route exact path="/changePassword">
+                  <ContainerChangePassword />
+                </Route>
+
+                <Route exact path="/activate">
+                  <ActivateAccount />
+                </Route>
+                <Route exact path="/setPassword">
+                  <SetPassword />
+                </Route>
+                <DashBoardProvider>
+                  <Route path="/DashBoard">
+                    <DashBoard />
+                  </Route>
+                </DashBoardProvider>
+
+                <Route>
+                  <NotFound />
+                </Route>
+              </Switch>
+            </BrowserRouter>
+          </div>
+          <RotateDevice />
+        </>
+      </Sentry.ErrorBoundary>
     </div >
   );
 }
