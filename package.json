@@ -48,6 +48,7 @@
 		"react-i18next": "^11.11.0",
 		"react-router-dom": "^5.2.0",
 		"react-scripts": "5.0.0",
+		"react-select": "^5.4.0",
 		"recharts": "^2.1.6",
 		"sass": "^1.52.1",
 		"stream-browserify": "^3.0.0",

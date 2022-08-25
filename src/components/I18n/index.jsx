@@ -716,7 +716,9 @@ i18n
           "Select the user you want to connect to the selected client":
             "Seleccione el usuario que desea vincular con el cliente seleccionado",
           "User connected to the client selected successfully": "Usuario vinculado al cliente correctamente",
-          "The user could not be connected to the client": "El ususario no pudo ser vinculado al cliente"
+          "The user could not be connected to the client": "El ususario no pudo ser vinculado al cliente",
+          'No clients found': 'No se encontraron clientes',
+          'No users found': 'No se encontraron usuarios'
         }
       }
     }

@@ -5,6 +5,8 @@ import { Button, Col, Container, Form, Row, Spinner } from "react-bootstrap";
 import Loading from "../Loading";
 import Error from "components/DashBoard/Admin/Error";
 import { useTranslation } from "react-i18next";
+import BaseSelect from "react-select";
+import FixRequiredSelect from "components/DashBoard/GeneralUse/Forms/FixRequiredSelect";
 
 const ConnectUserToClient = () => {
     const { toLogin } = useContext(DashBoardContext)
@@ -60,7 +62,7 @@ const ConnectUserToClient = () => {
 
     const connectUserToClient = () => {
         setRequest((prevState) => ({ ...prevState, fetching: true, fetched: false }))
-        axios.post(`/clients/${data.id}/connect`, undefined, { params: { userId: data.userId } },
+        axios.post(`/clients/${data.client.value}/connect`, undefined, { params: { userId: data.user.value } },
         ).then(function (response) {
             setRequest((prevState) => (
                 {
@@ -95,22 +97,17 @@ const ConnectUserToClient = () => {
             controller.abort();
         };
     }, [getUsers])
+
     const showLoading = () => clients.fetching || users.fetching
     const error = () => !(clients.valid /*&& users.valid */)
 
     const [data, setData] = useState(
         {
-            id: "",
-            userId: ""
+            client: "",
+            user: "",
         }
     )
     const [validated, setValidated] = useState(true);
-    const handleChange = (event) => {
-        setRequest(prevState => ({ ...prevState, ...{ fetching: false, fetched: false, valid: false } }))
-        let aux = data;
-        aux[event.target.id] = event.target.value;
-        setData({ ...data, ...aux });
-    }
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -122,7 +119,13 @@ const ConnectUserToClient = () => {
         setValidated(true);
     }
 
-
+    const Select = props => (
+        <FixRequiredSelect
+            {...props}
+            SelectComponent={BaseSelect}
+            options={props.options}
+        />
+    );
 
     return (
         showLoading() ?
@@ -138,35 +141,31 @@ const ConnectUserToClient = () => {
                                 <h1>{t("Connect user to client")}</h1>
                                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
                                     <Form.Label>{t("Select the client to witch you want to connect the user")}</Form.Label>
-                                    <Form.Select
-                                        id="id" onChange={handleChange} value={data.id}
-                                        className="mb-3" aria-label="Select Client" required>
-                                        <option disabled value="">{t("Open this select menu")}</option>
-                                        {clients.content.map((client, key) => {
-                                            return (
-                                                <option key={key + "-client"} value={client.id}>
-                                                    {t("Number")}: #{client.id}&nbsp;/&nbsp;
-                                                    {t("Alias")}: {client.alias}&nbsp;/&nbsp;
-                                                    {t("Name")}: {client.firstName}&nbsp;/&nbsp;
-                                                    {t("Apellido")}: {client.lastName}
-                                                </option>
-                                            )
-                                        })}
-                                    </Form.Select>
+                                    <Select className="mb-3" required value={data.client} placeholder={false} noOptionsMessage={() => t('No clients found')}
+                                        onChange={(val) => {
+                                            setData(prevState => ({ ...prevState, client: val }));
+                                            setRequest(prevState => ({ ...prevState, ...{ fetching: false, fetched: false, valid: false } }))
+                                        }}
+                                        options={clients.content.map((client, key) => (
+                                            {
+                                                label: `${t("Number")}: ${client.id} / ${t("Alias")}: ${client.alias} / ${t("Name")}: ${client.firstName} ${t("Apellido")}: ${client.lastName}`,
+                                                value: client.id
+                                            }
+                                        ))}
+                                    />
                                     <Form.Label>{t("Select the user you want to connect to the selected client")}</Form.Label>
-                                    <Form.Select
-                                        id="userId" onChange={handleChange} value={data.userId}
-                                        className="mb-3" aria-label="Select User" required>
-                                        <option disabled value="">{t("Open this select menu")}</option>
-                                        {users.content.map((user, key) => {
-                                            return (
-                                                <option key={key + "-user"} value={user.id}>
-                                                    {t("Number")}: #{user.id}&nbsp;/&nbsp;
-                                                    {t("Email")}: {user.email}
-                                                </option>
-                                            )
-                                        })}
-                                    </Form.Select>
+                                    <Select className="mb-3" required value={data.user} placeholder={false} noOptionsMessage={() => t('No users found')}
+                                        onChange={(val) => {
+                                            setData(prevState => ({ ...prevState, user: val }));
+                                            setRequest(prevState => ({ ...prevState, ...{ fetching: false, fetched: false, valid: false } }))
+                                        }}
+                                        options={users.content.map((user, key) => (
+                                            {
+                                                label: `${t("Number")}: ${user.id} / ${t("Email")}: ${user.email}`,
+                                                value: user.id
+                                            }
+                                        ))}
+                                    />
                                     {
                                         Request.fetched &&
                                         <div className="w-100 mb-2">
@@ -180,7 +179,6 @@ const ConnectUserToClient = () => {
                                             </Form.Text>
                                         </div>
                                     }
-
 
                                     <Button variant="danger" type="submit" disabled={Request.fetching}>
                                         <Spinner
