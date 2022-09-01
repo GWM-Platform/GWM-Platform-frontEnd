@@ -162,9 +162,7 @@ const AccountsSupervision = () => {
         }
     }, [Accounts, Clients])
 
-
     const getClientByClientId = (searchedId) => {
-
         let index = Clients.content.findIndex((client) => client.id === searchedId)
         return index === -1 ? false : Clients.content[index]
     }

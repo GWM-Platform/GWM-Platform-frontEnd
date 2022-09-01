@@ -8,7 +8,7 @@ import NoFunds from './NoFunds'
 const ViewDeleteAndCreateFunds = ({Funds, SearchText, handleSearch, cancelSearch, AssetTypes, FilteredFunds, chargeFunds, setAction, Action }) => {
 
     return (
-        <Col sm="12" md="10" className="ViewDeleteAndCreateFunds">
+        <Col sm="12" className="ViewDeleteAndCreateFunds">
             {Funds.length > 0 ?
                 <>
                     <FundsSearch

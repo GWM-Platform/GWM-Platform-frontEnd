@@ -106,7 +106,7 @@ const APL = () => {
       :
       <Container className="my-2">
         <Row className="d-flex justify-content-center">
-          <Col md="12" lg="11">
+          <Col md="12">
             <FundSelector SelectedFund={SelectedFund} setSelectedFund={setSelectedFund} Funds={Funds.content} />
             {SelectedFund !== "" ? <FundInfo Fund={Funds.content[SelectedFund]} /> : null}
             {

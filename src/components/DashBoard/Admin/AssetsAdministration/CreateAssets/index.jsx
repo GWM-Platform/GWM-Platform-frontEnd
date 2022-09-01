@@ -85,7 +85,7 @@ const CreateAssets = ({ Assets, AssetTypes, chargeAssets, Action, setAction }) =
     }
     
     return (
-        <Col sm="12" md="10">
+        <Col sm="12" >
             {
                 CreateRequest.fetched ?
                     <CreateResult CreateRequest={CreateRequest} setAction={setAction} chargeAssets={chargeAssets}

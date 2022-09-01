@@ -111,7 +111,7 @@ const CreateFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
     }
 
     return (
-        <Col sm="12" md="10">
+        <Col sm="12">
             {
                 CreateRequest.fetched ?
                     <CreateResult CreateRequest={CreateRequest} setAction={setAction} chargeFunds={chargeFunds}

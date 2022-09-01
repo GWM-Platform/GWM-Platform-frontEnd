@@ -86,7 +86,7 @@ const EditAssets = ({ Assets, AssetTypes, chargeAssets, Action, setAction }) => 
     }
 
     return (
-        <Col sm="12" md="10">
+        <Col sm="12" >
             {
                 EditRequest.fetched ?
                     <EditResult EditRequest={EditRequest} setAction={setAction} chargeAssets={chargeAssets}

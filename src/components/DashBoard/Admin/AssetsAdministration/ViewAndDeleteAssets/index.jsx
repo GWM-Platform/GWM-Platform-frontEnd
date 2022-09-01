@@ -8,7 +8,7 @@ import NoAssets from './NoAssets'
 const ViewDeleteAndCreateAssets = ({ SearchText,handleSearch,cancelSearch,AssetTypes,FilteredAssets, chargeAssets,setAction,Action}) => {
 
     return (
-        <Col sm="12" md="10" className="ViewDeleteAndCreateAssets">
+        <Col sm="12" className="ViewDeleteAndCreateAssets">
             <AssetsSearch FilteredAssets={FilteredAssets} SearchText={SearchText} handleSearch={handleSearch} cancelSearch={cancelSearch} />
             {
                 FilteredAssets.length === 0 && SearchText.length>0 ?

@@ -7,8 +7,11 @@ import Error from "components/DashBoard/Admin/Error";
 import { useTranslation } from "react-i18next";
 import BaseSelect from "react-select";
 import FixRequiredSelect from "components/DashBoard/GeneralUse/Forms/FixRequiredSelect";
+import { Route, Switch, useHistory } from "react-router-dom";
+import ClientsTable from "./ClientsTable";
 
 const ConnectUserToClient = () => {
+    const history = useHistory()
     const { toLogin } = useContext(DashBoardContext)
     const { t } = useTranslation()
 
@@ -60,9 +63,9 @@ const ConnectUserToClient = () => {
         });
     }, [toLogin, setUsers]);
 
-    const connectUserToClient = () => {
+    const connectUserToClient = (clientId) => {
         setRequest((prevState) => ({ ...prevState, fetching: true, fetched: false }))
-        axios.post(`/clients/${data.client.value}/connect`, undefined, { params: { userId: data.user.value } },
+        axios.post(`/clients/${clientId}/connect`, undefined, { params: { userId: data.user.value } },
         ).then(function (response) {
             setRequest((prevState) => (
                 {
@@ -70,6 +73,8 @@ const ConnectUserToClient = () => {
                     fetched: true,
                     valid: true,
                 }))
+                console.log("si")
+                history.push("/DashBoard/connectUserToClient/") 
         }).catch((err) => {
             if (err.message !== "canceled") {
                 if (err.response.status === "401") toLogin()
@@ -109,12 +114,12 @@ const ConnectUserToClient = () => {
     )
     const [validated, setValidated] = useState(true);
 
-    const handleSubmit = (event) => {
+    const handleSubmit = (event,clientId) => {
         event.preventDefault();
         event.stopPropagation();
         const form = event.currentTarget;
         if (form.checkValidity() === true) {
-            connectUserToClient()
+            connectUserToClient(clientId)
         }
         setValidated(true);
     }
@@ -134,67 +139,68 @@ const ConnectUserToClient = () => {
             error() ?
                 <Error />
                 :
-                <Container>
-                    <Row>
-                        <Col xs="12">
-                            <div className="growOpacity">
-                                <h1>{t("Connect user to client")}</h1>
-                                <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                                    <Form.Label>{t("Select the client to witch you want to connect the user")}</Form.Label>
-                                    <Select className="mb-3" required value={data.client} placeholder={false} noOptionsMessage={() => t('No clients found')}
-                                        onChange={(val) => {
-                                            setData(prevState => ({ ...prevState, client: val }));
-                                            setRequest(prevState => ({ ...prevState, ...{ fetching: false, fetched: false, valid: false } }))
-                                        }}
-                                        options={clients.content.map((client, key) => (
-                                            {
-                                                label: `${t("Number")}: ${client.id} / ${t("Alias")}: ${client.alias} / ${t("Name")}: ${client.firstName} ${t("Apellido")}: ${client.lastName}`,
-                                                value: client.id
-                                            }
-                                        ))}
-                                    />
-                                    <Form.Label>{t("Select the user you want to connect to the selected client")}</Form.Label>
-                                    <Select className="mb-3" required value={data.user} placeholder={false} noOptionsMessage={() => t('No users found')}
-                                        onChange={(val) => {
-                                            setData(prevState => ({ ...prevState, user: val }));
-                                            setRequest(prevState => ({ ...prevState, ...{ fetching: false, fetched: false, valid: false } }))
-                                        }}
-                                        options={users.content.map((user, key) => (
-                                            {
-                                                label: `${t("Number")}: ${user.id} / ${t("Email")}: ${user.email}`,
-                                                value: user.id
-                                            }
-                                        ))}
-                                    />
-                                    {
-                                        Request.fetched &&
-                                        <div className="w-100 mb-2">
-                                            <Form.Text className={!Request.valid ? "text-danger" : "text-success"}>
+                <Switch>
+                    <Route exact path="/DashBoard/connectUserToClient/">
+                        <ClientsTable clients={clients} />
+                    </Route>
+                    {clients.content.map((client) =>
+                        <Route exact path={`/DashBoard/connectUserToClient/${client.id}`}>
+                            <Container>
+                                <Row>
+                                    <Col xs="12">
+                                        <div className="growOpacity">
+                                            <h1>{t("Connect user to client")}&nbsp;{client.alias}</h1>
+                                            <Form noValidate validated={validated} onSubmit={(e)=>handleSubmit(e,client.id)}>
+                                                <Form.Label>{t("Select the user you want to connect to the client")}</Form.Label>
+                                                <Select className="mb-3" required value={data.user} placeholder={false} noOptionsMessage={() => t('No users found')}
+                                                    onChange={(val) => {
+                                                        setData(prevState => ({ ...prevState, user: val }));
+                                                        setRequest(prevState => ({ ...prevState, ...{ fetching: false, fetched: false, valid: false } }))
+                                                    }}
+                                                    options={users.content.map((user, key) => (
+                                                        {
+                                                            label: `${t("Number")}: ${user.id} / ${t("Email")}: ${user.email}`,
+                                                            value: user.id
+                                                        }
+                                                    ))}
+                                                />
                                                 {
-                                                    Request.valid ?
-                                                        t("User connected to the client selected successfully")
-                                                        :
-                                                        t("The user could not be connected to the client")
+                                                    Request.fetched &&
+                                                    <div className="w-100 mb-2">
+                                                        <Form.Text className={!Request.valid ? "text-danger" : "text-success"}>
+                                                            {
+                                                                Request.valid ?
+                                                                    t("User connected to the client selected successfully")
+                                                                    :
+                                                                    t("The user could not be connected to the client")
+                                                            }
+                                                        </Form.Text>
+                                                    </div>
                                                 }
-                                            </Form.Text>
-                                        </div>
-                                    }
 
-                                    <Button variant="danger" type="submit" disabled={Request.fetching}>
-                                        <Spinner
-                                            as="span"
-                                            animation="border"
-                                            size="sm"
-                                            role="status"
-                                            aria-hidden="true"
-                                            style={{ display: Request.fetching ? "inline-block" : "none" }}
-                                        />{' '}
-                                        {t("Submit")}</Button>
-                                </Form>
-                            </div>
-                        </Col>
-                    </Row>
-                </Container>
+                                                <Button variant="danger" type="submit" disabled={Request.fetching}>
+                                                    <Spinner
+                                                        as="span"
+                                                        animation="border"
+                                                        size="sm"
+                                                        role="status"
+                                                        aria-hidden="true"
+                                                        style={{ display: Request.fetching ? "inline-block" : "none" }}
+                                                    />{' '}
+                                                    {t("Submit")}</Button>
+                                            </Form>
+                                        </div>
+                                    </Col>
+                                </Row>
+                            </Container>
+                        </Route>
+
+                    )}
+                    <Route path="*">
+                        <h1>{t("Not found")}</h1>
+                    </Route>
+                </Switch>
+
     );
 }
 

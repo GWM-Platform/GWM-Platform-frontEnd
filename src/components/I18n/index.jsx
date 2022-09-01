@@ -710,7 +710,6 @@ i18n
           "Our team has been notified. Reload the page or, if this keeps happening, try again later": "Nuestro equipo ya ha sido notificado. Vuelva a cargar la página o, si esto sigue sucediendo, vuelva a intentarlo más tarde",
           "Report an issue": "Reportar un problema",
           "Reload page": "Recargar la página",
-          "Connect user to client": "Vincular usuario a cliente",
           "Number": "Número",
           "Select the client to witch you want to connect the user": "Seleccione el cliente con el que desea vincular el usuario",
           "Select the user you want to connect to the selected client":
@@ -718,7 +717,15 @@ i18n
           "User connected to the client selected successfully": "Usuario vinculado al cliente correctamente",
           "The user could not be connected to the client": "El ususario no pudo ser vinculado al cliente",
           'No clients found': 'No se encontraron clientes',
-          'No users found': 'No se encontraron usuarios'
+          'No users found': 'No se encontraron usuarios',
+          "New client": 'Nuevo cliente',
+          "Existing client": 'Cliente existente',
+          "Connect the new user to a": "Vincular el nuevo usuario a",
+          "Connect user to client":"Vincular usuario al cliente",
+          "Select the user you want to connect to the client":"Seleccione el usuario que quiere vincular al cliente",
+          'Administration of users connected to clients':'Administración de usuarios vinculados a clientes',
+          "Users connected to the client":"Usuarios vinculados al cliente",
+          "Connect a new user":"Vincular un nuevo usuario"
         }
       }
     }

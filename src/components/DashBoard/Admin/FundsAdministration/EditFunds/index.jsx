@@ -102,7 +102,7 @@ const EditFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
         setImageUrl(prevState => ({ ...prevState, ...{ fetching: false, fetched: true, valid: buff.type.startsWith('image/') } }))
     }
     return (
-        <Col sm="12" md="10">
+        <Col sm="12">
             {
                 EditRequest.fetched ?
                     <EditResult EditRequest={EditRequest} setAction={setAction} chargeFunds={chargeFunds}
