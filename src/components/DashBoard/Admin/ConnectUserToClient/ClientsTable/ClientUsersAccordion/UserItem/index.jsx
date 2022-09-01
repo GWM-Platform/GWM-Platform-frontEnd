@@ -36,7 +36,7 @@ const UserItem = ({ client, user, getUsers }) => {
 
     return (
         <div className="d-flex Actions py-2 align-items-center" style={{ borderBottom: " 1px solid lightgray" }}>
-            <h4 className="mb-0 me-1 me-md-2">{t("User")}:&nbsp;#{user.id}</h4>
+            <h4 className="mb-0 me-1 me-md-2">{t("User")}&nbsp;#{user.id}</h4>
             <div className="me-auto px-1 px-md-2" style={{ borderLeft: "1px solid lightgray", borderRight: " 1px solid lightgray" }} >
                 {t("Email")}:&nbsp;
                 {user.email}

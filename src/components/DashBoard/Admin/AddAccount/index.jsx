@@ -18,7 +18,7 @@ const AddAccount = () => {
             firstName: "",
             lastName: "",
             type: "",
-            client: {}
+            client: ""
         }
     )
 

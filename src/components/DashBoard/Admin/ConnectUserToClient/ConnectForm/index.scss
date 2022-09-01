@@ -1,0 +1,30 @@
+.section  .header {
+	position: relative;
+	font-size: 30px;
+	padding: 0.5em 0;
+	margin: 0.5em 0;
+	border-bottom: 1px solid;
+}
+.section .header .title {
+	font-size: 30px;
+	padding: 0;
+	margin: 0;
+}
+.section .header .button {
+	font-size: 20px;
+	position: absolute;
+	bottom: 0;
+	left: 1ch;
+	transform: translateY(50%);
+	cursor: pointer;
+	transition: 0.5s all;
+}
+.section .header .button.icon {
+	font-size: 20px;
+	color: var(--main-blue);
+	background-color: lightgrey;
+	border-radius: 50%;
+}
+.section .header .button.icon:hover {
+	animation: ease bounceLeft 0.5s 2;
+}

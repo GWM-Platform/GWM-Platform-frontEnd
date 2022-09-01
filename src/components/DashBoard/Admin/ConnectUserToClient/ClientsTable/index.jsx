@@ -10,8 +10,10 @@ const ClientsTable = ({ clients }) => {
         <Container>
             <Row>
                 <Col xs="12">
-                    <div className="growOpacity">
-                        <h1>{t('Administration of users connected to clients')}</h1>
+                    <div className="growOpacity section">
+                        <div className="header">
+                            <h1 className="title">{t('Administration of users connected to clients')}</h1>
+                        </div>
                         {clients.content.map(client => <ClientUsersAccordion client={client} key={`client-selector-${client.id}`} />)}
                     </div>
                 </Col>
