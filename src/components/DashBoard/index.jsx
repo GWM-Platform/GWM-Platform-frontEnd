@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Route, useRouteMatch } from 'react-router-dom';
 
@@ -43,6 +43,7 @@ import FixedDeposit from './Admin/FixedDeposit';
 //General
 import DashboardToast from './DashboardToast'
 import axios from 'axios';
+import NoClients from './GeneralUse/NoClients';
 
 const UserDashBoard = () => {
     axios.defaults.headers.common['Authorization'] = `Bearer ${sessionStorage.getItem("access_token")}`
@@ -52,9 +53,6 @@ const UserDashBoard = () => {
     const { path } = useRouteMatch()
     const [NavInfoToggled, setNavInfoToggled] = useState(false)
     const [numberOfFunds, setNumberOfFunds] = useState(0);
-
-    useEffect(() => {
-    }, [ClientSelected])
 
     return (
         <div className="DashBoard growOpacity" style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/backGround/background.jpg)` }}>
@@ -158,7 +156,10 @@ const UserDashBoard = () => {
                     UserClients.length > 1 ?
                         <SelectClient />
                         :
-                        <Loading />
+                        IndexClientSelected >= 0 || admin ?
+                            <Loading />
+                            :
+                            <NoClients />
             }
         </div>
     )

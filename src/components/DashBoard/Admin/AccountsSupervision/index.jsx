@@ -219,11 +219,10 @@ const AccountsSupervision = () => {
                     <Switch>
                         <Route exact path="/DashBoard/accountsSupervision/">
                             <AccountSelector setSelectedAccountId={setSelectedAccountId} Accounts={Accounts.content} Clients={Clients.content} />
-
                         </Route>
                         {
                             Clients.content.map((client) =>
-                                <Route path={`/DashBoard/accountsSupervision/${client.id}`}>
+                                <Route key={`client-data-${client.id}`} path={`/DashBoard/accountsSupervision/${client.id}`}>
                                     <SelectedAccountData
                                         users={users}
                                         Movements={Movements.content} stakes={stakes.content} Transactions={Transactions.content}
