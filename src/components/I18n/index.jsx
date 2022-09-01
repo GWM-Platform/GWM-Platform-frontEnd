@@ -725,7 +725,15 @@ i18n
           "Select the user you want to connect to the client":"Seleccione el usuario que quiere vincular al cliente",
           'Administration of users connected to clients':'Administración de usuarios vinculados a clientes',
           "Users connected to the client":"Usuarios vinculados al cliente",
-          "Connect a new user":"Vincular un nuevo usuario"
+          "Connect a new user":"Vincular un nuevo usuario",
+          "Clients administration":"Adminitración de clientes",
+          "Add user":"Añadir un cliente",
+          "Search client by number":"Buscar cliente por número",
+          "Data from client":"Datos del cliente",
+          "Clients supervision":"Supervisión de clientes",
+          "Client general data":"Datos generales del cliente",
+          "Client's movements":"Movimientos del cliente",
+          'User connections administration':'Administración de usuarios vinculados'
         }
       }
     }

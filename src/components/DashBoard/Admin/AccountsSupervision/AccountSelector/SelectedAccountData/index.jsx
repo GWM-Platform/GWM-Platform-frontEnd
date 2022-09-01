@@ -23,7 +23,7 @@ const SelectedAccountData = ({ Account, Client, setSelectedAccountId, Movements,
         <div className="AccountData h-100 mb-5">
             <div className="header">
                 <h1 className="title">
-                    {t("Data from Account with the id ")}{" \""}{Account.id}{"\" "}{t(" owned by ")}{Client.alias}
+                    {t("Data from client")}&nbsp;#{Account.id},&nbsp;{t("Alias")}:&nbsp;{Client.alias}
                 </h1>
                 <FontAwesomeIcon className="button icon" onClick={() => setSelectedAccountId(false)} icon={faChevronCircleLeft} />
             </div>

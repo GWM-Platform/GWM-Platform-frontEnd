@@ -63,7 +63,7 @@ const AddAccount = () => {
                 if (err.response.status === "401") toLogin()
                 if (err.response.status === "501") {
                     setMessage("Server error")
-                }else{
+                } else {
                     setMessage("Error. Verify the data entered")
                 }
             }
@@ -118,10 +118,11 @@ const AddAccount = () => {
     return (
         <Container className="h-100">
             <Row className="h-100 d-flex justify-content-center">
-                <Col>
-                    <h1 className="pb-2">{t("Add account")}</h1>
+                <Col className="growOpacity section">
+                    <div className="header">
+                        <h1 className="title">{t("Add user")}</h1>
+                    </div>
                     <Form noValidate validated={validated} onSubmit={handleSubmit}>
-
                         <Form.Group className="mb-3">
                             <Form.Label>{t("Email")}</Form.Label>
                             <Form.Control

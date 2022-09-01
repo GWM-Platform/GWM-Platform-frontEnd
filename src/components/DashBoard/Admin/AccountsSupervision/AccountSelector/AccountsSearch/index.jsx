@@ -17,7 +17,7 @@ const AccountsSearch = ({handleSearch,SearchText,cancelSearch,FilteredAccounts})
             <Form.Control
                 onChange={handleSearch}
                 value={SearchText}
-                placeholder={t("Search account by id")}
+                placeholder={t("Search client by number")}
                 aria-label="Search"
             />
             {SearchText.length > 0 ?

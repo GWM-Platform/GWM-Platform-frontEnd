@@ -41,7 +41,7 @@ const AccountGeneralData = ({ Account, Client }) => {
 
     return (
         <Accordion.Item eventKey="0">
-            <Accordion.Header>{t("Account general data")}</Accordion.Header>
+            <Accordion.Header>{t("Client general data")}</Accordion.Header>
             <Accordion.Body>
                 <Container fluid className="px-0">
                     <Row className="mx-0 w-100">
@@ -51,7 +51,7 @@ const AccountGeneralData = ({ Account, Client }) => {
                             <h1 className="Info">{t("Owner last name")}: <span className='emphasis'>{Client.lastName}</span></h1>
                         </Col>
                         <Col className="pe-0">
-                            <h1 className="totalBalance">{t("Total balance")}:{
+                            <h1 className="totalBalance">{t("Total balance")}:&nbsp;{
                                 balanceTotal.fetching ?
                                     <Spinner animation="border" size="sm" />
                                     :

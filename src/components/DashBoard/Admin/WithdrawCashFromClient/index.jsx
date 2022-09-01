@@ -203,8 +203,10 @@ const WithdrawCashFromClient = () => {
     return (
         <Container className="h-100 AssetsAdministration">
             <Row className="h-100 d-flex justify-content-center">
-                <Col className="newTicket h-100 growAnimation" sm="12">
-                    <h1>{t("Withdraw cash from an account")}</h1>
+                <Col className="newTicket h-100 growAnimation section" sm="12">
+                <div className="header">
+                        <h1 className="title">{t("Withdraw cash from an account")}</h1>
+                    </div>
                     <Form noValidate validated={validated} onSubmit={handleSubmit}>
                         <Form.Label>{t("Select the account for which you want to generate a withdrawal ticket")}</Form.Label>
                         <Form.Select

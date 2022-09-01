@@ -84,16 +84,16 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                         </Nav.Link>
                                         <NavDropdown
                                             active={itemSelectedLC === "withdrawcash" || itemSelectedLC === "depositcash" || itemSelectedLC === "addaccount" || itemSelectedLC === "accountssupervision" || itemSelectedLC === "connectusertoclient"}
-                                            className="px-0 transactionDropdown" title={t("Accounts administration")} id="collasible-nav-dropdown">
+                                            className="px-0 transactionDropdown" title={t("Clients administration")} id="collasible-nav-dropdown">
                                             <NavDropdown.Item
                                                 active={itemSelectedLC === "accountssupervision"}
                                                 onClick={() => { goTo("accountsSupervision") }}>
-                                                {t("Accounts supervision")}
+                                                {t("Clients supervision")}
                                             </NavDropdown.Item>
                                             <NavDropdown.Item
                                                 active={itemSelectedLC === "addaccount"}
                                                 onClick={() => { goTo("addAccount") }}>
-                                                {t("Add account")}
+                                                {t("Add user")}
                                             </NavDropdown.Item>
                                             <NavDropdown.Item
                                                 active={itemSelectedLC === "depositcash"}
@@ -108,7 +108,7 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                             <NavDropdown.Item
                                                 active={itemSelectedLC === "connectusertoclient"}
                                                 onClick={() => { goTo("connectUserToClient") }}>
-                                                {t("Connect user to client")}
+                                                {t('User connections administration')}
                                             </NavDropdown.Item>
                                         </NavDropdown>
                                     </>
@@ -236,17 +236,17 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                             className="p-2"
                                             active={itemSelectedLC === "accountssupervision"}
                                             onClick={() => { goTo("accountsSupervision") }}>
-                                            {t("Accounts Supervision")}
+                                            {t("Clients supervision")}
                                         </NavDropdown.Item>
                                         <NavDropdown.Item
                                             className="p-2"
                                             active={itemSelectedLC === "addaccount"} onClick={() => { goTo("addAccount") }}>
-                                            {t("Add account")}
+                                            {t("Add user")}
                                         </NavDropdown.Item>
                                         <NavDropdown.Item
                                             className="p-2"
                                             active={itemSelectedLC === "connectusertoClient"} onClick={() => { goTo("connectUserToClient") }}>
-                                            {t("Connect user to client")}
+                                            {t('User connections administration')}
                                         </NavDropdown.Item>
                                     </Popover.Body>
                                 </Popover>

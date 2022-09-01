@@ -14,7 +14,7 @@ const AccountMovements = ({ Movements }) => {
 
     return (
         <Accordion.Item eventKey="2">
-            <Accordion.Header>{t("Account's movements")}</Accordion.Header>
+            <Accordion.Header>{t("Client's movements")}</Accordion.Header>
             <Accordion.Body>
                 <Table className="AccountsTable mb-0" striped bordered hover>
                     <thead className="verticalTop tableHeader solid-bg">

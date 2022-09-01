@@ -1,12 +1,14 @@
-import React, {  useState } from 'react'
+import React, { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {  Col } from 'react-bootstrap'
+import { Col } from 'react-bootstrap'
 import AccountsSearch from './AccountsSearch'
 import AccountsTable from './AccountsTable'
 import NoAccounts from './NoAccounts'
+import { useTranslation } from 'react-i18next';
 
-const AccountSelector = ({ Accounts, Clients,setSelectedAccountId }) => {
+const AccountSelector = ({ Accounts, Clients, setSelectedAccountId }) => {
 
+    const { t } = useTranslation();
 
     const [FilteredAccounts, setFilteredAccounts] = useState(Accounts)
     const [SearchText, setSearchText] = useState("")
@@ -24,7 +26,10 @@ const AccountSelector = ({ Accounts, Clients,setSelectedAccountId }) => {
     }
 
     return (
-        <Col>
+        <Col className="section">
+            <div className="header">
+                <h1 className="title">{t("Clients supervision")}</h1>
+            </div>
             <AccountsSearch
                 handleSearch={handleSearch}
                 SearchText={SearchText}
@@ -32,9 +37,9 @@ const AccountSelector = ({ Accounts, Clients,setSelectedAccountId }) => {
                 FilteredAccounts={FilteredAccounts}
             />
             {
-                FilteredAccounts.length === 0 && SearchText.length>0 ?
+                FilteredAccounts.length === 0 && SearchText.length > 0 ?
                     <NoAccounts /> :
-                    <AccountsTable setSelectedAccountId={setSelectedAccountId} Clients={Clients} FilteredAccounts={FilteredAccounts}/>
+                    <AccountsTable setSelectedAccountId={setSelectedAccountId} Clients={Clients} FilteredAccounts={FilteredAccounts} />
             }
         </Col>
     )
