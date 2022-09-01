@@ -25,9 +25,9 @@ const AccountsTable = ({ FilteredAccounts, Clients,setSelectedAccountId }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {FilteredAccounts.map((Account, key) => {
-                        return <AccountRow setSelectedAccountId={setSelectedAccountId} key={key }Client={getClientByClientId(Account.clientId)} Account={Account} />
-                    })}
+                    {FilteredAccounts.map((Account, key) => 
+                         <AccountRow setSelectedAccountId={setSelectedAccountId} key={key }Client={getClientByClientId(Account.clientId)} Account={Account} />
+                    )}
                 </tbody>
             </Table>
         </div>

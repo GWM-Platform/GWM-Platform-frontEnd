@@ -53,11 +53,11 @@ const ClientUsersAccordion = ({ client }) => {
     return (
         <Accordion flush>
             <Accordion.Item eventKey="0">
-                <Accordion.Header>{t("Users connected to the client")}: {client.alias}</Accordion.Header>
+                <Accordion.Header>{t("Users connected to the client")}</Accordion.Header>
                 <Accordion.Body>
                     {users.content.map(user => <UserItem getUsers={getUsers} user={user} client={client} key={`user-item-${client.id}-${user.id}`} />)}
                     <div className="mt-2 d-flex justify-content-end">
-                        <Link to={`/DashBoard/connectUserToClient/${client.id}`}>
+                        <Link to={`/DashBoard/accountsSupervision/${client.id}/connectUserToClient`}>
                             <Button>{t("Connect a new user")}</Button>
                         </Link>
                     </div>

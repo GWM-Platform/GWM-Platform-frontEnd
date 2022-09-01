@@ -5,6 +5,7 @@ import { Spinner } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
+import { Link } from 'react-router-dom';
 
 const AccountRow = ({ Account, Client, setSelectedAccountId }) => {
 
@@ -16,7 +17,7 @@ const AccountRow = ({ Account, Client, setSelectedAccountId }) => {
         const token = sessionStorage.getItem('access_token')
 
         const getBalance = async () => {
-            setBalanceTotal((prevState) => ({ fetching: true, fetched: true, value: 0 }))
+            setBalanceTotal((prevState) => ({...prevState, fetching: true, fetched: true, value: 0 }))
             var url = `${process.env.REACT_APP_APIURL}/clients/${Client.id}/balance`
             const response = await fetch(url, {
                 method: 'GET',
@@ -46,11 +47,10 @@ const AccountRow = ({ Account, Client, setSelectedAccountId }) => {
 
     return (
         <tr className="AccountRow">
-            <td className="Id">{Account.id}</td>
+            <td className="Id">{Client.id}</td>
             <td className="Alias">{t(Client.alias)}</td>
             <td className="Alias">
                 {
-
                     balanceTotal.fetching ?
                         <Spinner animation="border" size="sm" />
                         :
@@ -58,9 +58,11 @@ const AccountRow = ({ Account, Client, setSelectedAccountId }) => {
                 }
             </td>
             <td onClick={() => setSelectedAccountId(Account.id)} className="toDetails text-nowrap">
-                <span className="d-inline d-md-none">{t("Details")}</span>
-                <span className="d-none d-md-inline">{t("Go to details")}</span>
-                <FontAwesomeIcon className="chevron" icon={faChevronRight} />
+                <Link to={`/DashBoard/accountsSupervision/${Client.id}`}>
+                    <span className="d-inline d-md-none">{t("Details")}</span>
+                    <span className="d-none d-md-inline">{t("Go to details")}</span>
+                    <FontAwesomeIcon className="chevron" icon={faChevronRight} />
+                </Link>
             </td>
         </tr>
     )

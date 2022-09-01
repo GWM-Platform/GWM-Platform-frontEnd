@@ -35,7 +35,7 @@ const ConnectForm = ({ client, users }) => {
                     fetched: true,
                     valid: true,
                 }))
-            history.push("/DashBoard/connectUserToClient/")
+            history.push(`/DashBoard/accountsSupervision/${client.id}`)
         }).catch((err) => {
             if (err.message !== "canceled") {
                 if (err.response.status === "401") toLogin()
@@ -73,7 +73,7 @@ const ConnectForm = ({ client, users }) => {
                             <h1 className="title">
                                 {t("Connect user to client")}&nbsp;{client.alias}
                             </h1>
-                            <Link className="button icon" to={`/DashBoard/connectUserToClient`}>
+                            <Link className="button icon" to={`/DashBoard/accountsSupervision/${client.id}`}>
                                 <FontAwesomeIcon className="button icon" icon={faChevronCircleLeft} />
                             </Link>
                         </div>

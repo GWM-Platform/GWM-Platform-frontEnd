@@ -3,15 +3,58 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row } from 'react-bootstrap'
 import Loading from 'components/DashBoard/User/MovementsTable/CardsContainer/MainCard/MainCardFund/MovementsTab/Loading';
 import AccountSelector from './AccountSelector';
-import SelectedAccountData from './AccountSelector/SelectedAccountData';
+import SelectedAccountData from './SelectedAccountData';
+import { Route, Switch } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useCallback } from 'react';
+import axios from 'axios';
+import { DashBoardContext } from 'context/DashBoardContext';
+import { useContext } from 'react';
 
 const AccountsSupervision = () => {
+    const { toLogin } = useContext(DashBoardContext)
+
+    const { t } = useTranslation();
+
     const [Accounts, setAccounts] = useState({ fetching: true, fetched: false, content: [] })
     const [Clients, setClients] = useState({ fetching: true, fetched: false, content: [] })
     const [Movements, setMovements] = useState({ fetching: true, fetched: false, content: [] })
     const [stakes, setStakes] = useState({ fetching: true, fetched: false, content: [] })
     const [Transactions, setTransactions] = useState({ fetching: true, fetched: false, content: [] })
     const [SelectedAccountId, setSelectedAccountId] = useState(false)
+    const [users, setUsers] = useState({ fetching: true, fetched: false, valid: false, content: [] })
+
+    const getUsers = useCallback((signal) => {
+        setUsers((prevState) => ({ ...prevState, fetching: true, fetched: false }))
+        axios.get(`/users`, {
+            params: { all: true },
+            signal: signal,
+        }).then(function (response) {
+            setUsers((prevState) => (
+                {
+                    ...prevState,
+                    fetching: false,
+                    fetched: true,
+                    valid: true,
+                    content: response.data,
+                }))
+        }).catch((err) => {
+            if (err.message !== "canceled") {
+                if (err.response.status === "401") toLogin()
+                setUsers((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
+            }
+        });
+    }, [toLogin, setUsers]);
+
+    useEffect(() => {
+        const controller = new AbortController();
+        const signal = controller.signal;
+        getUsers(signal)
+
+        return () => {
+            controller.abort();
+        };
+    }, [getUsers])
 
     useEffect(() => {
         const token = sessionStorage.getItem('access_token')
@@ -162,11 +205,6 @@ const AccountsSupervision = () => {
         }
     }, [Accounts, Clients])
 
-    const getClientByClientId = (searchedId) => {
-        let index = Clients.content.findIndex((client) => client.id === searchedId)
-        return index === -1 ? false : Clients.content[index]
-    }
-
     const getAccountByAccountId = (searchedId) => {
         let index = Accounts.content.findIndex((account) => account.id === searchedId)
         return index === -1 ? false : Accounts.content[index]
@@ -178,15 +216,28 @@ const AccountsSupervision = () => {
                 {Accounts.fetching || Clients.fetching || Movements.fetching || stakes.fetching || Transactions.fetching ?
                     <Loading />
                     :
-                    SelectedAccountId ?
-                        <SelectedAccountData
-                            Movements={Movements.content} stakes={stakes.content} Transactions={Transactions.content}
-                            Client={getClientByClientId(getAccountByAccountId(SelectedAccountId).clientId)}
-                            SelectedAccountId={SelectedAccountId} setSelectedAccountId={setSelectedAccountId}
-                            Account={getAccountByAccountId(SelectedAccountId)}
-                        />
-                        :
-                        <AccountSelector setSelectedAccountId={setSelectedAccountId} Accounts={Accounts.content} Clients={Clients.content} />
+                    <Switch>
+                        <Route exact path="/DashBoard/accountsSupervision/">
+                            <AccountSelector setSelectedAccountId={setSelectedAccountId} Accounts={Accounts.content} Clients={Clients.content} />
+
+                        </Route>
+                        {
+                            Clients.content.map((client) =>
+                                <Route path={`/DashBoard/accountsSupervision/${client.id}`}>
+                                    <SelectedAccountData
+                                        users={users}
+                                        Movements={Movements.content} stakes={stakes.content} Transactions={Transactions.content}
+                                        Client={client}
+                                        SelectedAccountId={SelectedAccountId} setSelectedAccountId={setSelectedAccountId}
+                                        Account={getAccountByAccountId(SelectedAccountId)}
+                                    />
+                                </Route>
+                            )
+                        }
+                        <Route path="*">
+                            <h1>{t("Not found")}</h1>
+                        </Route>
+                    </Switch>
                 }
             </Row>
         </Container>

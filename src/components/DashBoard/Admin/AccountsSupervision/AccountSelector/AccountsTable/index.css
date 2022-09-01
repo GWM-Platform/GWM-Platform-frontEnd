@@ -3,6 +3,12 @@
     cursor:pointer;
 }
 
+.AccountsTable .toDetails a{
+    color: var(--bs-table-hover-color);
+    text-decoration: none;
+}
+
+
 .AccountsTable .toDetails .chevron{
     margin-left: 0.5em;
 }

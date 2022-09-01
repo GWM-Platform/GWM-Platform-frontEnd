@@ -6,7 +6,7 @@ import AccountsTable from './AccountsTable'
 import NoAccounts from './NoAccounts'
 import { useTranslation } from 'react-i18next';
 
-const AccountSelector = ({ Accounts, Clients, setSelectedAccountId }) => {
+const AccountSelector = ({ Accounts, Clients, setSelectedAccountId, clientId }) => {
 
     const { t } = useTranslation();
 
@@ -26,7 +26,7 @@ const AccountSelector = ({ Accounts, Clients, setSelectedAccountId }) => {
     }
 
     return (
-        <Col className="section">
+        <Col className="section growOpacity">
             <div className="header">
                 <h1 className="title">{t("Clients supervision")}</h1>
             </div>
