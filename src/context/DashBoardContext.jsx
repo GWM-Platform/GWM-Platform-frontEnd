@@ -45,6 +45,8 @@ export const DashBoardProvider = ({ children }) => {
     const [width, setWidth] = useState(window.innerWidth);
 
     const [UserClients, setUserClients] = useState([])
+    const [fetchingClients, setFetchingClients] = useState(true)
+
     const [ClientSelected, setClientSelected] = useState({})
     const [IndexClientSelected, setIndexClientSelected] = useState(-1)
 
@@ -329,6 +331,7 @@ export const DashBoardProvider = ({ children }) => {
         }
 
         const getUserData = async () => {
+            setFetchingClients(true)
             var url = `${process.env.REACT_APP_APIURL}/clients`;
             const response = await fetch(url, {
                 method: 'GET',
@@ -340,6 +343,7 @@ export const DashBoardProvider = ({ children }) => {
             })
 
             if (response.status === 200) {
+                setFetchingClients(false)
                 const data = await response.json()
                 const getClientIndexById = (id) => {
                     return data.findIndex(client => {
@@ -362,6 +366,7 @@ export const DashBoardProvider = ({ children }) => {
                 }
 
             } else {
+                setFetchingClients(false)
                 switch (response.status) {
                     default:
                         toLogin()
@@ -462,7 +467,7 @@ export const DashBoardProvider = ({ children }) => {
         value={{
             token, admin, UserClients, ClientSelected, IndexClientSelected, setIndexClientSelected, balanceChanged, setBalanceChanged, TransactionStates, getMoveStateById,
             FetchingFunds, contentReady, PendingWithoutpossession, PendingTransactions, Accounts, Funds, itemSelected, setItemSelected, isMobile, width, toLogin, setContentReady,
-            DashboardToast, DashboardToastDispatch, AccountSelected
+            DashboardToast, DashboardToastDispatch, AccountSelected,fetchingClients
         }}>
         {children}
     </DashBoardContext.Provider>

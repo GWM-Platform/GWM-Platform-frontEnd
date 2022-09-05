@@ -443,7 +443,7 @@ i18n
           "Denegado": "Rechazado",
           "Liquidada": "Liquidado",
           "Transactions per page": "Transacciones por pagina",
-          "Transaction status": "Estado de la transacción",
+          "Transaction status": "Estado de la operación",
           "Update": "Actualizar",
           "Filters": "Filtros",
           "Remember my choice": "Recuerda mi elección",
@@ -727,7 +727,7 @@ i18n
           "Users connected to the client":"Usuarios vinculados al cliente",
           "Connect a new user":"Vincular un nuevo usuario",
           "Clients administration":"Adminitración de clientes",
-          "Add user":"Añadir un cliente",
+          "Add user":"Añadir un usuario",
           "Search client by number":"Buscar cliente por número",
           "Data from client":"Datos del cliente",
           "Clients supervision":"Supervisión de clientes",
@@ -736,7 +736,8 @@ i18n
           'User connections administration':'Administración de usuarios vinculados',
           "It seems your user does not have access to any client":"Parece que su usuario no tiene acceso a ningún cliente",
           "Contact an administrator to normalize your situation":"Pongase en contacto con un administrador para normalizar su situacion",
-          "Return to login":"Regresar al inicio de sesión"
+          "Return to login":"Regresar al inicio de sesión",
+          "Operation state":"Estado de la operación"
         }
       }
     }

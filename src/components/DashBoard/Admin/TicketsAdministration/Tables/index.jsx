@@ -813,8 +813,7 @@ const Tables = ({ state, messageVariants }) => {
                 state: null
             }
         }))
-        setPaginationTransactions(
-            (prevState) => ({
+        setPaginationTransactions((prevState) => ({
                 ...prevState, ...{
                     skip: 0,//Offset (in quantity of movements)
                     take: 5,//Movements per page
@@ -822,17 +821,15 @@ const Tables = ({ state, messageVariants }) => {
                 }
             })
         )
-        setPaginationTransfers(
-            (prevState) => ({
-                ...prevState, ...{
-                    skip: 0,//Offset (in quantity of movements)
-                    take: 5,//Movements per page
-                    state: null
-                }
-            })
+        setPaginationTransfers((prevState) => ({
+            ...prevState, ...{
+                skip: 0,//Offset (in quantity of movements)
+                take: 5,//Movements per page
+                state: null
+            }
+        })
         )
-        setPaginationFixedDeposits(
-            (prevState) => ({
+        setPaginationFixedDeposits((prevState) => ({
                 ...prevState, ...{
                     skip: 0,//Offset (in quantity of movements)
                     take: 5,//Movements per page
@@ -872,6 +869,7 @@ const Tables = ({ state, messageVariants }) => {
         movementsInState()
         transfersInState()
         fixedDepositsInState()
+        movementsPendingSettlement()
     }
 
     const ticketSearchPropsTransfers = {
@@ -927,18 +925,18 @@ const Tables = ({ state, messageVariants }) => {
     const FixedDepositsRef = useRef(null)
 
     const executeScroll = (ref) => ref?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    
+
     return (
         Transactions.fetching && Movements.fetching && FixedDeposits.fetching && Transfers.fetching ?
             <Message selected={0} messageVariants={messageVariants} />
             :
             <>
                 <div className='d-flex justify-content-between'>
-                    <Button variant="link" onClick={()=>executeScroll(PurchaseAndSale)}>{t("Purchase and sale tickets")}</Button>
-                    <Button variant="link" onClick={()=>executeScroll(AccountMovementsRef)}>{t("Account movements tickets")}</Button>
-                    <Button variant="link" onClick={()=>executeScroll(PendingSettlementRef)}>{t("Approved tickets pending settlement")}</Button>
-                    <Button variant="link" onClick={()=>executeScroll(TransferRef)}>{t("Transfer tickets")}</Button>
-                    <Button variant="link" onClick={()=>executeScroll(FixedDepositsRef)}>{t("Time deposits")}</Button>
+                    <Button variant="link" onClick={() => executeScroll(PurchaseAndSale)}>{t("Purchase and sale tickets")}</Button>
+                    <Button variant="link" onClick={() => executeScroll(AccountMovementsRef)}>{t("Account movements tickets")}</Button>
+                    <Button variant="link" onClick={() => executeScroll(PendingSettlementRef)}>{t("Approved tickets pending settlement")}</Button>
+                    <Button variant="link" onClick={() => executeScroll(TransferRef)}>{t("Transfer tickets")}</Button>
+                    <Button variant="link" onClick={() => executeScroll(FixedDepositsRef)}>{t("Time deposits")}</Button>
                 </div>
                 {/*-------------------------------Purchase and sale-------------------------- */}
                 <h1 ref={PurchaseAndSale} className="title">{t("Purchase and sale tickets")}:</h1>

@@ -274,7 +274,7 @@ const DepositCashToClient = () => {
                             </Form.Control.Feedback>
                         </InputGroup>
 
-                        <Form.Label>{t("Operation state")}</Form.Label>
+                        <Form.Label>{t("Transaction status")}</Form.Label>
                         <Form.Select id="stateId" onChange={handleChange} required className="mb-3" value={data.stateId} aria-label="Select State Id">
                             <option disabled value="">{t("Open this select menu")}</option>
                             {TransactionStates.values.map((state, key) =>

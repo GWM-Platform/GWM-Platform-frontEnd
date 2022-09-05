@@ -48,7 +48,7 @@ import NoClients from './GeneralUse/NoClients';
 const UserDashBoard = () => {
     axios.defaults.headers.common['Authorization'] = `Bearer ${sessionStorage.getItem("access_token")}`
 
-    const { isMobile, admin, ClientSelected, balanceChanged, setBalanceChanged, setItemSelected, IndexClientSelected, UserClients } = useContext(DashBoardContext);
+    const { isMobile, admin, ClientSelected, balanceChanged, setBalanceChanged, setItemSelected, IndexClientSelected, UserClients, fetchingClients } = useContext(DashBoardContext);
 
     const { path } = useRouteMatch()
     const [NavInfoToggled, setNavInfoToggled] = useState(false)
@@ -156,7 +156,7 @@ const UserDashBoard = () => {
                     UserClients.length > 1 ?
                         <SelectClient />
                         :
-                        IndexClientSelected >= 0 || admin ?
+                        fetchingClients ?
                             <Loading />
                             :
                             <NoClients />
