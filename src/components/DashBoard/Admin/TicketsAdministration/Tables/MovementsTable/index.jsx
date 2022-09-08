@@ -9,7 +9,7 @@ const MovementsTable = ({ AccountInfo, UsersInfo, movements, state, reloadData, 
 
     const couldLiquidate = (movement) => movement.motive === "WITHDRAWAL" && movement.stateId === 2
     const anyWithActions = () => Object.values(movements).some((movement) => movement.stateId === 1 || couldLiquidate(movement))
-
+    console.log(movements)
     return (
         <Col xs="12">
             <div style={{ overflowX: "overlay", minHeight: `calc( .5rem + ( 0.5rem * 2 + 25.5px ) * ${take + 1} )` }}>

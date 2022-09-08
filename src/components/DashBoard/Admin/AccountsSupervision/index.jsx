@@ -18,9 +18,7 @@ const AccountsSupervision = () => {
 
     const [Accounts, setAccounts] = useState({ fetching: true, fetched: false, content: [] })
     const [Clients, setClients] = useState({ fetching: true, fetched: false, content: [] })
-    const [Movements, setMovements] = useState({ fetching: true, fetched: false, content: [] })
     const [stakes, setStakes] = useState({ fetching: true, fetched: false, content: [] })
-    const [Transactions, setTransactions] = useState({ fetching: true, fetched: false, content: [] })
     const [SelectedAccountId, setSelectedAccountId] = useState(false)
     const [users, setUsers] = useState({ fetching: true, fetched: false, valid: false, content: [] })
 
@@ -120,60 +118,10 @@ const AccountsSupervision = () => {
     useEffect(() => {
         const token = sessionStorage.getItem('access_token')
 
-        const getTransactions = async () => {
-            setTransactions((prevState) => ({ ...prevState, fetching: true, fetched: true, content: [] }))
-            var url = `${process.env.REACT_APP_APIURL}/transactions/`
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    Accept: "*/*",
-                }
-            })
-
-            if (response.status === 200) {
-                const dataFetched = await response.json()
-                setTransactions((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, content: dataFetched.transactions } }))
-            } else {
-                switch (response.status) {
-                    case 500:
-                        setTransactions((prevState) => ({ ...prevState, ...{ fetching: false, fetched: false } }))
-                        break;
-                    default:
-                        setTransactions((prevState) => ({ ...prevState, ...{ fetching: false, fetched: false } }))
-                        console.error(response.status)
-                }
-            }
-        }
-
-        const getMovements = async () => {
-            setMovements((prevState) => ({ fetching: true, fetched: true, content: [] }))
-            var url = `${process.env.REACT_APP_APIURL}/movements/`
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    Accept: "*/*",
-                }
-            })
-
-            if (response.status === 200) {
-                const dataFetched = await response.json()
-                setMovements((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, content: dataFetched.movements } }))
-            } else {
-                switch (response.status) {
-                    case 500:
-                        setMovements((prevState) => ({ ...prevState, ...{ fetching: false, fetched: false } }))
-                        break;
-                    default:
-                        setMovements((prevState) => ({ ...prevState, ...{ fetching: false, fetched: false } }))
-                        console.error(response.status)
-                }
-            }
-        }
-
         const getStakes = async () => {
-            setStakes((prevState) => ({ fetching: true, fetched: true, content: [] }))
+
+            setStakes((prevState) => ({...prevState, fetching: true, fetched: true, content: [] }))
+
             var url = `${process.env.REACT_APP_APIURL}/stakes`
             const response = await fetch(url, {
                 method: 'GET',
@@ -200,8 +148,6 @@ const AccountsSupervision = () => {
 
         if (!Accounts.fetching && !Clients.fetching) {
             getStakes()
-            getMovements()
-            getTransactions()
         }
     }, [Accounts, Clients])
 
@@ -213,7 +159,7 @@ const AccountsSupervision = () => {
     return (
         <Container className="h-100 AccountsSupervision">
             <Row className="h-100">
-                {Accounts.fetching || Clients.fetching || Movements.fetching || stakes.fetching || Transactions.fetching ?
+                {Accounts.fetching || Clients.fetching || stakes.fetching ?
                     <Loading />
                     :
                     <Switch>
@@ -225,7 +171,7 @@ const AccountsSupervision = () => {
                                 <Route key={`client-data-${client.id}`} path={`/DashBoard/accountsSupervision/${client.id}`}>
                                     <SelectedAccountData
                                         users={users}
-                                        Movements={Movements.content} stakes={stakes.content} Transactions={Transactions.content}
+                                        stakes={stakes.content}
                                         Client={client}
                                         SelectedAccountId={SelectedAccountId} setSelectedAccountId={setSelectedAccountId}
                                         Account={getAccountByAccountId(SelectedAccountId)}

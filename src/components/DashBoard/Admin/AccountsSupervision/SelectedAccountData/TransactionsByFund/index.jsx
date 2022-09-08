@@ -1,39 +1,81 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
 import { Accordion, Form } from 'react-bootstrap'
 import TransactionFundTable from './TransactionFundTable';
-const TransactionsByFund = ({ stakes, transactions }) => {
+import axios from 'axios';
+import { useMemo } from 'react';
+import { DashBoardContext } from 'context/DashBoardContext';
+const TransactionsByFund = ({ AccountId, ClientId }) => {
     const { t } = useTranslation();
+
+    const { toLogin } = useContext(DashBoardContext)
+
     const [FundSelected, setFundSelected] = useState("")
-    const [transactionsFundSelected, setTransactionsFundSelected] = useState([])
 
     const handleChange = (event) => {
         setFundSelected(event.target.value)
-        setTransactionsFundSelected([])
     }
 
+    const initialState = useMemo(() => ({ fetching: true, fetched: false, valid: false, content: [] }), [])
+    const [Funds, setFunds] = useState(initialState)
+
     useEffect(() => {
-        if (FundSelected !== "") {
-            setTransactionsFundSelected(transactions.filter((transaction) => transaction.fundId === stakes[FundSelected].fund.id))
+        const getFunds = (signal) => {
+            axios.get(`/funds`, { signal: signal }).then(function (response) {
+                setFunds((prevState) => (
+                    {
+                        ...prevState,
+                        fetching: false,
+                        fetched: true,
+                        valid: true,
+                        content: response.data,
+                    }))
+            }).catch((err) => {
+                if (err.message !== "canceled") {
+                    if (err.response.status === "401") {
+                        toLogin()
+                    } else {
+                        setFunds((prevState) => (
+                            {
+                                ...prevState,
+                                fetching: false,
+                                fetched: true,
+                                valid: false,
+                                content: [],
+                            }))
+                    }
+
+
+                }
+            });
         }
-    }, [FundSelected, transactions, stakes])
-    
+        getFunds();
+
+        return () => {
+            setFunds((prevState) => (
+                {
+                    ...prevState,
+                    initialState
+                }))
+        }
+        //eslint-disable-next-line
+    }, [])
+
+
     return (
         <Accordion.Item eventKey="4">
             <Accordion.Header>{t("Transactions by fund")}</Accordion.Header>
             <Accordion.Body>
-                <Form.Select onChange={handleChange} value={FundSelected} aria-label="Default select example">
+                <Form.Select className="mb-2" disabled={!Funds.valid} onChange={handleChange} value={FundSelected} aria-label="Default select example">
                     <option value="" disabled>{t("Open this select menu")}</option>
-                    {stakes.map(
-                        (stake, key) => {
-                            return <option key={key} value={key}>{stake.fund.name}</option>
-                        }
+                    {!!(Funds.valid) && Funds.content.map(
+                        (fund, key) => <option key={`funds-selector-option-${fund.id}`} value={fund.id}>{fund.name}</option>
                     )}
                 </Form.Select>
                 {
                     FundSelected === "" ? null :
-                        <TransactionFundTable transactions={transactionsFundSelected} />
+                        <TransactionFundTable AccountId={AccountId} ClientId={ClientId} FundId={FundSelected} />
                 }
             </Accordion.Body>
         </Accordion.Item>

@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form, InputGroup, Row, Button, Accordion, Container } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
 import Decimal from 'decimal.js';
+import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
 
 const BuyData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAccordion, Balance, fetching }) => {
@@ -13,7 +14,7 @@ const BuyData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAcc
 
 
     const amountDecimal = new Decimal(data.amount.length === 0 ? 0 : data.amount)
- 
+
     const sharePriceDecimal = new Decimal(Funds[data.FundSelected]?.sharePrice || 1)
 
     const sharesToBuy = new Decimal(amountDecimal).div(sharePriceDecimal).toFixed(5)
@@ -83,14 +84,10 @@ const BuyData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAcc
                                 data.FundSelected === -1 ?
                                     t("Please, select a fund to buy")
                                     :
-                                    t("You are buying") + " " +
-                                    sharesToBuy.toString() + " " +
-                                    (
-                                        sharesToBuy.toString() === '1.00' ?
-                                            t("share")
-                                            :
-                                            t("shares")
-                                    )
+                                    <>
+                                        {t("You are buying")}&nbsp;<FormattedNumber prefix="" value={sharesToBuy.toString()} fixedDecimals={2} />&nbsp;{(sharesToBuy.toString() === '1.00' ? t("share") : t("shares"))}
+
+                                    </>
                             }
                         </Form.Control.Feedback>
                     </InputGroup>

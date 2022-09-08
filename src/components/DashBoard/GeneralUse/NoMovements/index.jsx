@@ -9,7 +9,6 @@ import './index.css'
 import Decimal from 'decimal.js';
 const NoMovements = ({ movements }) => {
   Decimal.set({ precision: 100 })
-
   //To use the translations from i18n
   const { t } = useTranslation();
   return (
@@ -17,7 +16,7 @@ const NoMovements = ({ movements }) => {
       className={`w-100 d-flex loadingMovements justify-content-center align-items-center`}>
       <Col className="d-flex justify-content-center align-items-center">
         <div className="emptyTable">
-          <span className="icon"><FontAwesomeIcon  icon={faSearch} /></span>
+          <span className="icon"><FontAwesomeIcon icon={faSearch} /></span>
           <span className="text">{t("There are no results")}</span>
         </div>
       </Col>

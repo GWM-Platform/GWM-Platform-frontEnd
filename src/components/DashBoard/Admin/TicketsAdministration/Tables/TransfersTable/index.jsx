@@ -7,7 +7,7 @@ import TransferRow from './TransferRow'
 const TransfersTable = ({ AccountInfo, UsersInfo, movements, state, reloadData, take }) => {
     const { t } = useTranslation();
 
-    const anyWithActions = () => Object.values(movements).some((field) => field.stateId === 1) && false
+    const anyWithActions = () => Object.values(movements).some((field) => field.stateId === 1)
 
     return (
         <Col xs="12">
@@ -37,8 +37,7 @@ const TransfersTable = ({ AccountInfo, UsersInfo, movements, state, reloadData, 
                     <tbody>
                         {
                             movements.map((movement, key) =>
-                                <TransferRow AccountInfo={AccountInfo} UsersInfo={UsersInfo}
-                                    reloadData={reloadData} key={key} Movement={movement} state={state} />
+                                <TransferRow key={key} Movement={movement} reloadData={reloadData} anyWithActions={anyWithActions()} />
                             )
                         }
                     </tbody>

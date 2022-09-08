@@ -9,8 +9,12 @@ const FundRow = ({ Fund }) => {
     return (
         <tr className="AccountRow">
             <td >{Fund.fund.name}</td>
-            <td >{Fund.shares}</td>
-            <td >{Fund.fund.sharePrice}</td>
+            <td >
+                <FormattedNumber prefix='' fixedDecimals={2} value={Decimal(Fund.shares).toString()} />
+            </td>
+            <td >
+                <FormattedNumber prefix='$' fixedDecimals={2} value={Decimal(Fund.fund.sharePrice).toString()} />
+            </td>
 
             <td>
                 <FormattedNumber prefix='$' fixedDecimals={2} value={Decimal(Fund.fund.sharePrice).times(Fund.shares)} />

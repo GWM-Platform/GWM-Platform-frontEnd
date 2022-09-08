@@ -43,7 +43,7 @@ const ActionConfirmationModal = ({ setShowModal, show, action, data, Funds, Bala
                             {t("Cash amount")}:<span className="emphasis"> <FormattedNumber prefix="U$D" value={data.amount} fixedDecimals={2}/></span>
                         </li>
                         <li className="listedInfo">
-                            {t("Share amount")}:<span className="emphasis"> <FormattedNumber prefix="U$D" value={sharesToBuy.toString()} fixedDecimals={2}/></span>
+                            {t("Share amount")}:<span className="emphasis"> <FormattedNumber prefix="" value={sharesToBuy.toString()} fixedDecimals={2}/></span>
                         </li>
 
                     </ul>

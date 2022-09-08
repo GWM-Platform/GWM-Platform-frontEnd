@@ -12,6 +12,7 @@ import TransferReceipt from 'Receipts/TransferReceipt';
 import { Spinner } from 'react-bootstrap';
 
 const Transfer = ({ content, actions, getTransfers }) => {
+
   var momentDate = moment(content.createdAt);
   const { t } = useTranslation();
   const { getMoveStateById, Accounts, AccountSelected } = useContext(DashBoardContext)
@@ -74,11 +75,14 @@ const Transfer = ({ content, actions, getTransfers }) => {
       {
         !!actions &&
         <td className="Actions verticalCenter" >{
-          !!(content.stateId === 1 && incomingTransfer()) &&
+          !!(content.stateId === 1) &&
           <div className="h-100 d-flex align-items-center justify-content-around">
-            <div className="iconContainer green">
-              <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => launchModalConfirmation("approve")} />
-            </div>
+            {
+              !!(incomingTransfer()) &&
+              <div className="iconContainer green">
+                <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => launchModalConfirmation("approve")} />
+              </div>
+            }
             <div className="iconContainer red">
               <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => launchModalConfirmation("deny")} />
             </div>
@@ -87,7 +91,7 @@ const Transfer = ({ content, actions, getTransfers }) => {
 
       }
       {
-        !!(content.stateId === 1 && incomingTransfer()) &&
+        !!(content.stateId === 1) &&
         <ActionConfirmationModal incomingTransfer={incomingTransfer()} reloadData={getTransfers} movement={content} setShowModal={setShowModal} action={Action} show={ShowModal} />
       }
     </tr >

@@ -22,9 +22,7 @@ const FundsPossesion = ({ stakes }) => {
                     </thead>
                     <tbody>
                         {
-                            stakes.map((stake, key) => {
-                                return <FundRow key={key} Fund={stake} />
-                            })
+                            stakes.map((stake, key) =><FundRow key={`fund-${key}`} Fund={stake} />)
                         }
                     </tbody>
                 </Table>

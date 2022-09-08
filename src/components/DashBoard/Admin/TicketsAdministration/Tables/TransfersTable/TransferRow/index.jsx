@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icons'
+import { faTimesCircle } from '@fortawesome/free-regular-svg-icons'
 import moment from 'moment';
 import ActionConfirmationModal from './ActionConfirmationModal'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
-const TransferRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }) => {
+const TransferRow = ({ Movement, reloadData, anyWithActions }) => {
 
     var momentDate = moment(Movement.createdAt);
 
@@ -45,16 +45,15 @@ const TransferRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }) =>
                 </td>
                 <td>{Movement.id}</td>
                 {
-                    !!(Movement.stateId === 1 && false) &&
+
+                    !!(anyWithActions) &&
                     <td className="Actions verticalCenter" >
-                        <div className="h-100 d-flex align-items-center justify-content-around">
-                            <div className="iconContainer green">
-                                <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => { launchModalConfirmation("approve") }} />
-                            </div>
-                            <div className="iconContainer red">
-                                <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => { launchModalConfirmation("deny") }} />
-                            </div>
-                        </div>
+                        {!!(Movement.stateId === 1) &&
+                            <div className="h-100 d-flex align-items-center justify-content-around">
+                                <div className="iconContainer red">
+                                    <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => { launchModalConfirmation("deny") }} />
+                                </div>
+                            </div>}
                     </td>
                 }
             </tr>

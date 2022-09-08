@@ -16,13 +16,11 @@ import { Link, Route, Switch } from 'react-router-dom';
 import ClientUsersAccordion from './ClientUsersAccordion';
 import ConnectForm from './ConnectForm';
 
-const SelectedAccountData = ({ Account, Client, setSelectedAccountId, Movements, stakes, Transactions, users }) => {
+const SelectedAccountData = ({ Account, Client, setSelectedAccountId, stakes, users }) => {
 
     const { t } = useTranslation();
 
-    const [accountMovements] = useState(Movements.filter(movement => movement.accountId === Account.id))
     const [clientFunds] = useState(stakes.filter(stake => stake.clientId === Client.id))
-    const [accountTransactions] = useState(Transactions.filter(transaction => transaction.clientId === Client.id))
 
     useEffect(() => {
         setSelectedAccountId(Client.id)
@@ -48,12 +46,8 @@ const SelectedAccountData = ({ Account, Client, setSelectedAccountId, Movements,
                         <AccountGeneralData Account={Account} Client={Client} />
                         <ClientUsersAccordion client={Client} />
                         {clientFunds.length > 0 ? <FundsPossesion stakes={clientFunds} /> : null}
-                        {Movements.length > 0 ? <AccountMovements Movements={accountMovements} /> : null}
-                        {
-                            clientFunds.length > 0 && accountTransactions.length > 0 ?
-                                <TransactionsByFund transactions={accountTransactions} stakes={clientFunds} /> :
-                                null
-                        }
+                        <AccountMovements ClientId={Client.id} AccountId={Account.id} />
+                        <TransactionsByFund ClientId={Client.id} AccountId={Account.id} />
                     </Accordion>
                 </div>
             </Route>
