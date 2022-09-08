@@ -217,7 +217,7 @@ const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }
         <>
             <div className='mobileMovement'>
                 <div className='d-flex py-1 align-items-center' >
-                    <span className="h4 mb-0 me-1 me-md-2">{t("Time deposit")}&nbsp;#{Movement.id}</span>
+                    <span className="h5 mb-0 me-1 me-md-2">{t("Time deposit")}&nbsp;#{Movement.id}</span>
                     <div className='me-auto px-1 px-md-2' style={{ borderLeft: "1px solid lightgray", borderRight: "1px solid lightgray" }}>
                         <span className="d-none d-md-inline">{t("Client")}:&nbsp;</span>
                         {

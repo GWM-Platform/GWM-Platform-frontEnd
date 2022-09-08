@@ -966,6 +966,7 @@ const Tables = ({ state, messageVariants }) => {
                         null
                 }
                 {/*-------------------------------Withdrawal and deposit-------------------------- */}
+                <div className='mt-3 w-100 d-flex' style={{ borderBottom: "1px solid gray" }} />
                 <h1 className="title" ref={AccountMovementsRef}>{t("Account movements tickets")}:</h1>
                 <TicketSearch
                     props={ticketSearchPropsMovements}
@@ -993,6 +994,7 @@ const Tables = ({ state, messageVariants }) => {
                         null
                 }
                 {/*-------------------------------Approved tickets pending settlement-------------------------- */}
+                <div className='mt-3 w-100 d-flex' style={{ borderBottom: "1px solid gray" }} />
                 <h1 className="title" ref={PendingSettlementRef}>{t("Approved tickets pending settlement")}:</h1>
                 <TicketSearch
                     props={ticketSearchPropsPendingSettlement}
@@ -1014,6 +1016,7 @@ const Tables = ({ state, messageVariants }) => {
                                 </>
                 }
                 {/*-------------------------------Transfers-------------------------- */}
+                <div className='mt-3 w-100 d-flex' style={{ borderBottom: "1px solid gray" }} />
                 <h1 className="title" ref={TransferRef}>{t("Transfer tickets")}:</h1>
                 <TicketSearch
                     props={ticketSearchPropsTransfer}
@@ -1042,6 +1045,7 @@ const Tables = ({ state, messageVariants }) => {
                 }
 
                 {/*-------------------------------Fixed Deposits-------------------------- */}
+                <div className='mt-3 w-100 d-flex' style={{ borderBottom: "1px solid gray" }} />
                 <h1 className="title" ref={FixedDepositsRef}>{t("Time deposits")}:</h1>
                 <TicketSearch
                     props={ticketSearchPropsFixedDeposits}

@@ -11,7 +11,7 @@ const FixedDepositsTable = ({ AccountInfo, UsersInfo, movements, state, reloadDa
 
     return (
 
-        <Col xs="12">
+        <Col xs="12" className="mt-2">
             <div style={{ overflowX: "overlay", minHeight: `calc( .5rem + ( 0.5rem * 2 + 25.5px ) * ${take + 1} )`, scrollSnapType: "both mandatory" }}>
                 {
                     movements.map((movement, key) =>
