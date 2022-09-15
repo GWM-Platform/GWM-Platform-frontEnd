@@ -67,8 +67,8 @@ const TableLastMovements = ({ Fund }) => {
     return (
         <Col md="12" className="p-0 mt-2">
             {fetchingMovements && (movements.transactions.length === 0 || movements === null) ?
-                <h2 className='my-2 p-0'>{t("Loading transactions")}</h2> :
-
+                <h2 className='my-2 p-0'>{t("Loading transactions")}</h2>
+                 :
                 <div>
                     <Container fluid className="p-0"
                         onClick={() => setOpen(!open)}

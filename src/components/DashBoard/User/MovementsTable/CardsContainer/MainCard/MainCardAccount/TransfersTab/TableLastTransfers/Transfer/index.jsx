@@ -73,7 +73,7 @@ const Transfer = ({ content, actions, getTransfers }) => {
         <FormattedNumber value={Math.abs(content.amount)} prefix="$" fixedDecimals={2} />
       </td>
       {
-        !!actions &&
+        !!(actions) &&
         <td className="Actions verticalCenter" >{
           !!(content.stateId === 1) &&
           <div className="h-100 d-flex align-items-center justify-content-around">

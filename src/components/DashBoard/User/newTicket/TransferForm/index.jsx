@@ -130,10 +130,10 @@ const TransferForm = ({ balanceChanged }) => {
                     </Row>
                 </Container>
                 {
-                    contentReady && Accounts.length >= 1 ?
+                    !!(contentReady && Accounts.length) >= 1 &&
                         <ActionConfirmationModal TargetAccount={TargetAccount} setShowModal={setShowModal} show={ShowModal} action={transfer} data={data} Balance={AccountSelected.balance} Transfer={Transfer} />
-                        :
-                        null
+                        
+                        
                 }
             </Form >
         </div >

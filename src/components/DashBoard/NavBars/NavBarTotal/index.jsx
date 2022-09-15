@@ -15,14 +15,14 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
     
     const { token, ClientSelected, itemSelected, contentReady, Accounts } = useContext(DashBoardContext)
     
-    const sectionsCashInAccount = ["buy", "withdraw", "sell", "transfer", "fixeddeposit"]
+    const sectionsCashInAccount = ["buy", "withdraw", "sell", "transfer", "timedeposit"]
 
     useEffect(() => {
         const getAccounts = async () => {
             var url = `${process.env.REACT_APP_APIURL}/clients/${ClientSelected.id}/balance`;
             setBalance({ ...Balance, ...{ fetching: true } })
             const response = await fetch(url, {
-                method: 'GET',
+                method: 'GET',  
                 headers: {
                     Authorization: `Bearer ${token}`,
                     Accept: "*/*",

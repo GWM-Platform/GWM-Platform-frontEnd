@@ -136,8 +136,8 @@ const SellForm = ({ balanceChanged }) => {
         setCollapsedFields(false)
     }
 
-    const sellAll = () => setData(prevState=>({...prevState,shares:Funds[data.FundSelected]?.shares || 0 }))
-    
+    const sellAll = () => setData(prevState => ({ ...prevState, shares: Funds[data.FundSelected]?.shares || 0 }))
+
     return (
         <div className="tabContent">
             <Container className="h-100">
@@ -154,7 +154,7 @@ const SellForm = ({ balanceChanged }) => {
                                     </Accordion>
                                     <Accordion flush activeKey={CollapsedFields ? "-1" : "0"}>
                                         <SellData fetching={fetching} toggleAccordion={toggleAccordion} handleSubmit={handleSubmit} validated={validated}
-                                            handleChange={handleChange} Funds={Funds} data={data} sellAll={sellAll}/>
+                                            handleChange={handleChange} Funds={Funds} data={data} sellAll={sellAll} />
                                     </Accordion>
                                 </Col>
                                 :
@@ -162,10 +162,9 @@ const SellForm = ({ balanceChanged }) => {
                     }
                 </Row>
                 {
-                    data.FundSelected !== -1 && contentReady ?
-                        <ActionConfirmationModal fetching={fetching} setShowModal={setShowModal} show={ShowModal} action={sell} data={data} Funds={Funds} Balance={Accounts[0].balance} />
-                        :
-                        null
+                    !!(data.FundSelected !== -1 && contentReady) &&
+                    <ActionConfirmationModal fetching={fetching} setShowModal={setShowModal} show={ShowModal} action={sell} data={data} Funds={Funds} Balance={Accounts[0].balance} />
+
                 }
             </Container>
         </div>

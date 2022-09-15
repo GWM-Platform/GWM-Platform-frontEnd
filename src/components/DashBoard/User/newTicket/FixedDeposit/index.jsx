@@ -215,10 +215,9 @@ const FixedDepositTicket = ({ balanceChanged }) => {
                     </Row>
                 </Container>
                 {
-                    FixedDeposit.fetched && contentReady ?
+                    !!(FixedDeposit.fetched && contentReady) &&
                         <ActionConfirmationModal anualRate={getAnualRate()} profit={profit} fetching={fetching} setShowModal={setShowModal} show={ShowModal} action={invest} data={data} Balance={Accounts[0].balance} />
-                        :
-                        null
+                        
                 }
             </div>
         </div >

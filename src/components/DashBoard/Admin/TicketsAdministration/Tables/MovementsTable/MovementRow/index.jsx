@@ -111,7 +111,7 @@ const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, coul
                         }
                     </div>
                     {
-                        !!((Movement.stateId === 1 && Movement.motive !== "FIXED_DEPOSIT_CREATE") || couldLiquidate(Movement)) &&
+                        !!((Movement.stateId === 1 ) || couldLiquidate(Movement)) &&
                         <div className="h-100 d-flex align-items-center justify-content-around Actions">
                             {couldLiquidate(Movement) ?
                                 <div className="iconContainer green me-1">
