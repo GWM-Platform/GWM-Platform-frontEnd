@@ -8,7 +8,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf } from '@fortawesome/free-regular-svg-icons';
 import ReactPDF from '@react-pdf/renderer';
 import MovementReceipt from 'Receipts/MovementReceipt';
-import { Spinner } from 'react-bootstrap';
+import { OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 const Movement = ({ content }) => {
   var momentDate = moment(content.createdAt);
@@ -38,9 +39,48 @@ const Movement = ({ content }) => {
     setGeneratingPDF(false)
   }
 
+  const [showClick, setShowClick] = useState(false)
+  const [showHover, setShowHover] = useState(false)
   return (
     <tr>
-      <td className="tableId">{content.id}</td>
+      <td className="tableId">
+        {content.id}
+        {
+          !!(content?.userEmail) &&
+          <OverlayTrigger
+            show={showClick || showHover}
+            placement="right"
+            delay={{ show: 250, hide: 400 }}
+            popperConfig={{
+              modifiers: [
+                {
+                  name: 'offset',
+                  options: {
+                    offset: [0, 0],
+                  },
+                },
+              ],
+            }}
+            overlay={
+              <Tooltip className="mailTooltip" id="more-units-tooltip">
+                <div>
+                {t('Operation performed by')}:<br />
+                  <span className="text-nowrap">{content?.userEmail}</span>
+                </div>
+              </Tooltip>
+            }
+          >
+            <span>
+              <button
+                onBlur={() => setShowClick(false)}
+                onClick={() => setShowClick(prevState => !prevState)}
+                onMouseEnter={() => setShowHover(true)}
+                onMouseLeave={() => setShowHover(false)}
+                type="button" className="noStyle"  ><FontAwesomeIcon icon={faInfoCircle} /></button>
+            </span>
+          </OverlayTrigger>
+        }
+      </td>
       <td className="text-center">
         {
           GeneratingPDF ?

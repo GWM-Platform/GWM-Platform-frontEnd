@@ -5,11 +5,12 @@ import './index.css'
 import { useTranslation } from 'react-i18next';
 import { DashBoardContext } from 'context/DashBoardContext';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
-import { Spinner } from 'react-bootstrap';
+import { OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf } from '@fortawesome/free-regular-svg-icons';
 import ReactPDF from '@react-pdf/renderer';
 import MovementReceipt from 'Receipts/MovementReceipt';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 const Movement = ({ content }) => {
   var momentDate = moment(content.createdAt);
   const { getMoveStateById, AccountSelected } = useContext(DashBoardContext)
@@ -39,6 +40,8 @@ const Movement = ({ content }) => {
     setGeneratingPDF(false)
   }
 
+  const [showClick, setShowClick] = useState(false)
+  const [showHover, setShowHover] = useState(false)
 
   return (
     <div className='mobileMovement'>
@@ -63,6 +66,43 @@ const Movement = ({ content }) => {
 
         }
       </button>
+
+      
+      {
+        !!(content?.userEmail) &&
+        <OverlayTrigger
+          show={showClick || showHover}
+          placement="auto"
+          delay={{ show: 250, hide: 400 }}
+          popperConfig={{
+            modifiers: [
+              {
+                name: 'offset',
+                options: {
+                  offset: [0, 0],
+                },
+              },
+            ],
+          }}
+          overlay={
+            <Tooltip className="mailTooltip" id="more-units-tooltip">
+              <div>
+                {t('Operation performed by')}:<br />
+                <span className="text-nowrap">{content?.userEmail}</span>
+              </div>
+            </Tooltip>
+          }
+        >
+          <span>
+            <button
+              onBlur={() => setShowClick(false)}
+              onClick={() => setShowClick(prevState => !prevState)}
+              onMouseEnter={() => setShowHover(true)}
+              onMouseLeave={() => setShowHover(false)}
+              type="button" className="noStyle"  ><FontAwesomeIcon icon={faInfoCircle} /></button>
+          </span>
+        </OverlayTrigger>
+      }
 
       <div className='d-flex justify-content-between'>
         <span className={`${content.stateId === 3 ? 'text-red' : 'text-green'}`}>{t(getMoveStateById(content.stateId).name)}</span>

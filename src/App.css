@@ -391,3 +391,7 @@ table .Actions {
 .css-tj5bde-Svg{
 	opacity:0;
 }
+
+.mailTooltip .tooltip-inner{
+	max-width: 350px;
+}

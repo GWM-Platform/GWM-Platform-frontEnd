@@ -739,7 +739,8 @@ i18n
           "It seems your user does not have access to any client": "Parece que su usuario no tiene acceso a ningún cliente",
           "Contact an administrator to normalize your situation": "Pongase en contacto con un administrador para normalizar su situacion",
           "Return to login": "Regresar al inicio de sesión",
-          "Operation state": "Estado de la operación"
+          "Operation state": "Estado de la operación",
+          "Operation performed by":"Operación realizada por"
         }
       }
     }
