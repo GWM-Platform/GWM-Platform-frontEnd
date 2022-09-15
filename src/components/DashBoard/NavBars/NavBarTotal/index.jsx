@@ -22,7 +22,7 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
             var url = `${process.env.REACT_APP_APIURL}/clients/${ClientSelected.id}/balance`;
             setBalance({ ...Balance, ...{ fetching: true } })
             const response = await fetch(url, {
-                method: 'GET',  
+                method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`,
                     Accept: "*/*",
