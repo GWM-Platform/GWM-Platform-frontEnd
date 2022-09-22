@@ -41,7 +41,7 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
             {/*====================================================Desktop==================================================== */}
             <Container fluid className="bottomInnerBorder px-0 d-none d-sm-block">
                 <Row className="w-100 d-flex align-items-center mx-0">
-                    <Col sm="auto" md={1} lg={admin && UserClients.length > 0 && IndexClientSelected === -1 ? "auto" : 2} style={{ paddingBottom: "5px" }}>
+                    <Col sm="auto" md={1} lg={admin &&  UserClients.content.length > 0 && IndexClientSelected === -1 ? "auto" : 2} style={{ paddingBottom: "5px" }}>
                         <Button className={`navInfoToggler ${NavInfoToggled ? "toggled" : ""}`} onClick={() => toggleNavInfo()}>
                             <FontAwesomeIcon icon={faChevronCircleUp} />
                         </Button>

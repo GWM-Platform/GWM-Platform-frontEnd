@@ -21,6 +21,9 @@ i18n
           "REPAYMENT_FUND": "Refund due to denied ticket (Fund {{fund}})",
           "REPAYMENT_FIXED_DEPOSIT": "Refund due to denied ticket (Time deposit #{{fixedDeposit}})",
           "REPAYMENT": "Refund due to denied ticket",
+          'TRANSFER_SEND': 'Outgoing transfer',
+          'TRANSFER_RECEIVE': 'Incoming transfer',
+
           "FIXED_DEPOSIT_CREATE": "Investment in time deposit #{{fixedDeposit}}",
           "FIXED_DEPOSIT_CLOSE": "Close of time deposit #{{fixedDeposit}}",
 
@@ -103,11 +106,6 @@ i18n
           "Source Account ID": "ID de cuenta de origen",
           "Transaction Destination": "Destino de la transferencia",
           "Internal transaction": "Transferencia interna",
-          "Wadiah customer": "Cliente de Wadiah",
-          "US transaction": "Transferencia a EE. UU.",
-          "International transaction": "Transferencia internacional",
-          "Internal Transactions": "Transferencias internas",
-          "Bank Address": "Dirección del banco",
           "Please, select a source account for the transaction": "Por favor, seleccione una cuenta de origen para la transacción",
           "Please, enter a short description about the transaction": "Por favor, ingrese una corta descripción sobre la transferencia",
           "Please, enter the movement amount": "Por favor, ingrese la cantidad que desea transferir",
@@ -424,6 +422,9 @@ i18n
           "REPAYMENT_FUND": "Devolución por ticket rechazado (Fondo {{fund}})",
           "REPAYMENT_FIXED_DEPOSIT": "Devolución por ticket rechazado (Plazo fijo #{{fixedDeposit}})",
           "REPAYMENT": "Devolución por ticket rechazado",
+          'TRANSFER_SEND': 'Transferencia saliente',
+          'TRANSFER_RECEIVE': 'Transferencia entrante',
+
           "FIXED_DEPOSIT_CREATE": "Inversión en plazo fijo #{{fixedDeposit}}",
           "FIXED_DEPOSIT_CLOSE": "Cierre del plazo fijo #{{fixedDeposit}}",
           "Change client": "Cambiar cliente",
@@ -739,7 +740,8 @@ i18n
           "It seems your user does not have access to any client": "Parece que su usuario no tiene acceso a ningún cliente",
           "Contact an administrator to normalize your situation": "Pongase en contacto con un administrador para normalizar su situacion",
           "Return to login": "Regresar al inicio de sesión",
-          "Operation state": "Estado de la operación"
+          "Operation state": "Estado de la operación",
+          "User":"Usuario"
         }
       }
     }

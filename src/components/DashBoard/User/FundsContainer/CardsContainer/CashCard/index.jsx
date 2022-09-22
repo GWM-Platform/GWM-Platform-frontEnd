@@ -288,7 +288,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                 <span className='d-flex justify-content-between'>
                                     {
                                         pendingCash().calculated ?
-                                            <>
+                                            <div className='d-flex align-items-center'>
                                                 <span>{t("Pending transactions")}:&nbsp;
                                                     <span className={`bolder ${pendingCash().isPositive ? "text-green" : "text-red"}`}>
                                                         {pendingCash().isPositive ? "+" : "-"}
@@ -336,11 +336,11 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                                         />
                                                     </button>
                                                 </OverlayTrigger>
-                                            </>
+                                            </div>
                                             :
-                                            <>
+                                            <div>
                                                 {t("Pending transactions")}:<span className={`bolder text-green`}>&nbsp;<Spinner className="ms-2" animation="border" size="sm" /></span>
-                                            </>
+                                            </div>
                                     }
                                 </span>
                             </div>
@@ -446,7 +446,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                     <span className='d-flex justify-content-between'>
                                         {
                                             pendingCash().calculated ?
-                                                <>
+                                                <div className='d-flex align-items-center'>
                                                     <span>{t("Pending transactions")}:&nbsp;
                                                         <span className={`bolder ${pendingCash().isPositive ? "text-green" : "text-red"}`}>
                                                             {pendingCash().isPositive ? "+" : "-"}
@@ -494,11 +494,11 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                                             />
                                                         </button>
                                                     </OverlayTrigger>
-                                                </>
+                                                </div>
                                                 :
-                                                <>
+                                                <div className='d-flex align-items-center'>
                                                     {t("Pending transactions")}:<span className={`bolder text-green`}>&nbsp;<Spinner className="ms-2" animation="border" size="sm" /></span>
-                                                </>
+                                                </div>
                                         }
                                     </span>
                                 </div>

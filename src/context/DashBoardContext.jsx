@@ -44,8 +44,7 @@ export const DashBoardProvider = ({ children }) => {
     const [balanceChanged, setBalanceChanged] = useState(true)
     const [width, setWidth] = useState(window.innerWidth);
 
-    const [UserClients, setUserClients] = useState([])
-    const [fetchingClients, setFetchingClients] = useState(true)
+    const [UserClients, setUserClients] = useState({ fetching: true, content: [], fetched: false, valid: false })
 
     const [ClientSelected, setClientSelected] = useState({})
     const [IndexClientSelected, setIndexClientSelected] = useState(-1)
@@ -331,7 +330,7 @@ export const DashBoardProvider = ({ children }) => {
         }
 
         const getUserData = async () => {
-            setFetchingClients(true)
+            setUserClients(prevState => ({ ...prevState, fetching: true, fetched: false }))
             var url = `${process.env.REACT_APP_APIURL}/clients`;
             const response = await fetch(url, {
                 method: 'GET',
@@ -343,14 +342,13 @@ export const DashBoardProvider = ({ children }) => {
             })
 
             if (response.status === 200) {
-                setFetchingClients(false)
                 const data = await response.json()
                 const getClientIndexById = (id) => {
                     return data.findIndex(client => {
                         return client.id.toString() === id
                     })
                 }
-                setUserClients(data)
+                setUserClients(prevState => ({ ...prevState, fetching: false, fetched: true, valid: true, content: data }))
                 if (data.length === 1 && !admin) {
                     setIndexClientSelected(0)
                 }
@@ -366,7 +364,7 @@ export const DashBoardProvider = ({ children }) => {
                 }
 
             } else {
-                setFetchingClients(false)
+                setUserClients(prevState => ({ ...prevState, fetching: false, fetched: true, valid: false, content: [] }))
                 switch (response.status) {
                     default:
                         toLogin()
@@ -389,7 +387,7 @@ export const DashBoardProvider = ({ children }) => {
     //Fired when th client changed
     useEffect(() => {
 
-        const userDashboardSelected = () => UserClients.length > 0 && IndexClientSelected >= 0
+        const userDashboardSelected = () =>  UserClients.content.length > 0 && IndexClientSelected >= 0
 
         const adminDashboardSelected = () => admin && IndexClientSelected === -1
 
@@ -439,12 +437,12 @@ export const DashBoardProvider = ({ children }) => {
         }
 
         if (userDashboardSelected()) {
-            setClientSelected(UserClients[IndexClientSelected])
+            setClientSelected( UserClients.content[IndexClientSelected])
             manageUrlUser()
             setBalanceChanged(true)
         } else if (adminDashboardSelected()) manageUrlAdmin()
         //eslint-disable-next-line
-    }, [history, UserClients, IndexClientSelected, admin]);
+    }, [history, UserClients.content, IndexClientSelected, admin]);
 
     const getMoveStateById = (id) => {
         if (TransactionStates.fetched && TransactionStates.valid && !TransactionStates.fetching) {
@@ -462,12 +460,12 @@ export const DashBoardProvider = ({ children }) => {
     const toLogin = () => {
         sessionStorage.clear(); history.push(`/login`);
     }
-    
+
     return <DashBoardContext.Provider
         value={{
             token, admin, UserClients, ClientSelected, IndexClientSelected, setIndexClientSelected, balanceChanged, setBalanceChanged, TransactionStates, getMoveStateById,
             FetchingFunds, contentReady, PendingWithoutpossession, PendingTransactions, Accounts, Funds, itemSelected, setItemSelected, isMobile, width, toLogin, setContentReady,
-            DashboardToast, DashboardToastDispatch, AccountSelected,fetchingClients
+            DashboardToast, DashboardToastDispatch, AccountSelected
         }}>
         {children}
     </DashBoardContext.Provider>

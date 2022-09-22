@@ -33,7 +33,7 @@ const TransferRow = ({ Movement, reloadData, anyWithActions }) => {
                     bg: "danger",
                     text: "Denied"
                 }
-                case 4://Liquidated
+            case 4://Liquidated
                 return {
                     bg: "primary",
                     text: "Liquidated"
@@ -68,7 +68,7 @@ const TransferRow = ({ Movement, reloadData, anyWithActions }) => {
                         }
                     </div>
                     {
-                        !!(Movement.stateId === 1) &&
+                        !!(Movement.stateId === 1 && false) &&
                         <div className="h-100 d-flex align-items-center justify-content-around Actions">
                             <div className="iconContainer red me-1">
                                 <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => { launchModalConfirmation("deny") }} />
@@ -83,8 +83,8 @@ const TransferRow = ({ Movement, reloadData, anyWithActions }) => {
 
                 <div className='d-flex justify-content-between' style={{ borderBottom: "1px solid 1px solid rgb(240,240,240)" }}>
                     <span >
-                        <span className="d-inline d-md-none">{t("Receiver")}</span>
-                        <span className="d-none d-md-inline">{t("Target account")}</span>
+                        <span className="d-inline d-md-none">{t("Sender")}</span>
+                        <span className="d-none d-md-inline">{t("Source account")}</span>
                         :&nbsp;
                         {
                             Movement?.senderAlias
@@ -120,10 +120,9 @@ const TransferRow = ({ Movement, reloadData, anyWithActions }) => {
                 </div >
             </div >
             {
-                Movement.stateId === 1 ?
-                    <ActionConfirmationModal reloadData={reloadData} movement={Movement} setShowModal={setShowModal} action={Action} show={ShowModal} />
-                    :
-                    null}
+                !!(Movement.stateId === 1 && false) &&
+                <ActionConfirmationModal reloadData={reloadData} movement={Movement} setShowModal={setShowModal} action={Action} show={ShowModal} />
+            }
         </>
     )
 }

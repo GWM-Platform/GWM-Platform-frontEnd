@@ -22,7 +22,7 @@ const SelectClient = () => {
 
     const toDashBoard = () => {
         if(remember){
-            localStorage.setItem(UserClients[0].alias,ClientToAccess)
+            localStorage.setItem( UserClients.content[0].alias,ClientToAccess)
         }
         setIndexClientSelected(ClientToAccess)
     }
@@ -38,7 +38,7 @@ const SelectClient = () => {
                             </h1>
                             <div>
 
-                                {UserClients.map(
+                                { UserClients.content.map(
                                     (client, key) =>
                                         <Client client={client} ownKey={key} key={key} ClientToAccess={ClientToAccess} setClientToAccess={setClientToAccess} />
                                 )

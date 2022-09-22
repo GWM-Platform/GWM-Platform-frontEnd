@@ -48,7 +48,7 @@ import NoClients from './GeneralUse/NoClients';
 const UserDashBoard = () => {
     axios.defaults.headers.common['Authorization'] = `Bearer ${sessionStorage.getItem("access_token")}`
 
-    const { isMobile, admin, ClientSelected, balanceChanged, setBalanceChanged, setItemSelected, IndexClientSelected, UserClients, fetchingClients } = useContext(DashBoardContext);
+    const { isMobile, admin, ClientSelected, balanceChanged, setBalanceChanged, setItemSelected, IndexClientSelected, UserClients } = useContext(DashBoardContext);
 
     const { path } = useRouteMatch()
     const [NavInfoToggled, setNavInfoToggled] = useState(false)
@@ -57,8 +57,8 @@ const UserDashBoard = () => {
     return (
         <div className="DashBoard growOpacity" style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/backGround/background.jpg)` }}>
             {
-                IndexClientSelected >= 0 || admin || UserClients.length === 1 ?
-                    UserClients.length > 0 || admin ?
+                IndexClientSelected >= 0 || admin || UserClients.content.length === 1 ?
+                    UserClients.content.length > 0 || admin ?
                         ClientSelected.id || admin ?
                             <>
                                 <NavInfo NavInfoToggled={NavInfoToggled} />
@@ -153,10 +153,10 @@ const UserDashBoard = () => {
                         :
                         <Loading />
                     :
-                    UserClients.length > 1 ?
+                    UserClients.content.length > 1 ?
                         <SelectClient />
                         :
-                        fetchingClients ?
+                        UserClients.fetching ?
                             <Loading />
                             :
                             <NoClients />

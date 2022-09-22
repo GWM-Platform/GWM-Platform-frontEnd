@@ -10,7 +10,7 @@ const ClientSelector = () => {
     const { t } = useTranslation();
     const { UserClients, IndexClientSelected, setIndexClientSelected, ClientSelected, admin } = useContext(DashBoardContext)
 
-    return ((admin && UserClients.length > 0) || (!admin && ClientSelected && UserClients.length > 1) ?
+    return ((admin &&  UserClients.content.length > 0) || (!admin && ClientSelected &&  UserClients.content.length > 1) ?
         <Dropdown className="clientSelector">
             <Dropdown.Toggle
                 variant="secondary btn-sm"
@@ -31,7 +31,7 @@ const ClientSelector = () => {
                         null
                 }
                 {
-                    UserClients.map((client, key) => {
+                     UserClients.content.map((client, key) => {
                         return (
                             <Dropdown.Item key={key} active={IndexClientSelected === key ? true : false} onClick={() => { setIndexClientSelected(key) }}>
                                 {client.alias}

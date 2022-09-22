@@ -93,6 +93,8 @@ const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, coul
         //eslint-disable-next-line
     }, [Movement, state, AccountInfo, UsersInfo])
 
+    const isTransferMovement = () => Movement.motive === 'TRANSFER_SEND' || Movement.motive === 'TRANSFER_RECEIVE'
+
     return (
         <>
             <div className='mobileMovement'>
@@ -111,13 +113,15 @@ const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, coul
                         }
                     </div>
                     {
-                        !!((Movement.stateId === 1 ) || couldLiquidate(Movement)) &&
+                        !!((Movement.stateId === 1) || couldLiquidate(Movement)) &&
                         <div className="h-100 d-flex align-items-center justify-content-around Actions">
                             {couldLiquidate(Movement) ?
                                 <div className="iconContainer green me-1">
                                     <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => { launchModalConfirmation("liquidate") }} />
                                 </div>
                                 :
+
+                                !!(!isTransferMovement()) &&
                                 <>
                                     <div className="iconContainer green me-1">
                                         <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => { launchModalConfirmation("approve") }} />
