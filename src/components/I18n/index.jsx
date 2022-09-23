@@ -373,6 +373,7 @@ i18n
           "Asset Create form": "Formulario de creación de activos",
           "You must provide a name for the Asset": "Debe especificar un nombre para el activo",
           "The value must be greater than 0": "El valor debe ser mayor a 0",
+          "The rate must be greater than 0": "La tasa debe ser mayor a 0",
           "Google SpreadSheet Id": "Id de la hoja de cálculo de Google",
           "SpreadSheet Id": "Id de la hoja de cálculo",
           "Symbol": "Simbolo",
@@ -741,7 +742,8 @@ i18n
           "Contact an administrator to normalize your situation": "Pongase en contacto con un administrador para normalizar su situacion",
           "Return to login": "Regresar al inicio de sesión",
           "Operation state": "Estado de la operación",
-          "User":"Usuario"
+          "User":"Usuario",
+          "Asset #":"Activo #"
         }
       }
     }

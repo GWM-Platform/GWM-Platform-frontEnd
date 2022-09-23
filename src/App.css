@@ -391,3 +391,10 @@ table .Actions {
 .css-tj5bde-Svg{
 	opacity:0;
 }
+
+.hideFormControl .form-control{
+	display: none;
+}
+.hideFormControl label{
+	display: none;
+}

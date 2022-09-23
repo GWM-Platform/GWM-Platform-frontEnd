@@ -6,7 +6,7 @@ import CreateResult from './CreateResult'
 import axios from 'axios';
 import { DashBoardContext } from 'context/DashBoardContext';
 
-const CreateRules = ({ ActionDispatch, FixedDeposit,getFixedDepositPlans }) => {
+const CreateRules = ({ ActionDispatch, FixedDeposit, getFixedDepositPlans }) => {
     const [validated, setValidated] = useState(false);
     const [data, setData] = useState({
         days: "",
@@ -91,7 +91,7 @@ const CreateRules = ({ ActionDispatch, FixedDeposit,getFixedDepositPlans }) => {
 
     const handleChange = (event) => {
         let aux = data
-        aux[event.target.id] = parseInt(event.target.value) || event.target.value
+        aux[event.target.id] = event.target.value
         setData({ ...data, ...aux })
     }
 
@@ -99,7 +99,7 @@ const CreateRules = ({ ActionDispatch, FixedDeposit,getFixedDepositPlans }) => {
         <>
             {
                 CreateRequest.fetched ?
-                    <CreateResult ActionDispatch={ActionDispatch} CreateRequest={CreateRequest} getFixedDepositPlans={getFixedDepositPlans}/>
+                    <CreateResult ActionDispatch={ActionDispatch} CreateRequest={CreateRequest} getFixedDepositPlans={getFixedDepositPlans} />
                     :
                     <CreateForm
                         fetchingCreateRequest={CreateRequest?.fetching} ActionDispatch={ActionDispatch}

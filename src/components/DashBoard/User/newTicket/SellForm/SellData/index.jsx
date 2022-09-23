@@ -1,12 +1,49 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form, InputGroup, Row, Button, Accordion, Container } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
+import { unMaskNumber } from 'utils/unmask';
+import CurrencyInput from '@osdiab/react-currency-input-field';
 
 
-const SellData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAccordion, fetching, sellAll }) => {
+const SellData = ({ data, setData, Funds, handleChange, validated, handleSubmit, toggleAccordion, fetching }) => {
 
     const { t } = useTranslation();
+
+    const [inputValid, setInputValid] = useState(false)
+    const [inputValue, setInputValue] = useState(data.shares)
+
+    const decimalSeparator = process.env.REACT_APP_DECIMALSEPARATOR ?? '.'
+    const groupSeparator = process.env.REACT_APP_GROUPSEPARATOR ?? ','
+    const inputRef = useRef()
+
+    const handleAmountChange = (value, name) => {
+        const decimalSeparator = process.env.REACT_APP_DECIMALSEPARATOR ?? '.'
+
+        let fixedValue = value || ""
+        if (value) {
+            let lastCharacter = value.slice(-1)
+            if (lastCharacter === decimalSeparator) {
+                fixedValue = value.slice(0, -1)
+            }
+        }
+        const unMaskedValue = unMaskNumber({ value: fixedValue || "" })
+        handleChange({
+            target:
+                { id: name ? name : 'shares', value: unMaskedValue }
+        })
+        setInputValue(value)
+    }
+
+    useEffect(() => {
+        setInputValid(inputRef?.current?.checkValidity())
+    }, [inputRef, data.shares])
+
+    const sellAll = () => {
+        setData(prevState => ({ ...prevState, shares: Funds[data.FundSelected]?.shares || 0 }));
+        setInputValue(Funds[data.FundSelected]?.shares)
+    }
+
     return (
         <Accordion.Item eventKey="0">
             <Accordion.Header onClick={() => { if (data.FundSelected !== -1) toggleAccordion() }}>
@@ -27,9 +64,28 @@ const SellData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAc
             </Accordion.Header>
             <Accordion.Body>
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                    <InputGroup>
+                        {/*Shown input formatted*/}
+                        <CurrencyInput
+                            allowNegativeValue={false}
+                            name="currencyInput"
+                            value={inputValue}
+                            decimalsLimit={2}
+                            decimalSeparator={decimalSeparator}
+                            groupSeparator={groupSeparator}
+                            onValueChange={(value, name) => handleAmountChange(value)}
+                            className={`form-control ${inputValid ? 'hardcoded-valid' : 'hardcoded-invalid'} `}
+                        />
+                        <Button variant="outline-secondary" onClick={() => sellAll()}
+                            disabled={Funds[data.FundSelected]?.shares === data?.shares}>
+                            {t("All")}
+                        </Button>
+                    </InputGroup>
                     <Form.Group className="mb-1" controlId="shares">
                         <InputGroup hasValidation>
                             <Form.Control
+                            className='d-none'
+                                ref={inputRef}
                                 onWheel={event => event.currentTarget.blur()}
                                 value={data.shares}
                                 onChange={handleChange}
@@ -44,10 +100,7 @@ const SellData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAc
                                 required
                                 placeholder={t("Shares")}
                             />
-                            <Button variant="outline-secondary" onClick={() => sellAll()}
-                                disabled={Funds[data.FundSelected]?.shares === data?.shares}>
-                                {t("All")}
-                            </Button>
+                            
                             <Form.Control.Feedback type="invalid">
                                 {
                                     data.FundSelected === -1 ?

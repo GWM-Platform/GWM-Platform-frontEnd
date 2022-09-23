@@ -1,12 +1,39 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form, InputGroup, Row, Button, Accordion, Container } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
+import CurrencyInput from '@osdiab/react-currency-input-field';
+import { unMaskNumber } from 'utils/unmask';
 
 const TransferData = ({ data, handleChange, TargetAccount, toggleAccordion, Balance }) => {
 
     const { t } = useTranslation();
-   
+
+    const [inputValid, setInputValid] = useState(false)
+
+    const decimalSeparator = process.env.REACT_APP_DECIMALSEPARATOR ?? '.'
+    const groupSeparator = process.env.REACT_APP_GROUPSEPARATOR ?? ','
+    const inputRef = useRef()
+
+    const handleAmountChange = (value, name) => {
+        const decimalSeparator = process.env.REACT_APP_DECIMALSEPARATOR ?? '.'
+
+        let fixedValue = value || ""
+        if (value) {
+            let lastCharacter = value.slice(-1)
+            if (lastCharacter === decimalSeparator) {
+                fixedValue = value.slice(0, -1)
+            }
+        }
+        const unMaskedValue = unMaskNumber({ value: fixedValue || "" })
+        handleChange({
+            target:
+                { id: name ? name : 'amount', value: unMaskedValue }
+        })
+    }
+    useEffect(() => {
+        setInputValid(inputRef?.current?.checkValidity())
+    }, [inputRef, data.amount])
 
     return (
         <Accordion.Item eventKey="0" disabled>
@@ -27,9 +54,24 @@ const TransferData = ({ data, handleChange, TargetAccount, toggleAccordion, Bala
                 </Container>
             </Accordion.Header>
             <Accordion.Body>
-                <InputGroup className="mb-3">
+                <InputGroup >
                     <InputGroup.Text>U$D</InputGroup.Text>
+                    {/*Shown input formatted*/}
+                    <CurrencyInput
+                        allowNegativeValue={false}
+                        name="currencyInput"
+                        defaultValue={data.amount}
+                        decimalsLimit={2}
+                        decimalSeparator={decimalSeparator}
+                        groupSeparator={groupSeparator}
+                        onValueChange={(value, name) => handleAmountChange(value)}
+                        className={`form-control ${inputValid ? 'hardcoded-valid' : 'hardcoded-invalid'} `}
+                    />
+                </InputGroup>
+                <InputGroup className="mb-3">
                     <Form.Control
+                    className='d-none'
+                        ref={inputRef}
                         onWheel={event => event.currentTarget.blur()}
                         disabled={false}
                         value={data.amount}

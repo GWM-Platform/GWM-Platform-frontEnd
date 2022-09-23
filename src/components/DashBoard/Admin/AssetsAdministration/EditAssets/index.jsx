@@ -31,7 +31,7 @@ const EditAssets = ({ Assets, AssetTypes, chargeAssets, Action, setAction }) => 
 
     const handleChange = (event) => {
         let aux = data
-        aux[event.target.id] = parseInt(event.target.value) || event.target.value
+        aux[event.target.id] = event.target.value
         setData({ ...data, ...aux })
     }
 

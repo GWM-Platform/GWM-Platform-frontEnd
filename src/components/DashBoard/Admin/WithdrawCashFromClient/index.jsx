@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col, Form, InputGroup, Button } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
 import { DashBoardContext } from 'context/DashBoardContext'
 import moment from 'moment';
+import { unMaskNumber } from 'utils/unmask';
+import CurrencyInput from '@osdiab/react-currency-input-field';
 
 const WithdrawCashFromClient = () => {
     const { toLogin, TransactionStates } = useContext(DashBoardContext)
@@ -200,11 +202,38 @@ const WithdrawCashFromClient = () => {
         let index = Accounts.value.findIndex((account) => account.id.toString() === searchedId.toString())
         return index === -1 ? false : Accounts.value[index][property]
     }
+
+    const [inputValid, setInputValid] = useState(false)
+
+    const decimalSeparator = process.env.REACT_APP_DECIMALSEPARATOR ?? '.'
+    const groupSeparator = process.env.REACT_APP_GROUPSEPARATOR ?? ','
+    const inputRef = useRef()
+
+    const handleAmountChange = (value, name) => {
+        const decimalSeparator = process.env.REACT_APP_DECIMALSEPARATOR ?? '.'
+
+        let fixedValue = value || ""
+        if (value) {
+            let lastCharacter = value.slice(-1)
+            if (lastCharacter === decimalSeparator) {
+                fixedValue = value.slice(0, -1)
+            }
+        }
+        const unMaskedValue = unMaskNumber({ value: fixedValue || "" })
+        handleChange({
+            target:
+                { id: name ? name : 'amount', value: unMaskedValue }
+        })
+    }
+    useEffect(() => {
+        setInputValid(inputRef?.current?.checkValidity())
+    }, [inputRef, data.amount])
+
     return (
         <Container className="h-100 AssetsAdministration">
             <Row className="h-100 d-flex justify-content-center">
                 <Col className="newTicket h-100 growAnimation section" sm="12">
-                <div className="header">
+                    <div className="header">
                         <h1 className="title">{t("Withdraw cash from an account")}</h1>
                     </div>
                     <Form noValidate validated={validated} onSubmit={handleSubmit}>
@@ -249,9 +278,24 @@ const WithdrawCashFromClient = () => {
                         </Form.Group>
 
                         <Form.Label>{t("Amount")}</Form.Label>
-                        <InputGroup className="mb-3">
+                        <InputGroup >
                             <InputGroup.Text>U$D</InputGroup.Text>
+                            {/*Shown input formatted*/}
+                            <CurrencyInput
+                                allowNegativeValue={false}
+                                name="currencyInput"
+                                defaultValue={data.amount}
+                                decimalsLimit={2}
+                                decimalSeparator={decimalSeparator}
+                                groupSeparator={groupSeparator}
+                                onValueChange={(value, name) => handleAmountChange(value)}
+                                className={`form-control ${inputValid ? 'hardcoded-valid' : 'hardcoded-invalid'} `}
+                            />
+                        </InputGroup>
+                        <InputGroup className="mb-3">
                             <Form.Control
+                                className='d-none'
+                                ref={inputRef}
                                 onWheel={event => event.currentTarget.blur()}
                                 value={data.amount}
                                 step=".01"
@@ -284,6 +328,8 @@ const WithdrawCashFromClient = () => {
                                 }
                             </Form.Control.Feedback>
                         </InputGroup>
+
+
 
                         <Form.Label>{t("Transaction status")}</Form.Label>
                         <Form.Select id="stateId" onChange={handleChange} required className="mb-3" value={data.stateId} aria-label="Select State Id">

@@ -1,9 +1,11 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form, Button, FloatingLabel, Spinner, Popover, InputGroup, Overlay, OverlayTrigger } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronCircleLeft, faEye, faSearch, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import CurrencyInput from '@osdiab/react-currency-input-field';
+import { unMaskNumber } from 'utils/unmask';
 
 const CreateFunds = ({ data, setData, CreateRequest, handleChange, Action, setAction, validated, handleSubmit, AssetTypes, ImageUrl, setImageUrl, checkImage, Funds }) => {
     const { t } = useTranslation();
@@ -20,7 +22,7 @@ const CreateFunds = ({ data, setData, CreateRequest, handleChange, Action, setAc
     const isNull = () => !popover.current
 
     const handleClick = (event) => {
-        if(ImageUrl.fetched){
+        if (ImageUrl.fetched) {
             setShow(!show);
             setTarget(event.target);
         }
@@ -81,6 +83,40 @@ const CreateFunds = ({ data, setData, CreateRequest, handleChange, Action, setAc
 
     const imageOptions = () => [...new Set([`${process.env.PUBLIC_URL}/images/FundsLogos/default.svg`, ...Funds.map(Fund => Fund.imageUrl)])].filter(e => e)
 
+    const [inputValid, setInputValid] = useState(false)
+    const [inputSharesValid, setInputSharesValid] = useState(false)
+    
+    const decimalSeparator = process.env.REACT_APP_DECIMALSEPARATOR ?? '.'
+    const groupSeparator = process.env.REACT_APP_GROUPSEPARATOR ?? ','
+   
+    const inputRef = useRef()
+    const inputSharesRef = useRef()
+
+    const handleAmountChange = (value, name) => {
+        const decimalSeparator = process.env.REACT_APP_DECIMALSEPARATOR ?? '.'
+
+        let fixedValue = value || ""
+        if (value) {
+            let lastCharacter = value.slice(-1)
+            if (lastCharacter === decimalSeparator) {
+                fixedValue = value.slice(0, -1)
+            }
+        }
+        const unMaskedValue = unMaskNumber({ value: fixedValue || "" })
+        handleChange({
+            target:
+                { id: name ? name : 'amount', value: unMaskedValue }
+        })
+    }
+
+    useEffect(() => {
+        setInputValid(inputRef?.current?.checkValidity())
+    }, [inputRef, data.initialSharePrice])
+
+    useEffect(() => {
+        setInputSharesValid(inputSharesRef?.current?.checkValidity())
+    }, [inputRef, data.shares])
+
     return (
         <div className="editForm">
             <div className="header">
@@ -114,11 +150,27 @@ const CreateFunds = ({ data, setData, CreateRequest, handleChange, Action, setAc
 
                 {/*------------------------------------------------------------------------------------------------------------------------------------------ */}
 
+                {/*Shown input formatted*/}
                 <FloatingLabel
                     label={t("Shares")}
-                    className="mb-3"
                 >
-                    <Form.Control required onChange={handleChange} id="shares" value={data.shares} min="0.01" step="0.01" type="number" placeholder={t("Shares")} />
+                    <CurrencyInput
+                        allowNegativeValue={false}
+                        name="shares"
+                        defaultValue={data.shares}
+                        decimalsLimit={2}
+                        decimalSeparator={decimalSeparator}
+                        groupSeparator={groupSeparator}
+                        onValueChange={(value, name) => handleAmountChange(value, name)}
+                        placeholder={t("Shares")}
+                        className={`form-control ${validated ? inputSharesValid ? 'hardcoded-valid' : 'hardcoded-invalid' : ""} `}
+                    />
+                </FloatingLabel>
+                <FloatingLabel
+                    label={t("Shares")}
+                    className="mb-3 hideFormControl"
+                >
+                    <Form.Control ref={inputSharesRef} required onChange={handleChange} id="shares" value={data.shares} min="0.01" step="0.01" type="number" placeholder={t("Shares")} />
                     <Form.Control.Feedback type="invalid">
                         {t("The shares must be more than 0")}
                     </Form.Control.Feedback>
@@ -126,11 +178,28 @@ const CreateFunds = ({ data, setData, CreateRequest, handleChange, Action, setAc
 
                 {/*------------------------------------------------------------------------------------------------------------------------------------------ */}
 
+                {/*Shown input formatted*/}
                 <FloatingLabel
                     label={t("Initial share price")}
-                    className="mb-3"
+                >
+                    <CurrencyInput
+                        allowNegativeValue={false}
+                        name="initialSharePrice"
+                        defaultValue={data.initialSharePrice}
+                        decimalsLimit={2}
+                        decimalSeparator={decimalSeparator}
+                        groupSeparator={groupSeparator}
+                        onValueChange={(value, name) => handleAmountChange(value, name)}
+                        placeholder={t("Initial share price")}
+                        className={`form-control ${validated ? inputValid ? 'hardcoded-valid' : 'hardcoded-invalid' : ""} `}
+                    />
+                </FloatingLabel>
+                <FloatingLabel
+                    label={t("Initial share price")}
+                    className="mb-3 hideFormControl"
                 >
                     <Form.Control
+                        ref={inputRef}
                         required onChange={handleChange} id="initialSharePrice"
                         value={data.initialSharePrice} min="0" step="0.01" type="number"
                         placeholder={t("Initial share price")}

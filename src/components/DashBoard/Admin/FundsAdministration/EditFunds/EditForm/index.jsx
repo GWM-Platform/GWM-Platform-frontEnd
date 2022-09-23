@@ -1,9 +1,11 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form, Button, FloatingLabel, Spinner, Popover, InputGroup, Overlay, OverlayTrigger } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronCircleLeft,faEye,faEyeSlash,faSearch } from '@fortawesome/free-solid-svg-icons'
+import { faChevronCircleLeft, faEye, faEyeSlash, faSearch } from '@fortawesome/free-solid-svg-icons'
+import CurrencyInput from '@osdiab/react-currency-input-field';
+import { unMaskNumber } from 'utils/unmask';
 //import FundAssets from './FundAssets'
 
 const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, setAction, validated, handleSubmit, AssetTypes, ImageUrl, setImageUrl, checkImage }) => {
@@ -23,7 +25,7 @@ const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, se
     const isNull = () => !popover.current
 
     const handleClick = (event) => {
-        if(ImageUrl.fetched){
+        if (ImageUrl.fetched) {
             setShow(!show);
             setTarget(event.target);
         }
@@ -83,6 +85,32 @@ const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, se
     }
 
     const imageOptions = () => [...new Set([`${process.env.PUBLIC_URL}/images/FundsLogos/default.svg`, ...Funds.map(Fund => Fund.imageUrl)])].filter(e => e)
+
+    const [inputValid, setInputValid] = useState(false)
+
+    const decimalSeparator = process.env.REACT_APP_DECIMALSEPARATOR ?? '.'
+    const groupSeparator = process.env.REACT_APP_GROUPSEPARATOR ?? ','
+    const inputRef = useRef()
+
+    const handleAmountChange = (value, name) => {
+        const decimalSeparator = process.env.REACT_APP_DECIMALSEPARATOR ?? '.'
+
+        let fixedValue = value || ""
+        if (value) {
+            let lastCharacter = value.slice(-1)
+            if (lastCharacter === decimalSeparator) {
+                fixedValue = value.slice(0, -1)
+            }
+        }
+        const unMaskedValue = unMaskNumber({ value: fixedValue || "" })
+        handleChange({
+            target:
+                { id: name ? name : 'shares', value: unMaskedValue }
+        })
+    }
+    useEffect(() => {
+        setInputValid(inputRef?.current?.checkValidity())
+    }, [inputRef, data.shares])
 
     return (
         <div className="editForm">
@@ -206,10 +234,26 @@ const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, se
                 </FloatingLabel>
 
                 {/*------------------------------------------------------------------------------------------------------------------------------------------ */}
-
+                {/*Shown input formatted*/}
                 <FloatingLabel
                     label={t("Shares")}
-                    className="mb-3"
+                >
+                    <CurrencyInput
+                        allowNegativeValue={false}
+                        name="currencyInput"
+                        disabled
+                        defaultValue={Funds[Action.fund].shares}
+                        decimalsLimit={2}
+                        decimalSeparator={decimalSeparator}
+                        groupSeparator={groupSeparator}
+                        onValueChange={(value, name) => handleAmountChange(value)}
+                        placeholder={t("Shares")}
+                        className={`form-control ${validated ? inputValid ? 'hardcoded-valid' : 'hardcoded-invalid' : ""} `}
+                    />
+                </FloatingLabel>
+                <FloatingLabel
+                    label={t("Shares")}
+                    className="mb-3 hideFormControl"
                 >
                     <Form.Control readOnly disabled value={Funds[Action.fund].shares} type="number" placeholder={t("Shares")} />
                     <Form.Control.Feedback type="invalid">
