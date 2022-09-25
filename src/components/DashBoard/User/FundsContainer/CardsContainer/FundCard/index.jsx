@@ -16,8 +16,6 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
 
     let history = useHistory();
 
-    Decimal.set({ precision: 6 })
-
     const pendingShares = () => {
         //Filtro de todos los movimientos pendientes solo los del fondo correspondiente
         const fundPendingTransactions = PendingTransactions.value.filter(

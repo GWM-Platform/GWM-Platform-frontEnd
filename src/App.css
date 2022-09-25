@@ -398,3 +398,6 @@ table .Actions {
 .hideFormControl label{
 	display: none;
 }
+.mailTooltip .tooltip-inner{
+	max-width: 350px;
+}

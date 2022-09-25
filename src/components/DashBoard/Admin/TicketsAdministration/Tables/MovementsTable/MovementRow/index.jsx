@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icons'
-import { Badge, Spinner } from 'react-bootstrap'
+import { Badge, OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 import ActionConfirmationModal from './ActionConfirmationModal'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, couldLiquidate }) => {
 
@@ -95,11 +96,53 @@ const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, coul
 
     const isTransferMovement = () => Movement.motive === 'TRANSFER_SEND' || Movement.motive === 'TRANSFER_RECEIVE'
 
+    const [showClick, setShowClick] = useState(false)
+    const [showHover, setShowHover] = useState(false)
+
     return (
         <>
             <div className='mobileMovement'>
                 <div className='d-flex py-1 align-items-center' >
-                    <span className="h5 mb-0 me-1 me-md-2">{t("Movement")}&nbsp;#{Movement.id}</span>
+                    <span className="h5 mb-0 me-1 me-md-2">
+                        {t("Movement")}&nbsp;#{Movement.id}
+                    </span>
+                    {
+                        !!(Movement?.userEmail) &&
+                        <div className='me-auto px-1 px-md-2' style={{ borderLeft: "1px solid lightgray", borderRight: "1px solid lightgray" }}>
+                            <OverlayTrigger
+                                show={showClick || showHover}
+                                placement="right"
+                                delay={{ show: 250, hide: 400 }}
+                                popperConfig={{
+                                    modifiers: [
+                                        {
+                                            name: 'offset',
+                                            options: {
+                                                offset: [0, 0],
+                                            },
+                                        },
+                                    ],
+                                }}
+                                overlay={
+                                    <Tooltip className="mailTooltip" id="more-units-tooltip">
+                                        <div>
+                                            {t('Operation performed by')}:<br />
+                                            <span className="text-nowrap">{Movement?.userEmail}</span>
+                                        </div>
+                                    </Tooltip>
+                                }
+                            >
+                                <span>
+                                    <button
+                                        onBlur={() => setShowClick(false)}
+                                        onClick={() => setShowClick(prevState => !prevState)}
+                                        onMouseEnter={() => setShowHover(true)}
+                                        onMouseLeave={() => setShowHover(false)}
+                                        type="button" className="noStyle"  ><FontAwesomeIcon icon={faInfoCircle} /></button>
+                                </span>
+                            </OverlayTrigger>
+                        </div>
+                    }
                     <div className='me-auto px-1 px-md-2' style={{ borderLeft: "1px solid lightgray", borderRight: "1px solid lightgray" }}>
                         <span className="d-none d-md-inline">{t("Client")}:&nbsp;</span>
                         {

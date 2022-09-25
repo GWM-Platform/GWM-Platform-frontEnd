@@ -743,7 +743,8 @@ i18n
           "Return to login": "Regresar al inicio de sesión",
           "Operation state": "Estado de la operación",
           "User":"Usuario",
-          "Asset #":"Activo #"
+          "Asset #":"Activo #",
+          "Operation performed by":"Operación realizada por"
         }
       }
     }

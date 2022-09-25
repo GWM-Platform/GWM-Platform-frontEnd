@@ -16,8 +16,6 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
     const { toLogin } = useContext(DashBoardContext);
     const { t } = useTranslation();
 
-    Decimal.set({ precision: 6 })
-
     const getAnualRate = () => FixedDeposit.interestRate ?? 0
 
     const ellapsedDays = () => (

@@ -12,7 +12,7 @@ import PaginationController from 'components/DashBoard/GeneralUse/PaginationCont
 import FilterOptions from 'components/DashBoard/GeneralUse/FilterOptions'
 
 const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
-    const { token, ClientSelected } = useContext(DashBoardContext);
+    const { token, ClientSelected,AccountSelected } = useContext(DashBoardContext);
     const history = useHistory();
 
     const [Movements, setMovements] = useState({ movements: 0, total: 0 })
@@ -33,6 +33,7 @@ const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
         var url = `${process.env.REACT_APP_APIURL}/movements/?` + new URLSearchParams(
             Object.fromEntries(Object.entries(
                 {
+                    accountId:AccountSelected.id,
                     client: ClientSelected.id,
                     filterAccount: Fund.id,
                     take: Pagination.take,
