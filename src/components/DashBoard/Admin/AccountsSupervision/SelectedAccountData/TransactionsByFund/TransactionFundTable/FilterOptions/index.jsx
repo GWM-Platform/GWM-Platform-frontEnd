@@ -70,8 +70,7 @@ const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, to
                         <Form.Group controlId="movesPerPage">
                             <Form.Label className="capitalizeFirstLetter">{t(`status`)}</Form.Label>
                             <Form.Select disabled={disabled} value={filterOptions.state} onChange={handleChange} id="state">
-                                <option value="">{t("All except denied")}</option>
-                                {<option value="10">{t("All (including denied)")}</option>}
+                                <option value="">{t("All")}</option>
                                 {TransactionStates.values.map((state, key) => <option key={key} value={state.id}>{t(state.name)}</option>)}
                             </Form.Select>
                         </Form.Group>

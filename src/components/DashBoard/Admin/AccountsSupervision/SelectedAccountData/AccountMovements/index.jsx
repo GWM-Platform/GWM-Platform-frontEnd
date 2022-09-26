@@ -35,6 +35,8 @@ const AccountMovements = ({ AccountId, ClientId }) => {
                     accountId: AccountId,
                     take: Pagination.take,
                     skip: Pagination.skip,
+                    filterState: Pagination.state===10 ? null :  Pagination.state,
+                    showDenied: Pagination.state===10 ? true : null
                 },
                 signal: signal,
             }).then(function (response) {
@@ -88,7 +90,6 @@ const AccountMovements = ({ AccountId, ClientId }) => {
                 <div className="d-flex align-items-start justify-content-center flex-column MovementsTableContainer">
                     <div className={`movementsTable growAnimation`}>
                         <Container fluid className='mb-2'>
-
                             <FilterOptions total={Movements.content.total} keyword={"transactions"} disabled={false} Fund={AccountId} setPagination={setPagination} movsPerPage={Pagination.take} />
                             {
                                 Movements.fetching ?

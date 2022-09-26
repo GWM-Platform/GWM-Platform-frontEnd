@@ -224,6 +224,9 @@ const DepositCashToClient = () => {
         setInputValid(inputRef?.current?.checkValidity())
     }, [inputRef, data.amount])
 
+    const PendingSettlementsId=4
+    const DeniedStateId=3
+
     return (
         <Container className="h-100 AssetsAdministration">
             <Row className="h-100 d-flex justify-content-center">
@@ -240,7 +243,7 @@ const DepositCashToClient = () => {
                             {Accounts.value.map((Account, key) => {
                                 return (
                                     <option key={key + "-account"} value={Account.id}>
-                                        {t("Account Alias")}: {Account.alias}&nbsp;/ {t("Account Id")}: {Account.id} / {t("Actual Balance")}: {Account.balance}
+                                        {t("Account Alias")}:&nbsp;{Account.alias}&nbsp;/ {t("Account Id")}: {Account.id} / {t("Actual Balance")}: {Account.balance}
                                     </option>
                                 )
                             })}
@@ -289,7 +292,7 @@ const DepositCashToClient = () => {
                         </InputGroup>
                         <InputGroup className="mb-3">
                             <Form.Control
-                            ref={inputRef}
+                                ref={inputRef}
                                 className="d-none"
                                 onWheel={event => event.currentTarget.blur()}
                                 value={data.amount}
@@ -321,6 +324,7 @@ const DepositCashToClient = () => {
                         <Form.Select id="stateId" onChange={handleChange} required className="mb-3" value={data.stateId} aria-label="Select State Id">
                             <option disabled value="">{t("Open this select menu")}</option>
                             {TransactionStates.values.map((state, key) =>
+                                !!(state.id !== PendingSettlementsId && state.id !== DeniedStateId) &&
                                 <option key={key + "-state"} value={state.id}>{state.id + " - " + state.name}</option>
                             )}
                         </Form.Select>

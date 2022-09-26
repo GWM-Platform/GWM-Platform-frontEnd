@@ -228,6 +228,7 @@ const WithdrawCashFromClient = () => {
     useEffect(() => {
         setInputValid(inputRef?.current?.checkValidity())
     }, [inputRef, data.amount])
+    const DeniedStateId = 3
 
     return (
         <Container className="h-100 AssetsAdministration">
@@ -245,7 +246,7 @@ const WithdrawCashFromClient = () => {
                             {Accounts.value.map((Account, key) => {
                                 return (
                                     <option disabled={Account.balance === 0} key={key + "-account"} value={Account.id}>
-                                        {t("Account Alias")}:{Account.alias}&nbsp;/ {t("Account Id")}: {Account.id} / {t("Actual Balance")}: {Account.balance}
+                                        {t("Account Alias")}:&nbsp;{Account.alias}&nbsp;/ {t("Account Id")}: {Account.id} / {t("Actual Balance")}: {Account.balance}
                                     </option>
                                 )
                             })}
@@ -335,6 +336,7 @@ const WithdrawCashFromClient = () => {
                         <Form.Select id="stateId" onChange={handleChange} required className="mb-3" value={data.stateId} aria-label="Select State Id">
                             <option disabled value="">{t("Open this select menu")}</option>
                             {TransactionStates.values.map((state, key) =>
+                                !!(state.id !== DeniedStateId) &&
                                 <option key={key + "-state"} value={state.id}>{state.id + " - " + state.name}</option>
                             )}
                         </Form.Select>

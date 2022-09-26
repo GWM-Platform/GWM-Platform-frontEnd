@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
-import { Accordion, Form } from 'react-bootstrap'
+import { Accordion, Col, Container, Form, Row } from 'react-bootstrap'
 import TransactionFundTable from './TransactionFundTable';
 import axios from 'axios';
 import { useMemo } from 'react';
@@ -66,13 +66,23 @@ const TransactionsByFund = ({ AccountId, ClientId }) => {
     return (
         <Accordion.Item eventKey="4">
             <Accordion.Header>{t("Transactions by fund")}</Accordion.Header>
-            <Accordion.Body>
-                <Form.Select className="mb-2" disabled={!Funds.valid} onChange={handleChange} value={FundSelected} aria-label="Default select example">
-                    <option value="" disabled>{t("Open this select menu")}</option>
-                    {!!(Funds.valid) && Funds.content.map(
-                        (fund, key) => <option key={`funds-selector-option-${fund.id}`} value={fund.id}>{fund.name}</option>
-                    )}
-                </Form.Select>
+            <Accordion.Body className='px-0'>
+                <Container fluid>
+                    <Row>
+                        <Col>
+                            <Form.Group className="mb-3">
+                                <Form.Label >{t("Fund")}</Form.Label>
+                                <Form.Select  disabled={!Funds.valid} onChange={handleChange} value={FundSelected} aria-label="Default select example">
+                                    <option value="" disabled>{t("Open this select menu")}</option>
+                                    {!!(Funds.valid) && Funds.content.map(
+                                        (fund, key) => <option key={`funds-selector-option-${fund.id}`} value={fund.id}>{fund.name}</option>
+                                    )}
+                                </Form.Select>
+                            </Form.Group>
+
+                        </Col>
+                    </Row>
+                </Container>
                 {
                     FundSelected === "" ? null :
                         <TransactionFundTable AccountId={AccountId} ClientId={ClientId} FundId={FundSelected} />
