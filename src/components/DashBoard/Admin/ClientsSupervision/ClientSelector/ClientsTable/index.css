@@ -1,0 +1,23 @@
+.ClientsTable .toDetails{
+    text-align:center;
+    cursor:pointer;
+}
+
+.ClientsTable .toDetails a{
+    color: var(--bs-table-hover-color);
+    text-decoration: none;
+}
+
+
+.ClientsTable .toDetails .chevron{
+    margin-left: 0.5em;
+}
+
+@keyframes bounceRight {
+    0%,100%{
+        transform: translateX(0);
+    }
+    40%,60%{
+        transform: translateX(25%);
+    }
+}

@@ -45,6 +45,8 @@ const Movement = ({ content }) => {
     <tr>
       <td className="tableId">
         {content.id}
+      </td>
+      <td className="text-center">
         {
           !!(content?.userEmail || content?.partialBalance) &&
           <OverlayTrigger

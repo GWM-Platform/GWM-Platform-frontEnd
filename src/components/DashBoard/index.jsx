@@ -35,7 +35,7 @@ import DepositCashToClient from './Admin/DepositCashToClient';
 import WithdrawCashFromClient from './Admin/WithdrawCashFromClient';
 import OperationStatusAdmin from './Admin/OperationStatus';
 import Loading from './Loading';
-import AccountsSupervision from './Admin/AccountsSupervision';
+import ClientsSupervision from './Admin/ClientsSupervision';
 import APL from './Admin/APL'
 import FixedDeposit from './Admin/FixedDeposit';
 
@@ -75,8 +75,8 @@ const UserDashBoard = () => {
                                             <Route path={`${path}/APL`}>
                                                 <APL />
                                             </Route>
-                                            <Route path={`${path}/accountsSupervision`}>
-                                                <AccountsSupervision />
+                                            <Route path={`${path}/clientsSupervision`}>
+                                                <ClientsSupervision />
                                             </Route>
                                             <Route path={`${path}/fundsAdministration`}>
                                                 <FundsAdministration />

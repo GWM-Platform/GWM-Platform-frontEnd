@@ -36,7 +36,7 @@ const NavBarMobile = () => {
     }
 
     const toAccountsAdmin = () => {
-        history.push(`${url}/accountsSupervision`);
+        history.push(`${url}/clientsSupervision`);
     }
 
 
@@ -69,7 +69,7 @@ const NavBarMobile = () => {
 
                             <div
                                 onClick={() => toAccountsAdmin()} xs="auto"
-                                className={`section ${itemSelectedLC === "depositcash" || itemSelectedLC === "withdrawcash" || itemSelectedLC === "accountssupervision" || itemSelectedLC === "addaccount" ? "selected" : ""}`}>
+                                className={`section ${itemSelectedLC === "depositcash" || itemSelectedLC === "withdrawcash" || itemSelectedLC === "clientssupervision" || itemSelectedLC === "addaccount" ? "selected" : ""}`}>
                                 <div className="d-flex justify-content-center">
                                     <FontAwesomeIcon className="icon" icon={faUser} />
                                 </div>

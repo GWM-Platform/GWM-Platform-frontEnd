@@ -83,11 +83,11 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                             {t("Tickets administration")}
                                         </Nav.Link>
                                         <NavDropdown
-                                            active={itemSelectedLC === "withdrawcash" || itemSelectedLC === "depositcash" || itemSelectedLC === "addaccount" || itemSelectedLC === "accountssupervision" || itemSelectedLC === "connectusertoclient"}
+                                            active={itemSelectedLC === "withdrawcash" || itemSelectedLC === "depositcash" || itemSelectedLC === "addaccount" || itemSelectedLC === "clientssupervision" || itemSelectedLC === "connectusertoclient"}
                                             className="px-0 transactionDropdown" title={t("Clients administration")} id="collasible-nav-dropdown">
                                             <NavDropdown.Item
-                                                active={itemSelectedLC === "accountssupervision"}
-                                                onClick={() => { goTo("accountsSupervision") }}>
+                                                active={itemSelectedLC === "clientssupervision"}
+                                                onClick={() => { goTo("clientsSupervision") }}>
                                                 {t("Clients supervision")}
                                             </NavDropdown.Item>
                                             <NavDropdown.Item
@@ -200,7 +200,7 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                         </Col>
                     </Row>
 
-                    <Row className={`w-100 justify-content-between align-items-center mx-0 px-0 ${itemSelectedLC === "addaccount" || itemSelectedLC === "depositcash" || itemSelectedLC === "withdrawcash" || itemSelectedLC === "accountssupervision" || itemSelectedLC === "connectusertoclient" ? "d-flex" : "d-none"}`}>
+                    <Row className={`w-100 justify-content-between align-items-center mx-0 px-0 ${itemSelectedLC === "addaccount" || itemSelectedLC === "depositcash" || itemSelectedLC === "withdrawcash" || itemSelectedLC === "clientssupervision" || itemSelectedLC === "connectusertoclient" ? "d-flex" : "d-none"}`}>
                         <Col xs="6" className="px-0">
                             <OverlayTrigger placement="bottom" overlay={
                                 <Popover id="popover-funds" className="OverlayNavMobile" >
@@ -229,8 +229,8 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                     <Popover.Body>
                                         <NavDropdown.Item
                                             className="p-2"
-                                            active={itemSelectedLC === "accountssupervision"}
-                                            onClick={() => { goTo("accountsSupervision") }}>
+                                            active={itemSelectedLC === "clientssupervision"}
+                                            onClick={() => { goTo("clientsSupervision") }}>
                                             {t("Clients supervision")}
                                         </NavDropdown.Item>
                                         <NavDropdown.Item
@@ -241,7 +241,7 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                     </Popover.Body>
                                 </Popover>
                             } popperConfig={1}>
-                                <Button className={`dropdownButton nav-link ${itemSelectedLC === "addaccount" || itemSelectedLC === "accountssupervision" || itemSelectedLC === "connectusertoclient" ? "active" : ""}`}>
+                                <Button className={`dropdownButton nav-link ${itemSelectedLC === "addaccount" || itemSelectedLC === "clientssupervision" || itemSelectedLC === "connectusertoclient" ? "active" : ""}`}>
                                     <p className="mobile-dropdown mb-0" >{t("Accounts")}</p>
                                 </Button>
                             </OverlayTrigger>

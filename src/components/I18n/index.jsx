@@ -732,7 +732,7 @@ i18n
           "Connect a new user": "Vincular un nuevo usuario",
           "Clients administration": "Administración de clientes",
           "Add user": "Añadir un usuario",
-          "Search client by number": "Buscar cliente por número",
+          "Search client": "Buscar cliente",
           "Data from client": "Datos del cliente",
           "Clients supervision": "Supervisión de clientes",
           "Client general data": "Datos generales del cliente",
