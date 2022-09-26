@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, useMemo } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
-import { Accordion, Table } from 'react-bootstrap'
+import { Accordion, Container, Table } from 'react-bootstrap'
 import MovementRow from './MovementRow'
 import axios from 'axios';
 import { DashBoardContext } from 'context/DashBoardContext';
@@ -10,6 +10,7 @@ import NoMovements from 'components/DashBoard/GeneralUse/NoMovements';
 import Loading from 'components/DashBoard/GeneralUse/Loading';
 import { useCallback } from 'react';
 import PaginationController from 'components/DashBoard/GeneralUse/PaginationController';
+import FilterOptions from './FilterOptions';
 
 const AccountMovements = ({ AccountId, ClientId }) => {
 
@@ -25,14 +26,13 @@ const AccountMovements = ({ AccountId, ClientId }) => {
         state: null
     })
 
-
-
     const getMovements = useCallback(
         (signal) => {
             axios.get(`/movements`, {
                 params: {
                     client: ClientId,
                     filterAccount: AccountId,
+                    accountId: AccountId,
                     take: Pagination.take,
                     skip: Pagination.skip,
                 },
@@ -68,9 +68,7 @@ const AccountMovements = ({ AccountId, ClientId }) => {
         [AccountId, ClientId, Pagination, toLogin],
     )
 
-
     useEffect(() => {
-
         getMovements();
         return () => {
             setMovements((prevState) => (
@@ -79,51 +77,57 @@ const AccountMovements = ({ AccountId, ClientId }) => {
                     ...initialState
                 }))
         }
-    }, [getMovements, initialState])
+        // eslint-disable-next-line
+    }, [AccountId, Pagination, getMovements, initialState])
 
     return (
 
         <Accordion.Item eventKey="2">
             <Accordion.Header>{t("Client's movements")}</Accordion.Header>
-            <Accordion.Body>
+            <Accordion.Body className='px-0'>
                 <div className="d-flex align-items-start justify-content-center flex-column MovementsTableContainer">
                     <div className={`movementsTable growAnimation`}>
-                        {
-                            Movements.fetching  ?
-                                <Loading movements={Decimal(Pagination.take).toNumber()} />
-                                :
-                                Decimal(Movements.content.movements.length).gt(0) ?
-                                    <>
-                                        <div style={{ minHeight: `calc( ( 0.5rem * 2 + 25.5px ) * ${Pagination.take + 1} )` }} className={`tableMovements`}>
-                                            <Table className="AccountsTable mb-0" striped bordered hover>
-                                                <thead className="verticalTop tableHeader solid-bg">
-                                                    <tr>
-                                                        <th className="tableId text-nowrap">{t("Ticket #")}</th>
-                                                        <th className="tableHeader">{t("Date")}</th>
-                                                        <th className="d-none d-sm-table-cell">{t("Status")}</th>
-                                                        <th className="tableHeader">{t("Description")}</th>
-                                                        <th className="tableDescription d-none d-sm-table-cell">{t("Amount")}</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {
-                                                        Movements.content.movements.map((movement, key) => <MovementRow key={`account-movement-${key}`} Movement={movement} />)
-                                                    }
-                                                </tbody>
-                                            </Table>
-                                        </div>
-                                    </>
+                        <Container fluid className='mb-2'>
+
+                            <FilterOptions total={Movements.content.total} keyword={"transactions"} disabled={false} Fund={AccountId} setPagination={setPagination} movsPerPage={Pagination.take} />
+                            {
+                                Movements.fetching ?
+                                    <Loading movements={Decimal(Pagination.take).toNumber()} />
                                     :
-                                    <NoMovements movements={Decimal(Pagination.take).toNumber()} />
-                        }
-                        {
-                            Movements.content.total > 0 ?
-                                <PaginationController PaginationData={Pagination} setPaginationData={setPagination} total={Movements.content.total} />
-                                :
-                                null
-                        }
+                                    Decimal(Movements.content.movements.length).gt(0) ?
+                                        <>
+                                            <div style={{ minHeight: `calc( ( 0.5rem * 2 + 25.5px ) * ${Pagination.take + 1} )` }} className={`tableMovements`}>
+                                                <Table className="AccountsTable mb-0" striped bordered hover>
+                                                    <thead className="verticalTop tableHeader solid-bg">
+                                                        <tr>
+                                                            <th className="tableId text-nowrap">{t("Ticket #")}</th>
+                                                            <th className="tableHeader">{t("Date")}</th>
+                                                            <th className="d-none d-sm-table-cell">{t("Status")}</th>
+                                                            <th className="tableHeader">{t("Description")}</th>
+                                                            <th className="tableDescription d-none d-sm-table-cell">{t("Amount")}</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {
+                                                            Movements.content.movements.map((movement, key) => <MovementRow key={`account-movement-${key}`} Movement={movement} />)
+                                                        }
+                                                    </tbody>
+                                                </Table>
+                                            </div>
+                                        </>
+                                        :
+                                        <NoMovements movements={Decimal(Pagination.take).toNumber()} />
+                            }
+                            {
+                                Movements.content.total > 0 ?
+                                    <PaginationController PaginationData={Pagination} setPaginationData={setPagination} total={Movements.content.total} />
+                                    :
+                                    null
+                            }
+                        </Container>
                     </div>
                 </div >
+
             </Accordion.Body>
         </Accordion.Item>
 

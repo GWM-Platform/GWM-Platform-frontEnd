@@ -730,7 +730,7 @@ i18n
           'Administration of users connected to clients': 'Administración de usuarios vinculados a clientes',
           "Users connected to the client": "Usuarios vinculados al cliente",
           "Connect a new user": "Vincular un nuevo usuario",
-          "Clients administration": "Adminitración de clientes",
+          "Clients administration": "Administración de clientes",
           "Add user": "Añadir un usuario",
           "Search client by number": "Buscar cliente por número",
           "Data from client": "Datos del cliente",
@@ -742,9 +742,13 @@ i18n
           "Contact an administrator to normalize your situation": "Pongase en contacto con un administrador para normalizar su situacion",
           "Return to login": "Regresar al inicio de sesión",
           "Operation state": "Estado de la operación",
-          "User":"Usuario",
-          "Asset #":"Activo #",
-          "Operation performed by":"Operación realizada por"
+          "User": "Usuario",
+          "Asset #": "Activo #",
+          "Operation performed by": "Operación realizada por",
+          'Partial balance': 'Saldo parcial',
+          'Maximum ({{maximum}})': 'Máximo ({{maximum}})',
+          "All except denied": "Todos salvo rechados",
+          "All (including denied)": "Todos (incluyendo rechazados)"
         }
       }
     }

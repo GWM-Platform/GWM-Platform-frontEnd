@@ -8,7 +8,7 @@ import TicketSearch from 'components/DashBoard/GeneralUse/TicketSearch'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, ticketSearch, ticketSearchProps }) => {
+const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, ticketSearch, ticketSearchProps, movements }) => {
     const { t } = useTranslation();
     const { TransactionStates } = useContext(DashBoardContext)
 
@@ -52,7 +52,7 @@ const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, ti
     return (
         <Accordion flush>
             <Accordion.Item eventKey="0">
-                <Accordion.Header disabled={disabled}>
+                <Accordion.Header >
                     {t("Filters")} {disabled ? t("(Cancel the search to use them)") : ""}
                 </Accordion.Header>
                 <Accordion.Body >
@@ -70,7 +70,8 @@ const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, ti
                                     <Form.Group controlId="movesPerPage">
                                         <Form.Label className="capitalizeFirstLetter">{t(`status`)}</Form.Label>
                                         <Form.Select disabled={disabled} value={filterOptions.state} onChange={handleChange} id="state">
-                                            <option value="">{t("All")}</option>
+                                            <option value="">{movements ? t("All except denied") : t("All")}</option>
+                                            {!!(movements) && <option value="10">{t("All (including denied)")}</option>}
                                             {TransactionStates.values.map((state, key) => <option key={key} value={state.id}>{t(state.name)}</option>)}
                                         </Form.Select>
                                     </Form.Group>

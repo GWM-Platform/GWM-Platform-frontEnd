@@ -42,7 +42,7 @@ const SelectedAccountData = ({ Account, Client, setSelectedAccountId, stakes, us
                         </Link>
 
                     </div>
-                    <Accordion flush>
+                    <Accordion flush alwaysOpen>
                         <AccountGeneralData Account={Account} Client={Client} />
                         <ClientUsersAccordion client={Client} />
                         {clientFunds.length > 0 ? <FundsPossesion stakes={clientFunds} /> : null}

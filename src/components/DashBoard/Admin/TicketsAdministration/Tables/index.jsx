@@ -573,6 +573,7 @@ const Tables = ({ state, messageVariants }) => {
             filterState: state,
             take: PaginationMovements.take,
             skip: PaginationMovements.skip,
+            onlyDepositsWithdraws:true
         });
         setMovements({
             ...Movements,

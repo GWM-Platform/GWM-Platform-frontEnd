@@ -27,7 +27,6 @@ const TransactionFundTable = ({ ClientId, FundId }) => {
         state: null
     })
 
-
     const getTransactions = useCallback(
         (signal) => {
             axios.get(`/transactions`, {
