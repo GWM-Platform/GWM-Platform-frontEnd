@@ -1,10 +1,10 @@
 import React, { useContext } from 'react'
 
 import { Nav, Navbar, Container, Row, Col, NavDropdown, Button, OverlayTrigger, Popover } from 'react-bootstrap'
-import { useRouteMatch, useHistory } from 'react-router-dom';
+import { useRouteMatch, useHistory, NavLink } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSignOutAlt, faChevronCircleUp } from '@fortawesome/free-solid-svg-icons'
+import { faSignOutAlt, faChevronCircleUp, faCog } from '@fortawesome/free-solid-svg-icons'
 
 import { useTranslation } from "react-i18next";
 import { DashBoardContext } from 'context/DashBoardContext';
@@ -41,7 +41,7 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
             {/*====================================================Desktop==================================================== */}
             <Container fluid className="bottomInnerBorder px-0 d-none d-sm-block">
                 <Row className="w-100 d-flex align-items-center mx-0">
-                    <Col sm="auto" md={1} lg={admin &&  UserClients.content.length > 0 && IndexClientSelected === -1 ? "auto" : 2} style={{ paddingBottom: "5px" }}>
+                    <Col sm="auto" md={1} lg={admin && UserClients.content.length > 0 && IndexClientSelected === -1 ? "auto" : 2} style={{ paddingBottom: "5px" }}>
                         <button className={`noStyle navInfoToggler ${NavInfoToggled ? "toggled" : ""}`} onClick={() => toggleNavInfo()}>
                             <FontAwesomeIcon icon={faChevronCircleUp} />
                         </button>
@@ -168,8 +168,11 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                 <LanguageSelector />
                             </div>
 
-                            <Nav.Link className="text-black" onClick={() => logOut()}>
-                                {t("LogOut")}&nbsp;
+                            <NavLink to="/Dashboard/Configuration?section=Password+and+authentication" className="nav-link " activeClassName="active">
+                                <FontAwesomeIcon icon={faCog} />
+                            </NavLink>
+
+                            <Nav.Link  onClick={() => logOut()} className="nav-link " activeClassName="active">
                                 <FontAwesomeIcon icon={faSignOutAlt} />
                             </Nav.Link>
                         </Nav>

@@ -749,7 +749,21 @@ i18n
           'Maximum ({{maximum}})': 'Máximo ({{maximum}})',
           "All except denied": "Todos salvo rechados",
           "All (including denied)": "Todos (incluyendo rechazados)",
-          "Account Alias":"Alias de la cuenta"
+          "Account Alias": "Alias de la cuenta",
+          'Update Password': 'Actualizar Contraseña',
+          'Password updated succesfully': 'Contraseña actualizada exitosamente',
+          'There was an error updating the password. Check the "Old Password" field': 'Hubo un error actualizando la contraseña. Verifique el campo "Contraseña anterior"',
+          'Old Password': 'Contraseña anterior',
+          'Confirm New Password': 'Confirmar nueva contraseña',
+          'The fields "New password" and "confirm password" must match': 'Los campos "Nueva contraseña" y "Confirmar nueva contraseña" deben coincidir',
+          'Password and authentication': 'Autenticación y contraseña',
+          "Support": "Soporte",
+          'Access and permissions administration': "Administración de acceso y permisos",
+          "Information": "Información",
+          "User email": "Email del usuario",
+          "Basic information": "Información básica",
+          "Edit permissions": "Editar permisos",
+          "Revoke access": "Revocar acceso"
         }
       }
     }

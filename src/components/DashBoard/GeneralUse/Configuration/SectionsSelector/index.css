@@ -1,0 +1,103 @@
+.Configuration .SectionSelector {
+	color: var(--text-dark);
+	border-right: rgb(0 0 0 / 13%) 1px solid;
+}
+.Configuration .padding{
+	padding-top: 1em;
+	padding-bottom: 1em;
+	padding-right: calc(var(--bs-gutter-x) * .5);
+    padding-left: calc(var(--bs-gutter-x) * .5);
+}
+.Configuration .SectionSelector .SectionGroup {
+	border-radius: 10px;
+	background-color: rgb(0 0 0 / 13%);
+	padding: 0.1rem 0.2rem;
+	margin-bottom: 0.3rem;
+}
+
+.Configuration .SectionSelector .SectionGroup:last-of-type {
+	margin-bottom: 0;
+}
+
+.Configuration .SectionSelector .SectionGroup:empty {
+	padding: 0;
+	margin: 0;
+}
+
+.Configuration .SectionSelector .Section {
+	font-size: 19px;
+	border-radius: 0.125em;
+	margin: .3em .15em .3em .55em;
+	position: relative;
+	border: none;
+	background-color: transparent;
+	display: block;
+	width: -webkit-fill-available;
+}
+
+.Configuration .SectionSelector .Section .Title {
+	text-align: start;
+	font-size: 16px;
+	cursor: pointer;
+	margin: 0;
+	padding: 0.4em;
+	border-radius: 0.25em;
+	color: black;
+	transition: all 0.6s;
+	font-weight: 400;
+}
+
+.Configuration .SectionSelector .Section .Title::before {
+	content: '';
+	opacity: 0;
+	background-color: var(--blue-main);
+	height: 100%;
+	width: 100%;
+	right: 0;
+	top: 0;
+	position: absolute;
+	transition: all 0.3s;
+	border-radius: 	10px;
+}
+
+.Configuration .SectionSelector .Section .Title > * {
+	position: relative;
+}
+
+.Configuration .SectionSelector .Section::before {
+	font-size: 19px;
+	position: absolute;
+	content: '';
+	width: 0em;
+	height: 80%;
+	background-color: var(--blue-main);
+	border-radius: 0.125em;
+	top: 50%;
+	left: -0.45em;
+	transform: translateY(-50%);
+	transition: all 0.3s;
+	vertical-align: bottom;
+}
+
+.Configuration .SectionSelector .Section.selected::before {
+	width: 0.25em;
+}
+.Configuration .SectionSelector .Section.selected .Title {
+	color: white;
+}
+.Configuration .SectionSelector .Section.selected .Title::before {
+	opacity: 1;
+}
+.Configuration .SectionSelector .Section:not(.selected):hover .Title {
+	color: white;
+}
+.Configuration .SectionSelector .Section:not(.selected):hover .Title::before {
+	opacity: 1;
+}
+
+
+@media (max-width: 576px) {
+	.Configuration .SectionSelector .Section:not(.selected):hover .Title::before {
+		opacity: 0;
+	}
+}

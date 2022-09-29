@@ -44,6 +44,7 @@ import FixedDeposit from './Admin/FixedDeposit';
 import DashboardToast from './DashboardToast'
 import axios from 'axios';
 import NoClients from './GeneralUse/NoClients';
+import Configuration from './GeneralUse/Configuration';
 
 const UserDashBoard = () => {
     axios.defaults.headers.common['Authorization'] = `Bearer ${sessionStorage.getItem("access_token")}`
@@ -141,6 +142,9 @@ const UserDashBoard = () => {
                                             </Route>
                                             <Route path={`${path}/operationResult`}>
                                                 <OperationStatus setItemSelected={setItemSelected} />
+                                            </Route>
+                                            <Route exact path={`${path}/configuration`}>
+                                                <Configuration />
                                             </Route>
                                         </>
                                 }

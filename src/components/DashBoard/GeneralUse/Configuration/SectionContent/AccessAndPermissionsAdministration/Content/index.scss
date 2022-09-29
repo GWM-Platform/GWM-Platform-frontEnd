@@ -1,0 +1,25 @@
+.AccessAndPermissionsAdministration {
+    .accordion-item {
+        background: transparent;
+
+        .accordion-button {
+            padding-left: 0;
+            background: transparent;
+            transition: all 0.3s;
+            border-bottom: 0 solid transparent;
+            box-shadow: unset;
+            &:not(.collapsed) {
+                border-bottom: var(--bs-accordion-border-width) solid var(--bs-accordion-border-color) !important;
+            }
+
+            &:focus {
+                z-index: 3;
+                border-color: transparent;
+                outline: 0;
+            }
+        }
+    }
+    .accordion-body{
+        padding:0
+    }
+}

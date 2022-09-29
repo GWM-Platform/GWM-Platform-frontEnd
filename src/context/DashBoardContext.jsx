@@ -32,6 +32,7 @@ export const DashBoardProvider = ({ children }) => {
 
         return React.useMemo(() => new URLSearchParams(search), [search]);
     }
+    const allowedSymbols = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
 
     const desiredLocation = useQuery().get("loc")
     const desiredId = useQuery().get("id")
@@ -465,7 +466,7 @@ export const DashBoardProvider = ({ children }) => {
         value={{
             token, admin, UserClients, ClientSelected, IndexClientSelected, setIndexClientSelected, balanceChanged, setBalanceChanged, TransactionStates, getMoveStateById,
             FetchingFunds, contentReady, PendingWithoutpossession, PendingTransactions, Accounts, Funds, itemSelected, setItemSelected, isMobile, width, toLogin, setContentReady,
-            DashboardToast, DashboardToastDispatch, AccountSelected
+            DashboardToast, DashboardToastDispatch, AccountSelected,allowedSymbols
         }}>
         {children}
     </DashBoardContext.Provider>
