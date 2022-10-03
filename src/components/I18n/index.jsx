@@ -749,7 +749,8 @@ i18n
           'Maximum ({{maximum}})': 'Máximo ({{maximum}})',
           "All except denied": "Todos salvo rechados",
           "All (including denied)": "Todos (incluyendo rechazados)",
-          "Account Alias":"Alias de la cuenta"
+          "Account Alias":"Alias de la cuenta",
+          "Partial balance (Cash)":'Saldo parcial (Cta. cte.)'
         }
       }
     }

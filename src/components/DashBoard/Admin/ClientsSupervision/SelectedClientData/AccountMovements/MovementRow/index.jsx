@@ -22,8 +22,8 @@ const Movement = ({ Movement }) => {
         {Movement.id}
       </td>
       <td className="text-center">
-      {
-          !!(Movement?.userEmail || Movement?.partialBalance) &&
+        {
+          !!(Movement?.userEmail) ?
           <OverlayTrigger
             show={showClick || showHover}
             placement="right"
@@ -46,13 +46,6 @@ const Movement = ({ Movement }) => {
                     <span className="text-nowrap">{Movement?.userEmail}</span>
                   </div>
                 }
-                {
-                  !!(Movement.partialBalance) &&
-                  <div>
-                    {t('Partial balance')}:<br />
-                    <FormattedNumber value={Movement.partialBalance} prefix='$' fixedDecimals={2} />
-                  </div>
-                }
               </Tooltip>
             }
           >
@@ -65,6 +58,8 @@ const Movement = ({ Movement }) => {
                 type="button" className="noStyle"  ><FontAwesomeIcon icon={faInfoCircle} /></button>
             </span>
           </OverlayTrigger>
+          :
+          <>-</>
         }
       </td>
       <td className="tableDate">
@@ -78,7 +73,14 @@ const Movement = ({ Movement }) => {
         <span>{Math.sign(Movement.amount) === 1 ? '+' : '-'}</span>
         <FormattedNumber value={Math.abs(Movement.amount)} prefix="$" fixedDecimals={2} />
       </td>
-
+      <td className={`tableAmount `}>
+        {
+          Movement.partialBalance ?
+            <FormattedNumber value={Math.abs(Movement.partialBalance)} prefix="$" fixedDecimals={2} />
+            :
+            <>-</>
+        }
+      </td>
     </tr>
   )
 }

@@ -14,11 +14,11 @@ const TableLastMovements = ({ content, movements }) => {
                     <tr>
                         <th className="tableId text-nowrap">{t("Ticket #")}</th>
                         <th className="tableId text-nowrap">{t("Details")}</th>
-                        <th className="tableId d-none d-sm-table-cell">{t("Receipts")}</th>
                         <th className="tableHeader">{t("Date")}</th>
                         <th className="d-none d-sm-table-cell">{t("Status")}</th>
                         <th className="tableHeader">{t("Description")}</th>
                         <th className="tableDescription d-none d-sm-table-cell">{t("Amount")}</th>
+                        <th className="tableDescription d-none d-sm-table-cell">{t("Partial balance")}</th>
                     </tr>
                 </thead>
                 <tbody>
