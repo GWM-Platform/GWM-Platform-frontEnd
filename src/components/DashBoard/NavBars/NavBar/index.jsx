@@ -40,14 +40,14 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
         <Navbar sticky="top" className={`py-0 mb-0 navBarDesktop`} collapseOnSelect expand="sm" variant="dark" >
             {/*====================================================Desktop==================================================== */}
             <Container fluid className="bottomInnerBorder px-0 d-none d-sm-block">
-                <Row className="w-100 d-flex align-items-center mx-0">
+                <Row className="w-100 d-flex align-items-center mx-0 flex-nowrap">
                     <Col sm="auto" md={1} lg={admin && UserClients.content.length > 0 && IndexClientSelected === -1 ? "auto" : 2} style={{ paddingBottom: "5px" }}>
                         <button className={`noStyle navInfoToggler ${NavInfoToggled ? "toggled" : ""}`} onClick={() => toggleNavInfo()}>
                             <FontAwesomeIcon icon={faChevronCircleUp} />
                         </button>
                     </Col>
-                    <Col className="px-0 flex-grow-1">
-                        <Nav >
+                    <Col className="px-0 flex-grow-1" style={{ maxWidth: "100%" }}>
+                        <Nav className="flex-wrap" >
                             {
                                 admin && IndexClientSelected === -1 ?
                                     /*----------------------------------------------------------Admin----------------------------------------------------------*/
@@ -172,7 +172,7 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                 <FontAwesomeIcon icon={faCog} />
                             </NavLink>
 
-                            <Nav.Link  onClick={() => logOut()} className="nav-link " activeClassName="active">
+                            <Nav.Link onClick={() => logOut()} className="nav-link " activeClassName="active">
                                 <FontAwesomeIcon icon={faSignOutAlt} />
                             </Nav.Link>
                         </Nav>

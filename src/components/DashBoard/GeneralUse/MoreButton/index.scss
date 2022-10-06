@@ -1,0 +1,28 @@
+.moreButton {
+    font-size: 1rem;
+    img{
+        transition: all 0.2s;
+        display: block;
+        height: 1rem;
+    }
+	&:not(:focus) {
+		img {
+			opacity: .7;
+		}
+	}
+    &:focus{
+        box-shadow: none!important;
+    }
+	&:hover {
+		img {
+			opacity: 1;
+		}
+	}
+}
+.btn {
+	&.no-style {
+		background: transparent;
+		border: none;
+		padding: 0;
+	}
+}

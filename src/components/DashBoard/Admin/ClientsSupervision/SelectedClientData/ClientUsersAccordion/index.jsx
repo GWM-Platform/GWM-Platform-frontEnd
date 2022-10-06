@@ -9,6 +9,7 @@ import { Accordion, Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import UserItem from "./UserItem";
+import './index.scss'
 
 const ClientUsersAccordion = ({ client }) => {
     const { t } = useTranslation()
@@ -29,7 +30,7 @@ const ClientUsersAccordion = ({ client }) => {
                     fetching: false,
                     fetched: true,
                     valid: true,
-                    content: response.data,
+                    content: response.data.sort((user) => user.isOwner ? -1 : 0),
                 }))
         }).catch((err) => {
             if (err.message !== "canceled") {
@@ -54,7 +55,7 @@ const ClientUsersAccordion = ({ client }) => {
         <Accordion flush>
             <Accordion.Item eventKey="0">
                 <Accordion.Header>{t("Users connected to the client")}</Accordion.Header>
-                <Accordion.Body>
+                <Accordion.Body className="usersList">
                     {users.content.map(user => <UserItem getUsers={getUsers} user={user} client={client} key={`user-item-${client.id}-${user.id}`} />)}
                     <div className="mt-2 d-flex justify-content-end">
                         <Link to={`/DashBoard/clientsSupervision/${client.id}/connectUserToClient`}>

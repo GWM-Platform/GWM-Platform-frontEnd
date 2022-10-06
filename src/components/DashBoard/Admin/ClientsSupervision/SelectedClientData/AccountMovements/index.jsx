@@ -85,7 +85,7 @@ const AccountMovements = ({ AccountId, ClientId }) => {
     return (
 
         <Accordion.Item eventKey="2">
-            <Accordion.Header>{t("Client's movements")}</Accordion.Header>
+            <Accordion.Header>{t("Account movements")}</Accordion.Header>
             <Accordion.Body className='px-0'>
                 <div className="d-flex align-items-start justify-content-center flex-column MovementsTableContainer">
                     <div className={`movementsTable growAnimation`}>

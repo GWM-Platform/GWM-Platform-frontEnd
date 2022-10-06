@@ -21,7 +21,8 @@ const AccessAndPermissionsAdministration = ({ desiredSubSection }) => {
         "enabled": true,
         "isAdmin": false,
         "createdAt": "2021-11-18T01:05:48.957Z",
-        "updatedAt": "2021-11-18T01:05:48.957Z"
+        "updatedAt": "2021-11-18T01:05:48.957Z",
+        "isOwner":true
       },
       {
         "id": 14,

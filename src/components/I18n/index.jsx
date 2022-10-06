@@ -763,7 +763,14 @@ i18n
           "User email": "Email del usuario",
           "Basic information": "Información básica",
           "Edit permissions": "Editar permisos",
-          "Revoke access": "Revocar acceso"
+          "Revoke access": "Revocar acceso",
+          'Account movements': 'Movimientos de cuenta',
+          'Client owner': 'Propietario del cliente',
+          'Make user owner': 'Convertir usuario en propietario',
+          'Make owner': 'Convertir en propietario',
+          "Disconnect user": 'Desvincular usuario del cliente',
+          'User options':'Opciones del usuario',
+          "Disconnect":"Desvincular"
         }
       }
     }

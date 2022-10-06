@@ -8,6 +8,7 @@
             transition: all 0.3s;
             border-bottom: 0 solid transparent;
             box-shadow: unset;
+
             &:not(.collapsed) {
                 border-bottom: var(--bs-accordion-border-width) solid var(--bs-accordion-border-color) !important;
             }
@@ -19,7 +20,23 @@
             }
         }
     }
-    .accordion-body{
-        padding:0
+
+    .accordion-body {
+        padding: 0
+    }
+}
+
+.usersList {
+    .user {
+        .title {
+            margin-top: 0;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .email {
+            font-size: 14px;
+            font-weight: 200;
+        }
     }
 }
