@@ -736,7 +736,7 @@ i18n
           "Data from client": "Datos del cliente",
           "Clients supervision": "Supervisión de clientes",
           "Client general data": "Datos generales del cliente",
-          "Client's movements": "Movimientos del cliente",
+          "Cash movements": "Movimientos cuenta corriente",
           'User connections administration': 'Administración de usuarios vinculados',
           "It seems your user does not have access to any client": "Parece que su usuario no tiene acceso a ningún cliente",
           "Contact an administrator to normalize your situation": "Pongase en contacto con un administrador para normalizar su situacion",
