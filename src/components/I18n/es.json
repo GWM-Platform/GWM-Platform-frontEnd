@@ -694,5 +694,6 @@
   "Disconnect":"Desvincular",
   "Make user owner":"Convertir usuario en propietario",
   "Disconnect user":"Desvincular usuario",
-    "User options": "Opciones del usuario"
+    "User options": "Opciones del usuario",
+    "Create user as owner of the selected client":"Crear usuario como propietario del cliente seleccionado"
 }

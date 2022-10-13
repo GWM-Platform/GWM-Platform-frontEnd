@@ -401,3 +401,10 @@ table .Actions {
 .mailTooltip .tooltip-inner{
 	max-width: 350px;
 }
+
+.react-select-container{
+	z-index: 1030;
+}
+.react-select__menu{
+	z-index: 1030;
+}

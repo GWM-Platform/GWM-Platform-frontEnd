@@ -18,7 +18,8 @@ const AddAccount = () => {
             firstName: "",
             lastName: "",
             type: "",
-            client: ""
+            client: "",
+            isOwner: false
         }
     )
 
@@ -32,6 +33,10 @@ const AddAccount = () => {
     const handleChange = (event) => {
         setFormData(prevState => ({ ...prevState, [event.target.id]: event.target.value }));
     };
+
+    const handleChangeCheck = (event) => {
+        setFormData(prevState => ({ ...prevState, [event.target.id]: event.target.checked }));
+    }
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -53,7 +58,8 @@ const AddAccount = () => {
             } :
                 {
                     email: formData.email,
-                    clientId: formData.client.value
+                    clientId: formData.client.value,
+                    isOwner: formData.isOwner
                 }
         ).then(function (response) {
             setMessage("La cuenta ha sido creada con exito, se enviara un link de verificacion al mail especificado")
@@ -145,53 +151,60 @@ const AddAccount = () => {
                         </Form.Group>
 
                         {
-                            formData.type === "1" ?
-                                <>
-                                    <Form.Group className="mb-3">
-                                        <Form.Label>{t("First Name")}</Form.Label>
-                                        <Form.Control
-                                            value={formData.firstName}
-                                            required
-                                            id="firstName"
-                                            onChange={handleChange}
-                                            type="text"
-                                            placeholder={t("First Name")}
-                                        />
-                                    </Form.Group>
+                            formData.type !== "" &&
+                            (
+                                formData.type === "1" ?
+                                    <>
+                                        <Form.Group className="mb-3">
+                                            <Form.Label>{t("First Name")}</Form.Label>
+                                            <Form.Control
+                                                value={formData.firstName}
+                                                required
+                                                id="firstName"
+                                                onChange={handleChange}
+                                                type="text"
+                                                placeholder={t("First Name")}
+                                            />
+                                        </Form.Group>
 
 
-                                    <Form.Group className="mb-3">
-                                        <Form.Label>{t("Last Name")}</Form.Label>
-                                        <Form.Control
-                                            value={formData.lastName}
-                                            required
-                                            id="lastName"
-                                            onChange={handleChange}
-                                            type="text"
-                                            placeholder={t("Last Name")}
-                                        />
-                                    </Form.Group>
-                                </>
-                                :
-                                !!(true) &&
-                                <Form.Group className="mb-3">
-                                    <Form.Label>{t("Select the client to witch you want to connect the user")}</Form.Label>
-                                    <Select
-                                        valid={validated ? clientSelectedValid() : false}
-                                        invalid={validated ? !clientSelectedValid() : false}
+                                        <Form.Group className="mb-3">
+                                            <Form.Label>{t("Last Name")}</Form.Label>
+                                            <Form.Control
+                                                value={formData.lastName}
+                                                required
+                                                id="lastName"
+                                                onChange={handleChange}
+                                                type="text"
+                                                placeholder={t("Last Name")}
+                                            />
+                                        </Form.Group>
+                                    </>
+                                    :
+                                    <>
+                                        <Form.Group className="mb-3">
+                                            <Form.Label>{t("Select the client to witch you want to connect the user")}</Form.Label>
+                                            <Select
+                                                valid={validated ? clientSelectedValid() : false}
+                                                invalid={validated ? !clientSelectedValid() : false}
 
-                                        className="mb-3" required value={formData.client} placeholder={false} noOptionsMessage={() => t('No clients found')}
-                                        onChange={(val) => {
-                                            setFormData(prevState => ({ ...prevState, client: val }));
-                                        }}
-                                        options={clients.content.map((client, key) => (
-                                            {
-                                                label: `${t("Number")}: ${client.id} / ${t("Alias")}: ${client.alias} / ${t("First name")}: ${client.firstName} ${t("Last name")}: ${client.lastName}`,
-                                                value: client.id
-                                            }
-                                        ))}
-                                    />
-                                </Form.Group>
+                                                className="mb-3" required value={formData.client} placeholder={false} noOptionsMessage={() => t('No clients found')}
+                                                onChange={(val) => {
+                                                    setFormData(prevState => ({ ...prevState, client: val }));
+                                                }}
+                                                options={clients.content.map((client, key) => (
+                                                    {
+                                                        label: `${t("Number")}: ${client.id} / ${t("Alias")}: ${client.alias} / ${t("First name")}: ${client.firstName} ${t("Last name")}: ${client.lastName}`,
+                                                        value: client.id
+                                                    }
+                                                ))}
+                                            />
+                                        </Form.Group>
+                                        <Form.Group className="mb-3" controlId="isOwner">
+                                            <Form.Check checked={formData.isOwner} onChange={handleChangeCheck} type="checkbox" label={t("Create user as owner of the selected client")} />
+                                        </Form.Group>
+                                    </>
+                            )
                         }
 
                         <p>{message}</p>
