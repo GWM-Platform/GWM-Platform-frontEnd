@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit } from '@fortawesome/free-regular-svg-icons'
 import DeleteConfirmationModal from './DeleteConfirmationModal'
@@ -8,7 +7,6 @@ import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
 const AssetRow = ({ Asset, AssetTypes, chargeAssets, setAction, Action, ownKey }) => {
 
-    const { t } = useTranslation();
     const [ShowModal, setShowModal] = useState(false)
 
     // eslint-disable-next-line
@@ -18,9 +16,9 @@ const AssetRow = ({ Asset, AssetTypes, chargeAssets, setAction, Action, ownKey }
     return (
         <>
             <tr className="AssetRow">
-                <td className="Name">{t(Asset.name)}</td>
-                <td className="Type">{t(AssetTypes[getAssetTypeById(AssetTypes, Asset.typeId)].name)}</td>
-                <td className="SharePrice">{t(Asset.symbol)}</td>
+                <td className="Name">{Asset.name}</td>
+                <td className="Type">{AssetTypes[getAssetTypeById(AssetTypes, Asset.typeId)].name}</td>
+                <td className="SharePrice">{Asset.symbol}</td>
                 <td className="SharePrice">
                     <FormattedNumber value={Asset.value} prefix="$" fixedDecimals={2} />
                 </td>

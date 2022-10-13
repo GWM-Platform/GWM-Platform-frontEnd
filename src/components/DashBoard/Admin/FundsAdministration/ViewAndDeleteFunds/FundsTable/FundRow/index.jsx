@@ -40,8 +40,8 @@ const FundRow = ({ Fund, AssetTypes, chargeFunds, setAction, Action, ownKey }) =
     return (
         <>
             <tr className="fundRow">
-                <td className="Name">{t(Fund.name)}</td>
-                <td className="Type">{t(AssetTypes[getAssetTypeById(AssetTypes, Fund.typeId)].name)}</td>
+                <td className="Name">{Fund.name}</td>
+                <td className="Type">{AssetTypes[getAssetTypeById(AssetTypes, Fund.typeId)].name}</td>
                 <td className="Shares">
                     <FormattedNumber value={Fund.shares} prefix="" fixedDecimals={2} />
                 </td>
