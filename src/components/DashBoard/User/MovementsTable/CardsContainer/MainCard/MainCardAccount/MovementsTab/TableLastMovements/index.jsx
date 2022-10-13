@@ -18,7 +18,7 @@ const TableLastMovements = ({ content, movements }) => {
                         <th className="d-none d-sm-table-cell">{t("Status")}</th>
                         <th className="tableHeader">{t("Description")}</th>
                         <th className="tableDescription d-none d-sm-table-cell">{t("Amount")}</th>
-                        <th className="tableDescription d-none d-sm-table-cell">{t("Partial balance")}</th>
+                        <th className="tableDescription d-none d-sm-table-cell">{t("Balance")}</th>
                     </tr>
                 </thead>
                 <tbody>

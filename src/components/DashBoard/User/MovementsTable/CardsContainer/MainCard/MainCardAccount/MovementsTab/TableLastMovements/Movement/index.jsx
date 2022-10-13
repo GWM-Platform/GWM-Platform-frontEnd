@@ -42,8 +42,6 @@ const Movement = ({ content }) => {
   const [showClick, setShowClick] = useState(false)
   const [showHover, setShowHover] = useState(false)
 
-  console.log(Movement)
-
   return (
     <tr>
       <td className="tableId">

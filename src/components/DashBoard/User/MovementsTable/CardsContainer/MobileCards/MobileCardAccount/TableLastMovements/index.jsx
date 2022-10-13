@@ -34,6 +34,7 @@ const TableLastMovements = ({ account }) => {
             var url = `${process.env.REACT_APP_APIURL}/movements/?` + new URLSearchParams(
                 Object.fromEntries(Object.entries(
                     {
+                        accountId:account.id,
                         client: ClientSelected.id,
                         filterAccount: account.id,
                         take: Options.take,

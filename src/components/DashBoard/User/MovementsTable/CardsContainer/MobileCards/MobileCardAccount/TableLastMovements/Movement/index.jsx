@@ -67,7 +67,7 @@ const Movement = ({ content }) => {
         }
       </button>
 
-      
+
       {
         !!(content?.userEmail) &&
         <OverlayTrigger
@@ -111,6 +111,15 @@ const Movement = ({ content }) => {
           <FormattedNumber value={Math.abs(content.amount)} prefix="$" fixedDecimals={2} />
         </span>
       </div>
+      {
+        !!(content.partialBalance) &&
+          <div className='d-flex justify-content-between' style={{borderTop:"1px solid rgb(200,200,200)"}}>
+            <span className={`${content.stateId === 3 ? 'text-red' : 'text-green'}`}>{t("Balance")}</span>
+            <span className={`${Math.sign(content.amount) === 1 ? 'text-green' : 'text-red'}`}>
+              <FormattedNumber value={Math.abs(content.partialBalance)} prefix="$" fixedDecimals={2} />
+            </span>
+          </div>
+      }
     </div>
 
   )
