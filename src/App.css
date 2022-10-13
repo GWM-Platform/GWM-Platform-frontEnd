@@ -402,9 +402,6 @@ table .Actions {
 	max-width: 350px;
 }
 
-.react-select-container{
-	z-index: 1030;
-}
-.react-select__menu{
-	z-index: 1030;
+.input-group>.form-control:not(:focus).is-valid, .input-group>.form-floating:not(:focus-within).is-valid, .input-group>.form-select:not(:focus).is-valid, .was-validated .input-group>.form-control:not(:focus):valid, .was-validated .input-group>.form-floating:not(:focus-within):valid, .was-validated .input-group>.form-select:not(:focus):valid {
+    z-index: 0;
 }
