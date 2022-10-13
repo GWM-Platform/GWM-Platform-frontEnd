@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt, faEdit } from '@fortawesome/free-regular-svg-icons'
 import DeleteConfirmationModal from './DeleteConfirmationModal'
@@ -8,7 +7,6 @@ import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
 const RuleRow = ({ rule, ActionDispatch, FixedDeposit, getFixedDepositPlans }) => {
 
-    const { t } = useTranslation();
     const [ShowModal, setShowModal] = useState(false)
 
     const launchDeleteConfirmation = () => {
@@ -17,7 +15,7 @@ const RuleRow = ({ rule, ActionDispatch, FixedDeposit, getFixedDepositPlans }) =
     return (
         <>
             <tr className="fundRow">
-                <td >{t(rule.days)}</td>
+                <td >{rule.days}</td>
                 <td >
                     <FormattedNumber value={rule?.rate} suffix="%" fixedDecimals={2} />
                 </td>

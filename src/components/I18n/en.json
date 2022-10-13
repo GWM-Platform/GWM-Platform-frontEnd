@@ -268,7 +268,7 @@
     "shares, but there are only": "shares, but there are only",
     "You are buying": "You are buying",
     " free.": " free.",
-    "Please, select a Fund to buy": "Please, select a Fund to buy",
+    "Please, select a fund to buy": "Please, select a fund to buy",
     "shares": "shares",
     "shares value": "shares value",
     "Initial share price": "Initial share price",
@@ -663,5 +663,13 @@
     "All (including denied)": "All (including denied)",
     "Account Alias": "Account Alias",
     "Partial balance (Cash)": "Partial balance (Cash)",
-    "Tickets": "Tickets"
+    "Tickets": "Tickets",
+    "Ticket #": "Ticket #",
+    "Alias":"Alias",
+    "Time deposits per page":"Time deposits per page",
+    "Not found":"Not found",
+    "Email":"Email",
+    "First name":"First name",
+    "Last name":"Last name",
+    "Please, enter the date in a valid format":"Please, enter the date in a valid format"
 }

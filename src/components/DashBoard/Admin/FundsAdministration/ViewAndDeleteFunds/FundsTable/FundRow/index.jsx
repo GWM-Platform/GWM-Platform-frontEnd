@@ -51,7 +51,7 @@ const FundRow = ({ Fund, AssetTypes, chargeFunds, setAction, Action, ownKey }) =
                 <td className="SharePrice">
                     <FormattedNumber value={Fund.sharePrice} prefix="$" fixedDecimals={2} />
                 </td>
-                <td className="Id">{t(Fund.spreadsheetId)}</td>
+                <td className="Id">{Fund.spreadsheetId}</td>
                 <td className="Actions verticalCenter" >
                     <div className="h-100 d-flex align-items-center justify-content-around">
                         <button className="noStyle iconContainer red" onClick={() => { launchDeleteConfirmation() }}>

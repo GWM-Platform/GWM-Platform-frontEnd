@@ -250,7 +250,7 @@
   "shares, but there are only": "cuotapartes, pero solo hay",
   "You are buying": "Estas comprando",
   " free.": " disponibles.",
-  "Please, select a Fund to buy": "Por favor, seleccione el fondo a comprar",
+  "Please, select a fund to buy": "Por favor, seleccione el fondo a comprar",
   "shares": "cuotapartes",
   "shares value": "valor de la cuotaparte",
   "Initial share price": "Valor inicial de la cuotaparte",
@@ -662,5 +662,16 @@
   "All (including denied)": "Todos (incluyendo rechazados)",
   "Account Alias": "Alias de la cuenta",
   "Partial balance (Cash)": "Saldo parcial (Cta. cte.)",
-  "Tickets":"Tickets"
+  "Tickets": "Tickets",
+  "Ticket #": "Ticket #",
+  "You are about to delete the Asset": "Estas a punto de eliminar el activo",
+  "Failed to delete the Asset": "Fallo al intentar eliminar el activo",
+  "Id": "Id",
+  "Alias": "Alias",
+  "Time deposits per page": "Plazos fijos por pagina",
+  "Not found":"No encontrado",
+  "Email":"Email",
+  "First name":"Nombre",
+  "Last name":"Apellido",
+  "Please, enter the date in a valid format":"Por favor, ingrese la fecha en un formato valido"
 }
