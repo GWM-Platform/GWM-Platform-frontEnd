@@ -21,7 +21,6 @@ const DepositCashToClient = () => {
         }
     )
 
-   
     const [data, setData] = useState(
         {
             amount: "",
@@ -36,7 +35,7 @@ const DepositCashToClient = () => {
     let history = useHistory();
     const { t } = useTranslation();
 
-    const withdraw = async () => {
+    const deposit = async () => {
         var url = `${process.env.REACT_APP_APIURL}/accounts/${data?.account?.value}/deposit`;
         const response = await fetch(url, {
             method: 'POST',
@@ -82,7 +81,7 @@ const DepositCashToClient = () => {
             if (token === null) {
                 toLogin()
             } else {
-                withdraw()
+                deposit()
             }
         }
         setValidated(true);
@@ -164,6 +163,7 @@ const DepositCashToClient = () => {
                 { id: name ? name : 'amount', value: unMaskedValue }
         })
     }
+    
     useEffect(() => {
         setInputValid(inputRef?.current?.checkValidity())
     }, [inputRef, data.amount])

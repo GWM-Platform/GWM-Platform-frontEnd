@@ -7,6 +7,8 @@ import { DashBoardContext } from 'context/DashBoardContext'
 import moment from 'moment';
 import { unMaskNumber } from 'utils/unmask';
 import CurrencyInput from '@osdiab/react-currency-input-field';
+import BaseSelect from "react-select";
+import FixRequiredSelect from 'components/DashBoard/GeneralUse/Forms/FixRequiredSelect';
 
 const WithdrawCashFromClient = () => {
     const { toLogin, TransactionStates } = useContext(DashBoardContext)
@@ -19,19 +21,12 @@ const WithdrawCashFromClient = () => {
         }
     )
 
-    const [Clients, setClients] = useState(
-        {
-            fetching: true,
-            fetched: false,
-            value: []
-        }
-    )
     const [data, setData] = useState(
         {
-            amount: "",
             idSelected: "",
             date: moment().format(moment.HTML5_FMT.DATETIME_LOCAL),
-            stateId: ""
+            stateId: "",
+            account: ""
         }
     )
 
@@ -42,7 +37,7 @@ const WithdrawCashFromClient = () => {
     const { t } = useTranslation();
 
     const withdraw = async () => {
-        var url = `${process.env.REACT_APP_APIURL}/accounts/${data.idSelected}/adminWithdraw`;
+        var url = `${process.env.REACT_APP_APIURL}/accounts/${data?.account?.value}/adminWithdraw`;
         const response = await fetch(url, {
             method: 'POST',
             body: JSON.stringify({
@@ -141,67 +136,9 @@ const WithdrawCashFromClient = () => {
             }
         }
 
-        const getClients = async () => {
-            const token = sessionStorage.getItem('access_token')
-            var url = `${process.env.REACT_APP_APIURL}/Clients/?` + new URLSearchParams({
-                all: true,
-            });
-
-            setClients(
-                {
-                    ...Clients,
-                    ...{
-                        fetching: true,
-                    }
-                }
-            )
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    Accept: "*/*",
-                    'Content-Type': 'application/json'
-                }
-            })
-
-            if (response.status === 200) {
-                const data = await response.json()
-                setClients(
-                    {
-                        ...Clients,
-                        ...{
-                            fetching: false,
-                            fetched: true,
-                            value: data
-                        }
-                    }
-                )
-            } else {
-                switch (response.status) {
-                    default:
-                        console.log(response.status)
-                        setClients(
-                            {
-                                ...Clients,
-                                ...{
-                                    fetching: false,
-                                    fetched: false,
-                                }
-                            }
-                        )
-                }
-            }
-        }
-
         getAccounts()
-        getClients()
         // eslint-disable-next-line
     }, [])
-
-    const getAccountPropertyById = (searchedId, property) => {
-        let index = Accounts.value.findIndex((account) => account.id.toString() === searchedId.toString())
-        return index === -1 ? false : Accounts.value[index][property]
-    }
 
     const [inputValid, setInputValid] = useState(false)
 
@@ -225,10 +162,26 @@ const WithdrawCashFromClient = () => {
                 { id: name ? name : 'amount', value: unMaskedValue }
         })
     }
+
     useEffect(() => {
         setInputValid(inputRef?.current?.checkValidity())
     }, [inputRef, data.amount])
     const DeniedStateId = 3
+
+    const getAccountPropertyById = (searchedId, property) => {
+        let index = Accounts.value.findIndex((account) => account.id.toString() === searchedId.toString())
+        return index === -1 ? false : Accounts.value[index][property]
+    }
+
+    const Select = props => (
+        <FixRequiredSelect
+            {...props}
+            SelectComponent={BaseSelect}
+            options={props.options}
+        />
+    );
+
+    const accountSelectedValid = () => data?.account?.value
 
     return (
         <Container className="h-100 AssetsAdministration">
@@ -238,19 +191,24 @@ const WithdrawCashFromClient = () => {
                         <h1 className="title">{t("Withdraw cash from an account")}</h1>
                     </div>
                     <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                        <Form.Label>{t("Select the account for which you want to generate a withdrawal ticket")}</Form.Label>
-                        <Form.Select
-                            id="idSelected" onChange={handleChange} value={data.idSelected}
-                            className="mb-3" aria-label="Select Account id" required>
-                            <option disabled value="">{t("Open this select menu")}</option>
-                            {Accounts.value.map((Account, key) => {
-                                return (
-                                    <option disabled={Account.balance === 0} key={key + "-account"} value={Account.id}>
-                                        {t("Account Alias")}:&nbsp;{Account.alias}&nbsp;/ {t("Account Id")}: {Account.id} / {t("Actual Balance")}: {Account.balance}
-                                    </option>
-                                )
-                            })}
-                        </Form.Select>
+                    <Form.Group className="mb-3">
+                    <Form.Label>{t("Select the account for which you want to generate a withdrawal ticket")}</Form.Label>
+                            <Select
+                                valid={validated ? accountSelectedValid() : false}
+                                invalid={validated ? !accountSelectedValid() : false}
+
+                                className="mb-3" required value={data.account} placeholder={false} noOptionsMessage={() => t('No accounts found')}
+                                onChange={(val) => {
+                                    setData(prevState => ({ ...prevState, account: val }));
+                                }}
+                                options={Accounts.value.map((Account) => (
+                                    {
+                                        label: `${t("Account Alias")}: ${Account.alias} / ${t("Account Id")}: ${Account.id} / ${t("Actual Balance")}: ${Account.balance}`,
+                                        value: Account.id
+                                    }
+                                ))}
+                            />
+                        </Form.Group>
 
                         <Form.Group className="mb-3">
                             <Form.Label>{t("Date that will appear as when the operation was performed")}</Form.Label>
