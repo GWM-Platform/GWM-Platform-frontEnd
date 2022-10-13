@@ -35,8 +35,8 @@ const AccountMovements = ({ AccountId, ClientId }) => {
                     accountId: AccountId,
                     take: Pagination.take,
                     skip: Pagination.skip,
-                    filterState: Pagination.state===10 ? null :  Pagination.state,
-                    showDenied: Pagination.state===10 ? true : null
+                    filterState: Pagination.state === 10 ? null : Pagination.state,
+                    showDenied: Pagination.state === 10 ? true : null
                 },
                 signal: signal,
             }).then(function (response) {
@@ -107,6 +107,7 @@ const AccountMovements = ({ AccountId, ClientId }) => {
                                                             <th className="d-none d-sm-table-cell">{t("Status")}</th>
                                                             <th className="tableHeader">{t("Description")}</th>
                                                             <th className="tableDescription d-none d-sm-table-cell">{t("Amount")}</th>
+                                                            <th className="tableDescription d-none d-sm-table-cell text-nowrap">{t("Partial balance (Cash)")}</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>

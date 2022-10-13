@@ -770,7 +770,8 @@ i18n
           'Make owner': 'Convertir en propietario',
           "Disconnect user": 'Desvincular usuario del cliente',
           'User options':'Opciones del usuario',
-          "Disconnect":"Desvincular"
+          "Disconnect":"Desvincular",
+          "Partial balance (Cash)":'Saldo parcial (Cta. cte.)'
         }
       }
     }

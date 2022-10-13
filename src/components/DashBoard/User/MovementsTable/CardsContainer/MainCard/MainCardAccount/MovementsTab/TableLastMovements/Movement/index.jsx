@@ -41,6 +41,9 @@ const Movement = ({ content }) => {
 
   const [showClick, setShowClick] = useState(false)
   const [showHover, setShowHover] = useState(false)
+
+  console.log(Movement)
+
   return (
     <tr>
       <td className="tableId">
@@ -48,7 +51,7 @@ const Movement = ({ content }) => {
       </td>
       <td className="text-center">
         {
-          !!(content?.userEmail || content?.partialBalance) &&
+          !!(content?.userEmail) &&
           <OverlayTrigger
             show={showClick || showHover}
             placement="right"
@@ -71,13 +74,6 @@ const Movement = ({ content }) => {
                     <span className="text-nowrap">{content?.userEmail}</span>
                   </div>
                 }
-                {
-                  !!(content.partialBalance) &&
-                  <div>
-                    {t('Partial balance')}:<br />
-                    <FormattedNumber value={content.partialBalance} prefix='$' fixedDecimals={2} />
-                  </div>
-                }
               </Tooltip>
             }
           >
@@ -91,8 +87,6 @@ const Movement = ({ content }) => {
             </span>
           </OverlayTrigger>
         }
-      </td>
-      <td className="text-center">
         {
           GeneratingPDF ?
             <Spinner animation="border" size="sm" />
@@ -113,7 +107,14 @@ const Movement = ({ content }) => {
         <span>{Math.sign(content.amount) === 1 ? '+' : '-'}</span>
         <FormattedNumber value={Math.abs(content.amount)} prefix="$" fixedDecimals={2} />
       </td>
-
+      <td className={`tableAmount `}>
+        {
+          content.partialBalance ?
+            <FormattedNumber value={Math.abs(content.partialBalance)} prefix="$" fixedDecimals={2} />
+            :
+            <>-</>
+        }
+      </td>
     </tr>
   )
 }
