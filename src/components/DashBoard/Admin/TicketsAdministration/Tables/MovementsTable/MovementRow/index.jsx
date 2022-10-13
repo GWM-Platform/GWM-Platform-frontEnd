@@ -108,7 +108,7 @@ const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, coul
                     </span>
                     {
                         !!(Movement?.userEmail) &&
-                        <div className='me-auto px-1 px-md-2' style={{ borderLeft: "1px solid lightgray", borderRight: "1px solid lightgray" }}>
+                        <div className='px-1 px-md-2' style={{ borderLeft: "1px solid lightgray", borderRight: "1px solid lightgray" }}>
                             <OverlayTrigger
                                 show={showClick || showHover}
                                 placement="right"

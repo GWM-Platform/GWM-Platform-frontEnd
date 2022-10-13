@@ -15,8 +15,10 @@ i18n
   .use(i18nextPlugin)
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
-    fallbackLng: "en", // use en if detected lng is not available
     saveMissing: true, // send not translated keys to endpoint
+    saveMissingTo: "current",
+    fallbackLng: false,
+    debug:true,
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default
     },

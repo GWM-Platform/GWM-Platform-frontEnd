@@ -186,7 +186,7 @@ const AddAccount = () => {
                                         }}
                                         options={clients.content.map((client, key) => (
                                             {
-                                                label: `${t("Number")}: ${client.id} / ${t("Alias")}: ${client.alias} / ${t("Name")}: ${client.firstName} ${t("Apellido")}: ${client.lastName}`,
+                                                label: `${t("Number")}: ${client.id} / ${t("Alias")}: ${client.alias} / ${t("First name")}: ${client.firstName} ${t("Last name")}: ${client.lastName}`,
                                                 value: client.id
                                             }
                                         ))}
