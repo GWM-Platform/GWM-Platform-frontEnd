@@ -163,7 +163,7 @@ const DepositCashToClient = () => {
                 { id: name ? name : 'amount', value: unMaskedValue }
         })
     }
-    
+
     useEffect(() => {
         setInputValid(inputRef?.current?.checkValidity())
     }, [inputRef, data.amount])
@@ -192,6 +192,7 @@ const DepositCashToClient = () => {
                         <Form.Group className="mb-3">
                             <Form.Label>{t("Select the account to which cash will be deposited")}</Form.Label>
                             <Select
+                                classNamePrefix="react-select"
                                 valid={validated ? accountSelectedValid() : false}
                                 invalid={validated ? !accountSelectedValid() : false}
 

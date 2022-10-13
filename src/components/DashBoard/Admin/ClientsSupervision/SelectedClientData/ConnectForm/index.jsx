@@ -80,6 +80,7 @@ const ConnectForm = ({ client, users }) => {
                         <Form noValidate validated={validated} onSubmit={(e) => handleSubmit(e, client.id)}>
                             <Form.Label>{t("Select the user you want to connect to the client")}</Form.Label>
                             <Select
+                                classNamePrefix="react-select"
                                 valid={validated ? userSelectedValid() : false}
                                 invalid={validated ? !userSelectedValid() : false}
                                 className="mb-3" required value={data.user} placeholder={false} noOptionsMessage={() => t('No users found')}

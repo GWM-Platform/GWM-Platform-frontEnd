@@ -191,9 +191,10 @@ const WithdrawCashFromClient = () => {
                         <h1 className="title">{t("Withdraw cash from an account")}</h1>
                     </div>
                     <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                    <Form.Group className="mb-3">
-                    <Form.Label>{t("Select the account for which you want to generate a withdrawal ticket")}</Form.Label>
+                        <Form.Group className="mb-3">
+                            <Form.Label>{t("Select the account for which you want to generate a withdrawal ticket")}</Form.Label>
                             <Select
+                                classNamePrefix="react-select"
                                 valid={validated ? accountSelectedValid() : false}
                                 invalid={validated ? !accountSelectedValid() : false}
 

@@ -185,6 +185,7 @@ const AddAccount = () => {
                                         <Form.Group className="mb-3">
                                             <Form.Label>{t("Select the client to witch you want to connect the user")}</Form.Label>
                                             <Select
+                                                classNamePrefix="react-select"
                                                 valid={validated ? clientSelectedValid() : false}
                                                 invalid={validated ? !clientSelectedValid() : false}
 
