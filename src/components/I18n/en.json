@@ -692,5 +692,6 @@
     "Make user owner":"Make user owner",
     "Disconnect user":"Disconnect user",
     "User options": "User options",
-    "Create user as owner of the selected client":"Create user as owner of the selected client"
+    "Create user as owner of the selected client":"Create user as owner of the selected client",
+    "No accounts found":"No accounts found"
 }
