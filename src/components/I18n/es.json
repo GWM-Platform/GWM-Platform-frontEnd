@@ -673,5 +673,6 @@
   "Email":"Email",
   "First name":"Nombre",
   "Last name":"Apellido",
-  "Please, enter the date in a valid format":"Por favor, ingrese la fecha en un formato valido"
+  "Please, enter the date in a valid format":"Por favor, ingrese la fecha en un formato valido",
+  "No accounts found":"No se encontraron cuentas"
 }

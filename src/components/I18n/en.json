@@ -671,5 +671,6 @@
     "Email":"Email",
     "First name":"First name",
     "Last name":"Last name",
-    "Please, enter the date in a valid format":"Please, enter the date in a valid format"
+    "Please, enter the date in a valid format":"Please, enter the date in a valid format",
+    "No accounts found":"No accounts found"
 }
