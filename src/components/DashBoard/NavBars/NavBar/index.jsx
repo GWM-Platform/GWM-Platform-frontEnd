@@ -73,7 +73,7 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                             <NavDropdown.Item
                                                 active={itemSelectedLC === "apl"}
                                                 onClick={() => { goTo("APL") }}>
-                                                {t("APL")}
+                                                APL
                                             </NavDropdown.Item>
                                         </NavDropdown>
                                         <Nav.Link
