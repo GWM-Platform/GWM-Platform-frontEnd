@@ -83,7 +83,7 @@ const ContainerForgotPassword = () => {
                     <h1>{t("Password Reset")}</h1>
                     <p className="text-medium-emphasis">{t(`Enter your user account's verified email address. We will send you a password reset link.`)}</p>
                     <h2 className="error m-2">{error}</h2>
-                    <h2 className="message m-2">{message}</h2>
+                    <h2 className="message m-2">{t(message)}</h2>
                     <InputGroup className="mb-2">
                       <InputGroup.Text>
                         <FontAwesomeIcon icon={faEnvelope} />

@@ -51,7 +51,7 @@ const ContainerForgotPassword = () => {
   const toLogin = () => {
     history.push(`/login`);
   }
-
+console.log(validation)
   const handleChange = (event) => {
 
     let aux = data
@@ -68,7 +68,7 @@ const ContainerForgotPassword = () => {
     setData((prevState) => ({ ...prevState, ...aux }))
 
     setMatch(aux.passwordConfirm === aux.password)
-    if (aux.passwordConfirm === aux.password && aux.email !== "" && aux.token !== "" && validation.value === "Medium") {
+    if (aux.passwordConfirm === aux.password && aux.email !== "" && aux.token !== "" && validation.id >= 2) {
       setButtonDisabled(false)
     } else {
       setButtonDisabled(true)
@@ -133,7 +133,7 @@ const ContainerForgotPassword = () => {
     <div className="changePassword min-vh-100 p-relative">
       <Button className="button toLogin" variant="danger" type="button" onClick={() => toLogin()} >
         <FontAwesomeIcon className="icon" icon={faChevronLeft} />
-        {t("To Login")}
+        {t("To login")}
       </Button>
       <Container fluid>
         <Row className="justify-content-center pt-3 pt-sm-5">
