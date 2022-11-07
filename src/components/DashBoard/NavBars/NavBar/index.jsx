@@ -169,13 +169,13 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                             </div>
                             {
                                 !!(!(admin && IndexClientSelected === -1)) &&
-                                <NavLink to="/Dashboard/Configuration?section=Password+and+authentication" className="nav-link " activeClassName="active">
+                                <NavLink to="/Dashboard/Configuration?section=Access+and+permissions+administration" className="nav-link " activeClassName="active">
                                     <FontAwesomeIcon icon={faCog} />
                                 </NavLink>
                             }
 
 
-                            <Nav.Link onClick={() => logOut()} className="nav-link " activeClassName="active">
+                            <Nav.Link onClick={() => logOut()} className="nav-link ">
                                 <FontAwesomeIcon icon={faSignOutAlt} />
                             </Nav.Link>
                         </Nav>

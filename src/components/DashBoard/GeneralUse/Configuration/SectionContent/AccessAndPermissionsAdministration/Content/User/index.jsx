@@ -1,16 +1,94 @@
-import React from 'react'
+import React, { useCallback, useMemo, useContext } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import { useTranslation } from 'react-i18next'
-import { Accordion, Badge, Button, Col, Container, Form, Row } from 'react-bootstrap'
+import { Accordion, Badge, Button, Col, Container, Form, OverlayTrigger, Row, Spinner, Tooltip } from 'react-bootstrap'
 import { useState } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
+import axios from 'axios'
+import { DashBoardContext } from 'context/DashBoardContext'
+import { faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icons'
 
-const User = ({ user }) => {
+const User = ({ user, permissions, funds, getUsers }) => {
 
+    const { ClientSelected, toLogin, DashboardToastDispatch } = useContext(DashBoardContext);
     const { t } = useTranslation()
-    const [disabled, setDisabled] = useState(true)
-    const toggledisabled = () => setDisabled(prevState => !prevState)
 
+    const [PermissionEdit, setPermissionEdit] = useState({
+        fetching: false,
+        editionEnabled: false
+    })
+
+    const toggleEdition = () => setPermissionEdit(prevState => ({ ...prevState, editionEnabled: !prevState.editionEnabled }))
+
+    const isOwner = useCallback(
+        () => user?.permissions?.filter(permission => permission?.action === "OWNER")?.length > 0
+        ,
+        [user],
+    )
+
+    const hasPermission = useCallback(
+        (permissionId = -1) => user.permissions.filter(permission => permission.id === permissionId)?.length > 0 || isOwner()
+        ,
+        [user, isOwner],
+    )
+    const initialState = useMemo(() => {
+        return {
+            permissions:
+                permissions.map((permission) => ({
+                    id: permission.id,
+                    action: permission.action,
+                    allowed: hasPermission(permission.id)
+                }))
+        }
+
+    }, [permissions, hasPermission])
+
+    const [FormData, setFormData] = useState(initialState)
+    const resetFormData = () => {
+        toggleEdition()
+        setFormData({ ...initialState })
+    }
+
+    const isSpecificFundPermission = (permission) =>
+        permission.action.includes("FUND")
+
+    const isStakePermission = (permission) =>
+        permission.action.includes("STAKE")
+
+    const StakeOrFundPermission = (permission) => isSpecificFundPermission(permission) || isStakePermission(permission)
+
+    const notifyNewUser = () => user.permissions.length === 0
+
+    const setPermissions = () => {
+        setPermissionEdit(() => (
+            {
+                fetching: true,
+                editionEnabled: false
+            }))
+        axios.post(`/permissions/client/${ClientSelected.id}`, {
+            permissions: FormData.permissions.filter(permission => permission.allowed).map(permission => permission.id)
+        }, {
+            params: {
+                userId: user.userId
+            }
+        }).then(function () {
+            getUsers()
+            DashboardToastDispatch({ type: "create", toastContent: { Icon: faCheckCircle, Title: "Permissions edited succesfully" } });
+        }).catch((err) => {
+            if (err.message !== "canceled") {
+                if (err.response.status === "401") toLogin()
+                setPermissionEdit(() => (
+                    {
+                        fetching: false,
+                        editionEnabled: false
+                    }))
+                DashboardToastDispatch({ type: "create", toastContent: { Icon: faTimesCircle, Title: "There was an error while editing the permissions" } });
+            }
+
+        });
+    }
 
 
     return (
@@ -18,6 +96,23 @@ const User = ({ user }) => {
             <Accordion.Header>
                 <div className="mb-0 pe-1 pe-md-2" >
                     <h1 className="title d-flex align-items-center">{t("User")}&nbsp;#{user.id}
+                        {
+                            notifyNewUser() &&
+                            <>
+                                &nbsp;
+                                <OverlayTrigger
+                                    overlay={
+                                        <Tooltip id={`tooltip-notice-${user.id}`}>
+                                            {t("Permissions have not yet been set for this user")}
+                                        </Tooltip>
+                                    }
+                                >
+                                    <div>
+                                        <FontAwesomeIcon icon={faExclamationTriangle} />
+                                    </div>
+                                </OverlayTrigger>
+                            </>
+                        }
                         {
                             !!(user.isOwner) &&
                             <>
@@ -39,98 +134,82 @@ const User = ({ user }) => {
             <Accordion.Body>
                 <Container className="px-0" fluid>
                     <Form>
-                        <Row className='py-3'>
-                            <Col md="4">
-                                <Form.Check
-                                    type="switch"
-                                    id="custom-switch"
-                                    label="Comprar cuotapartes"
-                                    disabled={disabled}
-                                />
+                        <Row className='pt-2'>
+                            <Col xs="12">
+                                <h3 className="permission-category ">{t("Funds permissions")}:</h3>
                             </Col>
-                            <Col md="4">
-                                <Form.Check
-                                    type="switch"
-                                    id="custom-switch"
-                                    label="Vender cuotapartes"
-                                    disabled={disabled}
-                                />
-                            </Col>
-                            <Col md="4">
-                                <Form.Check
-                                    type="switch"
-                                    id="custom-switch"
-                                    label="Retirar dinero"
-                                    disabled={disabled}
-                                />
-                            </Col>
-                            <Col md="4">
-                                <Form.Check
-                                    type="switch"
-                                    id="custom-switch"
-                                    label="Transferir dinero"
-                                    disabled={disabled}
-                                />
-                            </Col>
-                            <Col md="4">
-                                <Form.Check
-                                    type="switch"
-                                    id="custom-switch"
-                                    label="Ver historial"
-                                    disabled={disabled}
-                                />
-                            </Col>
-                            <Col md="4">
-                                <Form.Check
-                                    type="switch"
-                                    id="custom-switch"
-                                    label="Ver tenencias"
-                                    disabled={disabled}
-                                />
-                            </Col>
-                            <Col md="4">
-                                <Form.Check
-                                    type="switch"
-                                    id="custom-switch"
-                                    label="Disabledar permisos"
-                                    disabled={disabled}
-                                />
-                            </Col>
+                            {
+                                FormData.permissions
+                                    .filter(permission => permission.action !== "OWNER" && (StakeOrFundPermission(permission)))
+                                    .sort(permission => permission.action !== "VIEW_ALL_FUNDS" ? -1 : 0)
+                                    .map(
+                                        (permission, index) =>
+                                            <Permission
+                                                user={user} permission={permission} funds={funds}
+                                                setFormData={setFormData} disabled={!PermissionEdit.editionEnabled}
+                                                key={`user-${user.id}-permission-${permission.id}`} />
+                                    )
+                            }
+                            <Col xs="12">
+                                <h3 className="permission-category mt-2 pt-2 border-top">{t("Other permissions")}:</h3>
+                            </Col >
+                            {
+                                FormData.permissions
+                                    .filter(permission => permission.action !== "OWNER" && (!StakeOrFundPermission(permission)))
+                                    .map(
+                                        (permission, index) =>
+                                            <Permission
+                                                user={user} permission={permission} funds={funds}
+                                                setFormData={setFormData} disabled={!PermissionEdit.editionEnabled}
+                                                key={`user-${user.id}-permission-${permission.id}`} />
+                                    )
+                            }
+                            <Col xs="12">
+                                <div className="permission-category mt-2 pt-2 border-top" />
+                            </Col >
                         </Row>
                     </Form>
                     <Row className="justify-content-end gx-2">
                         {
-                            disabled ?
+                            PermissionEdit.editionEnabled || PermissionEdit.fetching ?
                                 <>
                                     <Col xs="auto" className=" mb-2">
-                                        <Button variant="danger" onClick={() => toggledisabled()}>
-                                            {t('Make owner')}
-                                        </Button>
-                                    </Col>
-                                    <Col xs="auto" className=" mb-2">
-                                        <Button variant="danger" onClick={() => toggledisabled()}>
-                                            {t("Edit permissions")}
-                                        </Button>
-                                    </Col>
-                                    <Col xs="auto" className=" mb-2">
-                                        <Button disabled={user.isOwner} variant="danger">
-                                            {t("Disconnect")}
-                                        </Button>
-                                    </Col>
-
-                                </>
-                                :
-                                <>
-                                    <Col xs="auto" className=" mb-2">
-                                        <Button variant="danger" onClick={() => toggledisabled()}>
+                                        <Button variant="danger" disabled={PermissionEdit.fetching} onClick={() => resetFormData()}>
                                             {t("Cancelar")}
                                         </Button>
                                     </Col>
                                     <Col xs="auto" className=" mb-2">
-                                        <Button variant="danger" onClick={() => toggledisabled()}>
+                                        <Button variant="danger" disabled={PermissionEdit.fetching} onClick={() => setPermissions()}>
+                                            {
+                                                PermissionEdit.fetching &&
+                                                <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className='me-2' />
+                                            }
                                             {t("Confirm")}
+
                                         </Button>
                                     </Col>
+                                </>
+                                :
+                                <>
+
+                                    <Col xs="auto" className=" mb-2">
+                                        <Button disabled={isOwner() || true} variant="danger">
+                                            {t('Make owner')}
+                                        </Button>
+                                    </Col>
+
+                                    <Col xs="auto" className=" mb-2">
+                                        <Button disabled={isOwner() || true} variant="danger">
+                                            {t("Disconnect")}
+                                        </Button>
+                                    </Col>
+
+                                    <Col xs="auto" className=" mb-2">
+                                        <Button variant="danger" disabled={isOwner()} onClick={() => toggleEdition()}>
+                                            {t("Edit permissions")}
+                                        </Button>
+                                    </Col>
+
                                 </>
                         }
                     </Row>
@@ -140,3 +219,74 @@ const User = ({ user }) => {
     )
 }
 export default User
+
+const Permission = ({ setFormData, permission, funds, disabled }) => {
+
+    const { t } = useTranslation()
+
+    const togglePermission = () => {
+        setFormData(
+            prevState =>
+            ({
+                ...prevState,
+                permissions: prevState.permissions.map(
+                    permissionMap =>
+                        permissionMap.id === permission.id ? { ...permission, allowed: !permission.allowed } : permissionMap
+                )
+            })
+        )
+    }
+
+    const isSpecificFundPermission = () =>
+        permission.action.includes("FUND") && permission.action !== "VIEW_ALL_FUNDS"
+
+    const isStakePermission = () =>
+        permission.action.includes("STAKE")
+
+    const isSellPermission = () =>
+        permission.action.includes("SELL")
+
+    const isBuyPermission = () =>
+        permission.action.includes("BUY")
+
+    const getFundName = () => {
+        const fundId = permission.action.slice(-1)
+        if (!isNaN(+fundId)) {
+            return funds?.find(fund => fund?.id === +fundId)?.name || t("Not found")
+        } else {
+            return t("Not found")
+        }
+    }
+
+    const composeTraduction = () => {
+        if (isSpecificFundPermission()) {
+            return (t("VIEW_FUND", { fundName: getFundName() }))
+        } else if (isStakePermission()) {
+            if (isBuyPermission()) {
+                return (t("BUY_STAKES", { fundName: getFundName() }))
+            } else if (isSellPermission()) {
+                return (t("SELL_STAKES", { fundName: getFundName() }))
+            } else {
+                return (t("Unknown permission"))
+            }
+        } else {
+            return (permission.action === "FIXED_DEPOSIT_CREATE" || permission.action === "DEPOSIT" ?
+                t(`PERMISSION_${permission.action}`)
+                :
+                t(permission?.action))
+        }
+    }
+
+    return (
+        <Col md="4" >
+            <Form.Check
+                checked={permission.allowed}
+                onChange={() => togglePermission()}
+                type="switch"
+                id="custom-switch"
+                label={composeTraduction()}
+                disabled={disabled}
+            />
+        </Col >
+    )
+}

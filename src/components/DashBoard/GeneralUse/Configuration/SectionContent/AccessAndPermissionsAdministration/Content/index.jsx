@@ -1,13 +1,13 @@
-import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import { useTranslation } from 'react-i18next'
 import { Accordion, Button, Col, Container, Row } from 'react-bootstrap'
 import User from './User'
 import './index.scss'
-const Content = ({ users }) => {
+const Content = ({ users, permissions, funds, getUsers }) => {
 
   const { t } = useTranslation()
+
 
   return (
     <div className="AccessAndPermissionsAdministration"  >
@@ -17,10 +17,10 @@ const Content = ({ users }) => {
           <Col lg="12" >
             <Accordion flush alwaysOpen className="usersList">
               {
-                users.map(user => <User key={`user-${user.id}`} user={user} />)
+                users.map(user => <User getUsers={getUsers} key={`user-${user.id}`} user={user} permissions={permissions} funds={funds} />)
               }
-              <div className="mt-2 d-flex justify-content-end">
-                <Button>{t("Connect a new user")}</Button>
+              <div className="my-2 d-flex justify-content-end">
+                <Button disabled>{t("Connect a new user")}</Button>
               </div>
             </Accordion>
           </Col>

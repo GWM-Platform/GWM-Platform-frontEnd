@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 
@@ -6,54 +6,119 @@ import Loading from '../Loading'
 
 import Content from './Content'
 import { useState } from 'react'
+import axios from 'axios'
+import { DashBoardContext } from 'context/DashBoardContext'
 
 const AccessAndPermissionsAdministration = ({ desiredSubSection }) => {
-  const [users] = useState({
-    "fetching": false,
-    "fetched": true,
-    "valid": true,
-    "content": [
-      {
-        "id": 2,
-        "email": "123@gmail.com",
-        "changedPassword": false,
-        "verified": false,
-        "enabled": true,
-        "isAdmin": false,
-        "createdAt": "2021-11-18T01:05:48.957Z",
-        "updatedAt": "2021-11-18T01:05:48.957Z",
-        "isOwner":true
-      },
-      {
-        "id": 14,
-        "email": "marcos.sk8.parengo+4@gmail.com",
-        "changedPassword": false,
-        "verified": true,
-        "enabled": true,
-        "isAdmin": false,
-        "createdAt": "2022-06-02T18:22:36.828Z",
-        "updatedAt": "2022-06-02T18:22:50.000Z"
-      },
-      {
-        "id": 34,
-        "email": "marcos.sk8.parengo+16@gmail.com",
-        "changedPassword": true,
-        "verified": true,
-        "enabled": true,
-        "isAdmin": false,
-        "createdAt": "2022-07-21T20:50:47.168Z",
-        "updatedAt": "2022-07-21T20:51:35.000Z"
-      }
+
+  const { ClientSelected, toLogin } = useContext(DashBoardContext);
+
+
+  const [users, setUsers] = useState({
+    fetching: true,
+    fetched: false,
+    valid: false,
+    content: [
+      // {
+      //   "id": 10,
+      //   "userId": 11,
+      //   "clientId": 12,
+      //   "isOwner": true,
+      //   "permissions": [
+      //     {
+      //       "id": 28,
+      //       "action": "OWNER",
+      //       "createdAt": "2022-10-26T21:23:36.990Z"
+      //     }
+      //   ],
+      //   "email": "marcos.sk8.parengo+1@gmail.com"
+      // }
     ]
   })
+
+  const getUsers = () => {
+    setUsers((prevState) => ({ ...prevState, fetching: true }))
+    axios.get(`/permissions`, {
+      params: { clientId: ClientSelected.id },
+    }).then(function (response) {
+      setUsers((prevState) => (
+        {
+          ...prevState,
+          fetching: false,
+          fetched: true,
+          valid: true,
+          content: response.data,
+        }))
+    }).catch((err) => {
+      if (err.message !== "canceled") {
+        if (err.response.status === "401") toLogin()
+        setUsers((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
+      }
+    });
+  }
+  
+  useEffect(() => {
+    getUsers()
+    //eslint-disable-next-line
+  }, [])
+
+  const [Permissions, setPermissions] = useState({
+    fetching: true,
+    fetched: false,
+    valid: false,
+    content: []
+  })
+
+  useEffect(() => {
+    axios.get(`/permissions`).then(function (response) {
+      setPermissions((prevState) => (
+        {
+          ...prevState,
+          fetching: false,
+          fetched: true,
+          valid: true,
+          content: response.data,
+        }))
+    }).catch((err) => {
+      if (err.message !== "canceled") {
+        if (err.response.status === "401") toLogin()
+        setPermissions((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
+      }
+    });
+  }, [toLogin])
+
+  const [Funds, setFunds] = useState({
+    fetching: true,
+    fetched: false,
+    valid: false,
+    content: []
+  })
+
+  useEffect(() => {
+    axios.get(`/funds`).then(function (response) {
+      setFunds((prevState) => (
+        {
+          ...prevState,
+          fetching: false,
+          fetched: true,
+          valid: true,
+          content: response.data,
+        }))
+    }).catch((err) => {
+      if (err.message !== "canceled") {
+        if (err.response.status === "401") toLogin()
+        setFunds((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
+      }
+    });
+  }, [toLogin])
 
   return (
     <>
       {
-        users.fetching
+        users.fetching || Permissions.fetching || Funds.fetching
           ? <Loading />
           :
-          <Content users={users.content}/>
+          <Content getUsers={getUsers} users={users.content} permissions={Permissions.content} funds={Funds.content} />
       }
     </>
   )
