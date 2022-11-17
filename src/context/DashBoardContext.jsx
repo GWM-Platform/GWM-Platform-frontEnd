@@ -111,17 +111,20 @@ export const DashBoardProvider = ({ children }) => {
         }
         const getAccountsAndFunds = async () => {
             setFetchingFunds(true)
-            const [resposponseAccounts, resposponseFunds] = await Promise.all(
+            const [responseAccounts, responseFunds] = await Promise.all(
                 [
-                    getAccounts(),
+                    hasPermission('VIEW_ACCOUNT') ? getAccounts() : null,
                     getFunds()
                 ]
             );
 
-            setAccounts(resposponseAccounts)
-            setAccountSelected(resposponseAccounts[0] ? resposponseAccounts[0] : {})
+            if (hasPermission('VIEW_ACCOUNT')) {
+                setAccounts(responseAccounts)
+                setAccountSelected(responseAccounts[0] ? responseAccounts[0] : {})
+            }
 
-            setFunds(resposponseFunds)
+
+            setFunds(responseFunds)
             setFetchingFunds(false)
             getPendingTransactions()
         }
@@ -521,7 +524,7 @@ export const DashBoardProvider = ({ children }) => {
             ?.filter(actionSplitted => actionSplitted?.includes('SELL') && actionSplitted?.includes('STAKES')) // Get all sell_stakes permissions
             ?.filter(sellPermission => sellPermission?.includes("" + fundId))?.length > 0 || // Verify that has a sell permission for the fund from parameter
         isOwner()
-
+    
     const hasBuyPermission = (fundId = -1) =>
         ClientPermissions?.content?.permissions?.map(permission => permission.action.split('_'))
             ?.filter(actionSplitted => actionSplitted?.includes('BUY') && actionSplitted?.includes('STAKES')) // Get all sell_stakes permissions

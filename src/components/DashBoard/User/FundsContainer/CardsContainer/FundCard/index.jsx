@@ -12,7 +12,7 @@ import { useContext } from 'react';
 import { DashBoardContext } from 'context/DashBoardContext';
 
 const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
-    const { hasSellPermission, hasBuyPermission } = useContext(DashBoardContext)
+    const { hasSellPermission, hasBuyPermission, hasPermission } = useContext(DashBoardContext)
 
     Decimal.set({ precision: 100 })
 
@@ -114,12 +114,16 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
                 <Card.Footer className="footer mt-2 m-0 p-0">
                     <Row className="d-flex justify-content-center m-0">
                         <Col xs="6" className="d-flex justify-content-center p-0 m-0">
-                            <Button disabled={!hasBuyPermission(Fund?.fund?.id)} onClick={() => toTickets("buy")} className="me-1 button left">
+                            <Button
+                                disabled={!hasBuyPermission(Fund?.fund?.id) || !hasPermission('VIEW_ACCOUNT')}
+                                onClick={() => toTickets("buy")} className="me-1 button left">
                                 <span className="label">{t("Buy")}</span>
                             </Button>
                         </Col>
                         <Col xs="6" className="d-flex justify-content-center p-0 m-0">
-                            <Button disabled={!hasSellPermission(Fund?.fund?.id)} onClick={() => toTickets("sell")} className="ms-1 button right">
+                            <Button
+                                disabled={!hasSellPermission(Fund?.fund?.id) || !hasPermission('VIEW_ACCOUNT')}
+                                onClick={() => toTickets("sell")} className="ms-1 button right">
                                 <span className="label">{t("Sell")}</span>
                             </Button>
                         </Col>

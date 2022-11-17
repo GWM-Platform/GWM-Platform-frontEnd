@@ -127,30 +127,32 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                         <NavDropdown className="px-0 transactionDropdown" active={itemSelectedLC === "timedeposit" || itemSelectedLC === "buy" || itemSelectedLC === "sell" || itemSelectedLC === "deposit" || itemSelectedLC === "withdraw" || itemSelectedLC === "transfer"} title={t("Transactions")} id="collasible-nav-dropdown">
                                             <NavDropdown.Item
                                                 active={itemSelectedLC === "buy"}
-                                                onClick={() => { goTo("buy") }}>
+                                                onClick={() => { goTo("buy") }}
+                                                disabled={!hasPermission('VIEW_ACCOUNT')}>
                                                 {t("Buy")}
                                             </NavDropdown.Item>
                                             <NavDropdown.Item
                                                 active={itemSelectedLC === "sell"}
-                                                onClick={() => { goTo("sell") }}>
+                                                onClick={() => { goTo("sell") }}
+                                                disabled={!hasPermission('VIEW_ACCOUNT')}>
                                                 {t("Sell")}
                                             </NavDropdown.Item>
                                             <NavDropdown.Item
                                                 active={itemSelectedLC === "withdraw"}
                                                 onClick={() => { goTo("withdraw"); }}
-                                                disabled={!hasPermission('WITHDRAW')}>
+                                                disabled={!hasPermission('WITHDRAW') || !hasPermission('VIEW_ACCOUNT')}>
                                                 {t("Withdraw")}
                                             </NavDropdown.Item>
                                             <NavDropdown.Item
                                                 active={itemSelectedLC === "transfer"}
                                                 onClick={() => { goTo("Transfer") }}
-                                                disabled={!hasPermission('TRANSFER_GENERATE')}>
+                                                disabled={!hasPermission('TRANSFER_GENERATE') || !hasPermission('VIEW_ACCOUNT')}>
                                                 {t("to Transfer")}
                                             </NavDropdown.Item>
                                             <NavDropdown.Item
                                                 active={itemSelectedLC === "timedeposit"}
                                                 onClick={() => { goTo("TimeDeposit") }}
-                                                disabled={!hasPermission('FIXED_DEPOSIT_CREATE')}>
+                                                disabled={!hasPermission('FIXED_DEPOSIT_CREATE') || !hasPermission('VIEW_ACCOUNT')}>
                                                 {t("Time deposit")}
                                             </NavDropdown.Item>
                                         </NavDropdown>
@@ -292,16 +294,18 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                 <Popover id="popover-funds" className="OverlayNavMobile" >
                                     <Popover.Body>
                                         <NavDropdown.Item className="p-2"
-                                            active={itemSelectedLC === "buy"} onClick={() => goTo("buy")}>
+                                            active={itemSelectedLC === "buy"} onClick={() => goTo("buy")}
+                                            disabled={!hasPermission('VIEW_ACCOUNT')}>
                                             {t("Buy")}
                                         </NavDropdown.Item>
                                         <NavDropdown.Item className="p-2"
-                                            active={itemSelectedLC === "sell"} onClick={() => goTo("sell")}>
+                                            active={itemSelectedLC === "sell"} onClick={() => goTo("sell")}
+                                            disabled={!hasPermission('VIEW_ACCOUNT')}>
                                             {t("Sell")}
                                         </NavDropdown.Item>
                                         <NavDropdown.Item className="p-2"
                                             active={itemSelectedLC === "timedeposit"} onClick={() => { goTo("TimeDeposit") }}
-                                            disabled={!hasPermission('FIXED_DEPOSIT_CREATE')}>
+                                            disabled={!hasPermission('FIXED_DEPOSIT_CREATE') || !hasPermission('VIEW_ACCOUNT')}>
                                             {t("Time deposit")}
                                         </NavDropdown.Item>
                                     </Popover.Body>
@@ -321,14 +325,14 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                                 className="p-2"
                                                 active={itemSelectedLC === "withdraw"}
                                                 onClick={() => { goTo("withdraw"); }}
-                                                disabled={!hasPermission('WITHDRAW')}>
+                                                disabled={!hasPermission('WITHDRAW') || !hasPermission('VIEW_ACCOUNT')}>
                                                 {t("Withdraw")}
                                             </NavDropdown.Item>
                                             <NavDropdown.Item
                                                 className="p-2"
                                                 active={itemSelectedLC === "transfer"}
                                                 onClick={() => { goTo("Transfer") }}
-                                                disabled={!hasPermission('TRANSFER_GENERATE')}>
+                                                disabled={!hasPermission('TRANSFER_GENERATE') || !hasPermission('VIEW_ACCOUNT')}>
                                                 {t("to Transfer")}
                                             </NavDropdown.Item>
                                         </Popover.Body>

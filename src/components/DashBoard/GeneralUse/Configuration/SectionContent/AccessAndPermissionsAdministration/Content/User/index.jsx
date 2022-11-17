@@ -140,7 +140,13 @@ const User = ({ user, permissions, funds, getUsers }) => {
                             </Col>
                             {
                                 FormData.permissions
-                                    .filter(permission => permission.action !== "OWNER" && (StakeOrFundPermission(permission)))
+                                    .filter(permission =>
+                                        permission.action !== "OWNER" &&
+                                        permission.action !== "VIEW_ALL_FUNDS" &&
+                                        permission.action !== "BUY_ALL_FUNDS" &&
+                                        permission.action !== "SELL_ALL_FUNDS" &&
+                                        (StakeOrFundPermission(permission))
+                                    )
                                     .sort(permission => permission.action !== "VIEW_ALL_FUNDS" ? -1 : 0)
                                     .map(
                                         (permission, index) =>
@@ -155,7 +161,11 @@ const User = ({ user, permissions, funds, getUsers }) => {
                             </Col >
                             {
                                 FormData.permissions
-                                    .filter(permission => permission.action !== "OWNER" && (!StakeOrFundPermission(permission)))
+                                    .filter(permission => permission.action !== "OWNER" &&
+                                        permission.action !== "VIEW_ALL_FUNDS" &&
+                                        permission.action !== "BUY_ALL_FUNDS" &&
+                                        permission.action !== "SELL_ALL_FUNDS" &&
+                                        (!StakeOrFundPermission(permission)))
                                     .map(
                                         (permission, index) =>
                                             <Permission
@@ -221,7 +231,6 @@ const User = ({ user, permissions, funds, getUsers }) => {
 export default User
 
 const Permission = ({ setFormData, permission, funds, disabled }) => {
-
     const { t } = useTranslation()
 
     const togglePermission = () => {
