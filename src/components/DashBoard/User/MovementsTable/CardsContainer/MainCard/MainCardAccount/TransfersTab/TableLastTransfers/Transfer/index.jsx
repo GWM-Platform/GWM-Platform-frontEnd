@@ -15,7 +15,7 @@ const Transfer = ({ content, actions, getTransfers }) => {
 
   var momentDate = moment(content.createdAt);
   const { t } = useTranslation();
-  const { getMoveStateById, Accounts, AccountSelected } = useContext(DashBoardContext)
+  const { getMoveStateById, Accounts, AccountSelected, hasPermission } = useContext(DashBoardContext)
 
   const [ShowModal, setShowModal] = useState(false)
   const [Action, setAction] = useState("approve")
@@ -79,13 +79,22 @@ const Transfer = ({ content, actions, getTransfers }) => {
           <div className="h-100 d-flex align-items-center justify-content-around">
             {
               !!(incomingTransfer()) &&
-              <div className="iconContainer green">
-                <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => launchModalConfirmation("approve")} />
+              <>
+                {
+                  hasPermission("TRANSFER_APPROVE") &&
+                  <div className="iconContainer green">
+                    <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => launchModalConfirmation("approve")} />
+                  </div>
+                }
+              </>
+            }
+
+            {
+              hasPermission("TRANSFER_DENY") &&
+              <div className="iconContainer red">
+                <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => launchModalConfirmation("deny")} />
               </div>
             }
-            <div className="iconContainer red">
-              <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => launchModalConfirmation("deny")} />
-            </div>
           </div>}
         </td>
 

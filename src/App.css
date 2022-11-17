@@ -374,6 +374,12 @@ table .Actions {
 	background-color: gray;
 }
 
+.dropdown-item.disabled,.dropdown-item:disabled{
+	color:#adb5bd;
+    pointer-events: none;
+    background-color: transparent;
+}
+
 @media (min-width: 600px) and (max-width: 800px) and (min-aspect-ratio: 13/9) {
 	.appContainer {
 		display: none;

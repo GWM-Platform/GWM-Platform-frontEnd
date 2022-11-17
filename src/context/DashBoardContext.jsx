@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useReducer, useRef } from 'react'
 import { createContext, useState, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -75,6 +76,14 @@ export const DashBoardProvider = ({ children }) => {
 
     const [DashboardToast, DashboardToastDispatch] = useReducer(reducerDashboardToast, DashboardToastInitialState);
 
+    const [ClientPermissions, setClientPermissions] = useState({
+        fetching: true,
+        fetched: false,
+        valid: false,
+        content: []
+    })
+
+
     function handleWindowSizeChange() {
         setWidth(window.innerWidth);
     }
@@ -87,6 +96,7 @@ export const DashBoardProvider = ({ children }) => {
             if (selected !== itemSelected) {
                 setContentReady(false)
                 setFunds([])
+                setFetchingFunds(true)
                 setAccounts([])
                 setItemSelected(selected)
             }
@@ -101,7 +111,13 @@ export const DashBoardProvider = ({ children }) => {
         }
         const getAccountsAndFunds = async () => {
             setFetchingFunds(true)
-            const [resposponseAccounts, resposponseFunds] = await Promise.all([getAccounts(), getFunds()]);
+            const [resposponseAccounts, resposponseFunds] = await Promise.all(
+                [
+                    getAccounts(),
+                    getFunds()
+                ]
+            );
+
             setAccounts(resposponseAccounts)
             setAccountSelected(resposponseAccounts[0] ? resposponseAccounts[0] : {})
 
@@ -203,7 +219,7 @@ export const DashBoardProvider = ({ children }) => {
             }
         }
 
-        if (ClientSelected.id) {
+        if (ClientSelected.id && ClientPermissions.fetched) {
             setContentReady(false)
             setPendingWithoutpossession([])
             getAccountsAndFunds()
@@ -212,7 +228,7 @@ export const DashBoardProvider = ({ children }) => {
         return () => {
         }
         // eslint-disable-next-line
-    }, [ClientSelected, itemSelected])
+    }, [ClientSelected, itemSelected, ClientPermissions])
 
     useEffect(() => {
         const toLogin = () => {
@@ -263,7 +279,8 @@ export const DashBoardProvider = ({ children }) => {
             setPendingWithoutpossession([...aux])
             setContentReady(true)
         }
-        if (!FetchingFunds && PendingTransactions.fetched && Accounts.length > 0 && !contentReady && ClientSelected.id) {
+
+        if (!FetchingFunds && PendingTransactions.fetched > 0 && !contentReady && ClientSelected.id) {
             addPendingFundsWithoutPosesion()
         }
 
@@ -388,7 +405,7 @@ export const DashBoardProvider = ({ children }) => {
     //Fired when th client changed
     useEffect(() => {
 
-        const userDashboardSelected = () =>  UserClients.content.length > 0 && IndexClientSelected >= 0
+        const userDashboardSelected = () => UserClients.content.length > 0 && IndexClientSelected >= 0
 
         const adminDashboardSelected = () => admin && IndexClientSelected === -1
 
@@ -438,7 +455,7 @@ export const DashBoardProvider = ({ children }) => {
         }
 
         if (userDashboardSelected()) {
-            setClientSelected( UserClients.content[IndexClientSelected])
+            setClientSelected(UserClients.content[IndexClientSelected])
             manageUrlUser()
             setBalanceChanged(true)
         } else if (adminDashboardSelected()) manageUrlAdmin()
@@ -462,11 +479,66 @@ export const DashBoardProvider = ({ children }) => {
         sessionStorage.clear(); history.push(`/login`);
     }
 
+
+    // get permissions when the client is changed
+    useEffect(() => {
+        const getPermissions = () => {
+            setClientPermissions((prevState) => ({ ...prevState, fetching: true }))
+            axios.get(`/permissions`, {
+                params: { clientId: ClientSelected.id },
+            }).then(function (response) {
+                const userId = parseInt(sessionStorage.getItem('session_userId' || -1))
+
+                setClientPermissions((prevState) => (
+                    {
+                        ...prevState,
+                        fetching: false,
+                        fetched: true,
+                        valid: true,
+                        content: response?.data?.find(PermissionsSet => PermissionsSet.userId === userId) || [],
+                    }))
+
+            }).catch((err) => {
+                if (err.message !== "canceled") {
+                    if (err.response.status === "401") toLogin()
+                    setClientPermissions((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
+                }
+            });
+        }
+        getPermissions()
+        return () => {
+            setClientPermissions((prevState) => ({ ...prevState, fetching: true, fetched: false, content: [] }))
+        }
+        //  eslint-disable-next-line
+    }, [ClientSelected])
+
+    const isOwner = () => ClientPermissions?.content?.permissions?.filter(permission => permission.action === "OWNER")?.length > 0
+
+    const hasPermission = (Permission) => ClientPermissions?.content?.permissions?.filter(permission => permission.action === Permission)?.length > 0 || isOwner()
+
+    const hasSellPermission = (fundId = -1) =>
+        ClientPermissions?.content?.permissions?.map(permission => permission.action.split('_'))
+            ?.filter(actionSplitted => actionSplitted?.includes('SELL') && actionSplitted?.includes('STAKES')) // Get all sell_stakes permissions
+            ?.filter(sellPermission => sellPermission?.includes("" + fundId))?.length > 0 || // Verify that has a sell permission for the fund from parameter
+        isOwner()
+
+    const hasBuyPermission = (fundId = -1) =>
+        ClientPermissions?.content?.permissions?.map(permission => permission.action.split('_'))
+            ?.filter(actionSplitted => actionSplitted?.includes('BUY') && actionSplitted?.includes('STAKES')) // Get all sell_stakes permissions
+            ?.filter(sellPermission => sellPermission?.includes("" + fundId))?.length > 0 ||// Verify that has a sell permission for the fund from parameter
+        isOwner()
+
+    const hasViewPermission = (fundId = -1) =>
+        ClientPermissions?.content?.permissions?.map(permission => permission.action.split('_'))
+            ?.filter(actionSplitted => actionSplitted?.includes('VIEW') && actionSplitted?.includes('STAKES')) // Get all sell_stakes permissions
+            ?.filter(sellPermission => sellPermission?.includes("" + fundId))?.length > 0 ||// Verify that has a sell permission for the fund from parameter
+        isOwner()
+
     return <DashBoardContext.Provider
         value={{
             token, admin, UserClients, ClientSelected, IndexClientSelected, setIndexClientSelected, balanceChanged, setBalanceChanged, TransactionStates, getMoveStateById,
             FetchingFunds, contentReady, PendingWithoutpossession, PendingTransactions, Accounts, Funds, itemSelected, setItemSelected, isMobile, width, toLogin, setContentReady,
-            DashboardToast, DashboardToastDispatch, AccountSelected,allowedSymbols
+            DashboardToast, DashboardToastDispatch, AccountSelected, allowedSymbols, ClientPermissions, hasPermission, hasSellPermission, hasBuyPermission,hasViewPermission
         }}>
         {children}
     </DashBoardContext.Provider>

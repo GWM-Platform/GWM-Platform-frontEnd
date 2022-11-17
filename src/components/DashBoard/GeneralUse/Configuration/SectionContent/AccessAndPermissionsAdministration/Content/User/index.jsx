@@ -12,7 +12,7 @@ import { faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icon
 
 const User = ({ user, permissions, funds, getUsers }) => {
 
-    const { ClientSelected, toLogin, DashboardToastDispatch } = useContext(DashBoardContext);
+    const { ClientSelected, toLogin, DashboardToastDispatch, hasPermission } = useContext(DashBoardContext);
     const { t } = useTranslation()
 
     const [PermissionEdit, setPermissionEdit] = useState({
@@ -28,22 +28,23 @@ const User = ({ user, permissions, funds, getUsers }) => {
         [user],
     )
 
-    const hasPermission = useCallback(
+    const userHasPermission = useCallback(
         (permissionId = -1) => user.permissions.filter(permission => permission.id === permissionId)?.length > 0 || isOwner()
         ,
         [user, isOwner],
     )
+
     const initialState = useMemo(() => {
         return {
             permissions:
                 permissions.map((permission) => ({
                     id: permission.id,
                     action: permission.action,
-                    allowed: hasPermission(permission.id)
+                    allowed: userHasPermission(permission.id)
                 }))
         }
 
-    }, [permissions, hasPermission])
+    }, [permissions, userHasPermission])
 
     const [FormData, setFormData] = useState(initialState)
     const resetFormData = () => {
@@ -89,7 +90,6 @@ const User = ({ user, permissions, funds, getUsers }) => {
 
         });
     }
-
 
     return (
         <Accordion.Item className="user" eventKey={user.id}>
@@ -191,21 +191,21 @@ const User = ({ user, permissions, funds, getUsers }) => {
                                 </>
                                 :
                                 <>
-
+                                    {/*The owners only can make another user owner */}
                                     <Col xs="auto" className=" mb-2">
-                                        <Button disabled={isOwner() || true} variant="danger">
+                                        <Button disabled={!hasPermission('')} variant="danger">
                                             {t('Make owner')}
                                         </Button>
                                     </Col>
 
                                     <Col xs="auto" className=" mb-2">
-                                        <Button disabled={isOwner() || true} variant="danger">
+                                        <Button disabled={!hasPermission('REMOVE_USERS')} variant="danger">
                                             {t("Disconnect")}
                                         </Button>
                                     </Col>
 
                                     <Col xs="auto" className=" mb-2">
-                                        <Button variant="danger" disabled={isOwner()} onClick={() => toggleEdition()}>
+                                        <Button variant="danger" disabled={!hasPermission('MODIFY_PERMISSIONS')} onClick={() => toggleEdition()}>
                                             {t("Edit permissions")}
                                         </Button>
                                     </Col>

@@ -12,7 +12,7 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, setNumberOfF
 
     const { t } = useTranslation();
 
-    const { FetchingFunds, Funds, Accounts, contentReady, PendingWithoutpossession } = useContext(DashBoardContext);
+    const { FetchingFunds, Funds, Accounts, contentReady, PendingWithoutpossession, hasPermission } = useContext(DashBoardContext);
 
     const [error, setError] = useState("Loading");
     const [FixedDeposits, setFixedDeposits] = useState({ fetching: true, fetched: false, valid: false, content: { deposits: [], total: 0 } })
@@ -87,9 +87,16 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, setNumberOfF
         }
 
         if (contentReady) {
-            getFixedDeposits()
-            getFixedDepositsStats()
+            if (hasPermission("FIXED_DEPOSIT_VIEW")) {
+                getFixedDeposits()
+                getFixedDepositsStats()
+            } else {
+                setFixedDeposits((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, content: { deposits: [] } } }))
+                setFixedDepositsStats((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, content: {} } }))
+            }
+
         }
+
         //eslint-disable-next-line
     }, [contentReady]);
 

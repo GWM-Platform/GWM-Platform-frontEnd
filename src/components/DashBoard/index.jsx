@@ -49,7 +49,7 @@ import Configuration from './GeneralUse/Configuration';
 const UserDashBoard = () => {
     axios.defaults.headers.common['Authorization'] = `Bearer ${sessionStorage.getItem("access_token")}`
 
-    const { isMobile, admin, ClientSelected, balanceChanged, setBalanceChanged, setItemSelected, IndexClientSelected, UserClients } = useContext(DashBoardContext);
+    const { isMobile, admin, ClientSelected, balanceChanged, setBalanceChanged, setItemSelected, IndexClientSelected, UserClients, ClientPermissions } = useContext(DashBoardContext);
 
     const { path } = useRouteMatch()
     const [NavInfoToggled, setNavInfoToggled] = useState(false)
@@ -60,7 +60,7 @@ const UserDashBoard = () => {
             {
                 IndexClientSelected >= 0 || admin || UserClients.content.length === 1 ?
                     UserClients.content.length > 0 || admin ?
-                        ClientSelected.id || admin ?
+                        (ClientSelected.id || admin) && ClientPermissions.fetched ?
                             <>
                                 <NavInfo NavInfoToggled={NavInfoToggled} />
                                 <NavBar NavInfoToggled={NavInfoToggled} setNavInfoToggled={setNavInfoToggled}

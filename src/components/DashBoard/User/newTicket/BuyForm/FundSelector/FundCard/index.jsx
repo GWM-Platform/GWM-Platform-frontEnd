@@ -5,6 +5,8 @@ import './index.css'
 import { Col, Card } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
+import { useContext } from 'react';
+import { DashBoardContext } from 'context/DashBoardContext';
 
 const FundCard = ({ Fund, ownKey, data, setData, openAccordion, Account }) => {
     const { t } = useTranslation();
@@ -15,9 +17,11 @@ const FundCard = ({ Fund, ownKey, data, setData, openAccordion, Account }) => {
         setWidth(ref.current === null ? 200 : ref.current.clientWidth - 20)
     }, [ref]);
 
+    const { hasBuyPermission } = useContext(DashBoardContext)
+
     return (
         <Col xs="10" sm="3"
-            className={`py-1 pe-1 growAnimation FundCardContainer ${Fund.freeShares === 0 || Fund.sharePrice > Account.balance || Fund.sharePrice === 0 ? " FundDisabled" : ""
+            className={`py-1 pe-1 growAnimation FundCardContainer ${Fund.freeShares === 0 || Fund.sharePrice > Account.balance || Fund.sharePrice === 0 || !hasBuyPermission(Fund.id) ? " FundDisabled" : ""
                 }${data.FundSelectedId === Fund.id ? " FundSelected" : ""
                 } 
         `}>

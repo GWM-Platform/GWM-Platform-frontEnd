@@ -4,9 +4,12 @@ import { useTranslation } from 'react-i18next'
 import { Accordion, Button, Col, Container, Row } from 'react-bootstrap'
 import User from './User'
 import './index.scss'
+import { DashBoardContext } from 'context/DashBoardContext'
+import { useContext } from 'react'
 const Content = ({ users, permissions, funds, getUsers }) => {
 
   const { t } = useTranslation()
+  const { hasPermission } = useContext(DashBoardContext);
 
 
   return (
@@ -20,7 +23,7 @@ const Content = ({ users, permissions, funds, getUsers }) => {
                 users.map(user => <User getUsers={getUsers} key={`user-${user.id}`} user={user} permissions={permissions} funds={funds} />)
               }
               <div className="my-2 d-flex justify-content-end">
-                <Button disabled>{t("Connect a new user")}</Button>
+                <Button disabled={!hasPermission('ADD_USERS')}>{t("Connect a new user")}</Button>
               </div>
             </Accordion>
           </Col>

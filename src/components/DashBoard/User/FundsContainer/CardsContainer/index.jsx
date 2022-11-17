@@ -9,7 +9,7 @@ import './index.css'
 import FixedDepositCard from './FixedDepositCard';
 
 const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions, PendingWithoutpossession, FixedDeposits }) => {
-    const { width } = useContext(DashBoardContext)
+    const { width, hasPermission } = useContext(DashBoardContext)
 
     const [CardWidth, setCardWidth] = useState(false)
     const [Offset, setOffset] = useState(0)
@@ -66,7 +66,7 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
         }
     }, [width])
 
-    const totalCards = () => Funds.length + PendingWithoutpossession.length + shownFixedDeposits().length + 1//+1 cta cte
+    const totalCards = () => Funds.length + PendingWithoutpossession.length + shownFixedDeposits().length + (hasPermission('VIEW_ACCOUNT') ? 1 : 0)//+1 cta cte
 
     return (
         <Container className={`px-0 d-flex justify-content-center FundsContainerWidth cardsContainer p-relative`}>
@@ -76,45 +76,50 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
                         "justify-content-center" : ""}
                  pb-2 flex-wrap flex-sm-nowrap overflow-hidden `}>
                 {
-                    Accounts.map(
-                        (account, key) =>
-                            <CashCard cardsAmount={Funds.length + PendingWithoutpossession.length + shownFixedDeposits().length + 1}
-                                inScreenFunds={CardWidth} Pinned={Pinned} setPinned={setPinned}
-                                PendingTransactions={PendingTransactions} key={key} Hide={Hide} setHide={setHide} Fund={account} />
-                    )
+                    hasPermission('VIEW_ACCOUNT') &&
+                    <>
+                        {
+                            Accounts.map(
+                                (account) =>
+                                    <CashCard cardsAmount={totalCards()}
+                                        inScreenFunds={CardWidth} Pinned={Pinned} setPinned={setPinned}
+                                        PendingTransactions={PendingTransactions} key={`account-card-${account?.id}`} Hide={Hide} setHide={setHide} Fund={account} />
+                            )
+                        }
+                    </>
                 }
                 {
-                    Funds.map((j, k) =>
-                        <FundCard Hide={Hide} setHide={setHide} key={k} PendingTransactions={PendingTransactions}
-                            setItemSelected={setItemSelected} Funds={Funds} Fund={j} />
+                    Funds.map((fund) =>
+                        <FundCard Hide={Hide} setHide={setHide} key={`fund-card-${fund?.id}`} PendingTransactions={PendingTransactions}
+                            setItemSelected={setItemSelected} Funds={Funds} Fund={fund} />
 
 
                     )
                 }
                 {
-                    PendingWithoutpossession.map((j, k) =>
-                        <FundCard Hide={Hide} setHide={setHide} key={k} PendingTransactions={PendingTransactions}
-                            setItemSelected={setItemSelected} Funds={Funds} Fund={j} />
+                    PendingWithoutpossession.map((fund) =>
+                        <FundCard Hide={Hide} setHide={setHide} key={`fund-withoutposession-card-${fund?.id}`} PendingTransactions={PendingTransactions}
+                            setItemSelected={setItemSelected} Funds={Funds} Fund={fund} />
                     )
                 }
                 {
                     shownFixedDeposits().map((fixedDeposit, key) =>
-                        <FixedDepositCard ownKey={key} key={`${key}-fixedDeposit`} FixedDeposit={fixedDeposit} Hide={Hide} setHide={setHide} />
+                        <FixedDepositCard ownKey={key} key={`fixedDeposit-${fixedDeposit?.id}`} FixedDeposit={fixedDeposit} Hide={Hide} setHide={setHide} />
                     )
                 }
             </Row>
             <div className={`arrow  right d-none d-sm-flex
-                                ${Funds.length + PendingWithoutpossession.length + shownFixedDeposits().length > 2 && showRightChevron ? "opacity-1" : ""}`}
+                                ${totalCards() > 3 && showRightChevron ? "opacity-1" : ""}`}
                 onClick={() => { if (showRightChevron) setScrollPositionByOffset(Offset + 1) }}>
                 <img className="chevron" src={`${process.env.PUBLIC_URL}/images/chevron/chevron-right.svg`} alt='right' />
             </div>
             <div className={` arrow left d-none d-sm-flex
-                                ${Funds.length + PendingWithoutpossession.length + shownFixedDeposits().length > 2 && showLeftChevron ? "opacity-1" : ""}`}
+                                ${totalCards() > 3 && showLeftChevron ? "opacity-1" : ""}`}
                 onClick={() => { if (showLeftChevron) setScrollPositionByOffset(Offset - 1) }}>
                 <img className="chevron" src={`${process.env.PUBLIC_URL}/images/chevron/chevron-left.svg`} alt='left' />
             </div>
             <Indicators
-                cardsAmount={Funds.length + PendingWithoutpossession.length + shownFixedDeposits().length + 1}
+                cardsAmount={totalCards()}
                 inScreenFunds={CardWidth}
                 offset={Offset} setScrollPositionByOffset={setScrollPositionByOffset}
             />

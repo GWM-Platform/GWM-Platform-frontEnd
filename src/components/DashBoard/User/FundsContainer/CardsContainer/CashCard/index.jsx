@@ -16,7 +16,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
 
     const { t } = useTranslation();
 
-    const { token, ClientSelected, DashboardToastDispatch, isMobile } = useContext(DashBoardContext)
+    const { token, ClientSelected, DashboardToastDispatch, isMobile, hasPermission } = useContext(DashBoardContext)
 
     const [PendingMovements, setPendingMovements] = useState(
         {
@@ -349,7 +349,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                     <Card.Footer className="footer mt-2 m-0 p-0">
                         <Row className="d-flex justify-content-center m-0">
                             <Col xs="12" className="d-flex justify-content-center p-0 m-0">
-                                <Button onClick={() => toWithdraw()} className="button d-flex align-items-center justify-content-center">
+                                <Button disabled={!hasPermission('WITHDRAW')} onClick={() => toWithdraw()} className="button d-flex align-items-center justify-content-center">
                                     <span className="label">{t("Withdraw")}</span>
                                 </Button>
                             </Col>
@@ -416,7 +416,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                         </span>
                                     </Card.Text>
                                 </Card.Title>
-                                <h1  className="title-gray mt-0">
+                                <h1 className="title-gray mt-0">
                                     <Container fluid className="px-0">
                                         <Row className="w-100 mx-0 d-flex justify-content-between gx-0">
                                             <span className="pe-2 containerHideInfo">
@@ -507,7 +507,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                         <Card.Footer className="footer mt-2 m-0 p-0">
                             <Row className="d-flex justify-content-center m-0">
                                 <Col xs="12" className="d-flex justify-content-center p-0 m-0">
-                                    <Button onClick={() => toWithdraw()} className="button d-flex align-items-center justify-content-center">
+                                    <Button disabled={!hasPermission('WITHDRAW')} onClick={() => toWithdraw()} className="button d-flex align-items-center justify-content-center">
                                         <span className="label">{t("Withdraw")}</span>
                                     </Button>
                                 </Col>

@@ -13,7 +13,7 @@ import { Spinner } from 'react-bootstrap';
 
 const Transfer = ({ content, getTransfers }) => {
 
-  const { getMoveStateById, Accounts, AccountSelected } = useContext(DashBoardContext)
+  const { getMoveStateById, Accounts, AccountSelected, hasPermission } = useContext(DashBoardContext)
   const { t } = useTranslation()
 
   var momentDate = moment(content.createdAt);
@@ -73,7 +73,7 @@ const Transfer = ({ content, getTransfers }) => {
 
         }
       </button>
-      
+
       <div className='d-flex justify-content-between'>
 
         <span className={`${content.stateId === 3 ? 'text-red' : 'text-green'}`}>{t(getMoveStateById(content.stateId).name)}</span>
@@ -84,12 +84,18 @@ const Transfer = ({ content, getTransfers }) => {
       {
         !!(content.stateId === 1 && incomingTransfer()) &&
         <div className="h-100 d-flex align-items-center justify-content-around">
-          <div className="iconContainer green" onClick={() => launchModalConfirmation("approve")}>
-            <FontAwesomeIcon className="icon" icon={faCheckCircle} /> {t("Approve")}
-          </div>
-          <div className="iconContainer red" onClick={() => launchModalConfirmation("deny")} >
-            <FontAwesomeIcon className="icon" icon={faTimesCircle} /> {t("Deny")}
-          </div>
+          {
+            hasPermission("TRANSFER_APPROVE") &&
+            <div className="iconContainer green" onClick={() => launchModalConfirmation("approve")}>
+              <FontAwesomeIcon className="icon" icon={faCheckCircle} /> {t("Approve")}
+            </div>
+          }
+          {
+            hasPermission("TRANSFER_DENY") &&
+            <div className="iconContainer red" onClick={() => launchModalConfirmation("deny")} >
+              <FontAwesomeIcon className="icon" icon={faTimesCircle} /> {t("Deny")}
+            </div>
+          }
         </div>
       }
       {

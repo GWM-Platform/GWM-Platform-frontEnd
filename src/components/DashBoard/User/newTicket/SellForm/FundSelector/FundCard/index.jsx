@@ -4,6 +4,8 @@ import DonutChart from 'react-donut-chart';
 import { Col, Card, Container, Row } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
+import { useContext } from 'react';
+import { DashBoardContext } from 'context/DashBoardContext';
 
 const FundCard = ({ Fund, ownKey, data, setData, setSome, some, openAccordion }) => {
     const { t } = useTranslation();
@@ -14,11 +16,13 @@ const FundCard = ({ Fund, ownKey, data, setData, setSome, some, openAccordion })
         setWidth(ref.current === null ? 200 : ref.current.clientWidth - 20)
     }, [ref]);
 
+    const { hasSellPermission } = useContext(DashBoardContext)
+
     return (
 
         <Col xs="10" sm="3"
             className={`py-1 growAnimation  FundCardContainer 
-        ${Fund.freeShares === 0 ? " FundDisabled" : ""}
+        ${Fund.freeShares === 0 || !hasSellPermission(Fund.fund.id) ? " FundDisabled" : ""}
         ${data.FundSelected === ownKey ? " FundSelected" : ""} 
         `}>
             <Card

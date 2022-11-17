@@ -8,7 +8,8 @@ import axios from 'axios';
 
 const FundsContainer = ({ isMobile, setItemSelected, numberOfFunds }) => {
 
-    const { FetchingFunds, contentReady, PendingWithoutpossession, PendingTransactions, Accounts, Funds, ClientSelected, toLogin } = useContext(DashBoardContext);
+    const { FetchingFunds, contentReady, PendingWithoutpossession, PendingTransactions, Accounts, Funds, ClientSelected, toLogin, hasPermission } = useContext(DashBoardContext);
+    
     const { t } = useTranslation();
 
     const [Mounted, setMounted] = useState(false);
@@ -22,7 +23,7 @@ const FundsContainer = ({ isMobile, setItemSelected, numberOfFunds }) => {
                     limit: 50,
                     skip: 0,
                     client: ClientSelected.id,
-                    filterState:null
+                    filterState: null
                 }
             }).then(function (response) {
                 if (response.status < 300 && response.status >= 200) {
@@ -45,11 +46,15 @@ const FundsContainer = ({ isMobile, setItemSelected, numberOfFunds }) => {
         }
         setMounted(true)
         if (contentReady) {
-            getFixedDeposits()
+            if (hasPermission("FIXED_DEPOSIT_VIEW")) {
+                getFixedDeposits()
+            } else {
+                setFixedDeposits((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, content: { deposits: [] } } }))
+            }
         }
         //eslint-disable-next-line
     }, [contentReady]);
-
+    
     return (
         <Container fluid
             className={`accountParent tabContent px-0  d-flex align-items-start align-items-md-center`}>

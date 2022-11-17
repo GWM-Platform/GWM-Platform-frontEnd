@@ -8,8 +8,12 @@ import './index.css'
 import { useHistory } from 'react-router-dom';
 import Decimal from 'decimal.js'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
+import { useContext } from 'react';
+import { DashBoardContext } from 'context/DashBoardContext';
 
 const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
+    const { hasSellPermission, hasBuyPermission } = useContext(DashBoardContext)
+
     Decimal.set({ precision: 100 })
 
     const { t } = useTranslation();
@@ -69,40 +73,40 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
                                 </Card.Text>
                             </Card.Title>
                             <Container fluid className="px-0">
-                                    <h1 className="title-gray mt-0">
-                                        <Container fluid className="px-0">
-                                            <Row className="mx-0 w-100 gx-0 d-flex justify-content-between">
-                                                <div className="pe-2 containerHideInfo">
-                                                    <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={Fund.shares ? HoldingInCash() : 0} prefix="$" fixedDecimals={2} />
-                                                    <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={Fund.shares ? HoldingInCash() : 0} prefix="$" fixedDecimals={2} />
-                                                    <FormattedNumber className={`info placeholder`} value={Fund.shares ? HoldingInCash() : 0} prefix="$" fixedDecimals={2} />
-                                                </div>
-                                                <div className="ps-0 hideInfoButton d-flex align-items-center">
-                                                    <FontAwesomeIcon
-                                                        className={`icon ${Hide ? "hidden" : "shown"}`}
-                                                        onClick={() => { setHide(!Hide) }}
-                                                        icon={faEye}
-                                                    />
-                                                    <FontAwesomeIcon
-                                                        className={`icon ${!Hide ? "hidden" : "shown"}`}
-                                                        onClick={() => { setHide(!Hide) }}
-                                                        icon={faEyeSlash}
-                                                    />
-                                                    <FontAwesomeIcon
-                                                        className="icon placeholder"
-                                                        icon={faEyeSlash}
-                                                    />
-                                                </div>
-                                            </Row>
-                                        </Container>
-                                    </h1>
-                                    <Card.Text className="subTitle lighter mt-0 mb-0">
-                                        {t("Balance (shares)")}:&nbsp;
-                                        <FormattedNumber className="bolder" value={Fund.shares ? Fund.shares : 0} prefix="" fixedDecimals={2} />
-                                    </Card.Text>
-                                    <Card.Text className="subTitle lighter mt-0 mb-0">
-                                        {t("Pending transactions")}&nbsp;({t("shares")}):&nbsp;<FormattedNumber className="bolder text-green" value={pendingShares()} prefix="+" fixedDecimals={2} />
-                                    </Card.Text>
+                                <h1 className="title-gray mt-0">
+                                    <Container fluid className="px-0">
+                                        <Row className="mx-0 w-100 gx-0 d-flex justify-content-between">
+                                            <div className="pe-2 containerHideInfo">
+                                                <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={Fund.shares ? HoldingInCash() : 0} prefix="$" fixedDecimals={2} />
+                                                <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={Fund.shares ? HoldingInCash() : 0} prefix="$" fixedDecimals={2} />
+                                                <FormattedNumber className={`info placeholder`} value={Fund.shares ? HoldingInCash() : 0} prefix="$" fixedDecimals={2} />
+                                            </div>
+                                            <div className="ps-0 hideInfoButton d-flex align-items-center">
+                                                <FontAwesomeIcon
+                                                    className={`icon ${Hide ? "hidden" : "shown"}`}
+                                                    onClick={() => { setHide(!Hide) }}
+                                                    icon={faEye}
+                                                />
+                                                <FontAwesomeIcon
+                                                    className={`icon ${!Hide ? "hidden" : "shown"}`}
+                                                    onClick={() => { setHide(!Hide) }}
+                                                    icon={faEyeSlash}
+                                                />
+                                                <FontAwesomeIcon
+                                                    className="icon placeholder"
+                                                    icon={faEyeSlash}
+                                                />
+                                            </div>
+                                        </Row>
+                                    </Container>
+                                </h1>
+                                <Card.Text className="subTitle lighter mt-0 mb-0">
+                                    {t("Balance (shares)")}:&nbsp;
+                                    <FormattedNumber className="bolder" value={Fund.shares ? Fund.shares : 0} prefix="" fixedDecimals={2} />
+                                </Card.Text>
+                                <Card.Text className="subTitle lighter mt-0 mb-0">
+                                    {t("Pending transactions")}&nbsp;({t("shares")}):&nbsp;<FormattedNumber className="bolder text-green" value={pendingShares()} prefix="+" fixedDecimals={2} />
+                                </Card.Text>
                             </Container>
                         </Row>
                     </Container>
@@ -110,12 +114,12 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
                 <Card.Footer className="footer mt-2 m-0 p-0">
                     <Row className="d-flex justify-content-center m-0">
                         <Col xs="6" className="d-flex justify-content-center p-0 m-0">
-                            <Button onClick={() => toTickets("buy")} className="me-1 button left">
+                            <Button disabled={!hasBuyPermission(Fund?.fund?.id)} onClick={() => toTickets("buy")} className="me-1 button left">
                                 <span className="label">{t("Buy")}</span>
                             </Button>
                         </Col>
                         <Col xs="6" className="d-flex justify-content-center p-0 m-0">
-                            <Button onClick={() => toTickets("sell")} className="ms-1 button right">
+                            <Button disabled={!hasSellPermission(Fund?.fund?.id)} onClick={() => toTickets("sell")} className="ms-1 button right">
                                 <span className="label">{t("Sell")}</span>
                             </Button>
                         </Col>
