@@ -721,5 +721,8 @@
   "Other permissions": "Otros permisios",
   "Permissions have not yet been set for this user": "Los permisos todavia no han sido configurados para este usuario",
   "Permissions edited succesfully": "Permisos editados correctamente",
-  "There was an error while editing the permissions": "Hubo un error al editar los permisos"
+  "There was an error while editing the permissions": "Hubo un error al editar los permisos",
+  "VIEW": "Ver",
+  "BUY": "Comprar",
+  "SELL": "Vender"
 }

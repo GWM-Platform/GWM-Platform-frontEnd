@@ -138,24 +138,39 @@ const User = ({ user, permissions, funds, getUsers }) => {
                             <Col xs="12">
                                 <h3 className="permission-category ">{t("Funds permissions")}:</h3>
                             </Col>
+                            <Col xs="3">{t("All")}</Col>
+                            <Col xs="3">
+                                <PermissionGrouper permissions={FormData.permissions} type="VIEW" setFormData={setFormData} disabled={!PermissionEdit.editionEnabled} />
+                            </Col>
+                            <Col xs="3">
+                                <PermissionGrouper permissions={FormData.permissions} type="BUY" setFormData={setFormData} disabled={!PermissionEdit.editionEnabled} />
+                            </Col>
+                            <Col xs="3">
+                                <PermissionGrouper permissions={FormData.permissions} type="SELL" setFormData={setFormData} disabled={!PermissionEdit.editionEnabled} />
+                            </Col>
                             {
-                                FormData.permissions
-                                    .filter(permission =>
-                                        permission.action !== "OWNER" &&
-                                        permission.action !== "VIEW_ALL_FUNDS" &&
-                                        permission.action !== "BUY_ALL_FUNDS" &&
-                                        permission.action !== "SELL_ALL_FUNDS" &&
-                                        (StakeOrFundPermission(permission))
-                                    )
-                                    .sort(permission => permission.action !== "VIEW_ALL_FUNDS" ? -1 : 0)
-                                    .map(
-                                        (permission, index) =>
-                                            <Permission
-                                                user={user} permission={permission} funds={funds}
-                                                setFormData={setFormData} disabled={!PermissionEdit.editionEnabled}
-                                                key={`user-${user.id}-permission-${permission.id}`} />
-                                    )
+                                funds.map(
+                                    fund =>
+                                        <>
+                                            <Col xs="3">
+                                                <FundGrouper
+                                                    fundId={fund.id} fundName={fund.name} permissions={FormData.permissions.filter(permission => permission.action !== "VIEW_ACCOUNT")} setFormData={setFormData} disabled={!PermissionEdit.editionEnabled}
+                                                />
+                                            </Col>
+                                            <Col xs="3">
+                                                <FundPermission fundId={fund.id} permissions={FormData.permissions.filter(permission => permission.action !== "VIEW_ACCOUNT")} type="VIEW" setFormData={setFormData} disabled={!PermissionEdit.editionEnabled} />
+                                            </Col>
+                                            <Col xs="3">
+                                                <FundPermission fundId={fund.id} permissions={FormData.permissions.filter(permission => permission.action !== "VIEW_ACCOUNT")} type="BUY" setFormData={setFormData} disabled={!PermissionEdit.editionEnabled} />
+                                            </Col>
+                                            <Col xs="3">
+                                                <FundPermission fundId={fund.id} permissions={FormData.permissions.filter(permission => permission.action !== "VIEW_ACCOUNT")} type="SELL" setFormData={setFormData} disabled={!PermissionEdit.editionEnabled} />
+                                            </Col>
+                                        </>
+                                )
                             }
+
+                            
                             <Col xs="12">
                                 <h3 className="permission-category mt-2 pt-2 border-top">{t("Other permissions")}:</h3>
                             </Col >
@@ -298,4 +313,125 @@ const Permission = ({ setFormData, permission, funds, disabled }) => {
             />
         </Col >
     )
+}
+
+const FundPermission = ({ fundId, permissions, type, setFormData, disabled }) => {
+    const { t } = useTranslation()
+
+    const permission = permissions.find(
+        (permission) => {
+            const actionSplitted = permission.action.split('_')
+            return actionSplitted.includes(type) && actionSplitted.includes(fundId + "")
+        }
+    )
+
+    const togglePermission = () => {
+        setFormData(
+            prevState =>
+            ({
+                ...prevState,
+                permissions: prevState.permissions.map(
+                    permissionMap =>
+                        permissionMap.id === permission.id ? { ...permission, allowed: !permission.allowed } : permissionMap
+                )
+            })
+        )
+    }
+
+    return (
+        <Form.Check
+            checked={permission.allowed}
+            onChange={() => togglePermission()}
+            type="switch"
+            id="custom-switch"
+            label={t(type)}
+            disabled={disabled}
+        />
+    )
+
+}
+
+const PermissionGrouper = ({ permissions, type, setFormData, disabled }) => {
+    const { t } = useTranslation()
+
+    const allChecked = () =>
+        permissions.filter(
+            permission =>
+                permission.action.split('_').includes(type)
+        ).length ===
+        permissions.filter(
+            permission =>
+                permission.action.split('_').includes(type) &&
+                permission.allowed
+        ).length
+
+    const togglePermissionWithThatType = () => {
+        setFormData(
+            prevState =>
+            ({
+                ...prevState,
+                permissions: prevState.permissions.map(
+                    permissionMap => {
+                        const actionSplitted = permissionMap.action.split('_')
+                        return actionSplitted.includes(type) ? { ...permissionMap, allowed: !allChecked() } : permissionMap
+                    }
+                )
+            })
+        )
+    }
+
+    return (
+        <Form.Check
+            checked={allChecked()}
+            label={t(type)}
+            onChange={() => togglePermissionWithThatType()}
+            type="switch"
+            id="custom-switch"
+            disabled={disabled}
+        />
+    )
+
+}
+
+const FundGrouper = ({ permissions, fundId, fundName, setFormData, disabled }) => {
+
+    const allChecked = () =>
+        permissions.filter(
+            permission =>
+                permission.action.split('_').includes(fundId + "")
+        ).length ===
+        permissions.filter(
+            permission =>
+                permission.action.split('_').includes(fundId + "") &&
+                permission.allowed
+        ).length
+
+    const togglePermissionWithThatType = () => {
+        setFormData(
+            prevState =>
+            ({
+                ...prevState,
+                permissions: prevState.permissions.map(
+                    permissionMap => {
+                        const actionSplitted = permissionMap.action.split('_')
+                        return actionSplitted.includes(fundId + "") ? { ...permissionMap, allowed: !allChecked() } : permissionMap
+                    }
+                )
+            })
+        )
+    }
+
+
+
+    return (
+        <Form.Check
+            checked={allChecked()}
+            label={fundName}
+            onChange={() => togglePermissionWithThatType()}
+            type="switch"
+            id="custom-switch"
+            disabled={disabled}
+        />
+    )
+
 }
