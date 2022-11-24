@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useContext } from 'react'
+import React, { useCallback, useMemo, useContext, Fragment } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import { useTranslation } from 'react-i18next'
@@ -18,6 +18,14 @@ const User = ({ user, permissions, funds, getUsers }) => {
     const [PermissionEdit, setPermissionEdit] = useState({
         fetching: false,
         editionEnabled: false
+    })
+
+    const [AssignOwner, setAssignOwner] = useState({
+        fetching: false
+    })
+
+    const [DisconnectUser, setDisconnectUser] = useState({
+        fetching: false
     })
 
     const toggleEdition = () => setPermissionEdit(prevState => ({ ...prevState, editionEnabled: !prevState.editionEnabled }))
@@ -85,7 +93,57 @@ const User = ({ user, permissions, funds, getUsers }) => {
                         fetching: false,
                         editionEnabled: false
                     }))
-                DashboardToastDispatch({ type: "create", toastContent: { Icon: faTimesCircle, Title: "There was an error while editing the permissions" } });
+                DashboardToastDispatch({ type: "create", toastContent: { Icon: faTimesCircle, Title: "There was an error editing the permissions" } });
+            }
+
+        });
+    }
+    console.log(user)
+    const disconnectUser = () => {
+        setDisconnectUser(() => (
+            {
+                fetching: true,
+            }))
+        axios.delete(`/clients/${ClientSelected.id}/clientDisconnect`, {
+            params: {
+                userId: user.userId
+            }
+        }).then(function () {
+            getUsers()
+            DashboardToastDispatch({ type: "create", toastContent: { Icon: faCheckCircle, Title: "User disconnected successfully" } });
+        }).catch((err) => {
+            if (err.message !== "canceled") {
+                if (err.response.status === "401") toLogin()
+                setDisconnectUser(() => (
+                    {
+                        fetching: false,
+                    }))
+                DashboardToastDispatch({ type: "create", toastContent: { Icon: faTimesCircle, Title: "There was an error disconnecting the user" } });
+            }
+
+        });
+    }
+
+    const assignOwner = () => {
+        setAssignOwner(() => (
+            {
+                fetching: true,
+            }))
+        axios.post(`/clients/${ClientSelected.id}/assignOwner`, {}, {
+            params: {
+                userId: user.userId
+            }
+        }).then(function () {
+            getUsers()
+            DashboardToastDispatch({ type: "create", toastContent: { Icon: faCheckCircle, Title: "User assigned as owner successfully" } });
+        }).catch((err) => {
+            if (err.message !== "canceled") {
+                if (err.response.status === "401") toLogin()
+                setAssignOwner(() => (
+                    {
+                        fetching: false,
+                    }))
+                DashboardToastDispatch({ type: "create", toastContent: { Icon: faTimesCircle, Title: "There was an error assigning the user as owner" } });
             }
 
         });
@@ -151,7 +209,7 @@ const User = ({ user, permissions, funds, getUsers }) => {
                             {
                                 funds.map(
                                     fund =>
-                                        <>
+                                        <Fragment key={"Funds-permission-group-" + fund.id}>
                                             <Col xs="3">
                                                 <FundGrouper
                                                     fundId={fund.id} fundName={fund.name} permissions={FormData.permissions.filter(permission => permission.action !== "VIEW_ACCOUNT")} setFormData={setFormData} disabled={!PermissionEdit.editionEnabled}
@@ -166,11 +224,11 @@ const User = ({ user, permissions, funds, getUsers }) => {
                                             <Col xs="3">
                                                 <FundPermission fundId={fund.id} permissions={FormData.permissions.filter(permission => permission.action !== "VIEW_ACCOUNT")} type="SELL" setFormData={setFormData} disabled={!PermissionEdit.editionEnabled} />
                                             </Col>
-                                        </>
+                                        </Fragment>
                                 )
                             }
 
-                            
+
                             <Col xs="12">
                                 <h3 className="permission-category mt-2 pt-2 border-top">{t("Other permissions")}:</h3>
                             </Col >
@@ -182,7 +240,7 @@ const User = ({ user, permissions, funds, getUsers }) => {
                                         permission.action !== "SELL_ALL_FUNDS" &&
                                         (!StakeOrFundPermission(permission)))
                                     .map(
-                                        (permission, index) =>
+                                        (permission) =>
                                             <Permission
                                                 user={user} permission={permission} funds={funds}
                                                 setFormData={setFormData} disabled={!PermissionEdit.editionEnabled}
@@ -200,7 +258,7 @@ const User = ({ user, permissions, funds, getUsers }) => {
                                 <>
                                     <Col xs="auto" className=" mb-2">
                                         <Button variant="danger" disabled={PermissionEdit.fetching} onClick={() => resetFormData()}>
-                                            {t("Cancelar")}
+                                            {t("Cancel")}
                                         </Button>
                                     </Col>
                                     <Col xs="auto" className=" mb-2">
@@ -218,19 +276,27 @@ const User = ({ user, permissions, funds, getUsers }) => {
                                 <>
                                     {/*The owners only can make another user owner */}
                                     <Col xs="auto" className=" mb-2">
-                                        <Button disabled={!hasPermission('')} variant="danger">
+                                        <Button disabled={!hasPermission('') || user?.isOwner || AssignOwner.fetching} variant="danger" onClick={assignOwner}>
+                                            {
+                                                AssignOwner.fetching &&
+                                                <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className='me-2' />
+                                            }
                                             {t('Make owner')}
                                         </Button>
                                     </Col>
 
                                     <Col xs="auto" className=" mb-2">
-                                        <Button disabled={!hasPermission('REMOVE_USERS')} variant="danger">
+                                        <Button disabled={!hasPermission('REMOVE_USERS') || user?.isOwner || DisconnectUser.fetching} variant="danger" onClick={disconnectUser}>
+                                            {
+                                                DisconnectUser.fetching &&
+                                                <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className='me-2' />
+                                            }
                                             {t("Disconnect")}
                                         </Button>
                                     </Col>
 
                                     <Col xs="auto" className=" mb-2">
-                                        <Button variant="danger" disabled={!hasPermission('MODIFY_PERMISSIONS')} onClick={() => toggleEdition()}>
+                                        <Button variant="danger" disabled={!hasPermission('MODIFY_PERMISSIONS') || user?.isOwner} onClick={() => toggleEdition()}>
                                             {t("Edit permissions")}
                                         </Button>
                                     </Col>
@@ -362,6 +428,8 @@ const PermissionGrouper = ({ permissions, type, setFormData, disabled }) => {
         permissions.filter(
             permission =>
                 permission.action.split('_').includes(type) &&
+                permission.action.split('_').includes("FUND") &&
+
                 permission.allowed
         ).length
 

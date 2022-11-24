@@ -243,7 +243,7 @@ export const DashBoardProvider = ({ children }) => {
             let FundsWithPendingTransactions = new Set(PendingTransactions.value.map(transaction => transaction.fundId))
             let FundsWithPosession = new Set(Funds.map(Funds => Funds.fundId))
 
-            const FundsWithNoPosession = ([...FundsWithPendingTransactions].filter(x => !FundsWithPosession.has(x)))//Diference (All in pending that are not funds with posession)
+            const FundsWithNoPosession = ([...FundsWithPendingTransactions].filter(x => !FundsWithPosession.has(x) && hasPermission('VIEW_FUND_' + x)))//Diference (All in pending that are not funds with posession)
 
             const getFund = async (id) => {
                 var url = `${process.env.REACT_APP_APIURL}/funds/${id}`;
@@ -283,12 +283,12 @@ export const DashBoardProvider = ({ children }) => {
             setContentReady(true)
         }
 
-        if (!FetchingFunds && PendingTransactions.fetched > 0 && !contentReady && ClientSelected.id) {
+        if (!FetchingFunds && PendingTransactions.fetched > 0 && !contentReady && ClientSelected.id && ClientPermissions.fetched) {
             addPendingFundsWithoutPosesion()
         }
 
         //eslint-disable-next-line
-    }, [Funds, PendingTransactions, ClientSelected]);
+    }, [Funds, PendingTransactions, ClientSelected, ClientPermissions.fetched]);
 
     useEffect(() => {
         isMountedRef.current = true;
@@ -524,7 +524,7 @@ export const DashBoardProvider = ({ children }) => {
             ?.filter(actionSplitted => actionSplitted?.includes('SELL') && actionSplitted?.includes('STAKES')) // Get all sell_stakes permissions
             ?.filter(sellPermission => sellPermission?.includes("" + fundId))?.length > 0 || // Verify that has a sell permission for the fund from parameter
         isOwner()
-    
+
     const hasBuyPermission = (fundId = -1) =>
         ClientPermissions?.content?.permissions?.map(permission => permission.action.split('_'))
             ?.filter(actionSplitted => actionSplitted?.includes('BUY') && actionSplitted?.includes('STAKES')) // Get all sell_stakes permissions
@@ -541,7 +541,7 @@ export const DashBoardProvider = ({ children }) => {
         value={{
             token, admin, UserClients, ClientSelected, IndexClientSelected, setIndexClientSelected, balanceChanged, setBalanceChanged, TransactionStates, getMoveStateById,
             FetchingFunds, contentReady, PendingWithoutpossession, PendingTransactions, Accounts, Funds, itemSelected, setItemSelected, isMobile, width, toLogin, setContentReady,
-            DashboardToast, DashboardToastDispatch, AccountSelected, allowedSymbols, ClientPermissions, hasPermission, hasSellPermission, hasBuyPermission,hasViewPermission
+            DashboardToast, DashboardToastDispatch, AccountSelected, allowedSymbols, ClientPermissions, hasPermission, hasSellPermission, hasBuyPermission, hasViewPermission
         }}>
         {children}
     </DashBoardContext.Provider>

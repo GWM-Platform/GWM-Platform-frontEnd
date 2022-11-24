@@ -6,10 +6,10 @@ import { Spinner, Row, Container, Col } from 'react-bootstrap';
 import { DashBoardContext } from 'context/DashBoardContext';
 import axios from 'axios';
 
-const FundsContainer = ({ isMobile, setItemSelected, numberOfFunds }) => {
+const FundsContainer = ({ isMobile, setItemSelected }) => {
 
     const { FetchingFunds, contentReady, PendingWithoutpossession, PendingTransactions, Accounts, Funds, ClientSelected, toLogin, hasPermission } = useContext(DashBoardContext);
-    
+
     const { t } = useTranslation();
 
     const [Mounted, setMounted] = useState(false);
@@ -54,7 +54,9 @@ const FundsContainer = ({ isMobile, setItemSelected, numberOfFunds }) => {
         }
         //eslint-disable-next-line
     }, [contentReady]);
-    
+
+    const numberOfFunds = () => Accounts.length + Funds.length + PendingWithoutpossession.length + (FixedDeposits.content.deposits.length > 0 ? 1 : 0)
+
     return (
         <Container fluid
             className={`accountParent tabContent px-0  d-flex align-items-start align-items-md-center`}>
@@ -70,6 +72,15 @@ const FundsContainer = ({ isMobile, setItemSelected, numberOfFunds }) => {
                         </Row>
                     </Container>
                     :
+                    numberOfFunds() === 0  ? 
+                    <Container className="h-100 d-flex align-items-center px-0" fluid>
+                        <Row className="w-100 mx-0 d-flex justify-content-center align-items-center">
+                            <Col xs="12" className="d-flex justify-content-center align-items-center">
+                                <span className="text-center">{t("The client does not have any holdings or your user does not have access to view any of these")}</span>
+                            </Col>
+                        </Row>
+                    </Container>
+                    :
                     <CardsContainer
                         FixedDeposits={FixedDeposits.content}
                         PendingWithoutpossession={PendingWithoutpossession}
@@ -78,7 +89,6 @@ const FundsContainer = ({ isMobile, setItemSelected, numberOfFunds }) => {
                         setItemSelected={setItemSelected}
                         isMobile={isMobile}
                         Funds={Funds}
-                        numberOfFunds={numberOfFunds}
                         Accounts={Accounts}
                     />
             }

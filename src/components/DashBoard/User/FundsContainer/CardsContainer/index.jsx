@@ -67,6 +67,7 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
     }, [width])
 
     const totalCards = () => Funds.length + PendingWithoutpossession.length + shownFixedDeposits().length + (hasPermission('VIEW_ACCOUNT') ? 1 : 0)//+1 cta cte
+    hasPermission('VIEW_ACCOUNT')
 
     return (
         <Container className={`px-0 d-flex justify-content-center FundsContainerWidth cardsContainer p-relative`}>

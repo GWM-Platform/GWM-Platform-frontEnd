@@ -616,6 +616,10 @@
     "Operation date": "Operation date",
     "Operation time": "Operation time",
     "Apparently, there is no time deposit plan created": "Apparently, there is no time deposit plan created",
+    "Apparently, there are no funds created": "Apparently, there are no funds created",
+    "Apparently, your user does not have permissions to perform this operation": "Apparently, your user does not have permissions to perform this operation",
+    "Apparently, your user does not have permissions to view this section": "Apparently, your user does not have permissions to view this section",
+    "Apparently, there are no funds available for this operation": "Apparently, there are no funds available for this operation",
     "Create one": "Create one",
     "Receipt": "Receipt",
     "Transaction receipt": "Transaction receipt",
@@ -717,5 +721,13 @@
     "Other permissions": "Other permissions",
     "Permissions have not yet been set for this user": "Permissions have not yet been set for this user",
     "Permissions edited succesfully": "Permissions edited succesfully",
-    "There was an error while editing the permissions":  "There was an error while editing the permissions"
+    "There was an error editing the permissions": "There was an error editing the permissions",
+    "There was an error disconnecting the user": "There was an error disconnecting the user",
+    "User disconnected successfully": "User disconnected successfully",
+    "There was an error connecting the user": "There was an error connecting the user",
+    "User connected successfully": "User connected successfully",
+    "User assigned as owner successfully": "User assigned as owner successfully",
+    "There was an error assigning the user as owner": "There was an error assigning the user as owner",
+    "The email entered is already connected to the client": "The email entered is already connected to the client",
+    "The client does not have any holdings or your user does not have access to view any of these": "The client does not have any holdings or your user does not have access to view any of these"
 }

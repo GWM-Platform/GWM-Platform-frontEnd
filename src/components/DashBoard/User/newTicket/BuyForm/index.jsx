@@ -14,7 +14,7 @@ import ActionConfirmationModal from './ActionConfirmationModal';
 
 const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
 
-    const { token, ClientSelected, contentReady, Accounts } = useContext(DashBoardContext);
+    const { token, ClientSelected, contentReady, Accounts, hasBuyPermission } = useContext(DashBoardContext);
 
     function useQuery() {
         const { search } = useLocation();
@@ -156,7 +156,7 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
                             FetchingFunds || !contentReady ?
                                 <Loading />
                                 :
-                                Funds.length > 0 ?
+                                Funds?.length > 0 && Funds?.filter(Fund => hasBuyPermission(Fund.id))?.length > 0 ?
                                     <Col xs="12">
                                         <Accordion flush defaultActiveKey="0">
                                             <FundSelector openAccordion={openAccordion} Account={Accounts[0]}
