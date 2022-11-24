@@ -37,8 +37,6 @@ const EditAssets = ({ data, EditRequest, handleChange, Assets, Action, setAction
         setInputValid(inputRef?.current?.checkValidity())
     }, [inputRef, data.value])
 
-    console.log(data)
-
     return (
         <div className="editForm">
             <div className="header">

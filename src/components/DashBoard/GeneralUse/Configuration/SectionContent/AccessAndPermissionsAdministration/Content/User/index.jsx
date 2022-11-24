@@ -98,7 +98,7 @@ const User = ({ user, permissions, funds, getUsers }) => {
 
         });
     }
-    console.log(user)
+
     const disconnectUser = () => {
         setDisconnectUser(() => (
             {
@@ -326,7 +326,7 @@ const Permission = ({ setFormData, permission, funds, disabled }) => {
             })
         )
     }
-
+    
     const isSpecificFundPermission = () =>
         permission.action.includes("FUND") && permission.action !== "VIEW_ALL_FUNDS"
 
@@ -423,13 +423,13 @@ const PermissionGrouper = ({ permissions, type, setFormData, disabled }) => {
     const allChecked = () =>
         permissions.filter(
             permission =>
-                permission.action.split('_').includes(type)
+                permission.action.split('_').includes(type) && 
+                (permission.action.split('_').includes("FUND") || permission.action.split('_').includes("STAKE") || permission.action.split('_').includes("STAKES") )
         ).length ===
         permissions.filter(
             permission =>
-                permission.action.split('_').includes(type) &&
-                permission.action.split('_').includes("FUND") &&
-
+                permission.action.split('_').includes(type) && 
+                (permission.action.split('_').includes("FUND") || permission.action.split('_').includes("STAKE") || permission.action.split('_').includes("STAKES") ) &&
                 permission.allowed
         ).length
 
@@ -441,7 +441,9 @@ const PermissionGrouper = ({ permissions, type, setFormData, disabled }) => {
                 permissions: prevState.permissions.map(
                     permissionMap => {
                         const actionSplitted = permissionMap.action.split('_')
-                        return actionSplitted.includes(type) ? { ...permissionMap, allowed: !allChecked() } : permissionMap
+                        return actionSplitted.includes(type) && 
+                        (actionSplitted.includes("FUND") || actionSplitted.includes("STAKE") || actionSplitted.includes("STAKES") )
+                         ? { ...permissionMap, allowed: !allChecked() } : permissionMap
                     }
                 )
             })

@@ -51,12 +51,11 @@ const ContainerForgotPassword = () => {
   const toLogin = () => {
     history.push(`/login`);
   }
-console.log(validation)
-  const handleChange = (event) => {
 
+  const handleChange = (event) => {
     let aux = data
     aux[event.target.id] = event.target.value
-    
+
     if (event.target.id !== "passwordConfirm") {
       let auxToAPI = {}
       auxToAPI[event.target.id] = event.target.value
