@@ -101,6 +101,10 @@ const UserDashBoard = () => {
                                             <Route path={`${path}/operationResult`}>
                                                 <OperationStatusAdmin />
                                             </Route>
+                                            
+                                            <Route exact path={`${path}/configuration`}>
+                                                <Configuration admin />
+                                            </Route>
                                         </div>
                                         :
                                         /*----------------------------------------------------------Client----------------------------------------------------------*/

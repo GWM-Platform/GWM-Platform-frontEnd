@@ -13,7 +13,8 @@ import './index.css'
 import { useTranslation } from 'react-i18next';
 import AccessAndPermissionsAdministration from './SectionContent/AccessAndPermissionsAdministration';
 
-const Configuration = () => {
+const Configuration = ({ admin = false }) => {
+
   const history = useHistory()
   const location = useLocation()
   const { t } = useTranslation()
@@ -29,7 +30,10 @@ const Configuration = () => {
   const contentByName =
   {
     passwordandauthentication: <PasswordAndAuthentication desiredSubSection={subSectionQuery} />,
-    accessandpermissionsadministration: <AccessAndPermissionsAdministration desiredSubSection={subSectionQuery} />,
+    ...(admin ?
+      {}
+      :
+      { accessandpermissionsadministration: <AccessAndPermissionsAdministration desiredSubSection={subSectionQuery} /> })
   }
   const content = () => {
     const contentSelected = contentByName[SectionSelected.replace(/\s/g, '').toLowerCase()]
@@ -62,8 +66,8 @@ const Configuration = () => {
     <Container fluid="lg" className="Configuration tabContent growAnimation ">
       <Row className={`h-100 p-relative ConfigurationRow
               d-flex justify-content-center align-items-stretch`}>
-        <SectionsSelector TabActive={TabActive} setTabActive={setTabActive} SectionSelected={SectionSelected} selectSection={selectSection} />
-        <SectionContent desiredSubSection={subSectionQuery} content={content} TabActive={TabActive} setTabActive={setTabActive} SectionSelected={SectionSelected} selectSection={selectSection} />
+        <SectionsSelector admin={admin} TabActive={TabActive} setTabActive={setTabActive} SectionSelected={SectionSelected} selectSection={selectSection} />
+        <SectionContent  desiredSubSection={subSectionQuery} content={content} TabActive={TabActive} setTabActive={setTabActive} SectionSelected={SectionSelected} selectSection={selectSection} />
       </Row>
     </Container>
   )

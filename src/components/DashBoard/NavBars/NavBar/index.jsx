@@ -172,8 +172,7 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                 <LanguageSelector />
                             </div>
                             {
-                                !!(!(admin && IndexClientSelected === -1)) &&
-                                <NavLink to="/Dashboard/Configuration?section=Access+and+permissions+administration" className="nav-link " activeClassName="active">
+                                <NavLink to="/Dashboard/Configuration?section=Password+and+authentication" className="nav-link " activeClassName="active">
                                     <FontAwesomeIcon icon={faCog} />
                                 </NavLink>
                             }

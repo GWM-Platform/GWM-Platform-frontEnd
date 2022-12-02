@@ -57,9 +57,9 @@ const ChangePassword = ({ scrollIntoView }) => {
 
   const patchUserInfo = () => {
     setPatch((prevState) => ({ ...prevState, fetching: true, success: false, fetched: false }))
-    axios.patch('/users/me',
+    axios.patch('/users/changePassword',
       {
-        password: data.password,
+        oldPassword: data.password,
         newPassword: data.newPassword,
       }).then(function (response) {
         setPatch((prevState) => ({ ...prevState, fetching: false, success: true, fetched: true }))
@@ -127,7 +127,6 @@ const ChangePassword = ({ scrollIntoView }) => {
                 <Col md={12} className=" mb-2">
                   <h1 className="label mt-0">{t('New Password')}</h1>
                   <Form.Control
-                    pattern={escapeRegExp(data.password)}
                     required
                     id="newPassword"
                     onChange={handleChange}
@@ -158,7 +157,8 @@ const ChangePassword = ({ scrollIntoView }) => {
                 <Col md={12} className=" mb-2">
                   <h1 className="label mt-0">{t('Confirm New Password')}</h1>
                   <Form.Control
-                    required id="confirmPassword" onChange={(event) => { handleChange(event) }} value={data.confirmPassword} type="password" maxLength={80} data-cy="input-confirm-new-password" />
+                    required id="confirmPassword" onChange={(event) => { handleChange(event) }} value={data.confirmPassword} type="password" maxLength={80} data-cy="input-confirm-new-password" pattern={escapeRegExp(data.newPassword)}
+                  />
                   <Form.Text className={`mb-2 text-muted formText ${validation.match || data.confirmPassword.length === 0 ? 'd-none' : 'd-block'}`}>
                     <p className="textRed mb-0 validation">{t('The fields "New password" and "confirm password" must match')}</p>
                   </Form.Text>
@@ -169,9 +169,8 @@ const ChangePassword = ({ scrollIntoView }) => {
                     type="submit"
                     variant="danger"
                     className={'mainColor mb-2'}
-                    data-cy="btn-submit"
-                    disabled
-                  >   <span>
+                  >
+                    <span>
                       <Spinner
                         className={Patch.fetching ? 'd-inline-block' : 'd-none'}
                         variant="light"

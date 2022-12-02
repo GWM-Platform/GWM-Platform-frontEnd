@@ -418,7 +418,7 @@ const Permission = ({ FormData, setFormData, permission, funds, disabled }) => {
                                         :
                                         t("Also need the permissions")
                                 }:
-                                {unsatisfiedDependencies().map(unsatisfiedDependency => <span><br />- {composeTraduction(unsatisfiedDependency)}</span>)}
+                                {unsatisfiedDependencies().map(unsatisfiedDependency => <span key={`dependency-${permission?.action}-${unsatisfiedDependency}`}><br />- {composeTraduction(unsatisfiedDependency)}</span>)}
                             </Tooltip>
                         }
                     >
@@ -545,7 +545,7 @@ const FundPermission = ({ fundId, permissions, type, setFormData, disabled, fund
                                         :
                                         t("Also need the permissions")
                                 }:
-                                {unsatisfiedDependencies().map(unsatisfiedDependency => <span><br />- {composeTraduction(unsatisfiedDependency)}</span>)}
+                                {unsatisfiedDependencies().map(unsatisfiedDependency => <span key={`dependency-${permission?.action}-${unsatisfiedDependency}`}><br />- {composeTraduction(unsatisfiedDependency)}</span>)}
                             </Tooltip>
                         }
                     >
