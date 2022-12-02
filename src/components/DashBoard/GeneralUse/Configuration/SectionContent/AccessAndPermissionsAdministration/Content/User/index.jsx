@@ -149,6 +149,8 @@ const User = ({ user, permissions, funds, getUsers }) => {
         });
     }
 
+
+
     return (
         <Accordion.Item className="user" eventKey={user.id}>
             <Accordion.Header>
@@ -216,13 +218,13 @@ const User = ({ user, permissions, funds, getUsers }) => {
                                                 />
                                             </Col>
                                             <Col xs="3">
-                                                <FundPermission fundId={fund.id} permissions={FormData.permissions.filter(permission => permission.action !== "VIEW_ACCOUNT")} type="VIEW" setFormData={setFormData} disabled={!PermissionEdit.editionEnabled} />
+                                                <FundPermission funds={funds} FormData={FormData} fundId={fund.id} permissions={FormData.permissions.filter(permission => permission.action !== "VIEW_ACCOUNT")} type="VIEW" setFormData={setFormData} disabled={!PermissionEdit.editionEnabled} />
                                             </Col>
                                             <Col xs="3">
-                                                <FundPermission fundId={fund.id} permissions={FormData.permissions.filter(permission => permission.action !== "VIEW_ACCOUNT")} type="BUY" setFormData={setFormData} disabled={!PermissionEdit.editionEnabled} />
+                                                <FundPermission funds={funds} FormData={FormData} fundId={fund.id} permissions={FormData.permissions.filter(permission => permission.action !== "VIEW_ACCOUNT")} type="BUY" setFormData={setFormData} disabled={!PermissionEdit.editionEnabled} />
                                             </Col>
                                             <Col xs="3">
-                                                <FundPermission fundId={fund.id} permissions={FormData.permissions.filter(permission => permission.action !== "VIEW_ACCOUNT")} type="SELL" setFormData={setFormData} disabled={!PermissionEdit.editionEnabled} />
+                                                <FundPermission funds={funds} FormData={FormData} fundId={fund.id} permissions={FormData.permissions.filter(permission => permission.action !== "VIEW_ACCOUNT")} type="SELL" setFormData={setFormData} disabled={!PermissionEdit.editionEnabled} />
                                             </Col>
                                         </Fragment>
                                 )
@@ -242,7 +244,7 @@ const User = ({ user, permissions, funds, getUsers }) => {
                                     .map(
                                         (permission) =>
                                             <Permission
-                                                user={user} permission={permission} funds={funds}
+                                                user={user} permission={permission} funds={funds} FormData={FormData}
                                                 setFormData={setFormData} disabled={!PermissionEdit.editionEnabled}
                                                 key={`user-${user.id}-permission-${permission.id}`} />
                                     )
@@ -311,8 +313,32 @@ const User = ({ user, permissions, funds, getUsers }) => {
 }
 export default User
 
-const Permission = ({ setFormData, permission, funds, disabled }) => {
+const Permission = ({ FormData, setFormData, permission, funds, disabled }) => {
     const { t } = useTranslation()
+
+    const permissionsDependencies = {
+        WITHDRAW: ["VIEW_ACCOUNT"],
+        TRANSFER_GENERATE: ["VIEW_ACCOUNT"],
+        TRANSFER_APPROVE: ["VIEW_ACCOUNT"],
+        TRANSFER_DENY: ["VIEW_ACCOUNT"],
+        FIXED_DEPOSIT_CREATE: ["VIEW_ACCOUNT"],
+        FIXED_DEPOSIT_PRECANCEL: ["FIXED_DEPOSIT_VIEW"],
+        ...funds.reduce(
+            (acumulator, fund) => (
+                {
+                    ...acumulator,
+                    [`SELL_STAKES_${fund.id}`]: [`VIEW_FUND_${fund.id}`],
+                    [`BUY_STAKES_${fund.id}`]: ["VIEW_ACCOUNT"],
+                }
+            ), {}),
+    }
+
+    const unsatisfiedDependencies = () => {
+        const permissionDependencies = permissionsDependencies[permission?.action] || []
+        return permissionDependencies?.filter(dependency => !(FormData?.permissions?.find(permissionFind => permissionFind?.action === dependency)?.allowed))
+    }
+
+    const hasUnsatisfiedDependencies = () => unsatisfiedDependencies().length > 0
 
     const togglePermission = () => {
         setFormData(
@@ -326,21 +352,21 @@ const Permission = ({ setFormData, permission, funds, disabled }) => {
             })
         )
     }
-    
-    const isSpecificFundPermission = () =>
-        permission.action.includes("FUND") && permission.action !== "VIEW_ALL_FUNDS"
 
-    const isStakePermission = () =>
-        permission.action.includes("STAKE")
+    const isSpecificFundPermission = (action) =>
+        action.includes("FUND") && action !== "VIEW_ALL_FUNDS"
 
-    const isSellPermission = () =>
-        permission.action.includes("SELL")
+    const isStakePermission = (action) =>
+        action.includes("STAKE")
 
-    const isBuyPermission = () =>
-        permission.action.includes("BUY")
+    const isSellPermission = (action) =>
+        action.includes("SELL")
 
-    const getFundName = () => {
-        const fundId = permission.action.slice(-1)
+    const isBuyPermission = (action) =>
+        action.includes("BUY")
+
+    const getFundName = (action) => {
+        const fundId = action.slice(-1)
         if (!isNaN(+fundId)) {
             return funds?.find(fund => fund?.id === +fundId)?.name || t("Not found")
         } else {
@@ -348,22 +374,22 @@ const Permission = ({ setFormData, permission, funds, disabled }) => {
         }
     }
 
-    const composeTraduction = () => {
-        if (isSpecificFundPermission()) {
-            return (t("VIEW_FUND", { fundName: getFundName() }))
-        } else if (isStakePermission()) {
+    const composeTraduction = (action) => {
+        if (isSpecificFundPermission(action)) {
+            return (t("VIEW_FUND", { fundName: getFundName(action) }))
+        } else if (isStakePermission(action)) {
             if (isBuyPermission()) {
-                return (t("BUY_STAKES", { fundName: getFundName() }))
-            } else if (isSellPermission()) {
-                return (t("SELL_STAKES", { fundName: getFundName() }))
+                return (t("BUY_STAKES", { fundName: getFundName(action) }))
+            } else if (isSellPermission(action)) {
+                return (t("SELL_STAKES", { fundName: getFundName(action) }))
             } else {
                 return (t("Unknown permission"))
             }
         } else {
-            return (permission.action === "FIXED_DEPOSIT_CREATE" || permission.action === "DEPOSIT" ?
-                t(`PERMISSION_${permission.action}`)
+            return (action === "FIXED_DEPOSIT_CREATE" || action === "DEPOSIT" ?
+                t(`PERMISSION_${action}`)
                 :
-                t(permission?.action))
+                t(action))
         }
     }
 
@@ -373,15 +399,39 @@ const Permission = ({ setFormData, permission, funds, disabled }) => {
                 checked={permission.allowed}
                 onChange={() => togglePermission()}
                 type="switch"
+                className="d-inline-block"
                 id="custom-switch"
-                label={composeTraduction()}
+                label={composeTraduction(permission?.action)}
                 disabled={disabled}
             />
+            {
+                !!(hasUnsatisfiedDependencies() && permission?.allowed) &&
+                <>
+                    &nbsp;
+                    <OverlayTrigger
+                        overlay={
+                            <Tooltip id={`tooltip-notice-${permission.action}`}>
+                                {
+                                    unsatisfiedDependencies().length === 1 ?
+                                        t("Also need the permission")
+                                        :
+                                        t("Also need the permissions")
+                                }:
+                                {unsatisfiedDependencies().map(unsatisfiedDependency => <span><br />- {composeTraduction(unsatisfiedDependency)}</span>)}
+                            </Tooltip>
+                        }
+                    >
+                        <div className='d-inline-block'>
+                            <FontAwesomeIcon icon={faExclamationTriangle} />
+                        </div>
+                    </OverlayTrigger>
+                </>
+            }
         </Col >
     )
 }
 
-const FundPermission = ({ fundId, permissions, type, setFormData, disabled }) => {
+const FundPermission = ({ fundId, permissions, type, setFormData, disabled, funds, FormData }) => {
     const { t } = useTranslation()
 
     const permission = permissions.find(
@@ -404,15 +454,105 @@ const FundPermission = ({ fundId, permissions, type, setFormData, disabled }) =>
         )
     }
 
+    const permissionsDependencies = {
+        WITHDRAW: ["VIEW_ACCOUNT"],
+        TRANSFER_GENERATE: ["VIEW_ACCOUNT"],
+        TRANSFER_APPROVE: ["VIEW_ACCOUNT"],
+        TRANSFER_DENY: ["VIEW_ACCOUNT"],
+        FIXED_DEPOSIT_CREATE: ["VIEW_ACCOUNT"],
+        FIXED_DEPOSIT_PRECANCEL: ["FIXED_DEPOSIT_VIEW"],
+        ...funds.reduce(
+            (acumulator, fund) => (
+                {
+                    ...acumulator,
+                    [`SELL_STAKES_${fund.id}`]: [`VIEW_FUND_${fund.id}`],
+                    [`BUY_STAKES_${fund.id}`]: ["VIEW_ACCOUNT"],
+                }
+            ), {}),
+    }
+
+    const unsatisfiedDependencies = () => {
+        const permissionDependencies = permissionsDependencies[permission?.action] || []
+        return permissionDependencies?.filter(dependency => !(FormData?.permissions?.find(permissionFind => permissionFind?.action === dependency)?.allowed))
+    }
+
+    const hasUnsatisfiedDependencies = () => unsatisfiedDependencies().length > 0
+
+    const isSpecificFundPermission = (action) =>
+        action.includes("FUND") && action !== "VIEW_ALL_FUNDS"
+
+    const isStakePermission = (action) =>
+        action.includes("STAKE")
+
+    const isSellPermission = (action) =>
+        action.includes("SELL")
+
+    const isBuyPermission = (action) =>
+        action.includes("BUY")
+
+    const getFundName = (action) => {
+        const fundId = action.slice(-1)
+        if (!isNaN(+fundId)) {
+            return funds?.find(fund => fund?.id === +fundId)?.name || t("Not found")
+        } else {
+            return t("Not found")
+        }
+    }
+
+    const composeTraduction = (action) => {
+        if (isSpecificFundPermission(action)) {
+            return (t("VIEW_FUND", { fundName: getFundName(action) }))
+        } else if (isStakePermission(action)) {
+            if (isBuyPermission()) {
+                return (t("BUY_STAKES", { fundName: getFundName(action) }))
+            } else if (isSellPermission(action)) {
+                return (t("SELL_STAKES", { fundName: getFundName(action) }))
+            } else {
+                return (t("Unknown permission"))
+            }
+        } else {
+            return (action === "FIXED_DEPOSIT_CREATE" || action === "DEPOSIT" ?
+                t(`PERMISSION_${action}`)
+                :
+                t(action))
+        }
+    }
+
     return (
-        <Form.Check
-            checked={permission.allowed}
-            onChange={() => togglePermission()}
-            type="switch"
-            id="custom-switch"
-            label={t(type)}
-            disabled={disabled}
-        />
+        <>
+            <Form.Check
+                checked={permission.allowed}
+                onChange={() => togglePermission()}
+                type="switch"
+                id="custom-switch"
+                className="d-inline-block"
+                label={t(type)}
+                disabled={disabled}
+            />
+            {
+                !!(hasUnsatisfiedDependencies() && permission?.allowed) &&
+                <>
+                    &nbsp;
+                    <OverlayTrigger
+                        overlay={
+                            <Tooltip id={`tooltip-notice-${permission.action}`}>
+                                {
+                                    unsatisfiedDependencies().length === 1 ?
+                                        t("Also need the permission")
+                                        :
+                                        t("Also need the permissions")
+                                }:
+                                {unsatisfiedDependencies().map(unsatisfiedDependency => <span><br />- {composeTraduction(unsatisfiedDependency)}</span>)}
+                            </Tooltip>
+                        }
+                    >
+                        <div className='d-inline-block'>
+                            <FontAwesomeIcon icon={faExclamationTriangle} />
+                        </div>
+                    </OverlayTrigger>
+                </>
+            }
+        </>
     )
 
 }
@@ -423,13 +563,13 @@ const PermissionGrouper = ({ permissions, type, setFormData, disabled }) => {
     const allChecked = () =>
         permissions.filter(
             permission =>
-                permission.action.split('_').includes(type) && 
-                (permission.action.split('_').includes("FUND") || permission.action.split('_').includes("STAKE") || permission.action.split('_').includes("STAKES") )
+                permission.action.split('_').includes(type) &&
+                (permission.action.split('_').includes("FUND") || permission.action.split('_').includes("STAKE") || permission.action.split('_').includes("STAKES"))
         ).length ===
         permissions.filter(
             permission =>
-                permission.action.split('_').includes(type) && 
-                (permission.action.split('_').includes("FUND") || permission.action.split('_').includes("STAKE") || permission.action.split('_').includes("STAKES") ) &&
+                permission.action.split('_').includes(type) &&
+                (permission.action.split('_').includes("FUND") || permission.action.split('_').includes("STAKE") || permission.action.split('_').includes("STAKES")) &&
                 permission.allowed
         ).length
 
@@ -441,9 +581,9 @@ const PermissionGrouper = ({ permissions, type, setFormData, disabled }) => {
                 permissions: prevState.permissions.map(
                     permissionMap => {
                         const actionSplitted = permissionMap.action.split('_')
-                        return actionSplitted.includes(type) && 
-                        (actionSplitted.includes("FUND") || actionSplitted.includes("STAKE") || actionSplitted.includes("STAKES") )
-                         ? { ...permissionMap, allowed: !allChecked() } : permissionMap
+                        return actionSplitted.includes(type) &&
+                            (actionSplitted.includes("FUND") || actionSplitted.includes("STAKE") || actionSplitted.includes("STAKES"))
+                            ? { ...permissionMap, allowed: !allChecked() } : permissionMap
                     }
                 )
             })
