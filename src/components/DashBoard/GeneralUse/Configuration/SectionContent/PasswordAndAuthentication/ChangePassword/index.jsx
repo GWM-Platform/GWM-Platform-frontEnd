@@ -57,7 +57,7 @@ const ChangePassword = ({ scrollIntoView }) => {
 
   const patchUserInfo = () => {
     setPatch((prevState) => ({ ...prevState, fetching: true, success: false, fetched: false }))
-    axios.patch('/users/changePassword',
+    axios.post('/users/changePassword',
       {
         oldPassword: data.password,
         newPassword: data.newPassword,
