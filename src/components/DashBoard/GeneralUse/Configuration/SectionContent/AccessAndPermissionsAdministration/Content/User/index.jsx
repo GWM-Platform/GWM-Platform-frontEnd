@@ -353,28 +353,28 @@ const Permission = ({ FormData, setFormData, permission, funds, disabled }) => {
         )
     }
 
-    const isSpecificFundPermission = (action) =>
-        action.includes("FUND") && action !== "VIEW_ALL_FUNDS"
-
-    const isStakePermission = (action) =>
-        action.includes("STAKE")
-
-    const isSellPermission = (action) =>
-        action.includes("SELL")
-
-    const isBuyPermission = (action) =>
-        action.includes("BUY")
-
-    const getFundName = (action) => {
-        const fundId = action.slice(-1)
-        if (!isNaN(+fundId)) {
-            return funds?.find(fund => fund?.id === +fundId)?.name || t("Not found")
-        } else {
-            return t("Not found")
-        }
-    }
-
     const composeTraduction = (action) => {
+        const isSpecificFundPermission = (action) =>
+            action.includes("FUND") && action !== "VIEW_ALL_FUNDS"
+
+        const isStakePermission = (action) =>
+            action.includes("STAKE")
+
+        const isSellPermission = (action) =>
+            action.includes("SELL")
+
+        const isBuyPermission = (action) =>
+            action.includes("BUY")
+
+        const getFundName = (action) => {
+            const fundId = action.slice(-1)
+            if (!isNaN(+fundId)) {
+                return funds?.find(fund => fund?.id === +fundId)?.name || t("Not found")
+            } else {
+                return t("Not found")
+            }
+        }
+        
         if (isSpecificFundPermission(action)) {
             return (t("VIEW_FUND", { fundName: getFundName(action) }))
         } else if (isStakePermission(action)) {
@@ -392,6 +392,7 @@ const Permission = ({ FormData, setFormData, permission, funds, disabled }) => {
                 t(action))
         }
     }
+
 
     return (
         <Col md="4" >
@@ -478,28 +479,30 @@ const FundPermission = ({ fundId, permissions, type, setFormData, disabled, fund
 
     const hasUnsatisfiedDependencies = () => unsatisfiedDependencies().length > 0
 
-    const isSpecificFundPermission = (action) =>
-        action.includes("FUND") && action !== "VIEW_ALL_FUNDS"
 
-    const isStakePermission = (action) =>
-        action.includes("STAKE")
-
-    const isSellPermission = (action) =>
-        action.includes("SELL")
-
-    const isBuyPermission = (action) =>
-        action.includes("BUY")
-
-    const getFundName = (action) => {
-        const fundId = action.slice(-1)
-        if (!isNaN(+fundId)) {
-            return funds?.find(fund => fund?.id === +fundId)?.name || t("Not found")
-        } else {
-            return t("Not found")
-        }
-    }
 
     const composeTraduction = (action) => {
+        const isSpecificFundPermission = (action) =>
+            action.includes("FUND") && action !== "VIEW_ALL_FUNDS"
+
+        const isStakePermission = (action) =>
+            action.includes("STAKE")
+
+        const isSellPermission = (action) =>
+            action.includes("SELL")
+
+        const isBuyPermission = (action) =>
+            action.includes("BUY")
+
+        const getFundName = (action) => {
+            const fundId = action.slice(-1)
+            if (!isNaN(+fundId)) {
+                return funds?.find(fund => fund?.id === +fundId)?.name || t("Not found")
+            } else {
+                return t("Not found")
+            }
+        }
+
         if (isSpecificFundPermission(action)) {
             return (t("VIEW_FUND", { fundName: getFundName(action) }))
         } else if (isStakePermission(action)) {
