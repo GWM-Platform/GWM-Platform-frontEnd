@@ -131,11 +131,8 @@ const UserDashBoard = () => {
                                                 }
                                             </Route>
                                             <Route path={`${path}/sell`}>
-                                                {
-                                                    hasPermission('VIEW_ACCOUNT') ?
-                                                        <SellForm balanceChanged={() => setBalanceChanged(true)} /> :
-                                                        <NoPermissionOperation />
-                                                }
+                                                <SellForm balanceChanged={() => setBalanceChanged(true)} />
+
                                             </Route>
                                             <Route path={`${path}/deposit`}>
                                                 {

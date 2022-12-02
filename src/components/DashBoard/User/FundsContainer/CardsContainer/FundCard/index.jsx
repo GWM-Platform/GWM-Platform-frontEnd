@@ -122,7 +122,7 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
                         </Col>
                         <Col xs="6" className="d-flex justify-content-center p-0 m-0">
                             <Button
-                                disabled={!hasSellPermission(Fund?.fund?.id) || !hasPermission('VIEW_ACCOUNT')}
+                                disabled={!hasSellPermission(Fund?.fund?.id)}
                                 onClick={() => toTickets("sell")} className="ms-1 button right">
                                 <span className="label">{t("Sell")}</span>
                             </Button>

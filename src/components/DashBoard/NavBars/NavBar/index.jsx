@@ -133,8 +133,7 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                             </NavDropdown.Item>
                                             <NavDropdown.Item
                                                 active={itemSelectedLC === "sell"}
-                                                onClick={() => { goTo("sell") }}
-                                                disabled={!hasPermission('VIEW_ACCOUNT')}>
+                                                onClick={() => { goTo("sell") }}>
                                                 {t("Sell")}
                                             </NavDropdown.Item>
                                             <NavDropdown.Item

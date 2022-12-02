@@ -10,15 +10,15 @@ import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
 const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
     const { t } = useTranslation();
-    
+
     const [Balance, setBalance] = useState({ fetching: false, value: 0 })
-    
-    const { token, ClientSelected, itemSelected, contentReady, Accounts } = useContext(DashBoardContext)
-    
+
+    const { token, ClientSelected, itemSelected, contentReady, Accounts, hasPermission } = useContext(DashBoardContext)
+
     const sectionsCashInAccount = ["buy", "withdraw", "sell", "transfer", "timedeposit"]
 
     useEffect(() => {
-        const getAccounts = async () => {
+        const getBalance = async () => {
             var url = `${process.env.REACT_APP_APIURL}/clients/${ClientSelected.id}/balance`;
             setBalance({ ...Balance, ...{ fetching: true } })
             const response = await fetch(url, {
@@ -40,7 +40,7 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
             }
             setBalanceChanged(false)
         }
-        if (balanceChanged && ClientSelected.id) getAccounts()
+        if (balanceChanged && ClientSelected.id) getBalance()
         // eslint-disable-next-line 
     }, [setBalance, token, balanceChanged, setBalanceChanged, ClientSelected])
 
@@ -52,7 +52,7 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
                         <h1 className="total my-0 py-0 d-flex align-items-center growOpacity">
 
                             {
-                                sectionsCashInAccount.includes(itemSelected.toLowerCase()) ?
+                                sectionsCashInAccount.includes(itemSelected.toLowerCase()) && hasPermission("VIEW_ACCOUNT") ?
                                     <>
                                         {t("Available cash")}:&nbsp;
                                         {
