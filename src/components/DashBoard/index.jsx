@@ -46,6 +46,7 @@ import axios from 'axios';
 import NoClients from './GeneralUse/NoClients';
 import Configuration from './GeneralUse/Configuration';
 import NoPermissionOperation from './User/NoPermissionFeedback/NoPermissionOperation';
+import Broadcast from './Admin/Broadcast';
 
 const UserDashBoard = () => {
     axios.defaults.headers.common['Authorization'] = `Bearer ${sessionStorage.getItem("access_token")}`
@@ -74,6 +75,9 @@ const UserDashBoard = () => {
                                             <Route path={`${path}/addAccount`}>
                                                 <AddAccount />
                                             </Route>
+                                            <Route path={`${path}/broadcast`}>
+                                                <Broadcast />
+                                            </Route>
                                             <Route path={`${path}/APL`}>
                                                 <APL />
                                             </Route>
@@ -101,7 +105,7 @@ const UserDashBoard = () => {
                                             <Route path={`${path}/operationResult`}>
                                                 <OperationStatusAdmin />
                                             </Route>
-                                            
+
                                             <Route exact path={`${path}/configuration`}>
                                                 <Configuration admin />
                                             </Route>

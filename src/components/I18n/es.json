@@ -733,11 +733,18 @@
   "User assigned as owner successfully": "Usuario asignado como propietario correctamente",
   "There was an error assigning the user as owner": "Hubo un error al asignar el usuario como propietario",
   "The email entered is already connected to the client": "El email ingresado ya se encuentra vinculado al cliente",
-  "The client does not have any holdings or your user does not have access to view any of these":"El cliente no dispone de ninguna tenencia o su usuario no tiene acceso para ver ninguna de las mismas",
+  "The client does not have any holdings or your user does not have access to view any of these": "El cliente no dispone de ninguna tenencia o su usuario no tiene acceso para ver ninguna de las mismas",
   "VIEW": "Ver",
   "BUY": "Comprar",
   "SELL": "Vender",
-  "The user will not be able to perform this action until they also have the following permissions":"El usuario no podrá realizar esta acción hasta que también tenga los siguientes permisos",
-  "Also need the permissions":"Tambien necesita los permisos",
-  "Also need the permission":"Tambien necesita el permiso"
+  "The user will not be able to perform this action until they also have the following permissions": "El usuario no podrá realizar esta acción hasta que también tenga los siguientes permisos",
+  "Also need the permissions": "Tambien necesita los permisos",
+  "Also need the permission": "Tambien necesita el permiso",
+  "Broadcast": "Difusión",
+  "Broadcast to users": "Difusión a usuarios",
+  "Recipients":"Destinatarios",
+  "Email title": "Titulo del email",
+  "Email body": "Cuerpo del email",
+  "Select all":"Seleccionar todos",
+  "The broadcast was successfully sent":"La difusión fue enviada correctamente"
 }

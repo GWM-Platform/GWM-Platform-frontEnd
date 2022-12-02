@@ -730,7 +730,14 @@
     "There was an error assigning the user as owner": "There was an error assigning the user as owner",
     "The email entered is already connected to the client": "The email entered is already connected to the client",
     "The client does not have any holdings or your user does not have access to view any of these": "The client does not have any holdings or your user does not have access to view any of these",
-    "The user will not be able to perform this action until they also have the following permissions":"The user will not be able to perform this action until they also have the following permissions",
-    "Also need the permissions":"Also need the permissions",
-    "Also need the permission":"Also need the permission"
+    "The user will not be able to perform this action until they also have the following permissions": "The user will not be able to perform this action until they also have the following permissions",
+    "Also need the permissions": "Also need the permissions",
+    "Also need the permission": "Also need the permission",
+    "Broadcast": "Broadcast",
+    "Broadcast to users": "Broadcast to users",
+    "Recipients": "Recipents",
+    "Email title": "Email title",
+    "Email body": "Email body",
+    "Select all":"Select all",
+    "The broadcast was successfully sent":"The broadcast was successfully sent"
 }
