@@ -42,7 +42,7 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
             <Container fluid className="bottomInnerBorder px-0 d-none d-sm-block">
                 <Row className="w-100 d-flex align-items-center mx-0 flex-nowrap">
                     <Col sm="auto" md={1} lg={admin && UserClients.content.length > 0 && IndexClientSelected === -1 ? "auto" : 2} style={{ paddingBottom: "5px" }}>
-                        <button className={`noStyle navInfoToggler ${NavInfoToggled ? "toggled" : ""}`} onClick={() => toggleNavInfo()}>
+                        <button type="button" className={`noStyle navInfoToggler ${NavInfoToggled ? "toggled" : ""}`} onClick={() => toggleNavInfo()}>
                             <FontAwesomeIcon icon={faChevronCircleUp} />
                         </button>
                     </Col>
@@ -232,7 +232,7 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                     </Popover.Body>
                                 </Popover>
                             } popperConfig={1}>
-                                <button className={`dropdownButton nav-link ${itemSelectedLC === "withdrawcash" || itemSelectedLC === "depositcash" ? "active" : ""}`}>
+                                <button type="button" className={`dropdownButton nav-link ${itemSelectedLC === "withdrawcash" || itemSelectedLC === "depositcash" ? "active" : ""}`}>
                                     <p className="mobile-dropdown mb-0" >{t("Operations")}</p>
                                 </button>
                             </OverlayTrigger>
@@ -260,7 +260,7 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                     </Popover.Body>
                                 </Popover>
                             } popperConfig={1}>
-                                <button className={`dropdownButton nav-link ${itemSelectedLC === "addaccount" || itemSelectedLC === "broadcast" || itemSelectedLC === "clientssupervision" || itemSelectedLC === "connectusertoclient" ? "active" : ""}`}>
+                                <button type="button" className={`dropdownButton nav-link ${itemSelectedLC === "addaccount" || itemSelectedLC === "broadcast" || itemSelectedLC === "clientssupervision" || itemSelectedLC === "connectusertoclient" ? "active" : ""}`}>
                                     <p className="mobile-dropdown mb-0" >{t("Accounts")}</p>
                                 </button>
                             </OverlayTrigger>
@@ -319,7 +319,7 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                     </Popover.Body>
                                 </Popover>
                             } popperConfig={1}>
-                                <button className={`nav-link dropdownButton ${itemSelectedLC === "sell" || itemSelectedLC === "buy" || itemSelectedLC === "timedeposit" ? "active" : ""}`}>
+                                <button type="button" className={`nav-link dropdownButton ${itemSelectedLC === "sell" || itemSelectedLC === "buy" || itemSelectedLC === "timedeposit" ? "active" : ""}`}>
                                     <p className="mb-0 mobile-dropdown" >{t("Funds")}</p>
                                 </button>
                             </OverlayTrigger>
@@ -346,7 +346,7 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                         </Popover.Body>
                                     </Popover>
                                 } popperConfig={1}>
-                                <button className={`nav-link dropdownButton ${itemSelectedLC === "withdraw" || itemSelectedLC === "deposit" || itemSelectedLC === "transfer" ? "active" : ""}`}>
+                                <button type="button" className={`nav-link dropdownButton ${itemSelectedLC === "withdraw" || itemSelectedLC === "deposit" || itemSelectedLC === "transfer" ? "active" : ""}`}>
                                     <p className="mb-0 mobile-dropdown" onClick={(e) => { e.target.focus() }}>{t("Account")}</p>
                                 </button>
                             </OverlayTrigger>
