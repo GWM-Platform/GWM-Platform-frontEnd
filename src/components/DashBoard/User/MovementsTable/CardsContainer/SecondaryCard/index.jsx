@@ -7,6 +7,7 @@ import './index.css'
 import { faPiggyBank } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
+import Decimal from 'decimal.js';
 //Parent key 0-> Fund;Parent key 1->Cash
 const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownKey, selected, Hide, categorySelected, resetSearchById }) => {
     const select = () => {
@@ -24,7 +25,7 @@ const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownK
             case 0:
                 return Fund.balance
             case 1:
-                return Fund.shares ? Fund.shares * Fund.fund.sharePrice : 0
+                return Fund.shares ? new Decimal(Fund?.shares || 0).times(Fund?.fund?.sharePrice || 0).toFixed(2).toString() : 0
             case 2:
                 return Fund.balance
             default:
