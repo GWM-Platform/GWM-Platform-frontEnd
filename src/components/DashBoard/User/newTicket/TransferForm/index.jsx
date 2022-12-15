@@ -118,7 +118,7 @@ const TransferForm = ({ balanceChanged }) => {
                                 <Col xs="12">
                                     <Accordion flush defaultActiveKey="0">
                                         <TargetAccountSelector
-                                            validated={validated} data={data} TargetAccount={TargetAccount} closeAccordion={closeAccordion}
+                                            validated={validated} data={data} setData={setData} TargetAccount={TargetAccount} closeAccordion={closeAccordion}
                                             setTargetAccount={setTargetAccount} handleChange={handleChange} openAccordion={openAccordion} />
                                     </Accordion>
                                     <Accordion flush activeKey={CollapsedFields || TargetAccount.fetching || !TargetAccount.fetched || !TargetAccount.valid ? "-1" : "0"}>
@@ -131,9 +131,9 @@ const TransferForm = ({ balanceChanged }) => {
                 </Container>
                 {
                     !!(contentReady && Accounts.length) >= 1 &&
-                        <ActionConfirmationModal TargetAccount={TargetAccount} setShowModal={setShowModal} show={ShowModal} action={transfer} data={data} Balance={AccountSelected.balance} Transfer={Transfer} />
-                        
-                        
+                    <ActionConfirmationModal TargetAccount={TargetAccount} setShowModal={setShowModal} show={ShowModal} action={transfer} data={data} Balance={AccountSelected.balance} Transfer={Transfer} />
+
+
                 }
             </Form >
         </div >

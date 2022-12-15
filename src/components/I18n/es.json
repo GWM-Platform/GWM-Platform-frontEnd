@@ -746,5 +746,6 @@
   "Email title": "Titulo del email",
   "Email body": "Cuerpo del email",
   "Select all":"Seleccionar todos",
-  "The broadcast was successfully sent":"La difusión fue enviada correctamente"
+  "The broadcast was successfully sent":"La difusión fue enviada correctamente",
+  "Verifying alias":"Verificando alias"
 }
