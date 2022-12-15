@@ -111,6 +111,8 @@ export const DashBoardProvider = ({ children }) => {
         }
         const getAccountsAndFunds = async () => {
             setFetchingFunds(true)
+            setAccounts([])
+            
             const [responseAccounts, responseFunds] = await Promise.all(
                 [
                     hasPermission('VIEW_ACCOUNT') ? getAccounts() : null,
@@ -157,6 +159,7 @@ export const DashBoardProvider = ({ children }) => {
         }
 
         const getAccounts = async () => {
+            setAccounts([])
             var url = `${process.env.REACT_APP_APIURL}/accounts/?` + new URLSearchParams({
                 client: ClientSelected.id,
             });
@@ -486,7 +489,13 @@ export const DashBoardProvider = ({ children }) => {
     // get permissions when the client is changed
     useEffect(() => {
         const getPermissions = () => {
-            setClientPermissions((prevState) => ({ ...prevState, fetching: true }))
+            setClientPermissions((prevState) => ({
+                ...prevState,
+                fetching: true,
+                fetched: false,
+                valid: false,
+                content: []
+            }))
             axios.get(`/permissions`, {
                 params: { clientId: ClientSelected.id },
             }).then(function (response) {
@@ -541,7 +550,7 @@ export const DashBoardProvider = ({ children }) => {
         value={{
             token, admin, UserClients, ClientSelected, IndexClientSelected, setIndexClientSelected, balanceChanged, setBalanceChanged, TransactionStates, getMoveStateById,
             FetchingFunds, contentReady, PendingWithoutpossession, PendingTransactions, Accounts, Funds, itemSelected, setItemSelected, isMobile, width, toLogin, setContentReady,
-            DashboardToast, DashboardToastDispatch, AccountSelected, allowedSymbols, ClientPermissions, hasPermission, hasSellPermission, hasBuyPermission, hasViewPermission
+            DashboardToast, DashboardToastDispatch, AccountSelected, allowedSymbols, ClientPermissions, hasPermission, hasSellPermission, hasBuyPermission, hasViewPermission,setClientPermissions
         }}>
         {children}
     </DashBoardContext.Provider>

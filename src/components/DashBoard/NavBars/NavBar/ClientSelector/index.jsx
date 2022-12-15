@@ -8,9 +8,9 @@ import { useTranslation } from "react-i18next";
 
 const ClientSelector = () => {
     const { t } = useTranslation();
-    const { UserClients, IndexClientSelected, setIndexClientSelected, ClientSelected, admin } = useContext(DashBoardContext)
+    const { UserClients, IndexClientSelected, setIndexClientSelected, ClientSelected, admin, setClientPermissions } = useContext(DashBoardContext)
 
-    return ((admin &&  UserClients.content.length > 0) || (!admin && ClientSelected &&  UserClients.content.length > 1) ?
+    return ((admin && UserClients.content.length > 0) || (!admin && ClientSelected && UserClients.content.length > 1) ?
         <Dropdown className="clientSelector">
             <Dropdown.Toggle
                 variant="secondary btn-sm"
@@ -31,9 +31,9 @@ const ClientSelector = () => {
                         null
                 }
                 {
-                     UserClients.content.map((client, key) => {
+                    UserClients.content.map((client, key) => {
                         return (
-                            <Dropdown.Item key={key} active={IndexClientSelected === key ? true : false} onClick={() => { setIndexClientSelected(key) }}>
+                            <Dropdown.Item key={key} active={IndexClientSelected === key ? true : false} onClick={() => { setIndexClientSelected(key); setClientPermissions(prevState => ({ ...prevState, content: [] })) }}>
                                 {client.alias}
                             </Dropdown.Item>
                         )
