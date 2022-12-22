@@ -13,7 +13,7 @@ const FundsContainer = ({ isMobile, setItemSelected }) => {
     const { t } = useTranslation();
 
     const [Mounted, setMounted] = useState(false);
-    const [FixedDeposits, setFixedDeposits] = useState({ fetching: true, fetched: false, valid: false, content: {} })
+    const [FixedDeposits, setFixedDeposits] = useState({ fetching: true, fetched: false, valid: false, content: { deposits: [] } })
 
     useEffect(() => {
         const getFixedDeposits = () => {
@@ -55,7 +55,7 @@ const FundsContainer = ({ isMobile, setItemSelected }) => {
         //eslint-disable-next-line
     }, [contentReady]);
 
-    const numberOfFunds = () => Accounts.length + Funds.length + PendingWithoutpossession.length + (FixedDeposits.content.deposits.length > 0 ? 1 : 0)
+    const numberOfFunds = () => Accounts.length + Funds.length + PendingWithoutpossession.length + (FixedDeposits?.content?.deposits?.length > 0 ? 1 : 0)
 
     return (
         <Container fluid

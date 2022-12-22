@@ -16,7 +16,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css'
 
 const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
-    const { admin, IndexClientSelected, UserClients, itemSelected, hasPermission } = useContext(DashBoardContext)
+    const { admin, IndexClientSelected, UserClients, itemSelected, hasPermission, hasAnySellPermission, hasAnyBuyPermission } = useContext(DashBoardContext)
     const itemSelectedLC = itemSelected.toLowerCase()
     const { t } = useTranslation();
 
@@ -133,11 +133,12 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                             <NavDropdown.Item
                                                 active={itemSelectedLC === "buy"}
                                                 onClick={() => { goTo("buy") }}
-                                                disabled={!hasPermission('VIEW_ACCOUNT')}>
+                                                disabled={!hasPermission('VIEW_ACCOUNT') || !hasAnyBuyPermission()}>
                                                 {t("Buy")}
                                             </NavDropdown.Item>
                                             <NavDropdown.Item
                                                 active={itemSelectedLC === "sell"}
+                                                disabled={!hasAnySellPermission()}
                                                 onClick={() => { goTo("sell") }}>
                                                 {t("Sell")}
                                             </NavDropdown.Item>

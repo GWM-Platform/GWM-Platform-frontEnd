@@ -109,10 +109,11 @@ export const DashBoardProvider = ({ children }) => {
             sessionStorage.clear();
             history.push(`/login`);
         }
+
         const getAccountsAndFunds = async () => {
             setFetchingFunds(true)
             setAccounts([])
-            
+
             const [responseAccounts, responseFunds] = await Promise.all(
                 [
                     hasPermission('VIEW_ACCOUNT') ? getAccounts() : null,
@@ -123,10 +124,11 @@ export const DashBoardProvider = ({ children }) => {
             if (hasPermission('VIEW_ACCOUNT')) {
                 setAccounts(responseAccounts)
                 setAccountSelected(responseAccounts[0] ? responseAccounts[0] : {})
+            } else {
+                setAccounts([])
             }
 
-
-            setFunds(responseFunds)
+            setFunds(responseFunds.filter(fund => hasPermission(`VIEW_FUND_${fund.id}`)))
             setFetchingFunds(false)
             getPendingTransactions()
         }
@@ -146,9 +148,6 @@ export const DashBoardProvider = ({ children }) => {
             })
 
             if (response.status === 200) {
-                //const data = await response.json()
-                //setFunds(data)
-                //getPendingTransactions()
                 return await response.json()
             } else {
                 switch (response.status) {
@@ -246,7 +245,7 @@ export const DashBoardProvider = ({ children }) => {
             let FundsWithPendingTransactions = new Set(PendingTransactions.value.map(transaction => transaction.fundId))
             let FundsWithPosession = new Set(Funds.map(Funds => Funds.fundId))
 
-            const FundsWithNoPosession = ([...FundsWithPendingTransactions].filter(x => !FundsWithPosession.has(x) && hasPermission('VIEW_FUND_' + x)))//Diference (All in pending that are not funds with posession)
+            const FundsWithNoPosession = ([...FundsWithPendingTransactions].filter(x => !FundsWithPosession.has(x) && hasPermission('VIEW_FUND_' + x)))//Diference (All in pending that are not funds with posession) and has permission to view
 
             const getFund = async (id) => {
                 var url = `${process.env.REACT_APP_APIURL}/funds/${id}`;
@@ -464,7 +463,10 @@ export const DashBoardProvider = ({ children }) => {
             setClientSelected(UserClients.content[IndexClientSelected])
             manageUrlUser()
             setBalanceChanged(true)
-        } else if (adminDashboardSelected()) manageUrlAdmin()
+        } else if (adminDashboardSelected()) {
+            setClientSelected({})
+            manageUrlAdmin()
+        }
         //eslint-disable-next-line
     }, [history, UserClients.content, IndexClientSelected, admin]);
 
@@ -486,7 +488,7 @@ export const DashBoardProvider = ({ children }) => {
     }
 
 
-    // get permissions when the client is changed
+    // get permissions on selected client changes
     useEffect(() => {
         const getPermissions = () => {
             setClientPermissions((prevState) => ({
@@ -500,7 +502,6 @@ export const DashBoardProvider = ({ children }) => {
                 params: { clientId: ClientSelected.id },
             }).then(function (response) {
                 const userId = parseInt(sessionStorage.getItem('session_userId' || -1))
-
                 setClientPermissions((prevState) => (
                     {
                         ...prevState,
@@ -517,7 +518,11 @@ export const DashBoardProvider = ({ children }) => {
                 }
             });
         }
-        getPermissions()
+        if (ClientSelected?.id) {
+            getPermissions()
+        } else {
+            setClientPermissions((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
+        }
         return () => {
             setClientPermissions((prevState) => ({ ...prevState, fetching: true, fetched: false, content: [] }))
         }
@@ -528,11 +533,17 @@ export const DashBoardProvider = ({ children }) => {
 
     const hasPermission = (Permission) => ClientPermissions?.content?.permissions?.filter(permission => permission.action === Permission)?.length > 0 || isOwner()
 
+    const hasAnySellPermission = () => ClientPermissions?.content?.permissions?.map(permission => permission.action.split('_'))
+        ?.filter(actionSplitted => actionSplitted?.includes('SELL') && actionSplitted?.includes('STAKES')).length > 0 || isOwner()
+
     const hasSellPermission = (fundId = -1) =>
         ClientPermissions?.content?.permissions?.map(permission => permission.action.split('_'))
             ?.filter(actionSplitted => actionSplitted?.includes('SELL') && actionSplitted?.includes('STAKES')) // Get all sell_stakes permissions
             ?.filter(sellPermission => sellPermission?.includes("" + fundId))?.length > 0 || // Verify that has a sell permission for the fund from parameter
         isOwner()
+
+    const hasAnyBuyPermission = () => ClientPermissions?.content?.permissions?.map(permission => permission.action.split('_'))
+        ?.filter(actionSplitted => actionSplitted?.includes('BUY') && actionSplitted?.includes('STAKES')).length > 0 || isOwner()
 
     const hasBuyPermission = (fundId = -1) =>
         ClientPermissions?.content?.permissions?.map(permission => permission.action.split('_'))
@@ -550,7 +561,8 @@ export const DashBoardProvider = ({ children }) => {
         value={{
             token, admin, UserClients, ClientSelected, IndexClientSelected, setIndexClientSelected, balanceChanged, setBalanceChanged, TransactionStates, getMoveStateById,
             FetchingFunds, contentReady, PendingWithoutpossession, PendingTransactions, Accounts, Funds, itemSelected, setItemSelected, isMobile, width, toLogin, setContentReady,
-            DashboardToast, DashboardToastDispatch, AccountSelected, allowedSymbols, ClientPermissions, hasPermission, hasSellPermission, hasBuyPermission, hasViewPermission,setClientPermissions
+            DashboardToast, DashboardToastDispatch, AccountSelected, allowedSymbols,
+            ClientPermissions, hasPermission, hasSellPermission, hasBuyPermission, hasViewPermission, setClientPermissions, hasAnySellPermission, hasAnyBuyPermission
         }}>
         {children}
     </DashBoardContext.Provider>
