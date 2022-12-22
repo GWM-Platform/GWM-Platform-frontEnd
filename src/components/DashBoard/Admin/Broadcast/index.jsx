@@ -105,12 +105,14 @@ const Broadcast = () => {
             setFormData(prevState => (
                 {
                     ...prevState,
-                    receivers: [...prevState.receivers, { key: t("Select all"), selectAll: true }]
+                    receivers: [...prevState.receivers, { key: t("All users"), selectAll: true }]
                 }
             ))
         }
         // eslint-disable-next-line
     }, [formData?.receivers, users?.content?.length])
+
+    const allUsersSelected = () => formData?.receivers.length > users?.content?.length
 
     return (
         <Container className="h-100">
@@ -119,6 +121,13 @@ const Broadcast = () => {
                     <div className="header">
                         <h1 className="title">{t("Broadcast to users")}</h1>
                     </div>
+                    <style>
+                        {`
+                        .chip:not(:first-of-type){
+                            display:${allUsersSelected() ? "none" : "inline-flex"}
+                        }
+                        `}
+                    </style>
                     <Form noValidate validated={validated} onSubmit={handleSubmit}>
                         <Form.Group className="mb-3">
                             <Form.Label>{t("Recipients")}</Form.Label>
@@ -127,9 +136,10 @@ const Broadcast = () => {
                                 disable={!users.fetched}
                                 isObject={true}
                                 placeholder=""
-                                emptyRecordMsg="No hay usuarios disponibles"
+                                emptyRecordMsg={t(users.content.length > 0 ? "There are no more users available to add to the broadcast" : "There are no users available to add to the broadcast")}
+                                showCheckbox
+                                //hideSelectedList
                                 displayValue="key"
-                                hideSelectedList
                                 selectedValues={formData.receivers}
                                 onKeyPressFn={function noRefCheck() { }}
                                 onSearch={function noRefCheck() { }}
@@ -141,9 +151,9 @@ const Broadcast = () => {
                                                 ...prevState,
                                                 receivers:
                                                     selectedItem.selectAll ?
-                                                        [{ key: t("Select all"), selectAll: true }, ...users.content.map(user => ({ ...user, key: user.email }))]
+                                                        [{ key: t("All users"), selectAll: true }, ...users.content.map(user => ({ ...user, key: user.email }))]
                                                         :
-                                                        [...prevState.receivers, selectedItem].length === users.content.length ? [...prevState.receivers, selectedItem, { key: t("Select all"), selectAll: true }] : [...prevState.receivers, selectedItem]
+                                                        [...prevState.receivers, selectedItem].length === users.content.length ? [{ key: t("All users"), selectAll: true }, ...prevState.receivers, selectedItem].sort((user) => user.key === t("All users") ? -1 : 0) : [...prevState.receivers, selectedItem]
                                             }
                                         ))
                                     }
@@ -175,8 +185,7 @@ const Broadcast = () => {
                                     }
                                 }
                                 ref={receiversSelectorRef}
-                                options={[{ key: t("Select all"), selectAll: true }, ...(users?.content?.map(user => ({ ...user, key: user.email })) || [])]}
-                                showCheckbox
+                                options={[{ key: t("All users"), selectAll: true }, ...(users?.content?.map(user => ({ ...user, key: user.email })) || [])]}
                             />
                         </Form.Group>
 

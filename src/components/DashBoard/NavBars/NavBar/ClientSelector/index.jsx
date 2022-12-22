@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 
 const ClientSelector = () => {
     const { t } = useTranslation();
-    const { UserClients, IndexClientSelected, setIndexClientSelected, ClientSelected, admin, setClientPermissions } = useContext(DashBoardContext)
+    const { UserClients, IndexClientSelected, setIndexClientSelected, ClientSelected, admin } = useContext(DashBoardContext)
 
     return ((admin && UserClients.content.length > 0) || (!admin && ClientSelected && UserClients.content.length > 1) ?
         <Dropdown className="clientSelector">

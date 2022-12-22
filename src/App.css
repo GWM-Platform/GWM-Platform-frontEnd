@@ -420,12 +420,12 @@ table .Actions {
   z-index: 0;
 }
 .searchWrapper {
-	padding:0!important;
+  padding: 0.375rem 0.75rem;
+  background-color: #fff!important;
 }
 .searchBox {
   display: block;
   width: 100%;
-  padding: 0.375rem 0.75rem;
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
