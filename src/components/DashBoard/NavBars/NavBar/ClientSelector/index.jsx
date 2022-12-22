@@ -33,7 +33,7 @@ const ClientSelector = () => {
                 {
                     UserClients.content.map((client, key) => {
                         return (
-                            <Dropdown.Item key={key} active={IndexClientSelected === key ? true : false} onClick={() => { setIndexClientSelected(key); setClientPermissions(prevState => ({ ...prevState, content: [] })) }}>
+                            <Dropdown.Item key={key} active={IndexClientSelected === key ? true : false} onClick={() => { setIndexClientSelected(key) }}>
                                 {client.alias}
                             </Dropdown.Item>
                         )
