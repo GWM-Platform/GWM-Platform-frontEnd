@@ -83,12 +83,17 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                             {t("Tickets administration")}
                                         </Nav.Link>
                                         <NavDropdown
-                                            active={itemSelectedLC === "withdrawcash" || itemSelectedLC === "depositcash" || itemSelectedLC === "broadcast" || itemSelectedLC === "addaccount" || itemSelectedLC === "clientssupervision" || itemSelectedLC === "connectusertoclient"}
+                                            active={itemSelectedLC === "useractionlogs" || itemSelectedLC === "withdrawcash" || itemSelectedLC === "depositcash" || itemSelectedLC === "broadcast" || itemSelectedLC === "addaccount" || itemSelectedLC === "clientssupervision" || itemSelectedLC === "connectusertoclient"}
                                             className="px-0 transactionDropdown" title={t("Clients administration")} id="collasible-nav-dropdown">
                                             <NavDropdown.Item
                                                 active={itemSelectedLC === "clientssupervision"}
                                                 onClick={() => { goTo("clientsSupervision") }}>
                                                 {t("Clients supervision")}
+                                            </NavDropdown.Item>
+                                            <NavDropdown.Item
+                                                active={itemSelectedLC === "useractionlogs"}
+                                                onClick={() => { goTo("useractionlogs") }}>
+                                                {t("User action logs")}
                                             </NavDropdown.Item>
                                             <NavDropdown.Item
                                                 active={itemSelectedLC === "broadcast"}

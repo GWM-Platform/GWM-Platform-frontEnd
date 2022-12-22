@@ -738,7 +738,20 @@
     "Recipients": "Recipents",
     "Email title": "Email title",
     "Email body": "Email body",
-    "Select all":"Select all",
-    "The broadcast was successfully sent":"The broadcast was successfully sent",
-    "Verifying alias":"Verifying alias"
+    "Select all": "Select all",
+    "The broadcast was successfully sent": "The broadcast was successfully sent",
+    "Verifying alias": "Verifying alias",
+    "User action logs": "User action logs",
+    "FUND_CREATION": "Fund creation",
+    "FUND_UPDATE": "Fund update",
+    "FUND_DELETE": "Fund elimination",
+    "ADMIN_APPROVE": "Operation approval (admin)",
+    "ADMIN_DENY": "Operation denial (admin)",
+    "ADMIN_LIQUIDATE": "Operation settlement (admin)",
+    "CLIENT_APPROVE": "Operation approval (customer)",
+    "CLIENT_DENY": "Operation rejection (customer)",
+    "MOVEMENT_GENERATE": "Movement generation",
+    "Detail": "Detail",
+    "detail": "detail",
+    "Log":"Log"
 }

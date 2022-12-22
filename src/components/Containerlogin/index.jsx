@@ -78,6 +78,7 @@ const ContainerLogin = () => {
       axios.defaults.headers.common['Authorization'] = `Bearer ${data?.access_token}`
       sessionStorage.setItem("access_token", data.access_token)
       sessionStorage.setItem("admin", data.user.isAdmin)
+      sessionStorage.setItem("session_userEmail", data?.user?.email)
       sessionStorage.setItem("session_userId", data.user.id)
 
       if (!data.user.changedPassword && !data.user.isAdmin) {
