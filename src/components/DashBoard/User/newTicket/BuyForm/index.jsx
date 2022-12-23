@@ -11,9 +11,18 @@ import Loading from '../Loading';
 import NoFunds from '../NoFunds';
 import { DashBoardContext } from 'context/DashBoardContext';
 import ActionConfirmationModal from './ActionConfirmationModal';
+import ReactGA from "react-ga4";
 
 const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
-
+    
+    useEffect(() => {
+        ReactGA.event({
+            category: "Acceso a secciones para generar tickets",
+            action: "Compra de cuotapartes",
+            label: "Compra de cuotapartes",
+          })
+    }, [])
+    
     const { token, ClientSelected, contentReady, Accounts, hasBuyPermission } = useContext(DashBoardContext);
 
     function useQuery() {

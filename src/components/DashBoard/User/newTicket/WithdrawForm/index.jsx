@@ -9,7 +9,19 @@ import { DashBoardContext } from 'context/DashBoardContext';
 import WithdrawData from './WithdrawData'
 import Loading from '../Loading';
 import ActionConfirmationModal from './ActionConfirmationModal';
+import ReactGA from "react-ga4";
+import { useEffect } from 'react';
+
 const WithdrawForm = ({ balanceChanged }) => {
+
+    useEffect(() => {
+        ReactGA.event({
+            category: "Acceso a secciones para generar tickets",
+            action: "Retiros",
+            label: "Retiros",
+        })
+    }, [])
+
     const [data, setData] = useState({ amount: "" })
     const [ShowModal, setShowModal] = useState(false)
     const [validated, setValidated] = useState(true);

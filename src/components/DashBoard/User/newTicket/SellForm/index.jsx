@@ -10,10 +10,19 @@ import SellData from './SellData'
 import Loading from '../Loading';
 import NoFunds from '../NoFunds';
 import ActionConfirmationModal from './ActionConfirmationModal';
+import ReactGA from "react-ga4";
 
 const SellForm = ({ balanceChanged }) => {
     const { token, ClientSelected, contentReady, Accounts } = useContext(DashBoardContext);
-
+    
+    useEffect(() => {
+        ReactGA.event({
+            category: "Acceso a secciones para generar tickets",
+            action: "Venta de cuotapartes",
+            label: "Venta de cuotapartes",
+          })
+    }, [])
+    
     function useQuery() {
         const { search } = useLocation();
         return React.useMemo(() => new URLSearchParams(search), [search]);
@@ -94,7 +103,7 @@ const SellForm = ({ balanceChanged }) => {
             } else {
                 switch (response.status) {
                     case 500:
-                        console.error("Error. Verify the entered data")
+                        console.error("Error. Vefique los datos ingresados")
                         break;
                     default:
                         console.error(response.status)
