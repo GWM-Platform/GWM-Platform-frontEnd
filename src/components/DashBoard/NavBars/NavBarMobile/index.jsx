@@ -69,7 +69,7 @@ const NavBarMobile = () => {
 
                             <div
                                 onClick={() => toAccountsAdmin()} xs="auto"
-                                className={`section ${itemSelectedLC === "depositcash" || itemSelectedLC === "withdrawcash" || itemSelectedLC === "clientssupervision" || itemSelectedLC === "addaccount" ? "selected" : ""}`}>
+                                className={`section ${itemSelectedLC === "depositcash" || itemSelectedLC === "broadcast" || itemSelectedLC === "useractionlogs" || itemSelectedLC === "withdrawcash" || itemSelectedLC === "clientssupervision" || itemSelectedLC === "addaccount" ? "selected" : ""}`}>
                                 <div className="d-flex justify-content-center">
                                     <FontAwesomeIcon className="icon" icon={faUser} />
                                 </div>
