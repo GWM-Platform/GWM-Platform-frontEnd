@@ -128,7 +128,7 @@ export const DashBoardProvider = ({ children }) => {
                 setAccounts([])
             }
 
-            setFunds(responseFunds.filter(fund => hasPermission(`VIEW_FUND_${fund.id}`)))
+            setFunds(responseFunds.filter(fund => hasPermission(`VIEW_FUND_${fund.fund.id}`)))
             setFetchingFunds(false)
             getPendingTransactions()
         }
