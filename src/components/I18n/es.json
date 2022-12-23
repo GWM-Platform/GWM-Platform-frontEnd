@@ -764,5 +764,7 @@
   "Attached files":"Archivos adjuntos",
   "There are no more users available to add to the broadcast" :"There are no more users available to add to the broadcast", 
   "There are no users available to add to the broadcast":"No hay usuarios disponibles para añadir a la difusión",
-  "All users":"Todos los usuarios"
+  "All users":"Todos los usuarios",
+  "Error. Verify the entered data":"Error. Verifique la información introducida",
+  "Server error. Try it again later":"Error de servidor. Intentelo de nuevo más tarde"
 }

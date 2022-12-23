@@ -100,7 +100,7 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
             } else {
                 switch (response.status) {
                     case 500:
-                        console.error("Error. Vefique los datos ingresados")
+                        console.error("Error. Verify the entered data")
                         break;
                     default:
                         console.error(response.status)

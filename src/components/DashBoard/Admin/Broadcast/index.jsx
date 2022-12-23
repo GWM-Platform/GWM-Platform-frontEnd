@@ -56,11 +56,11 @@ const Broadcast = () => {
             setButtonDisabled(false)
         }).catch((err) => {
             if (err.message !== "canceled") {
-                if (err.response.status === "401") toLogin()
-                if (err.response.status === "501") {
-                    setMessage("Server error")
+                if (err.response.status === 401) toLogin()
+                if (err.response.status === 500) {
+                    setMessage("Server error. Try it again later")
                 } else {
-                    setMessage("Error. Verify the data entered")
+                    setMessage("Error. Verify the entered data")
                 }
             }
         });
