@@ -44,26 +44,41 @@ const Broadcast = () => {
     }
 
     const broadcast = async () => {
+
         setButtonDisabled(true)
-        axios.post(`/users/broadcast`,
-            {
-                title: formData.title,
-                emailBody: formData.emailBody,
-                receivers: formData.receivers.filter(receiver => !receiver.selectAll).map(receiver => receiver.email)
-            }
-        ).then(function (response) {
-            setMessage("The broadcast was successfully sent")
-            setButtonDisabled(false)
-        }).catch((err) => {
-            if (err.message !== "canceled") {
-                if (err.response.status === 401) toLogin()
-                if (err.response.status === 500) {
-                    setMessage("Server error. Try it again later")
-                } else {
-                    setMessage("Error. Verify the entered data")
+        const formDataSubmit = new FormData()
+
+        const files = filesInput.current.files
+
+        for (var i = 0; i < files.length; i++) {
+            formDataSubmit.append("files", files[i])
+        }
+
+        let receivers = formData.receivers.filter(receiver => !receiver.selectAll).map(receiver => receiver.email)
+        for (var j = 0; j < receivers.length; j++) {
+            formDataSubmit.append("receivers", receivers[j])
+        }
+
+        formDataSubmit.append("title", formData.title)
+        formDataSubmit.append("emailBody", formData.emailBody)
+
+        axios.post(`/users/broadcast`, formDataSubmit)
+            .then(function (response) {
+                setMessage("The broadcast was successfully sent")
+                setButtonDisabled(false)
+            })
+            .catch((err) => {
+                if (err.message !== "canceled") {
+                    setButtonDisabled(false)
+                    if (err.response.status === 401) toLogin()
+                    console.log(err.response.status)
+                    if (err.response.status === 500) {
+                        setMessage("Server error. Try it again later")
+                    } else {
+                        setMessage("Error. Verify the entered data")
+                    }
                 }
-            }
-        });
+            });
     }
 
     const getUsers = useCallback((signal) => {
@@ -113,6 +128,8 @@ const Broadcast = () => {
     }, [formData?.receivers, users?.content?.length])
 
     const allUsersSelected = () => formData?.receivers.length > users?.content?.length
+
+    const filesInput = useRef(null)
 
     return (
         <Container className="h-100">
@@ -203,8 +220,13 @@ const Broadcast = () => {
                             />
                         </Form.Group>
 
+                        <Form.Group controlId="formFileMultiple" className="mb-3">
+                            <Form.Label>{t("Attached files")}</Form.Label>
+                            <Form.Control ref={filesInput} type="file" multiple />
+                        </Form.Group>
+
                         <p>{t(message)}</p>
-                        <Button disabled={buttonDisabled} variant="danger" type="submit">{t("Submit")}</Button>
+                        <Button disabled={buttonDisabled} variant="danger" type="submit" >{t("Submit")}</Button>
                     </Form>
                 </Col>
             </Row>
@@ -212,5 +234,3 @@ const Broadcast = () => {
     )
 }
 export default Broadcast
-
-
