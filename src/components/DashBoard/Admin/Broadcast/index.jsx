@@ -44,26 +44,41 @@ const Broadcast = () => {
     }
 
     const broadcast = async () => {
+
         setButtonDisabled(true)
-        axios.post(`/users/broadcast`,
-            {
-                title: formData.title,
-                emailBody: formData.emailBody,
-                receivers: formData.receivers.filter(receiver => !receiver.selectAll).map(receiver => receiver.email)
-            }
-        ).then(function (response) {
-            setMessage("The broadcast was successfully sent")
-            setButtonDisabled(false)
-        }).catch((err) => {
-            if (err.message !== "canceled") {
-                if (err.response.status === "401") toLogin()
-                if (err.response.status === "501") {
-                    setMessage("Server error")
-                } else {
-                    setMessage("Error. Verify the data entered")
+        const formDataSubmit = new FormData()
+
+        const files = filesInput.current.files
+
+        for (var i = 0; i < files.length; i++) {
+            formDataSubmit.append("files", files[i])
+        }
+
+        let receivers = formData.receivers.filter(receiver => !receiver.selectAll).map(receiver => receiver.email)
+        for (var j = 0; j < receivers.length; j++) {
+            formDataSubmit.append("receivers", receivers[j])
+        }
+
+        formDataSubmit.append("title", formData.title)
+        formDataSubmit.append("emailBody", formData.emailBody)
+
+        axios.post(`/users/broadcast`, formDataSubmit)
+            .then(function (response) {
+                setMessage("The broadcast was successfully sent")
+                setButtonDisabled(false)
+            })
+            .catch((err) => {
+                if (err.message !== "canceled") {
+                    setButtonDisabled(false)
+                    if (err.response.status === 401) toLogin()
+                    console.log(err.response.status)
+                    if (err.response.status === 500) {
+                        setMessage("Server error. Try it again later")
+                    } else {
+                        setMessage("Error. Verify the entered data")
+                    }
                 }
-            }
-        });
+            });
     }
 
     const getUsers = useCallback((signal) => {
@@ -105,12 +120,16 @@ const Broadcast = () => {
             setFormData(prevState => (
                 {
                     ...prevState,
-                    receivers: [...prevState.receivers, { key: t("Select all"), selectAll: true }]
+                    receivers: [...prevState.receivers, { key: t("All users"), selectAll: true }]
                 }
             ))
         }
         // eslint-disable-next-line
     }, [formData?.receivers, users?.content?.length])
+
+    const allUsersSelected = () => formData?.receivers.length > users?.content?.length
+
+    const filesInput = useRef(null)
 
     return (
         <Container className="h-100">
@@ -119,6 +138,13 @@ const Broadcast = () => {
                     <div className="header">
                         <h1 className="title">{t("Broadcast to users")}</h1>
                     </div>
+                    <style>
+                        {`
+                        .chip:not(:first-of-type){
+                            display:${allUsersSelected() ? "none" : "inline-flex"}
+                        }
+                        `}
+                    </style>
                     <Form noValidate validated={validated} onSubmit={handleSubmit}>
                         <Form.Group className="mb-3">
                             <Form.Label>{t("Recipients")}</Form.Label>
@@ -127,9 +153,10 @@ const Broadcast = () => {
                                 disable={!users.fetched}
                                 isObject={true}
                                 placeholder=""
-                                emptyRecordMsg="No hay usuarios disponibles"
+                                emptyRecordMsg={t(users.content.length > 0 ? "There are no more users available to add to the broadcast" : "There are no users available to add to the broadcast")}
+                                showCheckbox
+                                //hideSelectedList
                                 displayValue="key"
-                                hideSelectedList
                                 selectedValues={formData.receivers}
                                 onKeyPressFn={function noRefCheck() { }}
                                 onSearch={function noRefCheck() { }}
@@ -141,9 +168,9 @@ const Broadcast = () => {
                                                 ...prevState,
                                                 receivers:
                                                     selectedItem.selectAll ?
-                                                        [{ key: t("Select all"), selectAll: true }, ...users.content.map(user => ({ ...user, key: user.email }))]
+                                                        [{ key: t("All users"), selectAll: true }, ...users.content.map(user => ({ ...user, key: user.email }))]
                                                         :
-                                                        [...prevState.receivers, selectedItem].length === users.content.length ? [...prevState.receivers, selectedItem, { key: t("Select all"), selectAll: true }] : [...prevState.receivers, selectedItem]
+                                                        [...prevState.receivers, selectedItem].length === users.content.length ? [{ key: t("All users"), selectAll: true }, ...prevState.receivers, selectedItem].sort((user) => user.key === t("All users") ? -1 : 0) : [...prevState.receivers, selectedItem]
                                             }
                                         ))
                                     }
@@ -175,8 +202,7 @@ const Broadcast = () => {
                                     }
                                 }
                                 ref={receiversSelectorRef}
-                                options={[{ key: t("Select all"), selectAll: true }, ...(users?.content?.map(user => ({ ...user, key: user.email })) || [])]}
-                                showCheckbox
+                                options={[{ key: t("All users"), selectAll: true }, ...(users?.content?.map(user => ({ ...user, key: user.email })) || [])]}
                             />
                         </Form.Group>
 
@@ -194,8 +220,13 @@ const Broadcast = () => {
                             />
                         </Form.Group>
 
+                        <Form.Group controlId="formFileMultiple" className="mb-3">
+                            <Form.Label>{t("Attached files")}</Form.Label>
+                            <Form.Control ref={filesInput} type="file" multiple />
+                        </Form.Group>
+
                         <p>{t(message)}</p>
-                        <Button disabled={buttonDisabled} variant="danger" type="submit">{t("Submit")}</Button>
+                        <Button disabled={buttonDisabled} variant="danger" type="submit" >{t("Submit")}</Button>
                     </Form>
                 </Col>
             </Row>
@@ -203,5 +234,3 @@ const Broadcast = () => {
     )
 }
 export default Broadcast
-
-

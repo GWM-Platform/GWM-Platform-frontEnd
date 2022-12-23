@@ -68,9 +68,9 @@ const AddAccount = () => {
             if (err.message !== "canceled") {
                 if (err.response.status === "401") toLogin()
                 if (err.response.status === "501") {
-                    setMessage("Server error")
+                    setMessage("Server error. Try it again later")
                 } else {
-                    setMessage("Error. Verify the data entered")
+                    setMessage("Error. Verify the entered data")
                 }
             }
         });
@@ -208,7 +208,7 @@ const AddAccount = () => {
                             )
                         }
 
-                        <p>{message}</p>
+                        <p>{t(message)}</p>
                         <Button disabled={buttonDisabled} variant="danger" type="submit">{t("Submit")}</Button>
                     </Form>
                 </Col>

@@ -10,8 +10,17 @@ import Loading from '../Loading';
 import { DashBoardContext } from 'context/DashBoardContext';
 import ActionConfirmationModal from './ActionConfirmationModal';
 import { useHistory } from 'react-router-dom';
+import ReactGA from "react-ga4";
 
 const TransferForm = ({ balanceChanged }) => {
+
+    useEffect(() => {
+        ReactGA.event({
+            category: "Acceso a secciones para generar tickets",
+            action: "Transferencias",
+            label: "Transferencias",
+        })
+    }, [])
 
     const { token, contentReady, Accounts, AccountSelected, toLogin } = useContext(DashBoardContext);
 

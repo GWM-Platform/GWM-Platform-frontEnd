@@ -103,10 +103,10 @@ const ContainerLogin = () => {
     } else {
       switch (response.status) {
         case 500://Unhandled (Por ahora lo tira cuando el mail no matchea con ninguno de los de la DB)
-          setError("Error. Vefique los datos ingresados")
+          setError("Error. Verify the entered data")
           break;
         case 401://Unauthorized, deberia saltar por el mail tambien
-          setError("Error. Vefique los datos ingresados")
+          setError("Error. Verify the entered data")
           break;
         default:
           console.log(response.status)

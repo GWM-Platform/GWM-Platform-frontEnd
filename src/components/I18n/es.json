@@ -758,7 +758,14 @@
   "CLIENT_APPROVE": "Aprobación de operación (Cliente)",
   "CLIENT_DENY": "Rechazo de operación (Cliente)",
   "MOVEMENT_GENERATE": "Generación de movimiento",
+  "BROADCAST": "Difusión a clientes",
   "Detail": "Detalle",
   "detail": "detail",
-  "Log":"Registro"
+  "Log":"Registro",
+  "Attached files":"Archivos adjuntos",
+  "There are no more users available to add to the broadcast" :"There are no more users available to add to the broadcast", 
+  "There are no users available to add to the broadcast":"No hay usuarios disponibles para añadir a la difusión",
+  "All users":"Todos los usuarios",
+  "Error. Verify the entered data":"Error. Verifique la información introducida",
+  "Server error. Try it again later":"Error de servidor. Intentelo de nuevo más tarde"
 }

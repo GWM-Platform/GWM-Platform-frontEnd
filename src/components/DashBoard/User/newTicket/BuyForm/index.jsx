@@ -11,9 +11,18 @@ import Loading from '../Loading';
 import NoFunds from '../NoFunds';
 import { DashBoardContext } from 'context/DashBoardContext';
 import ActionConfirmationModal from './ActionConfirmationModal';
+import ReactGA from "react-ga4";
 
 const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
-
+    
+    useEffect(() => {
+        ReactGA.event({
+            category: "Acceso a secciones para generar tickets",
+            action: "Compra de cuotapartes",
+            label: "Compra de cuotapartes",
+          })
+    }, [])
+    
     const { token, ClientSelected, contentReady, Accounts, hasBuyPermission } = useContext(DashBoardContext);
 
     function useQuery() {
@@ -100,7 +109,7 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
             } else {
                 switch (response.status) {
                     case 500:
-                        console.error("Error. Vefique los datos ingresados")
+                        console.error("Error. Verify the entered data")
                         break;
                     default:
                         console.error(response.status)

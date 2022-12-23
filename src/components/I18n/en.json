@@ -751,7 +751,12 @@
     "CLIENT_APPROVE": "Operation approval (customer)",
     "CLIENT_DENY": "Operation rejection (customer)",
     "MOVEMENT_GENERATE": "Movement generation",
+    "BROADCAST": "Broadcast to clients",
     "Detail": "Detail",
     "detail": "detail",
-    "Log":"Log"
+    "Log": "Log",
+    "Attached files": "Attached files",
+    "There are no more users available to add to the broadcast": "There are no more users available to add to the broadcast",
+    "There are no users available to add to the broadcast": "There are no users available to add to the broadcast",
+    "All users":"All users"
 }

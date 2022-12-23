@@ -46,7 +46,7 @@ const ContainerVerifyAccount = () => {
           } else {
               switch (response.status) {
                   case 500:
-                    setMessage("Error. Vefique los datos ingresados")
+                    setMessage("Error. Verify the entered data")
                     break;
                   default:
                     console.error(response.status)
@@ -140,7 +140,7 @@ const ContainerVerifyAccount = () => {
                                         onChange={handleChange}
                                     />
                                 </FloatingLabel>
-                                <p>{message}</p>
+                                <p>{t(message)}</p>
                                 <Row className="d-flex justify-content-end">
                                     <Col xs="auto">
                                         <Button className="button" variant="danger" type="submit" disabled={buttonDisabled}>{t("Submit")}</Button>
