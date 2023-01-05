@@ -226,7 +226,7 @@ const Broadcast = () => {
                         </Form.Group>
 
                         <p>{t(message)}</p>
-                        <Button disabled={buttonDisabled} variant="danger" type="submit" >{t("Submit")}</Button>
+                        <Button className="mb-3" disabled={buttonDisabled} variant="danger" type="submit" >{t("Submit")}</Button>
                     </Form>
                 </Col>
             </Row>

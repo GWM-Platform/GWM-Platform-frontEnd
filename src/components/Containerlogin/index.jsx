@@ -20,6 +20,7 @@ const ContainerLogin = () => {
   const desiredId = useQuery().get("id")
   const desiredType = useQuery().get("type")
   const desiredClient = useQuery().get("client")
+  const transferId = useQuery().get("transferId")
   const desiredFundId = useQuery().get("fundId")
 
   let history = useHistory();
@@ -88,12 +89,16 @@ const ContainerLogin = () => {
         if (data.user.isAdmin) {
           if (desiredLocation && desiredId && desiredType) {
             destination = `FundsAdministration?loc=${desiredLocation}&id=${desiredId}&type=${desiredType}`
+          } else if (transferId) {
+            destination = `Accounts?loc=history&client=${desiredClient}&id=${transferId}&type=transfers`
           } else {
             destination = `FundsAdministration`
           }
         } else {
           if (desiredLocation && desiredId && desiredType && desiredClient) {
             destination = `Accounts?loc=${desiredLocation}&id=${desiredId}&type=${desiredType}&client=${desiredClient}${desiredFundId ? `&fundId=${desiredFundId}` : ""}`
+          } else if (transferId) {
+            destination = `Accounts?loc=history&client=${desiredClient}&id=${transferId}&type=transfers`
           } else {
             destination = `Accounts`
           }
