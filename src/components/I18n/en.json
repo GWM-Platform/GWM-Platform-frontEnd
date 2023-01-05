@@ -758,5 +758,10 @@
     "Attached files": "Attached files",
     "There are no more users available to add to the broadcast": "There are no more users available to add to the broadcast",
     "There are no users available to add to the broadcast": "There are no users available to add to the broadcast",
-    "All users":"All users"
+    "All users": "All users",
+    "Assign as signer": "Assign as signer",
+    "Unassign as signer": "Unassign as signer",
+    "User assigned as signer successfully": "User assigned as signer successfully",
+    "There was an error assigning the user as signer": "There was an error assigning the user as signer",
+    "Signer":"Signer"    
 }

@@ -28,6 +28,10 @@ const User = ({ user, permissions, funds, getUsers }) => {
         fetching: false
     })
 
+    const [DoubleCheck, setDoubleCheck] = useState({
+        fetching: false
+    })
+
     const toggleEdition = () => setPermissionEdit(prevState => ({ ...prevState, editionEnabled: !prevState.editionEnabled }))
 
     const isOwner = useCallback(
@@ -150,6 +154,33 @@ const User = ({ user, permissions, funds, getUsers }) => {
     }
 
 
+    const toggleDoubleCheck = () => {
+
+        setDoubleCheck(() => (
+            {
+                fetching: true,
+            }))
+
+        axios.post(
+            `/clients/${ClientSelected.id}/${user?.doubleCheck ? "disableDoubleCheck" : "enableDoubleCheck"}`, {}, {
+            params: {
+                userId: user.userId
+            }
+        }).then(function () {
+            getUsers()
+            DashboardToastDispatch({ type: "create", toastContent: { Icon: faCheckCircle, Title: "User assigned as signer successfully" } });
+        }).catch((err) => {
+            if (err.message !== "canceled") {
+                if (err.response.status === "401") toLogin()
+                setAssignOwner(() => (
+                    {
+                        fetching: false,
+                    }))
+                DashboardToastDispatch({ type: "create", toastContent: { Icon: faTimesCircle, Title: "There was an error assigning the user as signer" } });
+            }
+
+        });
+    }
 
     return (
         <Accordion.Item className="user" eventKey={user.id}>
@@ -179,6 +210,15 @@ const User = ({ user, permissions, funds, getUsers }) => {
                                 &nbsp;
                                 <Badge bg="primary">
                                     {t("Client owner")}
+                                </Badge>
+                            </>
+                        }
+                        {
+                            !!(user.doubleCheck) &&
+                            <>
+                                &nbsp;
+                                <Badge bg="secondary">
+                                    {t("Signer")}
                                 </Badge>
                             </>
                         }
@@ -251,7 +291,7 @@ const User = ({ user, permissions, funds, getUsers }) => {
                                     )
                             }
                             {
-                                !(!hasPermission('') || !hasPermission('REMOVE_USERS') || !hasPermission('MODIFY_PERMISSIONS') || user?.isOwner) &&
+                                hasPermission('') &&
                                 <Col xs="12">
                                     <div className="permission-category mt-2 pt-2 border-top" />
                                 </Col >
@@ -281,6 +321,22 @@ const User = ({ user, permissions, funds, getUsers }) => {
                                 :
                                 <>
                                     {/*The owners only can make another user owner */}
+                                    {
+                                        !(!hasPermission('')) &&
+
+                                        <Col xs="auto" className=" mb-2">
+                                            <Button disabled={DoubleCheck.fetching} variant="danger" onClick={toggleDoubleCheck}>
+                                                {
+                                                    DoubleCheck.fetching &&
+                                                    <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className='me-2' />
+                                                }
+                                                {user.doubleCheck ?
+                                                    t('Unassign as signer')
+                                                    :
+                                                    t('Assign as signer')}
+                                            </Button>
+                                        </Col>
+                                    }
                                     {
                                         !(!hasPermission('') || user?.isOwner) &&
 
