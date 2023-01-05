@@ -459,13 +459,16 @@ export const DashBoardProvider = ({ children }) => {
             }
         }
 
-        if (userDashboardSelected()) {
-            setClientSelected(UserClients.content[IndexClientSelected])
-            manageUrlUser()
-            setBalanceChanged(true)
-        } else if (adminDashboardSelected()) {
-            setClientSelected({})
-            manageUrlAdmin()
+        
+        if (UserClients.fetched) {
+            if (userDashboardSelected()) {
+                setClientSelected(UserClients.content[IndexClientSelected])
+                manageUrlUser()
+                setBalanceChanged(true)
+            } else if (adminDashboardSelected()) {
+                setClientSelected({})
+                manageUrlAdmin()
+            }
         }
         //eslint-disable-next-line
     }, [history, UserClients.content, IndexClientSelected, admin]);
