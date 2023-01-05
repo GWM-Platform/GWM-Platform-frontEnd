@@ -240,6 +240,7 @@ const User = ({ user, permissions, funds, getUsers }) => {
                                         permission.action !== "VIEW_ALL_FUNDS" &&
                                         permission.action !== "BUY_ALL_FUNDS" &&
                                         permission.action !== "SELL_ALL_FUNDS" &&
+                                        permission.action !== "CLIENT_DOUBLECHECK" &&
                                         (!StakeOrFundPermission(permission)))
                                     .map(
                                         (permission) =>
@@ -249,9 +250,12 @@ const User = ({ user, permissions, funds, getUsers }) => {
                                                 key={`user-${user.id}-permission-${permission.id}`} />
                                     )
                             }
-                            <Col xs="12">
-                                <div className="permission-category mt-2 pt-2 border-top" />
-                            </Col >
+                            {
+                                !(!hasPermission('') || !hasPermission('REMOVE_USERS') || !hasPermission('MODIFY_PERMISSIONS') || user?.isOwner) &&
+                                <Col xs="12">
+                                    <div className="permission-category mt-2 pt-2 border-top" />
+                                </Col >
+                            }
                         </Row>
                     </Form>
                     <Row className="justify-content-end gx-2">
@@ -277,32 +281,39 @@ const User = ({ user, permissions, funds, getUsers }) => {
                                 :
                                 <>
                                     {/*The owners only can make another user owner */}
-                                    <Col xs="auto" className=" mb-2">
-                                        <Button disabled={!hasPermission('') || user?.isOwner || AssignOwner.fetching} variant="danger" onClick={assignOwner}>
-                                            {
-                                                AssignOwner.fetching &&
-                                                <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className='me-2' />
-                                            }
-                                            {t('Make owner')}
-                                        </Button>
-                                    </Col>
+                                    {
+                                        !(!hasPermission('') || user?.isOwner) &&
 
-                                    <Col xs="auto" className=" mb-2">
-                                        <Button disabled={!hasPermission('REMOVE_USERS') || user?.isOwner || DisconnectUser.fetching} variant="danger" onClick={disconnectUser}>
-                                            {
-                                                DisconnectUser.fetching &&
-                                                <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className='me-2' />
-                                            }
-                                            {t("Disconnect")}
-                                        </Button>
-                                    </Col>
-
-                                    <Col xs="auto" className=" mb-2">
-                                        <Button variant="danger" disabled={!hasPermission('MODIFY_PERMISSIONS') || user?.isOwner} onClick={() => toggleEdition()}>
-                                            {t("Edit permissions")}
-                                        </Button>
-                                    </Col>
-
+                                        <Col xs="auto" className=" mb-2">
+                                            <Button disabled={AssignOwner.fetching} variant="danger" onClick={assignOwner}>
+                                                {
+                                                    AssignOwner.fetching &&
+                                                    <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className='me-2' />
+                                                }
+                                                {t('Make owner')}
+                                            </Button>
+                                        </Col>
+                                    }
+                                    {
+                                        !(!hasPermission('REMOVE_USERS') || user?.isOwner) &&
+                                        <Col xs="auto" className=" mb-2">
+                                            <Button disabled={DisconnectUser.fetching} variant="danger" onClick={disconnectUser}>
+                                                {
+                                                    DisconnectUser.fetching &&
+                                                    <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className='me-2' />
+                                                }
+                                                {t("Disconnect")}
+                                            </Button>
+                                        </Col>
+                                    }
+                                    {
+                                        !(!hasPermission('MODIFY_PERMISSIONS') || user?.isOwner) &&
+                                        <Col xs="auto" className=" mb-2">
+                                            <Button variant="danger" onClick={() => toggleEdition()}>
+                                                {t("Edit permissions")}
+                                            </Button>
+                                        </Col>
+                                    }
                                 </>
                         }
                     </Row>
@@ -374,7 +385,7 @@ const Permission = ({ FormData, setFormData, permission, funds, disabled }) => {
                 return t("Not found")
             }
         }
-        
+
         if (isSpecificFundPermission(action)) {
             return (t("VIEW_FUND", { fundName: getFundName(action) }))
         } else if (isStakePermission(action)) {

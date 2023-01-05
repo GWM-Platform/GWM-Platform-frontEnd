@@ -461,9 +461,8 @@ export const DashBoardProvider = ({ children }) => {
             }
         }
 
+        
         if (UserClients.fetched) {
-            console.log(IndexClientSelected)
-
             if (userDashboardSelected()) {
                 setClientSelected(UserClients.content[IndexClientSelected])
                 manageUrlUser()
