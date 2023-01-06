@@ -180,8 +180,6 @@ const Broadcast = () => {
         return aux
     }
 
-    console.log(groupedClients())
-
     return (
         <Container className="h-100">
             <Row className="h-100 d-flex justify-content-center">

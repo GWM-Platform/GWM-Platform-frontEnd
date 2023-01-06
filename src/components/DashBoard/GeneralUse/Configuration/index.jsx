@@ -12,6 +12,7 @@ import SectionsSelector from './SectionsSelector'
 import './index.css'
 import { useTranslation } from 'react-i18next';
 import AccessAndPermissionsAdministration from './SectionContent/AccessAndPermissionsAdministration';
+import Documents from './SectionContent/Documents';
 
 const Configuration = ({ admin = false }) => {
 
@@ -33,7 +34,10 @@ const Configuration = ({ admin = false }) => {
     ...(admin ?
       {}
       :
-      { accessandpermissionsadministration: <AccessAndPermissionsAdministration desiredSubSection={subSectionQuery} /> })
+      {
+        accessandpermissionsadministration: <AccessAndPermissionsAdministration desiredSubSection={subSectionQuery} />,
+        documents: <Documents />
+      })
   }
   const content = () => {
     const contentSelected = contentByName[SectionSelected.replace(/\s/g, '').toLowerCase()]
@@ -67,7 +71,7 @@ const Configuration = ({ admin = false }) => {
       <Row className={`h-100 p-relative ConfigurationRow
               d-flex justify-content-center align-items-stretch`}>
         <SectionsSelector admin={admin} TabActive={TabActive} setTabActive={setTabActive} SectionSelected={SectionSelected} selectSection={selectSection} />
-        <SectionContent  desiredSubSection={subSectionQuery} content={content} TabActive={TabActive} setTabActive={setTabActive} SectionSelected={SectionSelected} selectSection={selectSection} />
+        <SectionContent desiredSubSection={subSectionQuery} content={content} TabActive={TabActive} setTabActive={setTabActive} SectionSelected={SectionSelected} selectSection={selectSection} />
       </Row>
     </Container>
   )

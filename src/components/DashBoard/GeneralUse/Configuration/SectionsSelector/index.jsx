@@ -1,14 +1,14 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import React from 'react'
 
-import { faShieldAlt, faHeadset, faInfoCircle, faUsersCog } from '@fortawesome/free-solid-svg-icons'
+import { faShieldAlt, faUsersCog } from '@fortawesome/free-solid-svg-icons'
 import { Col } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 
 import Section from './Section'
 
 import './index.css'
-import { faAddressCard } from '@fortawesome/free-regular-svg-icons'
+import { faAddressCard, faFile } from '@fortawesome/free-regular-svg-icons'
 
 const SectionsSelector = ({ SectionSelected, selectSection, TabActive, setTabActive, admin = false }) => {
     const { t } = useTranslation()
@@ -32,13 +32,11 @@ const SectionsSelector = ({ SectionSelected, selectSection, TabActive, setTabAct
                         <Section setTabActive={setTabActive} SectionSelected={SectionSelected}
                             selectSection={selectSection} title={'Access and permissions administration'} icon={faUsersCog} enabled />
                     }
-                </div>
-
-                <div className="SectionGroup d-none">
-                    <Section setTabActive={setTabActive} SectionSelected={SectionSelected}
-                        selectSection={selectSection} title={'Support'} icon={faHeadset} enabled />
-                    <Section setTabActive={setTabActive} SectionSelected={SectionSelected}
-                        selectSection={selectSection} title={'Information'} icon={faInfoCircle} enabled />
+                    {
+                        !admin &&
+                        <Section setTabActive={setTabActive} SectionSelected={SectionSelected}
+                            selectSection={selectSection} title={'Documents'} icon={faFile} enabled />
+                    }
                 </div>
             </div>
 
