@@ -64,7 +64,7 @@ const DocumentsAccordion = ({ client }) => {
 
     const filteredDocuments = () => selectedOptions.length > 0
         ? documents.content.filter(
-            document => selectedOptions.map(selectedOptions => selectedOptions.value).every(tag => document.tags.includes(tag))
+            document => selectedOptions.map(selectedOptions => selectedOptions.value).every(tag => document?.tags?.includes(tag))
         )
         : documents.content
 
