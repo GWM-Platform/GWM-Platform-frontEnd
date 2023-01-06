@@ -25,6 +25,7 @@ const Broadcast = () => {
     const [message, setMessage] = useState()
 
     const [users, setUsers] = useState({ fetching: true, fetched: false, valid: false, content: [] })
+    const [clients, setClients] = useState({ fetching: true, fetched: false, valid: false, content: [] })
 
     const [validated, setValidated] = useState(false);
     const [buttonDisabled, setButtonDisabled] = useState(false)
@@ -114,6 +115,38 @@ const Broadcast = () => {
         };
     }, [getUsers])
 
+    const getClients = useCallback((signal) => {
+        setClients((prevState) => ({ ...prevState, fetching: true, fetched: false }))
+        axios.get(`/clients`, {
+            params: { all: true, showUsers: true },
+            signal: signal,
+        }).then(function (response) {
+            setClients((prevState) => (
+                {
+                    ...prevState,
+                    fetching: false,
+                    fetched: true,
+                    valid: true,
+                    content: response.data,
+                }))
+        }).catch((err) => {
+            if (err.message !== "canceled") {
+                if (err.response.status === "401") toLogin()
+                setClients((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
+            }
+        });
+    }, [toLogin, setClients]);
+
+    useEffect(() => {
+        const controller = new AbortController();
+        const signal = controller.signal;
+        getClients(signal)
+
+        return () => {
+            controller.abort();
+        };
+    }, [getClients])
+
     useEffect(() => {
         setButtonDisabled(formData?.receivers.length === 0)
         if (formData?.receivers?.length === users?.content?.length && formData?.receivers?.length !== 0 && users?.content?.length !== 0) {
@@ -130,6 +163,24 @@ const Broadcast = () => {
     const allUsersSelected = () => formData?.receivers.length > users?.content?.length
 
     const filesInput = useRef(null)
+
+    const groupedClients = () => {
+        var aux = []
+
+        if (clients.fetched && users.fetched) {
+            for (let client of clients.content) {
+                aux = [
+                    ...aux,
+                    ...client.users.map(
+                        userToClient => ({ ...userToClient?.user, clientAlias: client?.alias, key: userToClient?.user?.email })
+                    )
+                ]
+            }
+        }
+        return aux
+    }
+
+    console.log(groupedClients())
 
     return (
         <Container className="h-100">
@@ -153,6 +204,7 @@ const Broadcast = () => {
                                 disable={!users.fetched}
                                 isObject={true}
                                 placeholder=""
+                                groupBy='clientAlias'
                                 emptyRecordMsg={t(users.content.length > 0 ? "There are no more users available to add to the broadcast" : "There are no users available to add to the broadcast")}
                                 showCheckbox
                                 //hideSelectedList
@@ -202,7 +254,7 @@ const Broadcast = () => {
                                     }
                                 }
                                 ref={receiversSelectorRef}
-                                options={[{ key: t("All users"), selectAll: true }, ...(users?.content?.map(user => ({ ...user, key: user.email })) || [])]}
+                                options={[{ key: t("All users"), selectAll: true }, ...groupedClients()]}
                             />
                         </Form.Group>
 
