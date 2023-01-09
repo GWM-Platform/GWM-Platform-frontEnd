@@ -465,3 +465,20 @@ table .Actions {
   padding-right:0!important
 }
 
+.groupHeading {
+  padding: 8px 12px !important;
+  margin-bottom: 0px !important;
+  color: inherit !important;
+  font-weight: 400 !important;
+  font-size: 100% !important;
+  text-transform: unset !important;
+}
+
+.groupHeading:hover {
+  background: #deebff !important;
+}
+
+.groupHeading.selected {
+  background-color: #2684ff !important;
+  color: hsl(0, 0%, 100%) !important;
+}

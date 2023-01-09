@@ -4,11 +4,11 @@ import { Container, Row, Col, Form, Button } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { DashBoardContext } from 'context/DashBoardContext';
-import Multiselect from 'multiselect-react-dropdown';
 import { useRef } from 'react';
+import { components } from "react-select";
+import Select from "react-select";
 
 const Broadcast = () => {
-    const receiversSelectorRef = useRef(null);
 
     const { toLogin } = useContext(DashBoardContext)
 
@@ -18,13 +18,13 @@ const Broadcast = () => {
         {
             title: "",
             emailBody: "",
-            receivers: []
         }
     )
 
+    const [selectedOptions, setSelectedOptions] = useState([])
+
     const [message, setMessage] = useState()
 
-    const [users, setUsers] = useState({ fetching: true, fetched: false, valid: false, content: [] })
     const [clients, setClients] = useState({ fetching: true, fetched: false, valid: false, content: [] })
 
     const [validated, setValidated] = useState(false);
@@ -55,7 +55,7 @@ const Broadcast = () => {
             formDataSubmit.append("files", files[i])
         }
 
-        let receivers = formData.receivers.filter(receiver => !receiver.selectAll).map(receiver => receiver.email)
+        let receivers = selectedOptions.map(receiver => receiver.email)
         for (var j = 0; j < receivers.length; j++) {
             formDataSubmit.append("receivers", receivers[j])
         }
@@ -81,39 +81,6 @@ const Broadcast = () => {
                 }
             });
     }
-
-    const getUsers = useCallback((signal) => {
-        setUsers((prevState) => ({ ...prevState, fetching: true, fetched: false }))
-        axios.get(`/users`, {
-            params: { all: true },
-            signal: signal,
-        }).then(function (response) {
-            setUsers((prevState) => (
-                {
-                    ...prevState,
-                    fetching: false,
-                    fetched: true,
-                    valid: true,
-                    content: response.data,
-                }))
-        }).catch((err) => {
-            if (err.message !== "canceled") {
-                if (err.response.status === "401") toLogin()
-                setUsers((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
-            }
-        });
-    }, [toLogin, setUsers]);
-
-
-    useEffect(() => {
-        const controller = new AbortController();
-        const signal = controller.signal;
-        getUsers(signal)
-
-        return () => {
-            controller.abort();
-        };
-    }, [getUsers])
 
     const getClients = useCallback((signal) => {
         setClients((prevState) => ({ ...prevState, fetching: true, fetched: false }))
@@ -148,36 +115,151 @@ const Broadcast = () => {
     }, [getClients])
 
     useEffect(() => {
-        setButtonDisabled(formData?.receivers.length === 0)
-        if (formData?.receivers?.length === users?.content?.length && formData?.receivers?.length !== 0 && users?.content?.length !== 0) {
-            setFormData(prevState => (
-                {
-                    ...prevState,
-                    receivers: [...prevState.receivers, { key: t("All users"), selectAll: true }]
-                }
-            ))
-        }
-        // eslint-disable-next-line
-    }, [formData?.receivers, users?.content?.length])
-
-    const allUsersSelected = () => formData?.receivers.length > users?.content?.length
+        setButtonDisabled(selectedOptions.length === 0)
+        //eslint-disable-next-line
+    }, [selectedOptions])
 
     const filesInput = useRef(null)
 
-    const groupedClients = () => {
-        var aux = []
+    var allSelectedArray = [{ label: "All clients", value: "*" }]
 
-        if (clients.fetched && users.fetched) {
-            for (let client of clients.content) {
-                aux = [
-                    ...aux,
-                    ...client.users.map(
-                        userToClient => ({ ...userToClient?.user, clientAlias: client?.alias, key: userToClient?.user?.email })
-                    )
-                ]
+    for (let client of clients.content) {
+        let appendToArray = []
+        appendToArray = client.users.map(
+            userToClient => ({ value: userToClient?.user?.email, label: userToClient?.user?.email, email: userToClient?.user?.email })
+        ).filter(
+            //eslint-disable-next-line 
+            selectedOption => allSelectedArray.filter(
+                selectedOptionFilter => selectedOptionFilter.value === selectedOption.value
+            ).length === 0)
+        allSelectedArray = [...allSelectedArray, ...appendToArray]
+    }
+
+    const handleChangeMultiSelect = (selectedOption) => {
+
+        setSelectedOptions(prevState => {
+
+            const previouslyAllSelected = prevState?.filter(option => option?.value === "*")?.length > 0
+            const actuallyAllSelected = selectedOption?.filter(option => option?.value === "*")?.length > 0
+
+            if (!previouslyAllSelected && actuallyAllSelected) {
+                return ([...allSelectedArray])
+            } else {
+                if (previouslyAllSelected && !actuallyAllSelected) {
+                    return ([])
+                } else {
+                    if (previouslyAllSelected && actuallyAllSelected) {
+                        return ([...selectedOption.filter(selectedOption => selectedOption.value !== "*")])
+                    } else {
+                        return (selectedOption?.length === allSelectedArray?.length - 1 ? [...allSelectedArray] : [...selectedOption])
+                    }
+                }
+            }
+        });
+    };
+
+    const values = () => {
+        return clients?.fetched
+            ? [
+                { label: "All clients", value: "*" },
+                ...clients?.content?.map(
+                    client => ({
+                        label: client.alias,
+                        value: client.alias,
+                        id: client.id,
+                        options: client.users.map(
+                            userToClient => ({ ...userToClient?.user, label: userToClient?.user?.email, value: userToClient?.user?.email })
+                        )
+                    })
+                )]
+            : []
+    }
+
+    const filterOption = ({ label, value }, string) => {
+        // default search
+        if (label?.includes(string) || value?.includes(string)) return true;
+
+        // check if a group as the filter string as label
+        const groupOptions = values()?.filter((group) =>
+            group?.label?.toLowerCase()?.includes(string?.toLowerCase())
+        );
+
+        if (groupOptions) {
+            for (const groupOption of groupOptions) {
+                // Check if current option is in group
+                const option = groupOption?.options?.find((opt) => opt?.value?.toLowerCase() === value?.toLowerCase());
+                if (option) {
+                    return true;
+                }
             }
         }
-        return aux
+        return false;
+    };
+
+    const Option = ({ children, ...props }) => {
+        return (
+            <components.Option className='ps-4' {...props}>
+                <Form.Check readOnly checked={props.isSelected} label={t(children)} />
+            </components.Option>
+        );
+    }
+
+    const MultiValue = ({ children, ...props }) => {
+        const allSelected = props?.getValue()?.filter(option => option?.value === "*")?.length > 0
+        const isSelectAll = props?.data?.value === "*"
+        return (
+            (allSelected && !isSelectAll) ?
+                null
+                :
+                <components.MultiValue {...props}>
+                    {t(children)}
+                </components.MultiValue>
+        );
+    }
+
+    const getClientById = (clientId) => clients?.content?.find(client => client.id === clientId)
+
+    const selectUsersByClientId = (clientId) => {
+        setSelectedOptions(prevState => {
+            let aux = [...prevState]
+            let client = getClientById(clientId)
+            let appendToArray =
+                client?.users?.map(
+                    userToClient => ({ value: userToClient?.user?.email, label: userToClient?.user?.email, email: userToClient?.user?.email })
+                ).filter(
+                    //eslint-disable-next-line 
+                    selectedOption => aux.filter(selectedOptionFilter => selectedOptionFilter.value === selectedOption.value).length === 0
+                )
+            aux = [...aux, ...appendToArray]
+            return aux?.length === allSelectedArray?.length - 1 ? [...allSelectedArray] : [...aux]
+        })
+    }
+
+    const deSelectUsersByClientId = (clientId) => {
+        setSelectedOptions(prevState => {
+            let aux = [...prevState]
+            let client = getClientById(clientId)
+            aux = [...aux.filter(
+                selectedOption => {
+                    return client.users.filter(clientUser => selectedOption.value === clientUser.user.email).length === 0
+                }
+            )]
+            return [...aux]
+        })
+    }
+
+
+    const GroupHeading = ({ children, ...props }) => {
+
+        const clientUsers = getClientById(props?.data?.id)?.users
+        const allUsersFromClientSelected = selectedOptions.filter(option => clientUsers.filter(clientUser => clientUser.user.email === option.email).length > 0).length === clientUsers.length;
+
+        return (
+            <components.GroupHeading {...props} className={`${props?.className ? props?.className : ""} ${allUsersFromClientSelected ? "selected" : ""}`}
+                onClick={() => allUsersFromClientSelected ? deSelectUsersByClientId(props?.data?.id) : selectUsersByClientId(props?.data?.id)}>
+                <Form.Check checked={allUsersFromClientSelected} readOnly label={t("Client {{clientName}}", { clientName: children })} />
+            </components.GroupHeading>
+        );
     }
 
     return (
@@ -187,73 +269,27 @@ const Broadcast = () => {
                     <div className="header">
                         <h1 className="title">{t("Broadcast to users")}</h1>
                     </div>
-                    <style>
-                        {`
-                        .chip:not(:first-of-type){
-                            display:${allUsersSelected() ? "none" : "inline-flex"}
-                        }
-                        `}
-                    </style>
                     <Form noValidate validated={validated} onSubmit={handleSubmit}>
                         <Form.Group className="mb-3">
                             <Form.Label>{t("Recipients")}</Form.Label>
-                            <Multiselect
-                                className="flex-grow"
-                                disable={!users.fetched}
-                                isObject={true}
-                                placeholder=""
-                                groupBy='clientAlias'
-                                emptyRecordMsg={t(users.content.length > 0 ? "There are no more users available to add to the broadcast" : "There are no users available to add to the broadcast")}
-                                showCheckbox
-                                //hideSelectedList
-                                displayValue="key"
-                                selectedValues={formData.receivers}
-                                onKeyPressFn={function noRefCheck() { }}
-                                onSearch={function noRefCheck() { }}
-                                onSelect={
-                                    //eslint-disable-next-line
-                                    (a, selectedItem) => {
-                                        setFormData(prevState => (
-                                            {
-                                                ...prevState,
-                                                receivers:
-                                                    selectedItem.selectAll ?
-                                                        [{ key: t("All users"), selectAll: true }, ...users.content.map(user => ({ ...user, key: user.email }))]
-                                                        :
-                                                        [...prevState.receivers, selectedItem].length === users.content.length ? [{ key: t("All users"), selectAll: true }, ...prevState.receivers, selectedItem].sort((user) => user.key === t("All users") ? -1 : 0) : [...prevState.receivers, selectedItem]
-                                            }
-                                        ))
-                                    }
-                                }
-                                onRemove={
-                                    //eslint-disable-next-line
-                                    (a, removedItem) => {
-                                        setFormData(prevState => {
+                            <div>
+                                <Select
 
-                                            let receivers = [...removedItem?.selectAll ? [] : prevState.receivers]
-                                            if (!removedItem?.selectAll) {
-                                                const index = receivers.findIndex(receiver => receiver.email === removedItem.email)
-                                                if (index > -1) {
-                                                    receivers.splice(index, 1); // 2nd parameter means remove one item only
-                                                }
-                                                const indexSelectAll = receivers.findIndex(receiver => receiver.selectAll)
-                                                if (indexSelectAll > -1) {
-                                                    receivers.splice(indexSelectAll, 1); // 2nd parameter means remove one item only
-                                                }
-                                            }
+                                    value={selectedOptions} onChange={handleChangeMultiSelect}
+                                    isMulti isClearable isLoading={clients.fetching}
+                                    closeMenuOnSelect={false} hideSelectedOptions={false}
+                                    noOptionsMessage={() => t("No options")} placeholder={t("Select recipients")}
+                                    filterOption={filterOption} options={values()} components={{ Option, MultiValue, GroupHeading }}
+                                    className="w-100 mb-2"
+                                    classNames={{
+                                        groupHeading: () => ("groupHeading"),
+                                        multiValue: () => ("multiValue"),
+                                        multiValueLabel: () => ("multiValueLabel"),
+                                        multiValueRemove: () => ("multiValueRemove"),
+                                    }}
+                                />
+                            </div>
 
-                                            return (
-                                                {
-                                                    ...prevState,
-                                                    receivers: receivers
-                                                }
-                                            )
-                                        })
-                                    }
-                                }
-                                ref={receiversSelectorRef}
-                                options={[{ key: t("All users"), selectAll: true }, ...groupedClients()]}
-                            />
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId='title'>
