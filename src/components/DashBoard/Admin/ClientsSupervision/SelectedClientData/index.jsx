@@ -15,6 +15,8 @@ import { Link, Route, Switch } from 'react-router-dom';
 import ClientUsersAccordion from './ClientUsersAccordion';
 import ConnectForm from './ConnectForm';
 import TimeDeposits from './TimeDeposits';
+import AddDocumentForm from './AddDocumentForm';
+import DocumentsAccordion from './DocumentsAccordion';
 
 const SelectedAccountData = ({ Account, Client, stakes, users }) => {
 
@@ -38,6 +40,7 @@ const SelectedAccountData = ({ Account, Client, stakes, users }) => {
                     <Accordion flush alwaysOpen>
                         <AccountGeneralData Account={Account} Client={Client} />
                         <ClientUsersAccordion client={Client} />
+                        <DocumentsAccordion client={Client} />
                         {clientFunds.length > 0 ? <FundsPossesion stakes={clientFunds} /> : null}
                         <AccountMovements ClientId={Client.id} AccountId={Account.id} />
                         <TransactionsByFund ClientId={Client.id} AccountId={Account.id} />
@@ -48,6 +51,10 @@ const SelectedAccountData = ({ Account, Client, stakes, users }) => {
 
             <Route exact path={`/DashBoard/clientsSupervision/${Client.id}/connectUserToClient`}>
                 <ConnectForm client={Client} users={users} />
+            </Route>
+
+            <Route exact path={`/DashBoard/clientsSupervision/${Client.id}/addDocument`}>
+                <AddDocumentForm client={Client} users={users} />
             </Route>
 
             <Route path="*">

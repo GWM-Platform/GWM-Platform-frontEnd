@@ -371,7 +371,6 @@ export const DashBoardProvider = ({ children }) => {
                         return client.id.toString() === id
                     })
                 }
-                setUserClients(prevState => ({ ...prevState, fetching: false, fetched: true, valid: true, content: data }))
                 if (data.length === 1 && !admin) {
                     setIndexClientSelected(0)
                 }
@@ -385,7 +384,7 @@ export const DashBoardProvider = ({ children }) => {
                 else if (localStorage.getItem(data[0]?.alias)) {
                     setIndexClientSelected(parseInt(localStorage.getItem(data[0].alias)))
                 }
-
+                setUserClients(prevState => ({ ...prevState, fetching: false, fetched: true, valid: true, content: data }))
             } else {
                 setUserClients(prevState => ({ ...prevState, fetching: false, fetched: true, valid: false, content: [] }))
                 switch (response.status) {
@@ -431,11 +430,14 @@ export const DashBoardProvider = ({ children }) => {
 
         const manageUrlUser = () => {
             const validRedirectedSections = ["history"]
-            const validTypes = ["m", "t"]
+            const validTypes = ["m", "t","transfers" ]
             if (desiredLocation && desiredId && desiredType && desiredClient) {
                 if (validRedirectedSections.includes(desiredLocation) && validTypes.includes(desiredType)) {
                     let destination = ""
                     switch (desiredType) {
+                        case "transfers":
+                            destination = `/DashBoard/${desiredLocation}?loc=${desiredLocation}&id=${desiredId}&client=${desiredClient}&type=${desiredType}&SelectedTab=Transfers`
+                            break;
                         case "m":
                             destination = `/DashBoard/${desiredLocation}?loc=${desiredLocation}&id=${desiredId}&client=${desiredClient}&type=${desiredType}`
                             break;

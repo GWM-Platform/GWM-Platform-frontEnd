@@ -29,44 +29,44 @@ const TableLastMovements = ({ account }) => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    useEffect(() => {
-        const getMovements = async () => {
-            var url = `${process.env.REACT_APP_APIURL}/movements/?` + new URLSearchParams(
-                Object.fromEntries(Object.entries(
-                    {
-                        accountId:account.id,
-                        client: ClientSelected.id,
-                        filterAccount: account.id,
-                        take: Options.take,
-                        skip: Options.skip,
-                        filterState: Options.state
-                    }
-                ).filter(([_, v]) => v != null))
-            );
-
-            setFetchingMovements(true)
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    Accept: "*/*",
-                    'Content-Type': 'application/json'
+    const getMovements = async () => {
+        var url = `${process.env.REACT_APP_APIURL}/movements/?` + new URLSearchParams(
+            Object.fromEntries(Object.entries(
+                {
+                    accountId:account.id,
+                    client: ClientSelected.id,
+                    filterAccount: account.id,
+                    take: Options.take,
+                    skip: Options.skip,
+                    filterState: Options.state
                 }
-            })
+            ).filter(([_, v]) => v != null))
+        );
 
-            if (response.status === 200) {
-                const data = await response.json()
-                setMovements(data ? { ...data } : { ...{ movements: [], total: 0 } })
-                setFetchingMovements(false)
-            } else {
-                switch (response.status) {
-                    default:
-                        console.error("Error ", response.status, " account movements")
-                        toLogin()
-                }
+        setFetchingMovements(true)
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: "*/*",
+                'Content-Type': 'application/json'
+            }
+        })
+
+        if (response.status === 200) {
+            const data = await response.json()
+            setMovements(data ? { ...data } : { ...{ movements: [], total: 0 } })
+            setFetchingMovements(false)
+        } else {
+            switch (response.status) {
+                default:
+                    console.error("Error ", response.status, " account movements")
+                    toLogin()
             }
         }
-
+    }
+    
+    useEffect(() => {
         getMovements()
         // eslint-disable-next-line 
     }, [account, Options])
@@ -99,7 +99,7 @@ const TableLastMovements = ({ account }) => {
                                     :
                                     <>
                                         {
-                                            movements.movements.map((u, i) => <Movement key={i} content={u} />)
+                                            movements.movements.map((u, i) => <Movement key={i} content={u} reloadData={getMovements} />)
                                         }
                                     </>
                             }

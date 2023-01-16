@@ -38,7 +38,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
     const desiredId = useQuery().get("id")
     const desiredType = useQuery().get("type")
     const desiredFundId = useQuery().get("fundId")
-    const validTypes = ["m", "t"]
+    const validTypes = ["m", "t", "transfers"]
 
     const [categorySelected, setCategorySelected] = useState(
         desiredType ?
@@ -46,9 +46,9 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
                 desiredType === "t" ?
                     Funds.length > 0 ? 1 : 0
                     :
-                    desiredType === "m" ? 0 : 0
+                    desiredType === "m" || desiredType === "transfers" ? 0 : 0
                 :
-                Accounts.length > 0 ? 0 : Funds.length > 0 ? 1 : 0
+                Accounts.length > 0 && hasPermission('VIEW_ACCOUNT') ? 0 : Funds.length > 0 ? 1 : 0
             :
             Accounts.length > 0 && hasPermission('VIEW_ACCOUNT') ? 0 : Funds.length > 0 ? 1 : 0
     )
@@ -68,6 +68,8 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
                             return false
                         }
                     case "m":
+                        return true
+                    case "transfers":
                         return true
                     default:
                         return false

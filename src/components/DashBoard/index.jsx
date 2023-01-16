@@ -47,6 +47,7 @@ import NoClients from './GeneralUse/NoClients';
 import Configuration from './GeneralUse/Configuration';
 import NoPermissionOperation from './User/NoPermissionFeedback/NoPermissionOperation';
 import Broadcast from './Admin/Broadcast';
+import UserActionLogs from './Admin/UserActionLogs';
 
 const UserDashBoard = () => {
     axios.defaults.headers.common['Authorization'] = `Bearer ${sessionStorage.getItem("access_token")}`
@@ -83,6 +84,9 @@ const UserDashBoard = () => {
                                             </Route>
                                             <Route path={`${path}/clientsSupervision`}>
                                                 <ClientsSupervision />
+                                            </Route>
+                                            <Route path={`${path}/userActionLogs`}>
+                                                <UserActionLogs />
                                             </Route>
                                             <Route path={`${path}/fundsAdministration`}>
                                                 <FundsAdministration />

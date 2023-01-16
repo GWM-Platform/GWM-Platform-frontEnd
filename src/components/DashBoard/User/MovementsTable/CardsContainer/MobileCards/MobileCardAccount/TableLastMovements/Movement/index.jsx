@@ -7,13 +7,15 @@ import { DashBoardContext } from 'context/DashBoardContext';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import { OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilePdf } from '@fortawesome/free-regular-svg-icons';
+import { faCheckCircle,faTimesCircle, faFilePdf } from '@fortawesome/free-regular-svg-icons';
 import ReactPDF from '@react-pdf/renderer';
 import MovementReceipt from 'Receipts/MovementReceipt';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-const Movement = ({ content }) => {
+import { userEmail } from 'utils/userEmail';
+import MovementConfirmation from 'components/DashBoard/User/MovementsTable/GeneralUse/MovementConfirmation';
+const Movement = ({ content, reloadData }) => {
   var momentDate = moment(content.createdAt);
-  const { getMoveStateById, AccountSelected } = useContext(DashBoardContext)
+  const { getMoveStateById, AccountSelected, hasPermission } = useContext(DashBoardContext)
 
   const { t } = useTranslation()
 
@@ -42,6 +44,14 @@ const Movement = ({ content }) => {
 
   const [showClick, setShowClick] = useState(false)
   const [showHover, setShowHover] = useState(false)
+
+  const [ShowModal, setShowModal] = useState(false)
+  const [Action, setAction] = useState("approve")
+
+  const launchModalConfirmation = (action) => {
+    setAction(action)
+    setShowModal(true)
+  }
 
   return (
     <div className='mobileMovement'>
@@ -113,12 +123,31 @@ const Movement = ({ content }) => {
       </div>
       {
         !!(content.partialBalance) &&
-          <div className='d-flex justify-content-between' style={{borderTop:"1px solid rgb(200,200,200)"}}>
-            <span className={`${content.stateId === 3 ? 'text-red' : 'text-green'}`}>{t("Balance")}</span>
-            <span className={`${Math.sign(content.amount) === 1 ? 'text-green' : 'text-red'}`}>
-              <FormattedNumber value={Math.abs(content.partialBalance)} prefix="$" fixedDecimals={2} />
-            </span>
+        <div className='d-flex justify-content-between' style={{ borderTop: "1px solid rgb(200,200,200)" }}>
+          <span className={`${content.stateId === 3 ? 'text-red' : 'text-green'}`}>{t("Balance")}</span>
+          <span className={`${Math.sign(content.amount) === 1 ? 'text-green' : 'text-red'}`}>
+            <FormattedNumber value={Math.abs(content.partialBalance)} prefix="$" fixedDecimals={2} />
+          </span>
+        </div>
+      }
+      {
+        !!(content.stateId === 5 && content?.userEmail !== userEmail() && hasPermission("")) &&
+        <div className="h-100 d-flex align-items-center justify-content-around">
+
+          <div className="iconContainer green" onClick={() => launchModalConfirmation("approve")}>
+            <FontAwesomeIcon className="icon" icon={faCheckCircle} /> {t("Approve")}
           </div>
+
+
+          <div className="iconContainer red" onClick={() => launchModalConfirmation("deny")} >
+            <FontAwesomeIcon className="icon" icon={faTimesCircle} /> {t("Deny")}
+          </div>
+
+        </div>
+      }
+      {
+        !!(content.stateId === 5 && content?.userEmail !== userEmail()) &&
+        <MovementConfirmation reloadData={reloadData} movement={content} setShowModal={setShowModal} action={Action} show={ShowModal} />
       }
     </div>
 
