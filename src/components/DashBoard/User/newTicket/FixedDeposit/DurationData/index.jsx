@@ -9,9 +9,9 @@ import Decimal from 'decimal.js';
 const FundSelector = ({ data, Balance, fetching, handleChange, calculateProfit, FixedDepositRules }) => {
     const { t } = useTranslation();
 
-    const maxDuration = Decimal.max(...[...FixedDepositRules.map(string => parseInt(string)), 730])
-
-    const minDuration = Decimal.min(...[...FixedDepositRules.map(string => parseInt(string)), 365])
+    const selectedRuleIndex = FixedDepositRules.findIndex(rule => (rule === data.ruleSelected))
+    const minDuration = data.ruleSelected === "" ? Decimal.min(...[...FixedDepositRules.map(string => parseInt(string)), 365]).toNumber() : parseInt(data.ruleSelected)
+    const maxDuration = data.ruleSelected === "" ? Decimal.max(...[...FixedDepositRules.map(string => parseInt(string)), 730]).toNumber() : selectedRuleIndex < FixedDepositRules.length - 1 ? FixedDepositRules[selectedRuleIndex + 1] - 1 : parseInt(data.ruleSelected)
 
     return (
         <Accordion.Item eventKey="0">
@@ -43,7 +43,8 @@ const FundSelector = ({ data, Balance, fetching, handleChange, calculateProfit, 
 
                             min={minDuration}
                             max={maxDuration}
-
+                            disabled={maxDuration === minDuration}
+                            
                             id="days"
                             type="number"
                             required
@@ -54,8 +55,11 @@ const FundSelector = ({ data, Balance, fetching, handleChange, calculateProfit, 
                             onWheel={event => event.currentTarget.blur()}
                             value={data.until}
                             onChange={handleChange}
+
                             min={moment().add(minDuration, "days").format("YYYY-MM-DD")}
                             max={moment().add(maxDuration, "days").format("YYYY-MM-DD")}
+                            disabled={maxDuration === minDuration}
+                            
                             id="until"
                             type="date"
                             required
@@ -69,10 +73,10 @@ const FundSelector = ({ data, Balance, fetching, handleChange, calculateProfit, 
                                     data.days < minDuration ?
                                         t("The minimum duration is () days", { days: minDuration })
                                         :
-                                        data.days>maxDuration ? 
-                                        t("The maximum duration is () days", { days: maxDuration })
-                                        :
-                                        t("Decimal values ​​are not allowed")
+                                        data.days > maxDuration ?
+                                            t("The maximum duration is () days", { days: maxDuration })
+                                            :
+                                            t("Decimal values ​​are not allowed")
 
                             }
                         </Form.Control.Feedback>

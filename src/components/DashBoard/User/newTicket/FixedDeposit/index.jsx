@@ -16,6 +16,7 @@ import Decimal from 'decimal.js';
 import ReactGA from "react-ga4";
 
 import NoFixedDeposit from '../NoFixedDeposit';
+import RuleSelector from './RuleSelector';
 
 const FixedDepositTicket = ({ balanceChanged }) => {
     Decimal.set({ precision: 100 })
@@ -34,6 +35,7 @@ const FixedDepositTicket = ({ balanceChanged }) => {
 
     const [data, setData] = useState({
         amount: "",
+        ruleSelected: "",
         days: "",
         until: ""
     })
@@ -192,6 +194,7 @@ const FixedDepositTicket = ({ balanceChanged }) => {
         };
         //eslint-disable-next-line
     }, [getFixedDepositPlans])
+
     return (
         <div className="tabContent">
             <div className={`d-flex flex-column h-100`}>
@@ -206,12 +209,17 @@ const FixedDepositTicket = ({ balanceChanged }) => {
                                         <Form noValidate validated={validated} onSubmit={handleSubmit}>
 
                                             <Accordion flush defaultActiveKey="0">
+                                                <RuleSelector data={data} setData={setData} RulesObject={FixedDeposit.content} />
+                                            </Accordion>
+
+                                            <Accordion flush defaultActiveKey="0">
                                                 <InvestmentData
                                                     calculateProfit={calculateProfit}
                                                     handleSubmit={handleSubmit} validated={validated}
                                                     handleChange={handleChange} data={data}
                                                     Balance={Accounts[0].balance} fetching={fetching} />
                                             </Accordion>
+
                                             <Accordion flush defaultActiveKey="0" >
                                                 <DurationData
                                                     FixedDepositRules={Object.keys(FixedDeposit?.content?.interest ?? [])}
