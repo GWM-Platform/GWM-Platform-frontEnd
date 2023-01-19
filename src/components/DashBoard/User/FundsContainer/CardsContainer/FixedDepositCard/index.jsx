@@ -96,7 +96,6 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
     }, [])
 
     const wasEdited = () => editedDuration(FixedDeposit) || editedInterestRate(FixedDeposit)
-    console.log(getOriginalDuration(FixedDeposit), getEditedDuration(FixedDeposit))
     return (
         <Col className="fund-col growAnimation" sm="6" md="6" lg="4" >
             <Card className="FundCard FixedDeposit h-100">

@@ -88,7 +88,7 @@ const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
             case 2://Approved
                 if (Movement.closed) {
                     if (closedAtTheEnd()) {
-                        return Movement.duration
+                        return editedDuration ? Movement.newDuration : Movement?.duration
                     } else {
                         return (Math.floor(new Date(Movement?.updatedAt).getTime() / 1000 / 60 / 60 / 24) -
                             Math.floor(new Date(Movement?.startDate).getTime() / 1000 / 60 / 60 / 24)) ?? 0
@@ -110,7 +110,7 @@ const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
                 {
                     duration: ellapsedDays(),
                     initialAmount: Movement?.initialAmount,
-                    interestRate: getAnualRate()
+                    interestRate: editedInterestRate ? Movement.newInterestRate : getAnualRate()
                 }, { signal: signal }).then(function (response) {
                     if (response.status < 300 && response.status >= 200) {
                         setActualProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: response.data || Movement.initialAmount } }))
@@ -164,9 +164,9 @@ const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
         if (Movement.initialAmount) {
             axios.post(`/fixed-deposits/profit`,
                 {
-                    duration: ellapsedDays(),
+                    duration: editedDuration ? Movement.newDuration : Movement?.duration,
                     initialAmount: Movement?.initialAmount,
-                    interestRate: getAnualRate()
+                    interestRate: editedInterestRate ? Movement.newInterestRate : getAnualRate()
                 }, { signal: signal }).then(function (response) {
                     if (response.status < 300 && response.status >= 200) {
                         setRefundedProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: response.data || Movement.initialAmount } }))
@@ -188,7 +188,7 @@ const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
         }
     }
 
-    const calculateProfitEdited = (signal) => {
+    const calculateProfitAtTheEndEdited = (signal) => {
         if (Movement.initialAmount) {
             axios.post(`/fixed-deposits/profit`,
                 {
@@ -243,7 +243,7 @@ const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
         const signal = controller.signal;
 
         if (validState(["Pending", "Ongoing", "Denied", "Closed (Out of term)"])) calculateProfitAtTheEnd(signal)
-        if (validState(["Pending"]) && wasEdited) calculateProfitEdited(signal)
+        if (validState(["Pending", "Ongoing", "Denied", "Closed (Out of term)"]) && wasEdited) calculateProfitAtTheEndEdited(signal)
         if (validState(["Ongoing"])) calculateActualProfit(signal)
         if (validState(["Closed (Out of term)", "Closed (Term completed)"])) calculateRefundedProfit(signal)
         userInfoById(Movement.clientId)
@@ -257,7 +257,7 @@ const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
         <>
             <div className='mobileMovement'>
                 <div className='d-flex py-1 align-items-center' >
-                    <span className="h5 mb-0 me-1 me-md-2">{t("Time deposit")}&nbsp;#{Movement.id}</span>
+                    <span className="h5 mb-0 me-1 me-md-2">{t("Time deposit")}&nbsp;#{Movement.id} {!!(wasEdited) && <>({t("Preferential *")})</>}</span>
                     <div className='px-1 px-md-2' style={{ borderLeft: "1px solid lightgray", borderRight: "1px solid lightgray" }}>
                         <span className="d-none d-md-inline">{t("Client")}:&nbsp;</span>
                         {
