@@ -9,7 +9,7 @@ import Decimal from 'decimal.js';
 import axios from 'axios';
 import { DashBoardContext } from 'context/DashBoardContext';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
-import { editedDuration, editedInterestRate, getAnualRate, getDuration, getEditedDuration, getOriginalDuration, isPending, wasEdited } from 'utils/fixedDeposit';
+import { editedDuration, editedInterestRate, getAnualRate, getDuration, isPending, wasEdited } from 'utils/fixedDeposit';
 
 const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
     Decimal.set({ precision: 100 })
