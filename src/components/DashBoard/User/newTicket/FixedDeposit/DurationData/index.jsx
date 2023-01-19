@@ -43,8 +43,7 @@ const FundSelector = ({ data, Balance, fetching, handleChange, calculateProfit, 
 
                             min={minDuration}
                             max={maxDuration}
-                            disabled={maxDuration === minDuration}
-                            
+
                             id="days"
                             type="number"
                             required

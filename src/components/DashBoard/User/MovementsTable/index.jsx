@@ -116,7 +116,6 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, setNumberOfF
                     </Container>
                     :
                     <CardsContainer
-                        FixedDeposits={FixedDeposits}
                         FixedDepositsStats={FixedDepositsStats}
                         setItemSelected={setItemSelected}
                         isMobile={isMobile}

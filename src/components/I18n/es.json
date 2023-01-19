@@ -805,5 +805,19 @@
   "Filter documents by tags...": "Filtrar documentos por etiquetas",
   "All clients": "Todos los clientes",
   "Select recipients": "Seleccionar destinatarios",
-  "Client {{clientName}}": "Cliente {{clientName}}"
+  "Client {{clientName}}": "Cliente {{clientName}}",
+  "edit": "editar",
+  "edited": "editado",
+  "You must enter the anual rate": "Debe ingresar la tasa anual",
+  "The minimum anual rate is {{minAnualRate}}": "La tasa anual mínima es {{minAnualRate}}",
+  "The maximum anual rate is {{maxAnualRate}}": "La tasa anual máxima es {{maxAnualRate}}",
+  "You can enter at most 2 decimal places": "Puede ingresar como máximo dos decimales",
+  "You must enter how long the investment will last": "Debe ingresar cuanto durara la inversión",
+  "Edited by": "Editado por",
+  "Investment upon closing": "Inversión al cerrar",
+  "Edited": "Editado",
+  "DEPOSIT_CLOSE": "Cierre de plazo fijo",
+  "DEPOSIT_UPDATE": "Edición de plazo fijo",
+  "details": "detalles",
+  "Preferential *": "Preferencial *"
 }

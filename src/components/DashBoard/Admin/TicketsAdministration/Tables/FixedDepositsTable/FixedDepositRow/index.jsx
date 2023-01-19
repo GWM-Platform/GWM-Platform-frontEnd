@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icons'
+import { faCheckCircle, faEdit, faTimesCircle } from '@fortawesome/free-regular-svg-icons'
 import ActionConfirmationModal from './ActionConfirmationModal'
 import { Badge, Spinner } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
@@ -9,14 +9,17 @@ import axios from 'axios';
 import { DashBoardContext } from 'context/DashBoardContext';
 import moment from 'moment';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
+import EditModal from './EditModal';
+import { userId } from 'utils/userId';
 
-const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }) => {
+const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
     const { t } = useTranslation();
     const { toLogin } = useContext(DashBoardContext);
 
-
     const [ShowModal, setShowModal] = useState(false)
     const [Action, setAction] = useState("approve")
+
+    const [ShowEditModal, setShowEditModal] = useState(false)
 
     const [UserTicketInfo, SetUserTicketInfo] = useState({ fetching: true, valid: false, value: {} })
 
@@ -65,10 +68,18 @@ const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }
     }
 
     const [ProfitAtTheEnd, setProfitAtTheEnd] = useState({ fetching: false, fetched: false, valid: false, value: 0 })
+    const [ProfitEditedAtTheEnd, setProfitEditedAtTheEnd] = useState({ fetching: false, fetched: false, valid: false, value: 0 })
     const [ActualProfit, setActualProfit] = useState({ fetching: false, fetched: false, valid: false, value: 0 })
     const [RefundedProfit, setRefundedProfit] = useState({ fetching: false, fetched: false, valid: false, value: 0 })
 
     const getAnualRate = () => Movement.interestRate ?? 0
+
+    const wasEdited = Movement.updatedById !== null
+    const editedByCurrentUser = Movement.updatedById + "" === userId()
+
+    const editor = users.find(user => user?.id === Movement?.updatedById)
+    const editedInterestRate = Movement.newInterestRate !== 0 && Movement.newInterestRate !== null && Movement.newInterestRate !== getAnualRate()
+    const editedDuration = Movement.newDuration !== 0 && Movement.newDuration !== null && Movement.newDuration !== Movement.duration
 
     const ellapsedDays = () => {
         switch (Movement.stateId) {
@@ -177,6 +188,34 @@ const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }
         }
     }
 
+    const calculateProfitEdited = (signal) => {
+        if (Movement.initialAmount) {
+            axios.post(`/fixed-deposits/profit`,
+                {
+                    duration: editedDuration ? Movement.newDuration : Movement?.duration,
+                    initialAmount: Movement?.initialAmount,
+                    interestRate: editedInterestRate ? Movement.newInterestRate : getAnualRate()
+                }, { signal: signal }).then(function (response) {
+                    if (response.status < 300 && response.status >= 200) {
+                        setProfitEditedAtTheEnd((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: response.data || Movement.initialAmount } }))
+                    } else {
+                        switch (response.status) {
+                            case 401:
+                                toLogin();
+                                break;
+                            default:
+                                setProfitAtTheEnd((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: Movement.initialAmount } }))
+                                break
+                        }
+                    }
+                }).catch((err) => {
+                    if (err.message !== "canceled") {
+                        setProfitEditedAtTheEnd((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: Movement.initialAmount } }))
+                    }
+                });
+        }
+    }
+
     const userInfoById = (clientId) => {
         let indexClientTransaction = UsersInfo.value.findIndex((client) => client.id === clientId)
         if (indexClientTransaction >= 0) {
@@ -204,6 +243,7 @@ const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }
         const signal = controller.signal;
 
         if (validState(["Pending", "Ongoing", "Denied", "Closed (Out of term)"])) calculateProfitAtTheEnd(signal)
+        if (validState(["Pending"]) && wasEdited) calculateProfitEdited(signal)
         if (validState(["Ongoing"])) calculateActualProfit(signal)
         if (validState(["Closed (Out of term)", "Closed (Term completed)"])) calculateRefundedProfit(signal)
         userInfoById(Movement.clientId)
@@ -218,7 +258,7 @@ const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }
             <div className='mobileMovement'>
                 <div className='d-flex py-1 align-items-center' >
                     <span className="h5 mb-0 me-1 me-md-2">{t("Time deposit")}&nbsp;#{Movement.id}</span>
-                    <div className='me-auto px-1 px-md-2' style={{ borderLeft: "1px solid lightgray", borderRight: "1px solid lightgray" }}>
+                    <div className='px-1 px-md-2' style={{ borderLeft: "1px solid lightgray", borderRight: "1px solid lightgray" }}>
                         <span className="d-none d-md-inline">{t("Client")}:&nbsp;</span>
                         {
                             UserTicketInfo.fetching ?
@@ -231,6 +271,23 @@ const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }
                         }
                     </div>
                     {
+                        !!(wasEdited) &&
+                        <div className='px-1 px-md-2' style={{ borderLeft: "1px solid lightgray", borderRight: "1px solid lightgray" }}>
+                            <span className="d-none d-md-inline">{t("Edited by")}:&nbsp;</span>
+                            {
+                                editor === undefined ?
+                                    <Spinner animation="border" size="sm" />
+                                    :
+                                    editor.email ?
+                                        <strong>{editor.email}</strong>
+                                        :
+                                        t("Undefined Admin")
+                            }
+                        </div>
+                    }
+
+                    <div className='me-auto'></div>
+                    {
                         !!(Movement.stateId === 2 && !Movement.closed) &&
                         <div className="h-100 d-flex align-items-center justify-content-around Actions">
                             <div className="iconContainer red me-1">
@@ -242,11 +299,19 @@ const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }
                         !!(Movement.stateId === 1) &&
                         <div className="h-100 d-flex align-items-center justify-content-around Actions">
                             <div className="iconContainer green me-1">
-                                <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => { launchModalConfirmation("approve") }} />
+                                <FontAwesomeIcon className="icon" icon={faEdit} onClick={() => { setShowEditModal(true) }} />
                             </div>
-                            <div className="iconContainer red me-1">
-                                <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => { launchModalConfirmation("deny") }} />
-                            </div>
+                            {
+                                !!(!wasEdited || (wasEdited && !editedByCurrentUser)) &&
+                                <>
+                                    <div className="iconContainer green me-1">
+                                        <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => { launchModalConfirmation("approve") }} />
+                                    </div>
+                                    <div className="iconContainer red me-1">
+                                        <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => { launchModalConfirmation("deny") }} />
+                                    </div>
+                                </>
+                            }
                         </div>
                     }
                     <Badge className='ms-1 ms-md-2' bg={status()?.bg}>{t(status().text)}</Badge>
@@ -269,15 +334,33 @@ const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }
                 }
                 {
                     !!(validState(["Pending", "Ongoing", "Denied", "Closed (Out of term)"])) &&
-                    <div className='d-flex justify-content-between' >
-                        <span >{t("Investment upon closing within the agreed term")}:&nbsp;
-                            {ProfitAtTheEnd.fetching ?
-                                <Spinner animation="border" size="sm" />
-                                :
-                                <FormattedNumber value={ProfitAtTheEnd.value} prefix="$" fixedDecimals={2} />}
-                        </span>
-                    </div >
+
+                        wasEdited ?
+                        <div className='d-flex' >
+                            <span className='me-2 pe-2' style={{ borderRight: "1px solid lightgray" }}>{t("Investment upon closing")}:&nbsp;<strong>{t("Edited")}&nbsp;</strong>
+                                {ProfitEditedAtTheEnd.fetching ?
+                                    <Spinner animation="border" size="sm" />
+                                    :
+                                    <FormattedNumber value={ProfitEditedAtTheEnd.value} prefix="$" fixedDecimals={2} />}
+                            </span>
+                            <span ><strong>{t("Original")}:&nbsp;</strong>
+                                {ProfitAtTheEnd.fetching ?
+                                    <Spinner animation="border" size="sm" />
+                                    :
+                                    <FormattedNumber value={ProfitAtTheEnd.value} prefix="$" fixedDecimals={2} />}
+                            </span>
+                        </div >
+                        :
+                        <div className='d-flex justify-content-between' >
+                            <span >{t("Investment upon closing within the agreed term")}:&nbsp;
+                                {ProfitAtTheEnd.fetching ?
+                                    <Spinner animation="border" size="sm" />
+                                    :
+                                    <FormattedNumber value={ProfitAtTheEnd.value} prefix="$" fixedDecimals={2} />}
+                            </span>
+                        </div >
                 }
+
                 {!!(validState(["Closed (Out of term)", "Closed (Term completed)"])) &&
                     <div className='d-flex justify-content-between' >
                         <span >{t("Refund on close")}:&nbsp;
@@ -289,10 +372,22 @@ const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }
                     </div >
                 }
                 <div className='w-100 d-flex' style={{ borderBottom: "1px solid lightgray" }} />
-                <div className='d-flex justify-content-between' style={{ borderBottom: "1px solid 1px solid rgb(240,240,240)" }}>
-                    <span >{t("Duration (Agreed)")}:&nbsp;
-                        {Movement.duration}&nbsp;{t("days")}
-                    </span>
+                <div className='d-flex' style={{ borderBottom: "1px solid 1px solid rgb(240,240,240)" }}>
+                    {
+                        !!(wasEdited && editedDuration) ?
+                            <>
+                                <span className='me-2 pe-2' style={{ borderRight: "1px solid lightgray" }} >{t("Duration")}: <strong>{t("Edited")}&nbsp;</strong>
+                                    {Movement.newDuration}&nbsp;{t("days")}
+                                </span>
+                                <span><strong>{t("Original")}:&nbsp;</strong>
+                                    {Movement.duration}&nbsp;{t("days")}
+                                </span>
+                            </>
+                            :
+                            <span >{t("Duration")}:&nbsp;
+                                {Movement.duration}&nbsp;{t("days")}
+                            </span>
+                    }
                 </div >
 
                 {!!(validState(["Closed (Term completed)", "Closed (Out of term)", "Ongoing"])) &&
@@ -324,10 +419,25 @@ const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }
                     </div >}
 
                 <div className='w-100 d-flex' style={{ borderBottom: "1px solid lightgray" }} />
-                <div className='d-flex justify-content-between'>
-                    <span >{t("Anual rate")}:&nbsp;
-                        <FormattedNumber value={getAnualRate()} suffix="%" fixedDecimals={2} />
-                    </span>
+                <div className='d-flex'>
+                    {
+                        !!(wasEdited && editedInterestRate) ?
+
+                            <>
+                                <span className='me-2 pe-2' style={{ borderRight: "1px solid lightgray" }} >{t("Anual rate")}:&nbsp;<strong>{t("Edited")}&nbsp;</strong>
+                                    <FormattedNumber value={Movement.newInterestRate} suffix="%" fixedDecimals={2} />
+                                </span>
+                                <span ><strong>{t("Original")}:&nbsp;</strong>
+                                    <FormattedNumber value={getAnualRate()} suffix="%" fixedDecimals={2} />
+                                </span>
+                            </>
+                            :
+                            <span >{t("Anual rate")}:&nbsp;
+                                <FormattedNumber value={getAnualRate()} suffix="%" fixedDecimals={2} />
+                            </span>
+                    }
+
+
                 </div >
 
 
@@ -337,7 +447,14 @@ const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }
                 Movement.stateId === 1 || (Movement.stateId === 2 && !Movement.closed) ?
                     <ActionConfirmationModal reloadData={reloadData} movement={Movement} setShowModal={setShowModal} action={Action} show={ShowModal} />
                     :
-                    null}
+                    null
+            }
+            {
+                Movement.stateId === 1 ?
+                    <EditModal reloadData={reloadData} movement={Movement} setShowModal={setShowEditModal} show={ShowEditModal} />
+                    :
+                    null
+            }
         </>
     )
 }

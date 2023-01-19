@@ -17,7 +17,7 @@ import './index.css'
 import MainCardFixedDeposit from './MainCard/MainCardFixedDeposit';
 import MobileCardFixedDeposits from './MobileCards/MobileCardFixedDeposits';
 
-const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposits, FixedDepositsStats }) => {
+const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDepositsStats }) => {
     const { t } = useTranslation();
 
     function useQuery() {
@@ -116,7 +116,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
                                 <MobileCardFund Hide={Hide} setHide={setHide} key={"fund-" + key} Fund={fund} />
                         )}
 
-                        {!!(FixedDepositsStats?.fetched && hasPermission("FIXED_DEPOSIT_VIEW")) && <MobileCardFixedDeposits Hide={Hide} setHide={setHide} FixedDepositsStats={FixedDepositsStats.content} FixedDeposits={FixedDeposits} />}
+                        {!!(FixedDepositsStats?.fetched && hasPermission("FIXED_DEPOSIT_VIEW")) && <MobileCardFixedDeposits Hide={Hide} setHide={setHide} FixedDepositsStats={FixedDepositsStats.content} />}
                     </Col>
                     :
                     <Col className="h-100">
