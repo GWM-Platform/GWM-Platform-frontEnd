@@ -9,7 +9,7 @@ import Decimal from 'decimal.js';
 import axios from 'axios';
 import { DashBoardContext } from 'context/DashBoardContext';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
-import { editedDuration, editedInterestRate, getAnualRate, getDuration, getEditedDuration, getOriginalDuration, isPending } from 'utils/fixedDeposit';
+import { editedDuration, editedInterestRate, getAnualRate, getDuration, getEditedDuration, getOriginalDuration, isPending, wasEdited } from 'utils/fixedDeposit';
 
 const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
     Decimal.set({ precision: 100 })
@@ -95,7 +95,6 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
         //eslint-disable-next-line
     }, [])
 
-    const wasEdited = () => editedDuration(FixedDeposit) || editedInterestRate(FixedDeposit)
     return (
         <Col className="fund-col growAnimation" sm="6" md="6" lg="4" >
             <Card className="FundCard FixedDeposit h-100">
@@ -115,7 +114,7 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
                                     &nbsp;{!!(isPending(FixedDeposit)) ?
                                         <span style={{ textTransform: "none" }}>({t("Pending approval")})</span>
                                         :
-                                        wasEdited() &&
+                                        wasEdited(FixedDeposit) &&
                                         <span style={{ textTransform: "none" }}>({t("Preferential *")})</span>}
                                 </h1>
                                 <Card.Text className="subTitle lighter mt-0 my-0">
@@ -192,7 +191,7 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
                                                     <FormattedNumber value={profit.value} prefix="$" fixedDecimals={2} />
                                             }
                                         </span>
-                                        {(wasEdited() && !isPending(FixedDeposit)) && " *"}
+                                        {(wasEdited(FixedDeposit) && !isPending(FixedDeposit)) && " *"}
                                     </Card.Text>
                                 </Row>
                             </Container>

@@ -26,8 +26,11 @@ const getDuration = (FixedDeposit) =>
     ? getEditedDuration(FixedDeposit)
     : getOriginalDuration(FixedDeposit);
 
+const wasEdited=(FixedDeposit)=>editedDuration(FixedDeposit) || editedInterestRate(FixedDeposit)
+
 export {
   isPending,
+  wasEdited,
   getOriginalAnualRate,
   getEditedAnualRate,
   editedInterestRate,
