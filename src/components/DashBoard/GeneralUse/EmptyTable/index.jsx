@@ -3,11 +3,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {
   Col,
   Row,
-  Spinner,
 } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
-const Loading = ({ NavInfoToggled,className="" }) => {
+const EmptyTable = ({ NavInfoToggled,className="" }) => {
   //To use the translations from i18n
   const { t } = useTranslation();
   return (
@@ -15,10 +16,12 @@ const Loading = ({ NavInfoToggled,className="" }) => {
       <Col
         className="d-flex justify-content-center align-items-center"
       >
-        <Spinner className="me-2" animation="border" variant="primary" />
-        <span className="loadingText">{t("Loading")}</span>
+        <div className="emptyTable">
+          <span className="icon"><FontAwesomeIcon icon={faSearch} /></span>
+          <span className="text">{t("There are no results")}</span>
+        </div>
       </Col>
     </Row>
   )
 }
-export default Loading
+export default EmptyTable

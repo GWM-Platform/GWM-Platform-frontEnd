@@ -802,5 +802,9 @@
   "Filter documents by tags...": "Filtrar documentos por etiquetas",
   "All clients": "Todos los clientes",
   "Select recipients": "Seleccionar destinatarios",
-  "Client {{clientName}}": "Cliente {{clientName}}"
+  "Client {{clientName}}": "Cliente {{clientName}}",
+  "Client / Administration":"Cliente / Administración",
+  "Log type":"Tipo de registro",
+  "Administration":"Administración",
+  "No results":"No hay resultados"
 }
