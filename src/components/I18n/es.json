@@ -818,10 +818,11 @@
   "Edited": "Editado",
   "DEPOSIT_CLOSE": "Cierre de plazo fijo",
   "DEPOSIT_UPDATE": "Edición de plazo fijo",
-  "details": "detalles",
   "Preferential *": "Preferencial *",
   "Client / Administration":"Cliente / Administración",
+  "Client / Administrators":"Cliente / Administradores",
   "Log type":"Tipo de registro",
-  "Administration":"Administración",
-  "No results":"No hay resultados"
+  "Administrators":"Administradores",
+  "No results":"No hay resultados",
+  "details":"detalles"
 }

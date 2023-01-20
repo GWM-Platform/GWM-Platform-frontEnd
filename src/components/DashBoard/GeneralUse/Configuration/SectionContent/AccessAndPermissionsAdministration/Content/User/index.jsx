@@ -10,7 +10,7 @@ import axios from 'axios'
 import { DashBoardContext } from 'context/DashBoardContext'
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icons'
 
-const User = ({ user, permissions, funds, getUsers }) => {
+const User = ({ user, permissions, funds, getUsers, users }) => {
 
     const { ClientSelected, toLogin, DashboardToastDispatch, hasPermission } = useContext(DashBoardContext);
     const { t } = useTranslation()
@@ -307,7 +307,7 @@ const User = ({ user, permissions, funds, getUsers }) => {
                                     )
                             }
                             {
-                                hasPermission('') &&
+                                !!(hasPermission('') && users.length < 1) &&
                                 <Col xs="12">
                                     <div className="permission-category mt-2 pt-2 border-top" />
                                 </Col >
@@ -338,7 +338,7 @@ const User = ({ user, permissions, funds, getUsers }) => {
                                 <>
                                     {/*The owners only can make another user owner */}
                                     {
-                                        !(!hasPermission('')) &&
+                                        !(!hasPermission('') || users.length <= 1) &&
 
                                         <Col xs="auto" className=" mb-2">
                                             <Button disabled={DoubleCheck.fetching} variant="danger" onClick={toggleDoubleCheck}>

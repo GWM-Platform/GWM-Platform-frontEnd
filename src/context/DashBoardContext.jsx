@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useReducer, useRef } from 'react'
 import { createContext, useState, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+import { userEmail } from 'utils/userEmail';
 
 
 const DashboardToastInitialState = []
@@ -181,6 +182,7 @@ export const DashBoardProvider = ({ children }) => {
             }
         }
 
+        //TODO: Add client pending
         const getPendingTransactions = async () => {
             setPendingTransactions({
                 ...PendingTransactions, ...{
@@ -207,10 +209,9 @@ export const DashBoardProvider = ({ children }) => {
                 setPendingTransactions({
                     ...PendingTransactions, ...{
                         value: data.transactions ? data.transactions : [],
-                        fetched: true,
-                        fetching: false
                     }
                 })
+                getClientPendingTransactions()
             } else {
                 switch (response.status) {
                     default:
@@ -222,6 +223,32 @@ export const DashBoardProvider = ({ children }) => {
                         })
                 }
             }
+        }
+
+        const getClientPendingTransactions = () => {
+            setPendingTransactions(prevState => ({
+                ...prevState,
+                ...{
+                    fetching: true,
+                }
+            }))
+            axios.get(`/transfers`, {
+                params: {
+                    limit: 50,
+                    skip: 0,
+                    client: ClientSelected.id,
+                    filterState: 5
+                }
+            }).then(function (response) {
+                setPendingTransactions(prevState => ({
+                    ...prevState,
+                    ...{
+                        fetching: false,
+                        fetched: true,
+                        value: [...prevState.value, ...response?.data?.transactions ? response?.data?.transactions : []]
+                    }
+                }))
+            })
         }
 
         if (ClientSelected.id && ClientPermissions.fetched) {
@@ -430,7 +457,7 @@ export const DashBoardProvider = ({ children }) => {
 
         const manageUrlUser = () => {
             const validRedirectedSections = ["history"]
-            const validTypes = ["m", "t","transfers" ]
+            const validTypes = ["m", "t", "transfers"]
             if (desiredLocation && desiredId && desiredType && desiredClient) {
                 if (validRedirectedSections.includes(desiredLocation) && validTypes.includes(desiredType)) {
                     let destination = ""
@@ -461,7 +488,7 @@ export const DashBoardProvider = ({ children }) => {
             }
         }
 
-        
+
         if (UserClients.fetched) {
             if (userDashboardSelected()) {
                 setClientSelected(UserClients.content[IndexClientSelected])
@@ -538,6 +565,9 @@ export const DashBoardProvider = ({ children }) => {
 
     const hasPermission = (Permission) => ClientPermissions?.content?.permissions?.filter(permission => permission.action === Permission)?.length > 0 || isOwner()
 
+
+
+
     const hasAnySellPermission = () => ClientPermissions?.content?.permissions?.map(permission => permission.action.split('_'))
         ?.filter(actionSplitted => actionSplitted?.includes('SELL') && actionSplitted?.includes('STAKES')).length > 0 || isOwner()
 
@@ -562,12 +592,33 @@ export const DashBoardProvider = ({ children }) => {
             ?.filter(sellPermission => sellPermission?.includes("" + fundId))?.length > 0 ||// Verify that has a sell permission for the fund from parameter
         isOwner()
 
+    const couldSign = (movement) => {
+        console.log(movement)
+        const hasPermissionToSign = () => {
+            switch (movement.motive) {
+                case "FIXED_DEPOSIT_CREATE":
+                    return hasPermission('FIXED_DEPOSIT_CREATE')
+                case "STAKE_BUY":
+                    return hasBuyPermission(movement?.fundId)
+                case "STAKE_SELL":
+                    return hasSellPermission(movement?.fundId)
+                case "WITHDRAWAL":
+                    return hasPermission('WITHDRAW')
+                case "TRANSFER_SEND":
+                    return hasPermission('TRANSFER_GENERATE')
+                default:
+                    return hasPermission('')
+            }
+        }
+        //TODO: integrate outgoing transfer (incoming in transfer in "pending client" state cannot be signed, the sender should do it) 
+        return movement?.userEmail !== userEmail() && hasPermissionToSign()
+    }
     return <DashBoardContext.Provider
         value={{
             token, admin, UserClients, ClientSelected, IndexClientSelected, setIndexClientSelected, balanceChanged, setBalanceChanged, TransactionStates, getMoveStateById,
             FetchingFunds, contentReady, PendingWithoutpossession, PendingTransactions, Accounts, Funds, itemSelected, setItemSelected, isMobile, width, toLogin, setContentReady,
             DashboardToast, DashboardToastDispatch, AccountSelected, allowedSymbols,
-            ClientPermissions, hasPermission, hasSellPermission, hasBuyPermission, hasViewPermission, setClientPermissions, hasAnySellPermission, hasAnyBuyPermission
+            couldSign, ClientPermissions, hasPermission, hasSellPermission, hasBuyPermission, hasViewPermission, setClientPermissions, hasAnySellPermission, hasAnyBuyPermission
         }}>
         {children}
     </DashBoardContext.Provider>

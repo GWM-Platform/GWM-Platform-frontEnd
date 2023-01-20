@@ -3,19 +3,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Table } from 'react-bootstrap';
 import Movement from './Movement';
 import { useTranslation } from "react-i18next";
-import { useContext } from 'react';
-import { DashBoardContext } from 'context/DashBoardContext';
-import { userEmail } from 'utils/userEmail';
 
 const TableLastMovements = ({ content, movements, reloadData }) => {
 
-    const { hasPermission } = useContext(DashBoardContext);
 
     const { t } = useTranslation();
 
     const anyWithActions = () => Object.values(content).some(
-        (movement) => (
-            movement.stateId === 5 && movement.userEmail !== userEmail()  && hasPermission(""))
+        (movement) => (movement.stateId === 5 && movement.motive !== "TRANSFER_RECEIVE")
         /*
         //TODO: approve transfers from movements table
         ||
