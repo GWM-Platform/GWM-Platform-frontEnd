@@ -20,7 +20,7 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
     useEffect(() => {
         const getBalance = async () => {
             var url = `${process.env.REACT_APP_APIURL}/clients/${ClientSelected.id}/balance`;
-            setBalance({ ...Balance, ...{ fetching: true } })
+            setBalance(prevState => ({ ...prevState, ...{ fetching: true } }))
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -29,10 +29,11 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
                     'Content-Type': 'application/json'
                 }
             })
-
             if (response.status === 200) {
                 const data = await response.json()
-                setBalance(prevState => ({ ...prevState, ...{ fetching: false, value: data } }))
+                setBalance(prevState => {
+                    return ({ ...prevState, ...{ fetching: false, value: data } })
+                })
             } else {
                 switch (response.status) {
                     default:
@@ -40,9 +41,42 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
             }
             setBalanceChanged(false)
         }
-        if (balanceChanged && ClientSelected.id) getBalance()
+
+        if (!!(balanceChanged) && !!(ClientSelected.id)) { 
+            getBalance()
+         }
         // eslint-disable-next-line 
-    }, [setBalance, token, balanceChanged, setBalanceChanged, ClientSelected])
+    }, [setBalance, token, balanceChanged, setBalanceChanged])
+
+    useEffect(() => {
+        const getBalance = async () => {
+            var url = `${process.env.REACT_APP_APIURL}/clients/${ClientSelected.id}/balance`;
+            setBalance(prevState => ({ ...prevState, ...{ fetching: true } }))
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    Accept: "*/*",
+                    'Content-Type': 'application/json'
+                }
+            })
+            if (response.status === 200) {
+                const data = await response.json()
+                setBalance(prevState => {
+                    return ({ ...prevState, ...{ fetching: false, value: data } })
+                })
+            } else {
+                switch (response.status) {
+                    default:
+                }
+            }
+        }
+
+        if ((ClientSelected.id)) { 
+            getBalance()
+         }
+        // eslint-disable-next-line 
+    }, [setBalance, token, ClientSelected])
 
     return (
         <Navbar className="navBarTotal" bg="light">
