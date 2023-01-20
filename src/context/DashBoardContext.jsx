@@ -567,6 +567,7 @@ export const DashBoardProvider = ({ children }) => {
         isOwner()
 
     const couldSign = (movement) => {
+        console.log(movement)
         const hasPermissionToSign = () => {
             switch (movement.motive) {
                 case "FIXED_DEPOSIT_CREATE":
@@ -577,6 +578,8 @@ export const DashBoardProvider = ({ children }) => {
                     return hasSellPermission(movement?.fundId)
                 case "WITHDRAWAL":
                     return hasPermission('WITHDRAW')
+                case "TRANSFER_SEND":
+                    return hasPermission('TRANSFER_GENERATE')
                 default:
                     return hasPermission('')
             }

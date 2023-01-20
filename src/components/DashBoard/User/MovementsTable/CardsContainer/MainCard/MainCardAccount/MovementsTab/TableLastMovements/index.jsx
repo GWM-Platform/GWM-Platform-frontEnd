@@ -10,7 +10,7 @@ const TableLastMovements = ({ content, movements, reloadData }) => {
     const { t } = useTranslation();
 
     const anyWithActions = () => Object.values(content).some(
-        (movement) => (movement.stateId === 5)
+        (movement) => (movement.stateId === 5 && movement.motive !== "TRANSFER_RECEIVE")
         /*
         //TODO: approve transfers from movements table
         ||
