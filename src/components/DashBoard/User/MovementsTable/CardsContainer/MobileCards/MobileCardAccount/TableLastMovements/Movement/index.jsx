@@ -7,15 +7,14 @@ import { DashBoardContext } from 'context/DashBoardContext';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import { OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckCircle,faTimesCircle, faFilePdf } from '@fortawesome/free-regular-svg-icons';
+import { faCheckCircle, faTimesCircle, faFilePdf } from '@fortawesome/free-regular-svg-icons';
 import ReactPDF from '@react-pdf/renderer';
 import MovementReceipt from 'Receipts/MovementReceipt';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import { userEmail } from 'utils/userEmail';
 import MovementConfirmation from 'components/DashBoard/User/MovementsTable/GeneralUse/MovementConfirmation';
 const Movement = ({ content, reloadData }) => {
   var momentDate = moment(content.createdAt);
-  const { getMoveStateById, AccountSelected, hasPermission } = useContext(DashBoardContext)
+  const { getMoveStateById, AccountSelected, couldSign } = useContext(DashBoardContext)
 
   const { t } = useTranslation()
 
@@ -131,22 +130,21 @@ const Movement = ({ content, reloadData }) => {
         </div>
       }
       {
-        !!(content.stateId === 5 && content?.userEmail !== userEmail() && hasPermission("")) &&
+        !!(content.stateId === 5 && couldSign(content))  &&
         <div className="h-100 d-flex align-items-center justify-content-around">
 
-          <div className="iconContainer green" onClick={() => launchModalConfirmation("approve")}>
-            <FontAwesomeIcon className="icon" icon={faCheckCircle} /> {t("Approve")}
+          <div className={`iconContainer green ${!couldSign(content) ? "not-allowed" : ""}`}>
+            <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => { if (couldSign(content)) { launchModalConfirmation("approve") } }} />
           </div>
 
-
-          <div className="iconContainer red" onClick={() => launchModalConfirmation("deny")} >
-            <FontAwesomeIcon className="icon" icon={faTimesCircle} /> {t("Deny")}
+          <div className={`iconContainer red ${!couldSign(content) ? "not-allowed" : ""}`}>
+            <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => { if (couldSign(content)) { launchModalConfirmation("deny") } }} />
           </div>
 
         </div>
       }
       {
-        !!(content.stateId === 5 && content?.userEmail !== userEmail()) &&
+        !!(content.stateId === 5 && couldSign(content)) &&
         <MovementConfirmation reloadData={reloadData} movement={content} setShowModal={setShowModal} action={Action} show={ShowModal} />
       }
     </div>

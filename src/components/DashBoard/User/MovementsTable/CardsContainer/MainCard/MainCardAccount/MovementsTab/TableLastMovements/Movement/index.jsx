@@ -10,14 +10,13 @@ import ReactPDF from '@react-pdf/renderer';
 import MovementReceipt from 'Receipts/MovementReceipt';
 import { OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import MovementConfirmation from '../../../../../../GeneralUse/MovementConfirmation';
-import { userEmail } from 'utils/userEmail';
+import MovementConfirmation from 'components/DashBoard/User/MovementsTable/GeneralUse/MovementConfirmation';
 
 const Movement = ({ content, actions, reloadData }) => {
 
   var momentDate = moment(content.createdAt);
   const { t } = useTranslation();
-  const { getMoveStateById, AccountSelected } = useContext(DashBoardContext)
+  const { getMoveStateById, AccountSelected, couldSign } = useContext(DashBoardContext)
 
   const [GeneratingPDF, setGeneratingPDF] = useState(false)
 
@@ -128,15 +127,15 @@ const Movement = ({ content, actions, reloadData }) => {
       {
         !!(actions) &&
         <td className="Actions verticalCenter" >{
-          !!(content.stateId === 5 && content?.userEmail !== userEmail()) &&
+          !!(content.stateId === 5) &&
           <div className="h-100 d-flex align-items-center justify-content-around">
 
-            <div className="iconContainer green">
-              <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => launchModalConfirmation("approve")} />
+            <div className={`iconContainer green ${!couldSign(content) ? "not-allowed" : ""}`}>
+              <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() =>{ if (couldSign(content)) { launchModalConfirmation("approve")} } } />
             </div>
 
-            <div className="iconContainer red">
-              <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => launchModalConfirmation("deny")} />
+            <div className={`iconContainer red ${!couldSign(content) ? "not-allowed" : ""}`}>
+              <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => { if (couldSign(content)) { launchModalConfirmation("deny")} }} />
             </div>
 
           </div>}
@@ -144,7 +143,7 @@ const Movement = ({ content, actions, reloadData }) => {
 
       }
       {
-        !!(content.stateId === 5 && content?.userEmail !== userEmail()) &&
+        !!(content.stateId === 5 && couldSign(content)) &&
         <MovementConfirmation reloadData={reloadData} movement={content} setShowModal={setShowModal} action={Action} show={ShowModal} />
       }
     </tr>
