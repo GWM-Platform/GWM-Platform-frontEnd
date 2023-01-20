@@ -182,6 +182,7 @@ export const DashBoardProvider = ({ children }) => {
             }
         }
 
+        //TODO: Add client pending
         const getPendingTransactions = async () => {
             setPendingTransactions({
                 ...PendingTransactions, ...{
@@ -208,10 +209,9 @@ export const DashBoardProvider = ({ children }) => {
                 setPendingTransactions({
                     ...PendingTransactions, ...{
                         value: data.transactions ? data.transactions : [],
-                        fetched: true,
-                        fetching: false
                     }
                 })
+                getClientPendingTransactions()
             } else {
                 switch (response.status) {
                     default:
@@ -223,6 +223,32 @@ export const DashBoardProvider = ({ children }) => {
                         })
                 }
             }
+        }
+
+        const getClientPendingTransactions = () => {
+            setPendingTransactions(prevState => ({
+                ...prevState,
+                ...{
+                    fetching: true,
+                }
+            }))
+            axios.get(`/transfers`, {
+                params: {
+                    limit: 50,
+                    skip: 0,
+                    client: ClientSelected.id,
+                    filterState: 5
+                }
+            }).then(function (response) {
+                setPendingTransactions(prevState => ({
+                    ...prevState,
+                    ...{
+                        fetching: false,
+                        fetched: true,
+                        value: [...prevState.value, ...response?.data?.transactions ? response?.data?.transactions : []]
+                    }
+                }))
+            })
         }
 
         if (ClientSelected.id && ClientPermissions.fetched) {
