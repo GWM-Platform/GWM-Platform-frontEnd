@@ -803,8 +803,9 @@
   "All clients": "Todos los clientes",
   "Select recipients": "Seleccionar destinatarios",
   "Client {{clientName}}": "Cliente {{clientName}}",
-  "Client / Administration":"Cliente / Administración",
+  "Client / Administrators":"Cliente / Administradores",
   "Log type":"Tipo de registro",
-  "Administration":"Administración",
-  "No results":"No hay resultados"
+  "Administrators":"Administradores",
+  "No results":"No hay resultados",
+  "details":"detalles"
 }

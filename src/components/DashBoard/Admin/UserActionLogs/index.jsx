@@ -263,7 +263,7 @@ const UserActionLogs = () => {
         );
     }
 
-    const options = [{ label: t("Administration"), value: "admin" }, ...Clients.content
+    const options = [{ label: t("Administrators"), value: "admin" }, ...Clients.content
         .map(client =>
             ({ label: client.alias, value: client.id }))]
 
@@ -279,7 +279,7 @@ const UserActionLogs = () => {
                             <Accordion.Collapse eventKey="0">
                                 <Row className="pt-3">
                                     <Col md="6">
-                                        <Form.Label>{t("Client / Administration")}</Form.Label>
+                                        <Form.Label>{t("Client / Administrators")}</Form.Label>
                                         <Select
                                             menuPosition="fixed"
                                             className={`basic-single`}
