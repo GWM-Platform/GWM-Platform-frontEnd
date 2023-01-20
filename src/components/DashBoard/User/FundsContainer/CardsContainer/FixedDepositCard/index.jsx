@@ -191,7 +191,6 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
                                                     <FormattedNumber value={profit.value} prefix="$" fixedDecimals={2} />
                                             }
                                         </span>
-                                        {(wasEdited(FixedDeposit) && !isPending(FixedDeposit)) && " *"}
                                     </Card.Text>
                                 </Row>
                             </Container>
