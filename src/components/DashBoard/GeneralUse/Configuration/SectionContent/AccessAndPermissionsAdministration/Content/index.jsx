@@ -32,7 +32,7 @@ const Content = ({ users, permissions, funds, getUsers }) => {
             <Col lg="12" >
               <Accordion flush alwaysOpen className="usersList">
                 {
-                  users.map(user => <User getUsers={getUsers} key={`user-${user.id}`} user={user} permissions={permissions} funds={funds} />)
+                  users.map(user => <User getUsers={getUsers} key={`user-${user.id}`} user={user} permissions={permissions} funds={funds} users={users} />)
                 }
                 <div className="my-2 d-flex justify-content-end">
                   <Button onClick={() => history.push("Configuration?section=Access+and+permissions+administration&connectUser=true")} disabled={!hasPermission('ADD_USERS')}>
