@@ -85,8 +85,6 @@ const MovementRow = ({ Accounts, Clients, Movement }) => {
 
     const [showClick, setShowClick] = useState(false)
     const [showHover, setShowHover] = useState(false)
-
-    console.log(ClientAccountInfo)
     
     return (
         <>

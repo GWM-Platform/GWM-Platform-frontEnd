@@ -819,5 +819,9 @@
   "DEPOSIT_CLOSE": "Cierre de plazo fijo",
   "DEPOSIT_UPDATE": "Edición de plazo fijo",
   "details": "detalles",
-  "Preferential *": "Preferencial *"
+  "Preferential *": "Preferencial *",
+  "Client / Administration":"Cliente / Administración",
+  "Log type":"Tipo de registro",
+  "Administration":"Administración",
+  "No results":"No hay resultados"
 }
