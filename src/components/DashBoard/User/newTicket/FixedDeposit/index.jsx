@@ -209,7 +209,7 @@ const FixedDepositTicket = ({ balanceChanged }) => {
                                         <Form noValidate validated={validated} onSubmit={handleSubmit}>
 
                                             <Accordion flush defaultActiveKey="0">
-                                                <RuleSelector data={data} setData={setData} RulesObject={FixedDeposit.content} />
+                                                <RuleSelector handleChange={handleChange} data={data} setData={setData} RulesObject={FixedDeposit.content} />
                                             </Accordion>
 
                                             <Accordion flush defaultActiveKey="0">

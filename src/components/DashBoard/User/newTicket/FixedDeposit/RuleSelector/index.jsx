@@ -8,7 +8,7 @@ import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons
 import { useTranslation } from "react-i18next";
 import { DashBoardContext } from 'context/DashBoardContext';
 
-const RuleSelector = ({ data, setData, RulesObject }) => {
+const RuleSelector = ({ data, setData, RulesObject,handleChange }) => {
     const { t } = useTranslation();
     const [CardWidth, setCardWidth] = useState(false)
     const [Offset, setOffset] = useState(0)
@@ -80,7 +80,7 @@ const RuleSelector = ({ data, setData, RulesObject }) => {
                                     <Row className="mx-0 flex-row flex-nowrap  overflow-auto overflow-sm-hidden RuleCardsContainer" ref={RulesContainer}>
                                         {Rules.map((Rule, index) => {
                                             return (
-                                                <RuleCard key={`Rule-${index}`} Rule={Rule} data={data} setData={setData} index={index} Rules={Rules} RulesObject={RulesObject} />
+                                                <RuleCard handleChange={handleChange} key={`Rule-${index}`} Rule={Rule} data={data} setData={setData} index={index} Rules={Rules} RulesObject={RulesObject} />
                                             )
                                         })}
                                     </Row>

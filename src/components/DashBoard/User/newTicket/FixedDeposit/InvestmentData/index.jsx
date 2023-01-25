@@ -44,7 +44,7 @@ const InvestmentData = ({ data, handleChange, Balance, calculateProfit }) => {
                             <span>
                                 <span className="d-inline-block numberContainer">
                                     <div className="d-flex justify-content-center align-items-center h-100 w-100">
-                                        <span className="number">1</span>
+                                        <span className="number">2</span>
                                     </div>
                                 </span>
                                 {t("Specify the amount you want to invest")}

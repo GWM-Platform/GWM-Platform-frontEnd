@@ -22,7 +22,7 @@ const FundSelector = ({ data, Balance, fetching, handleChange, calculateProfit, 
                             <span>
                                 <span className="d-inline-block numberContainer">
                                     <div className="d-flex justify-content-center align-items-center h-100 w-100">
-                                        <span className="number">2</span>
+                                        <span className="number">3</span>
                                     </div>
                                 </span>
                                 {t("Specify the duration of your investment")}
@@ -57,7 +57,6 @@ const FundSelector = ({ data, Balance, fetching, handleChange, calculateProfit, 
 
                             min={moment().add(minDuration, "days").format("YYYY-MM-DD")}
                             max={moment().add(maxDuration, "days").format("YYYY-MM-DD")}
-                            disabled={maxDuration === minDuration}
                             
                             id="until"
                             type="date"
