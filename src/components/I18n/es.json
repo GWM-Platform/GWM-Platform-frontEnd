@@ -827,5 +827,6 @@
   "Collapse tags": "Colapsar etiquetas",
   "Download":"Descargar",
   "Open in a new tab":"Abrir en una pestaña nueva",
-  "Edit tags of \"{{documentName}}\"":"Editar etiquetas de \"{{documentName}}\""
+  "Edit tags of \"{{documentName}}\"":"Editar etiquetas de \"{{documentName}}\"",
+  "Document options":"Opciones del documento"
 }
