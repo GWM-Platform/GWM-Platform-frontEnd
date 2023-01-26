@@ -593,7 +593,6 @@ export const DashBoardProvider = ({ children }) => {
         isOwner()
 
     const couldSign = (movement) => {
-        console.log(movement)
         const hasPermissionToSign = () => {
             switch (movement.motive) {
                 case "FIXED_DEPOSIT_CREATE":

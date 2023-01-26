@@ -12,6 +12,8 @@ import { useTranslation } from 'react-i18next'
 import axios from 'axios'
 import DocumentItem from './DocumentItem'
 import ReactSelect from 'react-select'
+import { Row } from 'react-bootstrap'
+import NoMovements from 'components/DashBoard/GeneralUse/NoMovements'
 
 const Documents = () => {
 
@@ -27,7 +29,7 @@ const Documents = () => {
     setSelectedOptions([...selectedOption]);
   };
 
-  const uniqueTagsOptions = () => [...new Set(documents.content.map(document => [document.tags]).flat(2))].map(tag => ({ value: tag, label: tag }))
+  const uniqueTagsOptions = () => [...new Set(documents.content.map(document => [document?.tags || []]).flat(2))].map(tag => ({ value: tag, label: tag }))
 
   const getDocuments = useCallback((signal) => {
     setDocuments((prevState) => ({ ...prevState, fetching: true, fetched: false }))
@@ -90,7 +92,14 @@ const Documents = () => {
                 multiValueRemove: () => ("multiValueRemove"),
               }}
             />
-            {filteredDocuments().map(document => <DocumentItem uniqueTagsOptions={uniqueTagsOptions()} document={document} key={`document-item-${document.id}`} getDocuments={getDocuments} />)}
+            {
+              documents.fetched && filteredDocuments().length === 0 ?
+                <NoMovements movements={4} />
+                :
+                <Row className='g-2 mb-2'>
+                  {filteredDocuments().map(document => <DocumentItem uniqueTagsOptions={uniqueTagsOptions()} document={document} key={`document-item-${document.id}`} getDocuments={getDocuments} />)}
+                </Row>
+            }
           </>
       }
     </>

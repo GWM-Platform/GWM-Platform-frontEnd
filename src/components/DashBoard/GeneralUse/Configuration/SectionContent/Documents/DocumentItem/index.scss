@@ -1,11 +1,53 @@
 .document {
-    .title {
-        margin-top: 0;
-        font-size: 20px;
-        font-weight: 700;
+    height: 100%;
+    border: 1px solid lightgray;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .tag {
+        min-height: 1.35rem;
+        border: none;
+        white-space: break-spaces;
+
+        &.overview {
+            max-width: 100%;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
     }
+
+    .form-check-input {
+        margin-top: 0;
+    }
+
+    .identifier {
+        margin-top: 0;
+        margin-bottom: 0;
+        font-size: 14px;
+        font-weight: 300;
+    }
+
+    .title {
+        line-height: .7em;
+        margin-top: 0;
+        margin-bottom: .4em;
+        font-size: 20px;
+        font-weight: 400;
+    }
+
     .tags {
         font-size: 16px;
         font-weight: 200;
+    }
+}
+
+.editTags.modal {
+    .modal-content {
+        background-color: var(--bs-modal-bg);
+        border: var(--bs-modal-border-width) solid var(--bs-modal-border-color);
     }
 }
