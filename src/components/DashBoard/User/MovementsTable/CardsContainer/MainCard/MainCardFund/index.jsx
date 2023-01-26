@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useCallback, useContext, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Col, Nav } from 'react-bootstrap';
 
@@ -12,55 +12,69 @@ import MovementsTab from './MovementsTab';
 import FundDetail from './FundDetail';
 import './index.css'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
+import axios from 'axios';
 
 const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
     const [SelectedTab, setSelectedTab] = useState("0")
     //eslint-disable-next-line
-    const [Performance, setPerformance] = useState(0)
-    const { PendingTransactions, token, ClientSelected } = useContext(DashBoardContext)
+    const [Performance, setPerformance] = useState({ fetching: true, fetched: false, valid: false, content: {} })
+    const { PendingTransactions, ClientSelected, toLogin } = useContext(DashBoardContext)
     const { t } = useTranslation();
 
     const balanceInCash = Fund.shares ? (Fund.shares * Fund.fund.sharePrice) : 0
     const pendingshares = PendingTransactions.value.filter((transaction) => transaction.fundId === Fund.fund.id && Math.sign(transaction.shares) === +1).map((transaction) => transaction.shares).reduce((a, b) => a + b, 0).toFixed(2)
 
-    useEffect(() => {
-        //eslint-disable-next-line
-        const getPerformance = async () => {
-            var url = `${process.env.REACT_APP_APIURL}/funds/${Fund.fund.id}/performance?` + new URLSearchParams(
+    const getPerformance = useCallback((signal) => {
+        setPerformance((prevState) => ({ ...prevState, fetching: true, fetched: false }))
+        axios.get(`/funds/${Fund.fund.id}/performance`, {
+            params: { client: ClientSelected.id },
+            signal: signal,
+        }).then(function (response) {
+            setPerformance((prevState) => (
                 {
-                    client: ClientSelected.id
-                });
-
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    Accept: "*/*",
-                    'Content-Type': 'application/json'
-                }
-            })
-
-            if (response.status === 200) {
-                const data = await response.json()
-                setPerformance(data.toFixed(2))
-            } else {
-                switch (response.status) {
-                    default:
-                        console.error(response.status)
-                }
+                    ...prevState,
+                    fetching: false,
+                    fetched: true,
+                    valid: true,
+                    content: response.data,
+                }))
+        }).catch((err) => {
+            if (err.message !== "canceled") {
+                if (err.response.status === "401") toLogin()
+                setPerformance((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
             }
-        }
+        });
+    }, [toLogin, setPerformance, Fund, ClientSelected.id]);
 
-        /*
-        TODO - Show again when the backend is fixed
-        getPerformance()
-        */
-    }, [Fund, ClientSelected.id, token])
 
+    useEffect(() => {
+        const controller = new AbortController();
+        const signal = controller.signal;
+        getPerformance(signal)
+
+        return () => {
+            controller.abort();
+        };
+    }, [getPerformance])
+
+    const PerformanceComponent = ({ text, performance }) => {
+        return (
+            <span className='text-end w-100 d-block' style={{ fontWeight: "300" }}>
+                {t(text)}:&nbsp;
+                <strong>
+                    <FormattedNumber className={{
+                        '1': 'text-green',
+                        '-1': 'text-red'
+                    }[Math.sign(performance)]}
+                        value={performance} suffix="%" fixedDecimals={2} />
+                </strong>
+            </span>
+        )
+    }
     return (
         <div className="movementsMainCardFund growAnimation mt-2">
             <div className="bg-white info ms-0 mb-2 px-0">
-                <div className="d-flex justify-content-between align-items-end pe-2">
+                <div className="d-flex justify-content-between align-items-end pe-2 mb-1">
                     <h1 className="m-0 title px-2">
                         {t(Fund.fund.name)}
                     </h1>
@@ -69,17 +83,29 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
                         <FormattedNumber style={{ fontWeight: "bolder" }} value={Fund.fund.sharePrice} prefix="$" suffix="" fixedDecimals={2} />
                     </h2>
                 </div>
+                <div className="d-flex justify-content-between align-items-start pe-2">
+                    <Col className="d-flex justify-content-between pe-5" sm="auto">
+                        <h2 className="px-2 left mb-1">
+                            {t("Balance (shares)")}:&nbsp;
+                            <FormattedNumber style={{ fontWeight: "bolder" }} value={Fund.shares ? Fund.shares : 0} fixedDecimals={2} />
+                        </h2>
+                    </Col>
 
-                <div>
-                    <h2 className="px-2 left">
-                        {t("Balance (shares)")}:&nbsp;
-                        <FormattedNumber style={{ fontWeight: "bolder" }} value={Fund.shares ? Fund.shares : 0} fixedDecimals={2} />
-                    </h2>
+                    {
+                        !!(Performance?.fetched) &&
+                        (
+                            Performance?.content?.result &&
+                            <Col sm="auto" >
+                                <PerformanceComponent text={"Actual performance"} performance={Performance.content.result} />
+                            </Col>
+                        )
+                    }
                 </div>
+
                 <div className="d-flex justify-content-between align-items-end pe-2">
                     <Col className="d-flex justify-content-between pe-5" sm="auto">
                         <Col className="pe-2">
-                            <div className="containerHideInfo px-2 description">
+                            <div className="containerHideInfo px-2 description" style={{ lineHeight: "1em" }}>
                                 <span>{t("Balance ($)")}:&nbsp;</span>
                                 <span style={{ fontWeight: "bolder" }}>
                                     <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={balanceInCash.toFixed(2)} prefix="" fixedDecimals={2} />
@@ -106,22 +132,58 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
                             />
                         </Col>
                     </Col>
-                    {/*
-                    <Col sm="auto" >
-                        {t("Performance")}:&nbsp;
-                        <FormattedNumber className={{
-                            '1': 'text-green',
-                            '-1': 'text-red'
-                        }[Math.sign(Performance)]}
-                            value={Performance} suffix="%" fixedDecimals={2} />
+
+                    {
+                        !!(Performance.fetched) &&
+                        (
+                            Performance?.content?.performance &&
+                            <Col sm="auto" >
+                                <PerformanceComponent text={"Period performance"} performance={Performance.content.performance} />
+                            </Col>
+                        )
+                    }
+                </div>
+                <div className="d-flex justify-content-between align-items-start pe-2">
+                    <Col className="d-flex justify-content-between pe-5" sm="auto">
+                        <Col className="pe-2">
+                            <div className="containerHideInfo px-2 description">
+                                {t("Pending transactions (shares)")}&nbsp;
+                                <FormattedNumber style={{ fontWeight: "bolder" }} value={pendingshares ? pendingshares : 0} fixedDecimals={2} />
+                            </div>
+                        </Col>
+                        <Col sm="auto" className="hideInfoButton d-flex align-items-center">
+                            <FontAwesomeIcon
+                                className={`icon ${Hide ? "hidden" : "shown"}`}
+                                onClick={() => { setHide(!Hide) }}
+                                icon={faEye}
+                            />
+                            <FontAwesomeIcon
+                                className={`icon ${!Hide ? "hidden" : "shown"}`}
+                                onClick={() => { setHide(!Hide) }}
+                                icon={faEyeSlash}
+                            />
+                            <FontAwesomeIcon
+                                className="icon placeholder"
+                                icon={faEyeSlash}
+                            />
+                        </Col>
                     </Col>
-                    */}
+
+                    {
+                        !!(Performance.fetched) &&
+                        (
+                            Performance?.content?.anualPerf &&
+                            <Col sm="auto" >
+                                <PerformanceComponent text={"Anual performance"} performance={Performance.content.anualPerf} />
+                            </Col>
+                        )
+                    }
                 </div>
                 <div className="border-bottom-main pb-2">
                     <h2 className="px-2 left">
-                        {t("Pending transactions (shares)")}&nbsp;
-                        <FormattedNumber style={{ fontWeight: "bolder" }} value={pendingshares ? pendingshares : 0} fixedDecimals={2} />
+
                     </h2>
+
                 </div>
             </div>
             {/*tabs controller*/}
