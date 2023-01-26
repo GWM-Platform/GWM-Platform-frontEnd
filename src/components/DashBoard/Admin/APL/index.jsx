@@ -27,6 +27,7 @@ const APL = () => {
         method: 'GET',
         headers: {
           Accept: "*/*",
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
           signal: abortController.signal
         }

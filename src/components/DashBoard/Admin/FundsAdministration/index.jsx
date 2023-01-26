@@ -6,9 +6,13 @@ import EditFunds from './EditFunds'
 import CreateFunds from './CreateFunds'
 import Loading from 'components/DashBoard/Admin/Loading'
 import './index.css'
+import { useContext } from 'react';
+import { DashBoardContext } from 'context/DashBoardContext';
 
 
 const FundsAdministration = () => {
+    const { token } = useContext(DashBoardContext)
+
     const [FetchingFunds, setFetchingFunds] = useState([])
     const [Funds, setFunds] = useState([])
     const [FilteredFunds, setFilteredFunds] = useState([])
@@ -26,6 +30,7 @@ const FundsAdministration = () => {
             method: 'GET',
             headers: {
                 Accept: "*/*",
+                Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json'
             }
         })
@@ -54,6 +59,7 @@ const FundsAdministration = () => {
                 method: 'GET',
                 headers: {
                     Accept: "*/*",
+                    Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 }
             })

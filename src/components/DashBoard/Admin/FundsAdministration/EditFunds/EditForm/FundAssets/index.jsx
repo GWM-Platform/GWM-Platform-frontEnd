@@ -4,8 +4,11 @@ import { Container, Row } from 'react-bootstrap'
 import AddAsset from './LaunchAddAsset';
 import ModalAddAsset from './ModalAddAsset'
 import AssetCard from './Asset'
+import { useContext } from 'react';
+import { DashBoardContext } from 'context/DashBoardContext';
 
 const FundAssets = ({ Fund }) => {
+    const { token } = useContext(DashBoardContext)
 
     const [Show, setShow] = useState(false);
     const [Assets, setAssets] = useState([]);
@@ -22,6 +25,7 @@ const FundAssets = ({ Fund }) => {
                 method: 'GET',
                 headers: {
                     Accept: "*/*",
+                    Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 }
             })

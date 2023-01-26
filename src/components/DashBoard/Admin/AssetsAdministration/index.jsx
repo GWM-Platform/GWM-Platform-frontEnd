@@ -6,9 +6,13 @@ import EditAssets from './EditAssets'
 import CreateAssets from './CreateAssets'
 import Loading from './Loading'
 import './index.css'
+import { useContext } from 'react';
+import { DashBoardContext } from 'context/DashBoardContext';
 
 
 const AssetsAdministration = () => {
+    const { token } = useContext(DashBoardContext)
+
     const [FetchingAssets, setFetchingAssets] = useState([])
     const [Assets, setAssets] = useState([])
     const [FilteredAssets, setFilteredAssets] = useState([])
@@ -25,6 +29,7 @@ const AssetsAdministration = () => {
             method: 'GET',
             headers: {
                 Accept: "*/*",
+                Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json'
             }
         })
@@ -51,6 +56,7 @@ const AssetsAdministration = () => {
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
+                    Authorization: `Bearer ${token}`,
                     Accept: "*/*",
                     'Content-Type': 'application/json'
                 }
