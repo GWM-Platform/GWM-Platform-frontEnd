@@ -46,11 +46,10 @@ const DocumentItem = ({ document }) => {
                                 <Dropdown
                                     id={`dropdown-button-drop-start`}
                                     variant="secondary"
-                                    title={t(`Document options`)}
                                     className="d-flex justify-content-end"
                                     disabled={Request.fetching}
                                 >
-                                    <Dropdown.Toggle as={MoreButton} id="dropdown-custom-components" />
+                                    <Dropdown.Toggle title={t(`Document options`)} as={MoreButton} id="dropdown-custom-components" />
                                     <Dropdown.Menu >
 
                                         <Dropdown.Item target="_blank" rel="noreferrer nofollow" href={document.link}>

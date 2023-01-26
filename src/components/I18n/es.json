@@ -833,5 +833,6 @@
   "Edit tags of \"{{documentName}}\"":"Editar etiquetas de \"{{documentName}}\"",
   "Actual performance": "Rendimiento actual",
   "Period performance": "Rendimiento del periodo",
-  "Anual performance": "Rendimiento anual"
+  "Anual performance": "Rendimiento anual",
+  "Document options":"Opciones del documento"
 }
