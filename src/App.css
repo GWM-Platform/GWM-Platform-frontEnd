@@ -441,7 +441,7 @@ table .Actions {
 .multiValue {
   --bs-bg-opacity: 1;
   background-color: rgba(
-    var(--bs-primary-rgb),
+    var(--bs-secondary-rgb),
     var(--bs-bg-opacity)
   ) !important;
   padding: 0.35em 0.65em !important;
