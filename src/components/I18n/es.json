@@ -800,5 +800,6 @@
   "Filter documents by tags...": "Filtrar documentos por etiquetas",
   "All clients": "Todos los clientes",
   "Select recipients": "Seleccionar destinatarios",
-  "Client {{clientName}}": "Cliente {{clientName}}"
+  "Client {{clientName}}": "Cliente {{clientName}}",
+  "Owners":"Propietarios"
 }
