@@ -4,8 +4,12 @@ import { Modal, Button, Form, FloatingLabel } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next';
 import AvailableAssets from './AvailableAssets';
 import './index.css'
+import { useContext } from 'react';
+import { DashBoardContext } from 'context/DashBoardContext';
 
 const FundAssets = ({ Show, setShow,Fund }) => {
+    const { token } = useContext(DashBoardContext)
+
     const { t } = useTranslation();
 
     const [Amount, setAmount] = useState(0)
@@ -22,6 +26,7 @@ const FundAssets = ({ Show, setShow,Fund }) => {
         const response = await fetch(url, {
             method: 'GET',
             headers: {
+                Authorization: `Bearer ${token}`,
                 Accept: "*/*",
                 'Content-Type': 'application/json'
             }

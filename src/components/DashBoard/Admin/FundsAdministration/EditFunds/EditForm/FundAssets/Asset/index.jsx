@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, Col } from 'react-bootstrap'
+import { useContext } from 'react';
+import { DashBoardContext } from 'context/DashBoardContext';
 
 const AssetCard = ({ Asset }) => {
+    const { token } = useContext(DashBoardContext)
 
 
     const [AssetDetail, setAssetDetail] = useState({
@@ -18,6 +21,7 @@ const AssetCard = ({ Asset }) => {
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
+                    Authorization: `Bearer ${token}`,
                     Accept: "*/*",
                     'Content-Type': 'application/json'
                 }
