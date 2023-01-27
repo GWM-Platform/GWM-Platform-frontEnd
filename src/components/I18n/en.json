@@ -706,7 +706,6 @@
     "WITHDRAW": "Withdraw",
     "TRANSFER_DENY": "Deny transfers",
     "FIXED_DEPOSIT_PRECANCEL": "Pre-cancel time deposit",
-    "MODIFY_PERMISSIONS": "Edit permissions",
     "TRANSFER_GENERATE": "Generate transfers",
     "FIXED_DEPOSIT_VIEW": "View time deposits",
     "ADD_USERS": "Connect users",

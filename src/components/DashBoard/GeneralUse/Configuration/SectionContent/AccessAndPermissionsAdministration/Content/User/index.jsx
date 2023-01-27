@@ -236,11 +236,15 @@ const User = ({ user, permissions, funds, getUsers }) => {
                             </Col >
                             {
                                 FormData.permissions
-                                    .filter(permission => permission.action !== "OWNER" &&
+                                    .filter(permission => 
+                                        permission.action !== "OWNER" &&
                                         permission.action !== "VIEW_ALL_FUNDS" &&
                                         permission.action !== "BUY_ALL_FUNDS" &&
                                         permission.action !== "SELL_ALL_FUNDS" &&
                                         permission.action !== "CLIENT_DOUBLECHECK" &&
+                                        permission.action !== "EDIT_CLIENT" &&
+                                        permission.action !== "DEPOSIT" &&
+                                        permission.action !== "FIXED_DEPOSIT_PRECANCEL" &&
                                         (!StakeOrFundPermission(permission)))
                                     .map(
                                         (permission) =>
@@ -251,7 +255,7 @@ const User = ({ user, permissions, funds, getUsers }) => {
                                     )
                             }
                             {
-                                !(!hasPermission('') || !hasPermission('REMOVE_USERS') || !hasPermission('MODIFY_PERMISSIONS') || user?.isOwner) &&
+                                !(!hasPermission('') || !hasPermission('REMOVE_USERS') || user?.isOwner) &&
                                 <Col xs="12">
                                     <div className="permission-category mt-2 pt-2 border-top" />
                                 </Col >
@@ -307,7 +311,7 @@ const User = ({ user, permissions, funds, getUsers }) => {
                                         </Col>
                                     }
                                     {
-                                        !(!hasPermission('MODIFY_PERMISSIONS') || user?.isOwner) &&
+                                        !(!hasPermission('') || user?.isOwner) &&
                                         <Col xs="auto" className=" mb-2">
                                             <Button variant="danger" onClick={() => toggleEdition()}>
                                                 {t("Edit permissions")}
