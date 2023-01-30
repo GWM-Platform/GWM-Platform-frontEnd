@@ -154,7 +154,7 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
                                         </Container>
                                     </h1>
                                     <Card.Text className="subTitle lighter my-0">
-                                        {t("Time deposit Start date")}:&nbsp;
+                                        {t("Establishment date")}:&nbsp;
                                         <span className="bolder">
                                             {FixedDeposit?.startDate ? moment(FixedDeposit?.startDate).format('L') : moment().format('L')}
                                         </span><br />

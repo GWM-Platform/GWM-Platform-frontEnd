@@ -88,7 +88,7 @@ const FixedDepositReceipt = ({ FixedDeposit }) => {
                                 !!(validState(["Pending", "Ongoing", "Denied", "Closed (Out of term)"])) &&
                                 <View style={styles.body.section}>
                                     <Text style={styles.body.label}>
-                                        {t("Investment upon closing within the agreed term")}:
+                                        {t("Investment at maturity date")}:
                                     </Text>
                                     <Text style={styles.body.data}>
                                         {
@@ -126,7 +126,7 @@ const FixedDepositReceipt = ({ FixedDeposit }) => {
 
                             <View style={styles.body.section}>
                                 <Text style={styles.body.label}>
-                                    {t("Duration (Agreed)")}:
+                                    {t("Duration")}:
                                 </Text>
                                 <Text style={styles.body.data}>
                                     {FixedDeposit?.duration}&nbsp;{t("days")}
@@ -137,7 +137,7 @@ const FixedDepositReceipt = ({ FixedDeposit }) => {
                                 !!(validState(["Closed (Term completed)", "Closed (Out of term)", "Ongoing"])) &&
                                 <View style={styles.body.section}>
                                     <Text style={styles.body.label}>
-                                        {t("Time deposit Start date")}:
+                                        {t("Establishment date")}:
                                     </Text>
                                     <Text style={styles.body.data}>
                                         {moment(FixedDeposit?.startDate).format('l')}
@@ -149,7 +149,7 @@ const FixedDepositReceipt = ({ FixedDeposit }) => {
                                 !!(validState(["Closed (Term completed)", "Closed (Out of term)", "Ongoing"])) &&
                                 <View style={styles.body.section}>
                                     <Text style={styles.body.label}>
-                                        {t("End date (Agreed)")}:
+                                        {t("Maturity date")}:
                                     </Text>
                                     <Text style={styles.body.data}>
                                         {moment(FixedDeposit?.endDate).format('l')}

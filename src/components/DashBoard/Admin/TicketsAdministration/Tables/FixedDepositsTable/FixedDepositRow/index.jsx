@@ -270,7 +270,7 @@ const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }
                 {
                     !!(validState(["Pending", "Ongoing", "Denied", "Closed (Out of term)"])) &&
                     <div className='d-flex justify-content-between' >
-                        <span >{t("Investment upon closing within the agreed term")}:&nbsp;
+                        <span >{t("Investment at maturity date")}:&nbsp;
                             {ProfitAtTheEnd.fetching ?
                                 <Spinner animation="border" size="sm" />
                                 :
@@ -290,21 +290,21 @@ const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }
                 }
                 <div className='w-100 d-flex' style={{ borderBottom: "1px solid lightgray" }} />
                 <div className='d-flex justify-content-between' style={{ borderBottom: "1px solid 1px solid rgb(240,240,240)" }}>
-                    <span >{t("Duration (Agreed)")}:&nbsp;
+                    <span >{t("Duration")}:&nbsp;
                         {Movement.duration}&nbsp;{t("days")}
                     </span>
                 </div >
 
                 {!!(validState(["Closed (Term completed)", "Closed (Out of term)", "Ongoing"])) &&
                     <div className='d-flex justify-content-between'>
-                        <span >{t("Time deposit Start date")}:&nbsp;
+                        <span >{t("Establishment date")}:&nbsp;
                             {moment(Movement.startDate).format('L')}
                         </span>
                     </div >}
 
                 {!!(validState(["Closed (Term completed)", "Closed (Out of term)", "Ongoing"])) &&
                     <div className='d-flex justify-content-between' style={{ borderBottom: "1px solid 1px solid rgb(240,240,240)" }}>
-                        <span >{t("End date (Agreed)")}:&nbsp;
+                        <span >{t("Maturity date")}:&nbsp;
                             {moment(Movement.endDate).format('L')}
                         </span>
                     </div >}
