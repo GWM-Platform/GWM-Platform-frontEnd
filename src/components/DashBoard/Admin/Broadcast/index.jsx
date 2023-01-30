@@ -274,6 +274,7 @@ const Broadcast = () => {
             }
 
         }
+        //eslint-disable-next-line
     }, [selectedOptions])
 
 
@@ -306,6 +307,7 @@ const Broadcast = () => {
             }
 
         }
+        //eslint-disable-next-line
     }, [selectedOptions])
 
     const selectUsersByClientId = (clientId) => {
