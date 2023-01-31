@@ -2,7 +2,7 @@ import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCommentsDollar, faUser, faSignOutAlt, faTicketAlt, faChartLine } from '@fortawesome/free-solid-svg-icons'
+import { faCommentsDollar, faUser, faSignOutAlt, faTicketAlt, faChartLine, faCog } from '@fortawesome/free-solid-svg-icons'
 import { Row, Container } from 'react-bootstrap'
 import { useRouteMatch, useHistory } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
@@ -39,7 +39,9 @@ const NavBarMobile = () => {
         history.push(`${url}/clientsSupervision`);
     }
 
-
+    const toSettings = () => {
+        history.push(`${url}/Configuration`);
+    }
 
     return (
         <Container className="navBarMobile d-block d-sm-none">
@@ -108,6 +110,13 @@ const NavBarMobile = () => {
                                     <FontAwesomeIcon className="icon" icon={faSignOutAlt} />
                                 </div>
                                 <h1 className="section-label  mb-0 pb-0  " >{t("Logout")}</h1>
+                            </div>
+                            <div className={`section ${itemSelectedLC === "configuration" ? "selected" : ""}`}
+                                onClick={() => toSettings()} xs="auto">
+                                <div className="d-flex justify-content-center">
+                                    <FontAwesomeIcon className="icon" icon={faCog} />
+                                </div>
+                                <h1 className="section-label  mb-0 pb-0  " >{t("Settings")}</h1>
                             </div>
                         </>
                 }
