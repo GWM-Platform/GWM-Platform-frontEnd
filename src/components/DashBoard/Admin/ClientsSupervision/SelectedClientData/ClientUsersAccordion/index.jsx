@@ -10,6 +10,8 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import UserItem from "./UserItem";
 import './index.scss'
+import Loading from 'components/DashBoard/GeneralUse/Loading';
+import NoMovements from "components/DashBoard/GeneralUse/NoMovements";
 
 const ClientUsersAccordion = ({ client }) => {
     const { t } = useTranslation()
@@ -49,14 +51,24 @@ const ClientUsersAccordion = ({ client }) => {
             controller.abort();
         };
     }, [getUsers])
-
+    const ownersAmount = users?.content?.filter(user => user?.isOwner)?.length || 0
 
     return (
         <Accordion flush>
             <Accordion.Item eventKey="0">
                 <Accordion.Header>{t("Users connected to the client")}</Accordion.Header>
                 <Accordion.Body className="usersList">
-                    {users.content.map(user => <UserItem getUsers={getUsers} user={user} client={client} key={`user-item-${client.id}-${user.id}`} />)}
+                    {
+                        users.fetching ?
+                            <Loading movements={4} />
+                            :
+                            users.content.length > 0 ?
+                                users.content.map(user =>
+                                    <UserItem ownersAmount={ownersAmount} getUsers={getUsers} user={user} client={client} key={`user-tem-${client.id}-${user.id}`} />
+                                )
+                                :
+                                <NoMovements movements={4} />
+                    }
                     <div className="mt-2 d-flex justify-content-end">
                         <Link to={`/DashBoard/clientsSupervision/${client.id}/connectUserToClient`}>
                             <Button>{t("Connect a new user")}</Button>

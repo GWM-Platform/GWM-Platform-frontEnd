@@ -800,5 +800,7 @@
   "All clients": "Todos los clientes",
   "Select recipients": "Seleccionar destinatarios",
   "Client {{clientName}}": "Cliente {{clientName}}",
-  "Owners":"Propietarios"
+  "Owners": "Propietarios",
+  "Unassign as owner": "Desasignar propiedad",
+  "Assign as owner": "Asignar propiedad"
 }

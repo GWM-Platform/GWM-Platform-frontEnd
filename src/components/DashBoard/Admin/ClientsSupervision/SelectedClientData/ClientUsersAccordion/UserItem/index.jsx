@@ -7,7 +7,7 @@ import { useState } from "react";
 import { Badge, Dropdown, Spinner } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 
-const UserItem = ({ client, user, getUsers }) => {
+const UserItem = ({ ownersAmount, client, user, getUsers }) => {
     const { t } = useTranslation()
 
     const { toLogin } = useContext(DashBoardContext)
@@ -35,9 +35,28 @@ const UserItem = ({ client, user, getUsers }) => {
 
     const assignOwner = () => {
         setRequest((prevState) => ({ ...prevState, fetching: true, fetched: false }))
-        axios.post(`/clients/${client.id}/assignOwner`,undefined, { params: { userId: user.id } },
+        axios.post(`/clients/${client.id}/assignOwner`, undefined, { params: { userId: user.id } },
         ).then(function (response) {
             setRequest((prevState) => (
+                {
+                    fetching: false,
+                    fetched: true,
+                    valid: true,
+                }))
+            getUsers()
+        }).catch((err) => {
+            if (err.message !== "canceled") {
+                if (err.response.status === "401") toLogin()
+                setRequest((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
+            }
+        });
+    }
+
+    const unAssignOwner = () => {
+        setRequest((prevState) => ({ ...prevState, fetching: true, fetched: false }))
+        axios.post(`/clients/${client.id}/unassignOwner`, undefined, { params: { userId: user.id } },
+        ).then(function () {
+            setRequest(() => (
                 {
                     fetching: false,
                     fetched: true,
@@ -93,11 +112,18 @@ const UserItem = ({ client, user, getUsers }) => {
                         >
                             <Dropdown.Toggle as={MoreButton} id="dropdown-custom-components" />
                             <Dropdown.Menu >
-                                <Dropdown.Item disabled={user.isOwner} onClick={() => assignOwner()}>
-                                    {t('Make user owner')}
-                                </Dropdown.Item>
+                                {
+                                    user.isOwner ?
+                                        <Dropdown.Item disabled={ownersAmount === 1} onClick={() => unAssignOwner()}>
+                                            {t('Unassign as owner')}
+                                        </Dropdown.Item>
+                                        :
+                                        <Dropdown.Item onClick={() => assignOwner()}>
+                                            {t('Assign as owner')}
+                                        </Dropdown.Item>
+                                }
                                 <Dropdown.Divider />
-                                <Dropdown.Item disabled={user.isOwner} onClick={() => disconnectUserToClient()} >
+                                <Dropdown.Item disabled={user.isOwner && ownersAmount === 1} onClick={() => disconnectUserToClient()} >
                                     {t('Disconnect user')}
                                 </Dropdown.Item>
                             </Dropdown.Menu >
