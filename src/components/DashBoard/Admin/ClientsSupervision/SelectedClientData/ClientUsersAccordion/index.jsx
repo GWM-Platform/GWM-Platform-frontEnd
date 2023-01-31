@@ -1,10 +1,4 @@
-import axios from "axios";
-import { DashBoardContext } from "context/DashBoardContext";
 import React from "react";
-import { useContext } from "react";
-import { useState } from "react";
-import { useCallback } from "react";
-import { useEffect } from "react";
 import { Accordion, Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
@@ -13,45 +7,9 @@ import './index.scss'
 import Loading from 'components/DashBoard/GeneralUse/Loading';
 import NoMovements from "components/DashBoard/GeneralUse/NoMovements";
 
-const ClientUsersAccordion = ({ client }) => {
+const ClientUsersAccordion = ({ client, users, getUsers, ownersAmount }) => {
+
     const { t } = useTranslation()
-
-    const { toLogin } = useContext(DashBoardContext)
-
-    const [users, setUsers] = useState({ fetching: false, fetched: false, valid: false, content: [] })
-
-    const getUsers = useCallback((signal) => {
-        setUsers((prevState) => ({ ...prevState, fetching: true, fetched: false }))
-        axios.get(`/users`, {
-            params: { clientId: client.id },
-            signal: signal,
-        }).then(function (response) {
-            setUsers((prevState) => (
-                {
-                    ...prevState,
-                    fetching: false,
-                    fetched: true,
-                    valid: true,
-                    content: response.data.sort((user) => user.isOwner ? -1 : 0),
-                }))
-        }).catch((err) => {
-            if (err.message !== "canceled") {
-                if (err.response.status === "401") toLogin()
-                setUsers((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
-            }
-        });
-    }, [toLogin, setUsers, client]);
-
-    useEffect(() => {
-        const controller = new AbortController();
-        const signal = controller.signal;
-        getUsers(signal)
-
-        return () => {
-            controller.abort();
-        };
-    }, [getUsers])
-    const ownersAmount = users?.content?.filter(user => user?.isOwner)?.length || 0
 
     return (
         <Accordion flush>
@@ -71,7 +29,7 @@ const ClientUsersAccordion = ({ client }) => {
                     }
                     <div className="mt-2 d-flex justify-content-end">
                         <Link to={`/DashBoard/clientsSupervision/${client.id}/connectUserToClient`}>
-                            <Button>{t("Connect a new user")}</Button>
+                            <Button disabled={users.fetching}>{t("Connect a new user")}</Button>
                         </Link>
                     </div>
                 </Accordion.Body>

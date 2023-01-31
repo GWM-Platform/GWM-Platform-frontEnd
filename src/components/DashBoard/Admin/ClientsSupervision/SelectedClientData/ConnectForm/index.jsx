@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 import { Link, useHistory } from "react-router-dom";
 import BaseSelect from "react-select";
 import './index.scss'
-const ConnectForm = ({ client, users }) => {
+const ConnectForm = ({ client, users, ownersAmount, clientUsers }) => {
     const { t } = useTranslation()
 
     const { toLogin } = useContext(DashBoardContext)
@@ -19,15 +19,17 @@ const ConnectForm = ({ client, users }) => {
 
     const [validated, setValidated] = useState(false);
     const [Request, setRequest] = useState({ fetching: false, fetched: false, valid: false })
+
     const [data, setData] = useState(
         {
             user: "",
+            isOwner: ownersAmount === 0 ? true : false
         }
     )
 
     const connectUserToClient = (clientId) => {
         setRequest((prevState) => ({ ...prevState, fetching: true, fetched: false }))
-        axios.post(`/clients/${clientId}/connect`, undefined, { params: { userId: data.user.value } },
+        axios.post(`/clients/${clientId}/connect`, undefined, { params: { userId: data.user.value, isOwner: data.isOwner } },
         ).then(function (response) {
             setRequest((prevState) => (
                 {
@@ -83,7 +85,7 @@ const ConnectForm = ({ client, users }) => {
                                 classNamePrefix="react-select"
                                 valid={validated ? userSelectedValid() : false}
                                 invalid={validated ? !userSelectedValid() : false}
-                                className="mb-3" required value={data.user} placeholder={false} noOptionsMessage={() => t('No users found')}
+                                className="mb-2" required value={data.user} placeholder={false} noOptionsMessage={() => t('No users found')}
                                 onChange={(val) => {
                                     setData(prevState => ({ ...prevState, user: val }));
                                     setRequest(prevState => ({ ...prevState, ...{ fetching: false, fetched: false, valid: false } }))
@@ -91,10 +93,19 @@ const ConnectForm = ({ client, users }) => {
                                 options={users.content.map((user, key) => (
                                     {
                                         label: `${t("Number")}: ${user.id} / ${t("Email")}: ${user.email}`,
-                                        value: user.id
+                                        value: user.id,
+                                        isDisabled: clientUsers?.content?.filter(clientUser => clientUser?.id === user?.id).length > 0
                                     }
                                 ))}
                             />
+                              <Form.Check
+                                checked={data.isOwner}
+                                onChange={e => setData(prevState => ({ ...prevState, isOwner: e.target.checked }))}
+                                disabled={ownersAmount === 0}
+                                label={t("Client owner")}
+                                className="mb-3"
+                            />
+
                             {
                                 Request.fetched &&
                                 <div className="w-100 mb-2">
@@ -108,6 +119,7 @@ const ConnectForm = ({ client, users }) => {
                                     </Form.Text>
                                 </div>
                             }
+                          
 
                             <Button variant="danger" type="submit" disabled={Request.fetching}>
                                 <Spinner

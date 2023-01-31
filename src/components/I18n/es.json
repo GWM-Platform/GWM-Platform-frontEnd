@@ -802,5 +802,7 @@
   "Client {{clientName}}": "Cliente {{clientName}}",
   "Owners": "Propietarios",
   "Unassign as owner": "Desasignar propiedad",
-  "Assign as owner": "Asignar propiedad"
+  "Assign as owner": "Asignar propiedad",
+  "Create client": "Crear cliente",
+  "Client created succesfully": "Cliente creado correctamente"
 }
