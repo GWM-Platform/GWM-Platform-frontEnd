@@ -1,30 +1,30 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useContext } from 'react'
 import { Container, Row, Col, Card, Button, Spinner, OverlayTrigger, Popover } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSlash, faEyeSlash, faEye, faThumbtack, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import { faCheckCircle, faClipboard } from '@fortawesome/free-regular-svg-icons'
-import { Link, useHistory } from 'react-router-dom';
-import './index.css'
 import { DashBoardContext } from 'context/DashBoardContext';
 import Decimal from 'decimal.js'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
+import { useHistory } from 'react-router-dom';
 
-const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned, cardsAmount, inScreenFunds, pendingCash, setShow, show }) => {
+const CashCardPinned = ({ Hide, setHide, Fund, Pinned, setPinned, show, setShow, pendingCash }) => {
     Decimal.set({ precision: 100 })
-    const { DashboardToastDispatch, isMobile } = useContext(DashBoardContext)
 
     const { t } = useTranslation();
 
+    const { DashboardToastDispatch, isMobile } = useContext(DashBoardContext)
     let history = useHistory();
+
 
     const toWithdraw = (type) => {
         history.push(`/DashBoard/withdraw`);
     }
-
     return (
-        <Col sm="6" md="6" lg="4" className={`fund-col  growAnimation ${Pinned && !isMobile ? "opacity-0" : ""}`}>
+        !!(Pinned && !isMobile) &&
+        <Col sm="6" md="6" lg="4" className="fund-col pinned">
             <Card className="h-100 cashCard">
                 <Card.Header
                     className="header d-flex align-items-center justify-content-center"
@@ -37,25 +37,30 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                     <Row >
                         <Card.Title className="mb-2 mt-0" >
                             <Container fluid className="px-0">
-                                <Row className="mx-0 w-100 my-0">
+                                <Row className="mx-0 w-100">
                                     <Col className="ps-0">
                                         <h1 className="title my-0">
                                             {t("Cash")}
                                         </h1>
                                     </Col>
-                                    {
-                                        !!(cardsAmount > inScreenFunds && !isMobile) &&
-                                        <button className="noStyle px-0 hideInfoButton d-flex align-items-center" onClick={() => { setPinned(true); setShow(false) }}                                            >
-                                            <FontAwesomeIcon
-                                                className="icon pin"
-                                                icon={faThumbtack}
-                                            />
-                                            <FontAwesomeIcon
-                                                className="icon placeholder"
-                                                icon={faEyeSlash}
-                                            />
-                                        </button>
-                                    }
+
+                                    <button className="noStyle px-0 hideInfoButton d-flex align-items-center" onClick={() => { setPinned(false); setShow(false) }}>
+                                        <FontAwesomeIcon
+                                            className={`icon pin ${Pinned ? "active" : ""}`}
+                                            mask={faThumbtack}
+                                            icon={faSlash}
+                                            transform="down-2"
+                                        />
+                                        <FontAwesomeIcon
+                                            className={`icon pin`}
+                                            icon={faSlash}
+                                        />
+                                        <FontAwesomeIcon
+                                            className="icon placeholder"
+                                            icon={faEyeSlash}
+                                        />
+                                        <span className="line"></span>
+                                    </button>
                                 </Row>
                             </Container>
                             <Card.Text className="subTitle lighter mt-0 mb-2">
@@ -113,9 +118,8 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                                     <FormattedNumber value={pendingCash().valueAbs} prefix="$" fixedDecimals={2} />
                                                 </span>
                                             </span>
-
                                             <OverlayTrigger show={show} trigger="click" placement="auto-start" overlay={
-                                                <Popover id="popover-overview-cash" className={!!(Pinned && !isMobile) ? "d-none" : ""} >
+                                                <Popover id="popover-overview-cash-pinned" style={{ maxWidth: "unset" }}>
                                                     <Popover.Header>{t("Overview of pending transactions")}</Popover.Header>
                                                     <Popover.Body className="pt-1 pb-2">
                                                         {t("Pending share sales")}:&nbsp;
@@ -133,7 +137,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                                             {pendingCash().overView.Deposits.isPositive ? "+" : "-"}
                                                             <FormattedNumber value={pendingCash().overView.Deposits.valueAbs} prefix="$" fixedDecimals={2} />
                                                         </span><br />
-                                                        <Link to="history?SelectedTab=Transfers">{t("Pending transfers")}</Link>:&nbsp;
+                                                        {t("Pending transfers")}:&nbsp;
                                                         <span className={`bolder ${pendingCash().overView.Transfers.isPositive ? "text-green" : "text-red"}`}>
                                                             {pendingCash().overView.Transfers.isPositive ? "+" : "-"}
                                                             <FormattedNumber value={pendingCash().overView.Transfers.valueAbs} prefix="$" fixedDecimals={2} />
@@ -157,7 +161,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                                             </OverlayTrigger>
                                         </div>
                                         :
-                                        <div>
+                                        <div className='d-flex align-items-center'>
                                             {t("Pending transactions")}:<span className={`bolder text-green`}>&nbsp;<Spinner className="ms-2" animation="border" size="sm" /></span>
                                         </div>
                                 }
@@ -176,8 +180,6 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                 </Card.Footer>
             </Card>
         </Col>
-
-
     )
 }
-export default CashCard
+export default CashCardPinned
