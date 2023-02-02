@@ -674,5 +674,8 @@
   "First name":"Nombre",
   "Last name":"Apellido",
   "Please, enter the date in a valid format":"Por favor, ingrese la fecha en un formato valido",
-  "No accounts found":"No se encontraron cuentas"
+  "No accounts found":"No se encontraron cuentas",
+  "There are no time deposit plans, try again later":"No hay planes de plazos fijos, intentelo de nuevo más tarde",
+  "You don't have any share to sell":"No posee cuotapartes para vender",
+  "There are no funds to buy, try again later":"No hay fondos disponibles para comprar, intentelo de nuevo más tarde"
 }

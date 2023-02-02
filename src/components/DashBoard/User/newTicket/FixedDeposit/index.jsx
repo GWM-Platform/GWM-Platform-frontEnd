@@ -8,12 +8,12 @@ import { Container, Row, Col, Accordion, Form } from 'react-bootstrap'
 import DurationData from './DurationData'
 import InvestmentData from './InvestmentData'
 import Loading from '../Loading';
-import NoFunds from '../NoFunds';
 import { DashBoardContext } from 'context/DashBoardContext';
 import ActionConfirmationModal from './ActionConfirmationModal';
 import moment from 'moment';
 import axios from 'axios';
 import Decimal from 'decimal.js';
+import NoTimeDeposits from '../NoTimeDeposits';
 
 const FixedDepositTicket = ({ balanceChanged }) => {
     Decimal.set({ precision: 100 })
@@ -210,7 +210,7 @@ const FixedDepositTicket = ({ balanceChanged }) => {
                                         </Form>
                                     </Col>
                                     :
-                                    <NoFunds />
+                                    <NoTimeDeposits />
                         }
                     </Row>
                 </Container>

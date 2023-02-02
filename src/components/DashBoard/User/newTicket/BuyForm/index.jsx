@@ -8,9 +8,9 @@ import { Container, Row, Col, Accordion } from 'react-bootstrap'
 import FundSelector from './FundSelector'
 import BuyData from './BuyData'
 import Loading from '../Loading';
-import NoFunds from '../NoFunds';
 import { DashBoardContext } from 'context/DashBoardContext';
 import ActionConfirmationModal from './ActionConfirmationModal';
+import NoBuyFunds from '../NoBuyFunds';
 
 const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
 
@@ -82,6 +82,7 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
                 method: 'GET',
                 headers: {
                     Accept: "*/*",
+                    Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 }
             })
@@ -170,7 +171,7 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
                                         </Accordion>
                                     </Col>
                                     :
-                                    <NoFunds />
+                                    <NoBuyFunds />
                         }
                     </Row>
                 </Container>

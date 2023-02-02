@@ -8,8 +8,8 @@ import { Container, Row, Col, Accordion } from 'react-bootstrap'
 import FundSelector from './FundSelector'
 import SellData from './SellData'
 import Loading from '../Loading';
-import NoFunds from '../NoFunds';
 import ActionConfirmationModal from './ActionConfirmationModal';
+import NoSellFunds from '../NoSellFunds';
 
 const SellForm = ({ balanceChanged }) => {
     const { token, ClientSelected, contentReady, Accounts } = useContext(DashBoardContext);
@@ -157,7 +157,7 @@ const SellForm = ({ balanceChanged }) => {
                                     </Accordion>
                                 </Col>
                                 :
-                                <NoFunds />
+                                <NoSellFunds />
                     }
                 </Row>
                 {
