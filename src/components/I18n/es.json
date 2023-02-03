@@ -807,5 +807,6 @@
   "Unassign as owner": "Desasignar propiedad",
   "Assign as owner": "Asignar propiedad",
   "Create client": "Crear cliente",
-  "Client created succesfully": "Cliente creado correctamente"
+  "Client created succesfully": "Cliente creado correctamente",
+  "Administration":"Administración"
 }
