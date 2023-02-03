@@ -11,10 +11,19 @@ import Loading from '../Loading';
 import { DashBoardContext } from 'context/DashBoardContext';
 import ActionConfirmationModal from './ActionConfirmationModal';
 import NoBuyFunds from '../NoBuyFunds';
+import ReactGA from "react-ga4";
 
 const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
-
-    const { token, ClientSelected, contentReady, Accounts } = useContext(DashBoardContext);
+    
+    useEffect(() => {
+        ReactGA.event({
+            category: "Acceso a secciones para generar tickets",
+            action: "Compra de cuotapartes",
+            label: "Compra de cuotapartes",
+          })
+    }, [])
+    
+    const { token, ClientSelected, contentReady, Accounts, hasBuyPermission } = useContext(DashBoardContext);
 
     function useQuery() {
         const { search } = useLocation();
@@ -101,7 +110,7 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
             } else {
                 switch (response.status) {
                     case 500:
-                        console.error("Error. Vefique los datos ingresados")
+                        console.error("Error. Verify the entered data")
                         break;
                     default:
                         console.error(response.status)
@@ -157,7 +166,7 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
                             FetchingFunds || !contentReady ?
                                 <Loading />
                                 :
-                                Funds.length > 0 ?
+                                Funds?.length > 0 && Funds?.filter(Fund => hasBuyPermission(Fund.id))?.length > 0 ?
                                     <Col xs="12">
                                         <Accordion flush defaultActiveKey="0">
                                             <FundSelector openAccordion={openAccordion} Account={Accounts[0]}

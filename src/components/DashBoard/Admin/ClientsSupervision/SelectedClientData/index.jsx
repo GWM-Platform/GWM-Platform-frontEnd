@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronCircleLeft } from '@fortawesome/free-solid-svg-icons'
@@ -15,12 +15,52 @@ import { Link, Route, Switch } from 'react-router-dom';
 import ClientUsersAccordion from './ClientUsersAccordion';
 import ConnectForm from './ConnectForm';
 import TimeDeposits from './TimeDeposits';
+import axios from 'axios';
+import { DashBoardContext } from 'context/DashBoardContext';
 
 const SelectedAccountData = ({ Account, Client, stakes, users }) => {
 
     const { t } = useTranslation();
 
     const [clientFunds] = useState(stakes.filter(stake => stake.clientId === Client.id))
+
+    const { toLogin } = useContext(DashBoardContext)
+
+    const [clientUsers, setUsers] = useState({ fetching: false, fetched: false, valid: false, content: [] })
+
+    const getUsers = useCallback((signal) => {
+        setUsers((prevState) => ({ ...prevState, fetching: true, fetched: false }))
+        axios.get(`/users`, {
+            params: { clientId: Client.id },
+            signal: signal,
+        }).then(function (response) {
+            setUsers((prevState) => (
+                {
+                    ...prevState,
+                    fetching: false,
+                    fetched: true,
+                    valid: true,
+                    content: response.data.sort((user) => user.isOwner ? -1 : 0),
+                }))
+        }).catch((err) => {
+            if (err.message !== "canceled") {
+                if (err.response.status === "401") toLogin()
+                setUsers((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
+            }
+        });
+    }, [toLogin, setUsers, Client.id]);
+
+    useEffect(() => {
+        const controller = new AbortController();
+        const signal = controller.signal;
+        getUsers(signal)
+
+        return () => {
+            controller.abort();
+        };
+    }, [getUsers])
+
+    const ownersAmount = clientUsers?.content?.filter(user => user?.isOwner)?.length || 0
 
     return (
         <Switch>
@@ -37,7 +77,7 @@ const SelectedAccountData = ({ Account, Client, stakes, users }) => {
                     </div>
                     <Accordion flush alwaysOpen>
                         <AccountGeneralData Account={Account} Client={Client} />
-                        <ClientUsersAccordion client={Client} />
+                        <ClientUsersAccordion client={Client} users={clientUsers} getUsers={getUsers} ownersAmount={ownersAmount} />
                         {clientFunds.length > 0 ? <FundsPossesion stakes={clientFunds} /> : null}
                         <AccountMovements ClientId={Client.id} AccountId={Account.id} />
                         <TransactionsByFund ClientId={Client.id} AccountId={Account.id} />
@@ -47,7 +87,7 @@ const SelectedAccountData = ({ Account, Client, stakes, users }) => {
             </Route>
 
             <Route exact path={`/DashBoard/clientsSupervision/${Client.id}/connectUserToClient`}>
-                <ConnectForm client={Client} users={users} />
+                <ConnectForm clientUsers={clientUsers} client={Client} users={users} ownersAmount={ownersAmount} />
             </Route>
 
             <Route path="*">

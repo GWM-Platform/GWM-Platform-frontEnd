@@ -78,6 +78,7 @@ const ContainerLogin = () => {
       axios.defaults.headers.common['Authorization'] = `Bearer ${data?.access_token}`
       sessionStorage.setItem("access_token", data.access_token)
       sessionStorage.setItem("admin", data.user.isAdmin)
+      sessionStorage.setItem("session_userId", data.user.id)
 
       if (!data.user.changedPassword && !data.user.isAdmin) {
         toSetPassword()
@@ -101,10 +102,10 @@ const ContainerLogin = () => {
     } else {
       switch (response.status) {
         case 500://Unhandled (Por ahora lo tira cuando el mail no matchea con ninguno de los de la DB)
-          setError("Error. Vefique los datos ingresados")
+          setError("Error. Verify the entered data")
           break;
         case 401://Unauthorized, deberia saltar por el mail tambien
-          setError("Error. Vefique los datos ingresados")
+          setError("Error. Verify the entered data")
           break;
         default:
           console.log(response.status)

@@ -13,10 +13,19 @@ import ActionConfirmationModal from './ActionConfirmationModal';
 import moment from 'moment';
 import axios from 'axios';
 import Decimal from 'decimal.js';
-import NoTimeDeposits from '../NoTimeDeposits';
+import ReactGA from "react-ga4";
+import NoFixedDeposit from '../NoFixedDeposit';
 
 const FixedDepositTicket = ({ balanceChanged }) => {
     Decimal.set({ precision: 100 })
+    useEffect(() => {
+
+        ReactGA.event({
+            category: "Acceso a secciones para generar tickets",
+            action: "Generación De Plazos Fijos",
+            label: "Retiros",
+        })
+    }, [])
 
     const { token, contentReady, Accounts, toLogin, ClientSelected } = useContext(DashBoardContext);
 
@@ -210,14 +219,14 @@ const FixedDepositTicket = ({ balanceChanged }) => {
                                         </Form>
                                     </Col>
                                     :
-                                    <NoTimeDeposits />
+                                    <NoFixedDeposit />
                         }
                     </Row>
                 </Container>
                 {
                     !!(FixedDeposit.fetched && contentReady) &&
-                        <ActionConfirmationModal anualRate={getAnualRate()} profit={profit} fetching={fetching} setShowModal={setShowModal} show={ShowModal} action={invest} data={data} Balance={Accounts[0].balance} />
-                        
+                    <ActionConfirmationModal anualRate={getAnualRate()} profit={profit} fetching={fetching} setShowModal={setShowModal} show={ShowModal} action={invest} data={data} Balance={Accounts[0].balance} />
+
                 }
             </div>
         </div >

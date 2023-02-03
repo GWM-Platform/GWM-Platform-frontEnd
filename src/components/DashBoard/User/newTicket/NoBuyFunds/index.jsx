@@ -7,9 +7,9 @@ const NoBuyFunds = () => {
 
     return (
         <div className="h-100 d-flex align-items-center justify-content-center">
-            <h1>
-                {t("There are no funds to buy, try again later")}
-            </h1>
+            <span className='text-center'>
+                {t("Apparently, there are no funds available for this operation")}
+            </span>
         </div>
     )
 }

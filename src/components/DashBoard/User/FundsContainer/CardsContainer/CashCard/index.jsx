@@ -11,9 +11,9 @@ import { DashBoardContext } from 'context/DashBoardContext';
 import Decimal from 'decimal.js'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
-const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned, cardsAmount, inScreenFunds, pendingCash, setShow, show }) => {
+const CashCard = ({ Hide, setHide, Fund, Pinned, setPinned, cardsAmount, inScreenFunds, pendingCash, setShow, show }) => {
     Decimal.set({ precision: 100 })
-    const { DashboardToastDispatch, isMobile } = useContext(DashBoardContext)
+    const { DashboardToastDispatch, isMobile, hasPermission } = useContext(DashBoardContext)
 
     const { t } = useTranslation();
 
@@ -168,7 +168,7 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                 <Card.Footer className="footer mt-2 m-0 p-0">
                     <Row className="d-flex justify-content-center m-0">
                         <Col xs="12" className="d-flex justify-content-center p-0 m-0">
-                            <Button onClick={() => toWithdraw()} className="button d-flex align-items-center justify-content-center">
+                            <Button disabled={!hasPermission('WITHDRAW')} onClick={() => toWithdraw()} className="button d-flex align-items-center justify-content-center">
                                 <span className="label">{t("Withdraw")}</span>
                             </Button>
                         </Col>
@@ -176,8 +176,6 @@ const CashCard = ({ Hide, setHide, Fund, PendingTransactions, Pinned, setPinned,
                 </Card.Footer>
             </Card>
         </Col>
-
-
     )
 }
 export default CashCard

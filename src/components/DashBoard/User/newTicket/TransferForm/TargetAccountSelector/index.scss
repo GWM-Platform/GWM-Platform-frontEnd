@@ -1,0 +1,19 @@
+.optionsContainer {
+    max-height: calc((1rem + 23px) * 3.1);
+    overflow: overlay;
+
+    .option {
+        border-radius: 0;
+        font-weight: 200;
+        background: #f6f1ee;
+        color: black;
+
+        &.focus {
+            background-color: #d6d0ca;
+            cursor: pointer;
+        }
+    }
+}
+.suggestionsPopover {
+    .popover-arrow{visibility:hidden;}
+}

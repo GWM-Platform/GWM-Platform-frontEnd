@@ -26,7 +26,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
         return React.useMemo(() => new URLSearchParams(search), [search]);
     }
 
-    const { PendingWithoutpossession } = useContext(DashBoardContext)
+    const { PendingWithoutpossession, hasPermission } = useContext(DashBoardContext)
 
     const FundsWithPending = [...Funds, ...PendingWithoutpossession]
 
@@ -50,7 +50,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
                 :
                 Accounts.length > 0 ? 0 : Funds.length > 0 ? 1 : 0
             :
-            Accounts.length > 0 ? 0 : Funds.length > 0 ? 1 : 0
+            Accounts.length > 0 && hasPermission('VIEW_ACCOUNT') ? 0 : Funds.length > 0 ? 1 : 0
     )
 
     const [selected, setSelected] = useState(desiredType === "t" && desiredFundId ? getFundIndexById(desiredFundId).found ? getFundIndexById(desiredFundId).index : 0 : 0)
@@ -99,15 +99,22 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
             {isMobile ?
                 Accounts.length >= 1 || FundsWithPending.length >= 1 ?
                     <Col md="12" className="ps-2 ps-sm-2 ps-md-2 ps-md-0 ps-lg-0 pe-2 pt-0 growAnimation" >
-                        {Accounts.map(
-                            (account, key) =>
-                                <MobileCardAccount key={"account-" + key} account={account} />
-                        )}
+                        {hasPermission('VIEW_ACCOUNT') &&
+                            <>
+                                {
+                                    Accounts.map(
+                                        (account, key) =>
+                                            <MobileCardAccount key={"account-" + key} account={account} />
+                                    )
+                                }
+                            </>
+                        }
                         {FundsWithPending.map(
                             (fund, key) =>
                                 <MobileCardFund Hide={Hide} setHide={setHide} key={"fund-" + key} Fund={fund} />
                         )}
-                        {!!(FixedDepositsStats?.fetched) && <MobileCardFixedDeposits Hide={Hide} setHide={setHide} FixedDepositsStats={FixedDepositsStats.content} FixedDeposits={FixedDeposits} />}
+
+                        {!!(FixedDepositsStats?.fetched && hasPermission("FIXED_DEPOSIT_VIEW")) && <MobileCardFixedDeposits Hide={Hide} setHide={setHide} FixedDepositsStats={FixedDepositsStats.content} FixedDeposits={FixedDeposits} />}
                     </Col>
                     :
                     <Col className="h-100">
@@ -121,15 +128,16 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
                             {(() => {
                                 switch (categorySelected) {
                                     case 0:
-                                        return <MainCardAccount
-                                            Fund={Accounts[selected]}
-                                            Hide={Hide} setHide={setHide}
+                                        return (hasPermission('VIEW_ACCOUNT') &&
+                                            <MainCardAccount
+                                                Fund={Accounts[selected]}
+                                                Hide={Hide} setHide={setHide}
 
-                                            SearchById={SearchById}
-                                            setSearchById={setSearchById}
-                                            resetSearchById={resetSearchById}
-                                            handleMovementSearchChange={handleMovementSearchChange}
-                                        />
+                                                SearchById={SearchById}
+                                                setSearchById={setSearchById}
+                                                resetSearchById={resetSearchById}
+                                                handleMovementSearchChange={handleMovementSearchChange}
+                                            />)
                                     case 1:
                                         return <MainCardFund
                                             Fund={FundsWithPending[selected]}
@@ -143,7 +151,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
                                     case 2:
                                         return <MainCardFixedDeposit FixedDepositsStats={FixedDepositsStats.content} Hide={Hide} setHide={setHide} />
                                     default:
-                                        return <h1>Default</h1>
+                                        return <h1>{t("Not found")}</h1>
                                 }
                             })()}
                             <div className={`d-none d-sm-block collapser ${collapseSecondary ? "expanded" : "collapsed"}`}
@@ -158,21 +166,27 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
                             }>
 
                             {
-                                !!(Accounts.length > 0) &&
+                                !!(Accounts.length > 0 && hasPermission('VIEW_ACCOUNT')) &&
                                 <div className="CategoryLabel">
                                     <h1 className="title">{t("Cash")}</h1>
                                 </div>
                             }
                             {
-                                Accounts.map(
-                                    (Account, key) =>
-                                        <SecondaryCard
-                                            Hide={Hide} Fund={Account} parentKey={0} ownKey={key} key={key}
-                                            categorySelected={categorySelected} setCategorySelected={setCategorySelected}
-                                            selected={selected} setSelected={setSelected} resetSearchById={resetSearchById}
+                                hasPermission('VIEW_ACCOUNT') &&
+                                <>
+                                    {
+                                        Accounts.map(
+                                            (Account, key) =>
+                                                <SecondaryCard
+                                                    Hide={Hide} Fund={Account} parentKey={0} ownKey={key} key={key}
+                                                    categorySelected={categorySelected} setCategorySelected={setCategorySelected}
+                                                    selected={selected} setSelected={setSelected} resetSearchById={resetSearchById}
 
-                                        />
-                                )}
+                                                />
+                                        )
+                                    }
+                                </>
+                            }
                             {
                                 !!(Funds.length > 0) &&
                                 <div className="CategoryLabel">

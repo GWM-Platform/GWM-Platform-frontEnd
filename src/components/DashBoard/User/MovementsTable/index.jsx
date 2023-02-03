@@ -12,7 +12,7 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, setNumberOfF
 
     const { t } = useTranslation();
 
-    const { FetchingFunds, Funds, Accounts, contentReady, PendingWithoutpossession } = useContext(DashBoardContext);
+    const { FetchingFunds, Funds, Accounts, contentReady, PendingWithoutpossession, hasPermission } = useContext(DashBoardContext);
 
     const [error, setError] = useState("Loading");
     const [FixedDeposits, setFixedDeposits] = useState({ fetching: true, fetched: false, valid: false, content: { deposits: [], total: 0 } })
@@ -25,7 +25,7 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, setNumberOfF
     useEffect(() => {
         if (!FetchingFunds && contentReady) {
             setNumberOfFunds(Accounts.length + Funds.length + PendingWithoutpossession.length + (FixedDeposits.content.deposits.length > 0 ? 1 : 0))
-            if (Accounts.length + Funds.length === 0 && !FetchingFunds && contentReady) setError("No tiene participacion en ningun fondo")
+            if (Accounts.length + Funds.length === 0 && !FetchingFunds && contentReady) setError("The client does not have any holdings or your user does not have access to view any of these")
         }
     }, [Accounts, Funds, setNumberOfFunds, FetchingFunds, contentReady, PendingWithoutpossession, FixedDeposits])
 
@@ -87,9 +87,16 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, setNumberOfF
         }
 
         if (contentReady) {
-            getFixedDeposits()
-            getFixedDepositsStats()
+            if (hasPermission("FIXED_DEPOSIT_VIEW")) {
+                getFixedDeposits()
+                getFixedDepositsStats()
+            } else {
+                setFixedDeposits((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, content: { deposits: [] } } }))
+                setFixedDepositsStats((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, content: {} } }))
+            }
+
         }
+
         //eslint-disable-next-line
     }, [contentReady]);
 
@@ -101,8 +108,8 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, setNumberOfF
                     <Container className="h-100" fluid>
                         <Row className="d-flex justify-content-center align-items-center h-100">
                             <Col className="d-flex justify-content-center align-items-center">
-                                <Spinner className={`me-2 ${error === "No tiene participacion en ningun fondo" ? "d-none" : ""}`} animation="border" variant="primary" />
-                                <span className="d-none d-md-block loadingText">{t(error)}</span>
+                                <Spinner className={`me-2 ${error === "The client does not have any holdings or your user does not have access to view any of these" ? "d-none" : ""}`} animation="border" variant="primary" />
+                                <span className={`d-none d-md-block ${error==="Loading" ? "loadingText" : "text-center"}`}>{t(error)}</span>
                                 <span className="d-block d-md-none loadingText">{t("Loading")}</span>
                             </Col>
                         </Row>

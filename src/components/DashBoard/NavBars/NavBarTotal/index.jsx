@@ -10,17 +10,17 @@ import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
 const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
     const { t } = useTranslation();
-    
+
     const [Balance, setBalance] = useState({ fetching: false, value: 0 })
-    
-    const { token, ClientSelected, itemSelected, contentReady, Accounts } = useContext(DashBoardContext)
-    
+
+    const { token, ClientSelected, itemSelected, contentReady, Accounts, hasPermission } = useContext(DashBoardContext)
+
     const sectionsCashInAccount = ["buy", "withdraw", "sell", "transfer", "timedeposit"]
 
     useEffect(() => {
-        const getAccounts = async () => {
+        const getBalance = async () => {
             var url = `${process.env.REACT_APP_APIURL}/clients/${ClientSelected.id}/balance`;
-            setBalance({ ...Balance, ...{ fetching: true } })
+            setBalance(prevState => ({ ...prevState, ...{ fetching: true } }))
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -29,10 +29,11 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
                     'Content-Type': 'application/json'
                 }
             })
-
             if (response.status === 200) {
                 const data = await response.json()
-                setBalance(prevState => ({ ...prevState, ...{ fetching: false, value: data } }))
+                setBalance(prevState => {
+                    return ({ ...prevState, ...{ fetching: false, value: data } })
+                })
             } else {
                 switch (response.status) {
                     default:
@@ -40,9 +41,42 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
             }
             setBalanceChanged(false)
         }
-        if (balanceChanged && ClientSelected.id) getAccounts()
+
+        if (!!(balanceChanged) && !!(ClientSelected.id)) { 
+            getBalance()
+         }
         // eslint-disable-next-line 
-    }, [setBalance, token, balanceChanged, setBalanceChanged, ClientSelected])
+    }, [setBalance, token, balanceChanged, setBalanceChanged])
+
+    useEffect(() => {
+        const getBalance = async () => {
+            var url = `${process.env.REACT_APP_APIURL}/clients/${ClientSelected.id}/balance`;
+            setBalance(prevState => ({ ...prevState, ...{ fetching: true } }))
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    Accept: "*/*",
+                    'Content-Type': 'application/json'
+                }
+            })
+            if (response.status === 200) {
+                const data = await response.json()
+                setBalance(prevState => {
+                    return ({ ...prevState, ...{ fetching: false, value: data } })
+                })
+            } else {
+                switch (response.status) {
+                    default:
+                }
+            }
+        }
+
+        if ((ClientSelected.id)) { 
+            getBalance()
+         }
+        // eslint-disable-next-line 
+    }, [setBalance, token, ClientSelected])
 
     return (
         <Navbar className="navBarTotal" bg="light">
@@ -52,7 +86,7 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
                         <h1 className="total my-0 py-0 d-flex align-items-center growOpacity">
 
                             {
-                                sectionsCashInAccount.includes(itemSelected.toLowerCase()) ?
+                                sectionsCashInAccount.includes(itemSelected.toLowerCase()) && hasPermission("VIEW_ACCOUNT") ?
                                     <>
                                         {t("Available cash")}:&nbsp;
                                         {
@@ -82,6 +116,5 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
     )
 }
 export default NavBarTotal
-
 
 

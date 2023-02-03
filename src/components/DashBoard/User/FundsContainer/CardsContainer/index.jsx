@@ -11,7 +11,7 @@ import CashCardPinned from './CashCardPinned';
 import Decimal from 'decimal.js';
 
 const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions, PendingWithoutpossession, FixedDeposits }) => {
-    const { width, token, ClientSelected, } = useContext(DashBoardContext)
+    const { width, token, ClientSelected,hasPermission } = useContext(DashBoardContext)
 
     const [CardWidth, setCardWidth] = useState(false)
     const [Offset, setOffset] = useState(0)
@@ -68,7 +68,8 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
         }
     }, [width])
 
-    const totalCards = () => Funds.length + PendingWithoutpossession.length + shownFixedDeposits().length + 1//+1 cta cte
+    const totalCards = () => Funds.length + PendingWithoutpossession.length + shownFixedDeposits().length + (hasPermission('VIEW_ACCOUNT') ? 1 : 0)//+1 cta cte
+    hasPermission('VIEW_ACCOUNT')
 
     Decimal.set({ precision: 100 })
 
@@ -259,27 +260,33 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
                         "justify-content-center" : ""}
                  pb-2 flex-wrap flex-sm-nowrap overflow-hidden `}>
                 {
-                    Accounts.map(
-                        (account, key) =>
-                            <CashCard cardsAmount={Funds.length + PendingWithoutpossession.length + shownFixedDeposits().length + 1}
-                                inScreenFunds={CardWidth} Pinned={Pinned} setPinned={setPinned}
-                                PendingTransactions={PendingTransactions} key={`account-${account.id  || key}`} Hide={Hide} setHide={setHide} Fund={account}
-                                pendingCash={pendingCash}
-                                setShow={setShow}
-                                show={show}
-                            />
-                    )
+                    hasPermission('VIEW_ACCOUNT') ?
+                        Accounts.map(
+                            (account, key) =>
+                                <CashCard cardsAmount={Funds.length + PendingWithoutpossession.length + shownFixedDeposits().length + 1}
+                                    inScreenFunds={CardWidth} Pinned={Pinned} setPinned={setPinned}
+                                    PendingTransactions={PendingTransactions} key={`account-${account.id || key}`} Hide={Hide} setHide={setHide} Fund={account}
+                                    pendingCash={pendingCash}
+                                    setShow={setShow}
+                                    show={show}
+                                />
+                        )
+                        :
+                        null
                 }
                 {
-                    Accounts.map(
-                        (account, key) =>
-                            <CashCardPinned cardsAmount={Funds.length + PendingWithoutpossession.length + shownFixedDeposits().length + 1}
-                                inScreenFunds={CardWidth} Pinned={Pinned} setPinned={setPinned}
-                                PendingTransactions={PendingTransactions} key={`account-pinned-${account.id || key}`} Hide={Hide} setHide={setHide} Fund={account}
-                                setShow={setShow}
-                                pendingCash={pendingCash}
-                            />
-                    )
+                    hasPermission('VIEW_ACCOUNT') ?
+                        Accounts.map(
+                            (account, key) =>
+                                <CashCardPinned cardsAmount={Funds.length + PendingWithoutpossession.length + shownFixedDeposits().length + 1}
+                                    inScreenFunds={CardWidth} Pinned={Pinned} setPinned={setPinned}
+                                    PendingTransactions={PendingTransactions} key={`account-pinned-${account.id || key}`} Hide={Hide} setHide={setHide} Fund={account}
+                                    setShow={setShow}
+                                    pendingCash={pendingCash}
+                                />
+                        )
+                        :
+                        null
                 }
                 {
                     Funds.map((fund, k) =>
@@ -290,29 +297,29 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
                     )
                 }
                 {
-                    PendingWithoutpossession.map((fund, k) =>
-                        <FundCard Hide={Hide} setHide={setHide} PendingTransactions={PendingTransactions}
-                            setItemSelected={setItemSelected} Funds={Funds} Fund={fund}  key={`fund-wihtout-posession-${fund?.id || k}`}/>
+                    PendingWithoutpossession.map((fund) =>
+                        <FundCard Hide={Hide} setHide={setHide} key={`fund-withoutposession-card-${fund?.id}`} PendingTransactions={PendingTransactions}
+                            setItemSelected={setItemSelected} Funds={Funds} Fund={fund} />
                     )
                 }
                 {
                     shownFixedDeposits().map((fixedDeposit, key) =>
-                        <FixedDepositCard ownKey={key} key={`fixedDeposit-${key}`} FixedDeposit={fixedDeposit} Hide={Hide} setHide={setHide} />
+                        <FixedDepositCard ownKey={key} key={`fixedDeposit-${fixedDeposit?.id || key}`} FixedDeposit={fixedDeposit} Hide={Hide} setHide={setHide} />
                     )
                 }
             </Row>
             <div className={`arrow  right d-none d-sm-flex
-                                ${Funds.length + PendingWithoutpossession.length + shownFixedDeposits().length > 2 && showRightChevron ? "opacity-1" : ""}`}
+                                ${totalCards() > 3 && showRightChevron ? "opacity-1" : ""}`}
                 onClick={() => { if (showRightChevron) setScrollPositionByOffset(Offset + 1) }}>
                 <img className="chevron" src={`${process.env.PUBLIC_URL}/images/chevron/chevron-right.svg`} alt='right' />
             </div>
             <div className={` arrow left d-none d-sm-flex
-                                ${Funds.length + PendingWithoutpossession.length + shownFixedDeposits().length > 2 && showLeftChevron ? "opacity-1" : ""}`}
+                                ${totalCards() > 3 && showLeftChevron ? "opacity-1" : ""}`}
                 onClick={() => { if (showLeftChevron) setScrollPositionByOffset(Offset - 1) }}>
                 <img className="chevron" src={`${process.env.PUBLIC_URL}/images/chevron/chevron-left.svg`} alt='left' />
             </div>
             <Indicators
-                cardsAmount={Funds.length + PendingWithoutpossession.length + shownFixedDeposits().length + 1}
+                cardsAmount={totalCards()}
                 inScreenFunds={CardWidth}
                 offset={Offset} setScrollPositionByOffset={setScrollPositionByOffset}
             />

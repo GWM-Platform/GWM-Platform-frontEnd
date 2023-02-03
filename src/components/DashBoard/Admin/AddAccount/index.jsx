@@ -18,7 +18,8 @@ const AddAccount = () => {
             firstName: "",
             lastName: "",
             type: "",
-            client: ""
+            client: "",
+            isOwner: false
         }
     )
 
@@ -32,6 +33,10 @@ const AddAccount = () => {
     const handleChange = (event) => {
         setFormData(prevState => ({ ...prevState, [event.target.id]: event.target.value }));
     };
+
+    const handleChangeCheck = (event) => {
+        setFormData(prevState => ({ ...prevState, [event.target.id]: event.target.checked }));
+    }
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -53,7 +58,8 @@ const AddAccount = () => {
             } :
                 {
                     email: formData.email,
-                    clientId: formData.client.value
+                    clientId: formData.client.value,
+                    isOwner: formData.isOwner
                 }
         ).then(function (response) {
             setMessage("La cuenta ha sido creada con exito, se enviara un link de verificacion al mail especificado")
@@ -62,9 +68,9 @@ const AddAccount = () => {
             if (err.message !== "canceled") {
                 if (err.response.status === "401") toLogin()
                 if (err.response.status === "501") {
-                    setMessage("Server error")
+                    setMessage("Server error. Try it again later")
                 } else {
-                    setMessage("Error. Verify the data entered")
+                    setMessage("Error. Verify the entered data")
                 }
             }
         });
@@ -175,29 +181,34 @@ const AddAccount = () => {
                                         </Form.Group>
                                     </>
                                     :
-                                    <Form.Group className="mb-3">
-                                        <Form.Label>{t("Select the client to witch you want to connect the user")}</Form.Label>
-                                        <Select
-                                            classNamePrefix="react-select"
-                                            valid={validated ? clientSelectedValid() : false}
-                                            invalid={validated ? !clientSelectedValid() : false}
+                                    <>
+                                        <Form.Group className="mb-3">
+                                            <Form.Label>{t("Select the client to witch you want to connect the user")}</Form.Label>
+                                            <Select
+                                                classNamePrefix="react-select"
+                                                valid={validated ? clientSelectedValid() : false}
+                                                invalid={validated ? !clientSelectedValid() : false}
 
-                                            className="mb-3" required value={formData.client} placeholder={false} noOptionsMessage={() => t('No clients found')}
-                                            onChange={(val) => {
-                                                setFormData(prevState => ({ ...prevState, client: val }));
-                                            }}
-                                            options={clients.content.map((client, key) => (
-                                                {
-                                                    label: `${t("Number")}: ${client.id} / ${t("Alias")}: ${client.alias} / ${t("First name")}: ${client.firstName} / ${t("Last name")}: ${client.lastName}`,
-                                                    value: client.id
-                                                }
-                                            ))}
-                                        />
-                                    </Form.Group>
+                                                className="mb-3" required value={formData.client} placeholder={false} noOptionsMessage={() => t('No clients found')}
+                                                onChange={(val) => {
+                                                    setFormData(prevState => ({ ...prevState, client: val }));
+                                                }}
+                                                options={clients.content.map((client, key) => (
+                                                    {
+                                                        label: `${t("Number")}: ${client.id} / ${t("Alias")}: ${client.alias} / ${t("First name")}: ${client.firstName} ${t("Last name")}: ${client.lastName}`,
+                                                        value: client.id
+                                                    }
+                                                ))}
+                                            />
+                                        </Form.Group>
+                                        <Form.Group className="mb-3" controlId="isOwner">
+                                            <Form.Check checked={formData.isOwner} onChange={handleChangeCheck} type="checkbox" label={t("Create user as owner of the selected client")} />
+                                        </Form.Group>
+                                    </>
                             )
                         }
 
-                        <p>{message}</p>
+                        <p>{t(message)}</p>
                         <Button disabled={buttonDisabled} variant="danger" type="submit">{t("Submit")}</Button>
                     </Form>
                 </Col>

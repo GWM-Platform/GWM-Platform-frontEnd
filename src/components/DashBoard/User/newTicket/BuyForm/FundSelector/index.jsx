@@ -86,12 +86,12 @@ const FundSelector = ({ data, setData, Funds, openAccordion, Account }) => {
                                     </Row>
                                 </Container>
                                 <div className={`arrow  right d-none d-sm-block
-                                ${Funds.length > 3 && showRightChevron ? "opacity-1" : ""}`}
+                                ${Funds.length > 4 && showRightChevron ? "opacity-1" : ""}`}
                                     onClick={() => { if (showRightChevron) setScrollPositionByOffset(Offset + 1) }}>
                                     <FontAwesomeIcon icon={faChevronRight} />
                                 </div>
                                 <div className={` arrow left d-none d-sm-block
-                                ${Funds.length > 3 && showLeftChevron ? "opacity-1" : ""}`}
+                                ${Funds.length > 4 && showLeftChevron ? "opacity-1" : ""}`}
                                     onClick={() => { if (showLeftChevron) setScrollPositionByOffset(Offset - 1) }}>
                                     <FontAwesomeIcon icon={faChevronLeft} />
                                 </div>

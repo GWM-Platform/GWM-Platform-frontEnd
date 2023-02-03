@@ -15,7 +15,7 @@ const CashCardPinned = ({ Hide, setHide, Fund, Pinned, setPinned, show, setShow,
 
     const { t } = useTranslation();
 
-    const { DashboardToastDispatch, isMobile } = useContext(DashBoardContext)
+    const { DashboardToastDispatch, isMobile, hasPermission } = useContext(DashBoardContext)
     let history = useHistory();
 
 
@@ -172,7 +172,7 @@ const CashCardPinned = ({ Hide, setHide, Fund, Pinned, setPinned, show, setShow,
                 <Card.Footer className="footer mt-2 m-0 p-0">
                     <Row className="d-flex justify-content-center m-0">
                         <Col xs="12" className="d-flex justify-content-center p-0 m-0">
-                            <Button onClick={() => toWithdraw()} className="button d-flex align-items-center justify-content-center">
+                            <Button disabled={!hasPermission('WITHDRAW')} onClick={() => toWithdraw()} className="button d-flex align-items-center justify-content-center">
                                 <span className="label">{t("Withdraw")}</span>
                             </Button>
                         </Col>

@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Col } from 'react-bootstrap'
+import { Col, Button } from 'react-bootstrap'
 import ClientsSearch from './ClientsSearch'
 import ClientsTable from './ClientsTable'
 import NoAccounts from './NoAccounts'
 import { useTranslation } from 'react-i18next';
+import {  useHistory } from 'react-router-dom';
 
 const ClientSelector = ({ Accounts, Clients }) => {
 
@@ -24,11 +25,15 @@ const ClientSelector = ({ Accounts, Clients }) => {
         setSearchText("")
         setFilteredClients(Accounts)
     }
+    const history = useHistory()
 
     return (
         <Col className="section growOpacity">
-            <div className="header">
+            <div className="header d-flex">
                 <h1 className="title">{t("Clients supervision")}</h1>
+                <Button className="ms-auto" onClick={() => history.push("/DashBoard/clientsSupervision/create-client")}>
+                    {t("Create client")}
+                </Button>
             </div>
             <ClientsSearch
                 handleSearch={handleSearch}
@@ -40,7 +45,7 @@ const ClientSelector = ({ Accounts, Clients }) => {
             {
                 FilteredClients.length === 0 && SearchText.length > 0 ?
                     <NoAccounts /> :
-                    <ClientsTable  Clients={Clients} FilteredClients={FilteredClients} />
+                    <ClientsTable Clients={Clients} FilteredClients={FilteredClients} />
             }
         </Col>
     )

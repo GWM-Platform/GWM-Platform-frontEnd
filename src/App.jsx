@@ -5,7 +5,6 @@ import { withTranslation } from 'react-i18next';
 import { useTranslation } from "react-i18next";
 import 'moment/locale/es'
 import * as Sentry from "@sentry/react";
-//import ReactGA from "react-ga4";
 import { BrowserTracing } from "@sentry/tracing";
 
 import Landing from 'components/Landing';
@@ -51,13 +50,6 @@ function App() {
       integrations: [new BrowserTracing(), new Sentry.Replay()],
     })
   }, [])
-
-  /* TODO: Incorporate Google Analytics
-  useEffect(() => {
-    ReactGA.initialize(process.env.REACT_APP_GATAGID);
-    ReactGA.send("pageview");
-  }, [])
-  */
 
   return (
     <div className="App" style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/backGround/background.jpg)` }}>

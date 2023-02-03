@@ -10,10 +10,19 @@ import SellData from './SellData'
 import Loading from '../Loading';
 import ActionConfirmationModal from './ActionConfirmationModal';
 import NoSellFunds from '../NoSellFunds';
+import ReactGA from "react-ga4";
 
 const SellForm = ({ balanceChanged }) => {
     const { token, ClientSelected, contentReady, Accounts } = useContext(DashBoardContext);
-
+    
+    useEffect(() => {
+        ReactGA.event({
+            category: "Acceso a secciones para generar tickets",
+            action: "Venta de cuotapartes",
+            label: "Venta de cuotapartes",
+          })
+    }, [])
+    
     function useQuery() {
         const { search } = useLocation();
         return React.useMemo(() => new URLSearchParams(search), [search]);
@@ -162,7 +171,7 @@ const SellForm = ({ balanceChanged }) => {
                 </Row>
                 {
                     !!(data.FundSelected !== -1 && contentReady) &&
-                    <ActionConfirmationModal fetching={fetching} setShowModal={setShowModal} show={ShowModal} action={sell} data={data} Funds={Funds} Balance={Accounts[0].balance} />
+                    <ActionConfirmationModal fetching={fetching} setShowModal={setShowModal} show={ShowModal} action={sell} data={data} Funds={Funds} Balance={Accounts[0]?.balance} />
 
                 }
             </Container>

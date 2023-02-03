@@ -76,7 +76,6 @@ const DepositCashToClient = () => {
         event.preventDefault();
         event.stopPropagation();
         const form = event.currentTarget;
-        console.log()
         if (form.checkValidity()) {
             if (token === null) {
                 toLogin()

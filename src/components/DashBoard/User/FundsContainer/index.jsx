@@ -6,13 +6,14 @@ import { Spinner, Row, Container, Col } from 'react-bootstrap';
 import { DashBoardContext } from 'context/DashBoardContext';
 import axios from 'axios';
 
-const FundsContainer = ({ isMobile, setItemSelected, numberOfFunds }) => {
+const FundsContainer = ({ isMobile, setItemSelected }) => {
 
-    const { FetchingFunds, contentReady, PendingWithoutpossession, PendingTransactions, Accounts, Funds, ClientSelected, toLogin } = useContext(DashBoardContext);
+    const { FetchingFunds, contentReady, PendingWithoutpossession, PendingTransactions, Accounts, Funds, ClientSelected, toLogin, hasPermission } = useContext(DashBoardContext);
+
     const { t } = useTranslation();
 
     const [Mounted, setMounted] = useState(false);
-    const [FixedDeposits, setFixedDeposits] = useState({ fetching: true, fetched: false, valid: false, content: {} })
+    const [FixedDeposits, setFixedDeposits] = useState({ fetching: true, fetched: false, valid: false, content: { deposits: [] } })
 
     useEffect(() => {
         const getFixedDeposits = () => {
@@ -22,7 +23,7 @@ const FundsContainer = ({ isMobile, setItemSelected, numberOfFunds }) => {
                     limit: 50,
                     skip: 0,
                     client: ClientSelected.id,
-                    filterState:null
+                    filterState: null
                 }
             }).then(function (response) {
                 if (response.status < 300 && response.status >= 200) {
@@ -45,10 +46,16 @@ const FundsContainer = ({ isMobile, setItemSelected, numberOfFunds }) => {
         }
         setMounted(true)
         if (contentReady) {
-            getFixedDeposits()
+            if (hasPermission("FIXED_DEPOSIT_VIEW")) {
+                getFixedDeposits()
+            } else {
+                setFixedDeposits((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, content: { deposits: [] } } }))
+            }
         }
         //eslint-disable-next-line
     }, [contentReady]);
+
+    const numberOfFunds = () => Accounts.length + Funds.length + PendingWithoutpossession.length + (FixedDeposits?.content?.deposits?.length > 0 ? 1 : 0)
 
     return (
         <Container fluid
@@ -65,17 +72,25 @@ const FundsContainer = ({ isMobile, setItemSelected, numberOfFunds }) => {
                         </Row>
                     </Container>
                     :
-                    <CardsContainer
-                        FixedDeposits={FixedDeposits.content}
-                        PendingWithoutpossession={PendingWithoutpossession}
-                        PendingTransactions={PendingTransactions}
+                    numberOfFunds() === 0 ?
+                        <Container className="h-100 d-flex align-items-center px-0" fluid>
+                            <Row className="w-100 mx-0 d-flex justify-content-center align-items-center">
+                                <Col xs="12" className="d-flex justify-content-center align-items-center">
+                                    <span className="text-center">{t("The client does not have any holdings or your user does not have access to view any of these")}</span>
+                                </Col>
+                            </Row>
+                        </Container>
+                        :
+                        <CardsContainer
+                            FixedDeposits={FixedDeposits.content}
+                            PendingWithoutpossession={PendingWithoutpossession}
+                            PendingTransactions={PendingTransactions}
 
-                        setItemSelected={setItemSelected}
-                        isMobile={isMobile}
-                        Funds={Funds}
-                        numberOfFunds={numberOfFunds}
-                        Accounts={Accounts}
-                    />
+                            setItemSelected={setItemSelected}
+                            isMobile={isMobile}
+                            Funds={Funds}
+                            Accounts={Accounts}
+                        />
             }
 
         </Container>

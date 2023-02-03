@@ -21,8 +21,8 @@ const SelectClient = () => {
     }
 
     const toDashBoard = () => {
-        if(remember){
-            localStorage.setItem( UserClients.content[0].alias,ClientToAccess)
+        if (remember) {
+            localStorage.setItem(UserClients.content[0].alias, ClientToAccess)
         }
         setIndexClientSelected(ClientToAccess)
     }
@@ -38,7 +38,7 @@ const SelectClient = () => {
                             </h1>
                             <div>
 
-                                { UserClients.content.map(
+                                {UserClients.content.map(
                                     (client, key) =>
                                         <Client client={client} ownKey={key} key={key} ClientToAccess={ClientToAccess} setClientToAccess={setClientToAccess} />
                                 )
@@ -46,7 +46,7 @@ const SelectClient = () => {
                             </div>
                             <div className="w-100 mt-4 mt-2">
                                 <Form.Check
-                                    value={remember}
+                                    checked={remember}
                                     onChange={handleChange}
                                     type="checkbox"
                                     id="remember"

@@ -1,0 +1,86 @@
+.Configuration .SectionSelector,
+.Configuration .SectionContent {
+	margin: 0;
+	min-height: 100%;
+}
+
+.was-validated .form-control:valid ~ .btn {
+	border-color: #198754;
+}
+
+.was-validated .form-control:invalid ~ .btn {
+	border-color: var(--platform-red) !important;
+}
+
+.Configuration .hidden {
+	opacity: 0;
+	transition: all 0.5s;
+}
+
+.Configuration .shown {
+	opacity: 1;
+	transition: all 0.5s;
+}
+
+.Configuration .sectionHeader {
+	top:0;
+	position:sticky;
+	z-index: 1070;
+	margin: unset;
+	margin-bottom: 1rem;
+	padding: .5rem;
+	border: none;
+	border-bottom: 5px solid var(--selected-underline-section-color);
+	width: 100%;
+	background-color: var(--main-bg-nav-color);
+	text-align: start;
+	font-size: 1rem;
+	color: rgba(0, 0, 0, 0.9);
+	transition: all 0.2s;
+}
+
+.Configuration .sectionHeader:active {
+	color: gray;
+}
+
+.Configuration .sectionHeader .sectionSelected {
+	margin: unset;
+	display: inline-block;
+	font-size: 1rem;
+	padding-left: .5rem;
+	font-weight: 200;
+}
+
+@media (max-width: 576px) {
+	.Configuration .ConfigurationRow {
+		overflow-x: hidden;
+		overflow-y: overlay;
+	}
+	
+	.Configuration .SectionContent {
+		margin: 0 0;
+		padding: 0;
+	}
+	
+	.Configuration .SectionContent,
+	.Configuration .SectionSelector {
+		transition: all 0.5s;
+	}
+
+	.Configuration .SectionSelector {
+		transform: translateX(0%);
+	}
+	.Configuration .SectionContent {
+		position: absolute;
+		transform: translateX(100%);
+	}
+
+	.Configuration .SectionSelector.SectionSelected {
+		transition: 0.5s all 0.2s;
+		transform: translateX(-100%);
+	}
+	.Configuration .SectionContent.SectionSelected {
+		transition: 0.5s all 0.2s;
+		transform: translateX(0%);
+	}
+}

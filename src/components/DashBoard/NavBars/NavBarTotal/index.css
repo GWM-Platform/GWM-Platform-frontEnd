@@ -17,4 +17,7 @@
 	.changePassword {
 		background: white;
 	}
+	.total {
+		font-size: 16px;
+	}
 }
