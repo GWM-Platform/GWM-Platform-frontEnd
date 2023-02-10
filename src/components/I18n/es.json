@@ -852,5 +852,9 @@
   "Google drive file URL": "URL del archivo de google drive",
   "Make sure the file is shared, or inside a shared folder, with the account \"({{serviceAccount}})\"": "Asegúrese de que el archivo está compartido, o dentro de una carpeta compartida, con la cuenta \"({{serviceAccount}})\"",
   "The URL entered does not correspond to a google drive file": "La URL ingresada no corresponde a la de un archivo de google drive",
-  "You must enter a name for the document": "Debe ingresar un nombre para el documento"
+  "You must enter a name for the document": "Debe ingresar un nombre para el documento",
+  "of": "de",
+  "Sorry, this document cannot be previewed": "Lo sentimos, este documento no puede ser previsualizado",
+  "Sorry, this document cannot be downloaded": "Lo sentimos, este documento no puede ser descargado",
+  "Sorry, this document cannot be previewed, please try downloading it":"Lo sentimos, este documento no puede ser previsualizado, intente descargarlo "
 }

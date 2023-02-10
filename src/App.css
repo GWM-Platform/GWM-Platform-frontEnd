@@ -497,8 +497,8 @@ table .Actions {
   box-shadow: 0 0 0 0.25rem rgb(50 31 219 / 25%) !important;
 }
 
-.smaller{
-  transform:scale(0.7)  translateY(-2px);
-  display:block;
-  height:13.1px;
+.smaller {
+  transform: scale(0.7) translateY(-2px);
+  display: block;
+  height: 12.5px;
 }

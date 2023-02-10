@@ -54,7 +54,8 @@ const DocumentsAccordion = ({ client }) => {
         return () => {
             controller.abort();
         };
-    }, [getDocuments])
+        //eslint-disable-next-line
+    }, [])
 
     const [selectedOptions, setSelectedOptions] = useState([...document?.tags?.map(tag => ({ value: tag, label: tag })) || []])
 

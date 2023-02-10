@@ -1,14 +1,18 @@
-import { faChevronDown, faChevronUp, faDownload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimesCircle } from '@fortawesome/free-regular-svg-icons'
+import { faChevronDown, faChevronUp, faDownload, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import MoreButton from "components/DashBoard/GeneralUse/MoreButton";
-import React, { useState } from "react";
+import PDFModal from "components/DashBoard/GeneralUse/PDFModal";
+import React, { useContext, useState } from "react";
 import { Fragment } from "react";
 import { Badge, Col, Dropdown, Spinner, Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import { DashBoardContext } from "context/DashBoardContext";
 
 const DocumentItem = ({ Document }) => {
     const { t } = useTranslation()
+    const { DashboardToastDispatch, } = useContext(DashBoardContext)
 
     const [TagsCollapsed, setTagsCollapsed] = useState(true)
     const expandTags = () => { setTagsCollapsed(false) }
@@ -18,19 +22,21 @@ const DocumentItem = ({ Document }) => {
     const hasTags = !!(Document?.tags?.length > 0)
     const hasMultipleTags = !!(Document?.tags?.length > 1)
 
-    const [File, setFile] = useState({ fetching: false, fetched: false, valid: true, content: {} })
+    const [File, setFile] = useState({ fetching: false, fetched: false, valid: true, content: {}, type: "",validPreview:true })
+    const [show, setShow] = useState(false)
 
-    const downloadFile = () => {
+    const handleShow = () => setShow(!show)
 
-        const download = (file) => {
-            const alink = document.createElement('a')
-            alink.href = `data:application/octet-stream;base64,${file.file}`
-            alink.download = `${file.name}`
-            alink.click()
-        }
+    const download = (file) => {
+        const alink = document.createElement('a')
+        alink.href = `data:application/octet-stream;base64,${file.file}`
+        alink.download = `${file.name}`
+        alink.click()
+    }
 
+    const downloadFile = (type = "") => {
         if (!File.fetched) {
-            setFile((prevState) => ({ ...prevState, fetching: true, fetched: false, valid: true }))
+            setFile((prevState) => ({ ...prevState, fetching: true, fetched: false, valid: true, type }))
             axios.get(`/documents/${Document.id}/file/`,
             ).then(function (response) {
                 setFile((prevState) => (
@@ -39,21 +45,43 @@ const DocumentItem = ({ Document }) => {
                         fetching: false,
                         fetched: true,
                         valid: true,
-                        content: response.data
+                        content: response.data,
+                        validPreview: response?.data?.name?.split(".")?.[1] === "pdf"
                     }))
-                download(response.data)
+                if (type === "preview") {
+                    if (response?.data?.name?.split(".")?.[1] === "pdf") {
+                        handleShow()
+                    } else {
+                        DashboardToastDispatch({ type: "create", toastContent: { Icon: faTimesCircle, Title: "Sorry, this document cannot be previewed, please try downloading it" } });
+                    }
+                } else {
+                    download(response.data)
+                }
             }).catch((err) => {
                 if (err.message !== "canceled") {
                     setFile((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: false } }))
+                    if(type==="preview"){
+                        DashboardToastDispatch({ type: "create", toastContent: { Icon: faTimesCircle, Title: "Sorry, this document cannot be previewed" } });
+                    }else{
+                        DashboardToastDispatch({ type: "create", toastContent: { Icon: faTimesCircle, Title: "Sorry, this document cannot be downloaded" } });
+                    }
                 }
             });
         } else {
             if (File.valid) {
-                setFile((prevState) => ({ ...prevState, fetching: true, fetched: false }))
-                download(File.content)
-                setFile((prevState) => ({ ...prevState, fetching: false, fetched: false }))
-            }
 
+                setFile((prevState) => ({ ...prevState, fetching: true, type }))
+                if (type === "preview") {
+                    if (File?.content?.name?.split(".")?.[1] === "pdf") {
+                        handleShow()
+                    } else {
+                        DashboardToastDispatch({ type: "create", toastContent: { Icon: faTimesCircle, Title: "Sorry, this document cannot be previewed" } });
+                    }
+                } else {
+                    download(File.content)
+                }
+                setFile((prevState) => ({ ...prevState, fetching: false }))
+            }
         }
     }
 
@@ -91,8 +119,15 @@ const DocumentItem = ({ Document }) => {
                                 >
                                     <Dropdown.Toggle title={t(`Document options`)} as={MoreButton} id="dropdown-custom-components" />
                                     <Dropdown.Menu >
-                                        <Dropdown.Item disabled={!File.valid || File.fetching } onClick={downloadFile}>
+                                        <Dropdown.Item disabled={!File.valid || File.fetching || !File.validPreview} onClick={()=>downloadFile("preview")}>
+                                            {t('Preview')}
+                                        </Dropdown.Item>
+                                        <Dropdown.Item disabled={!File.valid || File.fetching} onClick={downloadFile}>
                                             {t('Download')}
+                                        </Dropdown.Item>
+                                        <Dropdown.Divider />
+                                        <Dropdown.Item disabled>
+                                            {t('Edit')}
                                         </Dropdown.Item>
                                         <Dropdown.Divider />
                                         <Dropdown.Item disabled>
@@ -155,9 +190,9 @@ const DocumentItem = ({ Document }) => {
                         }
                         {
                             TagsCollapsed &&
-                            <Button onClick={downloadFile} as={Badge} bg="primary" title={t("Download")} type="button" className={`noStyle d-inline-block ms-auto ${(!File.valid || File.fetching) ? "disabled": ""}`}>
+                            <Button onClick={downloadFile} as={Badge} bg="primary" title={t("Download")} type="button" className={`noStyle d-inline-block ms-auto ${(!File.valid || File.fetching) ? "disabled" : ""}`}>
                                 {
-                                    File.fetching ?
+                                    File.fetching && File.type !== "preview" ?
                                         <span className="smaller">
                                             <Spinner as="span" size="sm" />
                                         </span>
@@ -166,10 +201,28 @@ const DocumentItem = ({ Document }) => {
                                 }
                             </Button>
                         }
+                        {
+                            TagsCollapsed &&
+                            <Button onClick={() => downloadFile("preview")} as={Badge} bg="primary" title={t("Preview")} type="button" className={`noStyle d-inline-block ms-2 ${(!File.valid || File.fetching || !File.validPreview) ? "disabled" : ""}`}>
+                                {
+                                    File.fetching && File.type === "preview" ?
+                                        <span className="smaller">
+                                            <Spinner as="span" size="sm" />
+                                        </span>
+                                        :
+                                        <FontAwesomeIcon
+                                            icon={faMagnifyingGlass}
+                                        />
+                                }
+                            </Button>
+                        }
                     </div>
                 </div>
             </div>
-
+            {
+                !!(File.fetched && show && File.valid) &&
+                <PDFModal download={download} show={show} handleShow={handleShow} file={File.content} />
+            }
         </Col>
     );
 }
