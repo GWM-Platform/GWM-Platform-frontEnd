@@ -91,7 +91,6 @@ const UpdateAlias = ({ scrollIntoView }) => {
       setData(prevState => ({ ...prevState, checkingAlias: true, uniqueAlias: false }))
       axios.get('/accounts/byAlias', { params: { alias: data.alias }, signal: signal })
         .then(function (response) {
-          console.log(response)
           setData(prevState => ({ ...prevState, checkingAlias: false, uniqueAlias: false }))
         }).catch((err) => {
           if (err.message !== 'canceled') {

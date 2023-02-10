@@ -98,7 +98,7 @@ const UserActionLogs = () => {
                         ? null
                         : FilterOptions?.type?.value,
                     startDate: FilterOptions.from,
-                    endDate: moment(FilterOptions.to).add(1,"day").format(moment.HTML5_FMT.DATE)
+                    endDate: moment(FilterOptions.to).add(1, "day").format(moment.HTML5_FMT.DATE)
                 }, signal: signal
             })
             .then(function (response) {
@@ -310,7 +310,7 @@ const UserActionLogs = () => {
     const options = [{ label: t("Administrators"), value: "admin" }, ...Clients.content
         .map(client =>
             ({ label: client.alias, value: client.id }))]
-    console.log(toMinDate, toMaxDate)
+
     return (
         <Container className="h-100 ClientsSupervision">
             <Row className="h-100">

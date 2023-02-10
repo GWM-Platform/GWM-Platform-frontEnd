@@ -843,10 +843,14 @@
   "Update account alias": "Actualizar el alias de la cuenta",
   "Account alias": "Alias de la cuenta",
   "Client configuration": "Configuración del cliente",
-  "There was an error updating the account alias":"Hubo un error al actualizar el alias de la cuenta",
-  "Account alias updated succesfully":"El alias de la cuenta fue actualizado correctamente",
-  "This field is required":"Este campo es obligatorio",
-  "Checking if the alias is available":"Verificando si el alias está disponible",
-  "The alias entered isn't available, try again with another":"El alias ingresado no esta disponible, intentelo de nuevo con otro",
-  "The alias entered is the actual account alias":"El alias ingresado es el alias actual de la cuenta"
+  "There was an error updating the account alias": "Hubo un error al actualizar el alias de la cuenta",
+  "Account alias updated succesfully": "El alias de la cuenta fue actualizado correctamente",
+  "This field is required": "Este campo es obligatorio",
+  "Checking if the alias is available": "Verificando si el alias está disponible",
+  "The alias entered isn't available, try again with another": "El alias ingresado no esta disponible, intentelo de nuevo con otro",
+  "The alias entered is the actual account alias": "El alias ingresado es el alias actual de la cuenta",
+  "Google drive file URL": "URL del archivo de google drive",
+  "Make sure the file is shared, or inside a shared folder, with the account \"({{serviceAccount}})\"": "Asegúrese de que el archivo está compartido, o dentro de una carpeta compartida, con la cuenta \"({{serviceAccount}})\"",
+  "The URL entered does not correspond to a google drive file": "La URL ingresada no corresponde a la de un archivo de google drive",
+  "You must enter a name for the document": "Debe ingresar un nombre para el documento"
 }

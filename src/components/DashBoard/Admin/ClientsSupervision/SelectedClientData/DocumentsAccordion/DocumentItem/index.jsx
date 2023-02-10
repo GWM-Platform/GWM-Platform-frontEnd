@@ -18,7 +18,7 @@ const DocumentItem = ({ Document }) => {
     const hasTags = !!(Document?.tags?.length > 0)
     const hasMultipleTags = !!(Document?.tags?.length > 1)
 
-    const [File, setFile] = useState({ fetching: false, fetched: false, content: {} })
+    const [File, setFile] = useState({ fetching: false, fetched: false, valid: true, content: {} })
 
     const downloadFile = () => {
 
@@ -29,10 +29,8 @@ const DocumentItem = ({ Document }) => {
             alink.click()
         }
 
-
         if (!File.fetched) {
-
-            setFile((prevState) => ({ ...prevState, fetching: true, fetched: false }))
+            setFile((prevState) => ({ ...prevState, fetching: true, fetched: false, valid: true }))
             axios.get(`/documents/${Document.id}/file/`,
             ).then(function (response) {
                 setFile((prevState) => (
@@ -40,22 +38,24 @@ const DocumentItem = ({ Document }) => {
                         ...prevState,
                         fetching: false,
                         fetched: true,
+                        valid: true,
                         content: response.data
                     }))
                 download(response.data)
             }).catch((err) => {
                 if (err.message !== "canceled") {
-                    setFile((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true } }))
+                    setFile((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: false } }))
                 }
             });
         } else {
-            setFile((prevState) => ({ ...prevState, fetching: true, fetched: false }))
-            download(File.content)
-            setFile((prevState) => ({ ...prevState, fetching: false, fetched: false }))
+            if (File.valid) {
+                setFile((prevState) => ({ ...prevState, fetching: true, fetched: false }))
+                download(File.content)
+                setFile((prevState) => ({ ...prevState, fetching: false, fetched: false }))
+            }
 
         }
     }
-
 
     return (
         <Col xs="12" md="6" lg="4">
@@ -91,7 +91,7 @@ const DocumentItem = ({ Document }) => {
                                 >
                                     <Dropdown.Toggle title={t(`Document options`)} as={MoreButton} id="dropdown-custom-components" />
                                     <Dropdown.Menu >
-                                        <Dropdown.Item onClick={downloadFile}>
+                                        <Dropdown.Item disabled={!File.valid || File.fetching } onClick={downloadFile}>
                                             {t('Download')}
                                         </Dropdown.Item>
                                         <Dropdown.Divider />
@@ -155,7 +155,7 @@ const DocumentItem = ({ Document }) => {
                         }
                         {
                             TagsCollapsed &&
-                            <Button onClick={downloadFile} as={Badge} bg="primary" title={t("Download")} type="button" className="noStyle d-inline-block ms-auto">
+                            <Button onClick={downloadFile} as={Badge} bg="primary" title={t("Download")} type="button" className={`noStyle d-inline-block ms-auto ${(!File.valid || File.fetching) ? "disabled": ""}`}>
                                 {
                                     File.fetching ?
                                         <span className="smaller">

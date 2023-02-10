@@ -38,7 +38,7 @@ const DocumentItem = ({ Document, getDocuments, uniqueTagsOptions }) => {
     };
 
     const [Request, setRequest] = useState({ fetching: false, fetched: false, valid: false })
-    const [File, setFile] = useState({ fetching: false, fetched: false, content: {} })
+    const [File, setFile] = useState({ fetching: false, fetched: false, valid: true, content: {} })
 
     const addTagsToDocument = () => {
         setRequest((prevState) => ({ ...prevState, fetching: true, fetched: false }))
@@ -71,10 +71,8 @@ const DocumentItem = ({ Document, getDocuments, uniqueTagsOptions }) => {
             alink.click()
         }
 
-
         if (!File.fetched) {
-
-            setFile((prevState) => ({ ...prevState, fetching: true, fetched: false }))
+            setFile((prevState) => ({ ...prevState, fetching: true, fetched: false, valid: true }))
             axios.get(`/documents/${Document.id}/file/`,
             ).then(function (response) {
                 setFile((prevState) => (
@@ -82,19 +80,21 @@ const DocumentItem = ({ Document, getDocuments, uniqueTagsOptions }) => {
                         ...prevState,
                         fetching: false,
                         fetched: true,
+                        valid: true,
                         content: response.data
                     }))
                 download(response.data)
             }).catch((err) => {
                 if (err.message !== "canceled") {
-                    if (err.response.status === "401") toLogin()
-                    setFile((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true } }))
+                    setFile((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: false } }))
                 }
             });
         } else {
-            setFile((prevState) => ({ ...prevState, fetching: true, fetched: false }))
-            download(File.content)
-            setFile((prevState) => ({ ...prevState, fetching: false, fetched: false }))
+            if (File.valid) {
+                setFile((prevState) => ({ ...prevState, fetching: true, fetched: false }))
+                download(File.content)
+                setFile((prevState) => ({ ...prevState, fetching: false, fetched: false }))
+            }
 
         }
     }
@@ -141,7 +141,7 @@ const DocumentItem = ({ Document, getDocuments, uniqueTagsOptions }) => {
                                             {t('Edit tags')}
                                         </Dropdown.Item>
                                         <Dropdown.Divider />
-                                        <Dropdown.Item onClick={downloadFile}>
+                                        <Dropdown.Item disabled={!File.valid || File.fetching } onClick={downloadFile}>
                                             {t('Download')}
                                         </Dropdown.Item>
                                     </Dropdown.Menu >
@@ -214,7 +214,7 @@ const DocumentItem = ({ Document, getDocuments, uniqueTagsOptions }) => {
                         }
                         {
                             TagsCollapsed &&
-                            <Button onClick={downloadFile} as={Badge} bg="primary" title={t("Download")} type="button" className="noStyle d-inline-block ms-auto">
+                            <Button onClick={downloadFile} as={Badge} bg="primary" title={t("Download")} type="button" className={`noStyle d-inline-block ms-auto ${(!File.valid || File.fetching) ? "disabled": ""}`}>
                                 {
                                     File.fetching ?
                                         <span className="smaller">

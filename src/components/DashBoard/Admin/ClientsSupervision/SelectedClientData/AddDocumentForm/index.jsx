@@ -88,20 +88,42 @@ const AddDocumentForm = ({ client, users }) => {
                                     id="name"
                                     value={data.name}
                                 />
+                                <Form.Control.Feedback type="invalid">
+                                    {t("You must enter a name for the document")}
+                                </Form.Control.Feedback>
+                                <Form.Control.Feedback type="valid">
+                                    {t("Looks good")}!
+                                </Form.Control.Feedback>
                             </Form.Group>
                             <Form.Group className="mb-3">
-                                <Form.Label>{t("Document URL")}</Form.Label>
+                                <Form.Label>{t("Google drive file URL")}</Form.Label>
                                 <Form.Control
                                     onChange={handleChange}
                                     type=""
-                                    placeholder={t("Document URL")}
+                                    placeholder={t("Google drive file URL")}
                                     required
+                                    pattern="^https?://(www\.)?drive.google.com/file/d/.+"
                                     id="link"
                                     value={data.link}
                                 />
-                                <Form.Text className="text-success">
-                                    {t("Make sure the client can access the document by making it public or giving access to user emails")}
-                                </Form.Text>
+
+
+                                {
+                                    validated ?
+                                        <>
+                                            <Form.Control.Feedback type="invalid">
+                                                {t("The URL entered does not correspond to a google drive file")}
+                                            </Form.Control.Feedback>
+                                            <Form.Control.Feedback type="valid">
+                                                {t("Looks good")}!
+                                            </Form.Control.Feedback>
+                                        </>
+                                        :
+                                        <Form.Text className="text-success">
+                                            {t("Make sure the file is shared, or inside a shared folder, with the account \"({{serviceAccount}})\"", { serviceAccount: process.env.REACT_APP_GDRIVESERVICEACCOUTEMAIL })}
+                                        </Form.Text>
+
+                                }
                             </Form.Group>
                             {
                                 Request.fetched &&
