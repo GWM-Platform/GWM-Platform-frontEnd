@@ -385,13 +385,13 @@ const Broadcast = () => {
                         <Form.Group className="mb-3" controlId='title'>
                             <Form.Label>{t("Email title")}</Form.Label>
                             <Form.Control
-                                onChange={handleChange} value={formData.title} className="mb-1" required
+                                onChange={handleChange} value={formData.title} className="mb-1" required  maxLength="250"
                             />
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId='emailBody'>
                             <Form.Label>{t("Email body")}</Form.Label>
-                            <Form.Control as="textarea" maxLength="100"
+                            <Form.Control as="textarea" maxLength="20000"
                                 onChange={handleChange} value={formData.emailBody} className="mb-1" style={{ height: "100px" }} required
                             />
                         </Form.Group>
