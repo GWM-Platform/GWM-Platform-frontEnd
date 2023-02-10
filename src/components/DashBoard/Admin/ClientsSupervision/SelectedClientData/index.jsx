@@ -17,6 +17,8 @@ import ConnectForm from './ConnectForm';
 import TimeDeposits from './TimeDeposits';
 import axios from 'axios';
 import { DashBoardContext } from 'context/DashBoardContext';
+import AddDocumentForm from './AddDocumentForm';
+import DocumentsAccordion from './DocumentsAccordion';
 
 const SelectedAccountData = ({ Account, Client, stakes, users }) => {
 
@@ -78,6 +80,7 @@ const SelectedAccountData = ({ Account, Client, stakes, users }) => {
                     <Accordion flush alwaysOpen>
                         <AccountGeneralData Account={Account} Client={Client} />
                         <ClientUsersAccordion client={Client} users={clientUsers} getUsers={getUsers} ownersAmount={ownersAmount} />
+                        <DocumentsAccordion client={Client} />
                         {clientFunds.length > 0 ? <FundsPossesion stakes={clientFunds} /> : null}
                         <AccountMovements ClientId={Client.id} AccountId={Account.id} />
                         <TransactionsByFund ClientId={Client.id} AccountId={Account.id} />
@@ -88,6 +91,10 @@ const SelectedAccountData = ({ Account, Client, stakes, users }) => {
 
             <Route exact path={`/DashBoard/clientsSupervision/${Client.id}/connectUserToClient`}>
                 <ConnectForm clientUsers={clientUsers} client={Client} users={users} ownersAmount={ownersAmount} />
+            </Route>
+
+            <Route exact path={`/DashBoard/clientsSupervision/${Client.id}/addDocument`}>
+                <AddDocumentForm client={Client} users={users} />
             </Route>
 
             <Route path="*">

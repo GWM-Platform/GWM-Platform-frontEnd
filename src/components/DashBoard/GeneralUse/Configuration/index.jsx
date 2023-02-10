@@ -12,8 +12,11 @@ import SectionsSelector from './SectionsSelector'
 import './index.css'
 import { useTranslation } from 'react-i18next';
 import AccessAndPermissionsAdministration from './SectionContent/AccessAndPermissionsAdministration';
+import Documents from './SectionContent/Documents';
+import ClientConfiguration from './SectionContent/ClientConfiguration';
 
 const Configuration = ({ admin = false }) => {
+  const { hasPermission, isMobile } = useContext(DashBoardContext)
 
   const history = useHistory()
   const location = useLocation()
@@ -33,7 +36,11 @@ const Configuration = ({ admin = false }) => {
     ...(admin ?
       {}
       :
-      { accessandpermissionsadministration: <AccessAndPermissionsAdministration desiredSubSection={subSectionQuery} /> })
+      {
+        clientconfiguration: hasPermission('VIEW_ACCOUNT') && <ClientConfiguration desiredSubSection={subSectionQuery} />,
+        accessandpermissionsadministration: <AccessAndPermissionsAdministration desiredSubSection={subSectionQuery} />,
+        documents: <Documents />
+      })
   }
   const content = () => {
     const contentSelected = contentByName[SectionSelected.replace(/\s/g, '').toLowerCase()]
@@ -51,7 +58,6 @@ const Configuration = ({ admin = false }) => {
     } else return isMobile ? '' : 'passwordandauthentication'
   }
 
-  const { isMobile } = useContext(DashBoardContext);
   const [SectionSelected, SetSectionSelected] = useState(sectionFirstValue())
 
   const [TabActive, setTabActive] = useState(sectionFirstValue().length > 0)
@@ -67,7 +73,7 @@ const Configuration = ({ admin = false }) => {
       <Row className={`h-100 p-relative ConfigurationRow
               d-flex justify-content-center align-items-stretch`}>
         <SectionsSelector admin={admin} TabActive={TabActive} setTabActive={setTabActive} SectionSelected={SectionSelected} selectSection={selectSection} />
-        <SectionContent  desiredSubSection={subSectionQuery} content={content} TabActive={TabActive} setTabActive={setTabActive} SectionSelected={SectionSelected} selectSection={selectSection} />
+        <SectionContent desiredSubSection={subSectionQuery} content={content} TabActive={TabActive} setTabActive={setTabActive} SectionSelected={SectionSelected} selectSection={selectSection} />
       </Row>
     </Container>
   )

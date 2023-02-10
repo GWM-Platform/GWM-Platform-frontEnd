@@ -178,7 +178,7 @@ const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }
     }
 
     const userInfoById = (clientId) => {
-        let indexClientTransaction = UsersInfo.value.findIndex((client) => client.id === clientId)
+        let indexClientTransaction = UsersInfo?.value?.findIndex((client) => client.id === clientId)
         if (indexClientTransaction >= 0) {
             SetUserTicketInfo((prevState) => ({
                 ...prevState,

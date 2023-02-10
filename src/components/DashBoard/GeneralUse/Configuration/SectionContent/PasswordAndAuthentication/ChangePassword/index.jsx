@@ -164,7 +164,7 @@ const ChangePassword = ({ scrollIntoView }) => {
                   </Form.Text>
                 </Col>
 
-                <Col xs="12" className="d-flex justify-content-start">
+                <Col xs="12" className="d-flex justify-content-end">
                   <Button
                     type="submit"
                     variant="danger"

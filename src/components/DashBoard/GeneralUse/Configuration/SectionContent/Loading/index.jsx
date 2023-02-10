@@ -9,7 +9,7 @@ const Loading = () => {
   return (
         <div className='LoadingContainer'>
             <div className="d-flex align-items-center justify-content-center">
-                <Spinner className="me-2" animation="border" variant="success" />
+                <Spinner className="me-2" animation="border" variant="primary" />
                 <span className="loadingText">{t('Loading')}</span>
             </div>
         </div>

@@ -11,7 +11,7 @@ import BaseSelect from "react-select";
 import FixRequiredSelect from 'components/DashBoard/GeneralUse/Forms/FixRequiredSelect';
 
 const WithdrawCashFromClient = () => {
-    const { toLogin, TransactionStates } = useContext(DashBoardContext)
+    const { toLogin } = useContext(DashBoardContext)
 
     const [Accounts, setAccounts] = useState(
         {
@@ -25,7 +25,6 @@ const WithdrawCashFromClient = () => {
         {
             idSelected: "",
             date: moment().format(moment.HTML5_FMT.DATETIME_LOCAL),
-            stateId: "",
             account: ""
         }
     )
@@ -43,7 +42,6 @@ const WithdrawCashFromClient = () => {
             body: JSON.stringify({
                 amount: parseFloat(data.amount),
                 date: moment(data.date).format(),
-                stateId: parseInt(data.stateId)
             }),
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -166,7 +164,6 @@ const WithdrawCashFromClient = () => {
     useEffect(() => {
         setInputValid(inputRef?.current?.checkValidity())
     }, [inputRef, data.amount])
-    const DeniedStateId = 3
 
     const getAccountPropertyById = (searchedId, property) => {
         let index = Accounts.value.findIndex((account) => account.id.toString() === searchedId.toString())
@@ -288,17 +285,6 @@ const WithdrawCashFromClient = () => {
                                 }
                             </Form.Control.Feedback>
                         </InputGroup>
-
-
-
-                        <Form.Label>{t("Transaction status")}</Form.Label>
-                        <Form.Select id="stateId" onChange={handleChange} required className="mb-3" value={data.stateId} aria-label="Select State Id">
-                            <option disabled value="">{t("Open this select menu")}</option>
-                            {TransactionStates.values.map((state, key) =>
-                                !!(state.id !== DeniedStateId) &&
-                                <option key={key + "-state"} value={state.id}>{state.id + " - " + state.name}</option>
-                            )}
-                        </Form.Select>
 
                         <Button disabled={data.amount === "" || data.amount <= 0}
                             variant="danger" type="submit">{t("Submit")}</Button>

@@ -5,16 +5,18 @@ import { useTranslation } from "react-i18next";
 import { DashBoardContext } from 'context/DashBoardContext';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilePdf } from '@fortawesome/free-regular-svg-icons';
+import { faCheckCircle, faFilePdf, faTimesCircle } from '@fortawesome/free-regular-svg-icons';
 import ReactPDF from '@react-pdf/renderer';
 import MovementReceipt from 'Receipts/MovementReceipt';
 import { OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import MovementConfirmation from 'components/DashBoard/User/MovementsTable/GeneralUse/MovementConfirmation';
 
-const Movement = ({ content }) => {
+const Movement = ({ content, actions, reloadData }) => {
+
   var momentDate = moment(content.createdAt);
   const { t } = useTranslation();
-  const { getMoveStateById, AccountSelected } = useContext(DashBoardContext)
+  const { getMoveStateById, AccountSelected, couldSign } = useContext(DashBoardContext)
 
   const [GeneratingPDF, setGeneratingPDF] = useState(false)
 
@@ -41,6 +43,15 @@ const Movement = ({ content }) => {
 
   const [showClick, setShowClick] = useState(false)
   const [showHover, setShowHover] = useState(false)
+
+  const [ShowModal, setShowModal] = useState(false)
+  const [Action, setAction] = useState("approve")
+
+  const launchModalConfirmation = (action) => {
+    setAction(action)
+    setShowModal(true)
+  }
+
 
   return (
     <tr>
@@ -113,6 +124,28 @@ const Movement = ({ content }) => {
             <>-</>
         }
       </td>
+      {
+        !!(actions) &&
+        <td className="Actions verticalCenter" >{
+          !!(content.stateId === 5) &&
+          <div className="h-100 d-flex align-items-center justify-content-around">
+
+            <div className={`iconContainer green ${!couldSign(content) ? "not-allowed" : ""}`}>
+              <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() =>{ if (couldSign(content)) { launchModalConfirmation("approve")} } } />
+            </div>
+
+            <div className={`iconContainer red ${!couldSign(content) ? "not-allowed" : ""}`}>
+              <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => { if (couldSign(content)) { launchModalConfirmation("deny")} }} />
+            </div>
+
+          </div>}
+        </td>
+
+      }
+      {
+        !!(content.stateId === 5 && couldSign(content)) &&
+        <MovementConfirmation reloadData={reloadData} movement={content} setShowModal={setShowModal} action={Action} show={ShowModal} />
+      }
     </tr>
   )
 }

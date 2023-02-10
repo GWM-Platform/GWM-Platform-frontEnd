@@ -9,6 +9,7 @@ import './index.css'
 import FixedDepositCard from './FixedDepositCard';
 import CashCardPinned from './CashCardPinned';
 import Decimal from 'decimal.js';
+import axios from 'axios';
 
 const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions, PendingWithoutpossession, FixedDeposits }) => {
     const { width, token, ClientSelected,hasPermission } = useContext(DashBoardContext)
@@ -153,99 +154,94 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
     }
 
     useEffect(() => {
-        const getPendingMovements = async () => {
-            var url = `${process.env.REACT_APP_APIURL}/movements/?` + new URLSearchParams({
-                client: ClientSelected.id,
-                filterState: 1
-            });
-
-            setPendingMovements(prevState => ({
-                ...prevState,
-                ...{
-                    fetching: true,
+        const getPendingMovements = () => {
+            axios.get(`/movements`, {
+                params: {
+                    limit: 50,
+                    skip: 0,
+                    client: ClientSelected.id,
+                    filterState: 1
                 }
-            }))
-
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    Accept: "*/*",
-                    'Content-Type': 'application/json'
-                }
+            }).then(function (response) {
+                setPendingMovements(prevState => ({
+                    ...prevState,
+                    ...{
+                        value: response?.data?.movements ? response?.data?.movements : []
+                    }
+                }))
+                getClientPendingMovements()
             })
+        }
 
-            if (response.status === 200) {
-                const data = await response.json()
+        const getClientPendingMovements = async () => {
+            axios.get(`/movements`, {
+                params: {
+                    limit: 50,
+                    skip: 0,
+                    client: ClientSelected.id,
+                    filterState: 5
+                }
+            }).then(function (response) {
                 setPendingMovements(prevState => ({
                     ...prevState,
                     ...{
                         fetching: false,
                         fetched: true,
-                        value: data.movements ? data.movements : []
+                        value: [...prevState.value, ...response?.data?.movements ? response?.data?.movements : []]
                     }
                 }))
-
-            } else {
-                switch (response.status) {
-                    default:
-                        console.log(response.status)
-                        setPendingMovements(prevState => ({
-                            ...prevState,
-                            ...{
-                                fetching: false,
-                                fetched: false,
-                            }
-                        }))
-                }
-            }
+            })
         }
-        const getPendingTransfers = async () => {
-            var url = `${process.env.REACT_APP_APIURL}/transfers/?` + new URLSearchParams({
-                client: ClientSelected.id,
-                filterState: 1
-            });
 
+        const getPendingTransfers = () => {
             setPendingTransfers(prevState => ({
                 ...prevState,
                 ...{
                     fetching: true,
                 }
             }))
-
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    Accept: "*/*",
-                    'Content-Type': 'application/json'
+            axios.get(`/transfers`, {
+                params: {
+                    limit: 50,
+                    skip: 0,
+                    client: ClientSelected.id,
+                    filterState: 1
                 }
+            }).then(function (response) {
+                setPendingTransfers(prevState => ({
+                    ...prevState,
+                    ...{
+                        value: response?.data?.transfers ? response?.data?.transfers : []
+                    }
+                }))
+                getClientPendingTransfers()
             })
+        }
 
-            if (response.status === 200) {
-                const data = await response.json()
+        const getClientPendingTransfers = () => {
+            setPendingTransfers(prevState => ({
+                ...prevState,
+                ...{
+                    fetching: true,
+                }
+            }))
+            axios.get(`/transfers`, {
+                params: {
+                    limit: 50,
+                    skip: 0,
+                    client: ClientSelected.id,
+                    filterState: 5
+                }
+            }).then(function (response) {
                 setPendingTransfers(prevState => ({
                     ...prevState,
                     ...{
                         fetching: false,
                         fetched: true,
-                        value: data.transfers ? data.transfers : []
+                        value: [...prevState.value, ...response?.data?.transfers ? response?.data?.transfers : []]
                     }
                 }))
-
-            } else {
-                switch (response.status) {
-                    default:
-                        console.log(response.status)
-                        setPendingMovements(prevState => ({
-                            ...prevState,
-                            ...{
-                                fetching: false,
-                                fetched: false,
-                            }
-                        }))
-                }
-            }
+            })
         }
 
         getPendingMovements()

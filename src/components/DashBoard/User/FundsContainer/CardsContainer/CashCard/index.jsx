@@ -23,7 +23,7 @@ const CashCard = ({ Hide, setHide, Fund, Pinned, setPinned, cardsAmount, inScree
         history.push(`/DashBoard/withdraw`);
     }
 
-    return (
+        return (
         <Col sm="6" md="6" lg="4" className={`fund-col  growAnimation ${Pinned && !isMobile ? "opacity-0" : ""}`}>
             <Card className="h-100 cashCard">
                 <Card.Header

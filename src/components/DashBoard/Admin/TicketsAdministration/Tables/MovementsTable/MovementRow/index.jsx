@@ -8,6 +8,7 @@ import moment from 'moment';
 import ActionConfirmationModal from './ActionConfirmationModal'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { userEmail } from 'utils/userEmail';
 
 const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, couldLiquidate }) => {
 
@@ -98,7 +99,7 @@ const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, coul
 
     const [showClick, setShowClick] = useState(false)
     const [showHover, setShowHover] = useState(false)
-
+    
     return (
         <>
             <div className='mobileMovement'>
@@ -166,9 +167,12 @@ const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, coul
 
                                 !!(!isTransferMovement()) &&
                                 <>
-                                    <div className="iconContainer green me-1">
-                                        <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => { launchModalConfirmation("approve") }} />
-                                    </div>
+                                    {
+                                        (userEmail() !== Movement?.userEmail) &&
+                                        <div className="iconContainer green me-1">
+                                            <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => { launchModalConfirmation("approve") }} />
+                                        </div>
+                                    }
                                     <div className="iconContainer red me-1">
                                         <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => { launchModalConfirmation("deny") }} />
                                     </div>

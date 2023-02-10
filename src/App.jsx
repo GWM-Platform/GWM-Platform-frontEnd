@@ -19,6 +19,7 @@ import RotateDevice from 'components/RotateDevice';
 import ErrorNotice from 'components/ErrorNotice';
 
 import './App.css';
+import './widtHeightBP.css'
 import moment from 'moment';
 import axios from 'axios';
 
