@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimesCircle } from '@fortawesome/free-regular-svg-icons'
+import { faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icons'
 import { faChevronDown, faChevronUp, faDownload, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import MoreButton from "components/DashBoard/GeneralUse/MoreButton";
@@ -9,8 +9,9 @@ import { Fragment } from "react";
 import { Badge, Col, Dropdown, Spinner, Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { DashBoardContext } from "context/DashBoardContext";
+import { Link } from "react-router-dom";
 
-const DocumentItem = ({ Document }) => {
+const DocumentItem = ({ Document, getDocuments, client }) => {
     const { t } = useTranslation()
     const { DashboardToastDispatch, } = useContext(DashBoardContext)
 
@@ -22,7 +23,9 @@ const DocumentItem = ({ Document }) => {
     const hasTags = !!(Document?.tags?.length > 0)
     const hasMultipleTags = !!(Document?.tags?.length > 1)
 
-    const [File, setFile] = useState({ fetching: false, fetched: false, valid: true, content: {}, type: "",validPreview:true })
+    const [File, setFile] = useState({ fetching: false, fetched: false, valid: true, content: {}, type: "", validPreview: true })
+    const [Request, setRequest] = useState({ fetching: false })
+
     const [show, setShow] = useState(false)
 
     const handleShow = () => setShow(!show)
@@ -60,9 +63,9 @@ const DocumentItem = ({ Document }) => {
             }).catch((err) => {
                 if (err.message !== "canceled") {
                     setFile((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: false } }))
-                    if(type==="preview"){
+                    if (type === "preview") {
                         DashboardToastDispatch({ type: "create", toastContent: { Icon: faTimesCircle, Title: "Sorry, this document cannot be previewed" } });
-                    }else{
+                    } else {
                         DashboardToastDispatch({ type: "create", toastContent: { Icon: faTimesCircle, Title: "Sorry, this document cannot be downloaded" } });
                     }
                 }
@@ -83,6 +86,25 @@ const DocumentItem = ({ Document }) => {
                 setFile((prevState) => ({ ...prevState, fetching: false }))
             }
         }
+    }
+
+    const deleteFile = () => {
+        setRequest((prevState) => ({ ...prevState, fetching: true }))
+        axios.delete(`/documents/${Document.id}/`,
+        ).then(function () {
+
+            DashboardToastDispatch({ type: "create", toastContent: { Icon: faCheckCircle, Title: "The document was deleted successfully" } });
+            getDocuments()
+        }).catch((err) => {
+            DashboardToastDispatch({ type: "create", toastContent: { Icon: faTimesCircle, Title: "There was an error deleting the document, please try again later" } });
+            if (err.message !== "canceled") {
+                setFile((prevState) => (
+                    {
+                        ...prevState,
+                        fetching: false
+                    }))
+            }
+        });
     }
 
     return (
@@ -119,18 +141,21 @@ const DocumentItem = ({ Document }) => {
                                 >
                                     <Dropdown.Toggle title={t(`Document options`)} as={MoreButton} id="dropdown-custom-components" />
                                     <Dropdown.Menu >
-                                        <Dropdown.Item disabled={!File.valid || File.fetching || !File.validPreview} onClick={()=>downloadFile("preview")}>
+                                        <Dropdown.Item disabled={!File.valid || File.fetching || !File.validPreview} onClick={() => downloadFile("preview")}>
                                             {t('Preview')}
                                         </Dropdown.Item>
                                         <Dropdown.Item disabled={!File.valid || File.fetching} onClick={downloadFile}>
                                             {t('Download')}
                                         </Dropdown.Item>
                                         <Dropdown.Divider />
-                                        <Dropdown.Item disabled>
-                                            {t('Edit')}
+                                        <Dropdown.Item >
+                                            <Link to={`/DashBoard/clientsSupervision/${client.id}/document?i=${Document.id}`}
+                                                style={{ textDecoration: "none", color: "var(--bs-dropdown-link-color)" }}>
+                                                {t('Edit')}
+                                            </Link>
                                         </Dropdown.Item>
                                         <Dropdown.Divider />
-                                        <Dropdown.Item disabled>
+                                        <Dropdown.Item onClick={deleteFile}>
                                             {t('Delete')}
                                         </Dropdown.Item>
                                     </Dropdown.Menu >
