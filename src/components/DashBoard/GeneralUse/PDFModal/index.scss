@@ -1,6 +1,15 @@
 .helpModal {
     .modal-dialog {
-        height: 100%;
+        .loadingPDF {
+            @media (max-width: 576px) {
+                height: 60vh !important;
+            }
+        }
+
+        @media (min-width: 576px) {
+            height: 100%;
+        }
+
         margin-top: 0;
         margin-bottom: 0;
         padding-bottom: 1.75rem;
@@ -21,8 +30,9 @@
                 .react-pdf__Document {
                     height: 100%;
                 }
-                .react-pdf__Page__canvas{
-                    border-radius: 10px;
+
+                .react-pdf__Page__canvas {
+                    border-radius: 4px;
                 }
 
             }
@@ -40,6 +50,7 @@
                     color: white
                 }
             }
+
             .page-controls {
                 position: relative;
                 text-align: center;
@@ -50,9 +61,11 @@
                 transition: opacity ease-in-out 0.2s;
                 box-shadow: 0 30px 40px 0 rgb(16 36 94 / 20%);
                 border-radius: 4px;
+
                 @media (min-width: 576px) {
-                   position: absolute;
+                    position: absolute;
                 }
+
                 button {
                     width: 38px;
                     height: 44px;
@@ -62,11 +75,12 @@
                     font-size: 0.8em;
                     border-radius: 4px;
 
-                    &:hover{
+                    &:hover {
                         background-color: #e6e6e6;
                     }
 
                 }
+
                 span {
                     padding: 0 0.5em;
                 }
