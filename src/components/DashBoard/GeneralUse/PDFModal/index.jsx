@@ -13,7 +13,7 @@ import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import './index.scss'
 
 const PDFModal = (props) => {
-  console.log(props.handleShow)
+
   const { t } = useTranslation()
   const { isMobile } = useContext(DashBoardContext)
 
@@ -68,7 +68,7 @@ const PDFModal = (props) => {
                 <div className='w-100 h-100 PdfDiv' >
                   <Document
                     loading={
-                      <div className="w-100 h-100 d-flex justify-content-center align-items-center" style={{ background: "white" }}>
+                      <div className="w-100 h-100 d-flex justify-content-center align-items-center" style={{ background: "white", borderRadius: "10px" }}>
                         <div className="d-flex justify-content-center align-items-center h-100">
                           <Spinner className="me-2" animation="border" variant="primary" />
                           <span className="loadingText">{t('Loading')}</span>
@@ -76,7 +76,7 @@ const PDFModal = (props) => {
                       </div>
                     }
                     error={
-                      <div className="w-100 h-100 d-flex justify-content-center align-items-center">
+                      <div className="w-100 h-100 d-flex justify-content-center align-items-center" style={{ background: "white", borderRadius: "10px" }}>
                         <div className="d-flex justify-content-center align-items-center">
                           <span className="loadingText">{t('Not found')}</span>
                         </div>
