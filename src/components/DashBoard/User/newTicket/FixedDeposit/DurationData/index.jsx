@@ -42,7 +42,7 @@ const FundSelector = ({ data, Balance, fetching, handleChange, calculateProfit, 
                             onChange={handleChange}
 
                             min={minDuration}
-                            max={maxDuration}
+                            max={data.preferential ? null : maxDuration}
 
                             id="days"
                             type="number"
@@ -56,8 +56,8 @@ const FundSelector = ({ data, Balance, fetching, handleChange, calculateProfit, 
                             onChange={handleChange}
 
                             min={moment().add(minDuration, "days").format("YYYY-MM-DD")}
-                            max={moment().add(maxDuration, "days").format("YYYY-MM-DD")}
-                            
+                            max={data.preferential ? null : moment().add(maxDuration, "days").format("YYYY-MM-DD")}
+
                             id="until"
                             type="date"
                             required
@@ -79,8 +79,11 @@ const FundSelector = ({ data, Balance, fetching, handleChange, calculateProfit, 
                             }
                         </Form.Control.Feedback>
                     </InputGroup>
-                    <Button disabled={fetching || ((data.amount > Balance) && data.amount > 0)}
-                        variant="danger" type="submit" className="submitBtn">{t("Submit")}</Button>
+                    {
+                        !(data.preferential) &&
+                        <Button disabled={fetching || ((data.amount > Balance) && data.amount > 0)}
+                            variant="danger" type="submit" className="submitBtn">{t("Submit")}</Button>
+                    }
                 </div>
             </Accordion.Body>
         </Accordion.Item>

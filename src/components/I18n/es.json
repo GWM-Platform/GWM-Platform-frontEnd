@@ -868,5 +868,8 @@
   "The document could not be edited": "El documento no pudo ser editado",
   "Document edited successfully": "Documento editado correctamente",
   "There was an error while editing the document": "Hubo un erro al editar el documento",
-  "Edit document \"{{documentName}}\" from client":"Editar el documento \"{{documentName}}\" del cliente"
+  "Edit document \"{{documentName}}\" from client":"Editar el documento \"{{documentName}}\" del cliente",
+  "Preferential plan":"Plan Preferencial",
+  "Propose a differential rate/duration":"Proponga una tasa/duración diferencial",
+  "Specify the anual rate for your investment":"Ingrese la tasa anual para su inversión"
 }

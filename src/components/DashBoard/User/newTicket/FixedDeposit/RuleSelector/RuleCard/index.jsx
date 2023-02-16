@@ -13,11 +13,11 @@ const RuleCard = ({ Rule, data, setData, index, Rules, RulesObject,handleChange 
     const anualRate = RulesObject?.interest?.[Rule]
 
     return (
-        <Col xs="10" sm="4"
+        <Col xs="10" sm="3"
             className={`py-1 pe-1 growAnimation RuleCardContainer${false ? " RuleDisabled" : ""}${data.ruleSelected === Rule ? " RuleSelected" : ""}`}>
             <Card
                 className="RuleCard h-100" onClick={() => {
-                    setData(prevState => ({ ...prevState, ruleSelected: Rule }))
+                    setData(prevState => ({ ...prevState, ruleSelected: Rule,preferential: false,rate:"" }))
                     handleChange({ target: { id: "days", value: maxDuration ? maxDuration : minDuration } })
                 }}>
                 <Card.Header><strong className="title">{t("Plan")} #{index + 1}</strong></Card.Header>

@@ -16,6 +16,7 @@ import Decimal from 'decimal.js';
 import ReactGA from "react-ga4";
 import NoFixedDeposit from '../NoFixedDeposit';
 import RuleSelector from './RuleSelector';
+import RateData from './RateData';
 
 const FixedDepositTicket = ({ balanceChanged }) => {
     Decimal.set({ precision: 100 })
@@ -36,7 +37,9 @@ const FixedDepositTicket = ({ balanceChanged }) => {
         amount: "",
         ruleSelected: "",
         days: "",
-        until: ""
+        until: "",
+        preferential: false,
+        rate: ""
     })
 
     const [ShowModal, setShowModal] = useState(false)
@@ -159,7 +162,7 @@ const FixedDepositTicket = ({ balanceChanged }) => {
                 {
                     duration: data?.days,
                     initialAmount: data?.amount,
-                    interestRate: getAnualRate()
+                    interestRate: data.preferential ? data.rate : getAnualRate()
                 }).then(function (response) {
                     if (response.status < 300 && response.status >= 200) {
                         setProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: response.data || 0 } }))
@@ -224,6 +227,19 @@ const FixedDepositTicket = ({ balanceChanged }) => {
                                                     FixedDepositRules={Object.keys(FixedDeposit?.content?.interest ?? [])}
                                                     calculateProfit={calculateProfit} handleChange={handleChange} data={data} setData={setData} Account={Accounts[0]} />
                                             </Accordion>
+                                            {
+                                                !!(data.preferential) &&
+                                                <Accordion flush defaultActiveKey="0" >
+                                                    <RateData
+                                                        Balance={Accounts[0].balance}
+                                                        data={data}
+                                                        handleChange={handleChange}
+                                                        calculateProfit={calculateProfit}
+                                                    />
+                                                </Accordion>
+
+                                            }
+
                                         </Form>
                                     </Col>
                                     :

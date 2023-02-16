@@ -7,8 +7,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 import { useTranslation } from "react-i18next";
 import { DashBoardContext } from 'context/DashBoardContext';
+import PreferentialCard from './PreferentialCard';
 
-const RuleSelector = ({ data, setData, RulesObject,handleChange }) => {
+const RuleSelector = ({ data, setData, RulesObject, handleChange }) => {
     const { t } = useTranslation();
     const [CardWidth, setCardWidth] = useState(false)
     const [Offset, setOffset] = useState(0)
@@ -78,20 +79,20 @@ const RuleSelector = ({ data, setData, RulesObject,handleChange }) => {
                             <div className="p-relative px-0">
                                 <Container fluid className="px-0">
                                     <Row className="mx-0 flex-row flex-nowrap  overflow-auto overflow-sm-hidden RuleCardsContainer" ref={RulesContainer}>
-                                        {Rules.map((Rule, index) => {
-                                            return (
-                                                <RuleCard handleChange={handleChange} key={`Rule-${index}`} Rule={Rule} data={data} setData={setData} index={index} Rules={Rules} RulesObject={RulesObject} />
-                                            )
-                                        })}
+                                        {Rules.map((Rule, index) =>
+                                            <RuleCard handleChange={handleChange} key={`Rule-${index}`} Rule={Rule} data={data} setData={setData} index={index} Rules={Rules} RulesObject={RulesObject} />
+
+                                        )}
+                                        <PreferentialCard data={data} setData={setData} handleChange={handleChange} />
                                     </Row>
                                 </Container>
                                 <div className={`arrow  right d-none d-sm-block
-                                ${Rules.length > 3 && showRightChevron ? "opacity-1" : ""}`}
+                                ${Rules.length > 4 && showRightChevron ? "opacity-1" : ""}`}
                                     onClick={() => { if (showRightChevron) setScrollPositionByOffset(Offset + 1) }}>
                                     <FontAwesomeIcon icon={faChevronRight} />
                                 </div>
                                 <div className={` arrow left d-none d-sm-block
-                                ${Rules.length > 3 && showLeftChevron ? "opacity-1" : ""}`}
+                                ${Rules.length > 4 && showLeftChevron ? "opacity-1" : ""}`}
                                     onClick={() => { if (showLeftChevron) setScrollPositionByOffset(Offset - 1) }}>
                                     <FontAwesomeIcon icon={faChevronLeft} />
                                 </div>
