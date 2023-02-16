@@ -110,9 +110,7 @@ const DocumentItem = ({ Document, getDocuments, client }) => {
     return (
         <Col xs="12" md="6" lg="4">
             <div className="p-2 document" >
-
                 <div className="d-flex Actions justify-content-between mb-3">
-
                     <div className="mb-0 pe-1 pe-md-2" >
                         <div className="d-flex align-items-center">
                             <a className="title d-inline" target="_blank" rel="noreferrer nofollow" href={Document.link}>{Document.name}</a>
@@ -228,7 +226,7 @@ const DocumentItem = ({ Document, getDocuments, client }) => {
                         }
                         {
                             TagsCollapsed &&
-                            <Button onClick={() => downloadFile("preview")} as={Badge} bg="primary" title={t("Preview")} type="button" className={`noStyle d-inline-block ms-2 ${(!File.valid || File.fetching || !File.validPreview) ? "disabled" : ""}`}>
+                            <Button onClick={() => downloadFile("preview")} as={Badge} bg="primary" title={t("Preview")} type="button" className={`noStyle d-inline-block ms-1 ${(!File.valid || File.fetching || !File.validPreview) ? "disabled" : ""}`}>
                                 {
                                     File.fetching && File.type === "preview" ?
                                         <span className="smaller">

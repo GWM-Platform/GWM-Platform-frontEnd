@@ -1,17 +1,18 @@
 import MoreButton from "components/DashBoard/GeneralUse/MoreButton";
 import React, { useState } from "react";
-import { Badge, Button, Col, Dropdown, Form, Modal, Spinner } from "react-bootstrap";
+import { Badge, Button, Col, Dropdown, Spinner } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import './index.scss'
-import CreatableSelect from 'react-select/creatable';
 import axios from "axios";
 import { useContext } from "react";
 import { DashBoardContext } from "context/DashBoardContext";
 import { Fragment } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheckCircle, faTimesCircle,faEdit } from '@fortawesome/free-regular-svg-icons'
+import { faCheckCircle, faTimesCircle, faEdit } from '@fortawesome/free-regular-svg-icons'
 import { faChevronDown, faChevronUp, faDownload, faPlus, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import PDFModal from "components/DashBoard/GeneralUse/PDFModal";
+import TagsModal from "./TagsModal";
+import OtherFileTypesModal from "components/DashBoard/GeneralUse/OtherFileTypesModal";
 
 const DocumentItem = ({ Document, getDocuments, uniqueTagsOptions }) => {
 
@@ -22,9 +23,9 @@ const DocumentItem = ({ Document, getDocuments, uniqueTagsOptions }) => {
     const expandTags = () => { setTagsCollapsed(false) }
     const collapseTags = () => { setTagsCollapsed(true) }
 
-    const [showPDF, setShowPDF] = useState(false)
+    const [ShowPreview, setShowPreview] = useState(false)
 
-    const handleShowPDF = () => setShowPDF(!showPDF)
+    const handleShowPreview = () => setShowPreview(!ShowPreview)
 
     const [show, setShow] = useState(false);
 
@@ -42,7 +43,12 @@ const DocumentItem = ({ Document, getDocuments, uniqueTagsOptions }) => {
     };
 
     const [Request, setRequest] = useState({ fetching: false, fetched: false, valid: false })
-    const [File, setFile] = useState({ fetching: false, fetched: false, valid: true, content: {}, type: "", validPreview: true })
+
+    const [File, setFile] = useState({
+        fetching: false, fetched: false, valid: true,
+        content: {}, type: "",
+        validPreview: true, pdfPreview: true
+    })
 
     const addTagsToDocument = () => {
         setRequest((prevState) => ({ ...prevState, fetching: true, fetched: false }))
@@ -85,11 +91,12 @@ const DocumentItem = ({ Document, getDocuments, uniqueTagsOptions }) => {
                         fetched: true,
                         valid: true,
                         content: response.data,
-                        validPreview: response?.data?.name?.split(".")?.[1] === "pdf"
+                        validPreview: !!(response?.data?.mimeType),
+                        pdfPreview: response?.data?.name?.split(".")?.[1] === "pdf",
                     }))
                 if (type === "preview") {
-                    if (response?.data?.name?.split(".")?.[1] === "pdf") {
-                        handleShowPDF()
+                    if (!!(response?.data?.mimeType)) {
+                        handleShowPreview()
                     } else {
                         DashboardToastDispatch({ type: "create", toastContent: { Icon: faTimesCircle, Title: "Sorry, this document cannot be previewed, please try downloading it" } });
                     }
@@ -99,9 +106,9 @@ const DocumentItem = ({ Document, getDocuments, uniqueTagsOptions }) => {
             }).catch((err) => {
                 if (err.message !== "canceled") {
                     setFile((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: false } }))
-                    if(type==="preview"){
+                    if (type === "preview") {
                         DashboardToastDispatch({ type: "create", toastContent: { Icon: faTimesCircle, Title: "Sorry, this document cannot be previewed" } });
-                    }else{
+                    } else {
                         DashboardToastDispatch({ type: "create", toastContent: { Icon: faTimesCircle, Title: "Sorry, this document cannot be downloaded" } });
                     }
                 }
@@ -111,8 +118,8 @@ const DocumentItem = ({ Document, getDocuments, uniqueTagsOptions }) => {
 
                 setFile((prevState) => ({ ...prevState, fetching: true, type }))
                 if (type === "preview") {
-                    if (File?.content?.name?.split(".")?.[1] === "pdf") {
-                        handleShowPDF()
+                    if (!!(File?.content?.mimeType)) {
+                        handleShowPreview()
                     } else {
                         DashboardToastDispatch({ type: "create", toastContent: { Icon: faTimesCircle, Title: "Sorry, this document cannot be previewed" } });
                     }
@@ -133,7 +140,6 @@ const DocumentItem = ({ Document, getDocuments, uniqueTagsOptions }) => {
         <Col xs="12" md="6" lg="4">
             <div className="p-2 document" >
                 <div className="d-flex Actions justify-content-between mb-3">
-
                     <div className="mb-0 pe-1 pe-md-2" >
                         <div className="d-flex align-items-center">
                             <a className="title d-inline" target="_blank" rel="noreferrer nofollow" href={Document.link}>{Document.name}</a>
@@ -160,7 +166,6 @@ const DocumentItem = ({ Document, getDocuments, uniqueTagsOptions }) => {
                                     className="d-flex justify-content-end"
                                     disabled={Request.fetching}
                                 >
-
                                     <Dropdown.Toggle title={t(`Document options`)} as={MoreButton} id="dropdown-custom-components" />
                                     <Dropdown.Menu >
                                         <Dropdown.Item disabled={!File.valid || File.fetching || !File.validPreview} onClick={() => downloadFile("preview")}>
@@ -179,7 +184,6 @@ const DocumentItem = ({ Document, getDocuments, uniqueTagsOptions }) => {
                     </div>
 
                 </div>
-
                 <div>
                     <div className={`d-flex w-100 overflow-hidden align-items-end`}>
 
@@ -253,11 +257,10 @@ const DocumentItem = ({ Document, getDocuments, uniqueTagsOptions }) => {
                                         <FontAwesomeIcon icon={faDownload} />
                                 }
                             </Button>
-
                         }
                         {
                             TagsCollapsed &&
-                            <Button onClick={() => downloadFile("preview")} as={Badge} bg="primary" title={t("Preview")} type="button" className={`noStyle d-inline-block ms-2 ${(!File.valid || File.fetching || !File.validPreview) ? "disabled" : ""}`}>
+                            <Button onClick={() => downloadFile("preview")} as={Badge} bg="primary" title={t("Preview")} type="button" className={`noStyle d-inline-block ms-1 ${(!File.valid || File.fetching || !File.validPreview) ? "disabled" : ""}`}>
                                 {
                                     File.fetching && File.type === "preview" ?
                                         <span className="smaller">
@@ -274,49 +277,21 @@ const DocumentItem = ({ Document, getDocuments, uniqueTagsOptions }) => {
                 </div>
             </div>
             {
-                !!(File.fetched && showPDF && File.valid) &&
-                <PDFModal download={download} show={showPDF} handleShow={handleShowPDF} file={File.content} />
+                !!(File.fetched && ShowPreview && File.valid) &&
+                (
+                    File.pdfPreview ?
+                        <PDFModal download={download} show={ShowPreview} handleShow={handleShowPreview} file={File.content} />
+                        :
+                        <OtherFileTypesModal download={download} show={ShowPreview} handleShow={handleShowPreview} file={File.content} />
+                )
             }
-            <Modal className="editTags" show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>{t("Edit tags of \"{{documentName}}\"", { documentName: Document.name })}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form.Label>{t("Tags")}</Form.Label>
-                    <CreatableSelect
-                        value={selectedOptions}
-                        onChange={handleChange}
-                        className="w-100 mb-2"
-                        isMulti isClearable noOptionsMessage={() => t("No options")} placeholder={t("Select or create tags...")}
-                        formatCreateLabel={(inputValue) => t("Create tag \"{{tagName}}\"", { tagName: inputValue })}
-                        options={[...uniqueTagsOptions]}
-                        classNames={{
-                            multiValue: () => ("multiValue"),
-                            multiValueLabel: () => ("multiValueLabel"),
-                            multiValueRemove: () => ("multiValueRemove"),
-                        }}
-                    />
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button
-                        size="sm" type="button"
-                        variant="secondary" onClick={handleClose}>
-                        {t("Cancel")}
-                    </Button>
-                    <Button size="sm" disabled={Request.fetching} onClick={() => addTagsToDocument()}>
-                        <Spinner
-                            as="span"
-                            type="button"
-                            animation="border"
-                            size="sm"
-                            role="status"
-                            aria-hidden="true"
-                            style={{ display: Request.fetching ? "inline-block" : "none" }}
-                        />{' '}
-                        {t("Confirm")}
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+            <TagsModal
+                Document={Document}
+                uniqueTagsOptions={uniqueTagsOptions}
+                selectedOptions={selectedOptions} handleChange={handleChange}
+                show={show} handleClose={handleClose}
+                Request={Request} addTagsToDocument={addTagsToDocument}
+            />
         </Col >
 
     );
