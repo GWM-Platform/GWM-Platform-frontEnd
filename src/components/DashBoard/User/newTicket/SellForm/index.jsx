@@ -8,8 +8,8 @@ import { Container, Row, Col, Accordion } from 'react-bootstrap'
 import FundSelector from './FundSelector'
 import SellData from './SellData'
 import Loading from '../Loading';
-import NoFunds from '../NoFunds';
 import ActionConfirmationModal from './ActionConfirmationModal';
+import NoSellFunds from '../NoSellFunds';
 import ReactGA from "react-ga4";
 
 const SellForm = ({ balanceChanged }) => {
@@ -166,7 +166,7 @@ const SellForm = ({ balanceChanged }) => {
                                     </Accordion>
                                 </Col>
                                 :
-                                <NoFunds />
+                                <NoSellFunds />
                     }
                 </Row>
                 {

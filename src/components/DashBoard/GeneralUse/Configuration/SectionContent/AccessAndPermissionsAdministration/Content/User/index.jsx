@@ -153,7 +153,31 @@ const User = ({ user, permissions, funds, getUsers, users }) => {
         });
     }
 
+    const permissionsToFilter = () =>
+        FormData.permissions
+            .filter(permission =>
+                permission.action !== "OWNER" &&
+                permission.action !== "VIEW_ALL_FUNDS" &&
+                permission.action !== "BUY_ALL_FUNDS" &&
+                permission.action !== "SELL_ALL_FUNDS" &&
+                permission.action !== "CLIENT_DOUBLECHECK" &&
+                permission.action !== "EDIT_CLIENT" &&
+                permission.action !== "DEPOSIT" &&
+                permission.action !== "FIXED_DEPOSIT_PRECANCEL" &&
+                (!StakeOrFundPermission(permission)))
 
+    const filterGuide = {
+        administration: ['VIEW_ACCOUNT', "WITHDRAW", "ADD_USERS", "REMOVE_USERS"],
+        timeDeposits: ['FIXED_DEPOSIT_VIEW', 'FIXED_DEPOSIT_CREATE'],
+        transfers: ["TRANSFER_GENERATE", "TRANSFER_APPROVE", "TRANSFER_DENY"]
+    }
+
+    const filterPermissionsByGroup = (group = "others") => permissionsToFilter().filter(permission =>
+        Object.keys(filterGuide).includes(group) ?
+            filterGuide[group]?.includes(permission.action)
+            :
+            !(Object.values(filterGuide)?.flat()?.includes(permission.action))
+    )
     const toggleDoubleCheck = () => {
 
         setDoubleCheck(() => (
@@ -251,8 +275,54 @@ const User = ({ user, permissions, funds, getUsers, users }) => {
                 <Container className="px-0" fluid>
                     <Form>
                         <Row className='pt-2'>
+
                             <Col xs="12">
-                                <h3 className="permission-category ">{t("Funds permissions")}:</h3>
+                                <h3 className="permission-category">{t("Administration")}:</h3>
+                            </Col >
+                            {
+
+                                filterPermissionsByGroup('administration').map(
+                                    (permission) =>
+                                        <Permission
+                                            user={user} permission={permission} funds={funds} FormData={FormData}
+                                            setFormData={setFormData} disabled={!PermissionEdit.editionEnabled}
+                                            key={`user-${user.id}-administration-permission-${permission.id}`} />
+                                )
+                            }
+
+                            <Col xs="12">
+                                <h3 className="permission-category">{t("Time deposits")}:</h3>
+                            </Col >
+                            {
+
+                                filterPermissionsByGroup('timeDeposits').map(
+                                    (permission) =>
+                                        <Permission
+                                            user={user} permission={permission} funds={funds} FormData={FormData}
+                                            setFormData={setFormData} disabled={!PermissionEdit.editionEnabled}
+                                            key={`user-${user.id}-timeDeposits-permission-${permission.id}`} />
+                                )
+                            }
+
+                            <Col xs="12">
+                                <h3 className="permission-category">{t("Transfers")}:</h3>
+                            </Col >
+                            {
+
+                                filterPermissionsByGroup('transfers').map(
+                                    (permission) =>
+                                        <Permission
+                                            user={user} permission={permission} funds={funds} FormData={FormData}
+                                            setFormData={setFormData} disabled={!PermissionEdit.editionEnabled}
+                                            key={`user-${user.id}-transfers-permission-${permission.id}`} />
+                                )
+                            }
+
+
+
+
+                            <Col xs="12">
+                                <h3 className="permission-category mt-2 pt-2 border-top">{t("Funds permissions")}:</h3>
                             </Col>
                             <Col xs="3">{t("All")}</Col>
                             <Col xs="3">
@@ -286,28 +356,26 @@ const User = ({ user, permissions, funds, getUsers, users }) => {
                                 )
                             }
 
-
-                            <Col xs="12">
-                                <h3 className="permission-category mt-2 pt-2 border-top">{t("Other permissions")}:</h3>
-                            </Col >
                             {
-                                FormData.permissions
-                                    .filter(permission => permission.action !== "OWNER" &&
-                                        permission.action !== "VIEW_ALL_FUNDS" &&
-                                        permission.action !== "BUY_ALL_FUNDS" &&
-                                        permission.action !== "SELL_ALL_FUNDS" &&
-                                        permission.action !== "CLIENT_DOUBLECHECK" &&
-                                        (!StakeOrFundPermission(permission)))
-                                    .map(
-                                        (permission) =>
-                                            <Permission
-                                                user={user} permission={permission} funds={funds} FormData={FormData}
-                                                setFormData={setFormData} disabled={!PermissionEdit.editionEnabled}
-                                                key={`user-${user.id}-permission-${permission.id}`} />
-                                    )
+                                !!(filterPermissionsByGroup('other').length > 0) &&
+                                <>
+                                    <Col xs="12">
+                                        <h3 className="permission-category mt-2 pt-2 border-top">{t("Other permissions")}:</h3>
+                                    </Col>
+                                    {
+                                        filterPermissionsByGroup('other').map(
+                                            (permission) =>
+                                                <Permission
+                                                    user={user} permission={permission} funds={funds} FormData={FormData}
+                                                    setFormData={setFormData} disabled={!PermissionEdit.editionEnabled}
+                                                    key={`user-${user.id}-other-permission-${permission.id}`} />
+                                        )
+                                    }
+                                </>
                             }
+
                             {
-                                !!(hasPermission('') && users.length < 1) &&
+                                !(!hasPermission('') || !hasPermission('REMOVE_USERS') || user?.isOwner || users.length < 2) &&
                                 <Col xs="12">
                                     <div className="permission-category mt-2 pt-2 border-top" />
                                 </Col >
@@ -338,6 +406,7 @@ const User = ({ user, permissions, funds, getUsers, users }) => {
                                 <>
                                     {/*The owners only can make another user owner */}
                                     {
+
                                         !(!hasPermission('') || users.length <= 1) &&
 
                                         <Col xs="auto" className=" mb-2">
@@ -355,8 +424,8 @@ const User = ({ user, permissions, funds, getUsers, users }) => {
                                         </Col>
                                     }
                                     {
-                                        !(!hasPermission('') || user?.isOwner) &&
-
+                                         // TODO: Reintegrate when the assignment/desassignment as owners are integrated to client confirmations
+                                         (!(!hasPermission('') || user?.isOwner) && false) &&
                                         <Col xs="auto" className=" mb-2">
                                             <Button disabled={AssignOwner.fetching} variant="danger" onClick={assignOwner}>
                                                 {
@@ -380,7 +449,7 @@ const User = ({ user, permissions, funds, getUsers, users }) => {
                                         </Col>
                                     }
                                     {
-                                        !(!hasPermission('MODIFY_PERMISSIONS') || user?.isOwner) &&
+                                        !(!hasPermission('') || user?.isOwner) &&
                                         <Col xs="auto" className=" mb-2">
                                             <Button variant="danger" onClick={() => toggleEdition()}>
                                                 {t("Edit permissions")}

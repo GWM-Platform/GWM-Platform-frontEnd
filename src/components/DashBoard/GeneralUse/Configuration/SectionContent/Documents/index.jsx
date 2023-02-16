@@ -97,7 +97,7 @@ const Documents = () => {
                 <NoMovements movements={4} />
                 :
                 <Row className='g-2 mb-2'>
-                  {filteredDocuments().map(document => <DocumentItem uniqueTagsOptions={uniqueTagsOptions()} document={document} key={`document-item-${document.id}`} getDocuments={getDocuments} />)}
+                  {filteredDocuments().map(document => <DocumentItem uniqueTagsOptions={uniqueTagsOptions()} Document={document} key={`document-item-${document.id}`} getDocuments={getDocuments} />)}
                 </Row>
             }
           </>

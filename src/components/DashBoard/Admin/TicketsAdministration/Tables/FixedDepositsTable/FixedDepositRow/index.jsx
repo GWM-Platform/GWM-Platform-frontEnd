@@ -217,7 +217,7 @@ const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
     }
 
     const userInfoById = (clientId) => {
-        let indexClientTransaction = UsersInfo.value.findIndex((client) => client.id === clientId)
+        let indexClientTransaction = UsersInfo?.value?.findIndex((client) => client.id === clientId)
         if (indexClientTransaction >= 0) {
             SetUserTicketInfo((prevState) => ({
                 ...prevState,
@@ -337,7 +337,7 @@ const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
 
                         wasEdited ?
                         <div className='d-flex' >
-                            <span className='me-2 pe-2' style={{ borderRight: "1px solid lightgray" }}>{t("Investment upon closing")}:&nbsp;<strong>{t("Edited")}&nbsp;</strong>
+                            <span className='me-2 pe-2' style={{ borderRight: "1px solid lightgray" }}>{t("Investment at maturity date")}:&nbsp;<strong>{t("Edited")}&nbsp;</strong>
                                 {ProfitEditedAtTheEnd.fetching ?
                                     <Spinner animation="border" size="sm" />
                                     :
@@ -352,7 +352,7 @@ const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
                         </div >
                         :
                         <div className='d-flex justify-content-between' >
-                            <span >{t("Investment upon closing within the agreed term")}:&nbsp;
+                            <span >{t("Investment at maturity date")}:&nbsp;
                                 {ProfitAtTheEnd.fetching ?
                                     <Spinner animation="border" size="sm" />
                                     :
@@ -392,14 +392,14 @@ const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
 
                 {!!(validState(["Closed (Term completed)", "Closed (Out of term)", "Ongoing"])) &&
                     <div className='d-flex justify-content-between'>
-                        <span >{t("Time deposit Start date")}:&nbsp;
+                        <span >{t("Establishment date")}:&nbsp;
                             {moment(Movement.startDate).format('L')}
                         </span>
                     </div >}
 
                 {!!(validState(["Closed (Term completed)", "Closed (Out of term)", "Ongoing"])) &&
                     <div className='d-flex justify-content-between' style={{ borderBottom: "1px solid 1px solid rgb(240,240,240)" }}>
-                        <span >{t("End date (Agreed)")}:&nbsp;
+                        <span >{t("Maturity date")}:&nbsp;
                             {moment(Movement.endDate).format('L')}
                         </span>
                     </div >}

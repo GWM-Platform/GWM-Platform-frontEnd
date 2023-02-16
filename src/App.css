@@ -460,9 +460,9 @@ table .Actions {
   padding: 0 !important;
 }
 .multiValueRemove {
-  color: white!important;
-  background:none!important;
-  padding-right:0!important
+  color: white !important;
+  background: none !important;
+  padding-right: 0 !important;
 }
 
 .groupHeading {
@@ -481,4 +481,24 @@ table .Actions {
 .groupHeading.selected {
   background-color: #2684ff !important;
   color: hsl(0, 0%, 100%) !important;
+}
+
+.basic-single {
+  border-radius: 4px;
+}
+.basic-single .select__indicator {
+  color: #666 !important;
+}
+.basic-single .select__control {
+  border-color: #ced4da !important;
+}
+.basic-single .select__control--is-focused {
+  border-color: #86b7fe !important;
+  box-shadow: 0 0 0 0.25rem rgb(50 31 219 / 25%) !important;
+}
+
+.smaller {
+  transform: scale(0.7) translateY(-2px);
+  display: block;
+  height: 12.5px;
 }

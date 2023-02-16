@@ -19,6 +19,7 @@ import RotateDevice from 'components/RotateDevice';
 import ErrorNotice from 'components/ErrorNotice';
 
 import './App.css';
+import './widtHeightBP.css'
 import moment from 'moment';
 import axios from 'axios';
 
@@ -40,8 +41,14 @@ function App() {
   useEffect(() => {
     Sentry.init({
       dsn: process.env.REACT_APP_SENTRYDSN,
-      integrations: [new BrowserTracing()],
       tracesSampleRate: 1.0,
+      // This sets the sample rate to be 10%. You may want this to be 100% while
+      // in development and sample at a lower rate in production
+      replaysSessionSampleRate: 0.1,
+      // If the entire session is not sampled, use the below sample rate to sample
+      // sessions when an error occurs.
+      replaysOnErrorSampleRate: 1.0,
+      integrations: [new BrowserTracing(), new Sentry.Replay()],
     })
   }, [])
 

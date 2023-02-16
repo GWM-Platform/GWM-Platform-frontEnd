@@ -10,6 +10,7 @@ import { useCallback } from 'react';
 import axios from 'axios';
 import { DashBoardContext } from 'context/DashBoardContext';
 import { useContext } from 'react';
+import CreateClientForm from './CreateClientForm';
 
 const ClientsSupervision = () => {
     const { toLogin } = useContext(DashBoardContext)
@@ -53,6 +54,36 @@ const ClientsSupervision = () => {
         };
     }, [getUsers])
 
+    const getClients = async () => {
+        const token = sessionStorage.getItem('access_token')
+        setClients((prevState) => ({ fetching: true, fetched: true, content: [] }))
+        var url = `${process.env.REACT_APP_APIURL}/Clients/?` + new URLSearchParams({
+            all: true,
+        });
+
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: "*/*",
+            }
+        })
+
+        if (response.status === 200) {
+            const dataFetched = await response.json()
+            setClients((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, content: dataFetched } }))
+        } else {
+            switch (response.status) {
+                case 500:
+                    setClients((prevState) => ({ ...prevState, ...{ fetching: false, fetched: false } }))
+                    break;
+                default:
+                    setClients((prevState) => ({ ...prevState, ...{ fetching: false, fetched: false } }))
+                    console.error(response.status)
+            }
+        }
+    }
+
     useEffect(() => {
         const token = sessionStorage.getItem('access_token')
 
@@ -81,34 +112,7 @@ const ClientsSupervision = () => {
                 }
             }
         }
-        const getClients = async () => {
-            setClients((prevState) => ({ fetching: true, fetched: true, content: [] }))
-            var url = `${process.env.REACT_APP_APIURL}/Clients/?` + new URLSearchParams({
-                all: true,
-            });
 
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    Accept: "*/*",
-                }
-            })
-
-            if (response.status === 200) {
-                const dataFetched = await response.json()
-                setClients((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, content: dataFetched } }))
-            } else {
-                switch (response.status) {
-                    case 500:
-                        setClients((prevState) => ({ ...prevState, ...{ fetching: false, fetched: false } }))
-                        break;
-                    default:
-                        setClients((prevState) => ({ ...prevState, ...{ fetching: false, fetched: false } }))
-                        console.error(response.status)
-                }
-            }
-        }
         getAccounts()
         getClients()
 
@@ -154,7 +158,7 @@ const ClientsSupervision = () => {
         let index = Accounts.content.findIndex((account) => account.clientId === searchedClientId)
         return index === -1 ? false : Accounts.content[index]
     }
-    
+
     return (
         <Container className="h-100 ClientsSupervision">
             <Row className="h-100">
@@ -164,6 +168,9 @@ const ClientsSupervision = () => {
                     <Switch>
                         <Route exact path="/DashBoard/clientsSupervision/">
                             <ClientSelector Accounts={Accounts.content} Clients={Clients.content} />
+                        </Route>
+                        <Route exact path="/DashBoard/clientsSupervision/create-client">
+                            <CreateClientForm getClients={getClients}/>
                         </Route>
                         {
                             Clients.content.map((client) =>

@@ -87,12 +87,20 @@ const ContainerLogin = () => {
       } else {
         let destination = ""
         if (data.user.isAdmin) {
-          if (desiredLocation && desiredId && desiredType) {
-            destination = `FundsAdministration?loc=${desiredLocation}&id=${desiredId}&type=${desiredType}`
-          } else if (transferId) {
-            destination = `Accounts?loc=history&client=${desiredClient}&id=${transferId}&type=transfers`
+          if (desiredClient) {
+            if (desiredLocation && desiredId && desiredType) {
+              destination = `Accounts?loc=${desiredLocation}&id=${desiredId}&type=${desiredType}&client=${desiredClient}${desiredFundId ? `&fundId=${desiredFundId}` : ""}`
+            } else if (transferId) {
+              destination = `Accounts?loc=history&client=${desiredClient}&id=${transferId}&type=transfers`
+            } else {
+              destination = `FundsAdministration`
+            }
           } else {
-            destination = `FundsAdministration`
+            if (desiredLocation && desiredId && desiredType) {
+              destination = `FundsAdministration?loc=${desiredLocation}&id=${desiredId}&type=${desiredType}`
+            } else {
+              destination = `FundsAdministration`
+            }
           }
         } else {
           if (desiredLocation && desiredId && desiredType && desiredClient) {

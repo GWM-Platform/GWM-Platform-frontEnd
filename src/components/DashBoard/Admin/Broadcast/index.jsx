@@ -135,12 +135,40 @@ const Broadcast = () => {
         allSelectedArray = [...allSelectedArray, ...appendToArray]
     }
 
+    var allOwnersArray = [{ label: "Owners", value: "*owners" }]
+    for (let client of clients.content) {
+        let appendToArray = []
+        appendToArray = client.users.filter(user => user?.isOwner).map(
+            userToClient => ({ value: userToClient?.user?.email, label: userToClient?.user?.email, email: userToClient?.user?.email })
+        ).filter(
+            //eslint-disable-next-line 
+            selectedOption => allOwnersArray.filter(
+                selectedOptionFilter => selectedOptionFilter.value === selectedOption.value
+            ).length === 0)
+        allOwnersArray = [...allOwnersArray, ...appendToArray]
+    }
+
     const handleChangeMultiSelect = (selectedOption) => {
 
         setSelectedOptions(prevState => {
 
             const previouslyAllSelected = prevState?.filter(option => option?.value === "*")?.length > 0
             const actuallyAllSelected = selectedOption?.filter(option => option?.value === "*")?.length > 0
+
+            const previouslyOwnersSelected = prevState?.filter(option => option?.value === "*owners")?.length > 0
+            const actuallyOwnersSelected = selectedOption?.filter(option => option?.value === "*owners")?.length > 0
+
+            if (!previouslyOwnersSelected && actuallyOwnersSelected) {
+                return ([...allOwnersArray])
+            } else {
+                if (previouslyOwnersSelected && !actuallyOwnersSelected) {
+                    return ([])
+                } else {
+                    if (previouslyOwnersSelected && actuallyOwnersSelected) {
+                        return ([...selectedOption.filter(selectedOption => selectedOption.value !== "*owners")])
+                    }
+                }
+            }
 
             if (!previouslyAllSelected && actuallyAllSelected) {
                 return ([...allSelectedArray])
@@ -162,6 +190,7 @@ const Broadcast = () => {
         return clients?.fetched
             ? [
                 { label: "All clients", value: "*" },
+                { label: "Owners", value: "*owners" },
                 ...clients?.content?.map(
                     client => ({
                         label: client.alias,
@@ -207,8 +236,11 @@ const Broadcast = () => {
     const MultiValue = ({ children, ...props }) => {
         const allSelected = props?.getValue()?.filter(option => option?.value === "*")?.length > 0
         const isSelectAll = props?.data?.value === "*"
+
+        const ownersSelected = props?.getValue()?.filter(option => option?.value === "*owners")?.length > 0
+        const isSelectOwners = props?.data?.value === "*owners"
         return (
-            (allSelected && !isSelectAll) ?
+            ((allSelected && !isSelectAll) || (ownersSelected && !isSelectOwners)) ?
                 null
                 :
                 <components.MultiValue {...props}>
@@ -218,6 +250,65 @@ const Broadcast = () => {
     }
 
     const getClientById = (clientId) => clients?.content?.find(client => client.id === clientId)
+
+    useEffect(() => {
+
+        const objectsEqual = (o1, o2) =>
+            typeof o1 === 'object' && Object.keys(o1).length > 0
+                ? Object.keys(o1).length === Object.keys(o2).length
+                && Object.keys(o1).every(p => objectsEqual(o1[p], o2[p]))
+                : o1 === o2;
+
+        const arraysEqual = (a1, a2) =>
+            a1.length === a2.length && a1.every((o, idx) => objectsEqual(o, a2[idx]));
+
+        if (selectedOptions.length > 0) {
+            if (selectedOptions.filter(selectedOption => selectedOption.value === "*owners").length === 1) {
+                if (!arraysEqual(selectedOptions, allOwnersArray)) {
+                    setSelectedOptions(prevState => ([...prevState.filter(selectedOption => selectedOption.value !== "*owners")]))
+                }
+            } else {
+                if (arraysEqual(selectedOptions, allOwnersArray.filter(selectedOption => selectedOption.value !== "*owners"))) {
+                    setSelectedOptions([...allOwnersArray])
+                }
+            }
+
+        }
+        //eslint-disable-next-line
+    }, [selectedOptions])
+
+
+    useEffect(() => {
+
+        const objectsEqual = (o1, o2) =>
+            typeof o1 === 'object' && Object.keys(o1).length > 0
+                ? Object.keys(o1).length === Object.keys(o2).length
+                && Object.keys(o1).every(p => objectsEqual(o1[p], o2[p]))
+                : o1 === o2;
+
+        const arraysEqual = (a1, a2) =>
+            a1.length === a2.length && a1.every((o, idx) => objectsEqual(o, a2[idx]));
+
+        const alphSelectedOptions = selectedOptions.sort((a, b) =>
+            a?.email?.localeCompare(b?.email))
+
+        const alphAllArray = allSelectedArray.sort((a, b) =>
+            a?.email?.localeCompare(b?.email))
+
+        if (alphSelectedOptions.length > 0) {
+            if (alphSelectedOptions.filter(selectedOption => selectedOption.value === "*").length === 1) {
+                if (!arraysEqual(alphSelectedOptions, alphAllArray)) {
+                    setSelectedOptions(prevState => ([...prevState.filter(selectedOption => selectedOption.value !== "*")]))
+                }
+            } else {
+                if (alphSelectedOptions.length === alphAllArray.filter(selectedOption => selectedOption.value !== "*").length) {
+                    setSelectedOptions([...alphAllArray])
+                }
+            }
+
+        }
+        //eslint-disable-next-line
+    }, [selectedOptions])
 
     const selectUsersByClientId = (clientId) => {
         setSelectedOptions(prevState => {
@@ -230,8 +321,7 @@ const Broadcast = () => {
                     //eslint-disable-next-line 
                     selectedOption => aux.filter(selectedOptionFilter => selectedOptionFilter.value === selectedOption.value).length === 0
                 )
-            aux = [...aux, ...appendToArray]
-            return aux?.length === allSelectedArray?.length - 1 ? [...allSelectedArray] : [...aux]
+            return [...aux, ...appendToArray]
         })
     }
 
@@ -295,13 +385,13 @@ const Broadcast = () => {
                         <Form.Group className="mb-3" controlId='title'>
                             <Form.Label>{t("Email title")}</Form.Label>
                             <Form.Control
-                                onChange={handleChange} value={formData.title} className="mb-1" required
+                                onChange={handleChange} value={formData.title} className="mb-1" required  maxLength="250"
                             />
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId='emailBody'>
                             <Form.Label>{t("Email body")}</Form.Label>
-                            <Form.Control as="textarea" maxLength="100"
+                            <Form.Control as="textarea" maxLength="20000"
                                 onChange={handleChange} value={formData.emailBody} className="mb-1" style={{ height: "100px" }} required
                             />
                         </Form.Group>

@@ -5,9 +5,9 @@ import { Pagination } from 'react-bootstrap';
 const PaginationController = ({ PaginationData, setPaginationData, total }) => {
 
     const ActualPage = PaginationData.skip / PaginationData.take
-    
+
     return (
-        <div className={`w-100 ${total <= PaginationData.take ? "d-none" : "d-block"}`}>
+        <div className={`w-100 ${total <= PaginationData.take ? "d-none" : "d-block"} mt-2`}>
             <Pagination className="mb-0 mt-2 d-flex justify-content-center">
                 <Pagination.First
                     className={ActualPage < 2 ? "d-none" : "d-block"}
@@ -104,7 +104,7 @@ const PaginationController = ({ PaginationData, setPaginationData, total }) => {
                     onClick={() => {
                         setPaginationData((prevState) => ({
                             ...prevState, ...{
-                                skip: (Math.ceil(total / prevState.take)-1)*prevState.take,
+                                skip: (Math.ceil(total / prevState.take) - 1) * prevState.take,
                             }
                         }))
                     }}
@@ -128,7 +128,7 @@ const PaginationController = ({ PaginationData, setPaginationData, total }) => {
                     onClick={() => {
                         setPaginationData((prevState) => ({
                             ...prevState, ...{
-                                skip: (Math.ceil(total / prevState.take)-1)*prevState.take,
+                                skip: (Math.ceil(total / prevState.take) - 1) * prevState.take,
                             }
                         }))
                     }}

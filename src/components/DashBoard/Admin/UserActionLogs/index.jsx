@@ -8,10 +8,11 @@ import { useTranslation } from "react-i18next";
 import { DashBoardContext } from "context/DashBoardContext";
 import UserActionLog from "./UserActionLog";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilter } from "@fortawesome/free-solid-svg-icons";
+import { faSlidersH } from "@fortawesome/free-solid-svg-icons";
 import Select from 'react-select';
 import EmptyTable from "components/DashBoard/GeneralUse/EmptyTable";
 import PaginationController from "components/DashBoard/GeneralUse/PaginationController";
+import moment from "moment";
 
 const UserActionLogs = () => {
 
@@ -21,7 +22,26 @@ const UserActionLogs = () => {
 
     const [Events, setEvents] = useState({ status: "idle", content: { events: [], total: 0 } })
 
-    const [FilterOptions, setFilterOptions] = useState({ client: "", type: "" })
+    const [validated, setValidated] = useState(false)
+
+    const defaultMinDate = moment().subtract(1, "month").isSameOrAfter(moment("2023-02-01")) ? moment().subtract(1, "month").format(moment.HTML5_FMT.DATE) : "2023-02-01"
+    const defaultMaxDate = moment().format(moment.HTML5_FMT.DATE)
+
+    const FilterOptionsDefaultState = {
+        client: "",
+        type: "",
+        from: defaultMinDate,
+        to: defaultMaxDate
+    }
+
+    const [FilterOptions, setFilterOptions] = useState(FilterOptionsDefaultState)
+
+    const fromMinDate = defaultMinDate
+    const fromMaxDate = moment(FilterOptions.to).isValid() ? FilterOptions.to : defaultMaxDate
+
+    const toMinDate = moment(FilterOptions.from).isValid() ? FilterOptions.from : defaultMinDate
+    const toMaxDate = defaultMaxDate
+
     const [Pagination, setPagination] = useState({
         skip: 0,//Offset (in quantity of logs)
         take: 15,//Logs per page
@@ -56,10 +76,11 @@ const UserActionLogs = () => {
         setPagination(prevState => ({ ...prevState, skip: 0 }))
     }
 
-    useEffect(() => {
-        const controller = new AbortController();
-        const signal = controller.signal;
+    const handleChage = (e) => {
+        setFilterOptions(prevState => ({ ...prevState, [e.target.id]: e.target.value }))
+    }
 
+    const getEvents = (signal) => {
         setEvents((prevState) => (
             {
                 ...prevState,
@@ -78,6 +99,8 @@ const UserActionLogs = () => {
                     filterType: FilterOptions?.type === ""
                         ? null
                         : FilterOptions?.type?.value,
+                    startDate: FilterOptions.from,
+                    endDate: moment(FilterOptions.to).add(1, "day").format(moment.HTML5_FMT.DATE)
                 }, signal: signal
             })
             .then(function (response) {
@@ -101,11 +124,32 @@ const UserActionLogs = () => {
                     }
                 }
             })
+    }
+
+    useEffect(() => {
+        const controller = new AbortController();
+        const signal = controller.signal;
+
+
+
+        getEvents(signal)
         return () => {
             controller.abort();
         };
         // eslint-disable-next-line
-    }, [FilterOptions.client, FilterOptions.type, Pagination.skip])
+    }, [Pagination.skip])
+
+    const handleSubmit = (event) => {
+        const form = event.currentTarget;
+        event.preventDefault();
+        event.stopPropagation();
+        if (form.checkValidity()) {
+            setPagination(prevState => ({ ...prevState, skip: 0 }))
+            getEvents()
+        } else {
+            setValidated(true)
+        }
+    }
 
     const [Users, setUsers] = useState({ status: "idle", content: [] })
 
@@ -259,7 +303,7 @@ const UserActionLogs = () => {
                     className="ms-auto"
                     style={{ backgroundColor: isCurrentEventKey ? 'purple' : '' }}
                     onClick={decoratedOnClick}
-                    type="button"><FontAwesomeIcon icon={faFilter} /></Button>
+                    type="button"><FontAwesomeIcon icon={faSlidersH} /></Button>
             </div>
 
         );
@@ -279,51 +323,99 @@ const UserActionLogs = () => {
                         <Accordion >
                             <ContextAwareToggle eventKey="0">{t("User action logs")}</ContextAwareToggle>
                             <Accordion.Collapse eventKey="0">
-                                <Row className="pt-3">
-                                    <Col md="6">
-                                        <Form.Label>{t("Client / Administrators")}</Form.Label>
-                                        <Select
-                                            menuPosition="fixed"
-                                            className={`basic-single`}
-                                            classNamePrefix="select"
-                                            isSearchable
-                                            alwaysDisplayPlaceholder
-                                            noOptionsMessage={() => t("No results")}
-                                            placeholder=""
-                                            name="Client"
-                                            onChange={(selectedOption) => handleChangeClient(selectedOption)}
-                                            options={options}
-                                            required
-                                            value={FilterOptions.client}
-                                            classNames={{
-                                                input: () => "react-select-input",
-                                            }}
-                                            isClearable
-                                        />
-                                    </Col>
-                                    <Col md="6">
-                                        <Form.Label>{t("Log type")}</Form.Label>
-                                        <Select
-                                            menuPosition="fixed"
-                                            className={`basic-single`}
-                                            classNamePrefix="select"
-                                            isSearchable
-                                            alwaysDisplayPlaceholder
-                                            noOptionsMessage={() => t("No results")}
-                                            placeholder=""
-                                            name="Type"
-                                            onChange={(selectedOption) => handleChangeType(selectedOption)}
-                                            options={eventOptions}
-                                            required
-                                            value={FilterOptions.type}
-                                            classNames={{
-                                                input: () => "react-select-input",
-                                            }}
-                                            isClearable
-                                        />
-                                    </Col>
+                                <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                                    <Row className="pt-2 g-2">
+                                        <Col sm="12" md="6" lg="4">
+                                            <Row className="g-2 p-relative">
+                                                <Col sm="12" md="6">
 
-                                </Row>
+                                                    <Form.Label>{t("from_date")}</Form.Label>
+                                                    <Form.Control
+                                                        placeholder={t('from_date')}
+                                                        id="from"
+                                                        type="date"
+                                                        required
+                                                        value={FilterOptions.from}
+                                                        onChange={handleChage}
+                                                        min={fromMinDate}
+                                                        max={fromMaxDate}
+                                                    />
+                                                    <Form.Control.Feedback type="invalid" tooltip>
+                                                        {t("Enter a valid date range between {{defaultMinDate}} and today", { defaultMinDate })}
+                                                    </Form.Control.Feedback>
+                                                </Col>
+                                                <Col sm="12" md="6">
+                                                    <Form.Label>{t("to_date")}</Form.Label>
+                                                    <Form.Control
+                                                        placeholder={t('to_date')}
+                                                        id="to"
+                                                        type="date"
+                                                        required
+                                                        value={FilterOptions.to}
+                                                        onChange={handleChage}
+                                                        min={toMinDate}
+                                                        max={toMaxDate}
+                                                    />
+                                                </Col>
+                                            </Row>
+                                        </Col>
+
+                                        <Col sm="12" md="6" lg="4" >
+                                            <Form.Label>{t("Client / Administrators")}</Form.Label>
+                                            <Select
+                                                menuPosition="fixed"
+                                                className={`basic-single`}
+                                                classNamePrefix="select"
+                                                isSearchable
+                                                alwaysDisplayPlaceholder
+                                                noOptionsMessage={() => t("No results")}
+                                                placeholder=""
+                                                name="Client"
+                                                onChange={(selectedOption) => handleChangeClient(selectedOption)}
+                                                options={options}
+                                                value={FilterOptions.client}
+                                                classNames={{
+                                                    input: () => "react-select-input",
+                                                }}
+                                                isClearable
+                                            />
+                                        </Col>
+                                        <Col sm="12" md="6" lg="4" >
+                                            <Form.Label>{t("Log type")}</Form.Label>
+                                            <Select
+                                                menuPosition="fixed"
+                                                className={`basic-single`}
+                                                classNamePrefix="select"
+                                                isSearchable
+                                                alwaysDisplayPlaceholder
+                                                noOptionsMessage={() => t("No results")}
+                                                placeholder=""
+                                                name="Type"
+                                                onChange={(selectedOption) => handleChangeType(selectedOption)}
+                                                options={eventOptions}
+                                                value={FilterOptions.type}
+                                                classNames={{
+                                                    input: () => "react-select-input",
+                                                }}
+                                                isClearable
+                                            />
+                                        </Col>
+                                        <div className="w-100 m-0"></div>
+                                        <Col xs="auto" className="ms-auto">
+                                            <Button type="button" onClick={() => setFilterOptions({ ...FilterOptionsDefaultState })}>
+                                                Cancelar
+                                            </Button>
+                                        </Col>
+                                        <Col xs="auto">
+                                            <Button type="submit">
+                                                Confirmar
+                                            </Button>
+                                        </Col>
+                                        <Col xs="12">
+                                            <div className="w-100" style={{ borderBottom: "1px solid black" }} />
+                                        </Col>
+                                    </Row>
+                                </Form>
                             </Accordion.Collapse>
                         </Accordion>
                         {
@@ -333,25 +425,26 @@ const UserActionLogs = () => {
                                 Events?.content?.events?.length === 0 ?
                                     <EmptyTable className="h-100 mb-5" />
                                     :
-                                    <div className="py-3">
-                                        <Table className="ClientsTable" striped bordered hover>
-                                            <thead className="verticalTop tableHeader solid-bg">
-                                                <tr>
-                                                    <th className="id">{t("Log")} #</th>
-                                                    <th className="id">{t("Date")}</th>
-                                                    <th className="Alias">{t("User email")}</th>
-                                                    <th className="Balance">{t("Action")}</th>
-                                                    <th className="Balance">{t("Detail")}</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {
-                                                    Events.content.events.map(
-                                                        Log => <UserActionLog key={`user-log-${Log.id}`} User={selectUserById(Log.userId)} Log={Log} Users={Users.content} Accounts={Accounts.content} Clients={Clients.content} />
-                                                    )
-                                                }
-                                            </tbody>
-                                        </Table>
+                                    <div className="py-3 w-100">
+                                        <div className="w-100 overflow-auto">
+                                            <Table className="ClientsTable mb-0" striped bordered hover>
+                                                <thead className="verticalTop tableHeader solid-bg">
+                                                    <tr>
+                                                        <th className="id">{t("Date")}</th>
+                                                        <th className="Alias">{t("User email")}</th>
+                                                        <th className="Balance">{t("Action")}</th>
+                                                        <th className="Balance">{t("Detail")}</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {
+                                                        Events.content.events.map(
+                                                            Log => <UserActionLog key={`user-log-${Log.id}`} User={selectUserById(Log.userId)} Log={Log} Users={Users.content} Accounts={Accounts.content} Clients={Clients.content} />
+                                                        )
+                                                    }
+                                                </tbody>
+                                            </Table>
+                                        </div>
                                         <PaginationController PaginationData={Pagination} setPaginationData={setPagination} total={Events?.content?.total} />
                                     </div>
 
@@ -360,7 +453,7 @@ const UserActionLogs = () => {
                     </Col>
                 }
             </Row>
-        </Container>
+        </Container >
 
     );
 }

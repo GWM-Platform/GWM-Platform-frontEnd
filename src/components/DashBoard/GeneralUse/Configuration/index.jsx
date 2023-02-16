@@ -13,8 +13,10 @@ import './index.css'
 import { useTranslation } from 'react-i18next';
 import AccessAndPermissionsAdministration from './SectionContent/AccessAndPermissionsAdministration';
 import Documents from './SectionContent/Documents';
+import ClientConfiguration from './SectionContent/ClientConfiguration';
 
 const Configuration = ({ admin = false }) => {
+  const { hasPermission, isMobile } = useContext(DashBoardContext)
 
   const history = useHistory()
   const location = useLocation()
@@ -35,6 +37,7 @@ const Configuration = ({ admin = false }) => {
       {}
       :
       {
+        clientconfiguration: hasPermission('VIEW_ACCOUNT') && <ClientConfiguration desiredSubSection={subSectionQuery} />,
         accessandpermissionsadministration: <AccessAndPermissionsAdministration desiredSubSection={subSectionQuery} />,
         documents: <Documents />
       })
@@ -55,7 +58,6 @@ const Configuration = ({ admin = false }) => {
     } else return isMobile ? '' : 'passwordandauthentication'
   }
 
-  const { isMobile } = useContext(DashBoardContext);
   const [SectionSelected, SetSectionSelected] = useState(sectionFirstValue())
 
   const [TabActive, setTabActive] = useState(sectionFirstValue().length > 0)

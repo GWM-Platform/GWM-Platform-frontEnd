@@ -439,9 +439,9 @@ const Tables = ({ state, messageVariants }) => {
     }
 
     /*---------------------------------------------------------------------------------------- */
-    const [UsersInfo, SetUsersInfo] = useState({ fetching: true, value: {} })
-    const [FundInfo, SetFundInfo] = useState({ fetching: true, value: {} })
-    const [AccountInfo, SetAccountInfo] = useState({ fetching: true, value: {} })
+    const [UsersInfo, SetUsersInfo] = useState({ fetching: true, value: [] })
+    const [FundInfo, SetFundInfo] = useState({ fetching: true, value: [] })
+    const [AccountInfo, SetAccountInfo] = useState({ fetching: true, value: [] })
 
     const { t } = useTranslation()
 

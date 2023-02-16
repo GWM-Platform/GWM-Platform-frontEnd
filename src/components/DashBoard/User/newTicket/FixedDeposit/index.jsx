@@ -14,7 +14,6 @@ import moment from 'moment';
 import axios from 'axios';
 import Decimal from 'decimal.js';
 import ReactGA from "react-ga4";
-
 import NoFixedDeposit from '../NoFixedDeposit';
 import RuleSelector from './RuleSelector';
 

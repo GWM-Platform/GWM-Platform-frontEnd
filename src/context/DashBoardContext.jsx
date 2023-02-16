@@ -616,7 +616,7 @@ export const DashBoardProvider = ({ children }) => {
         value={{
             token, admin, UserClients, ClientSelected, IndexClientSelected, setIndexClientSelected, balanceChanged, setBalanceChanged, TransactionStates, getMoveStateById,
             FetchingFunds, contentReady, PendingWithoutpossession, PendingTransactions, Accounts, Funds, itemSelected, setItemSelected, isMobile, width, toLogin, setContentReady,
-            DashboardToast, DashboardToastDispatch, AccountSelected, allowedSymbols,
+            DashboardToast, DashboardToastDispatch, AccountSelected, allowedSymbols,setAccountSelected,
             couldSign, ClientPermissions, hasPermission, hasSellPermission, hasBuyPermission, hasViewPermission, setClientPermissions, hasAnySellPermission, hasAnyBuyPermission
         }}>
         {children}

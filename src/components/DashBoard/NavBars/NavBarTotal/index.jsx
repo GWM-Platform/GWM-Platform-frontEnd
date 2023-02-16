@@ -118,4 +118,3 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
 export default NavBarTotal
 
 
-

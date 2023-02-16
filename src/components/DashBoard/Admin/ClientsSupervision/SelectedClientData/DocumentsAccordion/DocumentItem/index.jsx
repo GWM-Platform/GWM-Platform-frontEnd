@@ -1,34 +1,128 @@
-import { faChevronDown, faChevronUp, faDownload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icons'
+import { faChevronDown, faChevronUp, faDownload, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 import MoreButton from "components/DashBoard/GeneralUse/MoreButton";
-import React, { useState } from "react";
+import PDFModal from "components/DashBoard/GeneralUse/PDFModal";
+import React, { useContext, useState } from "react";
 import { Fragment } from "react";
 import { Badge, Col, Dropdown, Spinner, Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import { DashBoardContext } from "context/DashBoardContext";
+import { Link } from "react-router-dom";
+import OtherFileTypesModal from "components/DashBoard/GeneralUse/OtherFileTypesModal";
 
-const DocumentItem = ({ document }) => {
+const DocumentItem = ({ Document, getDocuments, client }) => {
     const { t } = useTranslation()
+    const { DashboardToastDispatch, } = useContext(DashBoardContext)
 
     const [TagsCollapsed, setTagsCollapsed] = useState(true)
     const expandTags = () => { setTagsCollapsed(false) }
     const collapseTags = () => { setTagsCollapsed(true) }
 
-    const tagsAmount = document?.tags?.length
-    const hasTags = !!(document?.tags?.length > 0)
-    const hasMultipleTags = !!(document?.tags?.length > 1)
+    const tagsAmount = Document?.tags?.length
+    const hasTags = !!(Document?.tags?.length > 0)
+    const hasMultipleTags = !!(Document?.tags?.length > 1)
+
+    const [File, setFile] = useState({
+        fetching: false, fetched: false, valid: true,
+        content: {}, type: "",
+        validPreview: true, pdfPreview: true
+    })
+    const [Request, setRequest] = useState({ fetching: false })
+
+    const [show, setShow] = useState(false)
+
+    const handleShow = () => setShow(!show)
+
+    const download = (file) => {
+        const alink = document.createElement('a')
+        alink.href = `data:application/octet-stream;base64,${file.file}`
+        alink.download = `${file.name}`
+        alink.click()
+    }
+
+    const downloadFile = (type = "") => {
+        if (!File.fetched) {
+            setFile((prevState) => ({ ...prevState, fetching: true, fetched: false, valid: true, type }))
+            axios.get(`/documents/${Document.id}/file/`,
+            ).then(function (response) {
+                setFile((prevState) => (
+                    {
+                        ...prevState,
+                        fetching: false,
+                        fetched: true,
+                        valid: true,
+                        content: response.data,
+                        validPreview: !!(response?.data?.mimeType),
+                        pdfPreview: response?.data?.name?.split(".")?.[1] === "pdf",
+                    }))
+                if (type === "preview") {
+                    if (!!(response?.data?.mimeType)) {
+                        handleShow()
+                    } else {
+                        DashboardToastDispatch({ type: "create", toastContent: { Icon: faTimesCircle, Title: "Sorry, this document cannot be previewed, please try downloading it" } });
+                    }
+                } else {
+                    download(response.data)
+                }
+            }).catch((err) => {
+                if (err.message !== "canceled") {
+                    setFile((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: false } }))
+                    if (type === "preview") {
+                        DashboardToastDispatch({ type: "create", toastContent: { Icon: faTimesCircle, Title: "Sorry, this document cannot be previewed" } });
+                    } else {
+                        DashboardToastDispatch({ type: "create", toastContent: { Icon: faTimesCircle, Title: "Sorry, this document cannot be downloaded" } });
+                    }
+                }
+            });
+        } else {
+            if (File.valid) {
+
+                setFile((prevState) => ({ ...prevState, fetching: true, type }))
+                if (type === "preview") {
+                    if (!!(File?.content?.mimeType)) {
+                        handleShow()
+                    } else {
+                        DashboardToastDispatch({ type: "create", toastContent: { Icon: faTimesCircle, Title: "Sorry, this document cannot be previewed" } });
+                    }
+                } else {
+                    download(File.content)
+                }
+                setFile((prevState) => ({ ...prevState, fetching: false }))
+            }
+        }
+    }
+
+    const deleteFile = () => {
+        setRequest((prevState) => ({ ...prevState, fetching: true }))
+        axios.delete(`/documents/${Document.id}/`,
+        ).then(function () {
+
+            DashboardToastDispatch({ type: "create", toastContent: { Icon: faCheckCircle, Title: "The document was deleted successfully" } });
+            getDocuments()
+        }).catch((err) => {
+            DashboardToastDispatch({ type: "create", toastContent: { Icon: faTimesCircle, Title: "There was an error deleting the document, please try again later" } });
+            if (err.message !== "canceled") {
+                setFile((prevState) => (
+                    {
+                        ...prevState,
+                        fetching: false
+                    }))
+            }
+        });
+    }
 
     return (
         <Col xs="12" md="6" lg="4">
             <div className="p-2 document" >
-
                 <div className="d-flex Actions justify-content-between mb-3">
-
                     <div className="mb-0 pe-1 pe-md-2" >
                         <div className="d-flex align-items-center">
-                            <a className="title d-inline" target="_blank" rel="noreferrer nofollow" href={document.link}>{document.name}</a>
+                            <a className="title d-inline" target="_blank" rel="noreferrer nofollow" href={Document.link}>{Document.name}</a>
                         </div>
                         <h2 className="identifier d-flex align-items-center">
-                            {t("Document")}&nbsp;#{document.id}
+                            {t("Document")}&nbsp;#{Document.id}
                         </h2>
                     </div>
 
@@ -51,18 +145,21 @@ const DocumentItem = ({ document }) => {
                                 >
                                     <Dropdown.Toggle title={t(`Document options`)} as={MoreButton} id="dropdown-custom-components" />
                                     <Dropdown.Menu >
-
-                                        <Dropdown.Item target="_blank" rel="noreferrer nofollow" href={document.link}>
-                                            {t('Open in a new tab')}
+                                        <Dropdown.Item disabled={!File.valid || File.fetching || !File.validPreview} onClick={() => downloadFile("preview")}>
+                                            {t('Preview')}
                                         </Dropdown.Item>
-                                        <Dropdown.Item disabled>
+                                        <Dropdown.Item disabled={!File.valid || File.fetching} onClick={downloadFile}>
                                             {t('Download')}
                                         </Dropdown.Item>
                                         <Dropdown.Divider />
-                                        <Dropdown.Item disabled target="_blank" rel="noreferrer nofollow" href={document.link}>
-                                            {t('Edit')}
+                                        <Dropdown.Item >
+                                            <Link to={`/DashBoard/clientsSupervision/${client.id}/document?i=${Document.id}`}
+                                                style={{ textDecoration: "none", color: "var(--bs-dropdown-link-color)" }}>
+                                                {t('Edit')}
+                                            </Link>
                                         </Dropdown.Item>
-                                        <Dropdown.Item disabled>
+                                        <Dropdown.Divider />
+                                        <Dropdown.Item onClick={deleteFile}>
                                             {t('Delete')}
                                         </Dropdown.Item>
                                     </Dropdown.Menu >
@@ -85,7 +182,7 @@ const DocumentItem = ({ document }) => {
                                     TagsCollapsed ?
                                         <>
                                             <Badge className="tag overview" bg="secondary">
-                                                {document?.tags[0]}
+                                                {Document?.tags[0]}
                                             </Badge>
                                             {
                                                 hasMultipleTags &&
@@ -105,8 +202,8 @@ const DocumentItem = ({ document }) => {
                                         </>
                                         :
                                         <>
-                                            {document?.tags.map(tag =>
-                                                <Fragment key={`document-${document.id}-tag-${tag}`}>
+                                            {Document?.tags.map(tag =>
+                                                <Fragment key={`document-${Document.id}-tag-${tag}`}>
                                                     <Badge className="tag" bg="secondary">
                                                         {tag}
                                                     </Badge>
@@ -122,12 +219,44 @@ const DocumentItem = ({ document }) => {
                         }
                         {
                             TagsCollapsed &&
-                            <Button as={Badge} bg="primary" title={t("Download")} type="button" className="noStyle d-inline-block ms-auto"><FontAwesomeIcon icon={faDownload} /></Button>
+                            <Button onClick={downloadFile} as={Badge} bg="primary" title={t("Download")} type="button" className={`noStyle d-inline-block ms-auto ${(!File.valid || File.fetching) ? "disabled" : ""}`}>
+                                {
+                                    File.fetching && File.type !== "preview" ?
+                                        <span className="smaller">
+                                            <Spinner as="span" size="sm" />
+                                        </span>
+                                        :
+                                        <FontAwesomeIcon icon={faDownload} />
+                                }
+                            </Button>
+                        }
+                        {
+                            TagsCollapsed &&
+                            <Button onClick={() => downloadFile("preview")} as={Badge} bg="primary" title={t("Preview")} type="button" className={`noStyle d-inline-block ms-1 ${(!File.valid || File.fetching || !File.validPreview) ? "disabled" : ""}`}>
+                                {
+                                    File.fetching && File.type === "preview" ?
+                                        <span className="smaller">
+                                            <Spinner as="span" size="sm" />
+                                        </span>
+                                        :
+                                        <FontAwesomeIcon
+                                            icon={faMagnifyingGlass}
+                                        />
+                                }
+                            </Button>
                         }
                     </div>
                 </div>
             </div>
-
+            {
+                !!(File.fetched && show && File.valid) &&
+                (
+                    File.pdfPreview ?
+                        <PDFModal download={download} show={show} handleShow={handleShow} file={File.content} />
+                        :
+                        <OtherFileTypesModal download={download} show={show} handleShow={handleShow} file={File.content} />
+                )
+            }
         </Col>
     );
 }

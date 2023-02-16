@@ -14,12 +14,10 @@ import ReactSelect from "react-select";
 import Loading from 'components/DashBoard/GeneralUse/Loading';
 import NoMovements from "components/DashBoard/GeneralUse/NoMovements";
 
-const DocumentsAccordion = ({ client }) => {
+const DocumentsAccordion = ({ client,documents,setDocuments }) => {
     const { t } = useTranslation()
 
     const { toLogin } = useContext(DashBoardContext)
-
-    const [documents, setDocuments] = useState({ fetching: false, fetched: false, valid: false, content: [] })
 
     const getDocuments = useCallback((signal) => {
         setDocuments((prevState) => ({ ...prevState, fetching: true, fetched: false }))
@@ -54,7 +52,8 @@ const DocumentsAccordion = ({ client }) => {
         return () => {
             controller.abort();
         };
-    }, [getDocuments])
+        //eslint-disable-next-line
+    }, [])
 
     const [selectedOptions, setSelectedOptions] = useState([...document?.tags?.map(tag => ({ value: tag, label: tag })) || []])
 
@@ -98,11 +97,11 @@ const DocumentsAccordion = ({ client }) => {
                                         <NoMovements movements={4} />
                                         :
                                         <Row className='g-2 mb-2'>
-                                            {filteredDocuments().map(document => <DocumentItem document={document} key={`document-item-${client.id}-${document.id}`} />)}
+                                            {filteredDocuments().map(document => <DocumentItem client={client} getDocuments={getDocuments} Document={document} key={`document-item-${client.id}-${document.id}`} />)}
                                         </Row>
                                 }
                                 <div className="mt-2 d-flex justify-content-end">
-                                    <Link to={`/DashBoard/clientsSupervision/${client.id}/addDocument`}>
+                                    <Link to={`/DashBoard/clientsSupervision/${client.id}/document`}>
                                         <Button>{t("Add document")}</Button>
                                     </Link>
                                 </div>
