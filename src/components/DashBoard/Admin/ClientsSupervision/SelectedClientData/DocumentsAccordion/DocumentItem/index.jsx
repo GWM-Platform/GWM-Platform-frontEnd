@@ -10,6 +10,7 @@ import { Badge, Col, Dropdown, Spinner, Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { DashBoardContext } from "context/DashBoardContext";
 import { Link } from "react-router-dom";
+import OtherFileTypesModal from "components/DashBoard/GeneralUse/OtherFileTypesModal";
 
 const DocumentItem = ({ Document, getDocuments, client }) => {
     const { t } = useTranslation()
@@ -23,7 +24,11 @@ const DocumentItem = ({ Document, getDocuments, client }) => {
     const hasTags = !!(Document?.tags?.length > 0)
     const hasMultipleTags = !!(Document?.tags?.length > 1)
 
-    const [File, setFile] = useState({ fetching: false, fetched: false, valid: true, content: {}, type: "", validPreview: true })
+    const [File, setFile] = useState({
+        fetching: false, fetched: false, valid: true,
+        content: {}, type: "",
+        validPreview: true, pdfPreview: true
+    })
     const [Request, setRequest] = useState({ fetching: false })
 
     const [show, setShow] = useState(false)
@@ -49,10 +54,11 @@ const DocumentItem = ({ Document, getDocuments, client }) => {
                         fetched: true,
                         valid: true,
                         content: response.data,
-                        validPreview: response?.data?.name?.split(".")?.[1] === "pdf"
+                        validPreview: !!(response?.data?.mimeType),
+                        pdfPreview: response?.data?.name?.split(".")?.[1] === "pdf",
                     }))
                 if (type === "preview") {
-                    if (response?.data?.name?.split(".")?.[1] === "pdf") {
+                    if (!!(response?.data?.mimeType)) {
                         handleShow()
                     } else {
                         DashboardToastDispatch({ type: "create", toastContent: { Icon: faTimesCircle, Title: "Sorry, this document cannot be previewed, please try downloading it" } });
@@ -75,7 +81,7 @@ const DocumentItem = ({ Document, getDocuments, client }) => {
 
                 setFile((prevState) => ({ ...prevState, fetching: true, type }))
                 if (type === "preview") {
-                    if (File?.content?.name?.split(".")?.[1] === "pdf") {
+                    if (!!(File?.content?.mimeType)) {
                         handleShow()
                     } else {
                         DashboardToastDispatch({ type: "create", toastContent: { Icon: faTimesCircle, Title: "Sorry, this document cannot be previewed" } });
@@ -244,7 +250,12 @@ const DocumentItem = ({ Document, getDocuments, client }) => {
             </div>
             {
                 !!(File.fetched && show && File.valid) &&
-                <PDFModal download={download} show={show} handleShow={handleShow} file={File.content} />
+                (
+                    File.pdfPreview ?
+                        <PDFModal download={download} show={show} handleShow={handleShow} file={File.content} />
+                        :
+                        <OtherFileTypesModal download={download} show={show} handleShow={handleShow} file={File.content} />
+                )
             }
         </Col>
     );

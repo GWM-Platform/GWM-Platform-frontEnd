@@ -3,7 +3,7 @@ import React, { useContext } from 'react'
 import { DashBoardContext } from 'context/DashBoardContext'
 import { faDownload } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { CloseButton, Col, Container, Modal, Ratio, Row } from 'react-bootstrap'
+import { CloseButton, Col, Container, Modal, Row } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import FilePreviewer from 'react-file-previewer';
 
@@ -19,7 +19,7 @@ const OtherFileTypesModal = (props) => {
     <Modal className="helpModal2" size="md" show={props.show} onHide={() => props.handleShow()} >
       <Modal.Body className='d-flex pt-0'>
         <Container fluid style={{ minHeight: '100%', position: 'relative' }} className='px-0'>
-          <CloseButton onClick={() => props.handleShow()} style={{ position: 'absolute', top: "10px", right: "10px", zIndex: 1 }} />
+          <CloseButton  variant="white" onClick={() => props.handleShow()} style={{ position: 'absolute', top: "10px", right: "10px", zIndex: 1 }} />
           <Row className='h-100 align-items-stretch' style={{ flexDirection: 'column' }}>
             <Col lg="12"
               style={{

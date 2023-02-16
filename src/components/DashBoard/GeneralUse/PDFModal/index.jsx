@@ -52,7 +52,7 @@ const PDFModal = (props) => {
     <Modal className="helpModal" size="md" show={props.show} onHide={() => props.handleShow()} >
       <Modal.Body className='d-flex pt-0'>
         <Container fluid style={{ minHeight: '100%', position: 'relative' }} className='px-0'>
-          <CloseButton onClick={() => props.handleShow()} style={{ position: 'absolute', top: "10px", right: "10px", zIndex: 1 }} />
+          <CloseButton  variant="white" onClick={() => props.handleShow()} style={{ position: 'absolute', top: "10px", right: "10px", zIndex: 1 }} />
           <Row className='h-100 align-items-stretch' style={isMobile ? { flexDirection: 'column' } : {}}>
             <Col lg="12" style={
               isMobile
