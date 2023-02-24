@@ -863,5 +863,8 @@
   "Document edited successfully": "Documento editado correctamente",
   "There was an error while editing the document": "Hubo un erro al editar el documento",
   "Edit document \"{{documentName}}\" from client": "Editar el documento \"{{documentName}}\" del cliente",
-  "Try to download it and view it on your device": "Intenta descargarlo y verlo en tu dispositivo"
+  "This file cannot be previewed": "Este archivo no puede ser previsualizado",
+  "Try to download it and open it on your device": "Intenta descargarlo y abrirlo en tu dispositivo",
+  "Download this file": "Descargar este archivo",
+  "Download this pdf": "Descargar este pdf"
 }

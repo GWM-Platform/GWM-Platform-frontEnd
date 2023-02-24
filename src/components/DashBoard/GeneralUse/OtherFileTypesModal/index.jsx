@@ -56,17 +56,17 @@ const OtherFileTypesModal = (props) => {
                       :
                       <div className="d-flex flex-column align-items-center justify-content-center" style={{ height: "80vh" }}>
                         <FontAwesomeIcon icon={faMagnifyingGlass} style={{ fontSize: "90px" }} />
-                        <h1 style={{fontSize:"18px"}}>
+                        <h1 style={{ fontSize: "18px" }}>
                           {t("This file cannot be previewed")}
                         </h1>
-                        {t("Try to download it and view it on your device")}
+                        {t("Try to download it and open it on your device")}
                       </div>
                   }
                 </div>
               }
               <Col className='page-controls'>
                 {
-                  <button onClick={() => props.download(props.file)} data-cy="btn-download-pdf" title={t('Download this pdf')}>
+                  <button onClick={() => props.download(props.file)} data-cy="btn-download-pdf" title={t('Download this file')}>
                     <FontAwesomeIcon icon={faDownload} />
                   </button>
                 }
