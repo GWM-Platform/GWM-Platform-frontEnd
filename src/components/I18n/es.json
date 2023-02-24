@@ -862,5 +862,6 @@
   "The document could not be edited": "El documento no pudo ser editado",
   "Document edited successfully": "Documento editado correctamente",
   "There was an error while editing the document": "Hubo un erro al editar el documento",
-  "Edit document \"{{documentName}}\" from client":"Editar el documento \"{{documentName}}\" del cliente"
+  "Edit document \"{{documentName}}\" from client": "Editar el documento \"{{documentName}}\" del cliente",
+  "Try to download it and view it on your device": "Intenta descargarlo y verlo en tu dispositivo"
 }
