@@ -11,14 +11,15 @@ import Loading from '../Loading';
 import ActionConfirmationModal from './ActionConfirmationModal';
 import ReactGA from "react-ga4";
 import { useEffect } from 'react';
+import axios from 'axios';
 
 const WithdrawForm = ({ balanceChanged }) => {
 
     useEffect(() => {
         ReactGA.event({
-            category: "Acceso a secciones para generar tickets",
-            action: "Retiros",
-            label: "Retiros",
+            category: "acceso_seccion_generacion_tickets",
+            action: "acceso_seccion_generacion_ticket_retiro",
+            label: "Acceso a la seccion Generación De Retiro",
         })
     }, [])
 
@@ -27,37 +28,38 @@ const WithdrawForm = ({ balanceChanged }) => {
     const [validated, setValidated] = useState(true);
     const [fetching, setFetching] = useState(false)
 
-    const { token, Accounts, contentReady } = useContext(DashBoardContext);
+    const { token, toLogin, Accounts, contentReady } = useContext(DashBoardContext);
 
     let history = useHistory();
 
-
-    const withdraw = async () => {
-        setFetching(true)
-        var url = `${process.env.REACT_APP_APIURL}/accounts/${Accounts[0].id}/withdraw`;
-        const response = await fetch(url, {
-            method: 'POST',
-            body: JSON.stringify({ amount: parseFloat(data.amount) }),
-            headers: {
-                Authorization: `Bearer ${token}`,
-                Accept: "*/*",
-                'Content-Type': 'application/json'
-            }
-        })
-
-        if (response.status === 201) {
-            balanceChanged()
-            history.push(`/DashBoard/operationResult`);
-        } else {
-            switch (response.status) {
-                case 500:
-                    history.push(`/DashBoard/operationResult?result=failed`);
-                    break;
-                default:
-                    history.push(`/DashBoard/operationResult?result=failed`);
-            }
+    const withdraw = () => {
+        if (!fetching) {
+            setFetching(true)
+            axios.post(`/accounts/${Accounts[0].id}/withdraw`, {
+                amount: parseFloat(data.amount)
+            }).then(function (response) {
+                ReactGA.event({
+                    category: "generacion_ticket",
+                    action: "generacion_ticket_retiro",
+                    label: `Retiro de $${data.amount}.`,
+                    value: parseFloat(data.amount),
+                })
+                balanceChanged()
+                history.push(`/DashBoard/operationResult`);
+            }).catch((err) => {
+                console.log(err)
+                if (err?.message !== "canceled") {
+                    switch (err?.response?.status) {
+                        case 401:
+                            toLogin();
+                            break;
+                        default:
+                            history.push(`/DashBoard/operationResult?result=failed`);
+                            break
+                    }
+                }
+            });
         }
-        setFetching(false)
     }
 
     const handleChange = (event) => {
@@ -70,7 +72,6 @@ const WithdrawForm = ({ balanceChanged }) => {
         event.preventDefault();
         event.stopPropagation();
         const form = event.currentTarget;
-        const token = sessionStorage.getItem('access_token')
         if (form.checkValidity() === true && !fetching) {
             if (token === null) {
                 console.log("compra")

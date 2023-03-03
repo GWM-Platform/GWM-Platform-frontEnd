@@ -12,18 +12,19 @@ import { DashBoardContext } from 'context/DashBoardContext';
 import ActionConfirmationModal from './ActionConfirmationModal';
 import NoBuyFunds from '../NoBuyFunds';
 import ReactGA from "react-ga4";
+import axios from 'axios';
 
 const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
-    
+
     useEffect(() => {
         ReactGA.event({
-            category: "Acceso a secciones para generar tickets",
-            action: "Compra de cuotapartes",
-            label: "Compra de cuotapartes",
-          })
+            category: "acceso_seccion_generacion_tickets",
+            action: "acceso_seccion_generacion_ticket_compra_cuotapartes",
+            label: "Acceso a la seccion Generación De Compra de Cuotapartes",
+        })
     }, [])
-    
-    const { token, ClientSelected, contentReady, Accounts, hasBuyPermission } = useContext(DashBoardContext);
+
+    const { token, ClientSelected, contentReady, Accounts, hasBuyPermission, toLogin } = useContext(DashBoardContext);
 
     function useQuery() {
         const { search } = useLocation();
@@ -49,38 +50,41 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
 
     let history = useHistory();
 
-    const buy = async () => {
+    const buy = () => {
         if (!fetching) {
             setFetching(true)
-            var url = `${process.env.REACT_APP_APIURL}/funds/${data.FundSelectedId}/buy/?` + new URLSearchParams({
-                client: ClientSelected.id,
-            });
-
-            const response = await fetch(url, {
-                method: 'POST',
-                body: JSON.stringify({ amount: parseFloat(data.amount) }),
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    Accept: "*/*",
-                    'Content-Type': 'application/json'
+            axios.post(`/funds/${data.FundSelectedId}/buy`,
+                {
+                    amount: parseFloat(data.amount)
+                },
+                {
+                    params: {
+                        client: ClientSelected.id,
+                    }
                 }
-            })
-
-            if (response.status === 201) {
+            ).then(function (response) {
+                ReactGA.event({
+                    category: "generacion_ticket",
+                    action: "generacion_ticket_compra_de_cuotapartes",
+                    label: `Compra de $${data.amount} en cuotapartes del fondo ${Funds[data.FundSelected].name}.`,
+                    value: parseFloat(data.amount),
+                    dimension1: `Fondo ${Funds[data.FundSelected].name}`
+                })
                 balanceChanged()
                 history.push(`/DashBoard/operationResult`);
-            } else {
-                switch (response.status) {
-                    case 500:
-                        history.push(`/DashBoard/operationResult?result=failed`);
-                        console.error(response.status)
-                        break
-                    default:
-                        history.push(`/DashBoard/operationResult?result=failed`);
-                        console.error(response.status)
+            }).catch((err) => {
+                console.log(err)
+                if (err?.message !== "canceled") {
+                    switch (err?.response?.status) {
+                        case 401:
+                            toLogin();
+                            break;
+                        default:
+                            history.push(`/DashBoard/operationResult?result=failed`);
+                            break
+                    }
                 }
-            }
-            setFetching(false)
+            });
         }
     }
 

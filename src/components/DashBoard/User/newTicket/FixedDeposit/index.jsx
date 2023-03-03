@@ -1,4 +1,4 @@
-import React, { useState, useContext, useCallback, useEffect } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { useHistory } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -18,12 +18,12 @@ import NoFixedDeposit from '../NoFixedDeposit';
 
 const FixedDepositTicket = ({ balanceChanged }) => {
     Decimal.set({ precision: 100 })
-    useEffect(() => {
 
+    useEffect(() => {
         ReactGA.event({
-            category: "Acceso a secciones para generar tickets",
-            action: "Generación De Plazos Fijos",
-            label: "Retiros",
+            category: "acceso_seccion_generacion_tickets",
+            action: "acceso_seccion_generacion_ticket_plazo_fijo",
+            label: "Acceso a la seccion Generación De Plazos Fijos",
         })
     }, [])
 
@@ -54,12 +54,22 @@ const FixedDepositTicket = ({ balanceChanged }) => {
                 clientId: ClientSelected.id,
                 duration: data.days
             }).then(function (response) {
-                if (response.status < 300 && response.status >= 200) {
-                    setFetching(false)
-                    balanceChanged()
-                    history.push(`/DashBoard/operationResult`);
-                } else {
-                    switch (response.status) {
+                ReactGA.event({
+                    category: "generacion_ticket",
+                    action: "generacion_ticket_plazo_fijo",
+                    label: `Inversión de $${data.amount}. ${data.days} días; tasa anual ${getAnualRate()}%${profit.fetched ? `; Al vencimiento: $${profit.value}` : ""}.`,
+                    value: parseFloat(data.amount),
+                    dimension1: `Duración ${data.days} días`,
+                    dimension2: `Tasa ${getAnualRate()}%`,
+                    dimension3: profit.fetched ? `Al vencimiento $${profit.value}` : undefined
+                })
+                setFetching(false)
+                balanceChanged()
+                history.push(`/DashBoard/operationResult`);
+            }).catch((err) => {
+                console.log(err)
+                if (err?.message !== "canceled") {
+                    switch (err?.response?.status) {
                         case 401:
                             toLogin();
                             break;
@@ -67,10 +77,6 @@ const FixedDepositTicket = ({ balanceChanged }) => {
                             history.push(`/DashBoard/operationResult?result=failed`);
                             break
                     }
-                }
-            }).catch((err) => {
-                if (err.message !== "canceled") {
-                    history.push(`/DashBoard/operationResult?result=failed`);
                 }
             });
         }
@@ -111,30 +117,6 @@ const FixedDepositTicket = ({ balanceChanged }) => {
 
     const [FixedDeposit, setFixedDeposit] = useState({ fetching: true, fetched: false, valid: false, content: {} })
 
-    const getFixedDepositPlans = useCallback((signal) => {
-        setFixedDeposit((prevState) => ({ fetching: true, fetched: false }))
-        axios.get(`/fixed-deposits/plans`, {
-            signal: signal,
-        }).then(function (response) {
-            if (response.status < 300 && response.status >= 200) {
-                setFixedDeposit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, content: response?.data[0] || {} } }))
-            } else {
-                switch (response.status) {
-                    case 401:
-                        toLogin();
-                        break;
-                    default:
-                        setFixedDeposit((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
-                        break
-                }
-            }
-        }).catch((err) => {
-            if (err.message !== "canceled") {
-                setFixedDeposit((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
-            }
-        });
-    }, [toLogin]);
-
     const getAnualRate = () => {
         if (data.amount.length > 0 && data.days.length > 0 && Number(data.days) >= 365 && FixedDeposit.fetched) {
             const investmentDays = Number(data.days)
@@ -153,16 +135,17 @@ const FixedDepositTicket = ({ balanceChanged }) => {
 
     const calculateProfit = () => {
         if (data.amount.length > 0 && data.days.length > 0 && Number(data.days) >= 365 && FixedDeposit.fetched) {
+            setProfit((prevState) => ({ ...prevState, ...{ fetching: true } }))
             axios.post(`/fixed-deposits/profit`,
                 {
                     duration: data?.days,
                     initialAmount: data?.amount,
                     interestRate: getAnualRate()
                 }).then(function (response) {
-                    if (response.status < 300 && response.status >= 200) {
-                        setProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: response.data || 0 } }))
-                    } else {
-                        switch (response.status) {
+                    setProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: response.data || 0 } }))
+                }).catch((err) => {
+                    if (err.message !== "canceled") {
+                        switch (err.response.status) {
                             case 401:
                                 toLogin();
                                 break;
@@ -171,18 +154,40 @@ const FixedDepositTicket = ({ balanceChanged }) => {
                                 break
                         }
                     }
-                }).catch((err) => {
-                    if (err.message !== "canceled") {
-                        setProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: calculateProfitFE() } }))
-                    }
                 });
+        } else {
+            setProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: false, valid: false, value: 0 } }))
         }
     }
 
     useEffect(() => {
-
         const controller = new AbortController();
         const signal = controller.signal;
+
+        const getFixedDepositPlans = () => {
+            setFixedDeposit((prevState) => ({ ...prevState, fetching: true, fetched: false }))
+            axios.get(`/fixed-deposits/plans`, {
+                signal: signal,
+            }).then(function (response) {
+                if (response.status < 300 && response.status >= 200) {
+                    setFixedDeposit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, content: response?.data[0] || {} } }))
+                } else {
+                    switch (response.status) {
+                        case 401:
+                            toLogin();
+                            break;
+                        default:
+                            setFixedDeposit((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
+                            break
+                    }
+                }
+            }).catch((err) => {
+                if (err.message !== "canceled") {
+                    setFixedDeposit((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
+                }
+            });
+        }
+
 
         getFixedDepositPlans(signal)
 
@@ -190,7 +195,8 @@ const FixedDepositTicket = ({ balanceChanged }) => {
             controller.abort();
         };
         //eslint-disable-next-line
-    }, [getFixedDepositPlans])
+    }, [])
+
     return (
         <div className="tabContent">
             <div className={`d-flex flex-column h-100`}>

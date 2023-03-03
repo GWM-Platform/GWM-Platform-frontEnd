@@ -11,14 +11,15 @@ import { DashBoardContext } from 'context/DashBoardContext';
 import ActionConfirmationModal from './ActionConfirmationModal';
 import { useHistory } from 'react-router-dom';
 import ReactGA from "react-ga4";
+import axios from 'axios';
 
 const TransferForm = ({ balanceChanged }) => {
 
     useEffect(() => {
         ReactGA.event({
-            category: "Acceso a secciones para generar tickets",
-            action: "Transferencias",
-            label: "Transferencias",
+            category: "acceso_seccion_generacion_tickets",
+            action: "acceso_seccion_generacion_ticket_transferencia",
+            label: "Acceso a la seccion Generación De Transferencia",
         })
     }, [])
 
@@ -45,38 +46,35 @@ const TransferForm = ({ balanceChanged }) => {
 
     const [Transfer, setTransfer] = useState({ fetching: false, valid: false, fetched: false })
 
-    const transfer = async () => {
-        setTransfer(prevState => ({ ...prevState, fetching: true }))
-        var url = `${process.env.REACT_APP_APIURL}/transfers`
-        const response = await fetch(url, {
-            method: 'POST',
-            body: JSON.stringify(
-                {
-                    senderId: data.senderId,
-                    receiverId: TargetAccount?.content?.id,
-                    amount: data.amount
+    const transfer = () => {
+        if (!Transfer.fetching) {
+            setTransfer(prevState => ({ ...prevState, fetching: true }))
+            axios.post(`/transfers`, {
+                senderId: data.senderId,
+                receiverId: TargetAccount?.content?.id,
+                amount: data.amount
+            }).then(function (response) {
+                ReactGA.event({
+                    category: "generacion_ticket",
+                    action: "generacion_ticket_transferencia",
+                    label: `Transferencia de $${data.amount}.`,
+                    value: parseFloat(data.amount),
+                })
+                balanceChanged()
+                history.push(`/DashBoard/operationResult`);
+            }).catch((err) => {
+                console.log(err)
+                if (err?.message !== "canceled") {
+                    switch (err?.response?.status) {
+                        case 401:
+                            toLogin();
+                            break;
+                        default:
+                            history.push(`/DashBoard/operationResult?result=failed`);
+                            break
+                    }
                 }
-            ),
-            headers: {
-                Authorization: `Bearer ${token}`,
-                Accept: "*/*",
-                'Content-Type': 'application/json'
-            }
-        })
-
-        if (response.status === 201) {
-            balanceChanged()
-            history.push(`/DashBoard/operationResult`);
-        } else {
-            switch (response.status) {
-                case 500:
-                    history.push(`/DashBoard/operationResult?result=failed`);
-                    break
-                default:
-                    history.push(`/DashBoard/operationResult?result=failed`);
-                    break
-            }
-            setTransfer(prevState => ({ ...prevState, fetching: false, fetched: true, valid: false }))
+            });
         }
     }
 

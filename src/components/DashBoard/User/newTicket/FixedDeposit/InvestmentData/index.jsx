@@ -59,6 +59,7 @@ const InvestmentData = ({ data, handleChange, Balance, calculateProfit }) => {
                     {/*Shown input formatted*/}
                     <CurrencyInput
                         allowNegativeValue={false}
+                        onBlur={() => calculateProfit()}
                         name="currencyInput"
                         defaultValue={data.amount}
                         decimalsLimit={2}

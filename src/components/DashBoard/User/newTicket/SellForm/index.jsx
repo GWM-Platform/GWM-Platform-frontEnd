@@ -11,18 +11,19 @@ import Loading from '../Loading';
 import ActionConfirmationModal from './ActionConfirmationModal';
 import NoSellFunds from '../NoSellFunds';
 import ReactGA from "react-ga4";
+import axios from 'axios';
 
 const SellForm = ({ balanceChanged }) => {
-    const { token, ClientSelected, contentReady, Accounts } = useContext(DashBoardContext);
-    
+    const { toLogin, token, ClientSelected, contentReady, Accounts } = useContext(DashBoardContext);
+
     useEffect(() => {
         ReactGA.event({
-            category: "Acceso a secciones para generar tickets",
-            action: "Venta de cuotapartes",
-            label: "Venta de cuotapartes",
-          })
+            category: "acceso_seccion_generacion_tickets",
+            action: "acceso_seccion_generacion_ticket_venta_cuotapartes",
+            label: "Acceso a la seccion Generación De Venta de Cuotapartes",
+        })
     }, [])
-    
+
     function useQuery() {
         const { search } = useLocation();
         return React.useMemo(() => new URLSearchParams(search), [search]);
@@ -42,37 +43,39 @@ const SellForm = ({ balanceChanged }) => {
 
     let history = useHistory();
 
-    const sell = async () => {
-        setFetching(true)
-        var url = `${process.env.REACT_APP_APIURL}/funds/${Funds[data.FundSelected].fundId}/sell/?` + new URLSearchParams({
-            client: ClientSelected.id,
-        });
-        const response = await fetch(url, {
-            method: 'POST',
-            body: JSON.stringify({ shares: parseFloat(data.shares) }),
-            headers: {
-                Authorization: `Bearer ${token}`,
-                Accept: "*/*",
-                'Content-Type': 'application/json'
-            }
-        })
-
-        if (response.status === 201) {
-            balanceChanged()
-            history.push(`/DashBoard/operationResult`);
-        } else {
-            switch (response.status) {
-                case 500:
-                    history.push(`/DashBoard/operationResult?result=failed`);
-                    console.error(response.status)
-                    break
-                default:
-                    history.push(`/DashBoard/operationResult?result=failed`);
-                    console.error(response.status)
-                    break
-            }
+    const sell = () => {
+        if (!fetching) {
+            setFetching(true)
+            axios.post(`/funds/${Funds[data.FundSelected].fundId}/sell`, {
+                shares: parseFloat(data.shares)
+            }, {
+                params: {
+                    client: ClientSelected.id,
+                }
+            }).then(function (response) {
+                ReactGA.event({
+                    category: "generacion_ticket",
+                    action: "generacion_ticket_venta_de_cuotapartes",
+                    label: `Venta de ${data.shares} cuotapartes del fondo ${Funds[data.FundSelected]?.fund?.name}.`,
+                    value: parseFloat(data.shares),
+                    dimension1: `Fondo ${Funds[data.FundSelected]?.fund?.name}`
+                })
+                balanceChanged()
+                history.push(`/DashBoard/operationResult`);
+            }).catch((err) => {
+                console.log(err)
+                if (err?.message !== "canceled") {
+                    switch (err?.response?.status) {
+                        case 401:
+                            toLogin();
+                            break;
+                        default:
+                            history.push(`/DashBoard/operationResult?result=failed`);
+                            break
+                    }
+                }
+            });
         }
-        setFetching(false)
     }
 
     useEffect(() => {
