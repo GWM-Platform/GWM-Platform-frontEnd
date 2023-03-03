@@ -37,7 +37,7 @@ const Configuration = ({ admin = false }) => {
       {}
       :
       {
-        clientconfiguration: hasPermission('VIEW_ACCOUNT') && <ClientConfiguration desiredSubSection={subSectionQuery} />,
+        clientconfiguration: (hasPermission('VIEW_ACCOUNT') && hasPermission('EDIT_CLIENT')) && <ClientConfiguration desiredSubSection={subSectionQuery} />,
         accessandpermissionsadministration: <AccessAndPermissionsAdministration desiredSubSection={subSectionQuery} />,
         documents: <Documents />
       })

@@ -30,7 +30,7 @@ const SectionsSelector = ({ SectionSelected, selectSection, TabActive, setTabAct
                     <Section setTabActive={setTabActive} SectionSelected={SectionSelected}
                         selectSection={selectSection} title={'Password and authentication'} icon={faShieldAlt} enabled />
                     {
-                        !admin &&
+                        !!(!admin && (hasPermission('VIEW_ACCOUNT') && hasPermission('EDIT_CLIENT'))) &&
                         <Section setTabActive={setTabActive} SectionSelected={SectionSelected}
                             selectSection={selectSection} title={'Client configuration'} icon={faUserCog} enabled />
                     }

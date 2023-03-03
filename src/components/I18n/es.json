@@ -871,5 +871,9 @@
   "Edit document \"{{documentName}}\" from client":"Editar el documento \"{{documentName}}\" del cliente",
   "Preferential plan":"Plan Preferencial",
   "Propose a differential rate/duration":"Proponga una tasa/duración diferencial",
-  "Specify the anual rate for your investment":"Ingrese la tasa anual para su inversión"
+  "Specify the anual rate for your investment":"Ingrese la tasa anual para su inversión",
+  "This file cannot be previewed": "Este archivo no puede ser previsualizado",
+  "Try to download it and open it on your device": "Intenta descargarlo y abrirlo en tu dispositivo",
+  "Download this file": "Descargar este archivo",
+  "Download this pdf": "Descargar este pdf"
 }

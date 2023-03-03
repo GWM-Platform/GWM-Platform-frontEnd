@@ -161,13 +161,12 @@ const User = ({ user, permissions, funds, getUsers, users }) => {
                 permission.action !== "BUY_ALL_FUNDS" &&
                 permission.action !== "SELL_ALL_FUNDS" &&
                 permission.action !== "CLIENT_DOUBLECHECK" &&
-                permission.action !== "EDIT_CLIENT" &&
                 permission.action !== "DEPOSIT" &&
                 permission.action !== "FIXED_DEPOSIT_PRECANCEL" &&
                 (!StakeOrFundPermission(permission)))
 
     const filterGuide = {
-        administration: ['VIEW_ACCOUNT', "WITHDRAW", "ADD_USERS", "REMOVE_USERS"],
+        administration: ['EDIT_CLIENT','VIEW_ACCOUNT', "WITHDRAW", "ADD_USERS", "REMOVE_USERS"],
         timeDeposits: ['FIXED_DEPOSIT_VIEW', 'FIXED_DEPOSIT_CREATE'],
         transfers: ["TRANSFER_GENERATE", "TRANSFER_APPROVE", "TRANSFER_DENY"]
     }
