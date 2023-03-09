@@ -16,7 +16,7 @@ const OtherFileTypesModal = (props) => {
   const { isMobile } = useContext(DashBoardContext)
 
   return (
-    <Modal className="helpModal2" size="md" show={props.show} onHide={() => props.handleShow()} >
+    <Modal className="helpModal2" size="lg" show={props.show} onHide={() => props.handleShow()} >
       <Modal.Body className='d-flex pt-0'>
         <Container fluid style={{ minHeight: '100%', position: 'relative' }} className='px-0'>
           <CloseButton variant="white" onClick={() => props.handleShow()} style={{ position: 'absolute', top: "10px", right: "10px", zIndex: 1 }} />
