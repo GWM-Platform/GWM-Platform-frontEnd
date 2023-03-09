@@ -866,5 +866,7 @@
   "This file cannot be previewed": "Este archivo no puede ser previsualizado",
   "Try to download it and open it on your device": "Intenta descargarlo y abrirlo en tu dispositivo",
   "Download this file": "Descargar este archivo",
-  "Download this pdf": "Descargar este pdf"
+  "Download this pdf": "Descargar este pdf",
+  "Pendiente de cliente": "Pendiente de cliente",
+  "Client pending":"Pendiente de cliente"
 }

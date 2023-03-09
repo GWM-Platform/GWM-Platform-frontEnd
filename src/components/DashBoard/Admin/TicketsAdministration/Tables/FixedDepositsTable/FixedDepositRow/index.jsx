@@ -56,6 +56,11 @@ const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }
                     bg: "danger",
                     text: "Denied"
                 }
+            case 5://Client pending
+                return {
+                    bg: "warning",
+                    text: "Client pending"
+                }
             default:
                 return {
                     bg: "danger",
