@@ -68,7 +68,7 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
                     action: "generacion_ticket_compra_de_cuotapartes",
                     label: `Compra de $${data.amount} en cuotapartes del fondo ${Funds[data.FundSelected].name}.`,
                     value: parseFloat(data.amount),
-                    dimension1: `Fondo ${Funds[data.FundSelected].name}`
+                    dimension1: `${Funds[data.FundSelected].name}` // dimension 1 = Nombre del fondo
                 })
                 balanceChanged()
                 history.push(`/DashBoard/operationResult`);

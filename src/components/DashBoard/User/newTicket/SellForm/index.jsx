@@ -58,7 +58,7 @@ const SellForm = ({ balanceChanged }) => {
                     action: "generacion_ticket_venta_de_cuotapartes",
                     label: `Venta de ${data.shares} cuotapartes del fondo ${Funds[data.FundSelected]?.fund?.name}.`,
                     value: parseFloat(data.shares),
-                    dimension1: `Fondo ${Funds[data.FundSelected]?.fund?.name}`
+                    dimension1: `${Funds[data.FundSelected]?.fund?.name}` // dimension 1 = Nombre del fondo
                 })
                 balanceChanged()
                 history.push(`/DashBoard/operationResult`);

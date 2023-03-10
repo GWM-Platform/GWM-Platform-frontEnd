@@ -59,9 +59,9 @@ const FixedDepositTicket = ({ balanceChanged }) => {
                     action: "generacion_ticket_plazo_fijo",
                     label: `Inversión de $${data.amount}. ${data.days} días; tasa anual ${getAnualRate()}%${profit.fetched ? `; Al vencimiento: $${profit.value}` : ""}.`,
                     value: parseFloat(data.amount),
-                    dimension1: `Duración ${data.days} días`,
-                    dimension2: `Tasa ${getAnualRate()}%`,
-                    dimension3: profit.fetched ? `Al vencimiento $${profit.value}` : undefined
+                    dimension2: `${data.days} días`, // dimension 2 = Duracion del plazo fijo
+                    dimension3: `${getAnualRate()}%`,// dimension 3 = Tasa anual del plazo fijo
+                    dimension4: profit.fetched ? `$${profit.value}` : undefined // dimension 4 = Monto de la inversion al finalizar el plazo
                 })
                 setFetching(false)
                 balanceChanged()
