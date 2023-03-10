@@ -1,0 +1,138 @@
+$unread-notification: #9881ea;
+
+#popover-notifications-toggler {
+    &.unread-notifications {
+        .icon {
+            position: relative;
+
+            &::after {
+                position: absolute;
+                top: 3px;
+                right: 0;
+                content: "";
+                width: 5px;
+                height: 5px;
+                border-radius: 50%;
+                background-color: $unread-notification;
+            }
+        }
+    }
+}
+
+#notifications-center {
+    width: 30vw;
+
+    .popover-body {
+        padding: 0;
+        max-height: 70vh;
+        overflow: auto;
+        display: flex;
+        flex-direction: column;
+
+        .header {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px lightgray solid;
+            padding: .35rem .9rem .35rem 1rem;
+
+            h1 {
+                font-size: 20px;
+                font-weight: 400;
+                margin: 0;
+            }
+        }
+
+        .no-notifications {
+            height: 30vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            font-size: 10vh;
+
+            p {
+                margin-top: 1rem;
+                margin-bottom: .5rem;
+                font-size: 14px;
+                text-align: center;
+                line-height: 1em;
+            }
+        }
+
+        .notifications-container {
+            overflow: auto;
+
+            .notification {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+
+                position: relative;
+                padding: .35rem .5rem .35rem 1rem;
+                width: 100%;
+                overflow: hidden;
+
+                .notification-resume {
+                    overflow: hidden;
+
+                    h2 {
+                        font-weight: 400;
+                        font-size: 16px;
+                        margin-bottom: .25em;
+                        max-height: 3em;
+                        white-space: nowrap;
+
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+
+                    h3 {
+                        font-weight: 400;
+                        font-size: 14px;
+                        color: grey;
+                        margin-bottom: 0;
+                        margin-top: 0;
+                    }
+                }
+
+                &.unread {
+                    &::before {
+                        position: absolute;
+                        top: 1rem;
+                        left: calc(1rem / 2);
+                        transform: translate(-50%, -50%);
+                        content: "";
+                        width: 7px;
+                        height: 7px;
+                        border-radius: 50%;
+                        background-color: $unread-notification;
+                    }
+                }
+
+                &:not(:last-of-type) {
+                    border-bottom: 1px lightgray solid;
+                }
+            }
+
+        }
+
+        .actions {
+            border-top: 1px lightgray solid;
+            display: flex;
+            padding: 0 1rem;
+
+            button {
+                background-color: transparent;
+                border: transparent;
+                flex: 1 0;
+
+                &:nth-child(odd):not(:last-of-type) {
+                    border-right: 1px lightgray solid;
+                }
+            }
+
+        }
+
+    }
+
+}

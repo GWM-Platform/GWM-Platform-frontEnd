@@ -868,5 +868,32 @@
   "Download this file": "Descargar este archivo",
   "Download this pdf": "Descargar este pdf",
   "Pendiente de cliente": "Pendiente de cliente",
-  "Client pending":"Pendiente de cliente"
+  "Client pending":"Pendiente de cliente",
+    
+  "Notifications":"Notificaciones",
+  "Notifications center":"Centro de notificaciones",
+  "Mark all as read":"Marcar todo como leido",
+  "View all":"Ver todas",
+  "Notification options":"Opciones de la notificación",
+  "Notifications configuration":"Configuración de notificaciones",
+  
+  "FIXED_DEPOSIT_TICKET_APPROVED":"Plazo fijo aprobado",
+  "WITHDRAW_TICKET_APPROVED":"Retiro aprobado",
+  "WITHDRAW_TICKET_LIQUIDATED":"Retiro liquidado",
+  "SHARES_BUY_TICKET_APPROVED":"Compra de cuotapartes aprobada",
+  "SHARES_SELL_TICKET_APPROVED":"Venta de cuotapartes aprobada",
+  "DEPOSIT_PERFORMED":"Deposito acreditado",
+  "FUND_CREATED":"¡Lanzamos un nuevo fondo!",
+  "ALIAS_UPDATED":"Han actualizado el alias de su cuenta",
+
+  "CLIENT_APROVAL_PENDING":"Ticket esperando su confirmación",
+  "TRANSFER_PENDING":"Transferencia esperando a ser aceptada",
+  "TRANSFER_DENIED":"Transferencia rechazada",
+  "TRANSFER_APPROVED":"Transferencia aceptada",
+  
+  "FIXED_DEPOSIT_TICKET_DENIED":"Plazo fijo rechazado",
+  "WITHDRAW_TICKET_DENIED":"Retiro rechazado",
+  "SHARES_BUY_TICKET_DENIED":"Compra de cuotapartes rechazada",
+  "SHARES_SELL_TICKET_DENIED":"Venta de cuotapartes rechazada",
+  "DEPOSIT_DENIED":"Deposito rechazado"
 }

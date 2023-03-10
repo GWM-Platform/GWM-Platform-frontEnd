@@ -1,0 +1,191 @@
+$color_1: rgba(0, 0, 0, 0.7);
+$color_2: #000;
+$color_3: rgba(0, 0, 0, 0.9);
+$color_4: black;
+$color_5: var(--main-color);
+$color_6: none;
+$color_7: var(--blue-main);
+$background-color_1: var(--main-bg-nav-color);
+$background-color_2: transparent;
+$background-color_3: none;
+$border-color_1: transparent;
+$border-color_2: lightgrey;
+$border-color_3: var(--selected-underline-section-color);
+$border-color_4: none;
+
+.navBarDesktop {
+	background-color: $background-color_1;
+	transition: all 0.5s;
+	filter: drop-shadow(0px 0px 3px grey);
+	background-color: $background-color_1;
+	transition: all 0.5s;
+	.text-black {
+		color: $color_4;
+		&:hover {
+			color: $color_4;
+		}
+	}
+	.nav-link {
+		padding: 0.5em;
+		border-bottom: 5px solid;
+		border-color: $border-color_1;
+		&:hover {
+			border-color: $border-color_2 !important;
+		}
+		&.active {
+			border-bottom: 5px solid;
+			border-color: $border-color_3;
+			&:hover {
+				border-color: $border-color_3 !important;
+			}
+		}
+	}
+	.transactionDropdown.show {
+		.nav-link {
+			border-bottom: 5px solid;
+			border-color: $border-color_3;
+		}
+	}
+	.bottomInnerBorder {
+		box-shadow: inset 0px -13px 0px -8px var(--default-underline-section-color);
+	}
+	.transactionDropdown {
+		>.dropdown-toggle {
+			padding-right: 0.5rem !important;
+			padding-left: 0.5rem !important;
+		}
+	}
+	.logoNavInfoExpanded {
+		opacity: 1;
+		transition: all 0.5s;
+	}
+	.logoNavInfoCollapsed {
+		opacity: 0;
+		transition: all 0.5s;
+	}
+	.navInfoToggler {
+		background-color: $background-color_2;
+		color: $color_5;
+		transition: all 0.5s;
+		border: none;
+		&:focus {
+			color: $color_6 !important;
+			background-color: $background-color_3 !important;
+			border-color: $border-color_4 !important;
+			box-shadow: none !important;
+		}
+	}
+	.navInfoToggler.toggled {
+		background-color: $background-color_2;
+		color: $color_7;
+		transform: rotate(180deg);
+	}
+	.dropdownButton {
+		font-size: 1rem;
+		display: block;
+		width: 100%;
+		background-color: $background-color_2;
+		border: none;
+		border-bottom: 5px solid;
+		border-radius: 0;
+		border-color: $border-color_1;
+		color: $color_4;
+		text-align: center;
+		padding: 0.5em;
+	}
+	.dropdownButton.active {
+		border-bottom: 5px solid;
+		border-color: $border-color_3;
+		color: $color_1;
+	}
+	.dropdown-menu.show {
+		margin-top: 0 !important;
+	}
+	.dropdown-menu {
+		border: 0;
+		min-width: 100%;
+		border-radius: 0 0 0.25rem 0.25rem;
+		padding: 0;
+	}
+	.dropdown-item {
+		&:last-of-type {
+			border-radius: 0 0 0.25rem 0.25rem;
+		}
+	}
+	.mobile-dropdown {
+		&::after {
+			content: "";
+			background-image: url("data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27 fill=%27%23082044%27><path fill-rule=%27evenodd%27 d=%27M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z%27/></svg>");
+			border: none !important;
+			width: 10px;
+			height: 10px;
+			display: inline-block;
+			margin-left: 10px;
+		}
+	}
+}
+.navBarDesktop.dropShadow {
+	filter: drop-shadow(0px 0px 5px black);
+}
+.navbar-dark {
+	.navbar-nav {
+		.nav-link.active {
+			color: $color_1;
+		}
+		.show {
+			>.nav-link {
+				color: $color_1;
+			}
+		}
+		.nav-link {
+			color: $color_2;
+			&:focus {
+				color: $color_3;
+			}
+			&:hover {
+				color: $color_3;
+			}
+		}
+	}
+}
+.OverlayNavMobile {
+	position: absolute;
+	inset: -0.5rem auto auto 0px !important;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	width: 40%;
+	border: none;
+	.popover-arrow {
+		display: none;
+	}
+	.popover-body {
+		padding: 0;
+	}
+}
+@media (min-width: 992px) {
+	.navBarDesktop {
+		.transactionDropdown {
+			>.dropdown-toggle {
+				padding-right: 1.5rem !important;
+				padding-left: 1.5rem !important;
+			}
+		}
+	}
+}
+@media (min-width: 576px) {
+	.navBarDesktop {
+		position: sticky;
+	}
+	.nav-link {
+		white-space: nowrap;
+	}
+}
+@media (max-width: 576px) {
+	.navBarDesktop {
+		.nav-link {
+			&:hover {
+				background-color: $background-color_2;
+			}
+		}
+	}
+}

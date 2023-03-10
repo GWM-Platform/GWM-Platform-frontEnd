@@ -13,7 +13,8 @@ import LanguageSelector from 'components/LanguageSelector';
 import ClientSelector from './ClientSelector';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './index.css'
+import './index.scss'
+import NotificationsCenter from './NotificationsCenter';
 
 const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
     const { admin, IndexClientSelected, UserClients, itemSelected, hasPermission, hasAnySellPermission, hasAnyBuyPermission } = useContext(DashBoardContext)
@@ -182,11 +183,13 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                             <div className="d-block d-sm-none d-md-block" style={{ paddingBottom: "5px" }}>
                                 <LanguageSelector />
                             </div>
-                            {
-                                <NavLink to="/Dashboard/Configuration?section=Password+and+authentication" className="nav-link " activeClassName="active">
-                                    <FontAwesomeIcon icon={faCog} />
-                                </NavLink>
-                            }
+
+                            <NotificationsCenter />
+
+                            <NavLink to="/Dashboard/Configuration?section=Password+and+authentication" className="nav-link " activeClassName="active">
+                                <FontAwesomeIcon icon={faCog} />
+                            </NavLink>
+
 
 
                             <Nav.Link onClick={() => logOut()} className="nav-link ">
