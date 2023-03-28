@@ -876,6 +876,10 @@
   "View all":"Ver todas",
   "Notification options":"Opciones de la notificación",
   "Notifications configuration":"Configuración de notificaciones",
+  "Mark as read":"Marcar como leida",
+  "Dimiss":"Ignorar",
+  "You have no notifications with that search criteria":
+  "No tienes notificaciones con ese criterio de busqueda",
   
   "FIXED_DEPOSIT_TICKET_APPROVED":"Plazo fijo aprobado",
   "WITHDRAW_TICKET_APPROVED":"Retiro aprobado",

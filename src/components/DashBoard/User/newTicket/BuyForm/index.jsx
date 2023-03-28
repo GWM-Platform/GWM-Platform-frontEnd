@@ -13,7 +13,7 @@ import ActionConfirmationModal from './ActionConfirmationModal';
 import NoBuyFunds from '../NoBuyFunds';
 import ReactGA from "react-ga4";
 
-const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
+const BuyForm = ({ balanceChanged }) => {
     
     useEffect(() => {
         ReactGA.event({
@@ -176,7 +176,7 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
                                             <BuyData
                                                 handleSubmit={handleSubmit} validated={validated}
                                                 handleChange={handleChange} Funds={Funds} data={data}
-                                                toggleAccordion={toggleAccordion} Balance={Accounts[0].balance} fetching={fetching} />
+                                                toggleAccordion={toggleAccordion} Balance={Accounts[0]?.balance} fetching={fetching} />
                                         </Accordion>
                                     </Col>
                                     :
@@ -186,7 +186,7 @@ const BuyForm = ({ NavInfoToggled, balanceChanged }) => {
                 </Container>
                 {
                     !!(data.FundSelected !== -1 && contentReady) &&
-                    <ActionConfirmationModal fetching={fetching} setShowModal={setShowModal} show={ShowModal} action={buy} data={data} Funds={Funds} Balance={Accounts[0].balance} />
+                    <ActionConfirmationModal fetching={fetching} setShowModal={setShowModal} show={ShowModal} action={buy} data={data} Funds={Funds} Balance={Accounts[0]?.balance} />
                 }
             </div>
         </div>

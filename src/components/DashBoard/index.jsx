@@ -48,6 +48,7 @@ import Configuration from './GeneralUse/Configuration';
 import NoPermissionOperation from './User/NoPermissionFeedback/NoPermissionOperation';
 import Broadcast from './Admin/Broadcast';
 import UserActionLogs from './Admin/UserActionLogs';
+import NotificationsCenter from './GeneralUse/NotificationsCenter';
 
 const UserDashBoard = () => {
     axios.defaults.headers.common['Authorization'] = `Bearer ${sessionStorage.getItem("access_token")}`
@@ -112,6 +113,9 @@ const UserDashBoard = () => {
 
                                             <Route exact path={`${path}/configuration`}>
                                                 <Configuration admin />
+                                            </Route>
+                                            <Route exact path={`${path}/notificationsCenter`}>
+                                                <NotificationsCenter />
                                             </Route>
                                         </div>
                                         :
@@ -179,6 +183,9 @@ const UserDashBoard = () => {
                                             </Route>
                                             <Route exact path={`${path}/configuration`}>
                                                 <Configuration />
+                                            </Route>
+                                            <Route exact path={`${path}/notificationsCenter`}>
+                                                <NotificationsCenter />
                                             </Route>
                                         </>
                                 }

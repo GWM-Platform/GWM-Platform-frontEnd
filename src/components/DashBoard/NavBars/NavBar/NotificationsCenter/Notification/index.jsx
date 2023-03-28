@@ -3,13 +3,14 @@ import MoreButton from 'components/DashBoard/GeneralUse/MoreButton'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import { OverlayTrigger, Popover, Dropdown } from 'react-bootstrap'
+import { useHistory } from 'react-router-dom'
 
-const Notification = ({ notification }) => {
+const Notification = ({ notification, fromPopup = true }) => {
     const { t } = useTranslation()
     const [show, setShow] = useState(false)
 
     const ref = useRef(null);
-
+    const history = useHistory()
 
 
     useEffect(() => {
@@ -53,8 +54,17 @@ const Notification = ({ notification }) => {
 
 
     return (
-        <div className={`notification ${notification.read ? "" : "unread"}`} >
-            <div className='notification-resume' title={t(notification.eventType)}>
+        <div className={`notification ${notification.read ? "" : "unread"}`}  >
+            <div
+                className='notification-resume' title={t(notification.eventType)}
+                onClick={() => {
+                    if (notification.path) {
+                        history.push(notification.path)
+                        setShow(false)
+                    }
+                }}
+                style={{ cursor: notification.path ? "pointer" : "" }}
+            >
                 <h2 >
                     {t(notification.eventType)}
                 </h2>

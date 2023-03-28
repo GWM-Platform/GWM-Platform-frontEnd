@@ -1,0 +1,103 @@
+$color_1: rgba(0, 0, 0, 0.9);
+$color_2: gray;
+$background-color_1: var(--main-bg-nav-color);
+$border-color_1: #198754;
+$border-color_2: var(--platform-red);
+$unread-notification: #9881ea;
+
+.NotificationsCenter {
+    .header {
+        position: relative;
+        font-size: 30px;
+        padding: 0.5em 0;
+        margin: 0.5em 0;
+        border-bottom: 1px solid;
+
+        .title {
+            font-size: 30px;
+            padding: 0;
+            margin: 0;
+        }
+    }
+    
+    .no-notifications {
+        height: 30vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        font-size: 10vh;
+
+        p {
+            margin-top: 1rem;
+            margin-bottom: .5rem;
+            font-size: 14px;
+            text-align: center;
+            line-height: 1em;
+        }
+    }
+
+    .notifications-container {
+        overflow: auto;
+
+        .notification {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+
+            position: relative;
+            padding: .35rem .5rem .35rem 1rem;
+            width: 100%;
+            overflow: hidden;
+
+            .notification-resume {
+                overflow: hidden;
+
+                h2 {
+                    font-weight: 400;
+                    font-size: 16px;
+                    margin-bottom: .25em;
+                    max-height: 3em;
+                    white-space: nowrap;
+
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                h3 {
+                    font-weight: 400;
+                    font-size: 14px;
+                    color: grey;
+                    margin-bottom: 0;
+                    margin-top: 0;
+                }
+            }
+
+            &.unread {
+                &::before {
+                    position: absolute;
+                    top: 1rem;
+                    left: calc(1rem / 2);
+                    transform: translate(-50%, -50%);
+                    content: "";
+                    width: 7px;
+                    height: 7px;
+                    border-radius: 50%;
+                    background-color: $unread-notification;
+                }
+            }
+
+            &:not(:last-of-type) {
+                border-bottom: 1px lightgray solid;
+            }
+        }
+
+    }
+
+    @media (max-width: 576px) {
+        .NotificationsCenterRow {
+            overflow-x: hidden;
+            overflow-y: overlay;
+        }
+    }
+}

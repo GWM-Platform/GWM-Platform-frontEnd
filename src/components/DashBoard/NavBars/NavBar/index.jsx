@@ -184,7 +184,7 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                 <LanguageSelector />
                             </div>
 
-                            <NotificationsCenter />
+                            <NotificationsCenter  active={itemSelectedLC === "notificationscenter"}/>
 
                             <NavLink to="/Dashboard/Configuration?section=Password+and+authentication" className="nav-link " activeClassName="active">
                                 <FontAwesomeIcon icon={faCog} />
