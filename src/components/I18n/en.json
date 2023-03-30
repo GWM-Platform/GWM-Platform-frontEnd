@@ -767,5 +767,6 @@
     "DEPOSIT_CLOSE": "Time deposit close",
     "DEPOSIT_UPDATE": "Time deposit edit",
     "from_date":"From",
-    "to_date":"To"
+    "to_date":"To",
+    "Pendiente de cliente": "Client pending"
 }

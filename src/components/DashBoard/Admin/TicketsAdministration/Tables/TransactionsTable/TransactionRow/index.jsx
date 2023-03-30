@@ -43,6 +43,11 @@ const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData })
                     bg: "danger",
                     text: "Denied"
                 }
+            case 5://Client pending
+                return {
+                    bg: "warning",
+                    text: "Client pending"
+                }
             default:
                 return {
                     bg: "danger",
@@ -163,7 +168,7 @@ const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData })
                     </span>
                 </div >
 
-                
+
 
                 <div className='d-flex justify-content-between' style={{ borderBottom: "1px solid 1px solid rgb(240,240,240)" }}>
                     <span >

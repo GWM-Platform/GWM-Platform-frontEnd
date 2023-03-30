@@ -38,6 +38,11 @@ const TransferRow = ({ Movement, reloadData, anyWithActions }) => {
                     bg: "primary",
                     text: "Liquidated"
                 }
+            case 5://Client pending
+                return {
+                    bg: "warning",
+                    text: "Client pending"
+                }
             default:
                 return {
                     bg: "danger",

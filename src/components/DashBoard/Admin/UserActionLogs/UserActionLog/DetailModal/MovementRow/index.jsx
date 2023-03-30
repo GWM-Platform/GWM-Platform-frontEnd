@@ -37,6 +37,11 @@ const MovementRow = ({ Accounts, Clients, Movement }) => {
                     bg: "primary",
                     text: "Liquidated"
                 }
+            case 5://Client pending
+                return {
+                    bg: "warning",
+                    text: "Client pending"
+                }
             default:
                 return {
                     bg: "danger",
@@ -85,7 +90,7 @@ const MovementRow = ({ Accounts, Clients, Movement }) => {
 
     const [showClick, setShowClick] = useState(false)
     const [showHover, setShowHover] = useState(false)
-    
+
     return (
         <>
             <div className='mobileMovement'>
