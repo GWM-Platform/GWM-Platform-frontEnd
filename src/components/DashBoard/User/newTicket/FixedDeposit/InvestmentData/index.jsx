@@ -4,11 +4,16 @@ import { Form, InputGroup, Row, Accordion, Container } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
 import CurrencyInput from '@osdiab/react-currency-input-field';
 import { unMaskNumber } from 'utils/unmask';
+import { useContext } from 'react';
+import { DashBoardContext } from 'context/DashBoardContext';
 
 
-const InvestmentData = ({ data, handleChange, Balance, calculateProfit }) => {
+const InvestmentData = ({ data, handleChange, calculateProfit }) => {
 
     const { t } = useTranslation();
+
+    const {  Balance } = useContext(DashBoardContext);
+    
 
     const [inputValid, setInputValid] = useState(false)
 
@@ -59,30 +64,31 @@ const InvestmentData = ({ data, handleChange, Balance, calculateProfit }) => {
                     {/*Shown input formatted*/}
                     <CurrencyInput
                         allowNegativeValue={false}
-                        name="currencyInput"
-                        defaultValue={data.amount}
-                        decimalsLimit={2}
-                        decimalSeparator={decimalSeparator}
-                        groupSeparator={groupSeparator}
-                        onValueChange={(value, name) => handleAmountChange(value)}
                         className={`form-control ${inputValid ? 'hardcoded-valid' : 'hardcoded-invalid'} `}
+                        decimalSeparator={decimalSeparator}
+                        decimalsLimit={2}
+                        defaultValue={data.amount}
+                        groupSeparator={groupSeparator}
+                        name="currencyInput"
+                        onBlur={() => calculateProfit()}
+                        onValueChange={(value, name) => handleAmountChange(value)}
                     />
                 </InputGroup>
                 <InputGroup className="mb-3">
                     <Form.Control
-                    className='d-none'
-                        ref={inputRef}
-                        onBlur={() => calculateProfit()}
-                        onWheel={event => event.currentTarget.blur()}
-                        value={data.amount}
-                        step=".01"
-                        onChange={handleChange}
-                        min="1"
-                        max={Balance}
+                        className='d-none'
                         id="amount"
-                        type="number"
-                        required
+                        max={Balance}
+                        min="1"
+                        onBlur={() => calculateProfit()}
+                        onChange={handleChange}
+                        onWheel={event => event.currentTarget.blur()}
                         placeholder={t("Amount")}
+                        ref={inputRef}
+                        required
+                        step=".01"
+                        type="number"
+                        value={data.amount}
                     />
                     <Form.Control.Feedback type="invalid">
                         {

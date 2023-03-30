@@ -875,5 +875,8 @@
   "This file cannot be previewed": "Este archivo no puede ser previsualizado",
   "Try to download it and open it on your device": "Intenta descargarlo y abrirlo en tu dispositivo",
   "Download this file": "Descargar este archivo",
-  "Download this pdf": "Descargar este pdf"
+  "Download this pdf": "Descargar este pdf",
+  "The value must be greater or equal to":"El valor debe ser mayor o igual a",
+  "The value must be lower or equal to":"El valor debe ser menor o igual a",
+  "You must enter the anual rate for your investment":"Debe ingresar la tasa anual de su inversión"
 }

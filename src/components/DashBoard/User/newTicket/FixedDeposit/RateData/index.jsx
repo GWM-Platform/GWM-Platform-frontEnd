@@ -3,10 +3,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { Row, Form, Accordion, Container, InputGroup, Button } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
+import { DashBoardContext } from 'context/DashBoardContext';
+import { useContext } from 'react';
 
-const RateData = ({ data, handleChange, calculateProfit, fetching, Balance }) => {
+const RateData = ({ data, handleChange, calculateProfit, fetching, minRate, maxRate }) => {
     const { t } = useTranslation();
-
+    const { Balance } = useContext(DashBoardContext);
+    console.log(fetching)
     return (
         <Accordion.Item eventKey="0">
             <Accordion.Header>
@@ -28,20 +31,41 @@ const RateData = ({ data, handleChange, calculateProfit, fetching, Balance }) =>
             <Accordion.Body>
                 <div className="formSection">
                     <InputGroup className="mb-3">
+                        <InputGroup.Text>%</InputGroup.Text>
                         <Form.Control
                             onBlur={() => calculateProfit()}
                             onWheel={event => event.currentTarget.blur()}
                             value={data.rate}
                             step="0.01"
                             onChange={handleChange}
-
-                            min="0.01"
-
+                            min={minRate}
+                            max={maxRate}
                             id="rate"
                             type="number"
                             required
                             placeholder={t("Anual rate")}
                         />
+                        <Form.Control.Feedback type="invalid">
+                            {
+
+                                data.rate === "" ?
+                                    t("You must enter the anual rate for your investment")
+                                    :
+                                    data.rate < minRate ?
+                                        <>
+                                            {t("The value must be greater or equal to")}
+                                            &nbsp;{minRate}%
+                                        </>
+                                        :
+                                        data.rate > maxRate ?
+                                            <>
+                                                {t("The value must be lower or equal to")}
+                                                &nbsp;{maxRate}%
+                                            </>
+                                            :
+                                            t("The min step is 0.01")
+                            }
+                        </Form.Control.Feedback>
                     </InputGroup>
                     {
                         !!(data.preferential) &&

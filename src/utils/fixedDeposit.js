@@ -26,7 +26,14 @@ const getDuration = (FixedDeposit) =>
     ? getEditedDuration(FixedDeposit)
     : getOriginalDuration(FixedDeposit);
 
-const wasEdited=(FixedDeposit)=>editedDuration(FixedDeposit) || editedInterestRate(FixedDeposit)
+const wasEdited = (FixedDeposit) => {
+  console.log(
+    FixedDeposit,
+    editedDuration(FixedDeposit),
+    editedInterestRate(FixedDeposit)
+  );
+  return editedDuration(FixedDeposit) || editedInterestRate(FixedDeposit);
+};
 
 export {
   isPending,

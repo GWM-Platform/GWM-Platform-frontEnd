@@ -5,7 +5,7 @@ import { Col, Card } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
-const RuleCard = ({ Rule, data, setData, index, Rules, RulesObject,handleChange }) => {
+const RuleCard = ({ Rule, data, setData, index, Rules, RulesObject, handleChange }) => {
     const { t } = useTranslation();
 
     const minDuration = Rule
@@ -17,8 +17,8 @@ const RuleCard = ({ Rule, data, setData, index, Rules, RulesObject,handleChange 
             className={`py-1 pe-1 growAnimation RuleCardContainer${false ? " RuleDisabled" : ""}${data.ruleSelected === Rule ? " RuleSelected" : ""}`}>
             <Card
                 className="RuleCard h-100" onClick={() => {
-                    setData(prevState => ({ ...prevState, ruleSelected: Rule,preferential: false,rate:"" }))
-                    handleChange({ target: { id: "days", value: maxDuration ? maxDuration : minDuration } })
+                    setData(prevState => ({ ...prevState, ruleSelected: Rule, preferential: false, rate: "" }))
+                    handleChange({ target: { id: "days", value: maxDuration ? (maxDuration + "") : (minDuration + "") } })
                 }}>
                 <Card.Header><strong className="title">{t("Plan")} #{index + 1}</strong></Card.Header>
                 <Card.Body>
