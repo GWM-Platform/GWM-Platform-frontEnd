@@ -10,7 +10,7 @@ import { faCircle } from '@fortawesome/free-regular-svg-icons';
 const ActionConfirmationModal = ({ movement, setShowModal, action, show, reloadData }) => {
     const { t } = useTranslation();
     const [ActionFetch, setActionFetch] = useState({ fetched: false, fetching: false, valid: false })
-
+    
     const handleClose = () => {
         setActionFetch({
             ...ActionFetch,
@@ -30,7 +30,12 @@ const ActionConfirmationModal = ({ movement, setShowModal, action, show, reloadD
             valid: false
         })
 
-        const url = `${process.env.REACT_APP_APIURL}/fixed-deposits/${movement.id}/${action}`;
+        const url =
+            action !== "sign" ?
+                `${process.env.REACT_APP_APIURL}/fixed-deposits/${movement.id}/${action}`
+                :
+                `${process.env.REACT_APP_APIURL}/movements/${movement.movementId}/check`;
+                
         const token = sessionStorage.getItem("access_token")
 
         const response = await fetch(url, {

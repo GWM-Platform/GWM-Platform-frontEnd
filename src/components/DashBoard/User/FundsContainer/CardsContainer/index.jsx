@@ -21,9 +21,9 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
     const [Hide, setHide] = useState(false)
     const [Pinned, setPinned] = useState(false)
 
-    //Only shows approved or pending fixedDeposits
+    //Only shows approved, pending fixedDeposits or check pending
     const shownFixedDeposits = () => {
-        return FixedDeposits?.deposits.filter(FixedDeposits => (FixedDeposits.stateId === 2 || FixedDeposits.stateId === 1) && !FixedDeposits.closed) || []
+        return FixedDeposits?.deposits.filter(FixedDeposits => ( FixedDeposits.stateId === 5  || FixedDeposits.stateId === 2 || FixedDeposits.stateId === 1) && !FixedDeposits.closed) || []
     }
 
     //For scrolling

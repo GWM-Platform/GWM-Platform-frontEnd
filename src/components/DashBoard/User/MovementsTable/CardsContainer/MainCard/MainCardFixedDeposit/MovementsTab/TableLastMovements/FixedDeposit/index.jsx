@@ -10,7 +10,7 @@ import ReactPDF from '@react-pdf/renderer';
 import FixedDepositReceipt from 'Receipts/FixedDepositReceipt';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf } from '@fortawesome/free-regular-svg-icons';
-import { editedDuration, editedInterestRate, getAnualRate, getDuration, wasEdited } from 'utils/fixedDeposit';
+import { getAnualRate, getDuration, wasEdited } from 'utils/fixedDeposit';
 
 const FixedDeposit = ({ content }) => {
   const { t } = useTranslation();
@@ -54,6 +54,11 @@ const FixedDeposit = ({ content }) => {
           bg: "warning",
           text: "Client pending"
         }
+      case 6://Client pending
+        return {
+          bg: "warning",
+          text: "Admin sign pending"
+        }
       default:
         return {
           bg: "danger",
@@ -74,7 +79,7 @@ const FixedDeposit = ({ content }) => {
       case 2://Approved
         if (content.closed) {
           if (closedAtTheEnd()) {
-            return  getDuration(content)
+            return getDuration(content)
           } else {
             return (Math.floor(new Date(content?.updatedAt).getTime() / 1000 / 60 / 60 / 24) -
               Math.floor(new Date(content?.startDate).getTime() / 1000 / 60 / 60 / 24)) ?? 0
@@ -152,7 +157,7 @@ const FixedDeposit = ({ content }) => {
         {
           duration: ellapsedDays(),
           initialAmount: content?.initialAmount,
-          interestRate:  getAnualRate(content)
+          interestRate: getAnualRate(content)
         }, { signal: signal }).then(function (response) {
           if (response.status < 300 && response.status >= 200) {
             setRefundedProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: response.data || content.initialAmount } }))
@@ -184,7 +189,7 @@ const FixedDeposit = ({ content }) => {
         ProfitAtTheEnd: { ...ProfitAtTheEnd },
         RefundedProfit: { ...RefundedProfit },
         ellapsedDays: ellapsedDays(),
-        AnualRate:  getAnualRate(content),
+        AnualRate: getAnualRate(content),
         state: status()
       }
     }} />).toBlob()
@@ -282,7 +287,7 @@ const FixedDeposit = ({ content }) => {
       <div className='d-flex justify-content-between' style={{ borderBottom: "1px solid 1px solid rgb(240,240,240)" }}>
         <span >{t("Duration")}:&nbsp;
           {getDuration(content)}&nbsp;{t("days")}
-          {(editedDuration(content)) && " *"}
+          {(wasEdited(content)) && " *"}
         </span>
       </div >
 
@@ -318,7 +323,7 @@ const FixedDeposit = ({ content }) => {
       <div className='d-flex justify-content-between'>
         <span >{t("Anual rate")}:&nbsp;
           <FormattedNumber className={`bolder`} value={getAnualRate(content)} suffix="%" fixedDecimals={2} />
-          {editedInterestRate(content) && " *"}
+          {wasEdited(content) && " *"}
         </span>
       </div >
 

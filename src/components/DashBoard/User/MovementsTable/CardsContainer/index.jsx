@@ -95,7 +95,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
     const handleMovementSearchChange = (event) => {
         setSearchById((prevState) => ({ ...prevState, value: event.target.value }))
     }
-
+    
     return (
         <Row className="HistoryCardsContainer d-flex align-items-stretch flex-md-nowrap ">
             {isMobile ?

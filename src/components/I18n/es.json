@@ -371,6 +371,7 @@
   "TRANSFER_RECEIVE": "Transferencia entrante",
   "FIXED_DEPOSIT_CREATE": "Inversión en plazo fijo #{{fixedDeposit}}",
   "FIXED_DEPOSIT_CLOSE": "Cierre del plazo fijo #{{fixedDeposit}}",
+  "BID_OFFER": "Inversión en plazo fijo preferencial #{{fixedDeposit}}",
   "Change client": "Cambiar cliente",
   "Google SpreadSheet url (from which the id will be extracted)": "Url de Google SpreadSheet (de la cual se extraerá la id)",
   "It seems that the url entered is not valid, please check if I copied it correctly": "Al parecer, la url introducida no es valida, por favor, verifique si la copio correctamente",
@@ -880,5 +881,8 @@
   "The value must be lower or equal to": "El valor debe ser menor o igual a",
   "You must enter the anual rate for your investment": "Debe ingresar la tasa anual de su inversión",
   "Pendiente de cliente": "Pendiente de cliente",
-  "Client pending": "Pendiente de cliente"
+  "Client pending": "Pendiente de cliente",
+  "Admin sign pending":"Pendiente de firma de admin",
+  "Pendiente de doble firma Admin":"Pendiente de firma de Admin",
+  "sign": "firmar"
 }

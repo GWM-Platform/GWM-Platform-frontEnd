@@ -10,7 +10,7 @@ import FixedDepositReceipt from 'Receipts/FixedDepositReceipt';
 import ReactPDF from '@react-pdf/renderer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf } from '@fortawesome/free-regular-svg-icons';
-import { editedInterestRate, getAnualRate, wasEdited, getDuration, editedDuration } from 'utils/fixedDeposit';
+import { getAnualRate, wasEdited, getDuration } from 'utils/fixedDeposit';
 
 const FixedDeposit = ({ content }) => {
   const { t } = useTranslation();
@@ -51,6 +51,11 @@ const FixedDeposit = ({ content }) => {
         return {
           bg: "warning",
           text: "Client pending"
+        }
+      case 6://Client pending
+        return {
+          bg: "warning",
+          text: "Admin sign pending"
         }
       default:
         return {
@@ -221,7 +226,7 @@ const FixedDeposit = ({ content }) => {
         <span className="h5 mb-0 me-1">{t("Time deposit")}&nbsp;#{content.id}
           {
             wasEdited(content) &&
-            <span className="h5 mb-0 mx-1"><br/>({t("Preferential *")})</span>}
+            <span className="h5 mb-0 mx-1"><br />({t("Preferential *")})</span>}
         </span>
 
         <div className='ms-auto me-2'>
@@ -277,7 +282,7 @@ const FixedDeposit = ({ content }) => {
       <div className='d-flex justify-content-between' style={{ borderBottom: "1px solid 1px solid rgb(240,240,240)" }}>
         <span >{t("Duration (Agreed)")}:&nbsp;
           {getDuration(content)}&nbsp;{t("days")}
-          {(editedDuration(content)) && " *"}
+          {wasEdited(FixedDeposit) && " *"}
         </span>
       </div >
 
@@ -313,7 +318,7 @@ const FixedDeposit = ({ content }) => {
       <div className='d-flex justify-content-between'>
         <span >{t("Anual rate")}:&nbsp;
           <FormattedNumber className={`bolder`} value={getAnualRate(content)} suffix="%" fixedDecimals={2} />
-          {editedInterestRate(content) && " *"}
+          {wasEdited(FixedDeposit) && " *"}
         </span>
       </div >
 

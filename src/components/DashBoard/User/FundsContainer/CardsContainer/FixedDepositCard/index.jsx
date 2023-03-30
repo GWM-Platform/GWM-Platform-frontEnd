@@ -9,7 +9,7 @@ import Decimal from 'decimal.js';
 import axios from 'axios';
 import { DashBoardContext } from 'context/DashBoardContext';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
-import { editedDuration, editedInterestRate, getAnualRate, getDuration, isPending, wasEdited } from 'utils/fixedDeposit';
+import { getAnualRate, getDuration, isPending, wasEdited } from 'utils/fixedDeposit';
 
 const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
     Decimal.set({ precision: 100 })
@@ -125,7 +125,7 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
                                         </span>
                                         &nbsp;{t("out of")}&nbsp;
                                         {getDuration(FixedDeposit)}&nbsp;{t("days")}
-                                        {(editedDuration(FixedDeposit) && !isPending(FixedDeposit)) && " *"}
+                                        {wasEdited(FixedDeposit) && " *"}
                                     </span>
                                 </Card.Text>
                             </Card.Title>
@@ -169,12 +169,12 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
                                         <span className="bolder">
                                             {FixedDeposit?.endDate ? moment(FixedDeposit?.endDate).format('L') : moment().add(getDuration(FixedDeposit), "days").format('L')}
                                         </span>
-                                        {(editedDuration(FixedDeposit) && !isPending(FixedDeposit)) && " *"}
+                                        {wasEdited(FixedDeposit) && " *"}
                                     </Card.Text>
                                     <Card.Text className="subTitle lighter my-0">
                                         {t("Anual rate")}:&nbsp;
                                         <FormattedNumber className={`bolder`} value={getAnualRate(FixedDeposit)} suffix="%" fixedDecimals={2} />
-                                        {editedInterestRate(FixedDeposit) && " *"}
+                                        {wasEdited(FixedDeposit) && " *"}
                                         <br />
                                     </Card.Text>
                                     <Card.Text className="subTitle lighter my-0">

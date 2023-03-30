@@ -6,7 +6,7 @@ import axios from 'axios';
 import { DashBoardContext } from 'context/DashBoardContext';
 import moment from 'moment';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
-import { editedDuration, editedInterestRate, getAnualRate, getDuration, wasEdited } from 'utils/fixedDeposit';
+import { getAnualRate, getDuration, wasEdited } from 'utils/fixedDeposit';
 
 const FixedDepositRow = ({ Movement }) => {
     const { t } = useTranslation();
@@ -43,12 +43,16 @@ const FixedDepositRow = ({ Movement }) => {
                     bg: "danger",
                     text: "Denied"
                 }
-                
             case 5://Client pending
-            return {
-                bg: "warning",
-                text: "Client pending"
-            }
+                return {
+                    bg: "warning",
+                    text: "Client pending"
+                }
+            case 6://Client pending
+                return {
+                    bg: "warning",
+                    text: "Admin sign pending"
+                }
             default:
                 return {
                     bg: "danger",
@@ -237,7 +241,7 @@ const FixedDepositRow = ({ Movement }) => {
                 <div className='d-flex justify-content-between' style={{ borderBottom: "1px solid 1px solid rgb(240,240,240)" }}>
                     <span >{t("Duration (Agreed)")}:&nbsp;
                         {getDuration(Movement)}&nbsp;{t("days")}
-                        {(editedDuration(Movement)) && " *"}
+                        {(wasEdited(Movement)) && " *"}
                     </span>
                 </div >
 
@@ -273,7 +277,7 @@ const FixedDepositRow = ({ Movement }) => {
                 <div className='d-flex justify-content-between'>
                     <span >{t("Anual rate")}:&nbsp;
                         <FormattedNumber className={`bolder`} value={getAnualRate(Movement)} suffix="%" fixedDecimals={2} />
-                        {editedInterestRate(Movement) && " *"}
+                        {wasEdited(Movement) && " *"}
                     </span>
                 </div >
 

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheckCircle, faEdit, faTimesCircle } from '@fortawesome/free-regular-svg-icons'
+import { faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icons'
 import ActionConfirmationModal from './ActionConfirmationModal'
 import { Badge, Spinner } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
@@ -9,8 +9,8 @@ import axios from 'axios';
 import { DashBoardContext } from 'context/DashBoardContext';
 import moment from 'moment';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
-import EditModal from './EditModal';
 import { userId } from 'utils/userId';
+import { wasEdited } from 'utils/fixedDeposit';
 
 const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
     const { t } = useTranslation();
@@ -19,7 +19,6 @@ const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
     const [ShowModal, setShowModal] = useState(false)
     const [Action, setAction] = useState("approve")
 
-    const [ShowEditModal, setShowEditModal] = useState(false)
 
     const [UserTicketInfo, SetUserTicketInfo] = useState({ fetching: true, valid: false, value: {} })
 
@@ -64,6 +63,11 @@ const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
                     bg: "warning",
                     text: "Client pending"
                 }
+            case 6://Client pending
+                return {
+                    bg: "warning",
+                    text: "Admin sign pending"
+                }
             default:
                 return {
                     bg: "danger",
@@ -73,18 +77,12 @@ const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
     }
 
     const [ProfitAtTheEnd, setProfitAtTheEnd] = useState({ fetching: false, fetched: false, valid: false, value: 0 })
-    const [ProfitEditedAtTheEnd, setProfitEditedAtTheEnd] = useState({ fetching: false, fetched: false, valid: false, value: 0 })
     const [ActualProfit, setActualProfit] = useState({ fetching: false, fetched: false, valid: false, value: 0 })
     const [RefundedProfit, setRefundedProfit] = useState({ fetching: false, fetched: false, valid: false, value: 0 })
 
     const getAnualRate = () => Movement.interestRate ?? 0
-
-    const wasEdited = Movement.updatedById !== null
-    const editedByCurrentUser = Movement.updatedById + "" === userId()
-
-    const editor = users.find(user => user?.id === Movement?.updatedById)
-    const editedInterestRate = Movement.newInterestRate !== 0 && Movement.newInterestRate !== null && Movement.newInterestRate !== getAnualRate()
-    const editedDuration = Movement.newDuration !== 0 && Movement.newDuration !== null && Movement.newDuration !== Movement.duration
+    const WasEdited = wasEdited(Movement)
+    const signByCurrentUser = Movement?.approvedBy?.map(userId => userId + "")?.includes(userId())
 
     const ellapsedDays = () => {
         switch (Movement.stateId) {
@@ -93,7 +91,7 @@ const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
             case 2://Approved
                 if (Movement.closed) {
                     if (closedAtTheEnd()) {
-                        return editedDuration ? Movement.newDuration : Movement?.duration
+                        return Movement?.duration
                     } else {
                         return (Math.floor(new Date(Movement?.updatedAt).getTime() / 1000 / 60 / 60 / 24) -
                             Math.floor(new Date(Movement?.startDate).getTime() / 1000 / 60 / 60 / 24)) ?? 0
@@ -115,7 +113,7 @@ const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
                 {
                     duration: ellapsedDays(),
                     initialAmount: Movement?.initialAmount,
-                    interestRate: editedInterestRate ? Movement.newInterestRate : getAnualRate()
+                    interestRate: getAnualRate()
                 }, { signal: signal }).then(function (response) {
                     if (response.status < 300 && response.status >= 200) {
                         setActualProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: response.data || Movement.initialAmount } }))
@@ -169,9 +167,9 @@ const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
         if (Movement.initialAmount) {
             axios.post(`/fixed-deposits/profit`,
                 {
-                    duration: editedDuration ? Movement.newDuration : Movement?.duration,
+                    duration: Movement?.duration,
                     initialAmount: Movement?.initialAmount,
-                    interestRate: editedInterestRate ? Movement.newInterestRate : getAnualRate()
+                    interestRate: getAnualRate()
                 }, { signal: signal }).then(function (response) {
                     if (response.status < 300 && response.status >= 200) {
                         setRefundedProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: response.data || Movement.initialAmount } }))
@@ -188,34 +186,6 @@ const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
                 }).catch((err) => {
                     if (err.message !== "canceled") {
                         setRefundedProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: Movement.initialAmount } }))
-                    }
-                });
-        }
-    }
-
-    const calculateProfitAtTheEndEdited = (signal) => {
-        if (Movement.initialAmount) {
-            axios.post(`/fixed-deposits/profit`,
-                {
-                    duration: editedDuration ? Movement.newDuration : Movement?.duration,
-                    initialAmount: Movement?.initialAmount,
-                    interestRate: editedInterestRate ? Movement.newInterestRate : getAnualRate()
-                }, { signal: signal }).then(function (response) {
-                    if (response.status < 300 && response.status >= 200) {
-                        setProfitEditedAtTheEnd((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: response.data || Movement.initialAmount } }))
-                    } else {
-                        switch (response.status) {
-                            case 401:
-                                toLogin();
-                                break;
-                            default:
-                                setProfitAtTheEnd((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: Movement.initialAmount } }))
-                                break
-                        }
-                    }
-                }).catch((err) => {
-                    if (err.message !== "canceled") {
-                        setProfitEditedAtTheEnd((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: Movement.initialAmount } }))
                     }
                 });
         }
@@ -247,8 +217,7 @@ const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
         const controller = new AbortController();
         const signal = controller.signal;
 
-        if (validState(["Pending", "Ongoing", "Denied", "Closed (Out of term)"])) calculateProfitAtTheEnd(signal)
-        if (validState(["Pending", "Ongoing", "Denied", "Closed (Out of term)"]) && wasEdited) calculateProfitAtTheEndEdited(signal)
+        if (validState(["Pending", "Ongoing", "Denied", "Closed (Out of term)", "Client pending"])) calculateProfitAtTheEnd(signal)
         if (validState(["Ongoing"])) calculateActualProfit(signal)
         if (validState(["Closed (Out of term)", "Closed (Term completed)"])) calculateRefundedProfit(signal)
         userInfoById(Movement.clientId)
@@ -262,7 +231,7 @@ const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
         <>
             <div className='mobileMovement'>
                 <div className='d-flex py-1 align-items-center' >
-                    <span className="h5 mb-0 me-1 me-md-2">{t("Time deposit")}&nbsp;#{Movement.id} {!!(wasEdited) && <>({t("Preferential *")})</>}</span>
+                    <span className="h5 mb-0 me-1 me-md-2">{t("Time deposit")}&nbsp;#{Movement.id} {!!(WasEdited) && <>({t("Preferential *")})</>}</span>
                     <div className='px-1 px-md-2' style={{ borderLeft: "1px solid lightgray", borderRight: "1px solid lightgray" }}>
                         <span className="d-none d-md-inline">{t("Client")}:&nbsp;</span>
                         {
@@ -275,21 +244,6 @@ const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
                                     t("Undefined Client")
                         }
                     </div>
-                    {
-                        !!(wasEdited) &&
-                        <div className='px-1 px-md-2' style={{ borderLeft: "1px solid lightgray", borderRight: "1px solid lightgray" }}>
-                            <span className="d-none d-md-inline">{t("Edited by")}:&nbsp;</span>
-                            {
-                                editor === undefined ?
-                                    <Spinner animation="border" size="sm" />
-                                    :
-                                    editor.email ?
-                                        <strong>{editor.email}</strong>
-                                        :
-                                        t("Undefined Admin")
-                            }
-                        </div>
-                    }
 
                     <div className='me-auto'></div>
                     {
@@ -301,16 +255,13 @@ const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
                         </div>
                     }
                     {
-                        !!(Movement.stateId === 1) &&
+                        !!(Movement.stateId === 1 || Movement.stateId === 6) &&
                         <div className="h-100 d-flex align-items-center justify-content-around Actions">
-                            <div className="iconContainer green me-1">
-                                <FontAwesomeIcon className="icon" icon={faEdit} onClick={() => { setShowEditModal(true) }} />
-                            </div>
                             {
-                                !!(!wasEdited || (wasEdited && !editedByCurrentUser)) &&
+                                !!(!WasEdited || (WasEdited && !signByCurrentUser)) &&
                                 <>
                                     <div className="iconContainer green me-1">
-                                        <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => { launchModalConfirmation("approve") }} />
+                                        <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => { Movement.stateId === 6 ? launchModalConfirmation("sign") : launchModalConfirmation("approve") }} />
                                     </div>
                                     <div className="iconContainer red me-1">
                                         <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => { launchModalConfirmation("deny") }} />
@@ -338,34 +289,16 @@ const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
                     </div >
                 }
                 {
-                    !!(validState(["Pending", "Ongoing", "Denied", "Closed (Out of term)"])) &&
-
-                        wasEdited ?
-                        <div className='d-flex' >
-                            <span className='me-2 pe-2' style={{ borderRight: "1px solid lightgray" }}>{t("Investment at maturity date")}:&nbsp;<strong>{t("Edited")}&nbsp;</strong>
-                                {ProfitEditedAtTheEnd.fetching ?
-                                    <Spinner animation="border" size="sm" />
-                                    :
-                                    <FormattedNumber value={ProfitEditedAtTheEnd.value} prefix="$" fixedDecimals={2} />}
-                            </span>
-                            <span ><strong>{t("Original")}:&nbsp;</strong>
-                                {ProfitAtTheEnd.fetching ?
-                                    <Spinner animation="border" size="sm" />
-                                    :
-                                    <FormattedNumber value={ProfitAtTheEnd.value} prefix="$" fixedDecimals={2} />}
-                            </span>
-                        </div >
-                        :
-                        <div className='d-flex justify-content-between' >
-                            <span >{t("Investment at maturity date")}:&nbsp;
-                                {ProfitAtTheEnd.fetching ?
-                                    <Spinner animation="border" size="sm" />
-                                    :
-                                    <FormattedNumber value={ProfitAtTheEnd.value} prefix="$" fixedDecimals={2} />}
-                            </span>
-                        </div >
+                    !!(validState(["Pending", "Ongoing", "Denied", "Closed (Out of term)", "Client pending"])) &&
+                    <div className='d-flex justify-content-between' >
+                        <span >{t("Investment at maturity date")}:&nbsp;
+                            {ProfitAtTheEnd.fetching ?
+                                <Spinner animation="border" size="sm" />
+                                :
+                                <FormattedNumber value={ProfitAtTheEnd.value} prefix="$" fixedDecimals={2} />}
+                        </span>
+                    </div >
                 }
-
                 {!!(validState(["Closed (Out of term)", "Closed (Term completed)"])) &&
                     <div className='d-flex justify-content-between' >
                         <span >{t("Refund on close")}:&nbsp;
@@ -378,21 +311,9 @@ const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
                 }
                 <div className='w-100 d-flex' style={{ borderBottom: "1px solid lightgray" }} />
                 <div className='d-flex' style={{ borderBottom: "1px solid 1px solid rgb(240,240,240)" }}>
-                    {
-                        !!(wasEdited && editedDuration) ?
-                            <>
-                                <span className='me-2 pe-2' style={{ borderRight: "1px solid lightgray" }} >{t("Duration")}: <strong>{t("Edited")}&nbsp;</strong>
-                                    {Movement.newDuration}&nbsp;{t("days")}
-                                </span>
-                                <span><strong>{t("Original")}:&nbsp;</strong>
-                                    {Movement.duration}&nbsp;{t("days")}
-                                </span>
-                            </>
-                            :
-                            <span >{t("Duration")}:&nbsp;
-                                {Movement.duration}&nbsp;{t("days")}
-                            </span>
-                    }
+                    <span >{t("Duration")}:&nbsp;
+                        {Movement.duration}&nbsp;{t("days")}
+                    </span>
                 </div >
 
                 {!!(validState(["Closed (Term completed)", "Closed (Out of term)", "Ongoing"])) &&
@@ -425,38 +346,17 @@ const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
 
                 <div className='w-100 d-flex' style={{ borderBottom: "1px solid lightgray" }} />
                 <div className='d-flex'>
-                    {
-                        !!(wasEdited && editedInterestRate) ?
-
-                            <>
-                                <span className='me-2 pe-2' style={{ borderRight: "1px solid lightgray" }} >{t("Anual rate")}:&nbsp;<strong>{t("Edited")}&nbsp;</strong>
-                                    <FormattedNumber value={Movement.newInterestRate} suffix="%" fixedDecimals={2} />
-                                </span>
-                                <span ><strong>{t("Original")}:&nbsp;</strong>
-                                    <FormattedNumber value={getAnualRate()} suffix="%" fixedDecimals={2} />
-                                </span>
-                            </>
-                            :
-                            <span >{t("Anual rate")}:&nbsp;
-                                <FormattedNumber value={getAnualRate()} suffix="%" fixedDecimals={2} />
-                            </span>
-                    }
-
-
+                    <span >{t("Anual rate")}:&nbsp;
+                        <FormattedNumber value={getAnualRate()} suffix="%" fixedDecimals={2} />
+                    </span>
                 </div >
 
 
 
             </div >
             {
-                Movement.stateId === 1 || (Movement.stateId === 2 && !Movement.closed) ?
+                Movement.stateId === 1 || Movement.stateId === 6 || (Movement.stateId === 2 && !Movement.closed) ?
                     <ActionConfirmationModal reloadData={reloadData} movement={Movement} setShowModal={setShowModal} action={Action} show={ShowModal} />
-                    :
-                    null
-            }
-            {
-                Movement.stateId === 1 ?
-                    <EditModal reloadData={reloadData} movement={Movement} setShowModal={setShowEditModal} show={ShowEditModal} />
                     :
                     null
             }
