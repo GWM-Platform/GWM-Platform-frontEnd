@@ -10,6 +10,7 @@ import FixedDepositReceipt from 'Receipts/FixedDepositReceipt';
 import ReactPDF from '@react-pdf/renderer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf } from '@fortawesome/free-regular-svg-icons';
+import { getAnualRate, wasEdited, getDuration } from 'utils/fixedDeposit';
 
 const FixedDeposit = ({ content }) => {
   const { t } = useTranslation();
@@ -51,6 +52,11 @@ const FixedDeposit = ({ content }) => {
           bg: "warning",
           text: "Client pending"
         }
+      case 6://Client pending
+        return {
+          bg: "warning",
+          text: "Admin sign pending"
+        }
       default:
         return {
           bg: "danger",
@@ -64,8 +70,6 @@ const FixedDeposit = ({ content }) => {
   const [ActualProfit, setActualProfit] = useState({ fetching: false, fetched: false, valid: false, value: 0 })
   const [RefundedProfit, setRefundedProfit] = useState({ fetching: false, fetched: false, valid: false, value: 0 })
 
-  const getAnualRate = () => content.interestRate ?? 0
-
   const ellapsedDays = () => {
     switch (content.stateId) {
       case 1://pending
@@ -73,7 +77,7 @@ const FixedDeposit = ({ content }) => {
       case 2://Approved
         if (content.closed) {
           if (closedAtTheEnd()) {
-            return content.duration
+            return getDuration(content)
           } else {
             return (Math.floor(new Date(content?.updatedAt).getTime() / 1000 / 60 / 60 / 24) -
               Math.floor(new Date(content?.startDate).getTime() / 1000 / 60 / 60 / 24)) ?? 0
@@ -95,7 +99,7 @@ const FixedDeposit = ({ content }) => {
         {
           duration: ellapsedDays(),
           initialAmount: content?.initialAmount,
-          interestRate: getAnualRate()
+          interestRate: getAnualRate(content)
         }, { signal: signal }).then(function (response) {
           if (response.status < 300 && response.status >= 200) {
             setActualProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: response.data || content.initialAmount } }))
@@ -121,9 +125,9 @@ const FixedDeposit = ({ content }) => {
     if (content.initialAmount) {
       axios.post(`/fixed-deposits/profit`,
         {
-          duration: content?.duration,
+          duration: getDuration(content),
           initialAmount: content?.initialAmount,
-          interestRate: getAnualRate()
+          interestRate: getAnualRate(content)
         }, { signal: signal }).then(function (response) {
           if (response.status < 300 && response.status >= 200) {
             setProfitAtTheEnd((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: response.data || content.initialAmount } }))
@@ -151,7 +155,7 @@ const FixedDeposit = ({ content }) => {
         {
           duration: ellapsedDays(),
           initialAmount: content?.initialAmount,
-          interestRate: getAnualRate()
+          interestRate: getAnualRate(content)
         }, { signal: signal }).then(function (response) {
           if (response.status < 300 && response.status >= 200) {
             setRefundedProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: response.data || content.initialAmount } }))
@@ -200,7 +204,7 @@ const FixedDeposit = ({ content }) => {
         ProfitAtTheEnd: { ...ProfitAtTheEnd },
         RefundedProfit: { ...RefundedProfit },
         ellapsedDays: ellapsedDays(),
-        AnualRate: getAnualRate(),
+        AnualRate: getAnualRate(content),
         state: status()
       }
     }} />).toBlob()
@@ -219,7 +223,11 @@ const FixedDeposit = ({ content }) => {
   return (
     <div className='mobileMovement'>
       <div className='d-flex justify-content-between py-1 align-items-center' >
-        <span className="h5 mb-0">{t("Time deposit")}&nbsp;#{content.id}</span>
+        <span className="h5 mb-0 me-1">{t("Time deposit")}&nbsp;#{content.id}
+          {
+            wasEdited(content) &&
+            <span className="h5 mb-0 mx-1"><br />({t("Preferential *")})</span>}
+        </span>
 
         <div className='ms-auto me-2'>
           {
@@ -272,8 +280,9 @@ const FixedDeposit = ({ content }) => {
       }
       <div className='w-100 d-flex' style={{ borderBottom: "1px solid lightgray" }} />
       <div className='d-flex justify-content-between' style={{ borderBottom: "1px solid 1px solid rgb(240,240,240)" }}>
-        <span >{t("Duration")}:&nbsp;
-          {content.duration}&nbsp;{t("days")}
+        <span >{t("Duration (Agreed)")}:&nbsp;
+          {getDuration(content)}&nbsp;{t("days")}
+          {wasEdited(FixedDeposit) && " *"}
         </span>
       </div >
 
@@ -308,7 +317,8 @@ const FixedDeposit = ({ content }) => {
       <div className='w-100 d-flex' style={{ borderBottom: "1px solid lightgray" }} />
       <div className='d-flex justify-content-between'>
         <span >{t("Anual rate")}:&nbsp;
-          <FormattedNumber value={getAnualRate()} suffix="%" fixedDecimals={2} />
+          <FormattedNumber className={`bolder`} value={getAnualRate(content)} suffix="%" fixedDecimals={2} />
+          {wasEdited(FixedDeposit) && " *"}
         </span>
       </div >
 

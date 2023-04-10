@@ -57,7 +57,9 @@ const UserActionLogs = () => {
         "CLIENT_APPROVE",
         "CLIENT_DENY",
         "MOVEMENT_GENERATE",
-        "BROADCAST"
+        "BROADCAST",
+        "DEPOSIT_CLOSE",
+        "DEPOSIT_UPDATE"
     ].map(eventOption => ({ label: t(eventOption), value: eventOption }))
 
     const handleChangeClient = (selectedOption) => {

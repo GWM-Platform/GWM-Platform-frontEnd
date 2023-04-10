@@ -1,13 +1,15 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { Row, Form, Accordion, Container, Button, InputGroup } from 'react-bootstrap'
+import { Row, Form, Accordion, Container, InputGroup, Button } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
-import moment from 'moment';
+import { DashBoardContext } from 'context/DashBoardContext';
+import { useContext } from 'react';
 
-const DurationData = ({ data, Balance, fetching, handleChange, calculateProfit, minDuration, maxDuration }) => {
+const RateData = ({ data, handleChange, calculateProfit, fetching, minRate, maxRate }) => {
     const { t } = useTranslation();
-
+    const { Balance } = useContext(DashBoardContext);
+    console.log(fetching)
     return (
         <Accordion.Item eventKey="0">
             <Accordion.Header>
@@ -17,10 +19,10 @@ const DurationData = ({ data, Balance, fetching, handleChange, calculateProfit, 
                             <span>
                                 <span className="d-inline-block numberContainer">
                                     <div className="d-flex justify-content-center align-items-center h-100 w-100">
-                                        <span className="number">3</span>
+                                        <span className="number">4</span>
                                     </div>
                                 </span>
-                                {t("Specify the duration of your investment")}
+                                {t("Specify the anual rate for your investment")}
                             </span>
                         </Form.Label>
                     </Row>
@@ -29,53 +31,44 @@ const DurationData = ({ data, Balance, fetching, handleChange, calculateProfit, 
             <Accordion.Body>
                 <div className="formSection">
                     <InputGroup className="mb-3">
+                        <InputGroup.Text>%</InputGroup.Text>
                         <Form.Control
                             onBlur={() => calculateProfit()}
                             onWheel={event => event.currentTarget.blur()}
-                            value={data.days}
-                            step="1"
+                            value={data.rate}
+                            step="0.01"
                             onChange={handleChange}
-
-                            min={minDuration}
-                            max={maxDuration}
-
-                            id="days"
+                            min={minRate}
+                            max={maxRate}
+                            id="rate"
                             type="number"
                             required
-                            placeholder={t("Days")}
-                        />
-                        <Form.Control
-                            onBlur={() => calculateProfit()}
-                            onWheel={event => event.currentTarget.blur()}
-                            value={data.until}
-                            onChange={handleChange}
-
-                            min={moment().add(minDuration, "days").format("YYYY-MM-DD")}
-                            max={moment().add(maxDuration, "days").format("YYYY-MM-DD")}
-
-                            id="until"
-                            type="date"
-                            required
-                            placeholder={t("Date")}
+                            placeholder={t("Anual rate")}
                         />
                         <Form.Control.Feedback type="invalid">
                             {
-                                data.days === "" ?
-                                    t("You must enter how long your investment will last")
-                                    :
-                                    data.days < minDuration ?
-                                        t("The minimum duration is () days", { days: minDuration })
-                                        :
-                                        data.days > maxDuration ?
-                                            t("The maximum duration is () days", { days: maxDuration })
-                                            :
-                                            t("Decimal values ​​are not allowed")
 
+                                data.rate === "" ?
+                                    t("You must enter the anual rate for your investment")
+                                    :
+                                    data.rate < minRate ?
+                                        <>
+                                            {t("The value must be greater or equal to")}
+                                            &nbsp;{minRate}%
+                                        </>
+                                        :
+                                        data.rate > maxRate ?
+                                            <>
+                                                {t("The value must be lower or equal to")}
+                                                &nbsp;{maxRate}%
+                                            </>
+                                            :
+                                            t("The min step is 0.01")
                             }
                         </Form.Control.Feedback>
                     </InputGroup>
                     {
-                        !(data.preferential) &&
+                        !!(data.preferential) &&
                         <Button disabled={fetching || ((data.amount > Balance) && data.amount > 0)}
                             variant="danger" type="submit" className="submitBtn">{t("Submit")}</Button>
                     }
@@ -84,4 +77,4 @@ const DurationData = ({ data, Balance, fetching, handleChange, calculateProfit, 
         </Accordion.Item>
     )
 }
-export default DurationData
+export default RateData

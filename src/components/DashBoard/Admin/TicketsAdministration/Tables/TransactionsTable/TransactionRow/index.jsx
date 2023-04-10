@@ -48,6 +48,11 @@ const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData })
                     bg: "warning",
                     text: "Client pending"
                 }
+            case 6://Client pending
+                return {
+                    bg: "warning",
+                    text: "Admin sign pending"
+                }
             default:
                 return {
                     bg: "danger",

@@ -9,14 +9,13 @@ import Decimal from 'decimal.js';
 import axios from 'axios';
 import { DashBoardContext } from 'context/DashBoardContext';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
+import { getAnualRate, getDuration, isPending, wasEdited } from 'utils/fixedDeposit';
 
 const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
     Decimal.set({ precision: 100 })
 
     const { toLogin } = useContext(DashBoardContext);
     const { t } = useTranslation();
-
-    const getAnualRate = () => FixedDeposit.interestRate ?? 0
 
     const ellapsedDays = () => (
         Math.floor(new Date().getTime() / 1000 / 60 / 60 / 24) -
@@ -32,7 +31,7 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
                 {
                     duration: ellapsedDays(),
                     initialAmount: FixedDeposit?.initialAmount,
-                    interestRate: getAnualRate()
+                    interestRate: getAnualRate(FixedDeposit)
                 }, { signal: signal }).then(function (response) {
                     if (response.status < 300 && response.status >= 200) {
                         setActualProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: response.data || FixedDeposit.initialAmount } }))
@@ -58,9 +57,9 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
         if (FixedDeposit.initialAmount) {
             axios.post(`/fixed-deposits/profit`,
                 {
-                    duration: FixedDeposit?.duration,
+                    duration: getDuration(FixedDeposit),
                     initialAmount: FixedDeposit?.initialAmount,
-                    interestRate: getAnualRate()
+                    interestRate: getAnualRate(FixedDeposit)
                 }, { signal: signal }).then(function (response) {
                     if (response.status < 300 && response.status >= 200) {
                         setProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: response.data || FixedDeposit.initialAmount } }))
@@ -111,7 +110,12 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
                         <Row className="mx-0 w-100 gx-0">
                             <Card.Title >
                                 <h1 className="title m-0">
-                                    {t("Time deposit")}&nbsp;{FixedDeposit.id}&nbsp;{!!(FixedDeposit?.stateId === 1) && <span style={{ textTransform: "none" }}>({t("Pending approval")})</span>}
+                                    {t("Time deposit")}&nbsp;{FixedDeposit.id}
+                                    &nbsp;{!!(isPending(FixedDeposit)) ?
+                                        <span style={{ textTransform: "none" }}>({t("Pending approval")})</span>
+                                        :
+                                        wasEdited(FixedDeposit) &&
+                                        <span style={{ textTransform: "none" }}>({t("Preferential *")})</span>}
                                 </h1>
                                 <Card.Text className="subTitle lighter mt-0 my-0">
                                     {t("Elapsed")}:&nbsp;
@@ -120,7 +124,8 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
                                             {FixedDeposit.stateId === 2 ? ellapsedDays() : 0}
                                         </span>
                                         &nbsp;{t("out of")}&nbsp;
-                                        {FixedDeposit?.duration}&nbsp;{t("days")}
+                                        {getDuration(FixedDeposit)}&nbsp;{t("days")}
+                                        {wasEdited(FixedDeposit) && " *"}
                                     </span>
                                 </Card.Text>
                             </Card.Title>
@@ -160,17 +165,17 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
                                         </span><br />
                                     </Card.Text>
                                     <Card.Text className="subTitle lighter my-0">
-
-
-
                                         {t("Due date")}:&nbsp;
                                         <span className="bolder">
-                                            {FixedDeposit?.endDate ? moment(FixedDeposit?.endDate).format('L') : moment().add(FixedDeposit.duration, "days").format('L')}
+                                            {FixedDeposit?.endDate ? moment(FixedDeposit?.endDate).format('L') : moment().add(getDuration(FixedDeposit), "days").format('L')}
                                         </span>
+                                        {wasEdited(FixedDeposit) && " *"}
                                     </Card.Text>
                                     <Card.Text className="subTitle lighter my-0">
                                         {t("Anual rate")}:&nbsp;
-                                        <FormattedNumber className={`bolder`} value={getAnualRate()} suffix="%" fixedDecimals={2} /><br />
+                                        <FormattedNumber className={`bolder`} value={getAnualRate(FixedDeposit)} suffix="%" fixedDecimals={2} />
+                                        {wasEdited(FixedDeposit) && " *"}
+                                        <br />
                                     </Card.Text>
                                     <Card.Text className="subTitle lighter my-0">
                                         {t("Initial investment")}:&nbsp;

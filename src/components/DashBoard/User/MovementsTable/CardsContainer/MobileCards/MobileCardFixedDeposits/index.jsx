@@ -7,7 +7,7 @@ import { faEyeSlash, faEye, faPiggyBank } from '@fortawesome/free-solid-svg-icon
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import TableLastFixedDeposits from './TableLastFixedDeposits';
 
-const MobileCardFixedDeposits = ({ FixdedDeposits, FixedDepositsStats, Hide, setHide }) => {
+const MobileCardFixedDeposits = ({ FixedDepositsStats, Hide, setHide }) => {
     // eslint-disable-next-line
     const { t } = useTranslation();
 

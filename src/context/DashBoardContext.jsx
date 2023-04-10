@@ -58,6 +58,7 @@ export const DashBoardProvider = ({ children }) => {
     const [FetchingFunds, setFetchingFunds] = useState(true);
     const [Accounts, setAccounts] = useState([])
     const [AccountSelected, setAccountSelected] = useState({})
+    const Balance = AccountSelected?.balance || 0
 
     const [itemSelected, setItemSelected] = useState(location.pathname.split('/')[2])
 
@@ -616,7 +617,7 @@ export const DashBoardProvider = ({ children }) => {
         value={{
             token, admin, UserClients, ClientSelected, IndexClientSelected, setIndexClientSelected, balanceChanged, setBalanceChanged, TransactionStates, getMoveStateById,
             FetchingFunds, contentReady, PendingWithoutpossession, PendingTransactions, Accounts, Funds, itemSelected, setItemSelected, isMobile, width, toLogin, setContentReady,
-            DashboardToast, DashboardToastDispatch, AccountSelected, allowedSymbols,setAccountSelected,
+            DashboardToast, DashboardToastDispatch, AccountSelected, setAccountSelected, Balance, allowedSymbols,
             couldSign, ClientPermissions, hasPermission, hasSellPermission, hasBuyPermission, hasViewPermission, setClientPermissions, hasAnySellPermission, hasAnyBuyPermission
         }}>
         {children}

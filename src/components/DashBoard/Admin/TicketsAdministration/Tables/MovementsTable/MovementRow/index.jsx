@@ -53,6 +53,11 @@ const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, coul
                     bg: "warning",
                     text: "Client pending"
                 }
+            case 6://Client pending
+                return {
+                    bg: "warning",
+                    text: "Admin sign pending"
+                }
             default:
                 return {
                     bg: "danger",

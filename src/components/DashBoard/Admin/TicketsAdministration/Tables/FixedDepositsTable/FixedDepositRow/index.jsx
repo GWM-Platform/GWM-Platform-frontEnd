@@ -9,14 +9,16 @@ import axios from 'axios';
 import { DashBoardContext } from 'context/DashBoardContext';
 import moment from 'moment';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
+import { userId } from 'utils/userId';
+import { wasEdited } from 'utils/fixedDeposit';
 
-const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }) => {
+const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
     const { t } = useTranslation();
     const { toLogin } = useContext(DashBoardContext);
 
-
     const [ShowModal, setShowModal] = useState(false)
     const [Action, setAction] = useState("approve")
+
 
     const [UserTicketInfo, SetUserTicketInfo] = useState({ fetching: true, valid: false, value: {} })
 
@@ -61,6 +63,11 @@ const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }
                     bg: "warning",
                     text: "Client pending"
                 }
+            case 6://Client pending
+                return {
+                    bg: "warning",
+                    text: "Admin sign pending"
+                }
             default:
                 return {
                     bg: "danger",
@@ -74,6 +81,8 @@ const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }
     const [RefundedProfit, setRefundedProfit] = useState({ fetching: false, fetched: false, valid: false, value: 0 })
 
     const getAnualRate = () => Movement.interestRate ?? 0
+    const WasEdited = wasEdited(Movement)
+    const signByCurrentUser = Movement?.approvedBy?.map(userId => userId + "")?.includes(userId())
 
     const ellapsedDays = () => {
         switch (Movement.stateId) {
@@ -82,7 +91,7 @@ const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }
             case 2://Approved
                 if (Movement.closed) {
                     if (closedAtTheEnd()) {
-                        return Movement.duration
+                        return Movement?.duration
                     } else {
                         return (Math.floor(new Date(Movement?.updatedAt).getTime() / 1000 / 60 / 60 / 24) -
                             Math.floor(new Date(Movement?.startDate).getTime() / 1000 / 60 / 60 / 24)) ?? 0
@@ -158,7 +167,7 @@ const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }
         if (Movement.initialAmount) {
             axios.post(`/fixed-deposits/profit`,
                 {
-                    duration: ellapsedDays(),
+                    duration: Movement?.duration,
                     initialAmount: Movement?.initialAmount,
                     interestRate: getAnualRate()
                 }, { signal: signal }).then(function (response) {
@@ -208,7 +217,7 @@ const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }
         const controller = new AbortController();
         const signal = controller.signal;
 
-        if (validState(["Pending", "Ongoing", "Denied", "Closed (Out of term)"])) calculateProfitAtTheEnd(signal)
+        if (validState(["Pending", "Ongoing", "Denied", "Closed (Out of term)", "Client pending"])) calculateProfitAtTheEnd(signal)
         if (validState(["Ongoing"])) calculateActualProfit(signal)
         if (validState(["Closed (Out of term)", "Closed (Term completed)"])) calculateRefundedProfit(signal)
         userInfoById(Movement.clientId)
@@ -222,8 +231,8 @@ const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }
         <>
             <div className='mobileMovement'>
                 <div className='d-flex py-1 align-items-center' >
-                    <span className="h5 mb-0 me-1 me-md-2">{t("Time deposit")}&nbsp;#{Movement.id}</span>
-                    <div className='me-auto px-1 px-md-2' style={{ borderLeft: "1px solid lightgray", borderRight: "1px solid lightgray" }}>
+                    <span className="h5 mb-0 me-1 me-md-2">{t("Time deposit")}&nbsp;#{Movement.id} {!!(WasEdited) && <>({t("Preferential *")})</>}</span>
+                    <div className='px-1 px-md-2' style={{ borderLeft: "1px solid lightgray", borderRight: "1px solid lightgray" }}>
                         <span className="d-none d-md-inline">{t("Client")}:&nbsp;</span>
                         {
                             UserTicketInfo.fetching ?
@@ -235,6 +244,8 @@ const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }
                                     t("Undefined Client")
                         }
                     </div>
+
+                    <div className='me-auto'></div>
                     {
                         !!(Movement.stateId === 2 && !Movement.closed) &&
                         <div className="h-100 d-flex align-items-center justify-content-around Actions">
@@ -244,14 +255,19 @@ const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }
                         </div>
                     }
                     {
-                        !!(Movement.stateId === 1) &&
+                        !!(Movement.stateId === 1 || Movement.stateId === 6) &&
                         <div className="h-100 d-flex align-items-center justify-content-around Actions">
-                            <div className="iconContainer green me-1">
-                                <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => { launchModalConfirmation("approve") }} />
-                            </div>
-                            <div className="iconContainer red me-1">
-                                <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => { launchModalConfirmation("deny") }} />
-                            </div>
+                            {
+                                !!(!WasEdited || (WasEdited && !signByCurrentUser)) &&
+                                <>
+                                    <div className="iconContainer green me-1">
+                                        <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => { Movement.stateId === 6 ? launchModalConfirmation("sign") : launchModalConfirmation("approve") }} />
+                                    </div>
+                                    <div className="iconContainer red me-1">
+                                        <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => { launchModalConfirmation("deny") }} />
+                                    </div>
+                                </>
+                            }
                         </div>
                     }
                     <Badge className='ms-1 ms-md-2' bg={status()?.bg}>{t(status().text)}</Badge>
@@ -273,7 +289,7 @@ const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }
                     </div >
                 }
                 {
-                    !!(validState(["Pending", "Ongoing", "Denied", "Closed (Out of term)"])) &&
+                    !!(validState(["Pending", "Ongoing", "Denied", "Closed (Out of term)", "Client pending"])) &&
                     <div className='d-flex justify-content-between' >
                         <span >{t("Investment at maturity date")}:&nbsp;
                             {ProfitAtTheEnd.fetching ?
@@ -294,7 +310,7 @@ const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }
                     </div >
                 }
                 <div className='w-100 d-flex' style={{ borderBottom: "1px solid lightgray" }} />
-                <div className='d-flex justify-content-between' style={{ borderBottom: "1px solid 1px solid rgb(240,240,240)" }}>
+                <div className='d-flex' style={{ borderBottom: "1px solid 1px solid rgb(240,240,240)" }}>
                     <span >{t("Duration")}:&nbsp;
                         {Movement.duration}&nbsp;{t("days")}
                     </span>
@@ -329,7 +345,7 @@ const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }
                     </div >}
 
                 <div className='w-100 d-flex' style={{ borderBottom: "1px solid lightgray" }} />
-                <div className='d-flex justify-content-between'>
+                <div className='d-flex'>
                     <span >{t("Anual rate")}:&nbsp;
                         <FormattedNumber value={getAnualRate()} suffix="%" fixedDecimals={2} />
                     </span>
@@ -339,10 +355,11 @@ const FixedDepositRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData }
 
             </div >
             {
-                Movement.stateId === 1 || (Movement.stateId === 2 && !Movement.closed) ?
+                Movement.stateId === 1 || Movement.stateId === 6 || (Movement.stateId === 2 && !Movement.closed) ?
                     <ActionConfirmationModal reloadData={reloadData} movement={Movement} setShowModal={setShowModal} action={Action} show={ShowModal} />
                     :
-                    null}
+                    null
+            }
         </>
     )
 }

@@ -15,6 +15,8 @@ import axios from 'axios';
 import Decimal from 'decimal.js';
 import ReactGA from "react-ga4";
 import NoFixedDeposit from '../NoFixedDeposit';
+import RuleSelector from './RuleSelector';
+import RateData from './RateData';
 
 const FixedDepositTicket = ({ balanceChanged }) => {
     Decimal.set({ precision: 100 })
@@ -27,14 +29,17 @@ const FixedDepositTicket = ({ balanceChanged }) => {
         })
     }, [])
 
-    const { token, contentReady, Accounts, toLogin, ClientSelected } = useContext(DashBoardContext);
+    const { token, contentReady, AccountSelected, toLogin, ClientSelected } = useContext(DashBoardContext);
 
     //If the user came from an specific fund, we use the query to auto select that one
 
     const [data, setData] = useState({
         amount: "",
+        ruleSelected: "",
         days: "",
-        until: ""
+        until: "",
+        preferential: false,
+        rate: ""
     })
 
     const [ShowModal, setShowModal] = useState(false)
@@ -76,6 +81,37 @@ const FixedDepositTicket = ({ balanceChanged }) => {
         }
     }
 
+    const investOnPreferential = () => {
+        if (!fetching) {
+            setFetching(true)
+            axios.post('fixed-deposits/bid', {
+                initialAmount: data.amount,
+                interestRate: data?.rate,
+                clientId: ClientSelected.id,
+                duration: data.days
+            }).then(function (response) {
+                if (response.status < 300 && response.status >= 200) {
+                    setFetching(false)
+                    balanceChanged()
+                    history.push(`/DashBoard/operationResult`);
+                } else {
+                    switch (response.status) {
+                        case 401:
+                            toLogin();
+                            break;
+                        default:
+                            history.push(`/DashBoard/operationResult?result=failed`);
+                            break
+                    }
+                }
+            }).catch((err) => {
+                if (err.message !== "canceled") {
+                    history.push(`/DashBoard/operationResult?result=failed`);
+                }
+            });
+        }
+    }
+
     const handleChange = (event) =>
         setData(
             prevState => {
@@ -83,10 +119,12 @@ const FixedDepositTicket = ({ balanceChanged }) => {
                 aux[event?.target?.id] = event?.target?.value
                 switch (event.target.id) {
                     case "until":
-                        aux.days = moment(event.target.value, "YYYY-MM-DD").diff(moment().startOf('day'), 'days');
+                        const untilDate = moment(event.target.value, "YYYY-MM-DD")
+                        aux.days = untilDate.isValid() ? (untilDate.diff(moment().startOf('day'), 'days') + "") : "";
                         break;
                     case "days":
-                        aux.until = moment().add(event.target.value, 'days').format("YYYY-MM-DD")
+                        const days = event.target.value
+                        aux.until = days !== "" ? moment().add(event.target.value, 'days').format("YYYY-MM-DD") : ""
                         break
                     default:
                 }
@@ -110,6 +148,39 @@ const FixedDepositTicket = ({ balanceChanged }) => {
     }
 
     const [FixedDeposit, setFixedDeposit] = useState({ fetching: true, fetched: false, valid: false, content: {} })
+
+    const FixedDepositRules = Object.keys(FixedDeposit?.content?.interest ?? [])
+    const selectedRuleIndex = FixedDepositRules.findIndex(rule => (rule === data.ruleSelected))
+
+    const minDuration = selectedRuleIndex === -1 ?
+        data.preferential ?
+            90
+            :
+            Decimal.min(...[...FixedDepositRules.map(string => parseInt(string)), 365]).toNumber()
+        :
+        parseInt(data.ruleSelected)
+
+    const maxDuration = selectedRuleIndex === -1 ?
+        data.preferential ?
+            1825
+            :
+            Decimal.max(...[...FixedDepositRules.map(string => parseInt(string)), 730]).toNumber()
+        :
+        selectedRuleIndex < FixedDepositRules.length - 1 ?
+            FixedDepositRules[selectedRuleIndex + 1] - 1
+            : parseInt(data.ruleSelected)
+
+    const minRate = 1
+    const maxRate = 10
+
+    const isPreferential = data?.preferential;
+    const amount = data?.amount?.trim();
+    const days = data?.days?.trim();
+    const rate = data?.rate?.trim();
+    const isRateValid = rate !== "" && Number(rate) >= minRate && Number(rate) <= maxRate;
+    const isDaysValid = Number(days) >= minDuration && Number(days) <= maxDuration;
+    const isAmountValid = amount !== "";
+    const isFetched = FixedDeposit.fetched;
 
     const getFixedDepositPlans = useCallback((signal) => {
         setFixedDeposit((prevState) => ({ fetching: true, fetched: false }))
@@ -136,9 +207,13 @@ const FixedDepositTicket = ({ balanceChanged }) => {
     }, [toLogin]);
 
     const getAnualRate = () => {
-        if (data.amount.length > 0 && data.days.length > 0 && Number(data.days) >= 365 && FixedDeposit.fetched) {
-            const investmentDays = Number(data.days)
-            return FixedDeposit?.content?.interest[Object.keys(FixedDeposit?.content?.interest).filter(ruleDays => ruleDays <= investmentDays).reduce((prev, curr) => Math.abs(curr - investmentDays) < Math.abs(prev - investmentDays) ? curr : prev)] || 0
+        if (isFetched && isAmountValid && isDaysValid && (!isPreferential || (isPreferential && isRateValid))) {
+            if (isPreferential) {
+                return Number(rate)
+            } else {
+                const investmentDays = Number(data.days)
+                return FixedDeposit?.content?.interest[Object.keys(FixedDeposit?.content?.interest).filter(ruleDays => ruleDays <= investmentDays).reduce((prev, curr) => Math.abs(curr - investmentDays) < Math.abs(prev - investmentDays) ? curr : prev)] || 0
+            }
         }
         return 0
     }
@@ -151,8 +226,9 @@ const FixedDepositTicket = ({ balanceChanged }) => {
         return (new Decimal(profit).add(data.amount).toString()) || "0"
     }
 
+
     const calculateProfit = () => {
-        if (data.amount.length > 0 && data.days.length > 0 && Number(data.days) >= 365 && FixedDeposit.fetched) {
+        if (isFetched && isAmountValid && isDaysValid && (!isPreferential || (isPreferential && isRateValid))) {
             axios.post(`/fixed-deposits/profit`,
                 {
                     duration: data?.days,
@@ -191,6 +267,7 @@ const FixedDepositTicket = ({ balanceChanged }) => {
         };
         //eslint-disable-next-line
     }, [getFixedDepositPlans])
+    console.log(data)
     return (
         <div className="tabContent">
             <div className={`d-flex flex-column h-100`}>
@@ -205,17 +282,33 @@ const FixedDepositTicket = ({ balanceChanged }) => {
                                         <Form noValidate validated={validated} onSubmit={handleSubmit}>
 
                                             <Accordion flush defaultActiveKey="0">
-                                                <InvestmentData
-                                                    calculateProfit={calculateProfit}
-                                                    handleSubmit={handleSubmit} validated={validated}
-                                                    handleChange={handleChange} data={data}
-                                                    Balance={Accounts[0].balance} fetching={fetching} />
+                                                <RuleSelector handleChange={handleChange} data={data} setData={setData} RulesObject={FixedDeposit.content} />
                                             </Accordion>
+
+                                            <Accordion flush defaultActiveKey="0">
+                                                <InvestmentData handleChange={handleChange} data={data} calculateProfit={calculateProfit} />
+                                            </Accordion>
+
                                             <Accordion flush defaultActiveKey="0" >
                                                 <DurationData
-                                                    FixedDepositRules={Object.keys(FixedDeposit?.content?.interest ?? [])}
-                                                    calculateProfit={calculateProfit} handleChange={handleChange} data={data} setData={setData} Account={Accounts[0]} />
+                                                    data={data} setData={setData} handleChange={handleChange}
+                                                    minDuration={minDuration} maxDuration={maxDuration}
+                                                    calculateProfit={calculateProfit} fetching={fetching}
+                                                />
                                             </Accordion>
+
+                                            {
+                                                !!(data.preferential) &&
+                                                <Accordion flush defaultActiveKey="0" >
+                                                    <RateData
+                                                        data={data} handleChange={handleChange}
+                                                        maxRate={maxRate} minRate={minRate}
+                                                        calculateProfit={calculateProfit} fetching={fetching}
+                                                    />
+                                                </Accordion>
+
+                                            }
+
                                         </Form>
                                     </Col>
                                     :
@@ -225,7 +318,12 @@ const FixedDepositTicket = ({ balanceChanged }) => {
                 </Container>
                 {
                     !!(FixedDeposit.fetched && contentReady) &&
-                    <ActionConfirmationModal anualRate={getAnualRate()} profit={profit} fetching={fetching} setShowModal={setShowModal} show={ShowModal} action={invest} data={data} Balance={Accounts[0].balance} />
+                    <ActionConfirmationModal
+                        setShowModal={setShowModal} show={ShowModal}
+                        fetching={fetching} action={data.preferential ?   investOnPreferential : invest}
+                        anualRate={getAnualRate()} profit={profit}
+                        data={data} Balance={AccountSelected?.balance}
+                    />
 
                 }
             </div>

@@ -6,8 +6,9 @@ import axios from 'axios';
 import { DashBoardContext } from 'context/DashBoardContext';
 import moment from 'moment';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
+import { getAnualRate, getDuration, wasEdited } from 'utils/fixedDeposit';
 
-const FixedDepositRow = ({  Movement }) => {
+const FixedDepositRow = ({ Movement }) => {
     const { t } = useTranslation();
     const { toLogin } = useContext(DashBoardContext);
 
@@ -42,12 +43,16 @@ const FixedDepositRow = ({  Movement }) => {
                     bg: "danger",
                     text: "Denied"
                 }
-                
             case 5://Client pending
-            return {
-                bg: "warning",
-                text: "Client pending"
-            }
+                return {
+                    bg: "warning",
+                    text: "Client pending"
+                }
+            case 6://Client pending
+                return {
+                    bg: "warning",
+                    text: "Admin sign pending"
+                }
             default:
                 return {
                     bg: "danger",
@@ -60,8 +65,6 @@ const FixedDepositRow = ({  Movement }) => {
     const [ActualProfit, setActualProfit] = useState({ fetching: false, fetched: false, valid: false, value: 0 })
     const [RefundedProfit, setRefundedProfit] = useState({ fetching: false, fetched: false, valid: false, value: 0 })
 
-    const getAnualRate = () => Movement.interestRate ?? 0
-
     const ellapsedDays = () => {
         switch (Movement.stateId) {
             case 1://pending
@@ -69,7 +72,7 @@ const FixedDepositRow = ({  Movement }) => {
             case 2://Approved
                 if (Movement.closed) {
                     if (closedAtTheEnd()) {
-                        return Movement.duration
+                        return getDuration(Movement)
                     } else {
                         return (Math.floor(new Date(Movement?.updatedAt).getTime() / 1000 / 60 / 60 / 24) -
                             Math.floor(new Date(Movement?.startDate).getTime() / 1000 / 60 / 60 / 24)) ?? 0
@@ -91,7 +94,7 @@ const FixedDepositRow = ({  Movement }) => {
                 {
                     duration: ellapsedDays(),
                     initialAmount: Movement?.initialAmount,
-                    interestRate: getAnualRate()
+                    interestRate: getAnualRate(Movement)
                 }, { signal: signal }).then(function (response) {
                     if (response.status < 300 && response.status >= 200) {
                         setActualProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: response.data || Movement.initialAmount } }))
@@ -117,9 +120,9 @@ const FixedDepositRow = ({  Movement }) => {
         if (Movement.initialAmount) {
             axios.post(`/fixed-deposits/profit`,
                 {
-                    duration: Movement?.duration,
+                    duration: getDuration(Movement),
                     initialAmount: Movement?.initialAmount,
-                    interestRate: getAnualRate()
+                    interestRate: getAnualRate(Movement)
                 }, { signal: signal }).then(function (response) {
                     if (response.status < 300 && response.status >= 200) {
                         setProfitAtTheEnd((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: response.data || Movement.initialAmount } }))
@@ -147,7 +150,7 @@ const FixedDepositRow = ({  Movement }) => {
                 {
                     duration: ellapsedDays(),
                     initialAmount: Movement?.initialAmount,
-                    interestRate: getAnualRate()
+                    interestRate: getAnualRate(Movement)
                 }, { signal: signal }).then(function (response) {
                     if (response.status < 300 && response.status >= 200) {
                         setRefundedProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: response.data || Movement.initialAmount } }))
@@ -191,7 +194,10 @@ const FixedDepositRow = ({  Movement }) => {
         <>
             <div className='mobileMovement'>
                 <div className='d-flex py-1 align-items-center' >
-                    <span className="h5 mb-0 me-1 me-md-2">{t("Time deposit")}&nbsp;#{Movement.id}</span>
+                    <span className="h5 mb-0 me-1">{t("Time deposit")}&nbsp;#{Movement.id}</span>
+                    {
+                        wasEdited(Movement) &&
+                        <span className="h5 mb-0 me-1 me-md-2">({t("Preferential *")})</span>}
                     <Badge className='ms-auto' bg={status()?.bg}>{t(status().text)}</Badge>
                 </div >
                 <div className='w-100 d-flex' style={{ borderBottom: "1px solid lightgray" }} />
@@ -233,8 +239,9 @@ const FixedDepositRow = ({  Movement }) => {
                 }
                 <div className='w-100 d-flex' style={{ borderBottom: "1px solid lightgray" }} />
                 <div className='d-flex justify-content-between' style={{ borderBottom: "1px solid 1px solid rgb(240,240,240)" }}>
-                    <span >{t("Duration")}:&nbsp;
-                        {Movement.duration}&nbsp;{t("days")}
+                    <span >{t("Duration (Agreed)")}:&nbsp;
+                        {getDuration(Movement)}&nbsp;{t("days")}
+                        {(wasEdited(Movement)) && " *"}
                     </span>
                 </div >
 
@@ -269,14 +276,15 @@ const FixedDepositRow = ({  Movement }) => {
                 <div className='w-100 d-flex' style={{ borderBottom: "1px solid lightgray" }} />
                 <div className='d-flex justify-content-between'>
                     <span >{t("Anual rate")}:&nbsp;
-                        <FormattedNumber value={getAnualRate()} suffix="%" fixedDecimals={2} />
+                        <FormattedNumber className={`bolder`} value={getAnualRate(Movement)} suffix="%" fixedDecimals={2} />
+                        {wasEdited(Movement) && " *"}
                     </span>
                 </div >
 
 
 
             </div >
-    
+
         </>
     )
 }

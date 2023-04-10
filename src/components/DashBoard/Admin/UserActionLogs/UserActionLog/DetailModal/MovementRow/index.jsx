@@ -42,6 +42,11 @@ const MovementRow = ({ Accounts, Clients, Movement }) => {
                     bg: "warning",
                     text: "Client pending"
                 }
+            case 6://Client pending
+                return {
+                    bg: "warning",
+                    text: "Admin sign pending"
+                }
             default:
                 return {
                     bg: "danger",
