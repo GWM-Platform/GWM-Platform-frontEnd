@@ -2,7 +2,7 @@ import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCommentsDollar, faUser, faSignOutAlt, faTicketAlt, faChartLine, faCog } from '@fortawesome/free-solid-svg-icons'
+import { faCommentsDollar, faUser, faSignOutAlt, faTicketAlt, faChartLine } from '@fortawesome/free-solid-svg-icons'
 import { Row, Container } from 'react-bootstrap'
 import { useRouteMatch, useHistory } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
@@ -37,10 +37,6 @@ const NavBarMobile = () => {
 
     const toAccountsAdmin = () => {
         history.push(`${url}/clientsSupervision`);
-    }
-
-    const toSettings = () => {
-        history.push(`${url}/Configuration`);
     }
 
     return (

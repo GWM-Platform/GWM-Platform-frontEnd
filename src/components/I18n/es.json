@@ -882,8 +882,11 @@
   "You must enter the anual rate for your investment": "Debe ingresar la tasa anual de su inversión",
   "Pendiente de cliente": "Pendiente de cliente",
   "Client pending": "Pendiente de cliente",
-  "Admin sign pending":"Pendiente de firma de admin",
-  "Pendiente de doble firma Admin":"Pendiente de firma de Admin",
+  "Admin sign pending": "Pendiente de firma de admin",
+  "Pendiente de doble firma Admin": "Pendiente de firma de Admin",
   "sign": "firmar",
-  "Settings":"Configuración"
+  "Settings": "Configuración",
+  "Movement receipt": "Comprobante de movimiento",
+  "Fixed deposit receipt": "Comprobante de plazo fijo",
+  "Transfer receipt": "Comprobante de transferencia"
 }

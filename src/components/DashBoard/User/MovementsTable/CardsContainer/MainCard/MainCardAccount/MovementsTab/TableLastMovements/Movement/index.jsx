@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from 'moment';
 import { useTranslation } from "react-i18next";
@@ -11,14 +11,25 @@ import MovementReceipt from 'Receipts/MovementReceipt';
 import { OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import MovementConfirmation from 'components/DashBoard/User/MovementsTable/GeneralUse/MovementConfirmation';
+import axios from 'axios';
+import FixedDepositReceipt from 'Receipts/FixedDepositReceipt';
+import { getAnualRate, getDuration } from 'utils/fixedDeposit';
+import TransferReceipt from 'Receipts/TransferReceipt';
+import TransactionReceipt from 'Receipts/TransactionReceipt';
 
 const Movement = ({ content, actions, reloadData }) => {
 
   var momentDate = moment(content.createdAt);
   const { t } = useTranslation();
-  const { getMoveStateById, AccountSelected, couldSign } = useContext(DashBoardContext)
+  const { getMoveStateById, AccountSelected, couldSign, hasPermission, toLogin, Accounts, hasSellPermission, hasBuyPermission } = useContext(DashBoardContext)
 
   const [GeneratingPDF, setGeneratingPDF] = useState(false)
+  const [altGeneratingPDF, setAltGeneratingPDF] = useState(false)
+
+  const [fixedDeposit, setFixedDeposit] = useState(null)
+  const [ProfitAtTheEnd, setProfitAtTheEnd] = useState({ fetching: false, fetched: false, valid: false, value: 0 })
+  const [ActualProfit, setActualProfit] = useState({ fetching: false, fetched: false, valid: false, value: 0 })
+  const [RefundedProfit, setRefundedProfit] = useState({ fetching: false, fetched: false, valid: false, value: 0 })
 
   const renderAndDownloadPDF = async () => {
     setGeneratingPDF(true)
@@ -41,6 +52,323 @@ const Movement = ({ content, actions, reloadData }) => {
     setGeneratingPDF(false)
   }
 
+  const closedAtTheEnd = () => moment(fixedDeposit.endDate).isBefore(moment(fixedDeposit.updatedAt))
+
+  const status = () => {
+    switch (fixedDeposit.stateId) {
+      case 1://pending
+        return {
+          bg: "info",
+          text: "Pending"
+        }
+      case 2://Approved
+        if (fixedDeposit.closed) {
+          if (closedAtTheEnd()) {
+            return {
+              bg: "success",
+              text: "Closed (Term completed)"
+            }
+          } else {
+            return {
+              bg: "success",
+              text: "Closed (Out of term)"
+            }
+          }
+        } else {
+          return {
+            bg: "primary",
+            text: "Ongoing"
+          }
+        }
+      case 3://Denied
+        return {
+          bg: "danger",
+          text: "Denied"
+        }
+      case 5://Client pending
+        return {
+          bg: "warning",
+          text: "Client pending"
+        }
+      case 6://Client pending
+        return {
+          bg: "warning",
+          text: "Admin sign pending"
+        }
+      default:
+        return {
+          bg: "danger",
+          text: "Denied"
+        }
+    }
+  }
+
+
+  const ellapsedDays = () => {
+    switch (fixedDeposit.stateId) {
+      case 1://pending
+        return 0
+      case 2://Approved
+        if (fixedDeposit.closed) {
+          if (closedAtTheEnd()) {
+            return getDuration(fixedDeposit)
+          } else {
+            return (Math.floor(new Date(fixedDeposit?.updatedAt).getTime() / 1000 / 60 / 60 / 24) -
+              Math.floor(new Date(fixedDeposit?.startDate).getTime() / 1000 / 60 / 60 / 24)) ?? 0
+          }
+        } else {
+          return (Math.floor(new Date().getTime() / 1000 / 60 / 60 / 24) -
+            Math.floor(new Date(fixedDeposit?.startDate).getTime() / 1000 / 60 / 60 / 24)) ?? 0
+        }
+      case 3://Denied
+        return 0
+      default:
+        return 0
+    }
+  }
+
+  const calculateActualProfit = () => {
+    if (fixedDeposit.initialAmount) {
+      axios.post(`/fixed-deposits/profit`,
+        {
+          duration: ellapsedDays(fixedDeposit),
+          initialAmount: fixedDeposit?.initialAmount,
+          interestRate: getAnualRate(fixedDeposit)
+        }).then(function (response) {
+          if (response.status < 300 && response.status >= 200) {
+            setActualProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: response.data || fixedDeposit.initialAmount } }))
+          } else {
+            switch (response.status) {
+              case 401:
+                toLogin();
+                break;
+              default:
+                setActualProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: fixedDeposit.initialAmount } }))
+                break
+            }
+          }
+        }).catch((err) => {
+          if (err.message !== "canceled") {
+            setActualProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: fixedDeposit.initialAmount } }))
+          }
+        });
+    }
+  }
+
+  const calculateProfitAtTheEnd = () => {
+    if (fixedDeposit.initialAmount) {
+      axios.post(`/fixed-deposits/profit`,
+        {
+          duration: getDuration(fixedDeposit),
+          initialAmount: fixedDeposit?.initialAmount,
+          interestRate: getAnualRate(fixedDeposit)
+        }).then(function (response) {
+          if (response.status < 300 && response.status >= 200) {
+            setProfitAtTheEnd((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: response.data || fixedDeposit.initialAmount } }))
+          } else {
+            switch (response.status) {
+              case 401:
+                toLogin();
+                break;
+              default:
+                setProfitAtTheEnd((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: fixedDeposit.initialAmount } }))
+                break
+            }
+          }
+        }).catch((err) => {
+          if (err.message !== "canceled") {
+            setProfitAtTheEnd((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: fixedDeposit.initialAmount } }))
+          }
+        });
+    }
+  }
+
+  const calculateRefundedProfit = () => {
+    if (fixedDeposit.initialAmount) {
+      axios.post(`/fixed-deposits/profit`,
+        {
+          duration: ellapsedDays(fixedDeposit),
+          initialAmount: fixedDeposit?.initialAmount,
+          interestRate: getAnualRate(fixedDeposit)
+        }).then(function (response) {
+          if (response.status < 300 && response.status >= 200) {
+            setRefundedProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: response.data || fixedDeposit.initialAmount } }))
+          } else {
+            switch (response.status) {
+              case 401:
+                toLogin();
+                break;
+              default:
+                setRefundedProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: fixedDeposit.initialAmount } }))
+                break
+            }
+          }
+        }).catch((err) => {
+          if (err.message !== "canceled") {
+            setRefundedProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: fixedDeposit.initialAmount } }))
+          }
+        });
+    }
+  }
+
+  const validState = (states = []) => states.includes(status().text)
+
+
+  const renderAndDownloadFixedDepositPDF = async () => {
+    const blob = await ReactPDF.pdf(<FixedDepositReceipt FixedDeposit={{
+      ...fixedDeposit, ...{
+        accountAlias: AccountSelected.alias,
+        ActualProfit: { ...ActualProfit },
+        ProfitAtTheEnd: { ...ProfitAtTheEnd },
+        RefundedProfit: { ...RefundedProfit },
+        ellapsedDays: ellapsedDays(fixedDeposit),
+        AnualRate: getAnualRate(fixedDeposit),
+        state: status(fixedDeposit)
+      }
+    }} />).toBlob()
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', `${AccountSelected.alias} - ${t("Time deposit")} #${fixedDeposit.id}.pdf`)
+    // 3. Append to html page
+    document.body.appendChild(link)
+    // 4. Force download
+    link.click()
+    // 5. Clean up and remove the link
+    link.parentNode.removeChild(link)
+    setAltGeneratingPDF(false)
+  }
+
+  useEffect(() => {
+    if (fixedDeposit !== null) {
+      const controller = new AbortController();
+      const signal = controller.signal;
+
+      if (validState(["Pending", "Ongoing", "Denied", "Closed (Out of term)"])) {
+        calculateProfitAtTheEnd(signal)
+      } else {
+        setProfitAtTheEnd((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: fixedDeposit.initialAmount } }))
+      }
+      if (validState(["Ongoing"])) { calculateActualProfit(signal) } else {
+        setActualProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: fixedDeposit.initialAmount } }))
+      }
+      if (validState(["Closed (Out of term)", "Closed (Term completed)"])) {
+        calculateRefundedProfit(signal)
+      } else {
+        setRefundedProfit((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, value: fixedDeposit.initialAmount } }))
+      }
+
+      return () => {
+        controller.abort();
+      };
+    }
+    //eslint-disable-next-line
+  }, [fixedDeposit])
+
+  useEffect(() => {
+    if (ProfitAtTheEnd.fetched && ActualProfit.fetched && RefundedProfit.fetched && altGeneratingPDF) {
+      renderAndDownloadFixedDepositPDF()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ProfitAtTheEnd, ActualProfit, RefundedProfit])
+
+  const getFixedDepositPDF = () => {
+    setAltGeneratingPDF(true)
+    if (fixedDeposit) {
+      renderAndDownloadFixedDepositPDF()
+    } else {
+      axios.get(`/fixed-deposits/${content.fixedDepositId}`)
+        .then((response) => {
+          setFixedDeposit(response.data)
+        }
+        )
+        .catch(
+          (e) => {
+            setAltGeneratingPDF(false)
+            console.error(e)
+          }
+        )
+    }
+
+  }
+
+  const incomingTransfer = (transfer) => transfer.receiverId === Accounts[0]?.id
+
+  const renderAndDownloadTransferPDF = async (transfer) => {
+    const blob = await ReactPDF.pdf(<TransferReceipt Transfer={{
+      ...transfer, ...{
+        state: t(getMoveStateById(transfer.stateId).name),
+        accountAlias: AccountSelected.alias,
+        incomingTransfer: incomingTransfer(transfer),
+        AccountId: AccountSelected.id
+      }
+    }} />).toBlob()
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', `${AccountSelected.alias} - ${t("Transfer")} #${transfer.id}.pdf`)
+    // 3. Append to html page
+    document.body.appendChild(link)
+    // 4. Force download
+    link.click()
+    // 5. Clean up and remove the link
+    link.parentNode.removeChild(link)
+    setAltGeneratingPDF(false)
+  }
+
+  const getTransferPDF = () => {
+    setAltGeneratingPDF(true)
+
+    axios.get(`/transfers/${content.transferId}`)
+      .then((response) => {
+        renderAndDownloadTransferPDF(response.data)
+      }
+      )
+      .catch(
+        (e) => {
+          setAltGeneratingPDF(false)
+          console.error(e)
+        }
+      )
+  }
+
+  const renderAndDownloadTransactionPDF = async (transaction) => {
+    const blob = await ReactPDF.pdf(<TransactionReceipt Transaction={{
+      ...transaction, ...{
+        state: t(getMoveStateById(transaction.stateId).name),
+        accountAlias: AccountSelected.alias,
+        fundName: content.fundName
+      }
+    }} />).toBlob()
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', `${AccountSelected.alias} - ${t("Transaction")} #${transaction.id}.pdf`)
+    // 3. Append to html page
+    document.body.appendChild(link)
+    // 4. Force download
+    link.click()
+    // 5. Clean up and remove the link
+    link.parentNode.removeChild(link)
+    setAltGeneratingPDF(false)
+  }
+
+  const getTransactionPDF = () => {
+    setAltGeneratingPDF(true)
+
+    axios.get(`/transactions/${content.transactionId}`)
+      .then((response) => {
+        renderAndDownloadTransactionPDF(response.data)
+      }
+      )
+      .catch(
+        (e) => {
+          setAltGeneratingPDF(false)
+          console.error(e)
+        }
+      )
+  }
+
   const [showClick, setShowClick] = useState(false)
   const [showHover, setShowHover] = useState(false)
 
@@ -52,13 +380,12 @@ const Movement = ({ content, actions, reloadData }) => {
     setShowModal(true)
   }
 
-
   return (
     <tr>
       <td className="tableId">
         {content.id}
       </td>
-      <td className="text-center">
+      <td className="text-center text-nowrap">
         {
           !!(content?.userEmail) &&
           <OverlayTrigger
@@ -100,9 +427,42 @@ const Movement = ({ content, actions, reloadData }) => {
           GeneratingPDF ?
             <Spinner animation="border" size="sm" />
             :
-            <button className='noStyle py-0' style={{ cursor: "pointer" }} onClick={() => renderAndDownloadPDF()}>
+            <button title={t("Movement receipt")} className='noStyle py-0' style={{ cursor: "pointer" }} onClick={() => renderAndDownloadPDF()}>
               <FontAwesomeIcon icon={faFilePdf} />
             </button>
+        }
+        {
+          ((content.fixedDepositId) && hasPermission("FIXED_DEPOSIT_VIEW")) &&
+          (
+            altGeneratingPDF ?
+              <Spinner animation="border" size="sm" />
+              :
+              <button title={t("Fixed deposit receipt")} className='noStyle py-0' style={{ cursor: "pointer" }} onClick={() => getFixedDepositPDF()}>
+                <FontAwesomeIcon icon={faFilePdf} />
+              </button>
+          )
+        }
+        {
+          ((content.transferId) && (hasPermission("TRANSFER_APPROVE") || hasPermission("TRANSFER_DENY") || hasPermission("TRANSFER_GENERATE"))) &&
+          (
+            altGeneratingPDF ?
+              <Spinner animation="border" size="sm" />
+              :
+              <button title={t("Transfer receipt")} className='noStyle py-0' style={{ cursor: "pointer" }} onClick={() => getTransferPDF()}>
+                <FontAwesomeIcon icon={faFilePdf} />
+              </button>
+          )
+        }
+        {
+          ((content.fundId) && (hasSellPermission(content.fundId) || hasBuyPermission(content.fundId))) &&
+          (
+            altGeneratingPDF ?
+              <Spinner animation="border" size="sm" />
+              :
+              <button title={t("Transaction receipt")} className='noStyle py-0' style={{ cursor: "pointer" }} onClick={() => getTransactionPDF()}>
+                <FontAwesomeIcon icon={faFilePdf} />
+              </button>
+          )
         }
       </td>
       <td className="tableDate">
@@ -131,11 +491,11 @@ const Movement = ({ content, actions, reloadData }) => {
           <div className="h-100 d-flex align-items-center justify-content-around">
 
             <div className={`iconContainer green ${!couldSign(content) ? "not-allowed" : ""}`}>
-              <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() =>{ if (couldSign(content)) { launchModalConfirmation("approve")} } } />
+              <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => { if (couldSign(content)) { launchModalConfirmation("approve") } }} />
             </div>
 
             <div className={`iconContainer red ${!couldSign(content) ? "not-allowed" : ""}`}>
-              <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => { if (couldSign(content)) { launchModalConfirmation("deny")} }} />
+              <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => { if (couldSign(content)) { launchModalConfirmation("deny") } }} />
             </div>
 
           </div>}
