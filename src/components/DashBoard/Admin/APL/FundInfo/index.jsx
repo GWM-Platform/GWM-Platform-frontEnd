@@ -56,7 +56,7 @@ const FundInfo = ({ Fund }) => {
                 <h2 className="m-0 left">
                     {t("Share price")}
                     <span className="ps-3" style={{ fontWeight: "bolder" }}>
-                        ${Fund.sharePrice}
+                        <FormattedNumber value={Fund.sharePrice} prefix="U$D " fixedDecimals={2} />
                     </span>
                 </h2>
             </div>
@@ -75,9 +75,9 @@ const FundInfo = ({ Fund }) => {
                     <Col className="pe-2">
                         <div className="containerHideInfo px-2">
                             <span>{t("Balance ($)")}:&nbsp;</span>
-                            <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={balanceInCash} prefix="$" fixedDecimals={2} />
-                            <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={balanceInCash} prefix="$" fixedDecimals={2} />
-                            <FormattedNumber className={`info placeholder`} value={balanceInCash} prefix="$" fixedDecimals={2} />
+                            <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={balanceInCash} prefix="U$D " fixedDecimals={2} />
+                            <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={balanceInCash} prefix="U$D " fixedDecimals={2} />
+                            <FormattedNumber className={`info placeholder`} value={balanceInCash} prefix="U$D " fixedDecimals={2} />
                         </div>
                     </Col>
                     <Col sm="auto" className="hideInfoButton d-flex align-items-center">

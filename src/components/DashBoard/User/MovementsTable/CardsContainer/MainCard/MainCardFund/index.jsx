@@ -80,7 +80,7 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
                     </h1>
                     <h2 className="m-0 left">
                         {t("Share price")}:&nbsp;
-                        <FormattedNumber style={{ fontWeight: "bolder" }} value={Fund.fund.sharePrice} prefix="$" suffix="" fixedDecimals={2} />
+                        <FormattedNumber style={{ fontWeight: "bolder" }} value={Fund.fund.sharePrice} prefix="U$D " suffix="" fixedDecimals={2} />
                     </h2>
                 </div>
                 <div className="d-flex justify-content-between align-items-start pe-2">

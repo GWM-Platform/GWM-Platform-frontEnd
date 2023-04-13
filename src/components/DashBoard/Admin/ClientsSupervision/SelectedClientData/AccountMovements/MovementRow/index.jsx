@@ -71,12 +71,12 @@ const Movement = ({ Movement }) => {
       </td>
       <td className={`tableAmount ${Math.sign(Movement.amount) === 1 ? 'text-green' : 'text-red'}`}>
         <span>{Math.sign(Movement.amount) === 1 ? '+' : '-'}</span>
-        <FormattedNumber value={Math.abs(Movement.amount)} prefix="$" fixedDecimals={2} />
+        <FormattedNumber value={Math.abs(Movement.amount)} prefix="U$D " fixedDecimals={2} />
       </td>
       <td className={`tableAmount `}>
         {
           Movement.partialBalance ?
-            <FormattedNumber value={Math.abs(Movement.partialBalance)} prefix="$" fixedDecimals={2} />
+            <FormattedNumber value={Math.abs(Movement.partialBalance)} prefix="U$D " fixedDecimals={2} />
             :
             <>-</>
         }

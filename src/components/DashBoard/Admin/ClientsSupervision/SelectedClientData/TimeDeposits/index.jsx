@@ -158,7 +158,7 @@ const TimeDeposits = ({ AccountId, ClientId }) => {
                             {t("Performance")}:&nbsp;
                             <FormattedNumber value={FixedDepositsStats?.content?.performancePercentage || 0} suffix="%" fixedDecimals={2} />
                             &nbsp;(
-                            <FormattedNumber value={FixedDepositsStats?.content?.performanceCash || 0} prefix="$" fixedDecimals={2} />
+                            <FormattedNumber value={FixedDepositsStats?.content?.performanceCash || 0} prefix="U$D " fixedDecimals={2} />
                             )
                         </Col>
                         <Col xs="12">

@@ -20,7 +20,7 @@ const AssetRow = ({ Asset, AssetTypes, chargeAssets, setAction, Action, ownKey }
                 <td className="Type">{AssetTypes[getAssetTypeById(AssetTypes, Asset.typeId)].name}</td>
                 <td className="SharePrice">{Asset.symbol}</td>
                 <td className="SharePrice">
-                    <FormattedNumber value={Asset.value} prefix="$" fixedDecimals={2} />
+                    <FormattedNumber value={Asset.value} prefix="U$D " fixedDecimals={2} />
                 </td>
                 <td className="Id">{Asset.id}</td>
 

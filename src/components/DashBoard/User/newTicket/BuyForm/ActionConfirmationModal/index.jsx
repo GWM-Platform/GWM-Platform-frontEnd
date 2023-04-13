@@ -34,13 +34,13 @@ const ActionConfirmationModal = ({ setShowModal, show, action, data, Funds, Bala
                             {t("Account")}: <span className="emphasis">{ClientSelected.alias}</span>
                         </li>
                         <li className="listedInfo">
-                            {t("Account balance")}: <FormattedNumber className="emphasis" prefix="U$D" value={Balance} fixedDecimals={2}/>
+                            {t("Account balance")}: <FormattedNumber className="emphasis" prefix="U$D " value={Balance} fixedDecimals={2}/>
                         </li>
                         <li className="listedInfo">
                             {t("Product")}: <span className="emphasis">{Funds[data.FundSelected].name}</span>
                         </li>
                         <li className="listedInfo">
-                            {t("Cash amount")}:<span className="emphasis"> <FormattedNumber prefix="U$D" value={data.amount} fixedDecimals={2}/></span>
+                            {t("Cash amount")}:<span className="emphasis"> <FormattedNumber prefix="U$D " value={data.amount} fixedDecimals={2}/></span>
                         </li>
                         <li className="listedInfo">
                             {t("Share amount")}:<span className="emphasis"> <FormattedNumber prefix="" value={sharesToBuy.toString()} fixedDecimals={2}/></span>

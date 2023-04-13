@@ -135,9 +135,9 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
                                         <Container fluid className="px-0">
                                             <Row className="mx-0 w-100 gx-0 d-flex justify-content-between">
                                                 <div className="pe-2 containerHideInfo">
-                                                    <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={actualProfit.fetched ? actualProfit.value.toString() : FixedDeposit?.initialAmount.toString()} prefix="$" fixedDecimals={2} />
-                                                    <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={actualProfit.fetched ? actualProfit.value.toString() : FixedDeposit?.initialAmount.toString()} prefix="$" fixedDecimals={2} />
-                                                    <FormattedNumber className={`info placeholder`} value={actualProfit.fetched ? actualProfit.value.toString() : FixedDeposit?.initialAmount.toString()} prefix="$" fixedDecimals={2} />
+                                                    <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={actualProfit.fetched ? actualProfit.value.toString() : FixedDeposit?.initialAmount.toString()} prefix="U$D " fixedDecimals={2} />
+                                                    <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={actualProfit.fetched ? actualProfit.value.toString() : FixedDeposit?.initialAmount.toString()} prefix="U$D " fixedDecimals={2} />
+                                                    <FormattedNumber className={`info placeholder`} value={actualProfit.fetched ? actualProfit.value.toString() : FixedDeposit?.initialAmount.toString()} prefix="U$D " fixedDecimals={2} />
                                                 </div>
                                                 <div className="ps-0 hideInfoButton d-flex align-items-center">
                                                     <FontAwesomeIcon
@@ -179,7 +179,7 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
                                     </Card.Text>
                                     <Card.Text className="subTitle lighter my-0">
                                         {t("Initial investment")}:&nbsp;
-                                        <FormattedNumber className={`bolder`} value={FixedDeposit.initialAmount} prefix="$" fixedDecimals={2} />
+                                        <FormattedNumber className={`bolder`} value={FixedDeposit.initialAmount} prefix="U$D " fixedDecimals={2} />
                                     </Card.Text>
                                     <Card.Text className="subTitle lighter my-0">
                                         {t("Amount on due date")}:&nbsp;
@@ -188,7 +188,7 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
                                                 profit.fetching ?
                                                     <Spinner className="ms-2" animation="border" size="sm" />
                                                     :
-                                                    <FormattedNumber value={profit.value} prefix="$" fixedDecimals={2} />
+                                                    <FormattedNumber value={profit.value} prefix="U$D " fixedDecimals={2} />
                                             }
                                         </span>
                                     </Card.Text>

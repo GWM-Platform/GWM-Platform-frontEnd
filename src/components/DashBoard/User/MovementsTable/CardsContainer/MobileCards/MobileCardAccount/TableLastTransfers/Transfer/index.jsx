@@ -78,7 +78,7 @@ const Transfer = ({ content, getTransfers }) => {
 
         <span className={`${content.stateId === 3 ? 'text-red' : 'text-green'}`}>{t(getMoveStateById(content.stateId).name)}</span>
         <span className={`${Math.sign(content.amount) === 1 ? 'text-green' : 'text-red'}`}>{Math.sign(content.amount) === 1 ? '+' : '-'}
-          <FormattedNumber value={Math.abs(content.amount)} prefix="$" fixedDecimals={2} />
+          <FormattedNumber value={Math.abs(content.amount)} prefix="U$D " fixedDecimals={2} />
         </span>
       </div>
       {

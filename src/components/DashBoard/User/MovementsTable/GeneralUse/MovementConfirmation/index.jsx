@@ -92,7 +92,7 @@ const MovementConfirmation = ({ movement, setShowModal, action, show, reloadData
                 <li className="listedInfo">
                     {t("Amount")}:&nbsp;
                     <strong className="emphasis">
-                        <FormattedNumber value={Math.abs(movement.amount)} prefix="$" fixedDecimals={2} />
+                        <FormattedNumber value={Math.abs(movement.amount)} prefix="U$D " fixedDecimals={2} />
                     </strong>
                 </li>
                 <li className="listedInfo">

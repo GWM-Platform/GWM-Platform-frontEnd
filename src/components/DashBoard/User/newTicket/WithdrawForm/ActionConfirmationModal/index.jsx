@@ -25,10 +25,10 @@ const ActionConfirmationModal = ({ setShowModal, show, action, data, Balance ,fe
                             {t("Account with whom the operation will be made")}: <span className="emphasis">{ClientSelected.alias}</span>
                         </li>
                         <li className="listedInfo">
-                            {t("Cash balance")}: <FormattedNumber className="emphasis" prefix="U$D" value={Balance.toString()} fixedDecimals={2} />
+                            {t("Cash balance")}: <FormattedNumber className="emphasis" prefix="U$D " value={Balance.toString()} fixedDecimals={2} />
                         </li>
                         <li className="listedInfo">
-                            {t("Withdrawing")}: <FormattedNumber className="emphasis" prefix="U$D" value={data.amount.toString()} fixedDecimals={2} />
+                            {t("Withdrawing")}: <FormattedNumber className="emphasis" prefix="U$D " value={data.amount.toString()} fixedDecimals={2} />
                         </li>
                     </ul>
                 </div>

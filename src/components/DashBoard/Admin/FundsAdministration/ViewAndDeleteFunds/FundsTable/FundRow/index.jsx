@@ -49,7 +49,7 @@ const FundRow = ({ Fund, AssetTypes, chargeFunds, setAction, Action, ownKey }) =
                     <FormattedNumber value={Fund.freeShares} prefix="" fixedDecimals={2} />
                 </td>
                 <td className="SharePrice">
-                    <FormattedNumber value={Fund.sharePrice} prefix="$" fixedDecimals={2} />
+                    <FormattedNumber value={Fund.sharePrice} prefix="U$D " fixedDecimals={2} />
                 </td>
                 <td className="Id">{Fund.spreadsheetId}</td>
                 <td className="Actions verticalCenter" >

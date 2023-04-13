@@ -67,11 +67,11 @@ const Movement = ({ content,fundName }) => {
         <FormattedNumber value={Math.abs(content.shares)}  fixedDecimals={2} />&nbsp;
         {t(Math.abs(content.shares) === 1 ? "share" : "shares")}</td>
       <td className="tableDescription d-none d-sm-table-cell ">
-        <FormattedNumber prefix="$" value={content.sharePrice} fixedDecimals={2} />
+        <FormattedNumber prefix="U$D " value={content.sharePrice} fixedDecimals={2} />
       </td>
       <td className={`tableAmount ${Math.sign(content.shares) === 1 ? 'text-green' : 'text-red'}`}>
         {Math.sign(content.shares) === 1 ? '+' : '-'}
-        <FormattedNumber prefix="$" value={amount.toString()} fixedDecimals={2} />
+        <FormattedNumber prefix="U$D " value={amount.toString()} fixedDecimals={2} />
       </td>
     </tr>
   )

@@ -91,7 +91,7 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
                                         {t("Available cash")}:&nbsp;
                                         {
                                             contentReady && Accounts[0] ?
-                                                <FormattedNumber className="growOpacity" value={Accounts[0].balance} prefix="$" fixedDecimals={2} />
+                                                <FormattedNumber className="growOpacity" value={Accounts[0].balance} prefix="U$D " fixedDecimals={2} />
                                                 :
                                                 <Spinner className="ms-2" animation="border" size="sm" />
                                         }
@@ -104,7 +104,7 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
                                                 <Spinner className="ms-2" animation="border" size="sm" />
 
                                                 :
-                                                <FormattedNumber className="growOpacity" value={Balance.value} prefix="$" fixedDecimals={2} />
+                                                <FormattedNumber className="growOpacity" value={Balance.value} prefix="U$D " fixedDecimals={2} />
                                         }
                                     </>
                             }

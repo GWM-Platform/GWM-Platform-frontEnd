@@ -112,16 +112,16 @@ const BuyData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAcc
                                         :
                                         data.amount > Balance ?
                                             <>
-                                                {t("You only have")} <FormattedNumber prefix="U$D" value={Balance} fixedDecimals={2} /> {t("available in your account.")}
+                                                {t("You only have")} <FormattedNumber prefix="U$D " value={Balance} fixedDecimals={2} /> {t("available in your account.")}
                                             </>
                                             :
                                             data.amount < (Funds[data.FundSelected] ? Funds[data.FundSelected].sharePrice || 1 : 1) ?
-                                                <>{t("At least you must buy one share")} (<FormattedNumber prefix="U$D" value={(Funds[data.FundSelected] ? Funds[data.FundSelected].sharePrice || 1 : 1)} fixedDecimals={2} />)</>
+                                                <>{t("At least you must buy one share")} (<FormattedNumber prefix="U$D " value={(Funds[data.FundSelected] ? Funds[data.FundSelected].sharePrice || 1 : 1)} fixedDecimals={2} />)</>
                                                 :
 
                                                 (data.amount * multiplier) % (0.01 * multiplier) === 0 ?
                                                     <>
-                                                        {t("You are trying to invest")} <FormattedNumber prefix="U$D" value={data.amount} fixedDecimals={2} /> {t(", with you could buy")} <FormattedNumber value={sharesToBuy.toString()} fixedDecimals={2} /> {t("shares, but there are only")} <FormattedNumber value={Funds[data.FundSelected].freeShares} fixedDecimals={2} />{t(" free.")}
+                                                        {t("You are trying to invest")} <FormattedNumber prefix="U$D " value={data.amount} fixedDecimals={2} /> {t(", with you could buy")} <FormattedNumber value={sharesToBuy.toString()} fixedDecimals={2} /> {t("shares, but there are only")} <FormattedNumber value={Funds[data.FundSelected].freeShares} fixedDecimals={2} />{t(" free.")}
                                                     </>
                                                     :
                                                     t("The min step is 0.01")

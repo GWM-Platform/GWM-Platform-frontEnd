@@ -33,7 +33,7 @@ const FundCard = ({ Fund, ownKey, data, setData, openAccordion, Account }) => {
                 onClick={() => { if (Fund.freeShares > 0) setFundSelected(setData, Fund.id, ownKey, openAccordion) }}>
                 <Card.Header><strong className="title">{Fund.name}</strong></Card.Header>
                 <Card.Body>
-                    <Card.Title>{t("Share price")}: <strong><FormattedNumber prefix="$" value={Fund.sharePrice} fixedDecimals={2} /></strong></Card.Title>
+                    <Card.Title>{t("Share price")}: <strong><FormattedNumber prefix="U$D " value={Fund.sharePrice} fixedDecimals={2} /></strong></Card.Title>
                     {
                         Fund.composition !== undefined
                             ?

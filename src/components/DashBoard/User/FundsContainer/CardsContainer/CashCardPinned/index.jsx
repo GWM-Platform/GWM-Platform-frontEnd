@@ -85,9 +85,9 @@ const CashCardPinned = ({ Hide, setHide, Fund, Pinned, setPinned, show, setShow,
                             <Container fluid className="px-0">
                                 <Row className="w-100 mx-0 d-flex justify-content-between gx-0">
                                     <span className="pe-2 containerHideInfo">
-                                        <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={parseFloat(Fund.balance).toString()} prefix="$" fixedDecimals={2} />
-                                        <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={parseFloat(Fund.balance).toString()} prefix="$" fixedDecimals={2} />
-                                        <FormattedNumber className={`info placeholder`} value={parseFloat(Fund.balance).toString()} prefix="$" fixedDecimals={2} />
+                                        <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={parseFloat(Fund.balance).toString()} prefix="U$D " fixedDecimals={2} />
+                                        <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={parseFloat(Fund.balance).toString()} prefix="U$D " fixedDecimals={2} />
+                                        <FormattedNumber className={`info placeholder`} value={parseFloat(Fund.balance).toString()} prefix="U$D " fixedDecimals={2} />
                                     </span>
                                     <button onClick={() => setHide(prevState => !prevState)} className="noStyle ps-0 hideInfoButton d-flex align-items-center">
                                         <FontAwesomeIcon
@@ -115,7 +115,7 @@ const CashCardPinned = ({ Hide, setHide, Fund, Pinned, setPinned, show, setShow,
                                             <span>{t("Pending transactions")}:&nbsp;
                                                 <span className={`bolder ${pendingCash().isPositive ? "text-green" : "text-red"}`}>
                                                     {pendingCash().isPositive ? "+" : "-"}
-                                                    <FormattedNumber value={pendingCash().valueAbs} prefix="$" fixedDecimals={2} />
+                                                    <FormattedNumber value={pendingCash().valueAbs} prefix="U$D " fixedDecimals={2} />
                                                 </span>
                                             </span>
                                             <OverlayTrigger show={show} trigger="click" placement="auto-start" overlay={
@@ -125,27 +125,27 @@ const CashCardPinned = ({ Hide, setHide, Fund, Pinned, setPinned, show, setShow,
                                                         {t("Pending share sales")}:&nbsp;
                                                         <span className={`bolder ${pendingCash().overView.Transactions.isPositive ? "text-green" : "text-red"}`}>
                                                             {pendingCash().overView.Transactions.isPositive ? "+" : "-"}
-                                                            <FormattedNumber value={pendingCash().overView.Transactions.valueAbs} prefix="$" fixedDecimals={2} />
+                                                            <FormattedNumber value={pendingCash().overView.Transactions.valueAbs} prefix="U$D " fixedDecimals={2} />
                                                         </span><br />
                                                         {t("Pending withdrawals")}:&nbsp;
                                                         <span className={`bolder ${pendingCash().overView.Withdrawals.isPositive ? "text-green" : "text-red"}`}>
                                                             {pendingCash().overView.Withdrawals.isPositive ? "+" : "-"}
-                                                            <FormattedNumber value={pendingCash().overView.Withdrawals.valueAbs} prefix="$" fixedDecimals={2} />
+                                                            <FormattedNumber value={pendingCash().overView.Withdrawals.valueAbs} prefix="U$D " fixedDecimals={2} />
                                                         </span><br />
                                                         {t("Pending deposits")}:&nbsp;
                                                         <span className={`bolder ${pendingCash().overView.Deposits.isPositive ? "text-green" : "text-red"}`}>
                                                             {pendingCash().overView.Deposits.isPositive ? "+" : "-"}
-                                                            <FormattedNumber value={pendingCash().overView.Deposits.valueAbs} prefix="$" fixedDecimals={2} />
+                                                            <FormattedNumber value={pendingCash().overView.Deposits.valueAbs} prefix="U$D " fixedDecimals={2} />
                                                         </span><br />
                                                         {t("Pending transfers")}:&nbsp;
                                                         <span className={`bolder ${pendingCash().overView.Transfers.isPositive ? "text-green" : "text-red"}`}>
                                                             {pendingCash().overView.Transfers.isPositive ? "+" : "-"}
-                                                            <FormattedNumber value={pendingCash().overView.Transfers.valueAbs} prefix="$" fixedDecimals={2} />
+                                                            <FormattedNumber value={pendingCash().overView.Transfers.valueAbs} prefix="U$D " fixedDecimals={2} />
                                                         </span><br />
                                                         {t("Pending total")}:&nbsp;
                                                         <span className={`bolder ${pendingCash().isPositive ? "text-green" : "text-red"}`}>
                                                             {pendingCash().isPositive ? "+" : "-"}
-                                                            <FormattedNumber value={pendingCash().valueAbs} prefix="$" fixedDecimals={2} />
+                                                            <FormattedNumber value={pendingCash().valueAbs} prefix="U$D " fixedDecimals={2} />
                                                         </span>
                                                     </Popover.Body>
                                                 </Popover>

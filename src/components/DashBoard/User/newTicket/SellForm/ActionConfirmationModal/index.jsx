@@ -28,7 +28,7 @@ const ActionConfirmationModal = ({ setShowModal, show, action, data, Funds, Bala
                         {!(Balance===undefined) &&
                             <li className="listedInfo">
                                 {t("Account balance")}:&nbsp;
-                                <span className="emphasis"><FormattedNumber prefix="U$D" value={Balance} fixedDecimals={2} /></span>
+                                <span className="emphasis"><FormattedNumber prefix="U$D " value={Balance} fixedDecimals={2} /></span>
                             </li>
                         }
                         <li className="listedInfo">
@@ -37,7 +37,7 @@ const ActionConfirmationModal = ({ setShowModal, show, action, data, Funds, Bala
                         </li>
                         <li className="listedInfo">
                             {t("Cash amount")}:&nbsp;
-                            <span className="emphasis"><FormattedNumber prefix="U$D" value={(data.shares * Funds[data.FundSelected].fund.sharePrice)} fixedDecimals={2} /></span>
+                            <span className="emphasis"><FormattedNumber prefix="U$D " value={(data.shares * Funds[data.FundSelected].fund.sharePrice)} fixedDecimals={2} /></span>
                         </li>
                         <li className="listedInfo">
                             {t("Share amount")}:&nbsp;
