@@ -22,6 +22,8 @@ import './App.css';
 import './widtHeightBP.css'
 import moment from 'moment';
 import axios from 'axios';
+import { Provider } from 'react-redux';
+import store from 'ReduxStores/store';
 
 function App() {
 
@@ -57,43 +59,45 @@ function App() {
       <Sentry.ErrorBoundary fallback={<ErrorNotice dialogOptions={{ lang: localStorage.getItem("language") || "En" }} />} >
         <>
           <div className="appContainer">
-            <BrowserRouter>
-              <Switch>
-                <Route exact path="/">
-                  <Landing />
-                </Route>
-
-                <Route exact path="/login">
-                  <Containerlogin />
-                </Route>
-
-                <Route exact path="/forgotPassword">
-                  <ContainerForgotPassword />
-                </Route>
-                <Route exact path="/changePassword/:user/:token">
-                  <ContainerChangePassword />
-                </Route>
-                <Route exact path="/changePassword">
-                  <ContainerChangePassword />
-                </Route>
-
-                <Route exact path="/activate">
-                  <ActivateAccount />
-                </Route>
-                <Route exact path="/setPassword">
-                  <SetPassword />
-                </Route>
-                <DashBoardProvider>
-                  <Route path="/DashBoard">
-                    <DashBoard />
+            <Provider store={store}>
+              <BrowserRouter>
+                <Switch>
+                  <Route exact path="/">
+                    <Landing />
                   </Route>
-                </DashBoardProvider>
 
-                <Route>
-                  <NotFound />
-                </Route>
-              </Switch>
-            </BrowserRouter>
+                  <Route exact path="/login">
+                    <Containerlogin />
+                  </Route>
+
+                  <Route exact path="/forgotPassword">
+                    <ContainerForgotPassword />
+                  </Route>
+                  <Route exact path="/changePassword/:user/:token">
+                    <ContainerChangePassword />
+                  </Route>
+                  <Route exact path="/changePassword">
+                    <ContainerChangePassword />
+                  </Route>
+
+                  <Route exact path="/activate">
+                    <ActivateAccount />
+                  </Route>
+                  <Route exact path="/setPassword">
+                    <SetPassword />
+                  </Route>
+                  <DashBoardProvider>
+                    <Route path="/DashBoard">
+                      <DashBoard />
+                    </Route>
+                  </DashBoardProvider>
+
+                  <Route>
+                    <NotFound />
+                  </Route>
+                </Switch>
+              </BrowserRouter>
+            </Provider>
           </div>
           <RotateDevice />
         </>
