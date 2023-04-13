@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
-import './index.css'
+import './index.scss'
 import { useHistory } from 'react-router-dom';
 import Decimal from 'decimal.js'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';

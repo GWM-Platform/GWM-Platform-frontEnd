@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faEye, faThumbtack, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import { faCheckCircle, faClipboard } from '@fortawesome/free-regular-svg-icons'
 import { Link, useHistory } from 'react-router-dom';
-import './index.css'
+import './index.scss'
 import { DashBoardContext } from 'context/DashBoardContext';
 import Decimal from 'decimal.js'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';

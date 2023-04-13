@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../operationsForm.css'
+import '../operationsForm.scss'
 
 import { Container, Row, Col } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'

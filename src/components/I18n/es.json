@@ -884,5 +884,6 @@
   "Client pending": "Pendiente de cliente",
   "Admin sign pending":"Pendiente de firma de admin",
   "Pendiente de doble firma Admin":"Pendiente de firma de Admin",
-  "sign": "firmar"
+  "sign": "firmar",
+  "Settings":"Configuración"
 }

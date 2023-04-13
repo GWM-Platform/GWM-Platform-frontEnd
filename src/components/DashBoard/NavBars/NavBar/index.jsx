@@ -308,38 +308,26 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                         </Col>
                     </Row>
                     <Row className={`w-100 justify-content-between align-items-center mx-0 px-0 ${itemSelectedLC === "buy" || itemSelectedLC === "sell" || itemSelectedLC === "deposit" || itemSelectedLC === "withdraw" || itemSelectedLC === "transfer" || itemSelectedLC === "timedeposit" ? "d-flex" : "d-none"}`}>
-                        <Col xs="6" className="px-0">
-                            <OverlayTrigger placement="bottom" overlay={
-                                <Popover id="popover-funds" className="OverlayNavMobile" >
-                                    <Popover.Body>
-                                        <NavDropdown.Item className="p-2"
-                                            active={itemSelectedLC === "buy"} onClick={() => goTo("buy")}
-                                            disabled={!hasPermission('VIEW_ACCOUNT')}>
-                                            {t("Buy")}
-                                        </NavDropdown.Item>
-                                        <NavDropdown.Item className="p-2"
-                                            active={itemSelectedLC === "sell"} onClick={() => goTo("sell")}
-                                            disabled={!hasPermission('VIEW_ACCOUNT')}>
-                                            {t("Sell")}
-                                        </NavDropdown.Item>
-                                        <NavDropdown.Item className="p-2"
-                                            active={itemSelectedLC === "timedeposit"} onClick={() => { goTo("TimeDeposit") }}
-                                            disabled={!hasPermission('FIXED_DEPOSIT_CREATE') || !hasPermission('VIEW_ACCOUNT')}>
-                                            {t("Time deposit")}
-                                        </NavDropdown.Item>
-                                    </Popover.Body>
-                                </Popover>
-                            } popperConfig={1}>
-                                <button type="button" className={`nav-link dropdownButton ${itemSelectedLC === "sell" || itemSelectedLC === "buy" || itemSelectedLC === "timedeposit" ? "active" : ""}`}>
-                                    <p className="mb-0 mobile-dropdown" >{t("Funds")}</p>
-                                </button>
-                            </OverlayTrigger>
-                        </Col>
-                        <Col xs="6" className="px-0">
+                        <Col xs="12" className="px-0">
                             <OverlayTrigger
                                 placement="bottom" overlay={
                                     <Popover id="popover-cash" className="OverlayNavMobile">
                                         <Popover.Body>
+                                            <NavDropdown.Item className="p-2"
+                                                active={itemSelectedLC === "buy"} onClick={() => goTo("buy")}
+                                                disabled={!hasPermission('VIEW_ACCOUNT')}>
+                                                {t("Buy")}
+                                            </NavDropdown.Item>
+                                            <NavDropdown.Item className="p-2"
+                                                active={itemSelectedLC === "sell"} onClick={() => goTo("sell")}
+                                                disabled={!hasPermission('VIEW_ACCOUNT')}>
+                                                {t("Sell")}
+                                            </NavDropdown.Item>
+                                            <NavDropdown.Item className="p-2"
+                                                active={itemSelectedLC === "timedeposit"} onClick={() => { goTo("TimeDeposit") }}
+                                                disabled={!hasPermission('FIXED_DEPOSIT_CREATE') || !hasPermission('VIEW_ACCOUNT')}>
+                                                {t("Time deposit")}
+                                            </NavDropdown.Item>
                                             <NavDropdown.Item
                                                 className="p-2"
                                                 active={itemSelectedLC === "withdraw"}
@@ -357,8 +345,8 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                         </Popover.Body>
                                     </Popover>
                                 } popperConfig={1}>
-                                <button type="button" className={`nav-link dropdownButton ${itemSelectedLC === "withdraw" || itemSelectedLC === "deposit" || itemSelectedLC === "transfer" ? "active" : ""}`}>
-                                    <p className="mb-0 mobile-dropdown" onClick={(e) => { e.target.focus() }}>{t("Account")}</p>
+                                <button type="button" className={`nav-link dropdownButton ${itemSelectedLC === "buy" || itemSelectedLC === "sell" || itemSelectedLC === "deposit" || itemSelectedLC === "withdraw" || itemSelectedLC === "transfer" || itemSelectedLC === "timedeposit" ? "active" : ""}`}>
+                                    <p className="mb-0 mobile-dropdown" onClick={(e) => { e.target.focus() }}>{t("Operations")}</p>
                                 </button>
                             </OverlayTrigger>
                         </Col>

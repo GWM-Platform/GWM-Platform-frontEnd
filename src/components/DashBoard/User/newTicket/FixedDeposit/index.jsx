@@ -2,7 +2,7 @@ import React, { useState, useContext, useCallback, useEffect } from 'react'
 import { useHistory } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../operationsForm.css'
+import '../operationsForm.scss'
 
 import { Container, Row, Col, Accordion, Form } from 'react-bootstrap'
 import DurationData from './DurationData'
@@ -267,7 +267,7 @@ const FixedDepositTicket = ({ balanceChanged }) => {
         };
         //eslint-disable-next-line
     }, [getFixedDepositPlans])
-    console.log(data)
+
     return (
         <div className="tabContent">
             <div className={`d-flex flex-column h-100`}>

@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react'
 import { useHistory } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../operationsForm.css'
+import '../operationsForm.scss'
 
 import { Container, Row, Col } from 'react-bootstrap'
 import { DashBoardContext } from 'context/DashBoardContext';

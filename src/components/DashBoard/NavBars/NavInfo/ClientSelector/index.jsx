@@ -22,7 +22,11 @@ const ClientSelector = () => {
                     IndexClientSelected === -1 ?
                         t("Admin Panel")
                         :
-                        <>{t("Hi")},&nbsp;{ClientSelected.alias}!</>
+                        <>
+                            <span className='d-none d-inline-block'>{t("Hi")},&nbsp;</span>
+                            {ClientSelected.alias}
+                            <span className='d-none d-inline-block'>!</span>
+                        </>
 
                 }
             </Dropdown.Toggle>

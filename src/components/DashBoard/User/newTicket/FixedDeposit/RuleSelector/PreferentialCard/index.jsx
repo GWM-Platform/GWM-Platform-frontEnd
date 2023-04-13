@@ -9,7 +9,7 @@ const PreferentialCard = ({ data, setData, handleChange }) => {
 
 
     return (
-        <Col xs="10" sm="3"
+        <Col xs="10" sm="6" md="4"lg="3"
             className={`py-1 pe-1 growAnimation RuleCardContainer${false ? " RuleDisabled" : ""}${data.preferential ? " RuleSelected" : ""}`}>
             <Card
                 className="RuleCard h-100" onClick={() => {

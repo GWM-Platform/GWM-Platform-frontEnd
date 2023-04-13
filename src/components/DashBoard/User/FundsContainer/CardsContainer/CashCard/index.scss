@@ -1,0 +1,170 @@
+$color_1: white;
+$color_2: black;
+$color_3: dimgray;
+$color_4: var(--blue-main);
+$background-color_1: transparent;
+$background-color_2: var(--blue-main);
+$background-color_3: white;
+$border-color_1: var(--blue-main);
+$border-color_2: var(--main-card-color);
+
+.fund-col.pinned {
+	position: absolute;
+	height: 100%;
+	padding-bottom: 0.5rem;
+	z-index: 5;
+}
+.cashCard {
+	border: 1px transparent;
+	border-radius: 30px;
+	background-color: $background-color_1;
+	filter: drop-shadow(0px 0px 3px gray);
+	.header {
+		border-radius: 30px 30px 0px 0px;
+		border: 1px solid;
+		border-color: $border-color_1;
+		font-size: 60px;
+		background-color: $background-color_2;
+		.currencyContainer {
+			font-size: 30px;
+			border: white 1px solid;
+			border-radius: 50%;
+			height: 2.7em;
+			width: 2.7em;
+			margin: 0.3em 0em;
+			>.currency {
+				font-size: 30px;
+				border: transparent;
+				background-color: $background-color_1;
+				color: $color_1;
+				margin: 0;
+				padding: 0;
+				width: 30px;
+			}
+		}
+	}
+	.body {
+		border-left: 1px solid;
+		border-right: 1px solid;
+		border-bottom: 1px solid;
+		border-color: $border-color_1;
+		background-color: $background-color_3;
+		.title {
+			color: $color_2;
+			text-transform: uppercase;
+			text-align: start;
+			font-size: 20px;
+		}
+		.title-gray {
+			text-transform: capitalize;
+			color: $color_3;
+			text-align: start;
+			font-size: 20px;
+		}
+		.subTitle {
+			color: $color_2;
+			text-align: start;
+			font-size: 17px;
+		}
+		.balanceAmount {
+			padding: 0;
+			text-align: end;
+			font-size: 20px;
+			color: $color_3;
+		}
+		.balance {
+			padding: 0;
+			float: right;
+			font-size: 17px;
+		}
+	}
+	.footer {
+		background-color: $background-color_1;
+		border: none;
+		border-radius: 0px 0px 30px 30px;
+		border-color: $border-color_2;
+		.button {
+			height: 2em;
+			font-size: 30px;
+			background-color: $background-color_3;
+			border: 1px solid;
+			border-color: $border-color_1;
+			color: $color_4;
+			width: 100%;
+			border-radius: 0px 0px 30px 30px;
+			.label {
+				font-size: 20px;
+			}
+			&:disabled {
+				background-color: $background-color_3 !important;
+				opacity: 0.9;
+				cursor: not-allowed;
+			}
+		}
+		.button.disabled {
+			background-color: $background-color_3 !important;
+			opacity: 0.9;
+			cursor: not-allowed;
+		}
+	}
+	.line {
+		height: 0.1em;
+		width: 0;
+		border-radius: 0.05em;
+	}
+	.line.active {
+		width: 100%;
+	}
+}
+.lighter {
+	font-weight: lighter;
+	font-weight: lighter;
+}
+.bolder {
+	font-weight: bolder;
+}
+.icon.pin {
+	position: absolute;
+	&:not(.active) {
+		transition: all 0.3s !important;
+	}
+}
+.icon.pin.active {
+	transition: all 0.3s !important;
+}
+button {
+	color: $color_3;
+}
+@media (max-width: 568px) {
+	.cashCard {
+		.header {
+			.currencyContainer {
+				>.currency {
+					font-size: 20px!important;
+					width: 20px!important;
+				}
+				font-size: 20px!important;
+			}
+		}
+		.body {
+			.title {
+				font-size: 16px!important;
+			}
+			.title-gray {
+				font-size: 18px!important;
+			}
+			.subTitle {
+				font-size: 14px!important;
+			}
+		}
+		.footer {
+			.button {
+				height: 1.5em!important;
+				.label {
+					font-size: 14px!important;
+				}
+			}
+		}
+	}
+}
+

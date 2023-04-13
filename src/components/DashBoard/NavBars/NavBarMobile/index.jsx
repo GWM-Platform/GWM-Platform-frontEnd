@@ -111,13 +111,6 @@ const NavBarMobile = () => {
                                 </div>
                                 <h1 className="section-label  mb-0 pb-0  " >{t("Logout")}</h1>
                             </div>
-                            <div className={`section ${itemSelectedLC === "configuration" ? "selected" : ""}`}
-                                onClick={() => toSettings()} xs="auto">
-                                <div className="d-flex justify-content-center">
-                                    <FontAwesomeIcon className="icon" icon={faCog} />
-                                </div>
-                                <h1 className="section-label  mb-0 pb-0  " >{t("Settings")}</h1>
-                            </div>
                         </>
                 }
             </Row>

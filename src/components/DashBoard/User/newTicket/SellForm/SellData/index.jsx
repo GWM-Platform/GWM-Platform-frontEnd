@@ -84,7 +84,7 @@ const SellData = ({ data, setData, Funds, handleChange, validated, handleSubmit,
                     <Form.Group className="mb-1" controlId="shares">
                         <InputGroup hasValidation>
                             <Form.Control
-                            className='d-none'
+                                className='d-none'
                                 ref={inputRef}
                                 onWheel={event => event.currentTarget.blur()}
                                 value={data.shares}
@@ -100,7 +100,7 @@ const SellData = ({ data, setData, Funds, handleChange, validated, handleSubmit,
                                 required
                                 placeholder={t("Shares")}
                             />
-                            
+
                             <Form.Control.Feedback type="invalid">
                                 {
                                     data.FundSelected === -1 ?
@@ -117,10 +117,15 @@ const SellData = ({ data, setData, Funds, handleChange, validated, handleSubmit,
                             </Form.Control.Feedback>
                         </InputGroup>
                     </Form.Group>
-                    <Button
-                        disabled={fetching ||
-                            (data.FundSelected === -1 ? true : data.shares > Funds[data.FundSelected].shares || data.shares <= 0)}
-                        variant="danger" type="submit" className="submitBtn">{t("Submit")}</Button>
+
+                    <Container className='px-sm-0'>
+                        <div className='d-flex justify-content-end'>
+                            <Button
+                                disabled={fetching ||
+                                    (data.FundSelected === -1 ? true : data.shares > Funds[data.FundSelected].shares || data.shares <= 0)}
+                                variant="danger" type="submit" className="submitBtn">{t("Submit")}</Button>
+                        </div>
+                    </Container>
                 </Form>
             </Accordion.Body>
         </Accordion.Item>

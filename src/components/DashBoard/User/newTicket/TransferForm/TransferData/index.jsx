@@ -70,7 +70,7 @@ const TransferData = ({ data, handleChange, TargetAccount, toggleAccordion, Bala
                 </InputGroup>
                 <InputGroup className="mb-3">
                     <Form.Control
-                    className='d-none'
+                        className='d-none'
                         ref={inputRef}
                         onWheel={event => event.currentTarget.blur()}
                         disabled={false}
@@ -101,8 +101,12 @@ const TransferData = ({ data, handleChange, TargetAccount, toggleAccordion, Bala
                         }
                     </Form.Control.Feedback>
                 </InputGroup>
-                <Button disabled={false}
-                    variant="danger" type="submit" className="submitBtn">{t("Submit")}</Button>
+                <Container className='px-sm-0'>
+                    <div className='d-flex justify-content-end'>
+                        <Button disabled={false}
+                            variant="danger" type="submit" className="submitBtn">{t("Submit")}</Button>
+                    </div>
+                </Container>
             </Accordion.Body>
         </Accordion.Item>
     )

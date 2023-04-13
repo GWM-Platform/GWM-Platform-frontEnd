@@ -139,9 +139,13 @@ const BuyData = ({ data, Funds, handleChange, validated, handleSubmit, toggleAcc
                             }
                         </Form.Control.Feedback>
                     </InputGroup>
-                    <Button disabled={fetching ||
-                        (data.FundSelected === -1 ? true : data.amount > Math.min(Funds[data.FundSelected].freeShares * Funds[data.FundSelected].sharePrice, Balance) && data.amount > 0)}
-                        variant="danger" type="submit" className="submitBtn">{t("Submit")}</Button>
+                    <Container className='px-sm-0'>
+                        <div className='d-flex justify-content-end'>
+                            <Button disabled={fetching ||
+                                (data.FundSelected === -1 ? true : data.amount > Math.min(Funds[data.FundSelected].freeShares * Funds[data.FundSelected].sharePrice, Balance) && data.amount > 0)}
+                                variant="danger" type="submit" className="submitBtn">{t("Submit")}</Button>
+                        </div>
+                    </Container>
                 </Form>
             </Accordion.Body>
         </Accordion.Item>
