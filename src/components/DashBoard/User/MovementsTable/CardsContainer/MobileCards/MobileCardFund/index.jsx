@@ -58,7 +58,7 @@ const MobileCard = ({ Fund, Hide, setHide }) => {
                         <Col xs="12" className="px-0">
                             <span className="left">
                                 {t("Balance (shares)")}:&nbsp;
-                                <FormattedNumber style={{ fontWeight: "bolder" }} value={Fund.shares ? Fund.shares : 0} prefix="$" fixedDecimals={2} />
+                                <FormattedNumber style={{ fontWeight: "bolder" }} value={Fund.shares ? Fund.shares : 0} prefix="U$D " fixedDecimals={2} />
                             </span>
                             <div className="d-flex justify-content-between px-0" sm="auto">
                                 <Col className="pe-2">
@@ -66,9 +66,9 @@ const MobileCard = ({ Fund, Hide, setHide }) => {
                                         <span>{t("Balance ($)")}</span>
                                         <span style={{ fontWeight: "bolder" }}>
                                             :&nbsp;
-                                            <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={balanceInCash} prefix="$" fixedDecimals={2} />
-                                            <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={balanceInCash} prefix="$" fixedDecimals={2} />
-                                            <FormattedNumber className={`info placeholder`} value={balanceInCash} prefix="$" fixedDecimals={2} />
+                                            <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={balanceInCash} prefix="U$D " fixedDecimals={2} />
+                                            <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={balanceInCash} prefix="U$D " fixedDecimals={2} />
+                                            <FormattedNumber className={`info placeholder`} value={balanceInCash} prefix="U$D " fixedDecimals={2} />
                                         </span>
 
                                     </div>
@@ -92,7 +92,7 @@ const MobileCard = ({ Fund, Hide, setHide }) => {
                             </div>
                             <span className="left">
                                 {t("Pending transactions (shares)")}:&nbsp;
-                                <FormattedNumber   style={{ fontWeight: "bolder" }} value={pendingshares ? pendingshares : 0} prefix="$" fixedDecimals={2} />
+                                <FormattedNumber   style={{ fontWeight: "bolder" }} value={pendingshares ? pendingshares : 0} prefix="U$D " fixedDecimals={2} />
                             </span>
                         </Col>
                         <TableLastMovements Fund={Fund} />

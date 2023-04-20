@@ -30,11 +30,11 @@ const TransactionRow = ({ transaction }) => {
         <FormattedNumber value={Math.abs(transaction.shares)} fixedDecimals={2} />&nbsp;
         {t(Math.abs(transaction.shares) === 1 ? "share" : "shares")}</td>
       <td className="tableDescription d-none d-sm-table-cell ">
-        <FormattedNumber prefix="$" value={transaction.sharePrice} fixedDecimals={2} />
+        <FormattedNumber prefix="U$D " value={transaction.sharePrice} fixedDecimals={2} />
       </td>
       <td className={`tableAmount ${Math.sign(transaction.shares) === 1 ? 'text-green' : 'text-red'}`}>
         {Math.sign(transaction.shares) === 1 ? '+' : '-'}
-        <FormattedNumber prefix="$" value={amount.toString()} fixedDecimals={2} />
+        <FormattedNumber prefix="U$D " value={amount.toString()} fixedDecimals={2} />
       </td>
     </tr>
   )

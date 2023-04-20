@@ -913,7 +913,12 @@
   "DEPOSIT_DENIED":"Deposito rechazado",
 
   "Client pending": "Pendiente de cliente",
-  "Admin sign pending":"Pendiente de firma de admin",
-  "Pendiente de doble firma Admin":"Pendiente de firma de Admin",
-  "sign": "firmar"
+  "Admin sign pending": "Pendiente de firma de admin",
+  "Pendiente de doble firma Admin": "Pendiente de firma de Admin",
+  "sign": "firmar",
+  "Settings": "Configuración",
+  "Movement receipt": "Comprobante de movimiento",
+  "Fixed deposit receipt": "Comprobante de plazo fijo",
+  "Transfer receipt": "Comprobante de transferencia",
+  "Holdings":"Tenencias"
 }

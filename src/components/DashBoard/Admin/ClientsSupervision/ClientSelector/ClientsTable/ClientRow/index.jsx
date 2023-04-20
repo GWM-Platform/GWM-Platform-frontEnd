@@ -43,7 +43,7 @@ const ClientRow = ({ Client, show }) => {
                     balanceTotal.fetching ?
                         <Spinner animation="border" size="sm" />
                         :
-                        <FormattedNumber value={balanceTotal.value} prefix="$" fixedDecimals={2} />
+                        <FormattedNumber value={balanceTotal.value} prefix="U$D " fixedDecimals={2} />
                 }
             </td>
             <td className="toDetails text-nowrap">

@@ -30,7 +30,7 @@ const MobileCard = ({ account }) => {
                             <Col xs="12" className="px-0">
                                 <Card.Text>
                                     <span>{t("Balance")}:&nbsp;
-                                        <FormattedNumber value={account.balance} prefix="$" fixedDecimals={2} />
+                                        <FormattedNumber value={account.balance} prefix="U$D " fixedDecimals={2} />
                                     </span>
                                 </Card.Text>
                             </Col>

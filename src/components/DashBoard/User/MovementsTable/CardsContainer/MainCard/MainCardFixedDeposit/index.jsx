@@ -56,7 +56,7 @@ const MainCardFixedDeposit = ({ FixedDepositsStats, Hide, setHide }) => {
                         {t("Performance")}:&nbsp;
                         <FormattedNumber value={FixedDepositsStats?.performancePercentage ? FixedDepositsStats?.performancePercentage : 0} suffix="%" fixedDecimals={2} />
                         &nbsp;(
-                        <FormattedNumber value={FixedDepositsStats?.performanceCash ? FixedDepositsStats?.performanceCash : 0} prefix="$" fixedDecimals={2} />
+                        <FormattedNumber value={FixedDepositsStats?.performanceCash ? FixedDepositsStats?.performanceCash : 0} prefix="U$D " fixedDecimals={2} />
                         )
                     </Col>
                 </div>

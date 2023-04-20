@@ -28,7 +28,7 @@ const DurationData = ({ data, Balance, fetching, handleChange, calculateProfit, 
             </Accordion.Header>
             <Accordion.Body>
                 <div className="formSection">
-                    <InputGroup className="mb-3">
+                    <InputGroup className="mb-3" hasValidation>
                         <Form.Control
                             onBlur={() => calculateProfit()}
                             onWheel={event => event.currentTarget.blur()}

@@ -30,7 +30,7 @@ const ActionConfirmationModal = ({ setShowModal, show, action, data, Balance, fe
                         </li>
                         <li className="listedInfo">
                             {t("Account balance")}:&nbsp;
-                            <FormattedNumber className="emphasis" value={Balance} prefix="U$D" fixedDecimals={2} />
+                            <FormattedNumber className="emphasis" value={Balance} prefix="U$D " fixedDecimals={2} />
                         </li>
                         <li className="listedInfo">
                             {t("Product")}:&nbsp;
@@ -38,7 +38,7 @@ const ActionConfirmationModal = ({ setShowModal, show, action, data, Balance, fe
                         </li>
                         <li className="listedInfo">
                             {t("Cash amount")}:&nbsp;
-                            <FormattedNumber className="emphasis" value={data.amount} prefix="$" fixedDecimals={2} />
+                            <FormattedNumber className="emphasis" value={data.amount} prefix="U$D " fixedDecimals={2} />
                         </li>
                         <li className="listedInfo">
                             {t("Anual rate")}:&nbsp;
@@ -50,7 +50,7 @@ const ActionConfirmationModal = ({ setShowModal, show, action, data, Balance, fe
                                     profit.fetching ?
                                         <Spinner className="ms-2" animation="border" size="sm" />
                                         :
-                                        <FormattedNumber className="emphasis" value={profit.value} prefix="U$D" fixedDecimals={2} />
+                                        <FormattedNumber className="emphasis" value={profit.value} prefix="U$D " fixedDecimals={2} />
                                 }
                             </span>
                         </li>

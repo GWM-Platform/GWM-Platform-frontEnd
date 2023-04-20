@@ -55,10 +55,10 @@ const AccountGeneralData = ({ Account, Client }) => {
                                 balanceTotal.fetching ?
                                     <Spinner animation="border" size="sm" />
                                     :
-                                    <FormattedNumber className="emphasis" value={balanceTotal.value} prefix="$" fixedDecimals={2} />
+                                    <FormattedNumber className="emphasis" value={balanceTotal.value} prefix="U$D " fixedDecimals={2} />
                             }
                             </h1>
-                            <h1 className="Info text-end">{t("Cash balance")}: <FormattedNumber className="emphasis" value={Account.balance} prefix="$" fixedDecimals={2} /></h1>
+                            <h1 className="Info text-end">{t("Cash balance")}: <FormattedNumber className="emphasis" value={Account.balance} prefix="U$D " fixedDecimals={2} /></h1>
                         </Col>
                     </Row>
                 </Container>

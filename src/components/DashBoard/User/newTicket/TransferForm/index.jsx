@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../operationsForm.css'
+import '../operationsForm.scss'
 
 import { Container, Row, Col, Accordion, Form } from 'react-bootstrap'
 import TargetAccountSelector from './TargetAccountSelector'

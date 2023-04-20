@@ -43,7 +43,7 @@ const Movement = ({ content }) => {
       <div className='d-flex justify-content-between'>
         <span >{Math.sign(content.shares) === 1 ? t('Purchase of') : t('Sale of')}&nbsp;
           <FormattedNumber style={{ fontWeight: "bolder" }} value={Math.abs(content.shares)} prefix="" fixedDecimals={2} />&nbsp;   
-          {t(Math.abs(content.shares) === 1 ? "share" : "shares")}, <FormattedNumber style={{ fontWeight: "bolder" }} value={content.sharePrice} prefix="$" fixedDecimals={2} />
+          {t(Math.abs(content.shares) === 1 ? "share" : "shares")}, <FormattedNumber style={{ fontWeight: "bolder" }} value={content.sharePrice} prefix="U$D " fixedDecimals={2} />
           {t(" each")}</span>
         <span className="text-nowrap" >{momentDate.format('L')}</span>
 
@@ -67,7 +67,7 @@ const Movement = ({ content }) => {
 
         <span className={`${content.stateId === 3 ? 'text-red' : 'text-green'}`}>{t(getMoveStateById(content.stateId).name)}</span>
         <span className={`${Math.sign(content.shares) === 1 ? 'text-green' : 'text-red'}`}>{Math.sign(content.shares) === 1 ? '+' : '-'}
-          <FormattedNumber style={{ fontWeight: "bolder" }} value={(Math.abs(content.shares) * content.sharePrice)} prefix="$" fixedDecimals={2} />
+          <FormattedNumber style={{ fontWeight: "bolder" }} value={(Math.abs(content.shares) * content.sharePrice)} prefix="U$D " fixedDecimals={2} />
         </span>
       </div >
     </div >

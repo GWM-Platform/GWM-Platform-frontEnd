@@ -205,7 +205,7 @@ const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, coul
                 <div className='d-flex justify-content-between' style={{ borderBottom: "1px solid 1px solid rgb(240,240,240)" }}>
                     <span >
                         {t("Amount")}:&nbsp;
-                        <FormattedNumber value={Movement.amount} prefix="$" fixedDecimals={2} />
+                        <FormattedNumber value={Movement.amount} prefix="U$D " fixedDecimals={2} />
                     </span>
                 </div >
 

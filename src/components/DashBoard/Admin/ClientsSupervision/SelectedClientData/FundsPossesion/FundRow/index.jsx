@@ -13,11 +13,11 @@ const FundRow = ({ Fund }) => {
                 <FormattedNumber prefix='' fixedDecimals={2} value={Decimal(Fund.shares).toString()} />
             </td>
             <td >
-                <FormattedNumber prefix='$' fixedDecimals={2} value={Decimal(Fund.fund.sharePrice).toString()} />
+                <FormattedNumber prefix="U$D " fixedDecimals={2} value={Decimal(Fund.fund.sharePrice).toString()} />
             </td>
 
             <td>
-                <FormattedNumber prefix='$' fixedDecimals={2} value={Decimal(Fund.fund.sharePrice).times(Fund.shares)} />
+                <FormattedNumber prefix="U$D " fixedDecimals={2} value={Decimal(Fund.fund.sharePrice).times(Fund.shares)} />
             </td>
         </tr>
     )

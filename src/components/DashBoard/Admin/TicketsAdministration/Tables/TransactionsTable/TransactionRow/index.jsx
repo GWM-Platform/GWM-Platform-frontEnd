@@ -179,14 +179,14 @@ const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData })
                     <span >
                         <span className="d-inline d-md-none">{t("Price")}</span>
                         <span className="d-none d-md-inline">{t("Share Price")}</span>:&nbsp;
-                        <FormattedNumber value={Transaction.sharePrice} prefix="$" fixedDecimals={2} />
+                        <FormattedNumber value={Transaction.sharePrice} prefix="U$D " fixedDecimals={2} />
                     </span>
                 </div >
 
                 <div className='d-flex justify-content-between' style={{ borderBottom: "1px solid 1px solid rgb(240,240,240)" }}>
                     <span >
                         {t("Amount")}:&nbsp;
-                        <FormattedNumber preffix="$" value={amount} fixedDecimals={2} />
+                        <FormattedNumber prefix="U$D " value={amount} fixedDecimals={2} />
 
                     </span>
                 </div >

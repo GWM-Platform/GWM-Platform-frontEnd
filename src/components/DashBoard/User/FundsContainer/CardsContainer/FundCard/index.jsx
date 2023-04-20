@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
-import './index.css'
+import './index.scss'
 import { useHistory } from 'react-router-dom';
 import Decimal from 'decimal.js'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
@@ -69,7 +69,7 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
                                     {t(Fund.fund.name)}
                                 </h1>
                                 <Card.Text className="subTitle lighter my-0">{t("Share price")}:&nbsp;
-                                    <FormattedNumber className="bolder" value={Fund.fund.sharePrice} prefix="$" fixedDecimals={2} /><br />
+                                    <FormattedNumber className="bolder" value={Fund.fund.sharePrice} prefix="U$D " fixedDecimals={2} /><br />
                                 </Card.Text>
                             </Card.Title>
                             <Container fluid className="px-0">
@@ -77,9 +77,9 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
                                     <Container fluid className="px-0">
                                         <Row className="mx-0 w-100 gx-0 d-flex justify-content-between">
                                             <div className="pe-2 containerHideInfo">
-                                                <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={Fund.shares ? HoldingInCash() : 0} prefix="$" fixedDecimals={2} />
-                                                <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={Fund.shares ? HoldingInCash() : 0} prefix="$" fixedDecimals={2} />
-                                                <FormattedNumber className={`info placeholder`} value={Fund.shares ? HoldingInCash() : 0} prefix="$" fixedDecimals={2} />
+                                                <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={Fund.shares ? HoldingInCash() : 0} prefix="U$D " fixedDecimals={2} />
+                                                <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={Fund.shares ? HoldingInCash() : 0} prefix="U$D " fixedDecimals={2} />
+                                                <FormattedNumber className={`info placeholder`} value={Fund.shares ? HoldingInCash() : 0} prefix="U$D " fixedDecimals={2} />
                                             </div>
                                             <div className="ps-0 hideInfoButton d-flex align-items-center">
                                                 <FontAwesomeIcon

@@ -244,7 +244,7 @@ const FixedDeposit = ({ content }) => {
       <div className='w-100 d-flex' style={{ borderBottom: "1px solid lightgray" }} />
 
       <div className='d-flex justify-content-between'>
-        <span >{t("Investment initial amount")}:&nbsp;<FormattedNumber value={content.initialAmount} prefix="$" fixedDecimals={2} /></span>
+        <span >{t("Investment initial amount")}:&nbsp;<FormattedNumber value={content.initialAmount} prefix="U$D " fixedDecimals={2} /></span>
       </div >
       {
         !!(validState(["Ongoing"])) &&
@@ -253,7 +253,7 @@ const FixedDeposit = ({ content }) => {
             {ActualProfit.fetching ?
               <Spinner animation="border" size="sm" />
               :
-              <FormattedNumber value={ActualProfit.value} prefix="$" fixedDecimals={2} />}
+              <FormattedNumber value={ActualProfit.value} prefix="U$D " fixedDecimals={2} />}
           </span>
         </div >
       }
@@ -264,7 +264,7 @@ const FixedDeposit = ({ content }) => {
             {ProfitAtTheEnd.fetching ?
               <Spinner animation="border" size="sm" />
               :
-              <FormattedNumber value={ProfitAtTheEnd.value} prefix="$" fixedDecimals={2} />}
+              <FormattedNumber value={ProfitAtTheEnd.value} prefix="U$D " fixedDecimals={2} />}
           </span>
         </div >
       }
@@ -274,7 +274,7 @@ const FixedDeposit = ({ content }) => {
             {RefundedProfit.fetching ?
               <Spinner animation="border" size="sm" />
               :
-              <FormattedNumber value={RefundedProfit.value} prefix="$" fixedDecimals={2} />}
+              <FormattedNumber value={RefundedProfit.value} prefix="U$D " fixedDecimals={2} />}
           </span>
         </div >
       }

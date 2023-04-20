@@ -24,6 +24,7 @@
 }
 .tableAmount {
     text-align: end;
+    white-space:nowrap;
 }
 .tableConcept {
     text-align: start;
