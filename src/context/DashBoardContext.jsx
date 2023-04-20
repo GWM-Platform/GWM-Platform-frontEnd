@@ -1,6 +1,8 @@
+import { fetchNotifications, reset as notificationsReset } from 'Slices/DashboardUtilities/notificationsSlice';
 import axios from 'axios';
 import React, { useReducer, useRef } from 'react'
 import { createContext, useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { userEmail } from 'utils/userEmail';
 
@@ -25,6 +27,7 @@ const reducerDashboardToast = (state, action) => {
 export const DashBoardContext = createContext();
 
 export const DashBoardProvider = ({ children }) => {
+    const dispatch = useDispatch()
     const history = useHistory();
     let location = useLocation()
     const isMountedRef = useRef(null);
@@ -523,6 +526,11 @@ export const DashBoardProvider = ({ children }) => {
 
     // get permissions on selected client changes
     useEffect(() => {
+        let intervalId = null;
+        const fetchData = () => {
+            dispatch(fetchNotifications({ client: ClientSelected?.id }))
+        }
+
         const getPermissions = () => {
             setClientPermissions((prevState) => ({
                 ...prevState,
@@ -556,8 +564,20 @@ export const DashBoardProvider = ({ children }) => {
         } else {
             setClientPermissions((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
         }
+
+        fetchData() // Ejecutamos por primera vez
+        // Configuramos la ejecución automática cada 5 minutos
+        intervalId = setInterval(() => {
+            if (location.pathname !== "/DashBoard/notificationsCenter") {
+                fetchData()
+            }
+        }, 5 * 60 * 1000) // 5 minutos en milisegundos
+
+        dispatch(fetchNotifications({ client: ClientSelected?.id }))
         return () => {
             setClientPermissions((prevState) => ({ ...prevState, fetching: true, fetched: false, content: [] }))
+            clearInterval(intervalId) // Cancelamos la ejecución automática al desmontar el componente
+            dispatch(notificationsReset())
         }
         //  eslint-disable-next-line
     }, [ClientSelected])

@@ -4,29 +4,32 @@ import { useTranslation } from 'react-i18next';
 import './index.scss'
 import Notification from './Notification';
 import { useHistory, useLocation } from 'react-router-dom';
-import notifications from 'components/DashBoard/GeneralUse/NotificationsCenter/notifications';
 import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { selectAllNotifications } from 'Slices/DashboardUtilities/notificationsSlice';
 
 const { faBell, faBellSlash, faCog } = require("@fortawesome/free-solid-svg-icons")
 const { FontAwesomeIcon } = require("@fortawesome/react-fontawesome")
 const NotificationsCenter = ({ active }) => {
+
+    const notifications = useSelector(selectAllNotifications)
+    const notificationsStatus = useSelector(state => state.notifications.status)
+
     const { t } = useTranslation()
     const history = useHistory()
 
     const [show, setShow] = useState(false)
 
 
-    const hasNotifications = () => notifications.length > 0
-    const hasUnreadNotifications = () => hasNotifications() && notifications.filter(notification => !notification.read).length > 0
+    const hasNotifications = () => notifications?.total > 0
+    const hasUnreadNotifications = () => hasNotifications() && notifications?.notifications?.filter(notification => !notification.read).length > 0
 
     let location = useLocation()
 
-    useEffect(
-        () => {
-            setShow(false)
-        },
+    useEffect(() => {
+        setShow(false)
         //eslint-disable-next-line
-        [location])
+    }, [location])
 
     const popover = (
         <Popover id="notifications-center">
@@ -38,26 +41,28 @@ const NotificationsCenter = ({ active }) => {
                     {
                         hasNotifications() &&
                         <Badge className='ms-1 mt-auto'>
-                            {notifications.length}
+                            {notifications.total}
                         </Badge>
                     }
-
-                    <button
-                        className='noStyle ms-auto' type="button" title={t("Notifications configuration")}
-                        onClick={() => {
-                            history.push('/Dashboard/Configuration?section=Password+and+authentication');
-                            setShow(false);
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faCog} />
-                    </button>
-                    <CloseButton style={{ fontSize: ".85em" }} onClick={() => setShow(false)} type="button" title={t("Close")} />
+                    {
+                        false &&
+                        <button
+                            className='noStyle ms-auto' type="button" title={t("Notifications configuration")}
+                            onClick={() => {
+                                history.push('/Dashboard/Configuration?section=Password+and+authentication');
+                                setShow(false);
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faCog} />
+                        </button>
+                    }
+                    <CloseButton className='ms-auto' style={{ fontSize: ".85em" }} onClick={() => setShow(false)} type="button" title={t("Close")} />
                 </div>
                 {
                     hasNotifications() ?
                         <div className='notifications-container'>
                             {
-                                notifications.map(
+                                notifications?.notifications?.map(
                                     notification =>
                                         <Notification notification={notification} key={`notification-${notification.id}`} />
                                 )
@@ -76,12 +81,7 @@ const NotificationsCenter = ({ active }) => {
                         </div>
                 }
                 <div className='actions'>
-                    {
-                        (hasUnreadNotifications()) &&
-                        <button type="button">
-                            {t("Mark all as read")}
-                        </button>
-                    }
+
                     <button type="button"
                         onClick={() => {
                             history.push('notificationsCenter'); setShow(false);
@@ -106,6 +106,7 @@ const NotificationsCenter = ({ active }) => {
             }}
         >
             <button
+                disabled={notificationsStatus !== "succeeded"}
                 id="popover-notifications-toggler" title={t("Notifications center")} type="button"
                 className={`nav-link noStyle ${show || active ? "active" : ""} ${hasUnreadNotifications() ? "unread-notifications" : ""}`}
                 onClick={() => setShow(prevState => !prevState)}

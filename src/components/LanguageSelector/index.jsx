@@ -19,7 +19,7 @@ const LanguageSelector = () => {
 
     const changeLanguage = (language) => {
         i18n.changeLanguage(language);
-     
+        document.documentElement.setAttribute('lang', language)
         localStorage.setItem("language", language);
     }
 

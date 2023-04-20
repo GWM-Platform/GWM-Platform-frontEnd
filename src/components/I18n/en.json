@@ -770,5 +770,14 @@
     "from_date":"From",
     "to_date":"To",
     "Pendiente de cliente": "Client pending",
-    "Pendiente de doble firma Admin":"Admin sign pending"
+    "Pendiente de doble firma Admin":"Admin sign pending",
+
+    "TICKET_APPROVED":"Your ticket was approved",
+    "TICKET_DENIED":"Your ticket was denied",
+    "TICKET_LIQUIDATED":"Your withdraw was liquidated",
+    "CLIENT_APPROVAL_PENDING":"There is a ticket is waiting for another user's signature",
+    "ADMIN_APPROVAL_PENDING":"Your ticket is waiting for the approval of an administrator",
+    "DEPOSIT_PERFORMED":"Your deposit has been accredited",
+    "TRANSFER_PENDING":"There is a transfer waiting to be accepted",
+    "ALIAS_UPDATED" :"The alias of your account has been updated"
 }

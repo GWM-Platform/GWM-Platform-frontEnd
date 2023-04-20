@@ -5,7 +5,6 @@ import { withTranslation } from 'react-i18next';
 import { useTranslation } from "react-i18next";
 import 'moment/locale/es'
 import * as Sentry from "@sentry/react";
-import { BrowserTracing } from "@sentry/tracing";
 
 import Landing from 'components/Landing';
 import Containerlogin from 'components/Containerlogin';
@@ -33,26 +32,12 @@ function App() {
   useEffect(() => {
     const prefferedLanguage = localStorage.getItem("language")
     i18n.changeLanguage(prefferedLanguage ? prefferedLanguage : "es");
-
+    document.documentElement.setAttribute('lang', prefferedLanguage ? prefferedLanguage : "es")
     // eslint-disable-next-line
   }, [])
 
   axios.defaults.baseURL = process.env.REACT_APP_APIURL;
   axios.defaults.headers.post['Content-Type'] = '*/*';
-
-  useEffect(() => {
-    Sentry.init({
-      dsn: process.env.REACT_APP_SENTRYDSN,
-      tracesSampleRate: 1.0,
-      // This sets the sample rate to be 10%. You may want this to be 100% while
-      // in development and sample at a lower rate in production
-      replaysSessionSampleRate: 0.1,
-      // If the entire session is not sampled, use the below sample rate to sample
-      // sessions when an error occurs.
-      replaysOnErrorSampleRate: 1.0,
-      integrations: [new BrowserTracing(), new Sentry.Replay()],
-    })
-  }, [])
 
   return (
     <div className="App" style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/backGround/background.jpg)` }}>

@@ -1,0 +1,58 @@
+.detailModal .header,
+.detailModal .body,
+.detailModal .footer {
+	background-color: white !important;
+}
+.detailModal .body {
+	border-radius: 30px;
+}
+
+.detailModal .title {
+	color: black !important;
+	text-align: center;
+	font-weight: 300;
+
+	font-size: 40px;
+}
+.detailModal .descriptionIconContainer {
+	font-size: 60px;
+	width: 1.5em;
+	height: 1.5em;
+	border: 3px solid;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.detailModal .descriptionIconContainer.red {
+	border-color: red;
+}
+.detailModal .descriptionIconContainer.green {
+	border-color: green;
+}
+
+.detailModal .icon {
+	text-align: center;
+	font-size: 60px;
+}
+.detailModal .icon.red {
+	color: red !important;
+}
+.detailModal .icon.green {
+	color: green !important;
+}
+.detailModal .listedInfo {
+	color: black !important;
+	font-weight: 300;
+	text-align: start;
+	font-size: 16px;
+}
+.detailModal .emphasis {
+	font-weight: 500;
+}
+.detailModal .heading {
+	color: black !important;
+	text-align: center;
+	font-weight: 300;
+	font-size: 15px;
+}

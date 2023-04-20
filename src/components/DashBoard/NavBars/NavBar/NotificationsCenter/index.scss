@@ -19,8 +19,24 @@ $unread-notification: #9881ea;
     }
 }
 
+#notifications-center, .notification-options{
+    transition: all 0.5;
+}
+
+
+body:has(.notification-detail.show) {
+    #notifications-center,
+    .notification-options{
+        pointer-events: none;
+        opacity: 0;
+    }
+}
+
 #notifications-center {
     width: 30vw;
+    @media (max-width: 576px) {
+        width: 700vw;
+    }
 
     .popover-body {
         padding: 0;
@@ -120,7 +136,7 @@ $unread-notification: #9881ea;
             border-top: 1px lightgray solid;
             display: flex;
             padding: 0 1rem;
-
+            min-height: 2.5em;
             button {
                 background-color: transparent;
                 border: transparent;

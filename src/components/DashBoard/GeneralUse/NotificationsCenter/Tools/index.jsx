@@ -1,15 +1,21 @@
 
 import { faSlidersH } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { fetchNotifications } from "Slices/DashboardUtilities/notificationsSlice";
+import { DashBoardContext } from "context/DashBoardContext";
 import moment from "moment";
 import React from "react";
 import { useState } from "react";
 import { useContext } from "react";
 import { Accordion, AccordionContext, Button, Col, Form, Row, useAccordionButton } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 
 const Tools = () => {
+
     const { t } = useTranslation();
+    const { ClientSelected } = useContext(DashBoardContext);
+    const dispatch = useDispatch()
 
     const [Pagination, setPagination] = useState({
         skip: 0,//Offset (in quantity of logs)
@@ -18,9 +24,9 @@ const Tools = () => {
 
     const defaultMinDate = moment().subtract(1, "month").isSameOrAfter(moment("2023-02-01")) ? moment().subtract(1, "month").format(moment.HTML5_FMT.DATE) : "2023-02-01"
     const defaultMaxDate = moment().format(moment.HTML5_FMT.DATE)
-    
+
     const [validated, setValidated] = useState(false)
-    
+
     const FilterOptionsDefaultState = {
         client: "",
         type: "",
@@ -60,18 +66,18 @@ const Tools = () => {
 
         );
     }
-    
+
     const handleChage = (e) => {
         setFilterOptions(prevState => ({ ...prevState, [e.target.id]: e.target.value }))
     }
-    
+
     const handleSubmit = (event) => {
         const form = event.currentTarget;
         event.preventDefault();
         event.stopPropagation();
         if (form.checkValidity()) {
             setPagination(prevState => ({ ...prevState, skip: 0 }))
-            console.log("refetch notifications")
+            dispatch(fetchNotifications({ client: ClientSelected?.id, startDate: FilterOptions.from, endDate: FilterOptions.to }))
         } else {
             setValidated(true)
         }
@@ -119,7 +125,10 @@ const Tools = () => {
                         </Col>
                         <div className="w-100 m-0"></div>
                         <Col xs="auto" className="ms-auto">
-                            <Button type="button" onClick={() => setFilterOptions({ ...FilterOptionsDefaultState })}>
+                            <Button type="button" onClick={() => {
+                                dispatch(fetchNotifications({ client: ClientSelected?.id }))
+                                setFilterOptions({ ...FilterOptionsDefaultState })
+                            }}>
                                 Cancelar
                             </Button>
                         </Col>

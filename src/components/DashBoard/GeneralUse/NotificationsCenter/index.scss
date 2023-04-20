@@ -19,7 +19,7 @@ $unread-notification: #9881ea;
             margin: 0;
         }
     }
-    
+
     .no-notifications {
         height: 30vh;
         display: flex;
@@ -38,7 +38,7 @@ $unread-notification: #9881ea;
     }
 
     .notifications-container {
-        overflow: auto;
+        overflow: visible;
 
         .notification {
             display: flex;
@@ -96,8 +96,13 @@ $unread-notification: #9881ea;
 
     @media (max-width: 576px) {
         .NotificationsCenterRow {
-            overflow-x: hidden;
-            overflow-y: overlay;
+            .header {
+                padding: 0.25em 0;
+                margin: 0.25em 0;        
+                .title {
+                    font-size: 20px;
+                }
+            }
         }
     }
 }

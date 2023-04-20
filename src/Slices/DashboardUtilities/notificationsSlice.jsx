@@ -3,7 +3,10 @@ import axios from 'axios'
 import moment from 'moment'
 
 const initialState = {
-    notifications: [],
+    notifications: {
+        notifications: [],
+        total: 0
+    },
     status: 'idle',
     error: null
 }
@@ -12,7 +15,14 @@ const notificationsSlice = createSlice({
     name: 'notifications',
     initialState,
     reducers: {
-        reset: (state, action) => ({ ...initialState })
+        reset: (state, action) => ({ ...initialState }),
+        markAsRead: (state, action) => {
+            const { id } = action.payload
+            const notification = state.notifications.notifications.find(notification => notification.id === id)
+            if (notification) {
+                notification.read = true
+            }
+        }
     },
     extraReducers(builder) {
         builder
@@ -29,7 +39,7 @@ const notificationsSlice = createSlice({
             })
     }
 })
-export const { reset } = notificationsSlice.actions
+export const { reset, markAsRead } = notificationsSlice.actions
 
 export default notificationsSlice.reducer
 
@@ -42,13 +52,14 @@ export const fetchNotifications = createAsyncThunk(
                 delete params[key];
             }
         }
+
         const response = await axios.get('/notifications', {
             params: {
-                skip: params.skip,
-                take: params.take,
+                skip: params.skip || 0,
+                take: params.take || 50,
                 client: params.client,
-                startDate: params?.startDate ? params.startDate.subtract(1, 'days').format(moment.HTML5_FMT.DATE) : null,
-                endDate: params?.endDate ? params.endDate.format(moment.HTML5_FMT.DATE) : null,
+                startDate: params?.startDate ? moment(params.startDate).format(moment.HTML5_FMT.DATE) : null,
+                endDate: params?.endDate ? moment(params.endDate).add(1,"day").format(moment.HTML5_FMT.DATE) : null,
             }
         })
         return response.data

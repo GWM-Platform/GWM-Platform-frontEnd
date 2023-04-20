@@ -11,6 +11,7 @@ import LanguageSelector from 'components/LanguageSelector';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog } from '@fortawesome/free-solid-svg-icons';
 import { useHistory, useRouteMatch } from 'react-router';
+import NotificationsCenter from '../NavBar/NotificationsCenter';
 
 
 const NavBarInfo = ({ NavInfoToggled }) => {
@@ -58,14 +59,12 @@ const NavBarInfo = ({ NavInfoToggled }) => {
 
                     <Col xs="auto" className="d-block d-md-none ms-auto pe-0">
                         <LanguageSelector />
-
-                       
                     </Col>
                     <Col xs="auto" className="d-block d-md-none ps-0">
-
                         <div className="d-flex justify-content-center" onClick={() => toSettings()}>
                             <FontAwesomeIcon className="icon" icon={faCog} />
                         </div>
+                        <NotificationsCenter />
                     </Col>
                 </Row>
             </Container>
