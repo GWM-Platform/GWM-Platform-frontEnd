@@ -888,5 +888,6 @@
   "Settings": "Configuración",
   "Movement receipt": "Comprobante de movimiento",
   "Fixed deposit receipt": "Comprobante de plazo fijo",
-  "Transfer receipt": "Comprobante de transferencia"
+  "Transfer receipt": "Comprobante de transferencia",
+  "Holdings":"Tenencias"
 }

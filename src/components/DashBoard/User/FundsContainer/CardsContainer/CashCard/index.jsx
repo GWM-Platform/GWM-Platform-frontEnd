@@ -3,28 +3,35 @@ import { Container, Row, Col, Card, Button, Spinner, OverlayTrigger, Popover } f
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEyeSlash, faEye, faThumbtack, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
+import { faEyeSlash, faEye, faThumbtack, faInfoCircle, faSlash } from '@fortawesome/free-solid-svg-icons'
 import { faCheckCircle, faClipboard } from '@fortawesome/free-regular-svg-icons'
 import { Link, useHistory } from 'react-router-dom';
 import './index.scss'
 import { DashBoardContext } from 'context/DashBoardContext';
 import Decimal from 'decimal.js'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
+import { useState } from 'react';
 
-const CashCard = ({ Hide, setHide, Fund, Pinned, setPinned, cardsAmount, inScreenFunds, pendingCash, setShow, show }) => {
-    Decimal.set({ precision: 100 })
-    const { DashboardToastDispatch, isMobile, hasPermission } = useContext(DashBoardContext)
+const CashCard = ({ Hide, setHide, Fund, cardsAmount, inScreenFunds, pendingCash, setShow, show }) => {
 
     const { t } = useTranslation();
-
+    const { DashboardToastDispatch, isMobile, hasPermission } = useContext(DashBoardContext)
     let history = useHistory();
+
+    Decimal.set({ precision: 100 })
+
+    const [Pinned, setPinned] = useState(false)
+
+    const toTransfer = () => {
+        history.push(`/DashBoard/transfer`);
+    }
 
     const toWithdraw = (type) => {
         history.push(`/DashBoard/withdraw`);
     }
 
-        return (
-        <Col sm="6" md="6" lg="4" className={`fund-col  growAnimation ${Pinned && !isMobile ? "opacity-0" : ""}`}>
+    return (
+        <Col sm="6" md="6" lg="4" className={`fund-col  growAnimation ${Pinned && !isMobile ? "pinned" : ""}`}>
             <Card className="h-100 cashCard">
                 <Card.Header
                     className="header d-flex align-items-center justify-content-center"
@@ -45,15 +52,35 @@ const CashCard = ({ Hide, setHide, Fund, Pinned, setPinned, cardsAmount, inScree
                                     </Col>
                                     {
                                         !!(cardsAmount > inScreenFunds && !isMobile) &&
-                                        <button className="noStyle px-0 hideInfoButton d-flex align-items-center" onClick={() => { setPinned(true); setShow(false) }}                                            >
-                                            <FontAwesomeIcon
-                                                className="icon pin"
-                                                icon={faThumbtack}
-                                            />
-                                            <FontAwesomeIcon
-                                                className="icon placeholder"
-                                                icon={faEyeSlash}
-                                            />
+                                        <button className="noStyle px-0 hideInfoButton d-flex align-items-center" onClick={() => { setPinned(prevState => !prevState); setShow(false) }}                                            >
+                                                    <div className={Pinned ? "" : "opacity-0 d-none"}>
+                                                        <FontAwesomeIcon
+                                                            className={`icon pin ${Pinned ? "active" : ""}`}
+                                                            mask={faThumbtack}
+                                                            icon={faSlash}
+                                                            transform="down-2"
+                                                        />
+                                                        <FontAwesomeIcon
+                                                            className={`icon pin`}
+                                                            icon={faSlash}
+                                                        />
+                                                        <FontAwesomeIcon
+                                                            className="icon placeholder"
+                                                            icon={faEyeSlash}
+                                                        />
+                                                    </div>
+                                                    <div className={Pinned ? "opacity-0 d-none" : ""}>
+                                                        <FontAwesomeIcon
+                                                            className="icon pin"
+                                                            icon={faThumbtack}
+                                                        />
+                                                        <FontAwesomeIcon
+                                                            className="icon placeholder"
+                                                            icon={faEyeSlash}
+                                                        />
+                                                    </div>
+
+                                            <span className="line"></span>
                                         </button>
                                     }
                                 </Row>
@@ -115,7 +142,7 @@ const CashCard = ({ Hide, setHide, Fund, Pinned, setPinned, cardsAmount, inScree
                                             </span>
 
                                             <OverlayTrigger show={show} trigger="click" placement="auto-start" overlay={
-                                                <Popover id="popover-overview-cash" className={!!(Pinned && !isMobile) ? "d-none" : ""} >
+                                                <Popover id="popover-overview-cash" >
                                                     <Popover.Header>{t("Overview of pending transactions")}</Popover.Header>
                                                     <Popover.Body className="pt-1 pb-2">
                                                         {t("Pending share sales")}:&nbsp;
@@ -167,8 +194,17 @@ const CashCard = ({ Hide, setHide, Fund, Pinned, setPinned, cardsAmount, inScree
                 </Card.Body>
                 <Card.Footer className="footer mt-2 m-0 p-0">
                     <Row className="d-flex justify-content-center m-0">
-                        <Col xs="12" className="d-flex justify-content-center p-0 m-0">
-                            <Button disabled={!hasPermission('WITHDRAW')} onClick={() => toWithdraw()} className="button d-flex align-items-center justify-content-center">
+                        <Col xs="6" className="d-flex justify-content-center p-0 m-0">
+                            <Button
+                                disabled={!hasPermission('TRANSFER_GENERATE')}
+                                onClick={() => toTransfer()} className="me-1 button left">
+                                <span className="label">{t("to Transfer")}</span>
+                            </Button>
+                        </Col>
+                        <Col xs="6" className="d-flex justify-content-center p-0 m-0">
+                            <Button
+                                disabled={!hasPermission('WITHDRAW')}
+                                onClick={() => toWithdraw()} className="ms-1 button right">
                                 <span className="label">{t("Withdraw")}</span>
                             </Button>
                         </Col>

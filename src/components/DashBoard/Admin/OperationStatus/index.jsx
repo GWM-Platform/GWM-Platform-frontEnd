@@ -1,6 +1,6 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './operationsForm.css'
+import './operationsForm.scss'
 import './index.css'
 
 import { Container, Row, Col } from 'react-bootstrap'

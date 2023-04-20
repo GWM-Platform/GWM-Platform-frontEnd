@@ -2,7 +2,7 @@ import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCommentsDollar, faUser, faSignOutAlt, faTicketAlt, faChartLine } from '@fortawesome/free-solid-svg-icons'
+import { faUser, faSignOutAlt, faTicketAlt, faChartLine, faMoneyBillTransfer, faHandHoldingDollar, faTicket } from '@fortawesome/free-solid-svg-icons'
 import { Row, Container } from 'react-bootstrap'
 import { useRouteMatch, useHistory } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
@@ -33,6 +33,10 @@ const NavBarMobile = () => {
 
     const toTickets = () => {
         history.push(`${url}/ticketsAdministration`);
+    }
+    
+    const toTransfer = () => {
+        history.push(`${url}/transfer`);
     }
 
     const toAccountsAdmin = () => {
@@ -88,18 +92,27 @@ const NavBarMobile = () => {
                                 onClick={() => { toAccounts() }}
                                 className={`section ${itemSelectedLC === "accounts" || itemSelectedLC === "history" ? "selected" : ""}`}>
                                 <div className="d-flex justify-content-center">
-                                    <FontAwesomeIcon className="icon" icon={faUser} />
+                                    <FontAwesomeIcon className="icon" icon={faHandHoldingDollar} />
                                 </div>
-                                <h1 className="section-label  mb-0 pb-0  pb-0" >{t("Funds")}</h1>
+                                <h1 className="section-label  mb-0 pb-0  pb-0" >{t("Holdings")}</h1>
                             </div>
                             <div
                                 xs="auto"
                                 onClick={() => { toBuy(); }}
-                                className={`section ${itemSelectedLC === "buy" || itemSelectedLC === "sell" || itemSelectedLC === "deposit" || itemSelectedLC === "withdraw" || itemSelectedLC === "transfer" ? "selected" : ""}`}>
+                                className={`section ${itemSelectedLC === "buy" || itemSelectedLC === "sell" || itemSelectedLC === "deposit" || itemSelectedLC === "withdraw"  ? "selected" : ""}`}>
                                 <div className="d-flex justify-content-center">
-                                    <FontAwesomeIcon className="icon" icon={faCommentsDollar} />
+                                    <FontAwesomeIcon className="icon" icon={faTicket} />
                                 </div>
                                 <h1 className="section-label  mb-0 pb-0  " >{t("Operations")}</h1>
+                            </div>
+                            <div
+                                xs="auto"
+                                onClick={() => { toTransfer(); }}
+                                className={`section ${itemSelectedLC === "transfer" ? "selected" : ""}`}>
+                                <div className="d-flex justify-content-center">
+                                    <FontAwesomeIcon className="icon" icon={faMoneyBillTransfer} />
+                                </div>
+                                <h1 className="section-label  mb-0 pb-0  " >{t("to Transfer")}</h1>
                             </div>
                             <div className="section" onClick={() => toLogin()} xs="auto">
                                 <div className="d-flex justify-content-center">

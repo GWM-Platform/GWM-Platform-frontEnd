@@ -7,7 +7,6 @@ import { DashBoardContext } from 'context/DashBoardContext';
 import Indicators from './Indicators'
 import './index.css'
 import FixedDepositCard from './FixedDepositCard';
-import CashCardPinned from './CashCardPinned';
 import Decimal from 'decimal.js';
 import axios from 'axios';
 
@@ -19,7 +18,6 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
     const [showRightChevron, setShowRightChevron] = useState(true)
     const [showLeftChevron, setShowLeftChevron] = useState(false)
     const [Hide, setHide] = useState(false)
-    const [Pinned, setPinned] = useState(false)
 
     //Only shows approved, pending fixedDeposits or check pending
     const shownFixedDeposits = () => {
@@ -260,25 +258,11 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
                         Accounts.map(
                             (account, key) =>
                                 <CashCard cardsAmount={Funds.length + PendingWithoutpossession.length + shownFixedDeposits().length + 1}
-                                    inScreenFunds={CardWidth} Pinned={Pinned} setPinned={setPinned}
+                                    inScreenFunds={CardWidth}
                                     PendingTransactions={PendingTransactions} key={`account-${account.id || key}`} Hide={Hide} setHide={setHide} Fund={account}
                                     pendingCash={pendingCash}
                                     setShow={setShow}
                                     show={show}
-                                />
-                        )
-                        :
-                        null
-                }
-                {
-                    hasPermission('VIEW_ACCOUNT') ?
-                        Accounts.map(
-                            (account, key) =>
-                                <CashCardPinned cardsAmount={Funds.length + PendingWithoutpossession.length + shownFixedDeposits().length + 1}
-                                    inScreenFunds={CardWidth} Pinned={Pinned} setPinned={setPinned}
-                                    PendingTransactions={PendingTransactions} key={`account-pinned-${account.id || key}`} Hide={Hide} setHide={setHide} Fund={account}
-                                    setShow={setShow}
-                                    pendingCash={pendingCash}
                                 />
                         )
                         :
