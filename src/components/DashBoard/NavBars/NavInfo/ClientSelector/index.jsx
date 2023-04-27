@@ -8,7 +8,7 @@ import { Dropdown, Col } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleUser } from '@fortawesome/free-regular-svg-icons';
+import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 
 const ClientSelector = () => {
     const { t } = useTranslation();
