@@ -6,7 +6,9 @@ import { useTranslation } from "react-i18next";
 import { Dropdown, Col } from 'react-bootstrap'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './index.css'
+import './index.scss'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleUser } from '@fortawesome/free-regular-svg-icons';
 
 const ClientSelector = () => {
     const { t } = useTranslation();
@@ -16,21 +18,21 @@ const ClientSelector = () => {
         <Dropdown className="d-block d-md-none clientSelector">
             <Dropdown.Toggle
                 variant="secondary btn-sm"
-                className="bg-none"
+                className="bg-none ps-3"
                 id="dropdown-clients">
                 {
                     IndexClientSelected === -1 ?
                         t("Admin Panel")
                         :
                         <>
-                            <span className='d-none d-inline-block'>{t("Hi")},&nbsp;</span>
-                            {ClientSelected.alias}
+                            <span className='d-none d-sm-inline-block'>{t("Hi")},&nbsp;</span>
+                            <span>{ClientSelected.alias}</span>
                             <span className='d-none d-inline-block'>!</span>
                         </>
 
                 }
+                <FontAwesomeIcon className='smaller-client-selector' icon={faCircleUser} />
             </Dropdown.Toggle>
-
             <Dropdown.Menu>
                 {
                     admin ?

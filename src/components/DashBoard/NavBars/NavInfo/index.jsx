@@ -56,15 +56,16 @@ const NavBarInfo = ({ NavInfoToggled }) => {
                         </div>
                         <ClientSelector />
                     </Col>
-
-                    <Col xs="auto" className="d-block d-md-none ms-auto pe-0">
-                        <LanguageSelector />
+                    <Col xs="auto" className="d-block d-sm-none ms-auto pe-0">
+                        <NotificationsCenter />
                     </Col>
-                    <Col xs="auto" className="d-block d-md-none ps-0">
+                    <Col xs="auto" className="d-block d-md-none ms-auto pe-0">
                         <div className="d-flex justify-content-center" onClick={() => toSettings()}>
                             <FontAwesomeIcon className="icon" icon={faCog} />
                         </div>
-                        <NotificationsCenter />
+                    </Col>
+                    <Col xs="auto" className="d-block d-md-none">
+                        <LanguageSelector />
                     </Col>
                 </Row>
             </Container>

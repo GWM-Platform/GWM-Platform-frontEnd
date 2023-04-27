@@ -84,7 +84,7 @@ const NotificationsCenter = ({ active }) => {
 
                     <button type="button"
                         onClick={() => {
-                            history.push('notificationsCenter'); setShow(false);
+                            history.push('/Dashboard/notificationsCenter'); setShow(false);
                         }}>
                         {t("View all")}
                     </button>

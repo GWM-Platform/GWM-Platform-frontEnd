@@ -45,7 +45,7 @@ const LanguageSelector = () => {
     return (
         <Dropdown className="languageSelector">
             <Dropdown.Toggle
-                variant="secondary btn-sm"
+                variant="secondary btn-sm p-0 px-md-2 py-md-1"
                 className="bg-none"
                 id="dropdown-language">
                 {

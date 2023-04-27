@@ -1,50 +1,65 @@
 $color_1: black;
 
 .navBarInfo {
-	background: rgb(241,241,241);
+	background: rgb(241, 241, 241);
 	transition: all 0.5s;
 	max-height: 100px;
 
-    @media (max-width: 300px) {
-        min-height: 50px;
-    }
+	@media (max-width: 300px) {
+		min-height: 50px;
+	}
+
 	filter: drop-shadow(0px 0px 3px gray);
+
 	.greeting {
 		margin: 0;
 		color: $color_1;
 		font-weight: 400;
 		font-size: 25px;
 	}
+
 	.image {
 		opacity: 0.2;
 	}
-    .navbar-brand{
-        img{
-            height: 50px;
-        }
-        @media (max-width: 576px) {
-            margin-right: 0;
-            img{
-                height: 40px;
-            }
-        }
-    }
-    .imageContainer{
 
-        @media (max-width: 300px) {
-            display: none!important;
-        }
-    }
+	.navbar-brand {
+		img {
+			height: 50px;
+		}
+
+		@media (max-width: 576px) {
+			margin-right: 0;
+
+			img {
+				height: 40px;
+			}
+		}
+
+		@media (max-width: 400px) {
+			margin-right: 0;
+
+			img {
+				height: 25px;
+			}
+		}
+	}
+
+	.icon {
+		color: var(--bs-body-color)
+	}
 }
+
 .navBarInfo.toggled {
 	max-height: 0;
 	overflow-y: hidden;
 }
+
 @media (max-width: 576px) {
 	.navBarInfo {
 		.greeting {
 			font-size: 19px;
 		}
+
 		z-index: 1500;
 	}
 }

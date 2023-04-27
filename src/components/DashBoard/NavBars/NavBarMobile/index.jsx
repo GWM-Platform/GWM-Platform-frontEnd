@@ -1,6 +1,6 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './index.css'
+import './index.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser, faSignOutAlt, faTicketAlt, faChartLine, faMoneyBillTransfer, faHandHoldingDollar, faTicket } from '@fortawesome/free-solid-svg-icons'
 import { Row, Container } from 'react-bootstrap'

@@ -1,0 +1,30 @@
+$color_1: black;
+$background-color_1: transparent;
+$border-color_1: transparent;
+
+.clientSelector {
+	.bg-none {
+		background-color: $background-color_1 !important;
+		border-color: $border-color_1 !important;
+	}
+	.btn {
+		color: $color_1 !important;
+		font-size: 16px;
+	}
+}
+.smaller-client-selector {
+	display: none;
+}
+@media (max-width: 300px) {
+	#dropdown-clients {
+		padding-left: 0 !important;
+		>* {
+			&:not(.smaller-client-selector) {
+				display: none;
+			}
+		}
+	}
+	.smaller-client-selector {
+		display: inline-block;
+	}
+}

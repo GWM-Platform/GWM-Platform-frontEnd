@@ -1,0 +1,38 @@
+$color_1: black;
+$color_2: var(--blue-main);
+$color_3: rgba(0,0,0,0.4);
+$background-color_1: var(--footer-background);
+
+.navBarMobile {
+	background-color: $background-color_1;
+	color: $color_1;
+	position: sticky;
+	bottom: 0;
+	z-index: 10;
+	.section.selected {
+		color: $color_2;
+	}
+	.section {
+		color: $color_3;
+		flex-shrink: 1;
+		.section-label {
+			text-align: center;
+			font-size: 9px;
+			cursor: pointer;
+			border: 1px solid transparent;
+			transition: all 0.5s;
+			padding: .2em;
+			margin-top: .1em;
+		}
+	}
+	.rowNavBarMobile {
+		overflow-x: auto;
+	}
+}
+@media (max-width: 400px) {
+	.navBarMobile {
+		.rowNavBarMobile {
+			justify-content: start !important;
+		}
+	}
+}
