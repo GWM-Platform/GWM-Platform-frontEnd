@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Row, Col, Card, Button } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, Spinner } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -10,9 +10,14 @@ import Decimal from 'decimal.js'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import { useContext } from 'react';
 import { DashBoardContext } from 'context/DashBoardContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { fetchPerformance, selectPerformanceById } from 'Slices/DashboardUtilities/performancesSlice';
 
 const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
-    const { hasSellPermission, hasBuyPermission, hasPermission } = useContext(DashBoardContext)
+    const { hasSellPermission, hasBuyPermission, hasPermission, ClientSelected } = useContext(DashBoardContext)
+
+    const dispatch = useDispatch()
 
     Decimal.set({ precision: 100 })
 
@@ -37,13 +42,14 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
         history.push(`${operation}?fund=${Fund.fund.id}`);
     }
 
-    const checkImage = async (url) => {
-        const res = await fetch(url);
-        const buff = await res.blob();
-        return buff.type.startsWith('image/')
-    }
+    const performance = useSelector(state => selectPerformanceById(state, Fund.fund.id))
 
-    const hasCustomImage = () => Fund.fund.imageUrl ? checkImage(Fund.fund.imageUrl) : false
+    useEffect(() => {
+        dispatch(fetchPerformance({
+            fund: Fund.fund.id,
+            clientId: ClientSelected?.id
+        }))
+    }, [Fund, ClientSelected, dispatch])
 
     return (
         <Col className="fund-col growAnimation" sm="6" md="6" lg="4" >
@@ -51,13 +57,12 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
                 <Card.Header className="header d-flex align-items-center justify-content-center">
                     <div className="currencyContainer d-flex align-items-center justify-content-center">
                         {
-
                             <img className="currency px-0 mx-0" alt=""
                                 onError={({ currentTarget }) => {
                                     currentTarget.onerror = null;
                                     currentTarget.src = process.env.PUBLIC_URL + '/images/FundsLogos/default.svg';
                                 }}
-                                src={hasCustomImage() ? Fund.fund.imageUrl : process.env.PUBLIC_URL + '/images/FundsLogos/default.svg'} />
+                                src={Fund?.fund?.imageUrl || '/images/FundsLogos/default.svg'} />
                         }
                     </div>
                 </Card.Header>
@@ -100,6 +105,10 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
                                         </Row>
                                     </Container>
                                 </h1>
+                                {
+                                    performance &&
+                                    <PerformanceComponent text={"Performance"} performance={performance?.performance} status={performance?.status} />
+                                }
                                 <Card.Text className="subTitle lighter mt-0 mb-0">
                                     {t("Balance (shares)")}:&nbsp;
                                     <FormattedNumber className="bolder" value={Fund.shares ? Fund.shares : 0} prefix="" fixedDecimals={2} />
@@ -136,3 +145,25 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
     )
 }
 export default FundCard
+
+const PerformanceComponent = ({ text, performance = 0, status = "loading" }) => {
+    const { t } = useTranslation();
+
+    return (
+        <span className='text-start w-100 d-block' style={{ fontWeight: "300" }}>
+            {t(text)}:&nbsp;
+            {
+                status === "loading" ?
+                    <Spinner size="sm" className="me-2" animation="border" variant="primary" />
+                    :
+                    <strong>
+                        <FormattedNumber className={{
+                            '1': 'text-green',
+                            '-1': 'text-red'
+                        }[Math.sign(performance)]}
+                            value={performance} prefix="U$D " fixedDecimals={2} />
+                    </strong>
+            }
+        </span>
+    )
+}

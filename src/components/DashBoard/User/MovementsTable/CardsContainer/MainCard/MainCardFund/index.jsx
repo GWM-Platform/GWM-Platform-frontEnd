@@ -1,6 +1,6 @@
-import React, { useCallback, useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Col, Nav } from 'react-bootstrap';
+import { Container, Col, Nav, Spinner } from 'react-bootstrap';
 
 import { DashBoardContext } from 'context/DashBoardContext';
 import { useTranslation } from "react-i18next";
@@ -12,65 +12,28 @@ import MovementsTab from './MovementsTab';
 import FundDetail from './FundDetail';
 import './index.css'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
-import axios from 'axios';
+import { useEffect } from 'react';
+import { fetchPerformance, selectPerformanceById } from 'Slices/DashboardUtilities/performancesSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
     const [SelectedTab, setSelectedTab] = useState("0")
-    //eslint-disable-next-line
-    const [Performance, setPerformance] = useState({ fetching: true, fetched: false, valid: false, content: {} })
-    const { PendingTransactions, ClientSelected, toLogin } = useContext(DashBoardContext)
+    const { PendingTransactions, ClientSelected } = useContext(DashBoardContext)
     const { t } = useTranslation();
 
     const balanceInCash = Fund.shares ? (Fund.shares * Fund.fund.sharePrice) : 0
     const pendingshares = PendingTransactions.value.filter((transaction) => transaction.fundId === Fund.fund.id && Math.sign(transaction.shares) === +1).map((transaction) => transaction.shares).reduce((a, b) => a + b, 0).toFixed(2)
 
-    const getPerformance = useCallback((signal) => {
-        setPerformance((prevState) => ({ ...prevState, fetching: true, fetched: false }))
-        axios.get(`/funds/${Fund.fund.id}/performance`, {
-            params: { client: ClientSelected.id },
-            signal: signal,
-        }).then(function (response) {
-            setPerformance((prevState) => (
-                {
-                    ...prevState,
-                    fetching: false,
-                    fetched: true,
-                    valid: true,
-                    content: response.data,
-                }))
-        }).catch((err) => {
-            if (err.message !== "canceled") {
-                if (err.response.status === "401") toLogin()
-                setPerformance((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
-            }
-        });
-    }, [toLogin, setPerformance, Fund, ClientSelected.id]);
-
+    const dispatch = useDispatch()
+    const performance = useSelector(state => selectPerformanceById(state, Fund.fund.id))
 
     useEffect(() => {
-        const controller = new AbortController();
-        const signal = controller.signal;
-        getPerformance(signal)
+        dispatch(fetchPerformance({
+            fund: Fund.fund.id,
+            clientId: ClientSelected?.id
+        }))
+    }, [Fund, ClientSelected, dispatch])
 
-        return () => {
-            controller.abort();
-        };
-    }, [getPerformance])
-
-    const PerformanceComponent = ({ text, performance }) => {
-        return (
-            <span className='text-end w-100 d-block' style={{ fontWeight: "300" }}>
-                {t(text)}:&nbsp;
-                <strong>
-                    <FormattedNumber className={{
-                        '1': 'text-green',
-                        '-1': 'text-red'
-                    }[Math.sign(performance)]}
-                        value={performance} suffix="%" fixedDecimals={2} />
-                </strong>
-            </span>
-        )
-    }
     return (
         <div className="movementsMainCardFund growAnimation mt-2">
             <div className="bg-white info ms-0 mb-2 px-0">
@@ -92,13 +55,8 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
                     </Col>
 
                     {
-                        !!(Performance?.fetched) &&
-                        (
-                            Performance?.content?.result &&
-                            <Col sm="auto" >
-                                <PerformanceComponent text={"Actual performance"} performance={Performance.content.result} />
-                            </Col>
-                        )
+                        performance &&
+                        <PerformanceComponent text={"Performance"} performance={performance?.performance} status={performance?.status} />
                     }
                 </div>
 
@@ -132,16 +90,6 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
                             />
                         </Col>
                     </Col>
-
-                    {
-                        !!(Performance.fetched) &&
-                        (
-                            Performance?.content?.performance &&
-                            <Col sm="auto" >
-                                <PerformanceComponent text={"Period performance"} performance={Performance.content.performance} />
-                            </Col>
-                        )
-                    }
                 </div>
                 <div className="d-flex justify-content-between align-items-start pe-2">
                     <Col className="d-flex justify-content-between pe-5" sm="auto">
@@ -168,16 +116,6 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
                             />
                         </Col>
                     </Col>
-
-                    {
-                        !!(Performance.fetched) &&
-                        (
-                            Performance?.content?.anualPerf &&
-                            <Col sm="auto" >
-                                <PerformanceComponent text={"Anual performance"} performance={Performance.content.anualPerf} />
-                            </Col>
-                        )
-                    }
                 </div>
                 <div className="border-bottom-main pb-2">
                     <h2 className="px-2 left">
@@ -214,3 +152,24 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
 }
 export default MainCardFund
 
+const PerformanceComponent = ({ text, performance = 0, status = "loading" }) => {
+    const { t } = useTranslation();
+
+    return (
+        <span className='text-end w-100 d-block' style={{ fontWeight: "300" }}>
+            {t(text)}:&nbsp;
+            {
+                status === "loading" ?
+                    <Spinner size="sm" className="me-2" animation="border" variant="primary" />
+                    :
+                    <strong>
+                        <FormattedNumber className={{
+                            '1': 'text-green',
+                            '-1': 'text-red'
+                        }[Math.sign(performance)]}
+                            value={performance} prefix="U$D " fixedDecimals={2} />
+                    </strong>
+            }
+        </span>
+    )
+}

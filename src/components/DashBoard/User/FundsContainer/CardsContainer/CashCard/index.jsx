@@ -185,7 +185,7 @@ const CashCard = ({ Hide, setHide, Fund, cardsAmount, inScreenFunds, pendingCash
                                         </div>
                                         :
                                         <div>
-                                            {t("Pending transactions")}:<span className={`bolder text-green`}>&nbsp;<Spinner className="ms-2" animation="border" size="sm" /></span>
+                                            {t("Pending transactions")}:<span className={`bolder`}>&nbsp;<Spinner className="ms-2" animation="border" size="sm" /></span>
                                         </div>
                                 }
                             </span>
