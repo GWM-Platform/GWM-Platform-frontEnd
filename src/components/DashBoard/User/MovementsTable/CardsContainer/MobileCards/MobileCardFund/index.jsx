@@ -30,8 +30,6 @@ const MobileCard = ({ Fund, Hide, setHide }) => {
 
     const hasCustomImage = () => Fund.fund.imageUrl ? checkImage(Fund.fund.imageUrl) : false
 
-    //TODO - Add Performance
-
     const dispatch = useDispatch()
     const performance = useSelector(state => selectPerformanceById(state, Fund.fund.id))
 

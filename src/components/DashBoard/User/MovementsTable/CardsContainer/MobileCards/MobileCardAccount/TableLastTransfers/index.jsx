@@ -105,7 +105,7 @@ const TableLastTransfers = ({ account }) => {
     }, [account, Options])
 
     return (
-        <Col md="12" className="p-0 mt-2">
+        <Col md="12" className="p-0 mt-0">
             {fetchingTransfers && (transfers.transfers.length === 0 || transfers === null) ?
                 <h2 className='my-2 p-0'>{t("Loading transfers")}</h2> :
                 <div>

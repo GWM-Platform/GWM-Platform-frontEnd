@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Container, Row, Col, Card, Button, Spinner, OverlayTrigger, Popover } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
@@ -11,14 +11,20 @@ import { DashBoardContext } from 'context/DashBoardContext';
 import Decimal from 'decimal.js'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchPerformance, selectPerformanceById } from 'Slices/DashboardUtilities/performancesSlice';
 
 const CashCard = ({ Hide, setHide, Fund, cardsAmount, inScreenFunds, pendingCash, setShow, show }) => {
+    const { DashboardToastDispatch, isMobile, hasPermission, ClientSelected } = useContext(DashBoardContext)
 
-    const { t } = useTranslation();
-    const { DashboardToastDispatch, isMobile, hasPermission } = useContext(DashBoardContext)
-    let history = useHistory();
+    const dispatch = useDispatch()
 
     Decimal.set({ precision: 100 })
+
+    const { t } = useTranslation();
+
+    let history = useHistory();
+
 
     const [Pinned, setPinned] = useState(false)
 
@@ -29,6 +35,15 @@ const CashCard = ({ Hide, setHide, Fund, cardsAmount, inScreenFunds, pendingCash
     const toWithdraw = (type) => {
         history.push(`/DashBoard/withdraw`);
     }
+
+    const performance = useSelector(state => selectPerformanceById(state, "totalPerformance"))
+
+    useEffect(() => {
+        dispatch(fetchPerformance({
+            totalPerformance: true,
+            clientId: ClientSelected?.id
+        }))
+    }, [ClientSelected, dispatch])
 
     return (
         <Col sm="6" md="6" lg="4" className={`fund-col  growAnimation ${Pinned && !isMobile ? "pinned" : ""}`}>
@@ -42,7 +57,7 @@ const CashCard = ({ Hide, setHide, Fund, cardsAmount, inScreenFunds, pendingCash
                 </Card.Header>
                 <Card.Body className="body">
                     <Row >
-                        <Card.Title className="mb-2 mt-0" >
+                        <Card.Title className="my-0" >
                             <Container fluid className="px-0">
                                 <Row className="mx-0 w-100 my-0">
                                     <Col className="ps-0">
@@ -53,39 +68,39 @@ const CashCard = ({ Hide, setHide, Fund, cardsAmount, inScreenFunds, pendingCash
                                     {
                                         !!(cardsAmount > inScreenFunds && !isMobile) &&
                                         <button className="noStyle px-0 hideInfoButton d-flex align-items-center" onClick={() => { setPinned(prevState => !prevState); setShow(false) }}                                            >
-                                                    <div className={Pinned ? "" : "opacity-0 d-none"}>
-                                                        <FontAwesomeIcon
-                                                            className={`icon pin ${Pinned ? "active" : ""}`}
-                                                            mask={faThumbtack}
-                                                            icon={faSlash}
-                                                            transform="down-2"
-                                                        />
-                                                        <FontAwesomeIcon
-                                                            className={`icon pin`}
-                                                            icon={faSlash}
-                                                        />
-                                                        <FontAwesomeIcon
-                                                            className="icon placeholder"
-                                                            icon={faEyeSlash}
-                                                        />
-                                                    </div>
-                                                    <div className={Pinned ? "opacity-0 d-none" : ""}>
-                                                        <FontAwesomeIcon
-                                                            className="icon pin"
-                                                            icon={faThumbtack}
-                                                        />
-                                                        <FontAwesomeIcon
-                                                            className="icon placeholder"
-                                                            icon={faEyeSlash}
-                                                        />
-                                                    </div>
+                                            <div className={Pinned ? "" : "opacity-0 d-none"}>
+                                                <FontAwesomeIcon
+                                                    className={`icon pin ${Pinned ? "active" : ""}`}
+                                                    mask={faThumbtack}
+                                                    icon={faSlash}
+                                                    transform="down-2"
+                                                />
+                                                <FontAwesomeIcon
+                                                    className={`icon pin`}
+                                                    icon={faSlash}
+                                                />
+                                                <FontAwesomeIcon
+                                                    className="icon placeholder"
+                                                    icon={faEyeSlash}
+                                                />
+                                            </div>
+                                            <div className={Pinned ? "opacity-0 d-none" : ""}>
+                                                <FontAwesomeIcon
+                                                    className="icon pin"
+                                                    icon={faThumbtack}
+                                                />
+                                                <FontAwesomeIcon
+                                                    className="icon placeholder"
+                                                    icon={faEyeSlash}
+                                                />
+                                            </div>
 
                                             <span className="line"></span>
                                         </button>
                                     }
                                 </Row>
                             </Container>
-                            <Card.Text className="subTitle lighter mt-0 mb-2">
+                            <Card.Text className="subTitle lighter mt-0 mb-1">
                                 <span className='d-flex justify-content-between'>
                                     <span>
                                         {t("Alias")}: <span className="bolder">{Fund.alias}</span>
@@ -128,8 +143,14 @@ const CashCard = ({ Hide, setHide, Fund, cardsAmount, inScreenFunds, pendingCash
                                 </Row>
                             </Container>
                         </h1>
+                        {
+                            performance &&
+                            <PerformanceComponent text={"Total performance"} performance={performance?.performance} status={performance?.status} />
+                        }
                         <div className="subTitle lighter mt-0 mb-0">
                             <span className='invisible'>{t("Balance (shares)")}:<span className="bolder"></span></span> <br />
+                        </div>
+                        <div className="subTitle lighter mt-0 mb-0">
                             <span className='d-flex justify-content-between'>
                                 {
                                     pendingCash().calculated ?
@@ -215,3 +236,25 @@ const CashCard = ({ Hide, setHide, Fund, cardsAmount, inScreenFunds, pendingCash
     )
 }
 export default CashCard
+
+const PerformanceComponent = ({ text, performance = 0, status = "loading" }) => {
+    const { t } = useTranslation();
+
+    return (
+        <span className='text-start w-100 d-block' style={{ fontWeight: "300" }}>
+            {t(text)}:&nbsp;
+            {
+                status === "loading" ?
+                    <Spinner size="sm" className="me-2" animation="border" variant="primary" />
+                    :
+                    <strong>
+                        <FormattedNumber className={{
+                            '1': 'text-green',
+                            '-1': 'text-red'
+                        }[Math.sign(performance)]}
+                            value={performance} prefix="U$D " fixedDecimals={2} />
+                    </strong>
+            }
+        </span>
+    )
+}

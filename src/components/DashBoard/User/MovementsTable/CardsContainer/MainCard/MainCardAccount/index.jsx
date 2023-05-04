@@ -1,6 +1,6 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Col, Nav } from 'react-bootstrap';
+import { Container, Col, Nav, Spinner } from 'react-bootstrap';
 
 import { useTranslation } from "react-i18next";
 import { useState } from 'react';
@@ -13,8 +13,16 @@ import TransfersTab from './TransfersTab';
 import FundDetail from './FundDetail';
 import './index.css'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
+import { useContext } from 'react';
+import { DashBoardContext } from 'context/DashBoardContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchPerformance, selectPerformanceById } from 'Slices/DashboardUtilities/performancesSlice';
+import { useEffect } from 'react';
 
 const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
+    const { ClientSelected } = useContext(DashBoardContext)
+
+    const dispatch = useDispatch()
 
     function useQuery() {
         const { search } = useLocation();
@@ -42,13 +50,30 @@ const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, reset
 
     const balanceInCash = Fund.balance
 
+
+    const performance = useSelector(state => selectPerformanceById(state, "totalPerformance"))
+
+    useEffect(() => {
+        dispatch(fetchPerformance({
+            totalPerformance: true,
+            clientId: ClientSelected?.id
+        }))
+    }, [ClientSelected, dispatch])
+
+
     return (
         <div className="movementsMainCardAccount growAnimation mt-2">
             <div className="bg-white info ms-0 mb-2 px-0">
-                <div className="d-flex justify-content-between align-items-end pe-2">
-                    <h1 className="m-0 title px-2">
-                        {t("Cash")}
-                    </h1>
+                <div className="d-flex justify-content-between align-items-start pe-2">
+                    <Col className="d-flex justify-content-between pe-5" sm="auto">
+                        <h1 className="m-0 title px-2">
+                            {t("Cash")}
+                        </h1>
+                    </Col>
+                    {
+                        performance &&
+                        <PerformanceComponent text={"Total performance"} performance={performance?.performance} status={performance?.status} />
+                    }
                 </div>
                 <div className="d-flex justify-content-between align-items-end pe-2 pb-2 border-bottom-main">
                     <Col className="d-flex justify-content-between pe-5" sm="auto">
@@ -83,7 +108,7 @@ const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, reset
             <Container fluid className="px-0">
                 <Nav className="history-tabs" variant="tabs" activeKey={SelectedTab}
                     onSelect={(e) => {
-                        const params = new URLSearchParams({ SelectedTab:e })
+                        const params = new URLSearchParams({ SelectedTab: e })
                         history.replace({ pathname: location.pathname, search: params.toString() })
                         setSelectedTab(e)
                     }}
@@ -117,3 +142,24 @@ const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, reset
 }
 export default MainCardAccount
 
+const PerformanceComponent = ({ text, performance = 0, status = "loading" }) => {
+    const { t } = useTranslation();
+
+    return (
+        <span className='text-end w-100 d-block' style={{ fontWeight: "300" }}>
+            {t(text)}:&nbsp;
+            {
+                status === "loading" ?
+                    <Spinner size="sm" className="me-2" animation="border" variant="primary" />
+                    :
+                    <strong>
+                        <FormattedNumber className={{
+                            '1': 'text-green',
+                            '-1': 'text-red'
+                        }[Math.sign(performance)]}
+                            value={performance} prefix="U$D " fixedDecimals={2} />
+                    </strong>
+            }
+        </span>
+    )
+}

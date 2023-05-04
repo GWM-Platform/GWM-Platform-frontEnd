@@ -3,7 +3,7 @@ import { Container, Row, Col, Card, Button, Spinner } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
+import { faEyeSlash, faEye, faThumbtack } from '@fortawesome/free-solid-svg-icons'
 import './index.scss'
 import { useHistory } from 'react-router-dom';
 import Decimal from 'decimal.js'
@@ -14,8 +14,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchPerformance, selectPerformanceById } from 'Slices/DashboardUtilities/performancesSlice';
 
-const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
-    const { hasSellPermission, hasBuyPermission, hasPermission, ClientSelected } = useContext(DashBoardContext)
+const FundCard = ({ Hide, setHide, Fund, PendingTransactions, cardsAmount, inScreenFunds }) => {
+    const { hasSellPermission, hasBuyPermission, hasPermission, ClientSelected, isMobile } = useContext(DashBoardContext)
 
     const dispatch = useDispatch()
 
@@ -69,11 +69,34 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions }) => {
                 <Card.Body className="body">
                     <Container fluid className="px-0">
                         <Row className="mx-0 w-100 gx-0">
-                            <Card.Title className="mb-2 mt-0" >
-                                <h1 className="title my-0">
-                                    {t(Fund.fund.name)}
-                                </h1>
-                                <Card.Text className="subTitle lighter my-0">{t("Share price")}:&nbsp;
+                            <Card.Title className="my-0" >
+                                <Container fluid className="px-0">
+                                    <Row className="mx-0 w-100 my-0">
+                                        <Col className="ps-0">
+                                            <h1 className="title my-0">
+                                                {t(Fund.fund.name)}
+                                            </h1>
+                                        </Col>
+                                        {
+                                            !!(cardsAmount > inScreenFunds && !isMobile) &&
+                                            <button className="noStyle px-0 hideInfoButton d-flex align-items-center invisible" style={{ width: "0!important", overflow: "hidden" }}>
+                                                <div>
+                                                    <FontAwesomeIcon
+                                                        className="icon pin"
+                                                        icon={faThumbtack}
+                                                    />
+                                                    <FontAwesomeIcon
+                                                        className="icon placeholder"
+                                                        icon={faEyeSlash}
+                                                    />
+                                                </div>
+
+                                                <span className="line"></span>
+                                            </button>
+                                        }
+                                    </Row>
+                                </Container>
+                                <Card.Text className="subTitle lighter  mt-0 mb-1">{t("Share price")}:&nbsp;
                                     <FormattedNumber className="bolder" value={Fund.fund.sharePrice} prefix="U$D " fixedDecimals={2} /><br />
                                 </Card.Text>
                             </Card.Title>

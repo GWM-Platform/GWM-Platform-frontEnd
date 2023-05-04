@@ -12,13 +12,13 @@ const performancesSlice = createSlice({
     extraReducers(builder) {
         builder
             .addCase(fetchPerformance.pending, (state, action) => {
-                state[action?.meta?.arg?.fund] = { status: 'loading', performance: 0 }
+                state[action?.meta?.arg?.fund || "totalPerformance"] = { status: 'loading', performance: 0 }
             })
             .addCase(fetchPerformance.fulfilled, (state, action) => {
-                state[action?.payload?.fund] = { status: 'succeeded', performance: action.payload.response }
+                state[action?.payload?.fund || "totalPerformance"] = { status: 'succeeded', performance: action.payload.response }
             })
             .addCase(fetchPerformance.rejected, (state, action) => {
-                state[action?.payload?.fund] = { status: 'error', performance: action.payload, error: action.error.message }
+                state[action?.payload?.fund || "totalPerformance"] = { status: 'error', performance: action.payload, error: action.error.message }
             })
     }
 })
@@ -36,9 +36,9 @@ export const fetchPerformance = createAsyncThunk(
             }
         }
 
-        const response = await axios.get(`/clients/${params.clientId}/fundPerformance`, {
+        const response = await axios.get(`/clients/${params.clientId}/${params.totalPerformance ? "totalPerformance" : "fundPerformance"}`, {
             params: {
-                fund: params.fund,
+                fund: params.totalPerformance ? undefined : params.fund,
             }
         })
 
@@ -46,4 +46,6 @@ export const fetchPerformance = createAsyncThunk(
     }
 )
 
-export const selectPerformanceById = (state, fundId) => state.performances?.[fundId]
+export const selectPerformanceById = (state, fundId) => {
+    return state.performances?.[fundId]
+}

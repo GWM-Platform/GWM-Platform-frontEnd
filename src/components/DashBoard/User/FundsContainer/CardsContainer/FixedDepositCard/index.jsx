@@ -3,7 +3,7 @@ import { Container, Row, Col, Card, Spinner } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEyeSlash, faEye, faPiggyBank } from '@fortawesome/free-solid-svg-icons'
+import { faEyeSlash, faEye, faPiggyBank, faThumbtack } from '@fortawesome/free-solid-svg-icons'
 import moment from 'moment';
 import Decimal from 'decimal.js';
 import axios from 'axios';
@@ -11,10 +11,10 @@ import { DashBoardContext } from 'context/DashBoardContext';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import { getAnualRate, getDuration, isPending, wasEdited } from 'utils/fixedDeposit';
 
-const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
+const FixedDepositCard = ({ Hide, setHide, FixedDeposit, cardsAmount, inScreenFunds }) => {
     Decimal.set({ precision: 100 })
 
-    const { toLogin } = useContext(DashBoardContext);
+    const { toLogin, isMobile } = useContext(DashBoardContext);
     const { t } = useTranslation();
 
     const ellapsedDays = () => (
@@ -108,16 +108,40 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
                 <Card.Body className="body">
                     <Container fluid className="px-0">
                         <Row className="mx-0 w-100 gx-0">
-                            <Card.Title >
-                                <h1 className="title m-0">
-                                    {t("Time deposit")}&nbsp;{FixedDeposit.id}
-                                    &nbsp;{!!(isPending(FixedDeposit)) ?
-                                        <span style={{ textTransform: "none" }}>({t("Pending approval")})</span>
-                                        :
-                                        wasEdited(FixedDeposit) &&
-                                        <span style={{ textTransform: "none" }}>({t("Preferential *")})</span>}
-                                </h1>
-                                <Card.Text className="subTitle lighter mt-0 my-0">
+                            <Card.Title className="my-0" >
+                                <Container fluid className="px-0">
+                                    <Row className="mx-0 w-100 my-0">
+                                        <Col className="ps-0">
+                                            <h1 className="title m-0">
+                                                {t("Time deposit")}&nbsp;{FixedDeposit.id}
+                                                &nbsp;{!!(isPending(FixedDeposit)) ?
+                                                    <span style={{ textTransform: "none" }}>({t("Pending approval")})</span>
+                                                    :
+                                                    wasEdited(FixedDeposit) &&
+                                                    <span style={{ textTransform: "none" }}>({t("Preferential *")})</span>}
+                                            </h1>
+                                        </Col>
+                                        {
+                                            !!(cardsAmount > inScreenFunds && !isMobile) &&
+                                            <button className="noStyle px-0 hideInfoButton d-flex align-items-center invisible" style={{ width: "0!important", overflow: "hidden" }}>
+                                                <div>
+                                                    <FontAwesomeIcon
+                                                        className="icon pin"
+                                                        icon={faThumbtack}
+                                                    />
+                                                    <FontAwesomeIcon
+                                                        className="icon placeholder"
+                                                        icon={faEyeSlash}
+                                                    />
+                                                </div>
+
+                                                <span className="line"></span>
+                                            </button>
+                                        }
+                                    </Row>
+                                </Container>
+
+                                <Card.Text className="subTitle lighter mt-0 mt-0 mb-1">
                                     {t("Elapsed")}:&nbsp;
                                     <span className="bolder">
                                         <span className="growOpacity" >
@@ -131,7 +155,7 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, ownKey }) => {
                             </Card.Title>
                             <Container fluid className="px-0">
                                 <Row className="d-flex justify-content-between">
-                                    <h1 className="title-gray my-0">
+                                    <h1 className="title-gray">
                                         <Container fluid className="px-0">
                                             <Row className="mx-0 w-100 gx-0 d-flex justify-content-between">
                                                 <div className="pe-2 containerHideInfo">

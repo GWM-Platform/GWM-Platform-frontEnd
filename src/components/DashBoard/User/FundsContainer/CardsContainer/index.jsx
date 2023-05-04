@@ -11,7 +11,7 @@ import Decimal from 'decimal.js';
 import axios from 'axios';
 
 const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions, PendingWithoutpossession, FixedDeposits }) => {
-    const { width, token, ClientSelected,hasPermission } = useContext(DashBoardContext)
+    const { width, token, ClientSelected, hasPermission } = useContext(DashBoardContext)
 
     const [CardWidth, setCardWidth] = useState(false)
     const [Offset, setOffset] = useState(0)
@@ -21,7 +21,7 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
 
     //Only shows approved, pending fixedDeposits or check pending
     const shownFixedDeposits = () => {
-        return FixedDeposits?.deposits.filter(FixedDeposits => ( FixedDeposits.stateId === 5  || FixedDeposits.stateId === 2 || FixedDeposits.stateId === 1) && !FixedDeposits.closed) || []
+        return FixedDeposits?.deposits.filter(FixedDeposits => (FixedDeposits.stateId === 5 || FixedDeposits.stateId === 2 || FixedDeposits.stateId === 1) && !FixedDeposits.closed) || []
     }
 
     //For scrolling
@@ -271,7 +271,9 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
                 {
                     Funds.map((fund, k) =>
                         <FundCard Hide={Hide} setHide={setHide} PendingTransactions={PendingTransactions}
-                            setItemSelected={setItemSelected} Funds={Funds} Fund={fund} key={`fund-${fund?.id || k}`} />
+                            setItemSelected={setItemSelected} Funds={Funds} Fund={fund} key={`fund-${fund?.id || k}`} inScreenFunds={CardWidth}
+                            cardsAmount={Funds.length + PendingWithoutpossession.length + shownFixedDeposits().length + 1}
+                        />
 
 
                     )
@@ -279,12 +281,17 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
                 {
                     PendingWithoutpossession.map((fund) =>
                         <FundCard Hide={Hide} setHide={setHide} key={`fund-withoutposession-card-${fund?.id}`} PendingTransactions={PendingTransactions}
-                            setItemSelected={setItemSelected} Funds={Funds} Fund={fund} />
+                            setItemSelected={setItemSelected} Funds={Funds} Fund={fund} inScreenFunds={CardWidth}
+                            cardsAmount={Funds.length + PendingWithoutpossession.length + shownFixedDeposits().length + 1}
+                        />
                     )
                 }
                 {
                     shownFixedDeposits().map((fixedDeposit, key) =>
-                        <FixedDepositCard ownKey={key} key={`fixedDeposit-${fixedDeposit?.id || key}`} FixedDeposit={fixedDeposit} Hide={Hide} setHide={setHide} />
+                        <FixedDepositCard ownKey={key} key={`fixedDeposit-${fixedDeposit?.id || key}`} FixedDeposit={fixedDeposit} Hide={Hide} setHide={setHide}
+                            inScreenFunds={CardWidth}
+                            cardsAmount={Funds.length + PendingWithoutpossession.length + shownFixedDeposits().length + 1}
+                        />
                     )
                 }
             </Row>

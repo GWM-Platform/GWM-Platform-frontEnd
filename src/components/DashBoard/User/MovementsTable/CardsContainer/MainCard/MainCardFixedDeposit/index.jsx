@@ -53,11 +53,21 @@ const MainCardFixedDeposit = ({ FixedDepositsStats, Hide, setHide }) => {
                         </Col>
                     </Col>
                     <Col sm="auto" >
-                        {t("Performance")}:&nbsp;
-                        <FormattedNumber value={FixedDepositsStats?.performancePercentage ? FixedDepositsStats?.performancePercentage : 0} suffix="%" fixedDecimals={2} />
-                        &nbsp;(
-                        <FormattedNumber value={FixedDepositsStats?.performanceCash ? FixedDepositsStats?.performanceCash : 0} prefix="U$D " fixedDecimals={2} />
-                        )
+
+                        <span className='text-end w-100 d-block' style={{ fontWeight: "300" }}>
+                            {t("Performance")}:&nbsp;
+                            <strong className={{
+                                '1': 'text-green',
+                                '-1': 'text-red'
+                            }[Math.sign(FixedDepositsStats?.performancePercentage ? FixedDepositsStats?.performancePercentage : 0)]}>
+                                <FormattedNumber
+                                    value={FixedDepositsStats?.performancePercentage ? FixedDepositsStats?.performancePercentage : 0} suffix="%" fixedDecimals={2} />
+                                &nbsp;(
+                                <FormattedNumber
+                                    value={FixedDepositsStats?.performanceCash ? FixedDepositsStats?.performanceCash : 0} prefix="U$D " fixedDecimals={2} />
+                                )
+                            </strong>
+                        </span>
                     </Col>
                 </div>
                 <div className="d-flex justify-content-between align-items-end px-2">

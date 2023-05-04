@@ -63,8 +63,19 @@ const MobileCardFixedDeposits = ({ FixedDepositsStats, Hide, setHide }) => {
                                     />
                                 </Col>
                             </div>
-                            <span className="left">
-                                {t("Performance")}:&nbsp;{Performance}%&nbsp;(${PerformanceInCash})
+                            <span className='left'>
+                                {t("Performance")}:&nbsp;
+                                <strong className={{
+                                    '1': 'text-green',
+                                    '-1': 'text-red'
+                                }[Math.sign(Performance || 0)]}>
+                                    <FormattedNumber
+                                        value={Performance || 0} suffix="%" fixedDecimals={2} />
+                                    &nbsp;(
+                                    <FormattedNumber
+                                        value={PerformanceInCash || 0} prefix="U$D " fixedDecimals={2} />
+                                    )
+                                </strong>
                             </span>
                             <br />
                             <span className="left">
