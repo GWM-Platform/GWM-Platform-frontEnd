@@ -925,6 +925,10 @@
   "View detail": "Ver detalle",
   "Notification mark as read": "Notificación marcada como leida",
   "There was an error marking the notification as read": "Hubo un error al marcar la notificación como leida",
-  "Go to transfer":"Ir a la transferencia",
-  "Total performance":"Rendimiento total"
+  "Go to transfer": "Ir a la transferencia",
+  "Total performance": "Rendimiento total",
+  "Remove note": "Quitar nota",
+  "Add note": "Añadir nota",
+  "Transfer note": "Nota de la transferencia",
+  "You have no notifications right now": "No tiene ninguna notificación"
 }

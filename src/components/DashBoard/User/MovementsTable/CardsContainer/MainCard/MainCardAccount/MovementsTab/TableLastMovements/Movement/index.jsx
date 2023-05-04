@@ -16,12 +16,13 @@ import FixedDepositReceipt from 'Receipts/FixedDepositReceipt';
 import { getAnualRate, getDuration } from 'utils/fixedDeposit';
 import TransferReceipt from 'Receipts/TransferReceipt';
 import TransactionReceipt from 'Receipts/TransactionReceipt';
+import ActionConfirmationModal from 'components/DashBoard/User/MovementsTable/GeneralUse/TransferConfirmation'
 
 const Movement = ({ content, actions, reloadData }) => {
 
   var momentDate = moment(content.createdAt);
   const { t } = useTranslation();
-  const { getMoveStateById, AccountSelected, couldSign, hasPermission, toLogin, Accounts, hasSellPermission, hasBuyPermission } = useContext(DashBoardContext)
+  const { getMoveStateById, AccountSelected, couldSign, hasPermission, toLogin, Accounts, hasSellPermission, hasBuyPermission, ClientSelected } = useContext(DashBoardContext)
 
   const [GeneratingPDF, setGeneratingPDF] = useState(false)
   const [altGeneratingPDF, setAltGeneratingPDF] = useState(false)
@@ -292,7 +293,7 @@ const Movement = ({ content, actions, reloadData }) => {
 
   }
 
-  const incomingTransfer = (transfer) => transfer.receiverId === Accounts[0]?.id
+  const incomingTransfer = (transfer) => transfer?.receiverId === Accounts[0]?.id
 
   const renderAndDownloadTransferPDF = async (transfer) => {
     const blob = await ReactPDF.pdf(<TransferReceipt Transfer={{
@@ -319,7 +320,7 @@ const Movement = ({ content, actions, reloadData }) => {
   const getTransferPDF = () => {
     setAltGeneratingPDF(true)
 
-    axios.get(`/transfers/${content.transferId}`)
+    axios.get(`/transfers/${content.transferId}`, { params: { client: ClientSelected.id } })
       .then((response) => {
         renderAndDownloadTransferPDF(response.data)
       }
@@ -384,10 +385,8 @@ const Movement = ({ content, actions, reloadData }) => {
     <tr>
       <td className="tableId">
         {content.id}
-      </td>
-      <td className="text-center text-nowrap">
         {
-          !!(content?.userEmail) &&
+          !!(content?.userEmail || content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")) &&
           <OverlayTrigger
             show={showClick || showHover}
             placement="right"
@@ -408,6 +407,12 @@ const Movement = ({ content, actions, reloadData }) => {
                   <div>
                     {t('Operation performed by')}:<br />
                     <span className="text-nowrap">{content?.userEmail}</span>
+                  </div>
+                }
+                {!!(content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")) &&
+                  <div>
+                    {t('Transfer note')}:<br />
+                    <span className="text-nowrap">"{content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE").text}"</span>
                   </div>
                 }
               </Tooltip>
@@ -486,25 +491,67 @@ const Movement = ({ content, actions, reloadData }) => {
       </td>
       {
         !!(actions) &&
-        <td className="Actions verticalCenter" >{
-          !!(content.stateId === 5) &&
-          <div className="h-100 d-flex align-items-center justify-content-around">
+        <td className="Actions verticalCenter" >
+          {
+            !!(content.stateId === 5) &&
+            <div className="h-100 d-flex align-items-center justify-content-around">
 
-            <div className={`iconContainer green ${!couldSign(content) ? "not-allowed" : ""}`}>
-              <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => { if (couldSign(content)) { launchModalConfirmation("approve") } }} />
+              <div className={`iconContainer green ${!couldSign(content) ? "not-allowed" : ""}`}>
+                <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => { if (couldSign(content)) { launchModalConfirmation("approve") } }} />
+              </div>
+
+              <div className={`iconContainer red ${!couldSign(content) ? "not-allowed" : ""}`}>
+                <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => { if (couldSign(content)) { launchModalConfirmation("deny") } }} />
+              </div>
+
             </div>
+          }
+          {
+            !!((content.stateId === 1
+              &&
+              (
+                ((hasPermission("TRANSFER_DENY") || hasPermission("TRANSFER_APPROVE")) && content.motive === "TRANSFER_RECEIVE")
+                ||
+                (hasPermission("TRANSFER_DENY") && content.motive === "TRANSFER_SEND")
+              )
+            )) &&
+            <div className="h-100 d-flex align-items-center justify-content-around">
+              {
+                !!(content.motive === "TRANSFER_RECEIVE") &&
+                <>
+                  {
+                    hasPermission("TRANSFER_APPROVE") &&
+                    <div className="iconContainer green">
+                      <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => launchModalConfirmation("approve")} />
+                    </div>
+                  }
+                </>
+              }
 
-            <div className={`iconContainer red ${!couldSign(content) ? "not-allowed" : ""}`}>
-              <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => { if (couldSign(content)) { launchModalConfirmation("deny") } }} />
-            </div>
-
-          </div>}
+              {
+                hasPermission("TRANSFER_DENY") &&
+                <div className="iconContainer red">
+                  <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => launchModalConfirmation("deny")} />
+                </div>
+              }
+            </div>}
         </td>
 
       }
       {
         !!(content.stateId === 5 && couldSign(content)) &&
         <MovementConfirmation reloadData={reloadData} movement={content} setShowModal={setShowModal} action={Action} show={ShowModal} />
+      }
+      {
+        !!((content.stateId === 1
+          &&
+          (
+            ((hasPermission("TRANSFER_DENY") || hasPermission("TRANSFER_APPROVE")) && content.motive === "TRANSFER_RECEIVE")
+            ||
+            (hasPermission("TRANSFER_DENY") && content.motive === "TRANSFER_SEND")
+          )
+        )) &&
+        <ActionConfirmationModal isMovement reloadData={reloadData} movement={content} setShowModal={setShowModal} action={Action} show={ShowModal} />
       }
     </tr>
   )

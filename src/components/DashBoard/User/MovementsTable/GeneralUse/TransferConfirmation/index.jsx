@@ -6,10 +6,32 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExclamation, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { Modal, Button } from 'react-bootstrap'
 import { faCircle } from '@fortawesome/free-regular-svg-icons';
+import { useEffect } from 'react';
+import axios from 'axios';
+import { DashBoardContext } from 'context/DashBoardContext';
+import { useContext } from 'react';
 
-const TransferConfirmation = ({ incomingTransfer, movement, setShowModal, action, show, reloadData }) => {
+const TransferConfirmation = ({ isMovement = false, movement, setShowModal, action, show, reloadData }) => {
     const { t } = useTranslation();
+    const { ClientSelected } = useContext(DashBoardContext)
     const [ActionFetch, setActionFetch] = useState({ fetched: false, fetching: false, valid: false })
+    const [Transfer, setTransfer] = useState(isMovement ? {} : movement)
+
+    useEffect(() => {
+        if (isMovement) {
+            axios.get(`/transfers/${movement.transferId}`, { params: { client: ClientSelected.id } })
+                .then((response) => {
+                    setTransfer(response.data)
+                }
+                )
+                .catch(
+                    (e) => {
+                        console.error(e)
+                    }
+                )
+        }
+    }, [movement, isMovement])
+
 
     const handleClose = () => {
         setActionFetch({
@@ -30,7 +52,7 @@ const TransferConfirmation = ({ incomingTransfer, movement, setShowModal, action
             valid: false
         })
 
-        const url = `${process.env.REACT_APP_APIURL}/transfers/${movement.id}/${action}`;
+        const url = `${process.env.REACT_APP_APIURL}/transfers/${Transfer?.id}/${action}`;
         const token = sessionStorage.getItem("access_token")
 
         const response = await fetch(url, {
@@ -94,17 +116,24 @@ const TransferConfirmation = ({ incomingTransfer, movement, setShowModal, action
                         </h1>
                     </div>
                     <h1 className="title"> {t("Are you sure?")}</h1>
-                    <h2 className="subTitle">{t("You are about to")} {t(action)} {t("transfer #")}{movement.id}</h2>
+                    <h2 className="subTitle">{t("You are about to")} {t(action)} {t("transfer #")}{Transfer?.id}</h2>
                     <ul>
                         <li className="listedInfo">
-                            {t("Operation")}: <span className="emphasis">{t(`${incomingTransfer ? "Incoming" : "Outgoing"} transfer`)}</span>
+                            {t("Operation")}: <span className="emphasis">{t(`${(movement.motive !== "TRANSFER_RECEIVE") ? "Incoming" : "Outgoing"} transfer`)}</span>
 
                             <li className="listedInfo">
-                                {t(`Transfer from`)}: <span className="emphasis text-nowrap">{movement.senderAlias}{!incomingTransfer ? <>&nbsp;({t("You")})</> : ""}</span>
+                                {t(`Transfer from`)}: <span className="emphasis text-nowrap">{Transfer?.senderAlias}{!(movement.motive !== "TRANSFER_RECEIVE") ? <>&nbsp;({t("You")})</> : ""}</span>
                             </li>
                             <li className="listedInfo">
-                                {t(`Transfer to`)}: <span className="emphasis text-nowrap">{movement.receiverAlias}{incomingTransfer ? <>&nbsp;({t("You")})</> : ""}</span>
+                                {t(`Transfer to`)}: <span className="emphasis text-nowrap">{Transfer?.receiverAlias}{(movement.motive !== "TRANSFER_RECEIVE") ? <>&nbsp;({t("You")})</> : ""}</span>
                             </li>
+                            {
+                                !!(Transfer?.notes?.find(note => note?.noteType === "TRANSFER_MOTIVE")) &&
+                                <li className="listedInfo">
+                                    {t('Transfer note')}:
+                                    <span className="text-nowrap"> "{Transfer?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")?.text}"</span>
+                                </li>
+                            }
                         </li>
                     </ul>
                     <h3 className="heading">{t("This action cannot be undone")}</h3>
@@ -202,16 +231,23 @@ const TransferConfirmation = ({ incomingTransfer, movement, setShowModal, action
                         </h1>
                     </div>
                     <h1 className="title"> {t("Are you sure?")}</h1>
-                    <h2 className="subTitle">{t("You are about to")} {t(action)} {t("transfer #")} {movement.id}</h2>
+                    <h2 className="subTitle">{t("You are about to")} {t(action)} {t("transfer #")} {Transfer?.id}</h2>
                     <ul>
                         <li className="listedInfo">
-                            {t("Operation")}: <span className="emphasis">{t(`${incomingTransfer ? "Incoming" : "Outgoing"} transfer`)}</span>
+                            {t("Operation")}: <span className="emphasis">{t(`${(movement.motive !== "TRANSFER_RECEIVE") ? "Incoming" : "Outgoing"} transfer`)}</span>
                             <li className="listedInfo">
-                                {t(`Transfer from`)}: <span className="emphasis text-nowrap">{movement.senderAlias}{!incomingTransfer ? <>&nbsp;({t("You")})</> : ""}</span>
+                                {t(`Transfer from`)}: <span className="emphasis text-nowrap">{Transfer?.senderAlias}{!(movement.motive !== "TRANSFER_RECEIVE") ? <>&nbsp;({t("You")})</> : ""}</span>
                             </li>
                             <li className="listedInfo">
-                                {t(`Transfer to`)}: <span className="emphasis text-nowrap">{movement.receiverAlias}{incomingTransfer ? <>&nbsp;({t("You")})</> : ""}</span>
+                                {t(`Transfer to`)}: <span className="emphasis text-nowrap">{Transfer?.receiverAlias}{(movement.motive !== "TRANSFER_RECEIVE") ? <>&nbsp;({t("You")})</> : ""}</span>
                             </li>
+                            {
+                                !!(Transfer?.notes?.find(note => note?.noteType === "TRANSFER_MOTIVE")) &&
+                                <li className="listedInfo">
+                                    {t('Transfer note')}:
+                                    <span className="text-nowrap"> "{Transfer?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")?.text}"</span>
+                                </li>
+                            }
                         </li>
                     </ul>
                     <h3 className="heading">{t("This action cannot be undone")}</h3>

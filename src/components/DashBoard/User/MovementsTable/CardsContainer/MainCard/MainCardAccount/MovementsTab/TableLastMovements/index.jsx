@@ -3,19 +3,28 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Table } from 'react-bootstrap';
 import Movement from './Movement';
 import { useTranslation } from "react-i18next";
+import { useContext } from 'react';
+import { DashBoardContext } from 'context/DashBoardContext';
 
 const TableLastMovements = ({ content, movements, reloadData }) => {
 
 
     const { t } = useTranslation();
+    const { hasPermission } = useContext(DashBoardContext)
 
     const anyWithActions = () => Object.values(content).some(
-        (movement) => (movement.stateId === 5 && movement.motive !== "TRANSFER_RECEIVE")
-        /*
-        //TODO: approve transfers from movements table
-        ||
-        (movement.transferId !== null && movement.stateId === 1 && (hasPermission("TRANSFER_APPROVE") || hasPermission("TRANSFER_DENY")))
-        */
+        (movement) => (
+            (movement.stateId === 5 && movement.motive !== "TRANSFER_RECEIVE")
+            ||
+            (movement.stateId === 1
+                &&
+                (
+                    ((hasPermission("TRANSFER_DENY") || hasPermission("TRANSFER_APPROVE")) && movement.motive === "TRANSFER_RECEIVE")
+                    ||
+                    (hasPermission("TRANSFER_DENY") && movement.motive === "TRANSFER_SEND")
+                )
+            )
+        )
     )
 
     return (
@@ -23,8 +32,7 @@ const TableLastMovements = ({ content, movements, reloadData }) => {
             <Table striped bordered hover className="mb-auto m-0  mt-2" >
                 <thead >
                     <tr>
-                        <th className="tableId text-nowrap">{t("Ticket #")}</th>
-                        <th className="tableId text-nowrap">{t("Details")}</th>
+                        <th className="tableId text-nowrap">{t("Ticket")}</th>
                         <th className="tableHeader">{t("Date")}</th>
                         <th className="d-none d-sm-table-cell">{t("Status")}</th>
                         <th className="tableHeader">{t("Description")}</th>

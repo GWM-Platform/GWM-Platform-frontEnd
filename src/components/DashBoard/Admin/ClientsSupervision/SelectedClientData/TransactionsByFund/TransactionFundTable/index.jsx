@@ -99,7 +99,7 @@ const TransactionFundTable = ({ ClientId, FundId }) => {
                                         <Table className="ClientsTable mb-0" striped bordered hover>
                                             <thead className="verticalTop tableHeader solid-bg">
                                                 <tr>
-                                                    <th className="tableHeader text-nowrap">{t("Ticket #")}</th>
+                                                    <th className="tableHeader text-nowrap">{t("Ticket")}</th>
                                                     <th className="tableHeader">{t("Date")}</th>
                                                     <th className="d-none d-sm-table-cell">{t("Status")}</th>
                                                     <th className="d-none d-sm-table-cell">{t("Description")}</th>

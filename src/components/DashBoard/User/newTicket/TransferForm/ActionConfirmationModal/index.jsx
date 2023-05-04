@@ -41,6 +41,13 @@ const ActionConfirmationModal = ({ TargetAccount, setShowModal, show, action, da
                             {t("Transfer amount")}:&nbsp;
                             <FormattedNumber className="emphasis" prefix="U$D " value={data.amount.toString()} fixedDecimals={2} />
                         </li>
+                        {
+                            data.note !== "" &&
+                            <li className="listedInfo">
+                                {t("Transfer note")}:&nbsp;
+                                <span className="emphasis">{data?.note}</span>
+                            </li>
+                        }
                     </ul>
                 </div>
             </Modal.Body>

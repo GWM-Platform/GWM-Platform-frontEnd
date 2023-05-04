@@ -75,8 +75,6 @@ const NotificationsCenter = ({ active }) => {
                             />
                             <p>
                                 {t("You have no notifications right now")}
-                                <br />
-                                {t("Come back later")}
                             </p>
                         </div>
                 }

@@ -13,7 +13,7 @@ const TableLastMovements = ({ content, movements,fundName }) => {
             <Table striped bordered hover className=" mb-auto m-0 mt-2" >
                 <thead >
                     <tr>
-                        <th className="tableHeader text-nowrap">{t("Ticket #")}</th>
+                        <th className="tableHeader text-nowrap">{t("Ticket")}</th>
                         <th className="tableHeader">{t("Receipts")}</th>
                         <th className="tableHeader">{t("Date")}</th>
                         <th className="d-none d-sm-table-cell">{t("Status")}</th>

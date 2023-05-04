@@ -29,7 +29,8 @@ const TransferForm = ({ balanceChanged }) => {
     const [data, setData] = useState({
         amount: "",
         senderId: Accounts[0]?.id,
-        alias: ""
+        alias: "",
+        note: ""
     })
 
     const [ShowModal, setShowModal] = useState(false)
@@ -54,7 +55,8 @@ const TransferForm = ({ balanceChanged }) => {
                 {
                     senderId: data.senderId,
                     receiverId: TargetAccount?.content?.id,
-                    amount: data.amount
+                    amount: data.amount,
+                    note: data.note
                 }
             ),
             headers: {

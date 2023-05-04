@@ -9,7 +9,8 @@ import ActionConfirmationModal from 'components/DashBoard/User/MovementsTable/Ge
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import ReactPDF from '@react-pdf/renderer';
 import TransferReceipt from 'Receipts/TransferReceipt';
-import { Spinner } from 'react-bootstrap';
+import { OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 const Transfer = ({ content, getTransfers }) => {
 
@@ -52,6 +53,9 @@ const Transfer = ({ content, getTransfers }) => {
     setGeneratingPDF(false)
   }
 
+  const [showClick, setShowClick] = useState(false)
+  const [showHover, setShowHover] = useState(false)
+
   return (
     <div className='mobileMovement'>
       <div className='d-flex justify-content-between'>
@@ -73,6 +77,44 @@ const Transfer = ({ content, getTransfers }) => {
 
         }
       </button>
+
+      {
+          !!(content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")) &&
+          <OverlayTrigger
+            show={showClick || showHover}
+            placement="bottom"
+            delay={{ show: 250, hide: 400 }}
+            popperConfig={{
+              modifiers: [
+                {
+                  name: 'offset',
+                  options: {
+                    offset: [0, 0],
+                  },
+                },
+              ],
+            }}
+            overlay={
+              <Tooltip className="mailTooltip" id="more-units-tooltip">
+                {!!(content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")) &&
+                  <div>
+                    {t('Transfer note')}:<br />
+                    <span className="text-nowrap">"{content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE").text}"</span>
+                  </div>
+                }
+              </Tooltip>
+            }
+          >
+            <span>
+              <button
+                onBlur={() => setShowClick(false)}
+                onClick={() => setShowClick(prevState => !prevState)}
+                onMouseEnter={() => setShowHover(true)}
+                onMouseLeave={() => setShowHover(false)}
+                type="button" className="noStyle"  ><FontAwesomeIcon icon={faInfoCircle} /></button>
+            </span>
+          </OverlayTrigger>
+        }
 
       <div className='d-flex justify-content-between'>
 

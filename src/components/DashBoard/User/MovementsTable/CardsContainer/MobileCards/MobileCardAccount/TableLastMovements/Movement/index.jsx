@@ -405,6 +405,8 @@ const Movement = ({ content, reloadData }) => {
         <span className="text-nowrap" >{momentDate.format('L')}</span>
 
       </div>
+      <div className='d-flex'>
+
       {
         (
           ((content.fixedDepositId) && hasPermission("FIXED_DEPOSIT_VIEW")) ||
@@ -463,40 +465,50 @@ const Movement = ({ content, reloadData }) => {
           </button>
       }
       {
-        !!(content?.userEmail) &&
-        <OverlayTrigger
-          show={showClick || showHover}
-          placement="auto"
-          delay={{ show: 250, hide: 400 }}
-          popperConfig={{
-            modifiers: [
-              {
-                name: 'offset',
-                options: {
-                  offset: [0, 0],
+          !!(content?.userEmail || content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")) &&
+          <OverlayTrigger
+            show={showClick || showHover}
+            placement="bottom"
+            delay={{ show: 250, hide: 400 }}
+            popperConfig={{
+              modifiers: [
+                {
+                  name: 'offset',
+                  options: {
+                    offset: [0, 0],
+                  },
                 },
-              },
-            ],
-          }}
-          overlay={
-            <Tooltip className="mailTooltip" id="more-units-tooltip">
-              <div>
-                {t('Operation performed by')}:<br />
-                <span className="text-nowrap">{content?.userEmail}</span>
-              </div>
-            </Tooltip>
-          }
-        >
-          <span>
-            <button
-              onBlur={() => setShowClick(false)}
-              onClick={() => setShowClick(prevState => !prevState)}
-              onMouseEnter={() => setShowHover(true)}
-              onMouseLeave={() => setShowHover(false)}
-              type="button" className="noStyle"  ><FontAwesomeIcon icon={faInfoCircle} /></button>
-          </span>
-        </OverlayTrigger>
-      }
+              ],
+            }}
+            overlay={
+              <Tooltip className="mailTooltip" id="more-units-tooltip">
+                {!!(content.userEmail) &&
+                  <div>
+                    {t('Operation performed by')}:<br />
+                    <span className="text-nowrap">{content?.userEmail}</span>
+                  </div>
+                }
+                {!!(content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")) &&
+                  <div>
+                    {t('Transfer note')}:<br />
+                    <span className="text-nowrap">"{content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE").text}"</span>
+                  </div>
+                }
+              </Tooltip>
+            }
+          >
+            <span>
+              <button
+                onBlur={() => setShowClick(false)}
+                onClick={() => setShowClick(prevState => !prevState)}
+                onMouseEnter={() => setShowHover(true)}
+                onMouseLeave={() => setShowHover(false)}
+                type="button" className="noStyle"  ><FontAwesomeIcon icon={faInfoCircle} /></button>
+            </span>
+          </OverlayTrigger>
+        }
+      </div>
+
 
       <div className='d-flex justify-content-between'>
         <span className={`${content.stateId === 3 ? 'text-red' : 'text-green'}`}>{t(getMoveStateById(content.stateId).name)}</span>
