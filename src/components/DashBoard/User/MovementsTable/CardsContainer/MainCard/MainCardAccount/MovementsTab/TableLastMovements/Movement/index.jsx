@@ -534,7 +534,8 @@ const Movement = ({ content, actions, reloadData }) => {
                   <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => launchModalConfirmation("deny")} />
                 </div>
               }
-            </div>}
+            </div>
+          }
         </td>
 
       }

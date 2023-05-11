@@ -930,5 +930,8 @@
   "Remove note": "Quitar nota",
   "Add note": "Añadir nota",
   "Transfer note": "Nota de la transferencia",
-  "You have no notifications right now": "No tiene ninguna notificación"
+  "You have no notifications right now": "No tiene ninguna notificación",
+  "cancel": "cancelar",
+  "Cancelled": "Cancelada",
+  "cancelled": "cancelado"
 }

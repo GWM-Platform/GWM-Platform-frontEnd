@@ -12,10 +12,16 @@ import { DashBoardContext } from 'context/DashBoardContext';
 import { useContext } from 'react';
 
 const TransferConfirmation = ({ isMovement = false, movement, setShowModal, action, show, reloadData }) => {
+
+    const { Accounts } = useContext(DashBoardContext)
+
+
     const { t } = useTranslation();
     const { ClientSelected } = useContext(DashBoardContext)
     const [ActionFetch, setActionFetch] = useState({ fetched: false, fetching: false, valid: false })
     const [Transfer, setTransfer] = useState(isMovement ? {} : movement)
+
+    const incomingTransfer = () => movement.receiverId === Accounts[0]?.id
 
     useEffect(() => {
         if (isMovement) {
@@ -30,7 +36,7 @@ const TransferConfirmation = ({ isMovement = false, movement, setShowModal, acti
                     }
                 )
         }
-    }, [movement, isMovement])
+    }, [movement, isMovement, ClientSelected.id])
 
 
     const handleClose = () => {
@@ -116,25 +122,52 @@ const TransferConfirmation = ({ isMovement = false, movement, setShowModal, acti
                         </h1>
                     </div>
                     <h1 className="title"> {t("Are you sure?")}</h1>
-                    <h2 className="subTitle">{t("You are about to")} {t(action)} {t("transfer #")}{Transfer?.id}</h2>
+                    <h2 className="subTitle">{t("You are about to")} {t(action === "deny" ? (isMovement ? (movement.motive === "TRANSFER_RECEIVE") : incomingTransfer()) ? action : "cancel" : action)} {t("transfer #")}{Transfer?.id}</h2>
                     <ul>
                         <li className="listedInfo">
-                            {t("Operation")}: <span className="emphasis">{t(`${(movement.motive !== "TRANSFER_RECEIVE") ? "Incoming" : "Outgoing"} transfer`)}</span>
-
-                            <li className="listedInfo">
-                                {t(`Transfer from`)}: <span className="emphasis text-nowrap">{Transfer?.senderAlias}{!(movement.motive !== "TRANSFER_RECEIVE") ? <>&nbsp;({t("You")})</> : ""}</span>
-                            </li>
-                            <li className="listedInfo">
-                                {t(`Transfer to`)}: <span className="emphasis text-nowrap">{Transfer?.receiverAlias}{(movement.motive !== "TRANSFER_RECEIVE") ? <>&nbsp;({t("You")})</> : ""}</span>
-                            </li>
-                            {
-                                !!(Transfer?.notes?.find(note => note?.noteType === "TRANSFER_MOTIVE")) &&
-                                <li className="listedInfo">
-                                    {t('Transfer note')}:
-                                    <span className="text-nowrap"> "{Transfer?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")?.text}"</span>
-                                </li>
-                            }
+                            {t("Operation")}:&nbsp;
+                            <span className="emphasis">
+                                {
+                                    t(
+                                        `${(isMovement ? (movement.motive === "TRANSFER_RECEIVE") : incomingTransfer()) ?
+                                            "Incoming"
+                                            :
+                                            "Outgoing"
+                                        } transfer`
+                                    )
+                                }
+                            </span>
                         </li>
+                        <li className="listedInfo">
+                            {t(`Transfer from`)}:&nbsp;
+                            <span className="emphasis text-nowrap">{Transfer?.senderAlias}
+                                {
+                                    !(isMovement ? (movement.motive === "TRANSFER_RECEIVE") : incomingTransfer()) ?
+                                        <>&nbsp;({t("You")})</>
+                                        :
+                                        ""
+                                }
+                            </span>
+                        </li>
+                        <li className="listedInfo">
+                            {t(`Transfer to`)}:&nbsp;
+                            <span className="emphasis text-nowrap">
+                                {Transfer?.receiverAlias}
+                                {
+                                    (isMovement ? (movement.motive === "TRANSFER_RECEIVE") : incomingTransfer()) ?
+                                        <>&nbsp;({t("You")})</>
+                                        :
+                                        ""
+                                }
+                            </span>
+                        </li>
+                        {
+                            !!(Transfer?.notes?.find(note => note?.noteType === "TRANSFER_MOTIVE")) &&
+                            <li className="listedInfo">
+                                {t('Transfer note')}:
+                                <span> "{Transfer?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")?.text}"</span>
+                            </li>
+                        }
                     </ul>
                     <h3 className="heading">{t("This action cannot be undone")}</h3>
                 </div>
@@ -168,7 +201,7 @@ const TransferConfirmation = ({ isMovement = false, movement, setShowModal, acti
                                         <FontAwesomeIcon className="placeHolder" icon={faCircle} style={{ transform: "scale(1.5)" }} />
                                     </h1>
                                 </div>
-                                <h2 className="subTitle mt-4">{t("The ticket has been")} {t(action === "approve" ? "approved" : "denied")} {t("succesfully")}</h2>
+                                <h2 className="subTitle mt-4">{t("The ticket has been")} {t(action === "approve" ? "approved" : (isMovement ? (movement.motive === "TRANSFER_RECEIVE") : incomingTransfer()) ? "denied" : "cancelled")} {t("succesfully")}</h2>
                             </>
                             :
                             <>
@@ -234,21 +267,49 @@ const TransferConfirmation = ({ isMovement = false, movement, setShowModal, acti
                     <h2 className="subTitle">{t("You are about to")} {t(action)} {t("transfer #")} {Transfer?.id}</h2>
                     <ul>
                         <li className="listedInfo">
-                            {t("Operation")}: <span className="emphasis">{t(`${(movement.motive !== "TRANSFER_RECEIVE") ? "Incoming" : "Outgoing"} transfer`)}</span>
-                            <li className="listedInfo">
-                                {t(`Transfer from`)}: <span className="emphasis text-nowrap">{Transfer?.senderAlias}{!(movement.motive !== "TRANSFER_RECEIVE") ? <>&nbsp;({t("You")})</> : ""}</span>
-                            </li>
-                            <li className="listedInfo">
-                                {t(`Transfer to`)}: <span className="emphasis text-nowrap">{Transfer?.receiverAlias}{(movement.motive !== "TRANSFER_RECEIVE") ? <>&nbsp;({t("You")})</> : ""}</span>
-                            </li>
-                            {
-                                !!(Transfer?.notes?.find(note => note?.noteType === "TRANSFER_MOTIVE")) &&
-                                <li className="listedInfo">
-                                    {t('Transfer note')}:
-                                    <span className="text-nowrap"> "{Transfer?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")?.text}"</span>
-                                </li>
-                            }
+                            {t("Operation")}:&nbsp;
+                            <span className="emphasis">
+                                {
+                                    t(
+                                        `${(isMovement ? (movement.motive === "TRANSFER_RECEIVE") : incomingTransfer()) ?
+                                            "Incoming"
+                                            :
+                                            "Outgoing"
+                                        } transfer`
+                                    )
+                                }
+                            </span>
                         </li>
+                        <li className="listedInfo">
+                            {t(`Transfer from`)}:&nbsp;
+                            <span className="emphasis text-nowrap">{Transfer?.senderAlias}
+                                {
+                                    !(isMovement ? (movement.motive === "TRANSFER_RECEIVE") : incomingTransfer()) ?
+                                        <>&nbsp;({t("You")})</>
+                                        :
+                                        ""
+                                }
+                            </span>
+                        </li>
+                        <li className="listedInfo">
+                            {t(`Transfer to`)}:&nbsp;
+                            <span className="emphasis text-nowrap">
+                                {Transfer?.receiverAlias}
+                                {
+                                    (isMovement ? (movement.motive === "TRANSFER_RECEIVE") : incomingTransfer()) ?
+                                        <>&nbsp;({t("You")})</>
+                                        :
+                                        ""
+                                }
+                            </span>
+                        </li>
+                        {
+                            !!(Transfer?.notes?.find(note => note?.noteType === "TRANSFER_MOTIVE")) &&
+                            <li className="listedInfo">
+                                {t('Transfer note')}:
+                                <span> "{Transfer?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")?.text}"</span>
+                            </li>
+                        }
                     </ul>
                     <h3 className="heading">{t("This action cannot be undone")}</h3>
                 </div>

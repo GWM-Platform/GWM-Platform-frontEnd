@@ -56,6 +56,8 @@ const Transfer = ({ content, getTransfers }) => {
   const [showClick, setShowClick] = useState(false)
   const [showHover, setShowHover] = useState(false)
 
+  const state = (getMoveStateById(content.stateId).name === "Denegado" && !incomingTransfer()) ? "Cancelled" : getMoveStateById(content.stateId).name
+
   return (
     <div className='mobileMovement'>
       <div className='d-flex justify-content-between'>
@@ -79,55 +81,56 @@ const Transfer = ({ content, getTransfers }) => {
       </button>
 
       {
-          !!(content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")) &&
-          <OverlayTrigger
-            show={showClick || showHover}
-            placement="bottom"
-            delay={{ show: 250, hide: 400 }}
-            popperConfig={{
-              modifiers: [
-                {
-                  name: 'offset',
-                  options: {
-                    offset: [0, 0],
-                  },
+        !!(content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")) &&
+        <OverlayTrigger
+          show={showClick || showHover}
+          placement="bottom"
+          delay={{ show: 250, hide: 400 }}
+          popperConfig={{
+            modifiers: [
+              {
+                name: 'offset',
+                options: {
+                  offset: [0, 0],
                 },
-              ],
-            }}
-            overlay={
-              <Tooltip className="mailTooltip" id="more-units-tooltip">
-                {!!(content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")) &&
-                  <div>
-                    {t('Transfer note')}:<br />
-                    <span className="text-nowrap">"{content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE").text}"</span>
-                  </div>
-                }
-              </Tooltip>
-            }
-          >
-            <span>
-              <button
-                onBlur={() => setShowClick(false)}
-                onClick={() => setShowClick(prevState => !prevState)}
-                onMouseEnter={() => setShowHover(true)}
-                onMouseLeave={() => setShowHover(false)}
-                type="button" className="noStyle"  ><FontAwesomeIcon icon={faInfoCircle} /></button>
-            </span>
-          </OverlayTrigger>
-        }
+              },
+            ],
+          }}
+          overlay={
+            <Tooltip className="mailTooltip" id="more-units-tooltip">
+              {!!(content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")) &&
+                <div>
+                  {t('Transfer note')}:<br />
+                  <span className="text-nowrap">"{content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE").text}"</span>
+                </div>
+              }
+            </Tooltip>
+          }
+        >
+          <span>
+            <button
+              onBlur={() => setShowClick(false)}
+              onClick={() => setShowClick(prevState => !prevState)}
+              onMouseEnter={() => setShowHover(true)}
+              onMouseLeave={() => setShowHover(false)}
+              type="button" className="noStyle"  ><FontAwesomeIcon icon={faInfoCircle} /></button>
+          </span>
+        </OverlayTrigger>
+      }
 
       <div className='d-flex justify-content-between'>
 
-        <span className={`${content.stateId === 3 ? 'text-red' : 'text-green'}`}>{t(getMoveStateById(content.stateId).name)}</span>
-        <span className={`${Math.sign(content.amount) === 1 ? 'text-green' : 'text-red'}`}>{Math.sign(content.amount) === 1 ? '+' : '-'}
+        <span className={`${content.stateId === 3 ? 'text-red' : 'text-green'}`}>{t(state)}</span>
+        <span className={`${incomingTransfer() ? 'text-green' : 'text-red'}`}>
+          {incomingTransfer() ? '+' : '-'}
           <FormattedNumber value={Math.abs(content.amount)} prefix="U$D " fixedDecimals={2} />
         </span>
       </div>
       {
-        !!(content.stateId === 1 && incomingTransfer()) &&
+        !!(content.stateId === 1) &&
         <div className="h-100 d-flex align-items-center justify-content-around">
           {
-            hasPermission("TRANSFER_APPROVE") &&
+            (hasPermission("TRANSFER_APPROVE") && incomingTransfer()) &&
             <div className="iconContainer green" onClick={() => launchModalConfirmation("approve")}>
               <FontAwesomeIcon className="icon" icon={faCheckCircle} /> {t("Approve")}
             </div>
@@ -135,13 +138,19 @@ const Transfer = ({ content, getTransfers }) => {
           {
             hasPermission("TRANSFER_DENY") &&
             <div className="iconContainer red" onClick={() => launchModalConfirmation("deny")} >
-              <FontAwesomeIcon className="icon" icon={faTimesCircle} /> {t("Deny")}
+              <FontAwesomeIcon className="icon" icon={faTimesCircle} />
+              &nbsp;{
+                incomingTransfer() ?
+                  t("Deny")
+                  :
+                  t("Cancel")
+              }
             </div>
           }
         </div>
       }
       {
-        !!(content.stateId === 1 && incomingTransfer()) &&
+        !!(content.stateId === 1) &&
         <ActionConfirmationModal incomingTransfer={incomingTransfer()} reloadData={getTransfers} movement={content} setShowModal={setShowModal} action={Action} show={ShowModal} />
       }
     </div>

@@ -17,6 +17,7 @@ import FixedDepositReceipt from 'Receipts/FixedDepositReceipt';
 import { getAnualRate, getDuration } from 'utils/fixedDeposit';
 import TransferReceipt from 'Receipts/TransferReceipt';
 import TransactionReceipt from 'Receipts/TransactionReceipt';
+import ActionConfirmationModal from 'components/DashBoard/User/MovementsTable/GeneralUse/TransferConfirmation'
 
 const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
   <button
@@ -407,64 +408,64 @@ const Movement = ({ content, reloadData }) => {
       </div>
       <div className='d-flex'>
 
-      {
-        (
-          ((content.fixedDepositId) && hasPermission("FIXED_DEPOSIT_VIEW")) ||
-          ((content.transferId) && (hasPermission("TRANSFER_APPROVE") || hasPermission("TRANSFER_DENY") || hasPermission("TRANSFER_GENERATE"))) ||
-          ((content.fundId) && (hasSellPermission(content.fundId) || hasBuyPermission(content.fundId)))
-        ) ?
-          <Dropdown >
-            <Dropdown.Toggle disabled={GeneratingPDF || altGeneratingPDF}
-              as={CustomToggle} id="dropdown-custom-components">
+        {
+          (
+            ((content.fixedDepositId) && hasPermission("FIXED_DEPOSIT_VIEW")) ||
+            ((content.transferId) && (hasPermission("TRANSFER_APPROVE") || hasPermission("TRANSFER_DENY") || hasPermission("TRANSFER_GENERATE"))) ||
+            ((content.fundId) && (hasSellPermission(content.fundId) || hasBuyPermission(content.fundId)))
+          ) ?
+            <Dropdown >
+              <Dropdown.Toggle disabled={GeneratingPDF || altGeneratingPDF}
+                as={CustomToggle} id="dropdown-custom-components">
+                <span>
+                  {t("Receipt")}&nbsp;
+                </span>
+                {
+                  GeneratingPDF || altGeneratingPDF ?
+                    <Spinner animation="border" size="sm" />
+                    :
+                    <FontAwesomeIcon icon={faFilePdf} />
+
+                }
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item onClick={() => renderAndDownloadPDF()}>
+                  {t("Movement receipt")}
+                </Dropdown.Item>
+                {
+                  ((content.fixedDepositId) && hasPermission("FIXED_DEPOSIT_VIEW")) &&
+                  <Dropdown.Item onClick={() => getFixedDepositPDF()}>
+                    {t("Fixed deposit receipt")}
+                  </Dropdown.Item>
+                }
+                {
+                  ((content.transferId) && (hasPermission("TRANSFER_APPROVE") || hasPermission("TRANSFER_DENY") || hasPermission("TRANSFER_GENERATE"))) &&
+                  <Dropdown.Item onClick={() => getTransferPDF()}>
+                    {t("Transfer receipt")}
+                  </Dropdown.Item>
+                }
+                {
+                  ((content.fundId) && (hasSellPermission(content.fundId) || hasBuyPermission(content.fundId))) &&
+                  <Dropdown.Item onClick={() => getTransactionPDF()}>
+                    {t("Transaction receipt")}
+                  </Dropdown.Item>
+                }
+              </Dropdown.Menu>
+            </Dropdown>
+            :
+            <button disabled={GeneratingPDF} className="noStyle px-0" style={{ cursor: "pointer" }} onClick={() => renderAndDownloadPDF()}>
               <span>
                 {t("Receipt")}&nbsp;
               </span>
               {
-                GeneratingPDF || altGeneratingPDF ?
+                GeneratingPDF ?
                   <Spinner animation="border" size="sm" />
                   :
                   <FontAwesomeIcon icon={faFilePdf} />
-
               }
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item onClick={() => renderAndDownloadPDF()}>
-                {t("Movement receipt")}
-              </Dropdown.Item>
-              {
-                ((content.fixedDepositId) && hasPermission("FIXED_DEPOSIT_VIEW")) &&
-                <Dropdown.Item onClick={() => getFixedDepositPDF()}>
-                  {t("Fixed deposit receipt")}
-                </Dropdown.Item>
-              }
-              {
-                ((content.transferId) && (hasPermission("TRANSFER_APPROVE") || hasPermission("TRANSFER_DENY") || hasPermission("TRANSFER_GENERATE"))) &&
-                <Dropdown.Item onClick={() => getTransferPDF()}>
-                  {t("Transfer receipt")}
-                </Dropdown.Item>
-              }
-              {
-                ((content.fundId) && (hasSellPermission(content.fundId) || hasBuyPermission(content.fundId))) &&
-                <Dropdown.Item onClick={() => getTransactionPDF()}>
-                  {t("Transaction receipt")}
-                </Dropdown.Item>
-              }
-            </Dropdown.Menu>
-          </Dropdown>
-          :
-          <button disabled={GeneratingPDF} className="noStyle px-0" style={{ cursor: "pointer" }} onClick={() => renderAndDownloadPDF()}>
-            <span>
-              {t("Receipt")}&nbsp;
-            </span>
-            {
-              GeneratingPDF ?
-                <Spinner animation="border" size="sm" />
-                :
-                <FontAwesomeIcon icon={faFilePdf} />
-            }
-          </button>
-      }
-      {
+            </button>
+        }
+        {
           !!(content?.userEmail || content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")) &&
           <OverlayTrigger
             show={showClick || showHover}
@@ -541,8 +542,58 @@ const Movement = ({ content, reloadData }) => {
         </div>
       }
       {
+        !!((content.stateId === 1
+          &&
+          (
+            ((hasPermission("TRANSFER_DENY") || hasPermission("TRANSFER_APPROVE")) && content.motive === "TRANSFER_RECEIVE")
+            ||
+            (hasPermission("TRANSFER_DENY") && content.motive === "TRANSFER_SEND")
+          )
+        )) &&
+        <div className="h-100 d-flex align-items-center justify-content-around">
+
+          {
+            !!(content.motive === "TRANSFER_RECEIVE") &&
+            <>
+              {
+                hasPermission("TRANSFER_APPROVE") &&
+                <div className="iconContainer green">
+                  <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => { launchModalConfirmation("approve") }} />
+                  &nbsp;{t("Approve")}
+                </div>
+              }
+            </>
+          }
+
+          {
+            hasPermission("TRANSFER_DENY") &&
+            <div className={`iconContainer red`}>
+              <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => { launchModalConfirmation("deny") }} />
+              &nbsp;{
+                content.motive === "TRANSFER_RECEIVE"
+                  ?
+                  t("Deny")
+                  :
+                  t("Cancel")
+              }
+            </div>
+          }
+        </div>
+      }
+      {
         !!(content.stateId === 5 && couldSign(content)) &&
         <MovementConfirmation reloadData={reloadData} movement={content} setShowModal={setShowModal} action={Action} show={ShowModal} />
+      }
+      {
+        !!((content.stateId === 1
+          &&
+          (
+            ((hasPermission("TRANSFER_DENY") || hasPermission("TRANSFER_APPROVE")) && content.motive === "TRANSFER_RECEIVE")
+            ||
+            (hasPermission("TRANSFER_DENY") && content.motive === "TRANSFER_SEND")
+          )
+        )) &&
+        <ActionConfirmationModal isMovement reloadData={reloadData} movement={content} setShowModal={setShowModal} action={Action} show={ShowModal} />
       }
     </div>
 
