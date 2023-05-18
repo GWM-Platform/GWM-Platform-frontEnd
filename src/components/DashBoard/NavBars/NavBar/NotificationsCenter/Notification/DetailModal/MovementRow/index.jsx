@@ -58,6 +58,12 @@ const MovementRow = ({ Movement }) => {
     const [showClick, setShowClick] = useState(false)
     const [showHover, setShowHover] = useState(false)
 
+
+      const transferNote = Movement?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")
+  const clientNote = Movement?.notes?.find(note => note.noteType === "CLIENT_NOTE")
+  const denialMotive = Movement?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
+  const adminNote = Movement?.notes?.find(note => note.noteType === "ADMIN_NOTE")
+
     return (
         <>
             <div className='mobileMovement'>
@@ -104,6 +110,67 @@ const MovementRow = ({ Movement }) => {
                     }
 
                     <Badge className='ms-auto' bg={status()?.bg}>{t(status()?.text)}</Badge>
+                    {
+          (!!(Movement?.userEmail) || !!(transferNote) || !!(clientNote) || !!(denialMotive) || !!(adminNote)) &&
+          <OverlayTrigger
+            show={showClick || showHover}
+            placement="right"
+            delay={{ show: 250, hide: 400 }}
+            popperConfig={{
+              modifiers: [
+                {
+                  name: 'offset',
+                  options: {
+                    offset: [0, 0],
+                  },
+                },
+              ],
+            }}
+            overlay={
+              <Tooltip className="mailTooltip" id="more-units-tooltip">
+                {!!(Movement.userEmail) &&
+                  <div>
+                    {t('Operation performed by')}:<br />
+                    <span className="text-nowrap">{Movement?.userEmail}</span>
+                  </div>
+                }
+                {!!(transferNote) &&
+                  <div>
+                    {t('Transfer note')}:<br />
+                    <span className="text-nowrap">"{transferNote.text}"</span>
+                  </div>
+                }
+                {!!(clientNote) &&
+                  <div>
+                    {t('Personal note')}:<br />
+                    <span className="text-nowrap">"{clientNote.text}"</span>
+                  </div>
+                }
+                {!!(denialMotive) &&
+                  <div>
+                    {t('Denial motive')}:<br />
+                    <span className="text-nowrap">"{denialMotive.text}"</span>
+                  </div>
+                }
+                {!!(adminNote) &&
+                  <div>
+                    {t('Admin note')}:<br />
+                    <span className="text-nowrap">"{adminNote.text}"</span>
+                  </div>
+                }
+              </Tooltip>
+            }
+          >
+            <span>
+              <button
+                onBlur={() => setShowClick(false)}
+                onClick={() => setShowClick(prevState => !prevState)}
+                onMouseEnter={() => setShowHover(true)}
+                onMouseLeave={() => setShowHover(false)}
+                type="button" className="noStyle"  ><FontAwesomeIcon icon={faInfoCircle} /></button>
+            </span>
+          </OverlayTrigger>
+        }
                 </div >
 
                 <div className='w-100 d-flex' style={{ borderBottom: "1px solid lightgray" }} />

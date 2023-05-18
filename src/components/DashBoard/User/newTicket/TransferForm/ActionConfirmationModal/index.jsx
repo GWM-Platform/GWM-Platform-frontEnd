@@ -53,7 +53,7 @@ const ActionConfirmationModal = ({ TargetAccount, setShowModal, show, action, da
             </Modal.Body>
 
             <Modal.Footer className="footer justify-content-center">
-                <Button variant="outline-secondary" onClick={() => handleClose()}>
+                <Button disabled={Transfer.fetching} variant="outline-secondary" onClick={() => handleClose()}>
                     {t("Cancel")}
                 </Button>
                 <Button disabled={Transfer.fetching} variant="outline-success" onClick={() => { action() }}>

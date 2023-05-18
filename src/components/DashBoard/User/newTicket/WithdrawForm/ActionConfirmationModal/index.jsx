@@ -8,7 +8,7 @@ import { useContext } from 'react';
 import { DashBoardContext } from 'context/DashBoardContext';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
-const ActionConfirmationModal = ({ setShowModal, show, action, data, Balance ,fetching}) => {
+const ActionConfirmationModal = ({ setShowModal, show, action, data, Balance, fetching }) => {
     const { t } = useTranslation();
     const { ClientSelected } = useContext(DashBoardContext)
     const handleClose = () => {
@@ -30,12 +30,19 @@ const ActionConfirmationModal = ({ setShowModal, show, action, data, Balance ,fe
                         <li className="listedInfo">
                             {t("Withdrawing")}: <FormattedNumber className="emphasis" prefix="U$D " value={data.amount.toString()} fixedDecimals={2} />
                         </li>
+                        {
+                            data.note !== "" &&
+                            <li className="listedInfo">
+                                {t("Transfer note")}:&nbsp;
+                                <span className="emphasis">{data?.note}</span>
+                            </li>
+                        }
                     </ul>
                 </div>
             </Modal.Body>
 
             <Modal.Footer className="footer justify-content-center">
-                <Button variant="outline-secondary" onClick={() => handleClose()}>
+                <Button disabled={fetching} variant="outline-secondary" onClick={() => handleClose()}>
                     {t("Cancel")}
                 </Button>
                 <Button disabled={fetching} variant="outline-success" onClick={() => { action() }}>

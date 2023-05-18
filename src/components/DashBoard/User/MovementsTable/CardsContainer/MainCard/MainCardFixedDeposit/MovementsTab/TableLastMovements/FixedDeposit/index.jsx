@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 import { DashBoardContext } from 'context/DashBoardContext';
-import { Badge, Spinner } from 'react-bootstrap';
+import { Badge, OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import axios from 'axios';
 import ReactPDF from '@react-pdf/renderer';
@@ -11,6 +11,7 @@ import FixedDepositReceipt from 'Receipts/FixedDepositReceipt';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf } from '@fortawesome/free-regular-svg-icons';
 import { getAnualRate, getDuration, wasEdited } from 'utils/fixedDeposit';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 const FixedDeposit = ({ content }) => {
   const { t } = useTranslation();
@@ -222,7 +223,10 @@ const FixedDeposit = ({ content }) => {
     //eslint-disable-next-line
   }, [])
 
+  const [showClick, setShowClick] = useState(false)
+  const [showHover, setShowHover] = useState(false)
 
+  const denialMotive =  content?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
 
   return (
     <div className='mobileMovement'>
@@ -243,6 +247,43 @@ const FixedDeposit = ({ content }) => {
           }
         </div>
         <Badge bg={status()?.bg}>{t(status().text)}</Badge>
+        {
+          !!(!!(denialMotive)) &&
+          <OverlayTrigger
+            show={showClick || showHover}
+            placement="right"
+            delay={{ show: 250, hide: 400 }}
+            popperConfig={{
+              modifiers: [
+                {
+                  name: 'offset',
+                  options: {
+                    offset: [0, 0],
+                  },
+                },
+              ],
+            }}
+            overlay={
+              <Tooltip className="mailTooltip" id="more-units-tooltip">
+                {!!(denialMotive) &&
+                  <div>
+                    {t('Denial motive')}:<br />
+                    <span className="text-nowrap">"{denialMotive.text}"</span>
+                  </div>
+                }
+              </Tooltip>
+            }
+          >
+            <span>
+              <button
+                onBlur={() => setShowClick(false)}
+                onClick={() => setShowClick(prevState => !prevState)}
+                onMouseEnter={() => setShowHover(true)}
+                onMouseLeave={() => setShowHover(false)}
+                type="button" className="noStyle pe-0 ps-1"  ><FontAwesomeIcon icon={faInfoCircle} /></button>
+            </span>
+          </OverlayTrigger>
+        }
       </div >
       <div className='w-100 d-flex' style={{ borderBottom: "1px solid lightgray" }} />
 

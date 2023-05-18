@@ -7,17 +7,18 @@ import Decimal from 'decimal.js';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import ReactPDF from '@react-pdf/renderer';
 import TransactionReceipt from 'Receipts/TransactionReceipt';
-import { Spinner } from 'react-bootstrap';
+import { OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf } from '@fortawesome/free-regular-svg-icons';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
-const Movement = ({ content,fundName }) => {
+const Movement = ({ content, fundName }) => {
 
   Decimal.set({ precision: 100 })
 
   var momentDate = moment(content.createdAt);
   const { t } = useTranslation();
-  const { getMoveStateById,AccountSelected } = useContext(DashBoardContext)
+  const { getMoveStateById, AccountSelected } = useContext(DashBoardContext)
 
   const decimalSharesAbs = new Decimal(content.shares).abs()
   const decimalPrice = new Decimal(content.sharePrice)
@@ -31,7 +32,7 @@ const Movement = ({ content,fundName }) => {
       ...content, ...{
         state: t(getMoveStateById(content.stateId).name),
         accountAlias: AccountSelected.alias,
-        fundName:fundName
+        fundName: fundName
       }
     }} />).toBlob()
     const url = URL.createObjectURL(blob)
@@ -46,10 +47,59 @@ const Movement = ({ content,fundName }) => {
     link.parentNode.removeChild(link)
     setGeneratingPDF(false)
   }
+  const [showClick, setShowClick] = useState(false)
+  const [showHover, setShowHover] = useState(false)
+
+  const denialMotive = content?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
 
   return (
     <tr>
-      <td className="tableId">{content.id}</td>
+      <td className="tableId" style={{ whiteSpace: "nowrap" }}>
+        {content.id}
+        {
+          !!(content?.userEmail || !!(denialMotive)) &&
+          <OverlayTrigger
+            show={showClick || showHover}
+            placement="right"
+            delay={{ show: 250, hide: 400 }}
+            popperConfig={{
+              modifiers: [
+                {
+                  name: 'offset',
+                  options: {
+                    offset: [0, 0],
+                  },
+                },
+              ],
+            }}
+            overlay={
+              <Tooltip className="mailTooltip" id="more-units-tooltip">
+                {!!(content.userEmail) &&
+                  <div>
+                    {t('Operation performed by')}:<br />
+                    <span className="text-nowrap">{content?.userEmail}</span>
+                  </div>
+                }
+                {!!(denialMotive) &&
+                  <div>
+                    {t('Denial motive')}:<br />
+                    <span className="text-nowrap">"{denialMotive.text}"</span>
+                  </div>
+                }
+              </Tooltip>
+            }
+          >
+            <span>
+              <button
+                onBlur={() => setShowClick(false)}
+                onClick={() => setShowClick(prevState => !prevState)}
+                onMouseEnter={() => setShowHover(true)}
+                onMouseLeave={() => setShowHover(false)}
+                type="button" className="noStyle pe-0 ps-1"  ><FontAwesomeIcon icon={faInfoCircle} /></button>
+            </span>
+          </OverlayTrigger>
+        }
+      </td>
       <td className="text-center">
         {
           GeneratingPDF ?
@@ -64,7 +114,7 @@ const Movement = ({ content,fundName }) => {
       <td className={`tableConcept ${content.stateId === 3 ? 'text-red' : 'text-green'}`}>{t(getMoveStateById(content.stateId).name)}</td>
       <td className={`tableConcept ${Math.sign(content.shares) === 1 ? 'text-green' : 'text-red'}`}>
         <span>{Math.sign(content.shares) === 1 ? t('Purchase of') : t('Sale of')}{" "}</span>
-        <FormattedNumber value={Math.abs(content.shares)}  fixedDecimals={2} />&nbsp;
+        <FormattedNumber value={Math.abs(content.shares)} fixedDecimals={2} />&nbsp;
         {t(Math.abs(content.shares) === 1 ? "share" : "shares")}</td>
       <td className="tableDescription d-none d-sm-table-cell ">
         <FormattedNumber prefix="U$D " value={content.sharePrice} fixedDecimals={2} />

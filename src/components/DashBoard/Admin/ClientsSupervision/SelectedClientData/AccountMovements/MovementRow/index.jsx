@@ -16,14 +16,18 @@ const Movement = ({ Movement }) => {
 
   const [showClick, setShowClick] = useState(false)
   const [showHover, setShowHover] = useState(false)
+
+  const transferNote = Movement?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")
+  const clientNote = Movement?.notes?.find(note => note.noteType === "CLIENT_NOTE")
+  const denialMotive = Movement?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
+  const adminNote = Movement?.notes?.find(note => note.noteType === "ADMIN_NOTE")
+
   return (
     <tr>
       <td className="tableId">
         {Movement.id}
-      </td>
-      <td className="text-center">
         {
-          !!(Movement?.userEmail) ?
+          (!!(Movement?.userEmail) || !!(transferNote) || !!(clientNote) || !!(denialMotive) || !!(adminNote)) &&
           <OverlayTrigger
             show={showClick || showHover}
             placement="right"
@@ -46,6 +50,30 @@ const Movement = ({ Movement }) => {
                     <span className="text-nowrap">{Movement?.userEmail}</span>
                   </div>
                 }
+                {!!(transferNote) &&
+                  <div>
+                    {t('Transfer note')}:<br />
+                    <span className="text-nowrap">"{transferNote.text}"</span>
+                  </div>
+                }
+                {!!(clientNote) &&
+                  <div>
+                    {t('Personal note')}:<br />
+                    <span className="text-nowrap">"{clientNote.text}"</span>
+                  </div>
+                }
+                {!!(denialMotive) &&
+                  <div>
+                    {t('Denial motive')}:<br />
+                    <span className="text-nowrap">"{denialMotive.text}"</span>
+                  </div>
+                }
+                {!!(adminNote) &&
+                  <div>
+                    {t('Admin note')}:<br />
+                    <span className="text-nowrap">"{adminNote.text}"</span>
+                  </div>
+                }
               </Tooltip>
             }
           >
@@ -58,8 +86,6 @@ const Movement = ({ Movement }) => {
                 type="button" className="noStyle"  ><FontAwesomeIcon icon={faInfoCircle} /></button>
             </span>
           </OverlayTrigger>
-          :
-          <>-</>
         }
       </td>
       <td className="tableDate">

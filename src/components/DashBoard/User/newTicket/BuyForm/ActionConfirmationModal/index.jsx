@@ -51,7 +51,7 @@ const ActionConfirmationModal = ({ setShowModal, show, action, data, Funds, Bala
             </Modal.Body>
 
             <Modal.Footer className="footer justify-content-center">
-                <Button variant="outline-secondary" onClick={() => handleClose()}>
+                <Button disabled={fetching} variant="outline-secondary" onClick={() => handleClose()}>
                     {t("Cancel")}
                 </Button>
                 <Button disabled={fetching} variant="outline-success" onClick={() => action()}>

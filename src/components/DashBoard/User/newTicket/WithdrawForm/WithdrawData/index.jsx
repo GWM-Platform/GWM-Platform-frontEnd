@@ -4,6 +4,8 @@ import { Form, InputGroup, Row, Button, Container } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
 import { unMaskNumber } from 'utils/unmask';
 import CurrencyInput from '@osdiab/react-currency-input-field';
+import { faMinusCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 const WithdrawData = ({ data, handleChange, validated, handleSubmit, account, fetching }) => {
@@ -11,6 +13,7 @@ const WithdrawData = ({ data, handleChange, validated, handleSubmit, account, fe
     const { t } = useTranslation();
 
     const [inputValid, setInputValid] = useState(false)
+    const [NoteActive, setNoteActive] = useState(false)
 
     const decimalSeparator = process.env.REACT_APP_DECIMALSEPARATOR ?? '.'
     const groupSeparator = process.env.REACT_APP_GROUPSEPARATOR ?? ','
@@ -101,6 +104,37 @@ const WithdrawData = ({ data, handleChange, validated, handleSubmit, account, fe
                         {t("Looks good")}!
                     </Form.Control.Feedback>
                 </InputGroup>
+                {
+                            NoteActive ?
+                                <div className="d-flex align-items-center mb-3">
+                                    <Form.Control
+                                        placeholder={t("Withdrawal note")}
+                                        value={data.note} type="text" id="note" maxLength="250"
+                                        onChange={(e) => { handleChange(e); }}
+                                        required
+                                    />
+
+                                    <button
+                                        type="button"
+                                        onClick={
+                                            () => {
+                                                handleChange({ target: { id: "note", value: "" } })
+                                                setNoteActive(false)
+                                            }
+                                        }
+                                        className="noStyle ms-2" title={t("Remove note")}>
+                                        <FontAwesomeIcon icon={faMinusCircle} />
+                                    </button>
+                                </div>
+
+                                :
+                                <div style={{ height: "38px" }} className="mb-3 w-100 d-flex align-items-start">
+                                    <Button type="button" className="ms-auto" size="sm" variant="danger" onClick={() => setNoteActive(true)}>
+                                        <FontAwesomeIcon className="me-1" icon={faPlusCircle} />
+                                        {t("Add note")}
+                                    </Button>
+                                </div>
+                        }
                 <Container className='px-sm-0'>
                     <div className='d-flex justify-content-end'>
                         <Button disabled={fetching || data.amount === "" || data.amount <= 0}

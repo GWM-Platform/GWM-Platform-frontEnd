@@ -108,8 +108,8 @@ const TransferData = ({ data, handleChange, TargetAccount, toggleAccordion, Bala
                     NoteActive ?
                         <div className="d-flex align-items-center mb-3">
                             <Form.Control
-                                placeholder={t("Transfer note")}
-                                value={data.note} type="text" id="note"
+                                placeholder={t("Transfer note")} required
+                                value={data.note} type="text" id="note" maxLength="250"
                                 onChange={(e) => { handleChange(e); }}
                             />
 
@@ -125,7 +125,6 @@ const TransferData = ({ data, handleChange, TargetAccount, toggleAccordion, Bala
                                 <FontAwesomeIcon icon={faMinusCircle} />
                             </button>
                         </div>
-
                         :
                         <div style={{ height: "38px" }} className="mb-3 w-100 d-flex align-items-start">
                             <Button type="button" className="ms-auto" size="sm" variant="danger" onClick={() => setNoteActive(true)}>

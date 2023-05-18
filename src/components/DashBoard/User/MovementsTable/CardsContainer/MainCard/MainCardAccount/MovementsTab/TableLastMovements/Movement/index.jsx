@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faFilePdf, faTimesCircle } from '@fortawesome/free-regular-svg-icons';
 import ReactPDF from '@react-pdf/renderer';
 import MovementReceipt from 'Receipts/MovementReceipt';
-import { OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap';
+import { Dropdown, OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import MovementConfirmation from 'components/DashBoard/User/MovementsTable/GeneralUse/MovementConfirmation';
 import axios from 'axios';
@@ -17,6 +17,21 @@ import { getAnualRate, getDuration } from 'utils/fixedDeposit';
 import TransferReceipt from 'Receipts/TransferReceipt';
 import TransactionReceipt from 'Receipts/TransactionReceipt';
 import ActionConfirmationModal from 'components/DashBoard/User/MovementsTable/GeneralUse/TransferConfirmation'
+
+
+const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
+  <button
+    className="noStyle px-0 ps-1"
+    href=""
+    ref={ref}
+    onClick={(e) => {
+      e.preventDefault();
+      onClick(e);
+    }}
+  >
+    {children}
+  </button>
+));
 
 const Movement = ({ content, actions, reloadData }) => {
 
@@ -381,12 +396,16 @@ const Movement = ({ content, actions, reloadData }) => {
     setShowModal(true)
   }
 
+  const transferNote = content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")
+  const clientNote = content?.notes?.find(note => note.noteType === "CLIENT_NOTE")
+  const denialMotive = content?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
+
   return (
     <tr>
       <td className="tableId">
         {content.id}
         {
-          !!(content?.userEmail || content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")) &&
+          !!(content?.userEmail || !!(transferNote) || !!(clientNote) || !!(denialMotive)) &&
           <OverlayTrigger
             show={showClick || showHover}
             placement="right"
@@ -409,10 +428,22 @@ const Movement = ({ content, actions, reloadData }) => {
                     <span className="text-nowrap">{content?.userEmail}</span>
                   </div>
                 }
-                {!!(content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")) &&
+                {!!(transferNote) &&
                   <div>
                     {t('Transfer note')}:<br />
-                    <span className="text-nowrap">"{content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE").text}"</span>
+                    <span className="text-nowrap">"{transferNote.text}"</span>
+                  </div>
+                }
+                {!!(clientNote) &&
+                  <div>
+                    {t('Personal note')}:<br />
+                    <span className="text-nowrap">"{clientNote.text}"</span>
+                  </div>
+                }
+                {!!(denialMotive) &&
+                  <div>
+                    {t('Denial motive')}:<br />
+                    <span className="text-nowrap">"{denialMotive.text}"</span>
                   </div>
                 }
               </Tooltip>
@@ -424,50 +455,61 @@ const Movement = ({ content, actions, reloadData }) => {
                 onClick={() => setShowClick(prevState => !prevState)}
                 onMouseEnter={() => setShowHover(true)}
                 onMouseLeave={() => setShowHover(false)}
-                type="button" className="noStyle"  ><FontAwesomeIcon icon={faInfoCircle} /></button>
+                type="button" className="noStyle pe-0 ps-1"  ><FontAwesomeIcon icon={faInfoCircle} /></button>
             </span>
           </OverlayTrigger>
         }
         {
-          GeneratingPDF ?
-            <Spinner animation="border" size="sm" />
+          (
+            ((content.fixedDepositId) && hasPermission("FIXED_DEPOSIT_VIEW")) ||
+            ((content.transferId) && (hasPermission("TRANSFER_APPROVE") || hasPermission("TRANSFER_DENY") || hasPermission("TRANSFER_GENERATE"))) ||
+            ((content.fundId) && (hasSellPermission(content.fundId) || hasBuyPermission(content.fundId)))
+          ) ?
+            <Dropdown className='d-inline' >
+              <Dropdown.Toggle disabled={GeneratingPDF || altGeneratingPDF}
+                as={CustomToggle} id="dropdown-custom-components">
+                {
+                  GeneratingPDF || altGeneratingPDF ?
+                    <Spinner animation="border" size="sm" />
+                    :
+                    <>
+                      <FontAwesomeIcon icon={faFilePdf} />
+                    </>
+                }
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item onClick={() => renderAndDownloadPDF()}>
+                  {t("Movement receipt")}
+                </Dropdown.Item>
+                {
+                  ((content.fixedDepositId) && hasPermission("FIXED_DEPOSIT_VIEW")) &&
+                  <Dropdown.Item onClick={() => getFixedDepositPDF()}>
+                    {t("Fixed deposit receipt")}
+                  </Dropdown.Item>
+                }
+                {
+                  ((content.transferId) && (hasPermission("TRANSFER_APPROVE") || hasPermission("TRANSFER_DENY") || hasPermission("TRANSFER_GENERATE"))) &&
+                  <Dropdown.Item onClick={() => getTransferPDF()}>
+                    {t("Transfer receipt")}
+                  </Dropdown.Item>
+                }
+                {
+                  ((content.fundId) && (hasSellPermission(content.fundId) || hasBuyPermission(content.fundId))) &&
+                  <Dropdown.Item onClick={() => getTransactionPDF()}>
+                    {t("Transaction receipt")}
+                  </Dropdown.Item>
+                }
+              </Dropdown.Menu>
+            </Dropdown>
             :
-            <button title={t("Movement receipt")} className='noStyle py-0' style={{ cursor: "pointer" }} onClick={() => renderAndDownloadPDF()}>
-              <FontAwesomeIcon icon={faFilePdf} />
+            <button disabled={GeneratingPDF} className="noStyle ps-1 pe-0" style={{ cursor: "pointer" }} onClick={() => renderAndDownloadPDF()}>
+              {
+                GeneratingPDF ?
+                  <Spinner animation="border" size="sm" />
+                  :
+                  <FontAwesomeIcon icon={faFilePdf} />
+              }
             </button>
-        }
-        {
-          ((content.fixedDepositId) && hasPermission("FIXED_DEPOSIT_VIEW")) &&
-          (
-            altGeneratingPDF ?
-              <Spinner animation="border" size="sm" />
-              :
-              <button title={t("Fixed deposit receipt")} className='noStyle py-0' style={{ cursor: "pointer" }} onClick={() => getFixedDepositPDF()}>
-                <FontAwesomeIcon icon={faFilePdf} />
-              </button>
-          )
-        }
-        {
-          ((content.transferId) && (hasPermission("TRANSFER_APPROVE") || hasPermission("TRANSFER_DENY") || hasPermission("TRANSFER_GENERATE"))) &&
-          (
-            altGeneratingPDF ?
-              <Spinner animation="border" size="sm" />
-              :
-              <button title={t("Transfer receipt")} className='noStyle py-0' style={{ cursor: "pointer" }} onClick={() => getTransferPDF()}>
-                <FontAwesomeIcon icon={faFilePdf} />
-              </button>
-          )
-        }
-        {
-          ((content.fundId) && (hasSellPermission(content.fundId) || hasBuyPermission(content.fundId))) &&
-          (
-            altGeneratingPDF ?
-              <Spinner animation="border" size="sm" />
-              :
-              <button title={t("Transaction receipt")} className='noStyle py-0' style={{ cursor: "pointer" }} onClick={() => getTransactionPDF()}>
-                <FontAwesomeIcon icon={faFilePdf} />
-              </button>
-          )
         }
       </td>
       <td className="tableDate">

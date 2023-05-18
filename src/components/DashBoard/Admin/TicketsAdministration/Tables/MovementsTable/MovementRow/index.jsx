@@ -110,6 +110,11 @@ const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, coul
     const [showClick, setShowClick] = useState(false)
     const [showHover, setShowHover] = useState(false)
 
+    const transferNote = Movement?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")
+    const clientNote = Movement?.notes?.find(note => note.noteType === "CLIENT_NOTE")
+    const denialMotive = Movement?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
+    const adminNote = Movement?.notes?.find(note => note.noteType === "ADMIN_NOTE")
+
     return (
         <>
             <div className='mobileMovement'>
@@ -117,43 +122,6 @@ const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, coul
                     <span className="h5 mb-0 me-1 me-md-2">
                         {t("Movement")}&nbsp;#{Movement.id}
                     </span>
-                    {
-                        !!(Movement?.userEmail) &&
-                        <div className='px-1 px-md-2' style={{ borderLeft: "1px solid lightgray", borderRight: "1px solid lightgray" }}>
-                            <OverlayTrigger
-                                show={showClick || showHover}
-                                placement="right"
-                                delay={{ show: 250, hide: 400 }}
-                                popperConfig={{
-                                    modifiers: [
-                                        {
-                                            name: 'offset',
-                                            options: {
-                                                offset: [0, 0],
-                                            },
-                                        },
-                                    ],
-                                }}
-                                overlay={
-                                    <Tooltip className="mailTooltip" id="more-units-tooltip">
-                                        <div>
-                                            {t('Operation performed by')}:<br />
-                                            <span className="text-nowrap">{Movement?.userEmail}</span>
-                                        </div>
-                                    </Tooltip>
-                                }
-                            >
-                                <span>
-                                    <button
-                                        onBlur={() => setShowClick(false)}
-                                        onClick={() => setShowClick(prevState => !prevState)}
-                                        onMouseEnter={() => setShowHover(true)}
-                                        onMouseLeave={() => setShowHover(false)}
-                                        type="button" className="noStyle"  ><FontAwesomeIcon icon={faInfoCircle} /></button>
-                                </span>
-                            </OverlayTrigger>
-                        </div>
-                    }
                     <div className='me-auto px-1 px-md-2' style={{ borderLeft: "1px solid lightgray", borderRight: "1px solid lightgray" }}>
                         <span className="d-none d-md-inline">{t("Client")}:&nbsp;</span>
                         {
@@ -191,6 +159,69 @@ const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, coul
                         </div>
                     }
                     <Badge className='ms-1 ms-md-2' bg={status()?.bg}>{t(status().text)}</Badge>
+                    {
+                        !!(Movement?.userEmail || !!(transferNote) || !!(clientNote) || !!(denialMotive) || !!(adminNote)) &&
+                        <div>
+                            <OverlayTrigger
+                                show={showClick || showHover}
+                                placement="auto"
+                                delay={{ show: 250, hide: 400 }}
+                                popperConfig={{
+                                    modifiers: [
+                                        {
+                                            name: 'offset',
+                                            options: {
+                                                offset: [0, 0],
+                                            },
+                                        },
+                                    ],
+                                }}
+                                overlay={
+                                    <Tooltip className="mailTooltip" id="more-units-tooltip">
+                                        {!!(Movement.userEmail) &&
+                                            <div>
+                                                {t('Operation performed by')}:<br />
+                                                <span className="text-nowrap">{Movement?.userEmail}</span>
+                                            </div>
+                                        }
+                                        {!!(transferNote) &&
+                                            <div>
+                                                {t('Transfer note')}:<br />
+                                                <span className="text-nowrap">"{transferNote.text}"</span>
+                                            </div>
+                                        }
+                                        {!!(clientNote) &&
+                                            <div>
+                                                {t('Personal note')}:<br />
+                                                <span className="text-nowrap">"{clientNote.text}"</span>
+                                            </div>
+                                        }
+                                        {!!(denialMotive) &&
+                                            <div>
+                                                {t('Denial motive')}:<br />
+                                                <span className="text-nowrap">"{denialMotive.text}"</span>
+                                            </div>
+                                        }
+                                        {!!(adminNote) &&
+                                            <div>
+                                                {t('Admin note')}:<br />
+                                                <span className="text-nowrap">"{adminNote.text}"</span>
+                                            </div>
+                                        }
+                                    </Tooltip>
+                                }
+                            >
+                                <span>
+                                    <button
+                                        onBlur={() => setShowClick(false)}
+                                        onClick={() => setShowClick(prevState => !prevState)}
+                                        onMouseEnter={() => setShowHover(true)}
+                                        onMouseLeave={() => setShowHover(false)}
+                                        type="button" className="noStyle"  ><FontAwesomeIcon icon={faInfoCircle} /></button>
+                                </span>
+                            </OverlayTrigger>
+                        </div>
+                    }
                 </div >
 
                 <div className='w-100 d-flex' style={{ borderBottom: "1px solid lightgray" }} />

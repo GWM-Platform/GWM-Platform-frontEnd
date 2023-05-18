@@ -4,16 +4,17 @@ import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 import { DashBoardContext } from 'context/DashBoardContext';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
-import { Spinner } from 'react-bootstrap';
+import { OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf } from '@fortawesome/free-regular-svg-icons';
 import ReactPDF from '@react-pdf/renderer';
 import TransactionReceipt from 'Receipts/TransactionReceipt';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 const Movement = ({ content }) => {
   var momentDate = moment(content.createdAt);
   const { t } = useTranslation();
-  const { getMoveStateById,AccountSelected } = useContext(DashBoardContext)
+  const { getMoveStateById, AccountSelected } = useContext(DashBoardContext)
 
   const [GeneratingPDF, setGeneratingPDF] = useState(false)
 
@@ -38,17 +39,26 @@ const Movement = ({ content }) => {
     setGeneratingPDF(false)
   }
 
+  const [showClick, setShowClick] = useState(false)
+  const [showHover, setShowHover] = useState(false)
+
+
+
+  const denialMotive = content?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
+
+
+
   return (
     <div className='mobileMovement'>
       <div className='d-flex justify-content-between'>
         <span >{Math.sign(content.shares) === 1 ? t('Purchase of') : t('Sale of')}&nbsp;
-          <FormattedNumber style={{ fontWeight: "bolder" }} value={Math.abs(content.shares)} prefix="" fixedDecimals={2} />&nbsp;   
+          <FormattedNumber style={{ fontWeight: "bolder" }} value={Math.abs(content.shares)} prefix="" fixedDecimals={2} />&nbsp;
           {t(Math.abs(content.shares) === 1 ? "share" : "shares")}, <FormattedNumber style={{ fontWeight: "bolder" }} value={content.sharePrice} prefix="U$D " fixedDecimals={2} />
           {t(" each")}</span>
         <span className="text-nowrap" >{momentDate.format('L')}</span>
 
       </div>
-    
+
       <button disabled={GeneratingPDF} className="noStyle px-0" style={{ cursor: "pointer" }} onClick={() => renderAndDownloadPDF()}>
         <span>
           {t("Receipt")}&nbsp;
@@ -62,6 +72,50 @@ const Movement = ({ content }) => {
 
         }
       </button>
+
+      {
+        !!(content?.userEmail || !!(denialMotive)) &&
+        <OverlayTrigger
+          show={showClick || showHover}
+          placement="right"
+          delay={{ show: 250, hide: 400 }}
+          popperConfig={{
+            modifiers: [
+              {
+                name: 'offset',
+                options: {
+                  offset: [0, 0],
+                },
+              },
+            ],
+          }}
+          overlay={
+            <Tooltip className="mailTooltip" id="more-units-tooltip">
+              {!!(content.userEmail) &&
+                <div>
+                  {t('Operation performed by')}:<br />
+                  <span className="text-nowrap">{content?.userEmail}</span>
+                </div>
+              }
+              {!!(denialMotive) &&
+                <div>
+                  {t('Denial motive')}:<br />
+                  <span className="text-nowrap">"{denialMotive.text}"</span>
+                </div>
+              }
+            </Tooltip>
+          }
+        >
+          <span>
+            <button
+              onBlur={() => setShowClick(false)}
+              onClick={() => setShowClick(prevState => !prevState)}
+              onMouseEnter={() => setShowHover(true)}
+              onMouseLeave={() => setShowHover(false)}
+              type="button" className="noStyle pe-0 ps-1"  ><FontAwesomeIcon icon={faInfoCircle} /></button>
+          </span>
+        </OverlayTrigger>
+      }
 
       <div className='d-flex justify-content-between'>
 

@@ -102,7 +102,6 @@ const AccountMovements = ({ AccountId, ClientId }) => {
                                                     <thead className="verticalTop tableHeader solid-bg">
                                                         <tr>
                                                             <th className="tableId text-nowrap">{t("Ticket")}</th>
-                                                            <th className="tableId text-nowrap">{t("Details")}</th>
                                                             <th className="tableHeader">{t("Date")}</th>
                                                             <th className="d-none d-sm-table-cell">{t("Status")}</th>
                                                             <th className="tableHeader">{t("Description")}</th>

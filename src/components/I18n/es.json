@@ -933,5 +933,10 @@
   "You have no notifications right now": "No tiene ninguna notificación",
   "cancel": "cancelar",
   "Cancelled": "Cancelada",
-  "cancelled": "cancelado"
+  "cancelled": "cancelado",
+  "Deposit note": "Nota de deposito",
+  "Withdrawal note": "Nota de retiro",
+  "Personal note": "Nota personal",
+  "Denial motive": "Nota de rechazo",
+  "Admin note": "Nota de administrador"
 }

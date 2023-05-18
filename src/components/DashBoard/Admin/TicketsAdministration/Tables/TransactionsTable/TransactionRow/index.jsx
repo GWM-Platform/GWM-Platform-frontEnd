@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icons'
-import { Badge, Spinner } from 'react-bootstrap'
+import { Badge, OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next';
 
 import moment from 'moment';
 import ActionConfirmationModal from './ActionConfirmationModal'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import Decimal from 'decimal.js';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData }) => {
     const { t } = useTranslation();
@@ -112,6 +113,14 @@ const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData })
     const decimalPrice = new Decimal(Transaction.sharePrice)
     const amount = new Decimal(decimalSharesAbs.times(decimalPrice))
 
+    const [showClick, setShowClick] = useState(false)
+    const [showHover, setShowHover] = useState(false)
+
+
+    const transferNote = Transaction?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")
+    const clientNote = Transaction?.notes?.find(note => note.noteType === "CLIENT_NOTE")
+    const denialMotive = Transaction?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
+    const adminNote = Transaction?.notes?.find(note => note.noteType === "ADMIN_NOTE")
     return (
         <>
             <div className='mobileMovement'>
@@ -141,6 +150,69 @@ const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData })
                         </div>
                     }
                     <Badge className='ms-1 ms-md-2' bg={status()?.bg}>{t(status().text)}</Badge>
+                    {
+                        !!(Transaction?.userEmail || !!(transferNote) || !!(clientNote) || !!(denialMotive) || !!(adminNote)) &&
+                        <div>
+                            <OverlayTrigger
+                                show={showClick || showHover}
+                                placement="auto"
+                                delay={{ show: 250, hide: 400 }}
+                                popperConfig={{
+                                    modifiers: [
+                                        {
+                                            name: 'offset',
+                                            options: {
+                                                offset: [0, 0],
+                                            },
+                                        },
+                                    ],
+                                }}
+                                overlay={
+                                    <Tooltip className="mailTooltip" id="more-units-tooltip">
+                                        {!!(Transaction.userEmail) &&
+                                            <div>
+                                                {t('Operation performed by')}:<br />
+                                                <span className="text-nowrap">{Transaction?.userEmail}</span>
+                                            </div>
+                                        }
+                                        {!!(transferNote) &&
+                                            <div>
+                                                {t('Transfer note')}:<br />
+                                                <span className="text-nowrap">"{transferNote.text}"</span>
+                                            </div>
+                                        }
+                                        {!!(clientNote) &&
+                                            <div>
+                                                {t('Personal note')}:<br />
+                                                <span className="text-nowrap">"{clientNote.text}"</span>
+                                            </div>
+                                        }
+                                        {!!(denialMotive) &&
+                                            <div>
+                                                {t('Denial motive')}:<br />
+                                                <span className="text-nowrap">"{denialMotive.text}"</span>
+                                            </div>
+                                        }
+                                        {!!(adminNote) &&
+                                            <div>
+                                                {t('Admin note')}:<br />
+                                                <span className="text-nowrap">"{adminNote.text}"</span>
+                                            </div>
+                                        }
+                                    </Tooltip>
+                                }
+                            >
+                                <span>
+                                    <button
+                                        onBlur={() => setShowClick(false)}
+                                        onClick={() => setShowClick(prevState => !prevState)}
+                                        onMouseEnter={() => setShowHover(true)}
+                                        onMouseLeave={() => setShowHover(false)}
+                                        type="button" className="noStyle"  ><FontAwesomeIcon icon={faInfoCircle} /></button>
+                                </span>
+                            </OverlayTrigger>
+                        </div>
+                    }
                 </div >
 
                 <div className='w-100 d-flex' style={{ borderBottom: "1px solid lightgray" }} />

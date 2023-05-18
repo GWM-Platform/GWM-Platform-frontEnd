@@ -2,14 +2,24 @@ import React, { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faExclamation, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons'
-import { Modal, Button } from 'react-bootstrap'
+import { faExclamation, faCheck, faTimes, faMinusCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
+import { Modal, Button, Form } from 'react-bootstrap'
 import { faCircle } from '@fortawesome/free-regular-svg-icons';
 
 
 const ActionConfirmationModal = ({ movement, setShowModal, action, show, reloadData }) => {
     const { t } = useTranslation();
     const [ActionFetch, setActionFetch] = useState({ fetched: false, fetching: false, valid: false })
+
+    const [NoteActive, setNoteActive] = useState(false)
+
+    const [data, setData] = useState({ note: "" })
+
+    const handleChange = (event) => {
+        let aux = data;
+        aux[event.target.id] = event.target.value;
+        setData(prevState => ({ ...prevState, ...aux }));
+    }
 
     const handleClose = () => {
         setActionFetch({
@@ -35,6 +45,7 @@ const ActionConfirmationModal = ({ movement, setShowModal, action, show, reloadD
 
         const response = await fetch(url, {
             method: 'POST',
+            body: JSON.stringify({ denialMotive: data.note }),
             headers: {
                 Authorization: `Bearer ${token}`,
                 Accept: "*/*",
@@ -96,6 +107,37 @@ const ActionConfirmationModal = ({ movement, setShowModal, action, show, reloadD
                     <h1 className="title"> {t("Are you sure?")}</h1>
                     <h2 className="subTitle">{t("You are about to")} {t(action)} {t("the ticket with the id")} {movement.id}</h2>
                     <h3 className="heading">{t("This action cannot be undone")}</h3>
+                    <div className='px-3 mt-3'>
+                        {
+                            NoteActive ?
+                                <div className="d-flex align-items-center">
+                                    <Form.Control
+                                        placeholder={t("Denial motive")} required
+                                        value={data.note} type="text" id="note" maxLength="250"
+                                        onChange={(e) => { handleChange(e); }}
+                                    />
+
+                                    <button
+                                        type="button"
+                                        onClick={
+                                            () => {
+                                                handleChange({ target: { id: "note", value: "" } })
+                                                setNoteActive(false)
+                                            }
+                                        }
+                                        className="noStyle ms-2" title={t("Remove note")}>
+                                        <FontAwesomeIcon icon={faMinusCircle} />
+                                    </button>
+                                </div>
+                                :
+                                <div style={{ height: "38px" }} className="w-100 d-flex align-items-start">
+                                    <Button type="button" className="ms-auto" size="sm" variant="danger" onClick={() => setNoteActive(true)}>
+                                        <FontAwesomeIcon className="me-1" icon={faPlusCircle} />
+                                        {t("Add note")}
+                                    </Button>
+                                </div>
+                        }
+                    </div>
                 </div>
                 <div className={ActionFetch.fetched && !ActionFetch.fetching ? "show" : "hidden"}>
                     {
@@ -192,6 +234,8 @@ const ActionConfirmationModal = ({ movement, setShowModal, action, show, reloadD
                     <h1 className="title"> {t("Are you sure?")}</h1>
                     <h2 className="subTitle">{t("You are about to")} {t(action)} {t("the ticket with the id")} {t(movement.id)}</h2>
                     <h3 className="heading">{t("This action cannot be undone")}</h3>
+                    <div style={{ height: "38px" }} className="w-100 d-flex align-items-start">
+                    </div>
                 </div>
             </Modal.Body>
 

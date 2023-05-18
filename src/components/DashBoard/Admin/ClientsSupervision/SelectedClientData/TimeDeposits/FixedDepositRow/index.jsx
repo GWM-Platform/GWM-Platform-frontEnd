@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Badge, Spinner } from 'react-bootstrap';
+import { Badge, OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { DashBoardContext } from 'context/DashBoardContext';
 import moment from 'moment';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import { getAnualRate, getDuration, wasEdited } from 'utils/fixedDeposit';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 const FixedDepositRow = ({ Movement }) => {
     const { t } = useTranslation();
@@ -190,6 +192,12 @@ const FixedDepositRow = ({ Movement }) => {
         //eslint-disable-next-line
     }, [])
 
+    const [showClick, setShowClick] = useState(false)
+    const [showHover, setShowHover] = useState(false)
+
+    const denialMotive = Movement?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
+    const adminNote = Movement?.notes?.find(note => note.noteType === "ADMIN_NOTE")
+
     return (
         <>
             <div className='mobileMovement'>
@@ -199,6 +207,54 @@ const FixedDepositRow = ({ Movement }) => {
                         wasEdited(Movement) &&
                         <span className="h5 mb-0 me-1 me-md-2">({t("Preferential *")})</span>}
                     <Badge className='ms-auto' bg={status()?.bg}>{t(status().text)}</Badge>
+                    {
+                        (!!(Movement?.userEmail) | !!(denialMotive) || !!(adminNote)) &&
+                        <OverlayTrigger
+                            show={showClick || showHover}
+                            delay={{ show: 250, hide: 400 }}
+                            popperConfig={{
+                                modifiers: [
+                                    {
+                                        name: 'offset',
+                                        options: {
+                                            offset: [0, 0],
+                                        },
+                                    },
+                                ],
+                            }}
+                            overlay={
+                                <Tooltip className="mailTooltip" id="more-units-tooltip">
+                                    {!!(Movement.userEmail) &&
+                                        <div>
+                                            {t('Operation performed by')}:<br />
+                                            <span className="text-nowrap">{Movement?.userEmail}</span>
+                                        </div>
+                                    }
+                                    {!!(denialMotive) &&
+                                        <div>
+                                            {t('Denial motive')}:<br />
+                                            <span className="text-nowrap">"{denialMotive.text}"</span>
+                                        </div>
+                                    }
+                                    {!!(adminNote) &&
+                                        <div>
+                                            {t('Admin note')}:<br />
+                                            <span className="text-nowrap">"{adminNote.text}"</span>
+                                        </div>
+                                    }
+                                </Tooltip>
+                            }
+                        >
+                            <span>
+                                <button
+                                    onBlur={() => setShowClick(false)}
+                                    onClick={() => setShowClick(prevState => !prevState)}
+                                    onMouseEnter={() => setShowHover(true)}
+                                    onMouseLeave={() => setShowHover(false)}
+                                    type="button" className="noStyle pe-0 ps-1"  ><FontAwesomeIcon icon={faInfoCircle} /></button>
+                            </span>
+                        </OverlayTrigger>
+                    }
                 </div >
                 <div className='w-100 d-flex' style={{ borderBottom: "1px solid lightgray" }} />
 

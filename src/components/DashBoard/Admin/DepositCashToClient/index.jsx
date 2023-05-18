@@ -9,6 +9,8 @@ import CurrencyInput from '@osdiab/react-currency-input-field';
 import { unMaskNumber } from 'utils/unmask';
 import BaseSelect from "react-select";
 import FixRequiredSelect from 'components/DashBoard/GeneralUse/Forms/FixRequiredSelect';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMinusCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
 const DepositCashToClient = () => {
     const { toLogin } = useContext(DashBoardContext)
@@ -25,10 +27,13 @@ const DepositCashToClient = () => {
         {
             amount: "",
             date: moment().format(moment.HTML5_FMT.DATETIME_LOCAL),
-            account: ""
+            account: "",
+            note: ""
         }
     )
     const [validated, setValidated] = useState(true);
+
+    const [NoteActive, setNoteActive] = useState(false)
 
     const token = sessionStorage.getItem('access_token')
     let history = useHistory();
@@ -41,6 +46,7 @@ const DepositCashToClient = () => {
             body: JSON.stringify({
                 amount: parseFloat(data.amount),
                 date: moment(data.date).format(),
+                note: NoteActive ? data.note : undefined
             }),
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -274,8 +280,42 @@ const DepositCashToClient = () => {
                             </Form.Control.Feedback>
                         </InputGroup>
 
-                        <Button disabled={data.amount === "" || data.amount <= 0}
-                            variant="danger" type="submit">{t("Submit")}</Button>
+                        {
+                            NoteActive ?
+                                <div className="d-flex align-items-center mb-3">
+                                    <Form.Control
+                                        placeholder={t("Deposit note")}
+                                        value={data.note} type="text" id="note" maxLength="250"
+                                        onChange={(e) => { handleChange(e); }}
+                                        required
+                                    />
+
+                                    <button
+                                        type="button"
+                                        onClick={
+                                            () => {
+                                                handleChange({ target: { id: "note", value: "" } })
+                                                setNoteActive(false)
+                                            }
+                                        }
+                                        className="noStyle ms-2" title={t("Remove note")}>
+                                        <FontAwesomeIcon icon={faMinusCircle} />
+                                    </button>
+                                </div>
+
+                                :
+                                <div style={{ height: "38px" }} className="mb-3 w-100 d-flex align-items-start">
+                                    <Button type="button" className="ms-auto" size="sm" variant="danger" onClick={() => setNoteActive(true)}>
+                                        <FontAwesomeIcon className="me-1" icon={faPlusCircle} />
+                                        {t("Add note")}
+                                    </Button>
+                                </div>
+                        }
+
+                        <div className='d-flex pb-3'>
+                            <Button className="ms-auto" disabled={data.amount === "" || data.amount <= 0}
+                                variant="danger" type="submit">{t("Submit")}</Button>
+                        </div>
                     </Form>
                 </Col>
             </Row>

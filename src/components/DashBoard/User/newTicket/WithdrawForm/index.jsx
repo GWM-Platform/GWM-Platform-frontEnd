@@ -22,7 +22,7 @@ const WithdrawForm = ({ balanceChanged }) => {
         })
     }, [])
 
-    const [data, setData] = useState({ amount: "" })
+    const [data, setData] = useState({ amount: "", note: "" })
     const [ShowModal, setShowModal] = useState(false)
     const [validated, setValidated] = useState(true);
     const [fetching, setFetching] = useState(false)
@@ -37,7 +37,7 @@ const WithdrawForm = ({ balanceChanged }) => {
         var url = `${process.env.REACT_APP_APIURL}/accounts/${Accounts[0].id}/withdraw`;
         const response = await fetch(url, {
             method: 'POST',
-            body: JSON.stringify({ amount: parseFloat(data.amount) }),
+            body: JSON.stringify({ amount: parseFloat(data.amount), note: data.note }),
             headers: {
                 Authorization: `Bearer ${token}`,
                 Accept: "*/*",
