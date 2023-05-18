@@ -147,7 +147,7 @@ const TimeDeposits = ({ AccountId, ClientId }) => {
                     <Row className='mb-3' >
                         <Col xs="6">
                             <div className="containerHideInfo description">
-                                <span>{t("Balance ($)")}:&nbsp;</span>
+                                <span>{t("Balance (U$S)")}:&nbsp;</span>
                                 <span style={{ fontWeight: "bolder" }}>
                                     <FormattedNumber className={`info`} value={FixedDepositsStats?.content?.balance} prefix="" fixedDecimals={2} />
                                 </span>

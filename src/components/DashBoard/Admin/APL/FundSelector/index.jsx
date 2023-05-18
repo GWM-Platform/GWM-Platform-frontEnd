@@ -1,25 +1,39 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Form } from 'react-bootstrap'
-import { useTranslation } from 'react-i18next';
+import { Col, Row } from 'react-bootstrap'
 
 const FundSelector = ({ SelectedFund, setSelectedFund, Funds }) => {
-    const handleChange = (event) => {
-        setSelectedFund(event.target.value)
-    }
 
-    const { t } = useTranslation()
+    useEffect(() => {
+        setSelectedFund(Funds?.[0].id)
+    }, [Funds, setSelectedFund])
 
     return (
         <>
-            <Form.Select className="my-2" value={SelectedFund} onChange={handleChange} >
-                <option disabled value="">{t("Open this select menu")}</option>
+            <Row className='fund-selector'>
                 {Funds.map((Fund, key) =>
-                    <option key={key} value={key}>
-                        {Fund.name}
-                    </option>
+                    <Col sm="10" md="4" lg="3" xl="3">
+                        <button onClick={() => setSelectedFund(Fund.id)} key={key} className={`noStyle fund-item ${SelectedFund === Fund.id ? "selected" : ""}`}>
+                            <div className='content-container'>
+                                <h7 className="d-flex">
+                                    {Fund.name}
+                                    <div className="fund-icon ms-auto">
+                                        {
+                                            <img alt=""
+                                                onError={({ currentTarget }) => {
+                                                    currentTarget.onerror = null;
+                                                    currentTarget.src = process.env.PUBLIC_URL + '/images/FundsLogos/default.svg';
+                                                }}
+                                                src={Fund.imageUrl ? Fund.imageUrl : process.env.PUBLIC_URL + '/images/FundsLogos/default.svg'} />
+                                        }
+                                    </div>
+                                </h7>
+                            </div>
+                        </button>
+                    </Col>
                 )}
-            </Form.Select>
+
+            </Row>
         </>
     )
 }

@@ -5,8 +5,12 @@ import TransactionsTable from './TransactionsTable';
 import FilterOptions from 'components/DashBoard/GeneralUse/FilterOptions';
 import NoMovements from 'components/DashBoard/GeneralUse/NoMovements';
 import Loading from 'components/DashBoard/GeneralUse/Loading';
+import { useTranslation } from 'react-i18next';
 
 const TransactionFundTable = ({ Id, UsersInfo, AccountInfo }) => {
+
+    const { t } = useTranslation()
+
     const [Transactions, setTransactions] = useState({
         fetching: true,
         fetched: false,
@@ -65,20 +69,21 @@ const TransactionFundTable = ({ Id, UsersInfo, AccountInfo }) => {
 
 
     return (
-        <>
-            <FilterOptions keyword={"transactions"} Fund={Id} setPagination={setPagination} movsPerPage={Pagination.take} total={Transactions.content.total} />
-            {
-                Transactions.fetching || UsersInfo.fetching || AccountInfo.fetching ?
-                    <Loading movements={Pagination.take} />
-                    :
-                    Transactions.content.total > 0 ?
-                        <TransactionsTable
-                            UsersInfo={UsersInfo} AccountInfo={AccountInfo} movements={Pagination.take} Transactions={Transactions} />
+            <div className='transaction-table box-shadow mb-2'>
+                <h1 className="m-0 title pe-2">{t("Movements")}</h1>
+                <FilterOptions keyword={"transactions"} Fund={Id} setPagination={setPagination} movsPerPage={Pagination.take} total={Transactions.content.total} />
+                {
+                    Transactions.fetching || UsersInfo.fetching || AccountInfo.fetching ?
+                        <Loading movements={Pagination.take} />
                         :
-                        <NoMovements movements={Pagination.take} />
-            }
-            <PaginationController PaginationData={Pagination} setPaginationData={setPagination} total={Transactions.content.total} />
-        </>
+                        Transactions.content.total > 0 ?
+                            <TransactionsTable
+                                UsersInfo={UsersInfo} AccountInfo={AccountInfo} movements={Pagination.take} Transactions={Transactions} />
+                            :
+                            <NoMovements movements={Pagination.take} />
+                }
+                <PaginationController PaginationData={Pagination} setPaginationData={setPagination} total={Transactions.content.total} />
+            </div>
     )
 }
 

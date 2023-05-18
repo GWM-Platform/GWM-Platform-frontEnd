@@ -74,7 +74,7 @@ const MobileCard = ({ Fund, Hide, setHide }) => {
                             <div className="d-flex justify-content-between px-0" sm="auto">
                                 <Col className="pe-2">
                                     <div className="containerHideInfo px-0 description">
-                                        <span>{t("Balance ($)")}</span>
+                                        <span>{t("Balance (U$S)")}</span>
                                         <span style={{ fontWeight: "bolder" }}>
                                             :&nbsp;
                                             <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={balanceInCash} prefix="U$D " fixedDecimals={2} />

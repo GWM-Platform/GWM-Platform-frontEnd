@@ -6,6 +6,8 @@ import FundSelector from './FundSelector'
 import FundInfo from './FundInfo'
 import FundTransactionsById from './FundTransactionsById';
 import { DashBoardContext } from 'context/DashBoardContext';
+import GeneralInfo from './FundTransactionsById/GeneralInfo';
+import './index.scss'
 
 const APL = () => {
   const { token } = useContext(DashBoardContext)
@@ -101,22 +103,36 @@ const APL = () => {
     //eslint-disable-next-line
   }, [])
 
+  const FundSelected = Funds?.content?.find(Fund => Fund.id === SelectedFund)
+
   return (
     Funds.fetching ?
       <Loading />
       :
-      <Container className="my-2">
-        <Row className="d-flex justify-content-center">
+      <Container className="my-2 APL">
+        <Row className="d-flex justify-content-center gy-3  py-1">
+          <Col md="12">
+            <GeneralInfo />
+          </Col>
           <Col md="12">
             <FundSelector SelectedFund={SelectedFund} setSelectedFund={setSelectedFund} Funds={Funds.content} />
-            {SelectedFund !== "" ? <FundInfo Fund={Funds.content[SelectedFund]} /> : null}
+          </Col>
+          {
+            FundSelected !== undefined ?
+              <Col md="12">
+                <FundInfo Fund={FundSelected} />
+              </Col>
+              : null
+          }
+          <Col xs="12">
             {
               SelectedFund !== "" ?
-                <FundTransactionsById UsersInfo={UsersInfo} AccountInfo={AccountInfo} Id={Funds.content[SelectedFund].id} />
+                <FundTransactionsById UsersInfo={UsersInfo} AccountInfo={AccountInfo} Id={FundSelected?.id} />
                 :
                 null
             }
           </Col>
+
         </Row>
       </Container>
   )

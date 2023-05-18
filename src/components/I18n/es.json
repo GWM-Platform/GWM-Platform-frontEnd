@@ -257,7 +257,7 @@
   "Available": "Disponibles",
   "in total": "en total",
   "Balance (shares)": "Saldo (cuotapartes)",
-  "Balance ($)": "Saldo ($)",
+  "Balance (U$S)": "Saldo (U$S)",
   "Pending transactions (shares)": "Pendiente de liquidación (cuotapartes)",
   "Status": "Estado",
   "Performance": "Rendimiento",
@@ -449,6 +449,7 @@
   "Your account balance if you approve this transfer": "Saldo de su cuenta si aprueba esta transferencia",
   "transactions": "transacciones",
   "movements": "movimientos",
+  "Movements": "Movimientos",
   "Transfer tickets": "Tickets de transferencias",
   "Transfer ticket": "Tickets de transferencia",
   "transfer ticket": "tickets de transferencia",
@@ -938,5 +939,9 @@
   "Withdrawal note": "Nota de retiro",
   "Personal note": "Nota personal",
   "Denial motive": "Nota de rechazo",
-  "Admin note": "Nota de administrador"
+  "Admin note": "Nota de administrador",
+  "Full Settlement": "liquidación total",
+  "Holding in current accounts + Holding in fixed terms": "Tenencia en cuentas corrientes + Tenencia en plazos fijos",
+  "Holding in current accounts": "Tenencia en cuentas corrientes",
+  "Holding in fixed terms": "Tenencia en plazos fijos"
 }
