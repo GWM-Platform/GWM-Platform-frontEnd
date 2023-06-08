@@ -12,7 +12,7 @@ const FundSelector = ({ SelectedFund, setSelectedFund, Funds }) => {
         <>
             <Row className='fund-selector'>
                 {Funds.map((Fund, key) =>
-                    <Col sm="10" md="4" lg="3" xl="3">
+                    <Col key={Fund.id} sm="10" md="4" lg="3" xl="3">
                         <button onClick={() => setSelectedFund(Fund.id)} key={key} className={`noStyle fund-item ${SelectedFund === Fund.id ? "selected" : ""}`}>
                             <div className='content-container'>
                                 <h7 className="d-flex">

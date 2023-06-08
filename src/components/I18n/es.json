@@ -949,7 +949,13 @@
   "Welcome back!": "¡Bienvenido/a de nuevo!",
   "In order to provide you with a better personalized experience, we would like to request your additional information. Please take a moment to complete the following fields with your personal information. You will have the option to edit this information later from your account settings.": "Para brindarte una mejor experiencia personalizada, nos gustaría solicitar tu información adicional. Por favor, tómate un momento para completar los siguientes campos con tu información personal. Tendrás la opción de editar esta información más tarde desde la configuración de tu cuenta.",
   "Your personal information has been updated successfully": "Su información personal ha sido actualizada con exito",
-  "Personal information updated succesfully":"Información personal actualizada con éxito",
-  "There was an error updating yout personal information":"Hubo un error al actualizar su información personal",
-  "Update Personal Information": "Actualizar Información Personal"
+  "Personal information updated succesfully": "Información personal actualizada con éxito",
+  "There was an error updating yout personal information": "Hubo un error al actualizar su información personal",
+  "Update Personal Information": "Actualizar Información Personal",
+  "Total debt": "Deuda total",
+  "Accounts debt": "Deudas de cuentas corrientes",
+  "Fixed deposits debt": "Deudas de plazos fijos",
+  "Paid proffit":"Interés pagado",
+  "\"{{fund}}\" debt":"Deuda \"{{fund}}\"",
+  "Sum of all fund debts":"Sumatoria de la deuda de los fondos"
 }
