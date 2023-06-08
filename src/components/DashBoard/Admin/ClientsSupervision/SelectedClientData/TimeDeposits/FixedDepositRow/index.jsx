@@ -208,7 +208,7 @@ const FixedDepositRow = ({ Movement }) => {
                         <span className="h5 mb-0 me-1 me-md-2">({t("Preferential *")})</span>}
                     <Badge className='ms-auto' bg={status()?.bg}>{t(status().text)}</Badge>
                     {
-                        (!!(Movement?.userEmail) | !!(denialMotive) || !!(adminNote)) &&
+                        (!!(Movement?.userEmail) || !!(Movement?.userName) || !!(denialMotive) || !!(adminNote)) &&
                         <OverlayTrigger
                             show={showClick || showHover}
                             delay={{ show: 250, hide: 400 }}
@@ -224,10 +224,10 @@ const FixedDepositRow = ({ Movement }) => {
                             }}
                             overlay={
                                 <Tooltip className="mailTooltip" id="more-units-tooltip">
-                                    {!!(Movement.userEmail) &&
+                                    {!!(Movement.userName || Movement?.userEmail) &&
                                         <div>
                                             {t('Operation performed by')}:<br />
-                                            <span className="text-nowrap">{Movement?.userEmail}</span>
+                                            <span className="text-nowrap">{Movement?.userName || Movement?.userEmail}</span>
                                         </div>
                                     }
                                     {!!(denialMotive) &&

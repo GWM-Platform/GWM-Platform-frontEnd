@@ -23,6 +23,7 @@ import moment from 'moment';
 import axios from 'axios';
 import { Provider } from 'react-redux';
 import store from 'ReduxStores/store';
+import SetUserData from 'components/SetUserData';
 
 function App() {
 
@@ -70,6 +71,9 @@ function App() {
                   </Route>
                   <Route exact path="/setPassword">
                     <SetPassword />
+                  </Route>
+                  <Route exact path="/setUserData">
+                    <SetUserData />
                   </Route>
                   <DashBoardProvider>
                     <Route path="/DashBoard">

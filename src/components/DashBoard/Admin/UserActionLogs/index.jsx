@@ -432,6 +432,7 @@ const UserActionLogs = () => {
                                                     <tr>
                                                         <th className="id">{t("Date")}</th>
                                                         <th className="Alias">{t("User email")}</th>
+                                                        <th className="Alias">{t("User name")}</th>
                                                         <th className="Balance">{t("Action")}</th>
                                                         <th className="Balance">{t("Detail")}</th>
                                                     </tr>

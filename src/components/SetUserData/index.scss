@@ -1,0 +1,60 @@
+.setUserData {
+	background-color: transparent;
+	background-repeat: no-repeat;
+	background-size: cover;
+	min-height: 100vh;
+	.languageSelectorContainer {
+		position: absolute;
+		left: 1rem;
+		top: .75rem;
+	}
+	.form-control {
+		border-radius: 30px;
+	}
+	.validation .textRed {
+		color: red;
+	}
+	.validation .textGreen {
+		color: green;
+	}
+	.Card {
+		margin-top: max(10%, 4rem);
+		border-radius: 30px;
+	}
+	.card-body {
+		padding: 1rem 1.25rem;
+	}
+	h1 {
+		margin-top: 0;
+		font-size: 27px;
+	}
+	h2 {
+		font-size: 22px;
+	}
+	h3 {
+		margin-top: 0;
+		font-size: 17px;
+	}
+	.btn {
+		border-radius: 30px;
+	}
+	.result .icon {
+		font-size: 100px;
+		text-align: center;
+		color: green;
+	}
+	.result .label {
+		font-size: 20px;
+		text-align: center;
+	}
+	.collapsed {
+		max-height: 0;
+		overflow-y: hidden;
+		transition: all 1s ease-in-out;
+	}
+	.expanded {
+		max-height: 1000px;
+		overflow-y: hidden;
+		transition: all 1s ease-in-out;
+	}
+}

@@ -98,7 +98,7 @@ const TransferRow = ({ Movement, reloadData, anyWithActions }) => {
                     }
                     <Badge className='ms-1 ms-md-2' bg={status()?.bg}>{t(status().text)}</Badge>
                     {
-                        !!(Movement?.userEmail || !!(transferNote) || !!(clientNote) || !!(denialMotive) || !!(adminNote)) &&
+                        !!(Movement?.userEmail || Movement?.userName || !!(transferNote) || !!(clientNote) || !!(denialMotive) || !!(adminNote)) &&
                         <div>
                             <OverlayTrigger
                                 show={showClick || showHover}
@@ -116,10 +116,10 @@ const TransferRow = ({ Movement, reloadData, anyWithActions }) => {
                                 }}
                                 overlay={
                                     <Tooltip className="mailTooltip" id="more-units-tooltip">
-                                        {!!(Movement.userEmail) &&
+                                        {!!(Movement.userEmail || Movement.userName) &&
                                             <div>
                                                 {t('Operation performed by')}:<br />
-                                                <span className="text-nowrap">{Movement?.userEmail}</span>
+                                                <span className="text-nowrap">{Movement?.userName ||  Movement.userEmail}</span>
                                             </div>
                                         }
                                         {!!(transferNote) &&

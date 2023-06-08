@@ -466,7 +466,7 @@ const Movement = ({ content, reloadData }) => {
             </button>
         }
         {
-          !!(content?.userEmail || content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")) &&
+          !!(content?.userEmail || content?.userName || content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")) &&
           <OverlayTrigger
             show={showClick || showHover}
             placement="bottom"
@@ -483,10 +483,10 @@ const Movement = ({ content, reloadData }) => {
             }}
             overlay={
               <Tooltip className="mailTooltip" id="more-units-tooltip">
-                {!!(content.userEmail) &&
+                {!!(content.userEmail || content?.userName ) &&
                   <div>
                     {t('Operation performed by')}:<br />
-                    <span className="text-nowrap">{content?.userEmail}</span>
+                    <span className="text-nowrap">{content?.userName || content?.userEmail }</span>
                   </div>
                 }
                 {!!(content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")) &&

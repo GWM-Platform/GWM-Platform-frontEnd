@@ -1,11 +1,10 @@
 import { fetchNotifications, reset as notificationsReset } from 'Slices/DashboardUtilities/notificationsSlice';
+import { fetchUser, reset as resetUser, selectUserEmail, selectUserId } from 'Slices/DashboardUtilities/userSlice';
 import axios from 'axios';
 import React, { useReducer, useRef } from 'react'
 import { createContext, useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
-import { userEmail } from 'utils/userEmail';
-
 
 const DashboardToastInitialState = []
 
@@ -28,6 +27,9 @@ export const DashBoardContext = createContext();
 
 export const DashBoardProvider = ({ children }) => {
     const dispatch = useDispatch()
+
+    const userStatus = useSelector(state => state.user.status)
+
     const history = useHistory();
     let location = useLocation()
     const isMountedRef = useRef(null);
@@ -325,6 +327,9 @@ export const DashBoardProvider = ({ children }) => {
 
     useEffect(() => {
         isMountedRef.current = true;
+        const controller = new AbortController()
+        const signal = controller.signal
+
         const toLogin = () => {
             sessionStorage.clear(); history.push(`/login`);
         }
@@ -427,10 +432,18 @@ export const DashBoardProvider = ({ children }) => {
 
         window.addEventListener('resize', handleWindowSizeChange);
         if (token === null) toLogin()
+
+        if (userStatus !== "succeeded") {
+            dispatch(fetchUser(signal))
+        }
+
         getUserData();
+
         transactionsStates()
 
         return () => {
+            dispatch(resetUser())
+            controller.abort()
             isMountedRef.current = false;
             window.removeEventListener('resize', handleWindowSizeChange);
         }
@@ -559,6 +572,7 @@ export const DashBoardProvider = ({ children }) => {
                 }
             });
         }
+
         if (ClientSelected?.id) {
             getPermissions()
         } else {
@@ -586,9 +600,6 @@ export const DashBoardProvider = ({ children }) => {
 
     const hasPermission = (Permission) => ClientPermissions?.content?.permissions?.filter(permission => permission.action === Permission)?.length > 0 || isOwner()
 
-
-
-
     const hasAnySellPermission = () => ClientPermissions?.content?.permissions?.map(permission => permission.action.split('_'))
         ?.filter(actionSplitted => actionSplitted?.includes('SELL') && actionSplitted?.includes('STAKES')).length > 0 || isOwner()
 
@@ -613,6 +624,10 @@ export const DashBoardProvider = ({ children }) => {
             ?.filter(sellPermission => sellPermission?.includes("" + fundId))?.length > 0 ||// Verify that has a sell permission for the fund from parameter
         isOwner()
 
+
+    const userEmail = useSelector(selectUserEmail)
+    const userId = useSelector(selectUserId)
+
     const couldSign = (movement) => {
         const hasPermissionToSign = () => {
             switch (movement.motive) {
@@ -631,7 +646,7 @@ export const DashBoardProvider = ({ children }) => {
             }
         }
         //TODO: integrate outgoing transfer (incoming in transfer in "pending client" state cannot be signed, the sender should do it) 
-        return movement?.userEmail !== userEmail() && hasPermissionToSign()
+        return (userId ? userId !== movement.userId : userEmail ? userEmail !== movement?.userEmail : false) && hasPermissionToSign()
     }
     return <DashBoardContext.Provider
         value={{

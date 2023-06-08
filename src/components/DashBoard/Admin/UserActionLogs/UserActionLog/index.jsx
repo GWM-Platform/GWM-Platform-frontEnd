@@ -13,6 +13,7 @@ const UserActionLog = ({ Log, User, Users, Accounts, Clients }) => {
         <tr>
             <td className="Alias">{moment(Log.createdAt).format('l')} {moment(Log.createdAt).format('LT')}</td>
             <td className="Alias">{User.email}</td>
+            <td className="Alias">{User.firstName || User.lastName ? (User.firstName + " " + User.lastName ): "-"}</td>
             <td className="Alias">{t(Log.eventType)}</td>
             <td className="Alias text-center">
                 <span className="text-center">

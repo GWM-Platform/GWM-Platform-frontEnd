@@ -151,7 +151,7 @@ const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData })
                     }
                     <Badge className='ms-1 ms-md-2' bg={status()?.bg}>{t(status().text)}</Badge>
                     {
-                        !!(Transaction?.userEmail || !!(transferNote) || !!(clientNote) || !!(denialMotive) || !!(adminNote)) &&
+                        !!(Transaction?.userEmail || Transaction?.userName || !!(transferNote) || !!(clientNote) || !!(denialMotive) || !!(adminNote)) &&
                         <div>
                             <OverlayTrigger
                                 show={showClick || showHover}
@@ -169,10 +169,10 @@ const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData })
                                 }}
                                 overlay={
                                     <Tooltip className="mailTooltip" id="more-units-tooltip">
-                                        {!!(Transaction.userEmail) &&
+                                        {!!(Transaction.userEmail || Transaction?.userName) &&
                                             <div>
                                                 {t('Operation performed by')}:<br />
-                                                <span className="text-nowrap">{Transaction?.userEmail}</span>
+                                                <span className="text-nowrap">{Transaction?.userName || Transaction?.userEmail}</span>
                                             </div>
                                         }
                                         {!!(transferNote) &&

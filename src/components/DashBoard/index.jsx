@@ -49,9 +49,11 @@ import NoPermissionOperation from './User/NoPermissionFeedback/NoPermissionOpera
 import Broadcast from './Admin/Broadcast';
 import UserActionLogs from './Admin/UserActionLogs';
 import NotificationsCenter from './GeneralUse/NotificationsCenter';
+import { useSelector } from 'react-redux';
 
 const UserDashBoard = () => {
     axios.defaults.headers.common['Authorization'] = `Bearer ${sessionStorage.getItem("access_token")}`
+    const userStatus = useSelector(state => state.user.status)
 
     const { isMobile, admin, ClientSelected, balanceChanged, setBalanceChanged, setItemSelected, IndexClientSelected, UserClients, ClientPermissions, hasPermission } = useContext(DashBoardContext);
 
@@ -64,7 +66,7 @@ const UserDashBoard = () => {
             {
                 IndexClientSelected >= 0 || admin || UserClients.content.length === 1 ?
                     UserClients.content.length > 0 || admin ?
-                        (ClientSelected.id || admin) && ClientPermissions.fetched ?
+                        (ClientSelected.id || admin) && ClientPermissions.fetched && userStatus === "succeeded" ?
                             <>
                                 <NavInfo NavInfoToggled={NavInfoToggled} />
                                 <NavBar NavInfoToggled={NavInfoToggled} setNavInfoToggled={setNavInfoToggled}

@@ -402,10 +402,10 @@ const Movement = ({ content, actions, reloadData }) => {
 
   return (
     <tr>
-      <td className="tableId">
+      <td className="tableId text-nowrap">
         {content.id}
         {
-          !!(content?.userEmail || !!(transferNote) || !!(clientNote) || !!(denialMotive)) &&
+          !!(content?.userEmail ||content?.userName || !!(transferNote) || !!(clientNote) || !!(denialMotive)) &&
           <OverlayTrigger
             show={showClick || showHover}
             placement="right"
@@ -422,10 +422,10 @@ const Movement = ({ content, actions, reloadData }) => {
             }}
             overlay={
               <Tooltip className="mailTooltip" id="more-units-tooltip">
-                {!!(content.userEmail) &&
+                {!!(content.userEmail || content?.userName) &&
                   <div>
                     {t('Operation performed by')}:<br />
-                    <span className="text-nowrap">{content?.userEmail}</span>
+                    <span className="text-nowrap">{content?.userName || content?.userEmail}</span>
                   </div>
                 }
                 {!!(transferNote) &&

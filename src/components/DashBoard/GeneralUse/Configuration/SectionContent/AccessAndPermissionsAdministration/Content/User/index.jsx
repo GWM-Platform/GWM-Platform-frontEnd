@@ -11,7 +11,7 @@ import { DashBoardContext } from 'context/DashBoardContext'
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icons'
 
 const User = ({ user, permissions, funds, getUsers, users }) => {
-
+    console.log(user)
     const { ClientSelected, toLogin, DashboardToastDispatch, hasPermission } = useContext(DashBoardContext);
     const { t } = useTranslation()
 
@@ -264,7 +264,7 @@ const User = ({ user, permissions, funds, getUsers, users }) => {
                     </h1>
                     <h2 className="email">
                         {t("Email")}:&nbsp;
-                        {user.email}
+                        {user.userName}
                     </h2>
                 </div>
                 <div className="ms-auto">

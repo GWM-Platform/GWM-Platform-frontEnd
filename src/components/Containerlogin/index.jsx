@@ -8,8 +8,13 @@ import { Col, Row, Container } from 'react-bootstrap'
 import FormMobile from './FormMobile';
 import LanguageSelector from 'components/LanguageSelector'
 import axios from 'axios';
+import { setDataFromLogin } from 'Slices/DashboardUtilities/userSlice';
+import { useDispatch } from 'react-redux';
 
 const ContainerLogin = () => {
+
+  const dispatch = useDispatch()
+
   function useQuery() {
     const { search } = useLocation();
 
@@ -31,6 +36,10 @@ const ContainerLogin = () => {
 
   const toSetPassword = () => {
     history.push(`/setPassword`);
+  }
+
+  const toSetUserData = () => {
+    history.push(`/setUserData`);
   }
 
   const [buttonDisabled, setButtonDisabled] = useState(true)
@@ -76,14 +85,16 @@ const ContainerLogin = () => {
 
     if (response.status === 200) {
       const data = await response.json()
+      dispatch(setDataFromLogin({ prevState: {}, ...data }))
       axios.defaults.headers.common['Authorization'] = `Bearer ${data?.access_token}`
       sessionStorage.setItem("access_token", data.access_token)
       sessionStorage.setItem("admin", data.user.isAdmin)
-      sessionStorage.setItem("session_userEmail", data?.user?.email)
       sessionStorage.setItem("session_userId", data.user.id)
 
       if (!data.user.changedPassword && !data.user.isAdmin) {
         toSetPassword()
+      } else if (data?.user?.firstName === null || data?.user?.lastName === null || data?.user?.phone === null || data?.user?.address === null || data?.user?.dni === null) {
+        toSetUserData()
       } else {
         let destination = ""
         if (data.user.isAdmin) {

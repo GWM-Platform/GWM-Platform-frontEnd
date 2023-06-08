@@ -690,6 +690,7 @@
   "Confirm New Password": "Confirmar nueva contraseña",
   "The fields \"New password\" and \"confirm password\" must match": "Los campos \"Nueva contraseña\" y \"Confirmar nueva contraseña\" deben coincidir",
   "Password and authentication": "Autenticación y contraseña",
+  "Personal information": "Información personal",
   "Support": "Soporte",
   "Access and permissions administration": "Administración de acceso y permisos",
   "Information": "Información",
@@ -943,5 +944,12 @@
   "Full Settlement": "liquidación total",
   "Holding in current accounts + Holding in fixed terms": "Tenencia en cuentas corrientes + Tenencia en plazos fijos",
   "Holding in current accounts": "Tenencia en cuentas corrientes",
-  "Holding in fixed terms": "Tenencia en plazos fijos"
+  "Holding in fixed terms": "Tenencia en plazos fijos",
+  "Phone number": "Número de teléfono",
+  "Welcome back!": "¡Bienvenido/a de nuevo!",
+  "In order to provide you with a better personalized experience, we would like to request your additional information. Please take a moment to complete the following fields with your personal information. You will have the option to edit this information later from your account settings.": "Para brindarte una mejor experiencia personalizada, nos gustaría solicitar tu información adicional. Por favor, tómate un momento para completar los siguientes campos con tu información personal. Tendrás la opción de editar esta información más tarde desde la configuración de tu cuenta.",
+  "Your personal information has been updated successfully": "Su información personal ha sido actualizada con exito",
+  "Personal information updated succesfully":"Información personal actualizada con éxito",
+  "There was an error updating yout personal information":"Hubo un error al actualizar su información personal",
+  "Update Personal Information": "Actualizar Información Personal"
 }

@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 import AccessAndPermissionsAdministration from './SectionContent/AccessAndPermissionsAdministration';
 import Documents from './SectionContent/Documents';
 import ClientConfiguration from './SectionContent/ClientConfiguration';
+import PersonalInformation from './SectionContent/PersonalInformation';
 
 const Configuration = ({ admin = false }) => {
   const { hasPermission, isMobile } = useContext(DashBoardContext)
@@ -33,6 +34,7 @@ const Configuration = ({ admin = false }) => {
   const contentByName =
   {
     passwordandauthentication: <PasswordAndAuthentication desiredSubSection={subSectionQuery} />,
+    personalinformation: <PersonalInformation desiredSubSection={subSectionQuery} />,
     ...(admin ?
       {}
       :

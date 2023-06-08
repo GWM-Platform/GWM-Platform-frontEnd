@@ -15,7 +15,7 @@ const TransactionRow = ({ transaction }) => {
   const { getMoveStateById } = useContext(DashBoardContext)
 
   Decimal.set({ precision: 100 })
-  
+
   const [showClick, setShowClick] = useState(false)
   const [showHover, setShowHover] = useState(false)
 
@@ -28,13 +28,13 @@ const TransactionRow = ({ transaction }) => {
 
   const denialMotive = transaction?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
   const adminNote = transaction?.notes?.find(note => note.noteType === "ADMIN_NOTE")
-  
+
   return (
     <tr>
-      <td className="tableId">
+      <td className="tableId text-nowrap">
         {transaction.id}
         {
-          (!!(transaction?.userEmail)  || !!(denialMotive) || !!(adminNote)) &&
+          (!!(transaction?.userEmail) || !!(transaction?.userName) || !!(denialMotive) || !!(adminNote)) &&
           <OverlayTrigger
             show={showClick || showHover}
             placement="right"
@@ -51,10 +51,10 @@ const TransactionRow = ({ transaction }) => {
             }}
             overlay={
               <Tooltip className="mailTooltip" id="more-units-tooltip">
-                {!!(transaction.userEmail) &&
+                {!!(transaction.userEmail || transaction.userName) &&
                   <div>
                     {t('Operation performed by')}:<br />
-                    <span className="text-nowrap">{transaction?.userEmail}</span>
+                    <span className="text-nowrap">{transaction?.userName || transaction.userEmail}</span>
                   </div>
                 }
                 {!!(denialMotive) &&

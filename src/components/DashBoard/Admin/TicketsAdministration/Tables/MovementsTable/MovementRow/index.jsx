@@ -8,7 +8,8 @@ import moment from 'moment';
 import ActionConfirmationModal from './ActionConfirmationModal'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import { userEmail } from 'utils/userEmail';
+import { selectUserEmail, selectUserId } from 'Slices/DashboardUtilities/userSlice';
+import { useSelector } from 'react-redux';
 
 const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, couldLiquidate }) => {
 
@@ -115,6 +116,9 @@ const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, coul
     const denialMotive = Movement?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
     const adminNote = Movement?.notes?.find(note => note.noteType === "ADMIN_NOTE")
 
+    const userEmail = useSelector(selectUserEmail)
+    const userId = useSelector(selectUserId)
+
     return (
         <>
             <div className='mobileMovement'>
@@ -146,7 +150,7 @@ const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, coul
                                 !!(!isTransferMovement()) &&
                                 <>
                                     {
-                                        (userEmail() !== Movement?.userEmail) &&
+                                        (userId ? userId !== Movement.userId : userEmail ? userEmail !== Movement?.userEmail : false) &&
                                         <div className="iconContainer green me-1">
                                             <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => { launchModalConfirmation("approve") }} />
                                         </div>
@@ -160,7 +164,7 @@ const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, coul
                     }
                     <Badge className='ms-1 ms-md-2' bg={status()?.bg}>{t(status().text)}</Badge>
                     {
-                        !!(Movement?.userEmail || !!(transferNote) || !!(clientNote) || !!(denialMotive) || !!(adminNote)) &&
+                        !!(Movement?.userEmail || Movement.userName || !!(transferNote) || !!(clientNote) || !!(denialMotive) || !!(adminNote)) &&
                         <div>
                             <OverlayTrigger
                                 show={showClick || showHover}
@@ -178,10 +182,10 @@ const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, coul
                                 }}
                                 overlay={
                                     <Tooltip className="mailTooltip" id="more-units-tooltip">
-                                        {!!(Movement.userEmail) &&
+                                        {!!(Movement?.userEmail || Movement?.userName) &&
                                             <div>
                                                 {t('Operation performed by')}:<br />
-                                                <span className="text-nowrap">{Movement?.userEmail}</span>
+                                                <span className="text-nowrap">{Movement?.userName || Movement?.userEmail}</span>
                                             </div>
                                         }
                                         {!!(transferNote) &&

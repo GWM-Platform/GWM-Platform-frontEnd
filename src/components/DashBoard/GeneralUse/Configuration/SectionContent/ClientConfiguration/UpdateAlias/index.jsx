@@ -12,8 +12,6 @@ const UpdateAlias = ({ scrollIntoView }) => {
   const { toLogin, AccountSelected, setAccountSelected } = useContext(DashBoardContext)
   const isMountedRef = useRef(null)
 
-  console.log(AccountSelected)
-
   const [Patch, setPatch] = useState({ fetching: false, fetched: false, success: false })
 
   const { t } = useTranslation()

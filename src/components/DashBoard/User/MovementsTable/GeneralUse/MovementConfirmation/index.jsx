@@ -96,7 +96,7 @@ const MovementConfirmation = ({ movement, setShowModal, action, show, reloadData
                     </strong>
                 </li>
                 <li className="listedInfo">
-                    {t('Performed by')}: <strong className="emphasis text-nowrap">{movement?.userEmail}</strong>
+                    {t('Performed by')}: <strong className="emphasis text-nowrap">{movement?.userName || movement?.userEmail }</strong>
                 </li>
             </ul>
             <h3 className="heading">{t("This action cannot be undone")}</h3>

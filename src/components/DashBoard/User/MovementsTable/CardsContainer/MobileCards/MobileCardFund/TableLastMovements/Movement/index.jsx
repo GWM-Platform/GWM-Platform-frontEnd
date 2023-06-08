@@ -74,7 +74,7 @@ const Movement = ({ content }) => {
       </button>
 
       {
-        !!(content?.userEmail || !!(denialMotive)) &&
+        !!(content?.userEmail || content?.userName || !!(denialMotive)) &&
         <OverlayTrigger
           show={showClick || showHover}
           placement="right"
@@ -91,10 +91,10 @@ const Movement = ({ content }) => {
           }}
           overlay={
             <Tooltip className="mailTooltip" id="more-units-tooltip">
-              {!!(content.userEmail) &&
+              {!!(content.userEmail || content?.userName) &&
                 <div>
                   {t('Operation performed by')}:<br />
-                  <span className="text-nowrap">{content?.userEmail}</span>
+                  <span className="text-nowrap">{content?.userName || content?.userEmail}</span>
                 </div>
               }
               {!!(denialMotive) &&

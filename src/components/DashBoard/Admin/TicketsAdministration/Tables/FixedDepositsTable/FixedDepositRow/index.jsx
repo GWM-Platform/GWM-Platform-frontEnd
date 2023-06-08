@@ -279,7 +279,7 @@ const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
                     }
                     <Badge className='ms-1 ms-md-2' bg={status()?.bg}>{t(status().text)}</Badge>
                     {
-                        (!!(Movement?.userEmail) | !!(denialMotive) || !!(adminNote)) &&
+                        (!!(Movement?.userName) || !!(Movement?.userEmail) || !!(denialMotive) || !!(adminNote)) &&
                         <OverlayTrigger
                             show={showClick || showHover}
                             placement='auto'
@@ -296,10 +296,10 @@ const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
                             }}
                             overlay={
                                 <Tooltip className="mailTooltip" id="more-units-tooltip">
-                                    {!!(Movement.userEmail) &&
+                                    {!!(Movement?.userEmail || Movement.userName) &&
                                         <div>
                                             {t('Operation performed by')}:<br />
-                                            <span className="text-nowrap">{Movement?.userEmail}</span>
+                                            <span className="text-nowrap">{Movement?.userName || Movement?.userEmail}</span>
                                         </div>
                                     }
                                     {!!(denialMotive) &&

@@ -29,6 +29,8 @@ const SectionsSelector = ({ SectionSelected, selectSection, TabActive, setTabAct
                 <div className="SectionGroup">
                     <Section setTabActive={setTabActive} SectionSelected={SectionSelected}
                         selectSection={selectSection} title={'Password and authentication'} icon={faShieldAlt} enabled />
+                    <Section setTabActive={setTabActive} SectionSelected={SectionSelected}
+                        selectSection={selectSection} title={'Personal information'} icon={faAddressCard} enabled />
                     {
                         !!(!admin && (hasPermission('VIEW_ACCOUNT') && hasPermission('EDIT_CLIENT'))) &&
                         <Section setTabActive={setTabActive} SectionSelected={SectionSelected}
@@ -44,7 +46,7 @@ const SectionsSelector = ({ SectionSelected, selectSection, TabActive, setTabAct
                         <Section setTabActive={setTabActive} SectionSelected={SectionSelected}
                             selectSection={selectSection} title={'Documents'} icon={faFile} enabled />
                     }
-                    
+
                 </div>
             </div>
 

@@ -58,7 +58,7 @@ const Transfer = ({ content, actions, getTransfers }) => {
 
   return (
     <tr>
-      <td className="tableId">
+      <td className="tableId text-nowrap">
         {content.id}
         {
           GeneratingPDF ?

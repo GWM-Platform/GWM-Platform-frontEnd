@@ -9,7 +9,7 @@ import { useContext } from 'react';
 const RateData = ({ data, handleChange, calculateProfit, fetching, minRate, maxRate }) => {
     const { t } = useTranslation();
     const { Balance } = useContext(DashBoardContext);
-    console.log(fetching)
+
     return (
         <Accordion.Item eventKey="0">
             <Accordion.Header>

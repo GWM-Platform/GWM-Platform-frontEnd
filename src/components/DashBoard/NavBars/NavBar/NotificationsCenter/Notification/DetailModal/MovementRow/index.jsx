@@ -70,7 +70,7 @@ const MovementRow = ({ Movement }) => {
             {t("Movement")}&nbsp;#{Movement.id}
           </span>
           {
-            !!(Movement?.userEmail) &&
+            !!(Movement?.userEmail || Movement?.userName) &&
             <div className='px-1 px-md-2' style={{ borderLeft: "1px solid lightgray", borderRight: "1px solid lightgray" }}>
               <OverlayTrigger
                 show={showClick || showHover}
@@ -90,7 +90,7 @@ const MovementRow = ({ Movement }) => {
                   <Tooltip className="mailTooltip" id="more-units-tooltip">
                     <div>
                       {t('Operation performed by')}:<br />
-                      <span className="text-nowrap">{Movement?.userEmail}</span>
+                      <span className="text-nowrap">{Movement?.userName || Movement?.userEmail}</span>
                     </div>
                   </Tooltip>
                 }
@@ -109,7 +109,7 @@ const MovementRow = ({ Movement }) => {
 
           <Badge className='ms-auto' bg={status()?.bg}>{t(status()?.text)}</Badge>
           {
-            (!!(Movement?.userEmail) || !!(transferNote) || !!(clientNote) || !!(denialMotive) || !!(adminNote)) &&
+            (!!(Movement?.userEmail) || !!(Movement?.userName) || !!(transferNote) || !!(clientNote) || !!(denialMotive) || !!(adminNote)) &&
             <OverlayTrigger
               show={showClick || showHover}
               placement="right"
@@ -126,10 +126,10 @@ const MovementRow = ({ Movement }) => {
               }}
               overlay={
                 <Tooltip className="mailTooltip" id="more-units-tooltip">
-                  {!!(Movement.userEmail) &&
+                  {!!(Movement.userEmail || Movement?.userName) &&
                     <div>
                       {t('Operation performed by')}:<br />
-                      <span className="text-nowrap">{Movement?.userEmail}</span>
+                      <span className="text-nowrap">{Movement?.userEmail || Movement?.userName}</span>
                     </div>
                   }
                   {!!(transferNote) &&

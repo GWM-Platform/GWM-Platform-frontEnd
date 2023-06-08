@@ -89,6 +89,13 @@ const UserItem = ({ ownersAmount, client, user, getUsers }) => {
                     {t("Email")}:&nbsp;
                     {user.email}
                 </h2>
+                {
+                    (user.firstName || user.lastName) &&
+                    <h2 className="email">
+                        {t("Name")}:&nbsp;
+                        {user.firstName} {user.lastName}
+                    </h2>
+                }
             </div>
 
             <div className="ms-auto">
