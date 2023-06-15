@@ -287,6 +287,7 @@
   "Concept": "Concepto",
   "Funds": "Fondos",
   "Actual Value in cash of your holding": "Valor en efectivo de su tenencia",
+  "CASH": "Efectivo",
   "shares in possession": "Cuotapartes en posesión",
   "FeePart price (Now)": "Valor de la cuotaparte (Ahora)",
   "Purchase of": "Compra de",
@@ -957,6 +958,7 @@
   "Total debt": "Deuda total",
   "Accounts debt": "Deudas de cuentas corrientes",
   "Fixed deposits debt": "Deudas de plazos fijos",
+  "Fixed deposits": "Plazos fijos",
   "Paid proffit": "Interés pagado",
   "\"{{fund}}\" debt": "Deuda \"{{fund}}\"",
   "Sum of all fund debts": "Sumatoria de la deuda de los fondos",
@@ -966,5 +968,8 @@
   "Not active": "No activo",
   "Resend activation email": "Reenviar email de activación",
   "Activation email successfully resent": "Email de activación reenviado con éxito",
-  "There was an error resending the activation email": "Hubo un error al reenviar el correo electrónico de activación"
+  "There was an error resending the activation email": "Hubo un error al reenviar el correo electrónico de activación",
+  "Fixed deposit debt as of today": "Deudas de plazos fijos a hoy",
+  "Fixed deposit debt at closing": "Deudas de plazos fijos al cierre",
+  "Monthly debt":"Deuda mensual"
 }

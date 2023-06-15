@@ -6,11 +6,15 @@ import FundSelector from './FundSelector'
 import FundInfo from './FundInfo'
 import FundTransactionsById from './FundTransactionsById';
 import { DashBoardContext } from 'context/DashBoardContext';
-import GeneralInfo from './FundTransactionsById/GeneralInfo';
+import GeneralInfo from './GeneralInfo';
 import './index.scss'
+import FixedDepositInfo from './FixedDepositInfo';
+import FixedDepositsGraphic from './FixedDepositsGraphic';
 
 const APL = () => {
   const { token } = useContext(DashBoardContext)
+
+  const [fullSettlement, setFullSettlement] = useState({ fetching: false, debt: {} })
 
   const [Funds, setFunds] = useState({ fetching: true, fetched: false, content: [] })
   const [SelectedFund, setSelectedFund] = useState("")
@@ -112,27 +116,37 @@ const APL = () => {
       <Container className="my-2 APL">
         <Row className="d-flex justify-content-center gy-3  py-1">
           <Col md="12">
-            <GeneralInfo />
+            <GeneralInfo fullSettlement={fullSettlement} setFullSettlement={setFullSettlement} />
           </Col>
           <Col md="12">
             <FundSelector SelectedFund={SelectedFund} setSelectedFund={setSelectedFund} Funds={Funds.content} />
           </Col>
           {
-            FundSelected !== undefined ?
-              <Col md="12">
-                <FundInfo Fund={FundSelected} />
-              </Col>
-              : null
-          }
-          <Col xs="12">
-            {
-              SelectedFund !== "" ?
-                <FundTransactionsById UsersInfo={UsersInfo} AccountInfo={AccountInfo} Id={FundSelected?.id} />
+            SelectedFund !== "" ?
+              SelectedFund === "fixed-deposit" ?
+                <Col md="12">
+                  <FixedDepositInfo fullSettlement={fullSettlement} Fund={FundSelected} />
+                </Col>
                 :
-                null
-            }
-          </Col>
-
+                <Col md="12">
+                  <FundInfo Fund={FundSelected} />
+                </Col>
+              :
+              null
+          }
+          {
+            SelectedFund !== "" ?
+              SelectedFund === "fixed-deposit" ?
+                <Col md="12">
+                  <FixedDepositsGraphic data={fullSettlement?.debt?.fixedDeposits?.graphicData} />
+                </Col>
+                :
+                <Col md="12">
+                  <FundTransactionsById UsersInfo={UsersInfo} AccountInfo={AccountInfo} Id={FundSelected?.id} />
+                </Col>
+              :
+              null
+          }
         </Row>
       </Container>
   )

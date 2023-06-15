@@ -2,14 +2,14 @@ import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import FormattedNumber from "components/DashBoard/GeneralUse/FormattedNumber";
+import Decimal from "decimal.js";
 import React, { useEffect, useState } from "react";
 import { Col, OverlayTrigger, Row, Spinner, Tooltip } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 
-const GeneralInfo = () => {
+const GeneralInfo = ({ fullSettlement, setFullSettlement }) => {
     const { t } = useTranslation()
 
-    const [fullSettlement, setFullSettlement] = useState({ fetching: false, debt: {} })
 
     const [showClick, setShowClick] = useState(false)
     const [showHover, setShowHover] = useState(false)
@@ -59,6 +59,10 @@ const GeneralInfo = () => {
             , 0)
     }
 
+    const fixedDepositAtClose = () => {
+        return (fullSettlement?.debt?.fixedDeposits?.graphicData?.reduce((acumulator, monthlyData) => Decimal(acumulator).plus(monthlyData.debt).toNumber(), 0))
+    }
+
     return (
         <div className="general-info box-shadow">
             <h1 className="mt-0">
@@ -69,11 +73,11 @@ const GeneralInfo = () => {
                     <div style={{ borderBottom: "1px solid lightgrey" }} />
                 </Col>
                 <h2 className="mb-2">
-                    {t("Cash")}
+                    {t("CASH")}
                 </h2>
                 <Col xs="12">
                     <h6 className="mb-0">
-                        {t("Total debt")}
+                        {t("Total debt")} ({t("CASH")})
                         <OverlayTrigger
                             show={showClick || showHover}
                             placement="right"
@@ -117,7 +121,7 @@ const GeneralInfo = () => {
                 </Col>
                 <Col xs="auto">
                     <h6 className="mb-0">
-                        {t("Fixed deposits debt")}
+                        {t("Fixed deposit debt as of today")}
                     </h6>
                     <h4 className="mt-0 mb-0">
                         {
@@ -136,7 +140,19 @@ const GeneralInfo = () => {
                                 <FormattedNumber value={fullSettlement?.debt?.fixedDeposits?.payedProfit} prefix="U$D " fixedDecimals={2} />
                         }
                     </h6>
-
+                </Col>
+                <Col xs="auto">
+                    <h6 className="mb-0">
+                        {t("Fixed deposit debt at closing")}
+                    </h6>
+                    <h4 className="mt-0 mb-0">
+                        {
+                            fullSettlement.fetching ?
+                                <Spinner animation="border" size="sm" />
+                                :
+                                <FormattedNumber value={fixedDepositAtClose()} prefix="U$D " fixedDecimals={2} />
+                        }
+                    </h4>
                 </Col>
                 <Col xs="auto">
                     <h6 className="mb-0">
@@ -164,7 +180,7 @@ const GeneralInfo = () => {
                     </h2>
                     <Col xs="12">
                         <h6 className="mb-0">
-                            {t("Total debt")}
+                            {t("Total debt")} ({t("Funds")})
                             <OverlayTrigger
                                 show={showFundClick || showFundHover}
                                 placement="right"
@@ -207,7 +223,7 @@ const GeneralInfo = () => {
                     {
                         Object.keys(fullSettlement.debt.transactions).map(
                             fund =>
-                                <Col xs="auto">
+                                <Col xs="auto" key={fund}>
                                     <h6 className="mb-0">
                                         {t("\"{{fund}}\" debt", { fund })}
                                     </h6>
