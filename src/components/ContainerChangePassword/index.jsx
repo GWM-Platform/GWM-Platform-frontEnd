@@ -141,7 +141,7 @@ const ContainerForgotPassword = () => {
               <Card.Body className="px-0 px-sm-3">
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
                   <h1 className="mt-0 pb-2">{t("Change password")}</h1>
-                  <p className="Message mb-1">{Message}</p>
+                  <p className="Message mb-1">{t("Message")}</p>
                   <InputGroup className="mb-2">
                     <InputGroup.Text>
                       <FontAwesomeIcon icon={faUser} />
