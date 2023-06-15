@@ -88,10 +88,10 @@ const TransferRow = ({ Movement, reloadData, anyWithActions }) => {
                         }
                     </div>
                     {
-                        !!(Movement.stateId === 1 && false) &&
+                        !!(Movement.stateId === 2) &&
                         <div className="h-100 d-flex align-items-center justify-content-around Actions">
                             <div className="iconContainer red me-1">
-                                <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => { launchModalConfirmation("deny") }} />
+                                <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => { launchModalConfirmation("revert") }} />
                             </div>
 
                         </div>
@@ -203,7 +203,7 @@ const TransferRow = ({ Movement, reloadData, anyWithActions }) => {
                 </div >
             </div >
             {
-                !!(Movement.stateId === 1 && false) &&
+                !!(Movement.stateId === 2) &&
                 <ActionConfirmationModal reloadData={reloadData} movement={Movement} setShowModal={setShowModal} action={Action} show={ShowModal} />
             }
         </>
