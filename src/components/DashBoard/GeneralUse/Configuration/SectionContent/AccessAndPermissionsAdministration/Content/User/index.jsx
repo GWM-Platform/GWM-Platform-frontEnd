@@ -11,7 +11,6 @@ import { DashBoardContext } from 'context/DashBoardContext'
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icons'
 
 const User = ({ user, permissions, funds, getUsers, users }) => {
-    console.log(user)
     const { ClientSelected, toLogin, DashboardToastDispatch, hasPermission } = useContext(DashBoardContext);
     const { t } = useTranslation()
 
@@ -166,7 +165,7 @@ const User = ({ user, permissions, funds, getUsers, users }) => {
                 (!StakeOrFundPermission(permission)))
 
     const filterGuide = {
-        administration: ['EDIT_CLIENT','VIEW_ACCOUNT', "WITHDRAW", "ADD_USERS", "REMOVE_USERS"],
+        administration: ['EDIT_CLIENT', 'VIEW_ACCOUNT', "WITHDRAW", "ADD_USERS", "REMOVE_USERS"],
         timeDeposits: ['FIXED_DEPOSIT_VIEW', 'FIXED_DEPOSIT_CREATE'],
         transfers: ["TRANSFER_GENERATE", "TRANSFER_APPROVE", "TRANSFER_DENY"]
     }
@@ -237,7 +236,7 @@ const User = ({ user, permissions, funds, getUsers, users }) => {
                             <>
                                 &nbsp;
                                 <Badge bg="primary">
-                                    {t("Client owner")}
+                                    {t("Owner")}
                                 </Badge>
                             </>
                         }
@@ -423,8 +422,8 @@ const User = ({ user, permissions, funds, getUsers, users }) => {
                                         </Col>
                                     }
                                     {
-                                         // TODO: Reintegrate when the assignment/desassignment as owners are integrated to client confirmations
-                                         (!(!hasPermission('') || user?.isOwner) && false) &&
+                                        // TODO: Reintegrate when the assignment/desassignment as owners are integrated to client confirmations
+                                        (!(!hasPermission('') || user?.isOwner) && false) &&
                                         <Col xs="auto" className=" mb-2">
                                             <Button disabled={AssignOwner.fetching} variant="danger" onClick={assignOwner}>
                                                 {

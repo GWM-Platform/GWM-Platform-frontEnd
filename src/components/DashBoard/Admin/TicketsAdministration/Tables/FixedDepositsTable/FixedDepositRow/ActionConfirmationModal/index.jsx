@@ -51,7 +51,6 @@ const ActionConfirmationModal = ({ movement, setShowModal, action, show, reloadD
 
         const response = await fetch(url, {
             method: 'POST',
-            body: JSON.stringify({ denialMotive: data.note }),
             headers: {
                 Authorization: `Bearer ${token}`,
                 Accept: "*/*",

@@ -14,7 +14,7 @@ import ReactSelect from "react-select";
 import Loading from 'components/DashBoard/GeneralUse/Loading';
 import NoMovements from "components/DashBoard/GeneralUse/NoMovements";
 
-const DocumentsAccordion = ({ client,documents,setDocuments }) => {
+const DocumentsAccordion = ({ client, documents, setDocuments }) => {
     const { t } = useTranslation()
 
     const { toLogin } = useContext(DashBoardContext)
@@ -42,7 +42,8 @@ const DocumentsAccordion = ({ client,documents,setDocuments }) => {
                 setDocuments((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
             }
         });
-    }, [toLogin, setDocuments, client]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [setDocuments, client]);
 
     useEffect(() => {
         const controller = new AbortController();

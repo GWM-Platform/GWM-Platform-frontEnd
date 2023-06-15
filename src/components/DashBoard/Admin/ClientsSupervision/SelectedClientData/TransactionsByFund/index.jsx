@@ -73,13 +73,15 @@ const TransactionsByFund = ({ AccountId, ClientId }) => {
                         <Col>
                             <Form.Group className="mb-3">
                                 <Form.Label >{t("Fund")}</Form.Label>
-                                {!!(Funds.valid) ?
-                                    Funds.content.map((fund, key) => <option key={`funds-selector-option-${fund.id}`} value={fund.id}>{fund.name}</option>)
-                                    :
-                                    <Form.Select disabled={!Funds.valid} onChange={handleChange} value={FundSelected} aria-label="Default select example">
-                                        <option value="" disabled>{t("Open this select menu")}</option>
-                                    </Form.Select>
-                                }
+                                <Form.Select disabled={!Funds.valid} onChange={handleChange} value={FundSelected}>
+                                    {!!(Funds.valid) ?
+                                        Funds.content.map((fund, key) => <option key={`funds-selector-option-${fund.id}`} value={fund.id}>{fund.name}</option>)
+                                        :
+                                        <Form.Select disabled={!Funds.valid} onChange={handleChange} value={FundSelected} aria-label="Default select example">
+                                            <option value="" disabled>{t("Open this select menu")}</option>
+                                        </Form.Select>
+                                    }
+                                </Form.Select>
                             </Form.Group>
 
                         </Col>

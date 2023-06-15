@@ -46,7 +46,7 @@ const ActionConfirmationModal = ({ transaction, setShowModal, action, show, relo
 
         const response = await fetch(url, {
             method: 'POST',
-            body: JSON.stringify({ denialMotive: data.note }),
+            body: JSON.stringify({ ...data.note !== "" ? { denialMotive: data.note !== "" ? data.note : null } : {} }),
             headers: {
                 Authorization: `Bearer ${token}`,
                 Accept: "*/*",

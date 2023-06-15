@@ -20,11 +20,11 @@ import { DashBoardContext } from 'context/DashBoardContext';
 import DocumentForm from './DocumentForm';
 import DocumentsAccordion from './DocumentsAccordion';
 
-const SelectedAccountData = ({ Account, Client, stakes, users }) => {
+const SelectedAccountData = ({ Account, Client, users }) => {
 
     const { t } = useTranslation();
 
-    const [clientFunds] = useState(stakes.filter(stake => stake.clientId === Client.id))
+    const [stakes, setStakes] = useState({ fetching: true, fetched: false, content: [] })
     const [documents, setDocuments] = useState({ fetching: false, fetched: false, valid: false, content: [] })
 
     const { toLogin } = useContext(DashBoardContext)
@@ -51,7 +51,8 @@ const SelectedAccountData = ({ Account, Client, stakes, users }) => {
                 setUsers((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
             }
         });
-    }, [toLogin, setUsers, Client.id]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [Client.id]);
 
     useEffect(() => {
         const controller = new AbortController();
@@ -63,6 +64,33 @@ const SelectedAccountData = ({ Account, Client, stakes, users }) => {
         };
     }, [getUsers])
 
+    useEffect(() => {
+        const getStakes = async () => {
+            setStakes((prevState) => ({ ...prevState, fetching: true, fetched: true, content: [] }))
+            axios.get(`/stakes`, {
+                params: { all: true },
+                client: Client.id
+            }).then(function (response) {
+                setStakes((prevState) => (
+                    {
+                        ...prevState,
+                        fetching: false,
+                        fetched: true,
+                        valid: true,
+                        content: response.data,
+                    }))
+            }).catch((err) => {
+                if (err.message !== "canceled") {
+                    if (err.response.status === "401") toLogin()
+                    setStakes((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
+                }
+            });
+        }
+        getStakes()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [Client.id])
+
+    const [clientFunds] = useState(stakes?.content?.filter(stake => stake.clientId === Client.id))
     const ownersAmount = clientUsers?.content?.filter(user => user?.isOwner)?.length || 0
 
     return (

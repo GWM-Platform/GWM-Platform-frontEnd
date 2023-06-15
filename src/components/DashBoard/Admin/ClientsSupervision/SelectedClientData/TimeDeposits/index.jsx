@@ -61,7 +61,8 @@ const TimeDeposits = ({ AccountId, ClientId }) => {
                 }
             });
         },
-        [AccountId, ClientId, toLogin],
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [AccountId, ClientId],
     )
 
     useEffect(() => {
@@ -123,7 +124,8 @@ const TimeDeposits = ({ AccountId, ClientId }) => {
                 }
             });
         },
-        [AccountId, ClientId, Pagination, toLogin],
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [AccountId, ClientId, Pagination],
     )
 
     useEffect(() => {

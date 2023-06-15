@@ -19,7 +19,6 @@ const ClientsSupervision = () => {
 
     const [Accounts, setAccounts] = useState({ fetching: true, fetched: false, content: [] })
     const [Clients, setClients] = useState({ fetching: true, fetched: false, content: [] })
-    const [stakes, setStakes] = useState({ fetching: true, fetched: false, content: [] })
     const [users, setUsers] = useState({ fetching: true, fetched: false, valid: false, content: [] })
 
     const getUsers = useCallback((signal) => {
@@ -42,7 +41,8 @@ const ClientsSupervision = () => {
                 setUsers((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
             }
         });
-    }, [toLogin, setUsers]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [setUsers]);
 
     useEffect(() => {
         const controller = new AbortController();
@@ -118,42 +118,6 @@ const ClientsSupervision = () => {
 
     }, [])
 
-    useEffect(() => {
-        const token = sessionStorage.getItem('access_token')
-
-        const getStakes = async () => {
-
-            setStakes((prevState) => ({ ...prevState, fetching: true, fetched: true, content: [] }))
-
-            var url = `${process.env.REACT_APP_APIURL}/stakes`
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    Accept: "*/*",
-                }
-            })
-
-            if (response.status === 200) {
-                const dataFetched = await response.json()
-                setStakes((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, content: dataFetched } }))
-            } else {
-                switch (response.status) {
-                    case 500:
-                        setStakes((prevState) => ({ ...prevState, ...{ fetching: false, fetched: false } }))
-                        break;
-                    default:
-                        setStakes((prevState) => ({ ...prevState, ...{ fetching: false, fetched: false } }))
-                        console.error(response.status)
-                }
-            }
-        }
-
-        if (!Accounts.fetching && !Clients.fetching) {
-            getStakes()
-        }
-    }, [Accounts, Clients])
-
     const getAccountByClientId = (searchedClientId) => {
         let index = Accounts.content.findIndex((account) => account.clientId === searchedClientId)
         return index === -1 ? false : Accounts.content[index]
@@ -162,7 +126,7 @@ const ClientsSupervision = () => {
     return (
         <Container className="h-100 ClientsSupervision">
             <Row className="h-100">
-                {Accounts.fetching || Clients.fetching || stakes.fetching ?
+                {Accounts.fetching || Clients.fetching ?
                     <Loading />
                     :
                     <Switch>
@@ -170,17 +134,12 @@ const ClientsSupervision = () => {
                             <ClientSelector Accounts={Accounts.content} Clients={Clients.content} />
                         </Route>
                         <Route exact path="/DashBoard/clientsSupervision/create-client">
-                            <CreateClientForm getClients={getClients}/>
+                            <CreateClientForm getClients={getClients} />
                         </Route>
                         {
                             Clients.content.map((client) =>
                                 <Route key={`client-data-${client.id}`} path={`/DashBoard/clientsSupervision/${client.id}`}>
-                                    <SelectedClientData
-                                        users={users}
-                                        stakes={stakes.content}
-                                        Client={client}
-                                        Account={getAccountByClientId(client.id)}
-                                    />
+                                    <SelectedClientData users={users} Client={client} Account={getAccountByClientId(client.id)} />
                                 </Route>
                             )
                         }

@@ -36,7 +36,7 @@ const TransactionFundTable = ({ ClientId, FundId }) => {
                     filterFund: FundId,
                     take: Pagination.take,
                     skip: Pagination.skip,
-                    filterState:Pagination.state
+                    filterState: Pagination.state
                 },
                 signal: signal,
             }).then(function (response) {
@@ -67,7 +67,8 @@ const TransactionFundTable = ({ ClientId, FundId }) => {
                 }
             });
         },
-        [FundId, ClientId, Pagination, toLogin],
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [FundId, ClientId, Pagination],
     )
 
     useEffect(() => {

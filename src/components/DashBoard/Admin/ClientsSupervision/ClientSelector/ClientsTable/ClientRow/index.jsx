@@ -36,7 +36,6 @@ const ClientRow = ({ Client, show }) => {
 
     return (
         <tr className={`ClientRow ${show ? '' : 'd-none'}`}>
-            <td className="Id">{Client.id}</td>
             <td className="Alias">{Client.alias}</td>
             <td className="Alias">
                 {

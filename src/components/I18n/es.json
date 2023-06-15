@@ -701,6 +701,7 @@
   "Revoke access": "Revocar acceso",
   "Configuration": "Configuración",
   "Client owner": "Propietario del cliente",
+  "Owner": "Propietario",
   "Make owner": "Convertir en propietario",
   "Disconnect": "Desvincular",
   "Make user owner": "Convertir usuario en propietario",
@@ -960,5 +961,10 @@
   "\"{{fund}}\" debt": "Deuda \"{{fund}}\"",
   "Sum of all fund debts": "Sumatoria de la deuda de los fondos",
   "revert": "revertir",
-  "reversed": "revertido"
+  "reversed": "revertido",
+  "Active": "Activo",
+  "Not active": "No activo",
+  "Resend activation email": "Reenviar email de activación",
+  "Activation email successfully resent": "Email de activación reenviado con éxito",
+  "There was an error resending the activation email": "Hubo un error al reenviar el correo electrónico de activación"
 }
