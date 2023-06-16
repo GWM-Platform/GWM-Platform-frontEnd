@@ -6,6 +6,7 @@ import moment from 'moment';
 import './index.scss'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import { Badge, Col, Row } from 'react-bootstrap';
+import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 
 const FixedDepositsGraphic = ({ data }) => {
     const [selectedMonth, setSelectedMonth] = useState(0)
@@ -95,9 +96,11 @@ const FixedDepositsGraphic = ({ data }) => {
                                             {t("Fixed deposit")} #{monthDeposit.id}
                                         </h3>
                                         <h4>
+                                            <Link to={`/DashBoard/clientsSupervision/${ monthDeposit.clientId}`}>
                                             {
                                                 monthDeposit.client
                                             }
+                                            </Link>
                                         </h4>
                                         <h4>
                                             <FormattedNumber value={monthDeposit.profit} prefix="U$D " fixedDecimals={2} />
