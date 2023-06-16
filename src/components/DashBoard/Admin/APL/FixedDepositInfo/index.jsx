@@ -23,19 +23,19 @@ const FixedDepositInfo = ({fullSettlement}) => {
             </div>
             <div>
                 <h2 className="mt-2 pe-2 topic">
-                    {t("Fixed deposit debt as of today")} (U$S)
+                    {t("Fixed deposit debt as of today")}
                     <br />
                     <span style={{ fontWeight: "bolder" }}>
-                        <FormattedNumber value={fullSettlement?.debt?.fixedDeposits?.todaysDebt} fixedDecimals={2} />
+                        <FormattedNumber prefix="U$S " value={fullSettlement?.debt?.fixedDeposits?.todaysDebt} fixedDecimals={2} />
                     </span>
                 </h2>
             </div>
             <div>
                 <h2 className="mt-2 pe-2 topic">
-                    {t("Fixed deposit debt at closing")} (U$S)
+                    {t("Fixed deposit debt at closing")}
                     <br />
                     <span style={{ fontWeight: "bolder" }}>
-                        <FormattedNumber value={fixedDepositAtClose()} fixedDecimals={2} />
+                        <FormattedNumber prefix="U$S "value={fixedDepositAtClose()} fixedDecimals={2} />
                     </span>
                 </h2>
             </div>

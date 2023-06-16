@@ -971,5 +971,8 @@
   "There was an error resending the activation email": "Hubo un error al reenviar el correo electrónico de activación",
   "Fixed deposit debt as of today": "Deudas de plazos fijos a hoy",
   "Fixed deposit debt at closing": "Deudas de plazos fijos al cierre",
-  "Monthly debt":"Deuda mensual"
+  "Monthly debt": "Deuda mensual",
+  "Close on": "Cierra en",
+  "Fixed deposit": "Plazo fijo",
+  "Closes on": "Cierra el"
 }

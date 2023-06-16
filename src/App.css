@@ -28,6 +28,7 @@
   --main-card-color: rgb(158, 26, 27);
   /*Create Ticket Colors*/
   --ticket-main-color: #082044;
+  --ticket-main-color-rgb: 8, 32, 68;
   --ticket-secondary-color: rgb(220, 157, 157);
 
   /*Table movs colors*/
@@ -501,4 +502,9 @@ table .Actions {
   transform: scale(0.7) translateY(-2px);
   display: block;
   height: 12.5px;
+}
+
+.bg-mainColor {
+  --bs-bg-opacity: 1;
+  background-color: rgba(var(--ticket-main-color-rgb),var(--bs-bg-opacity))!important;
 }

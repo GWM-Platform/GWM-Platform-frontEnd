@@ -76,12 +76,12 @@ const FundInfo = ({ Fund }) => {
                 <Col className="d-flex justify-content-between pe-5" sm="auto">
                     <Col className="pe-2">
                         <h2 className="mt-2 pe-2 topic">
-                            {t("Balance (U$S)")}
+                            {t("Balance")}
                         </h2>
                         <div className="containerHideInfo d-inline">
-                            <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={balanceInCash} fixedDecimals={2} />
-                            <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={balanceInCash} fixedDecimals={2} />
-                            <FormattedNumber className={`info placeholder`} value={balanceInCash} fixedDecimals={2} />
+                            <FormattedNumber prefix="U$S " hidden className={`info ${Hide ? "shown" : "hidden"}`} value={balanceInCash} fixedDecimals={2} />
+                            <FormattedNumber prefix="U$S " className={`info ${Hide ? "hidden" : "shown"}`} value={balanceInCash} fixedDecimals={2} />
+                            <FormattedNumber prefix="U$S " className={`info placeholder`} value={balanceInCash} fixedDecimals={2} />
                         </div>
                         <div className="hideInfoButton d-inline-flex align-items-center mt-1">
                             <FontAwesomeIcon

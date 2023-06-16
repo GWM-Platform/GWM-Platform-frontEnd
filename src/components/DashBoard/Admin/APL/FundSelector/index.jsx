@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Col, Row } from 'react-bootstrap'
-import { faPiggyBank } from '@fortawesome/free-solid-svg-icons';
+import { Col } from 'react-bootstrap'
+import { faChevronLeft, faChevronRight, faPiggyBank } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useTranslation } from 'react-i18next';
 
@@ -13,14 +13,59 @@ const FundSelector = ({ SelectedFund, setSelectedFund, Funds }) => {
         setSelectedFund(Funds?.[0].id)
     }, [Funds, setSelectedFund])
 
+    const accountsSlider = useRef(null)
+    const accountCard = useRef(null)
+
+    const [HasScrollBar, setHasScrollBar] = useState(false)
+    const [ScrollBarSides, setScrollBarSides] = useState({
+        left: false,
+        right: true
+    })
+
+    useEffect(() => {
+        function updateState() {
+            const el = accountsSlider.current
+            el && setHasScrollBar(el.scrollWidth > el.clientWidth)
+        }
+
+        updateState()
+
+        window.addEventListener('resize', updateState)
+        return () => window.removeEventListener('resize', updateState)
+    }, [Funds])
+
+    const handleScroll = (e) => {
+        setScrollBarSides(prevState => (
+            {
+                ...prevState,
+                left: e.target.scrollLeft !== 0,
+                right: e.target.scrollLeft !== e.target.scrollWidth - e.target.clientWidth
+            }
+        ))
+    }
+
+    const scroll = (right = true) => {
+        const el = accountsSlider?.current
+        if (el) {
+            accountsSlider.current.scrollTo({
+                top: 0,
+                left: el.scrollLeft + (accountCard?.current.clientWidth || 200) * (right ? 1 : -1),
+                behavior: 'smooth'
+            })
+        }
+    }
+
     return (
         <>
-            <Row className='fund-selector flex-nowrap overflow-auto'>
+        <div className='p-relative'>
+
+            <div ref={accountsSlider} className='fund-selector' onScroll={handleScroll} >
+
                 {Funds.map((Fund, key) =>
-                    <Col key={Fund.id} sm="10" md="4" lg="3" xl="3">
+                    <Col key={Fund.id} sm="10" md="4" lg="3" xl="3" ref={key === 0 ? accountCard : undefined}>
                         <button onClick={() => setSelectedFund(Fund.id)} key={key} className={`noStyle fund-item ${SelectedFund === Fund.id ? "selected" : ""}`}>
                             <div className='content-container'>
-                                <h7 className="d-flex">
+                                <div className="d-flex">
                                     {Fund.name}
                                     <div className="fund-icon ms-auto">
                                         {
@@ -32,7 +77,7 @@ const FundSelector = ({ SelectedFund, setSelectedFund, Funds }) => {
                                                 src={Fund.imageUrl ? Fund.imageUrl : process.env.PUBLIC_URL + '/images/FundsLogos/default.svg'} />
                                         }
                                     </div>
-                                </h7>
+                                </div>
                             </div>
                         </button>
                     </Col>
@@ -40,17 +85,36 @@ const FundSelector = ({ SelectedFund, setSelectedFund, Funds }) => {
                 <Col sm="10" md="4" lg="3" xl="3">
                     <button onClick={() => setSelectedFund("fixed-deposit")} className={`noStyle fund-item ${SelectedFund === "fixed-deposit" ? "selected" : ""}`}>
                         <div className='content-container'>
-                            <h7 className="d-flex">
+                            <div className="d-flex">
                                 {t("Fixed deposits")}
                                 <div className="fund-icon ms-auto">
                                     <FontAwesomeIcon color='white' icon={faPiggyBank} />
                                 </div>
-                            </h7>
+                            </div>
                         </div>
                     </button>
                 </Col>
-            </Row>
+                {
+                    !!(HasScrollBar) &&
+                    <ScrollControl scroll={scroll} ScrollBarSides={ScrollBarSides} />
+                }
+            </div>
+        </div>
+
         </>
     )
 }
 export default FundSelector
+
+const ScrollControl = ({ ScrollBarSides, scroll }) => {
+    return (
+        <div className={`scrollController ${!!(ScrollBarSides?.left) && 'scrollLeft'} ${!!(ScrollBarSides?.right) && 'scrollRight'}`} >
+            <button onClick={() => scroll(false)} type="button" className={`control  left ${!(ScrollBarSides?.left) && 'hidden'}`} data-cy="btn-scroll-prev-accounts">
+                <FontAwesomeIcon icon={faChevronLeft} />
+            </button>
+            <button onClick={() => scroll()} type="button" className={`control right ${!(ScrollBarSides?.right) && 'hidden'}`} data-cy="btn-scroll-next-accounts">
+                <FontAwesomeIcon icon={faChevronRight} />
+            </button>
+        </div>
+    )
+}

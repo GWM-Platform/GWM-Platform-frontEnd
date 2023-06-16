@@ -22,7 +22,9 @@ const ClientSelector = () => {
                 id="dropdown-clients">
                 {
                     IndexClientSelected === -1 ?
-                        t("Admin Panel")
+                        <span>
+                            {t("Admin Panel")}
+                        </span>
                         :
                         <>
                             <span className='d-none d-sm-inline-block'>{t("Hi")},&nbsp;</span>
