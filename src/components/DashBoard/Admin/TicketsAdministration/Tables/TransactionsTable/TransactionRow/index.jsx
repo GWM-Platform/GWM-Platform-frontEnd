@@ -10,6 +10,7 @@ import ActionConfirmationModal from './ActionConfirmationModal'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import Decimal from 'decimal.js';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import Notes from '../../Notes';
 
 const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData }) => {
     const { t } = useTranslation();
@@ -151,7 +152,7 @@ const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData })
                     }
                     <Badge className='ms-1 ms-md-2' bg={status()?.bg}>{t(status().text)}</Badge>
                     {
-                        !!(Transaction?.userEmail || Transaction?.userName || !!(transferNote) || !!(clientNote) || !!(denialMotive) || !!(adminNote)) &&
+                        !!(Transaction?.userEmail || Transaction?.userName) &&
                         <div>
                             <OverlayTrigger
                                 show={showClick || showHover}
@@ -173,30 +174,6 @@ const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData })
                                             <div>
                                                 {t('Operation performed by')}:<br />
                                                 <span className="text-nowrap">{Transaction?.userName || Transaction?.userEmail}</span>
-                                            </div>
-                                        }
-                                        {!!(transferNote) &&
-                                            <div>
-                                                {t('Transfer note')}:<br />
-                                                <span className="text-nowrap">"{transferNote.text}"</span>
-                                            </div>
-                                        }
-                                        {!!(clientNote) &&
-                                            <div>
-                                                {t('Personal note')}:<br />
-                                                <span className="text-nowrap">"{clientNote.text}"</span>
-                                            </div>
-                                        }
-                                        {!!(denialMotive) &&
-                                            <div>
-                                                {t('Denial motive')}:<br />
-                                                <span className="text-nowrap">"{denialMotive.text}"</span>
-                                            </div>
-                                        }
-                                        {!!(adminNote) &&
-                                            <div>
-                                                {t('Admin note')}:<br />
-                                                <span className="text-nowrap">"{adminNote.text}"</span>
                                             </div>
                                         }
                                     </Tooltip>
@@ -272,9 +249,7 @@ const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData })
                         {momentDate.format('L')}
                     </span>
                 </div >
-
-
-
+                <Notes transferNote={transferNote} clientNote={clientNote} denialMotive={denialMotive} adminNote={adminNote} />
             </div >
             {
                 Transaction.stateId === 1 ?

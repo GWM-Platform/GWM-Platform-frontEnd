@@ -10,10 +10,6 @@ import { useTranslation } from "react-i18next";
 const GeneralInfo = ({ fullSettlement, setFullSettlement }) => {
     const { t } = useTranslation()
 
-
-    const [showClick, setShowClick] = useState(false)
-    const [showHover, setShowHover] = useState(false)
-
     const [showFundClick, setShowFundClick] = useState(false)
     const [showFundHover, setShowFundHover] = useState(false)
 
@@ -77,38 +73,7 @@ const GeneralInfo = ({ fullSettlement, setFullSettlement }) => {
                 </h2>
                 <Col xs="12">
                     <h6 className="mb-0">
-                        {t("Total debt")} ({t("CASH")})
-                        <OverlayTrigger
-                            show={showClick || showHover}
-                            placement="right"
-                            delay={{ show: 250, hide: 400 }}
-                            popperConfig={{
-                                modifiers: [
-                                    {
-                                        name: 'offset',
-                                        options: {
-                                            offset: [0, 0],
-                                        },
-                                    },
-                                ],
-                            }}
-                            overlay={
-                                <Tooltip className="mailTooltip" id="more-units-tooltip">
-                                    {t("Accounts debt")} +
-                                    <br />
-                                    {t("Fixed deposits debt")}
-                                </Tooltip>
-                            }
-                        >
-                            <span>
-                                <button
-                                    onBlur={() => setShowClick(false)}
-                                    onClick={() => setShowClick(prevState => !prevState)}
-                                    onMouseEnter={() => setShowHover(true)}
-                                    onMouseLeave={() => setShowHover(false)}
-                                    type="button" className="noStyle"  ><FontAwesomeIcon icon={faInfoCircle} /></button>
-                            </span>
-                        </OverlayTrigger>
+                        {t("Total debt")} ({t("Current_accounts")} + {t("Fixed deposits")})
                     </h6>
                     <h4 className="mt-0">
                         {
@@ -143,7 +108,7 @@ const GeneralInfo = ({ fullSettlement, setFullSettlement }) => {
                 </Col>
                 <Col xs="auto">
                     <h6 className="mb-0">
-                        {t("Fixed deposit debt at closing")}
+                        {t("Debts of fixed terms at maturity")}
                     </h6>
                     <h4 className="mt-0 mb-0">
                         {

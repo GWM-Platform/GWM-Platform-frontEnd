@@ -70,7 +70,7 @@ const MovementReceipt = ({ Movement }) => {
                       value: new Decimal(Movement?.amount || 0).abs().toFixed(2),
                       groupSeparator: '.',
                       decimalSeparator: ',',
-                      prefix: "U$D"
+                      prefix: "U$D "
                     })
                   }
                 </Text>

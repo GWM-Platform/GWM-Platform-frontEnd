@@ -105,7 +105,7 @@ const TransactionReceipt = ({ Transaction }) => {
                       value: new Decimal(Transaction?.sharePrice || 0).toFixed(2),
                       groupSeparator: '.',
                       decimalSeparator: ',',
-                      prefix: "U$D"
+                      prefix: "U$D "
                     })
                   }
                 </Text>
@@ -122,7 +122,7 @@ const TransactionReceipt = ({ Transaction }) => {
                       value: new Decimal(amount || 0).abs().toFixed(2),
                       groupSeparator: '.',
                       decimalSeparator: ',',
-                      prefix: "U$D"
+                      prefix: "U$D "
                     })
                   }
                 </Text>

@@ -107,7 +107,7 @@ const ActionConfirmationModal = ({ movement, setShowModal, action, show, reloadD
                     <h1 className="title"> {t("Are you sure?")}</h1>
                     <h2 className="subTitle">{t("You are about to")} {t(action)} {t("the ticket with the id")} {movement.id}</h2>
                     <h3 className="heading">{t("This action cannot be undone")}</h3>
-                    <div className='px-3 mt-3'>
+                    <div className={`px-3 mt-3 ${action !== "deny" ? "hidden" : ""}`}>
                         {
                             NoteActive ?
                                 <div className="d-flex align-items-center">

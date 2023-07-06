@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useContext, useState } from 'react'
 import { Popover, OverlayTrigger, Badge, CloseButton } from "react-bootstrap";
 import { useTranslation } from 'react-i18next';
 import './index.scss'
@@ -7,10 +7,12 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { selectAllNotifications } from 'Slices/DashboardUtilities/notificationsSlice';
+import { DashBoardContext } from 'context/DashBoardContext';
 
 const { faBell, faBellSlash, faCog } = require("@fortawesome/free-solid-svg-icons")
 const { FontAwesomeIcon } = require("@fortawesome/react-fontawesome")
 const NotificationsCenter = ({ active }) => {
+    const { DashboardToastDispatch } = useContext(DashBoardContext)
 
     const notifications = useSelector(selectAllNotifications)
     const notificationsStatus = useSelector(state => state.notifications.status)
@@ -19,10 +21,18 @@ const NotificationsCenter = ({ active }) => {
     const history = useHistory()
 
     const [show, setShow] = useState(false)
+    const [alreadyNotifiedNew, setAlreadyNotifiedNew] = useState(false)
 
 
-    const hasNotifications = () => notifications?.total > 0
-    const hasUnreadNotifications = () => hasNotifications() && notifications?.notifications?.filter(notification => !notification.read).length > 0
+    const hasNotifications = useCallback(
+        () => notifications?.total > 0,
+        [notifications?.total],
+    )
+
+    const hasUnreadNotifications = useCallback(
+        () => hasNotifications() && notifications?.notifications?.filter(notification => !notification.read).length > 0,
+        [hasNotifications, notifications],
+    )
 
     let location = useLocation()
 
@@ -30,6 +40,15 @@ const NotificationsCenter = ({ active }) => {
         setShow(false)
         //eslint-disable-next-line
     }, [location])
+
+    useEffect(() => {
+        if (hasUnreadNotifications() && !alreadyNotifiedNew) {
+            DashboardToastDispatch({ type: "create", toastContent: { Icon: faBell, Title: "You have unread notifications" } });
+            setAlreadyNotifiedNew(true)
+        }
+        //eslint-disable-next-line
+    }, [hasUnreadNotifications])
+
 
     const popover = (
         <Popover id="notifications-center">

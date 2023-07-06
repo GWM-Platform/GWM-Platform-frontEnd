@@ -235,7 +235,7 @@ const FixedDeposit = ({ content }) => {
         </span>
         {
           wasEdited(content) &&
-          <span className="h5 mb-0 me-1 me-md-2">({t("Preferential *")})</span>}
+          <span className="h5 mb-0 me-1 me-md-2">({t("Personalized  *")})</span>}
         <div className='ms-auto me-2'>
           {
             GeneratingPDF ?

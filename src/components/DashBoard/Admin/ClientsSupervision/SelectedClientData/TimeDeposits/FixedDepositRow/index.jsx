@@ -9,6 +9,7 @@ import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import { getAnualRate, getDuration, wasEdited } from 'utils/fixedDeposit';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import Notes from 'components/DashBoard/Admin/TicketsAdministration/Tables/Notes';
 
 const FixedDepositRow = ({ Movement }) => {
     const { t } = useTranslation();
@@ -195,6 +196,8 @@ const FixedDepositRow = ({ Movement }) => {
     const [showClick, setShowClick] = useState(false)
     const [showHover, setShowHover] = useState(false)
 
+    const transferNote = Movement?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")
+    const clientNote = Movement?.notes?.find(note => note.noteType === "CLIENT_NOTE")
     const denialMotive = Movement?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
     const adminNote = Movement?.notes?.find(note => note.noteType === "ADMIN_NOTE")
 
@@ -205,10 +208,10 @@ const FixedDepositRow = ({ Movement }) => {
                     <span className="h5 mb-0 me-1">{t("Time deposit")}&nbsp;#{Movement.id}</span>
                     {
                         wasEdited(Movement) &&
-                        <span className="h5 mb-0 me-1 me-md-2">({t("Preferential *")})</span>}
+                        <span className="h5 mb-0 me-1 me-md-2">({t("Personalized  *")})</span>}
                     <Badge className='ms-auto' bg={status()?.bg}>{t(status().text)}</Badge>
                     {
-                        (!!(Movement?.userEmail) || !!(Movement?.userName) || !!(denialMotive) || !!(adminNote)) &&
+                        (!!(Movement?.userEmail) || !!(Movement?.userName)) &&
                         <OverlayTrigger
                             show={showClick || showHover}
                             delay={{ show: 250, hide: 400 }}
@@ -228,18 +231,6 @@ const FixedDepositRow = ({ Movement }) => {
                                         <div>
                                             {t('Operation performed by')}:<br />
                                             <span className="text-nowrap">{Movement?.userName || Movement?.userEmail}</span>
-                                        </div>
-                                    }
-                                    {!!(denialMotive) &&
-                                        <div>
-                                            {t('Denial motive')}:<br />
-                                            <span className="text-nowrap">"{denialMotive.text}"</span>
-                                        </div>
-                                    }
-                                    {!!(adminNote) &&
-                                        <div>
-                                            {t('Admin note')}:<br />
-                                            <span className="text-nowrap">"{adminNote.text}"</span>
                                         </div>
                                     }
                                 </Tooltip>
@@ -337,7 +328,7 @@ const FixedDepositRow = ({ Movement }) => {
                     </span>
                 </div >
 
-
+                <Notes transferNote={transferNote} clientNote={clientNote} denialMotive={denialMotive} adminNote={adminNote} />
 
             </div >
 

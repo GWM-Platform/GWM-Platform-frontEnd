@@ -32,7 +32,7 @@ const FixedDepositInfo = ({fullSettlement}) => {
             </div>
             <div>
                 <h2 className="mt-2 pe-2 topic">
-                    {t("Fixed deposit debt at closing")}
+                    {t("Debts of fixed terms at maturity")}
                     <br />
                     <span style={{ fontWeight: "bolder" }}>
                         <FormattedNumber prefix="U$S "value={fixedDepositAtClose()} fixedDecimals={2} />

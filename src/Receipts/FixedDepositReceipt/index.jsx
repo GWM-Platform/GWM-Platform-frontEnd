@@ -59,7 +59,7 @@ const FixedDepositReceipt = ({ FixedDeposit }) => {
                                             value: new Decimal(FixedDeposit?.initialAmount || 0).abs().toFixed(2),
                                             groupSeparator: '.',
                                             decimalSeparator: ',',
-                                            prefix: "U$D"
+                                            prefix: "U$D "
                                         })
                                     }
                                 </Text>
@@ -77,7 +77,7 @@ const FixedDepositReceipt = ({ FixedDeposit }) => {
                                                 value: new Decimal(FixedDeposit?.ActualProfit.value || 0).abs().toFixed(2),
                                                 groupSeparator: '.',
                                                 decimalSeparator: ',',
-                                                prefix: "U$D"
+                                                prefix: "U$D "
                                             })
                                         }
                                     </Text>
@@ -96,7 +96,7 @@ const FixedDepositReceipt = ({ FixedDeposit }) => {
                                                 value: new Decimal(FixedDeposit?.ProfitAtTheEnd.value || 0).abs().toFixed(2),
                                                 groupSeparator: '.',
                                                 decimalSeparator: ',',
-                                                prefix: "U$D"
+                                                prefix: "U$D "
                                             })
                                         }
                                     </Text>
@@ -116,7 +116,7 @@ const FixedDepositReceipt = ({ FixedDeposit }) => {
                                                 value: new Decimal(FixedDeposit?.RefundedProfit.value || 0).abs().toFixed(2),
                                                 groupSeparator: '.',
                                                 decimalSeparator: ',',
-                                                prefix: "U$D"
+                                                prefix: "U$D "
                                             })
                                         }
                                     </Text>

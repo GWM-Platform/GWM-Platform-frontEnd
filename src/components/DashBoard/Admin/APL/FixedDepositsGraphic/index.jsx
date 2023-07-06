@@ -48,7 +48,7 @@ const FixedDepositsGraphic = ({ data }) => {
     const ref = useRef(null)
     return (
         <div className='transaction-table box-shadow mb-2'>
-            <h1 className="m-0 title pe-2">{t("Monthly debt")}</h1>
+            <h1 className="m-0 title pe-2">{t("Maturity profile")}</h1>
             <ResponsiveContainer width="100%" height={300}>
                 <BarChart
                     data={formattedData} margin={{ top: 15, right: 20, bottom: 10, left: 20 }}

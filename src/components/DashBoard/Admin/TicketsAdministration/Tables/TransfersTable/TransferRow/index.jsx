@@ -8,6 +8,7 @@ import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import { useTranslation } from 'react-i18next';
 import { Badge, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import Notes from '../../Notes';
 
 const TransferRow = ({ Movement, reloadData, anyWithActions }) => {
     const { t } = useTranslation();
@@ -102,7 +103,7 @@ const TransferRow = ({ Movement, reloadData, anyWithActions }) => {
                     }
                     <Badge className='ms-1 ms-md-2' bg={status()?.bg}>{t(status().text)}</Badge>
                     {
-                        !!(Movement?.userEmail || Movement?.userName || !!(transferNote) || !!(clientNote) || !!(denialMotive) || !!(adminNote)) &&
+                        !!(Movement?.userEmail || Movement?.userName) &&
                         <div>
                             <OverlayTrigger
                                 show={showClick || showHover}
@@ -124,30 +125,6 @@ const TransferRow = ({ Movement, reloadData, anyWithActions }) => {
                                             <div>
                                                 {t('Operation performed by')}:<br />
                                                 <span className="text-nowrap">{Movement?.userName || Movement.userEmail}</span>
-                                            </div>
-                                        }
-                                        {!!(transferNote) &&
-                                            <div>
-                                                {t('Transfer note')}:<br />
-                                                <span className="text-nowrap">"{transferNote.text}"</span>
-                                            </div>
-                                        }
-                                        {!!(clientNote) &&
-                                            <div>
-                                                {t('Personal note')}:<br />
-                                                <span className="text-nowrap">"{clientNote.text}"</span>
-                                            </div>
-                                        }
-                                        {!!(denialMotive) &&
-                                            <div>
-                                                {t('Denial motive')}:<br />
-                                                <span className="text-nowrap">"{denialMotive.text}"</span>
-                                            </div>
-                                        }
-                                        {!!(adminNote) &&
-                                            <div>
-                                                {t('Admin note')}:<br />
-                                                <span className="text-nowrap">"{adminNote.text}"</span>
                                             </div>
                                         }
                                     </Tooltip>
@@ -205,6 +182,7 @@ const TransferRow = ({ Movement, reloadData, anyWithActions }) => {
                         {momentDate.format('L')}
                     </span>
                 </div >
+                <Notes transferNote={transferNote} clientNote={clientNote} denialMotive={denialMotive} adminNote={adminNote} />
             </div >
             {
                 !!(Movement.stateId === 2) &&

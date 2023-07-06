@@ -17,7 +17,7 @@ import NotificationsCenter from '../NavBar/NotificationsCenter';
 const NavBarInfo = ({ NavInfoToggled }) => {
 
     const { t } = useTranslation();
-    const { ClientSelected, admin, IndexClientSelected } = useContext(DashBoardContext)
+    const { ClientSelected, admin, IndexClientSelected, isMobile } = useContext(DashBoardContext)
 
     const { url } = useRouteMatch()
     let history = useHistory();
@@ -56,9 +56,12 @@ const NavBarInfo = ({ NavInfoToggled }) => {
                         </div>
                         <ClientSelector />
                     </Col>
-                    <Col xs="auto" className="d-block d-sm-none ms-auto pe-0">
-                        <NotificationsCenter />
-                    </Col>
+                    {
+                        isMobile &&
+                        <Col xs="auto" className="d-block d-sm-none ms-auto pe-0">
+                            <NotificationsCenter />
+                        </Col>
+                    }
                     <Col xs="auto" className="d-block d-md-none ms-auto pe-0">
                         <div className="d-flex justify-content-center" onClick={() => toSettings()}>
                             <FontAwesomeIcon className="icon" icon={faCog} />

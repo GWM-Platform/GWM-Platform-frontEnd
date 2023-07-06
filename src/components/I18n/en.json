@@ -11,7 +11,7 @@
     "TRANSFER_REVERT": "Transfer reverted",
     "FIXED_DEPOSIT_CREATE": "Investment in time deposit #{{fixedDeposit}}",
     "FIXED_DEPOSIT_CLOSE": "Close of time deposit #{{fixedDeposit}}",
-    "BID_OFFER": "Investment in preferential time deposit #{{fixedDeposit}}",
+    "BID_OFFER": "Investment in personalized time deposit #{{fixedDeposit}}",
     "Pendiente": "Pending",
     "Aprobado": "Approved",
     "Denegado": "Denied",
@@ -781,5 +781,6 @@
     "ADMIN_APPROVAL_PENDING": "Your ticket is waiting for the approval of an administrator",
     "DEPOSIT_PERFORMED": "Your deposit has been accredited",
     "TRANSFER_PENDING": "There is a transfer waiting to be accepted",
-    "ALIAS_UPDATED": "The alias of your account has been updated"
+    "ALIAS_UPDATED": "The alias of your account has been updated",
+    "Current_accounts": "Accounts"
 }

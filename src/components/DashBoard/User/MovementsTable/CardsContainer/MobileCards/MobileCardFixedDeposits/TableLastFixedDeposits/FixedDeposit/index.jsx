@@ -233,7 +233,7 @@ const FixedDeposit = ({ content }) => {
         <span className="h5 mb-0 me-1">{t("Time deposit")}&nbsp;#{content.id}
           {
             wasEdited(content) &&
-            <span className="h5 mb-0 mx-1"><br />({t("Preferential *")})</span>}
+            <span className="h5 mb-0 mx-1"><br />({t("Personalized  *")})</span>}
         </span>
 
         <div className='ms-auto me-2'>

@@ -118,7 +118,7 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, cardsAmount, inScreenFu
                                                     <span style={{ textTransform: "none" }}>({t("Pending approval")})</span>
                                                     :
                                                     wasEdited(FixedDeposit) &&
-                                                    <span style={{ textTransform: "none" }}>({t("Preferential *")})</span>}
+                                                    <span style={{ textTransform: "none" }}>({t("Personalized  *")})</span>}
                                             </h1>
                                         </Col>
                                         {

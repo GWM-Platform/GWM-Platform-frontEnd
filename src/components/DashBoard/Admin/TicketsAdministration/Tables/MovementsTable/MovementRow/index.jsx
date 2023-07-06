@@ -10,6 +10,7 @@ import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { selectUserEmail, selectUserId } from 'Slices/DashboardUtilities/userSlice';
 import { useSelector } from 'react-redux';
+import Notes from '../../Notes';
 
 const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, couldLiquidate }) => {
 
@@ -164,7 +165,7 @@ const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, coul
                     }
                     <Badge className='ms-1 ms-md-2' bg={status()?.bg}>{t(status().text)}</Badge>
                     {
-                        !!(Movement?.userEmail || Movement.userName || !!(transferNote) || !!(clientNote) || !!(denialMotive) || !!(adminNote)) &&
+                        !!(Movement?.userEmail || Movement.userName) &&
                         <div>
                             <OverlayTrigger
                                 show={showClick || showHover}
@@ -186,30 +187,6 @@ const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, coul
                                             <div>
                                                 {t('Operation performed by')}:<br />
                                                 <span className="text-nowrap">{Movement?.userName || Movement?.userEmail}</span>
-                                            </div>
-                                        }
-                                        {!!(transferNote) &&
-                                            <div>
-                                                {t('Transfer note')}:<br />
-                                                <span className="text-nowrap">"{transferNote.text}"</span>
-                                            </div>
-                                        }
-                                        {!!(clientNote) &&
-                                            <div>
-                                                {t('Personal note')}:<br />
-                                                <span className="text-nowrap">"{clientNote.text}"</span>
-                                            </div>
-                                        }
-                                        {!!(denialMotive) &&
-                                            <div>
-                                                {t('Denial motive')}:<br />
-                                                <span className="text-nowrap">"{denialMotive.text}"</span>
-                                            </div>
-                                        }
-                                        {!!(adminNote) &&
-                                            <div>
-                                                {t('Admin note')}:<br />
-                                                <span className="text-nowrap">"{adminNote.text}"</span>
                                             </div>
                                         }
                                     </Tooltip>
@@ -253,6 +230,7 @@ const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, coul
                         {momentDate.format('L')}
                     </span>
                 </div >
+                <Notes transferNote={transferNote} clientNote={clientNote} denialMotive={denialMotive} adminNote={adminNote} />
             </div >
             {
                 !!(Movement.stateId === 1 || couldLiquidate(Movement)) &&
