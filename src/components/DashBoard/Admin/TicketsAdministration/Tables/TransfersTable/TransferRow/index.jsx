@@ -10,6 +10,7 @@ import { Badge, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 const TransferRow = ({ Movement, reloadData, anyWithActions }) => {
+    console.log(Movement)
     const { t } = useTranslation();
 
     var momentDate = moment(Movement.createdAt);
@@ -88,7 +89,7 @@ const TransferRow = ({ Movement, reloadData, anyWithActions }) => {
                         }
                     </div>
                     {
-                        !!(Movement.stateId === 2) &&
+                        !!(Movement.stateId === 2 && !Movement.reverted) &&
                         <div className="h-100 d-flex align-items-center justify-content-around Actions">
                             <div className="iconContainer red me-1">
                                 <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => { launchModalConfirmation("revert") }} />
@@ -119,7 +120,7 @@ const TransferRow = ({ Movement, reloadData, anyWithActions }) => {
                                         {!!(Movement.userEmail || Movement.userName) &&
                                             <div>
                                                 {t('Operation performed by')}:<br />
-                                                <span className="text-nowrap">{Movement?.userName ||  Movement.userEmail}</span>
+                                                <span className="text-nowrap">{Movement?.userName || Movement.userEmail}</span>
                                             </div>
                                         }
                                         {!!(transferNote) &&

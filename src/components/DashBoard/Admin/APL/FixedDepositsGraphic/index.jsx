@@ -32,7 +32,6 @@ const FixedDepositsGraphic = ({ data }) => {
 
     const CustomTooltip = ({ active, payload, label }) => {
         if (active && payload && payload.length) {
-            console.log(payload)
             return (
                 <div className="custom-tooltip">
                     <p className="label">

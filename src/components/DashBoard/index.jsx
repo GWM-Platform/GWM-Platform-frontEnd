@@ -3,6 +3,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Route, useRouteMatch } from 'react-router-dom';
 
 import './index.css'
+import "components/DashBoard/Admin/TicketsAdministration/index.css"
+import 'components/DashBoard/Admin/AssetsAdministration/index.css'
+import 'components/DashBoard/Admin/FundsAdministration/index.css'
+import 'components/DashBoard/Admin/OperationStatus/operationsForm.scss'
 
 import NavBar from './NavBars/NavBar';
 import NavInfo from './NavBars/NavInfo';
@@ -77,119 +81,123 @@ const UserDashBoard = () => {
                                         admin && IndexClientSelected === -1 ?
                                             /*----------------------------------------------------------Admin----------------------------------------------------------*/
                                             <div className={`adminContainer tabContent`}>
-                                                <Route path={`${path}/addAccount`}>
-                                                    <AddAccount />
-                                                </Route>
-                                                <Route path={`${path}/broadcast`}>
-                                                    <Broadcast />
-                                                </Route>
-                                                <Route path={`${path}/APL`}>
-                                                    <APL />
-                                                </Route>
-                                                <Route path={`${path}/clientsSupervision`}>
-                                                    <ClientsSupervision />
-                                                </Route>
-                                                <Route path={`${path}/userActionLogs`}>
-                                                    <UserActionLogs />
-                                                </Route>
-                                                <Route path={`${path}/fundsAdministration`}>
-                                                    <FundsAdministration />
-                                                </Route>
-                                                <Route path={`${path}/assetsAdministration`}>
-                                                    <AssetsAdministration />
-                                                </Route>
-                                                <Route path={`${path}/TimeDeposit`}>
-                                                    <FixedDeposit />
-                                                </Route>
-                                                <Route path={`${path}/ticketsAdministration`}>
-                                                    <TicketsAdministration />
-                                                </Route>
-                                                <Route path={`${path}/depositCash`}>
-                                                    <DepositCashToClient />
-                                                </Route>
-                                                <Route path={`${path}/withdrawCash`}>
-                                                    <WithdrawCashFromClient />
-                                                </Route>
-                                                <Route path={`${path}/operationResult`}>
-                                                    <OperationStatusAdmin />
-                                                </Route>
+                                                <Suspense fallback={<Loading />}>
+                                                    <Route path={`${path}/addAccount`}>
+                                                        <AddAccount />
+                                                    </Route>
+                                                    <Route path={`${path}/broadcast`}>
+                                                        <Broadcast />
+                                                    </Route>
+                                                    <Route path={`${path}/APL`}>
+                                                        <APL />
+                                                    </Route>
+                                                    <Route path={`${path}/clientsSupervision`}>
+                                                        <ClientsSupervision />
+                                                    </Route>
+                                                    <Route path={`${path}/userActionLogs`}>
+                                                        <UserActionLogs />
+                                                    </Route>
+                                                    <Route path={`${path}/fundsAdministration`}>
+                                                        <FundsAdministration />
+                                                    </Route>
+                                                    <Route path={`${path}/assetsAdministration`}>
+                                                        <AssetsAdministration />
+                                                    </Route>
+                                                    <Route path={`${path}/TimeDeposit`}>
+                                                        <FixedDeposit />
+                                                    </Route>
+                                                    <Route path={`${path}/ticketsAdministration`}>
+                                                        <TicketsAdministration />
+                                                    </Route>
+                                                    <Route path={`${path}/depositCash`}>
+                                                        <DepositCashToClient />
+                                                    </Route>
+                                                    <Route path={`${path}/withdrawCash`}>
+                                                        <WithdrawCashFromClient />
+                                                    </Route>
+                                                    <Route path={`${path}/operationResult`}>
+                                                        <OperationStatusAdmin />
+                                                    </Route>
 
-                                                <Route exact path={`${path}/configuration`}>
-                                                    <Configuration admin />
-                                                </Route>
-                                                <Route exact path={`${path}/notificationsCenter`}>
-                                                    <NotificationsCenter />
-                                                </Route>
+                                                    <Route exact path={`${path}/configuration`}>
+                                                        <Configuration admin />
+                                                    </Route>
+                                                    <Route exact path={`${path}/notificationsCenter`}>
+                                                        <NotificationsCenter />
+                                                    </Route>
+                                                </Suspense>
                                             </div>
                                             :
                                             /*----------------------------------------------------------Client----------------------------------------------------------*/
                                             <>
                                                 <NavBarTotal balanceChanged={balanceChanged} setBalanceChanged={setBalanceChanged} />
-                                                <Route path={`${path}/accounts`}>
-                                                    <FundsContainer
-                                                        NavInfoToggled={NavInfoToggled}
-                                                        isMobile={isMobile}
-                                                        setItemSelected={setItemSelected}
-                                                        setNumberOfFunds={setNumberOfFunds}
-                                                    />
-                                                </Route>
-                                                <Route path={`${path}/history`}>
-                                                    <MovementsTable
-                                                        isMobile={isMobile}
-                                                        numberOfFunds={numberOfFunds}
-                                                        setNumberOfFunds={setNumberOfFunds}
-                                                        NavInfoToggled={NavInfoToggled}
-                                                    />
-                                                </Route>
-                                                <Route path={`${path}/buy`}>
-                                                    {
-                                                        hasPermission('VIEW_ACCOUNT') ?
-                                                            <BuyForm balanceChanged={() => setBalanceChanged(true)} />
-                                                            :
-                                                            <NoPermissionOperation />
-                                                    }
-                                                </Route>
-                                                <Route path={`${path}/sell`}>
-                                                    <SellForm balanceChanged={() => setBalanceChanged(true)} />
+                                                <Suspense fallback={<Loading />}>
+                                                    <Route path={`${path}/accounts`}>
+                                                        <FundsContainer
+                                                            NavInfoToggled={NavInfoToggled}
+                                                            isMobile={isMobile}
+                                                            setItemSelected={setItemSelected}
+                                                            setNumberOfFunds={setNumberOfFunds}
+                                                        />
+                                                    </Route>
+                                                    <Route path={`${path}/history`}>
+                                                        <MovementsTable
+                                                            isMobile={isMobile}
+                                                            numberOfFunds={numberOfFunds}
+                                                            setNumberOfFunds={setNumberOfFunds}
+                                                            NavInfoToggled={NavInfoToggled}
+                                                        />
+                                                    </Route>
+                                                    <Route path={`${path}/buy`}>
+                                                        {
+                                                            hasPermission('VIEW_ACCOUNT') ?
+                                                                <BuyForm balanceChanged={() => setBalanceChanged(true)} />
+                                                                :
+                                                                <NoPermissionOperation />
+                                                        }
+                                                    </Route>
+                                                    <Route path={`${path}/sell`}>
+                                                        <SellForm balanceChanged={() => setBalanceChanged(true)} />
 
-                                                </Route>
-                                                <Route path={`${path}/deposit`}>
-                                                    {
-                                                        hasPermission('VIEW_ACCOUNT') ?
-                                                            <DepositForm balanceChanged={() => setBalanceChanged(true)} /> :
-                                                            <NoPermissionOperation />
-                                                    }
-                                                </Route>
-                                                <Route path={`${path}/withdraw`}>
-                                                    {
-                                                        hasPermission('VIEW_ACCOUNT') && hasPermission('WITHDRAW') ?
-                                                            <WithdrawForm balanceChanged={() => setBalanceChanged(true)} /> :
-                                                            <NoPermissionOperation />
-                                                    }
-                                                </Route>
-                                                <Route path={`${path}/transfer`}>
-                                                    {
-                                                        hasPermission('VIEW_ACCOUNT') && hasPermission('TRANSFER_GENERATE') ?
-                                                            <TransferForm balanceChanged={() => setBalanceChanged(true)} /> :
-                                                            <NoPermissionOperation />
-                                                    }
-                                                </Route>
-                                                <Route path={`${path}/TimeDeposit`}>
-                                                    {
-                                                        hasPermission('VIEW_ACCOUNT') && hasPermission('FIXED_DEPOSIT_CREATE') ?
-                                                            <FixedDepositClient balanceChanged={() => setBalanceChanged(true)} /> :
-                                                            <NoPermissionOperation />
-                                                    }
-                                                </Route>
-                                                <Route path={`${path}/operationResult`}>
-                                                    <OperationStatus setItemSelected={setItemSelected} />
-                                                </Route>
-                                                <Route exact path={`${path}/configuration`}>
-                                                    <Configuration />
-                                                </Route>
-                                                <Route exact path={`${path}/notificationsCenter`}>
-                                                    <NotificationsCenter />
-                                                </Route>
+                                                    </Route>
+                                                    <Route path={`${path}/deposit`}>
+                                                        {
+                                                            hasPermission('VIEW_ACCOUNT') ?
+                                                                <DepositForm balanceChanged={() => setBalanceChanged(true)} /> :
+                                                                <NoPermissionOperation />
+                                                        }
+                                                    </Route>
+                                                    <Route path={`${path}/withdraw`}>
+                                                        {
+                                                            hasPermission('VIEW_ACCOUNT') && hasPermission('WITHDRAW') ?
+                                                                <WithdrawForm balanceChanged={() => setBalanceChanged(true)} /> :
+                                                                <NoPermissionOperation />
+                                                        }
+                                                    </Route>
+                                                    <Route path={`${path}/transfer`}>
+                                                        {
+                                                            hasPermission('VIEW_ACCOUNT') && hasPermission('TRANSFER_GENERATE') ?
+                                                                <TransferForm balanceChanged={() => setBalanceChanged(true)} /> :
+                                                                <NoPermissionOperation />
+                                                        }
+                                                    </Route>
+                                                    <Route path={`${path}/TimeDeposit`}>
+                                                        {
+                                                            hasPermission('VIEW_ACCOUNT') && hasPermission('FIXED_DEPOSIT_CREATE') ?
+                                                                <FixedDepositClient balanceChanged={() => setBalanceChanged(true)} /> :
+                                                                <NoPermissionOperation />
+                                                        }
+                                                    </Route>
+                                                    <Route path={`${path}/operationResult`}>
+                                                        <OperationStatus setItemSelected={setItemSelected} />
+                                                    </Route>
+                                                    <Route exact path={`${path}/configuration`}>
+                                                        <Configuration />
+                                                    </Route>
+                                                    <Route exact path={`${path}/notificationsCenter`}>
+                                                        <NotificationsCenter />
+                                                    </Route>
+                                                </Suspense>
                                             </>
                                     }
                                     <DashboardToast />
