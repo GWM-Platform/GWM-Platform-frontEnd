@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 import { Link, useHistory } from "react-router-dom";
 import BaseSelect from "react-select";
 import './index.scss'
-const ConnectForm = ({ client, users, ownersAmount, clientUsers }) => {
+const ConnectForm = ({ client, users, ownersAmount, clientUsers, getUsers }) => {
     const { t } = useTranslation()
 
     const { toLogin } = useContext(DashBoardContext)
@@ -37,6 +37,7 @@ const ConnectForm = ({ client, users, ownersAmount, clientUsers }) => {
                     fetched: true,
                     valid: true,
                 }))
+            getUsers()
             history.push(`/DashBoard/clientsSupervision/${client.id}`)
         }).catch((err) => {
             if (err.message !== "canceled") {
@@ -98,7 +99,7 @@ const ConnectForm = ({ client, users, ownersAmount, clientUsers }) => {
                                     }
                                 ))}
                             />
-                              <Form.Check
+                            <Form.Check
                                 checked={data.isOwner}
                                 onChange={e => setData(prevState => ({ ...prevState, isOwner: e.target.checked }))}
                                 disabled={ownersAmount === 0}
@@ -119,7 +120,7 @@ const ConnectForm = ({ client, users, ownersAmount, clientUsers }) => {
                                     </Form.Text>
                                 </div>
                             }
-                          
+
 
                             <Button variant="danger" type="submit" disabled={Request.fetching}>
                                 <Spinner

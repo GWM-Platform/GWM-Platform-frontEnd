@@ -119,7 +119,7 @@ const SelectedAccountData = ({ Account, Client, users }) => {
             </Route>
 
             <Route exact path={`/DashBoard/clientsSupervision/${Client.id}/connectUserToClient`}>
-                <ConnectForm clientUsers={clientUsers} client={Client} users={users} ownersAmount={ownersAmount} />
+                <ConnectForm getUsers={getUsers} clientUsers={clientUsers} client={Client} users={users} ownersAmount={ownersAmount} />
             </Route>
 
             <Route exact path={`/DashBoard/clientsSupervision/${Client.id}/document`}>

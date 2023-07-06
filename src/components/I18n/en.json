@@ -8,7 +8,7 @@
     "REPAYMENT": "Refund due to denied ticket",
     "TRANSFER_SEND": "Outgoing transfer",
     "TRANSFER_RECEIVE": "Incoming transfer",
-    "TRANSFER_REVERT": "Transfer reversed",
+    "TRANSFER_REVERT": "Transfer reverted",
     "FIXED_DEPOSIT_CREATE": "Investment in time deposit #{{fixedDeposit}}",
     "FIXED_DEPOSIT_CLOSE": "Close of time deposit #{{fixedDeposit}}",
     "BID_OFFER": "Investment in preferential time deposit #{{fixedDeposit}}",

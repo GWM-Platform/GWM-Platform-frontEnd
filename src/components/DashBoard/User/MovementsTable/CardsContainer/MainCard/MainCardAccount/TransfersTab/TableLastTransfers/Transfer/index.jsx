@@ -56,6 +56,8 @@ const Transfer = ({ content, actions, getTransfers }) => {
   const [showClick, setShowClick] = useState(false)
   const [showHover, setShowHover] = useState(false)
 
+  const transferNote = content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")
+
   return (
     <tr>
       <td className="tableId text-nowrap">
@@ -69,7 +71,7 @@ const Transfer = ({ content, actions, getTransfers }) => {
             </button>
         }
         {
-          !!(content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")) &&
+          !!(transferNote) &&
           <OverlayTrigger
             show={showClick || showHover}
             placement="right"
@@ -86,10 +88,10 @@ const Transfer = ({ content, actions, getTransfers }) => {
             }}
             overlay={
               <Tooltip className="mailTooltip" id="more-units-tooltip">
-                {!!(content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")) &&
+                {!!(transferNote) &&
                   <div>
                     {t('Transfer note')}:<br />
-                    <span className="text-nowrap">"{content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE").text}"</span>
+                    <span className="text-nowrap">"{transferNote.text}"</span>
                   </div>
                 }
               </Tooltip>
@@ -107,7 +109,10 @@ const Transfer = ({ content, actions, getTransfers }) => {
         }
       </td>
       <td className="tableDate">{momentDate.format('L')}</td>
-      <td className={`tableConcept ${content.stateId === 3 ? 'text-red' : 'text-green'}`}>{t(getMoveStateById(content.stateId).name)}</td>
+      <td className={`tableConcept ${content.stateId === 3 ? 'text-red' : 'text-green'}`}>
+        {t(getMoveStateById(content.stateId).name)}
+        {(content.reverted && transferNote?.text !== "Transferencia revertida") ? <>, {t("reverted")}</> : ""}
+      </td>
       <td className="tableConcept">{t(incomingTransfer() ? "Received from account" : "Sent to account")}{t("")}{" \""}{incomingTransfer() ? content.senderAlias : content.receiverAlias}{"\""}</td>
       <td className={`tableAmount ${content.receiverId === Accounts[0]?.id ? 'text-green' : 'text-red'}`}>
         <span>{content.receiverId === Accounts[0]?.id ? '+' : '-'}</span>

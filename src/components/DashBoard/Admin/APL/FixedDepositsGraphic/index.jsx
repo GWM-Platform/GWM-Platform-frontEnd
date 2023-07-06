@@ -37,7 +37,7 @@ const FixedDepositsGraphic = ({ data }) => {
                     <p className="label">
                         {label}
                         &nbsp;<Badge bg="mainColor">{payload[0]?.payload?.monthDeposits?.length}</Badge>
-                        </p>
+                    </p>
                     <FormattedNumber value={payload[0].value} prefix="U$D " fixedDecimals={2} />
                 </div>
             );
@@ -69,9 +69,9 @@ const FixedDepositsGraphic = ({ data }) => {
                         wrapperStyle={{ right: 30, top: 30, left: "unset" }}
                         content={CustomTooltip}
                     />
-                    <Bar onClick={(a) => { console.log(a) }} style={{ cursor: "pointer" }} barSize={20} dataKey="debt" fill="#082044" radius={[5, 5, 0, 0]} >
+                    <Bar style={{ cursor: "pointer" }} barSize={20} dataKey="debt" fill="#082044" radius={[5, 5, 0, 0]} >
                         {data.map((entry, index) => (
-                            <Cell fill={selectedMonth === index ? "#385074" : "#082044"} />
+                            <Cell key={index} fill={selectedMonth === index ? "#385074" : "#082044"} />
                         ))}
                     </Bar>
 
@@ -95,10 +95,10 @@ const FixedDepositsGraphic = ({ data }) => {
                                             {t("Fixed deposit")} #{monthDeposit.id}
                                         </h3>
                                         <h4>
-                                            <Link to={`/DashBoard/clientsSupervision/${ monthDeposit.clientId}`}>
-                                            {
-                                                monthDeposit.client
-                                            }
+                                            <Link to={`/DashBoard/clientsSupervision/${monthDeposit.clientId}`}>
+                                                {
+                                                    monthDeposit.client
+                                                }
                                             </Link>
                                         </h4>
                                         <h4>

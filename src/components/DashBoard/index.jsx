@@ -29,6 +29,8 @@ import axios from 'axios';
 import NoClients from './GeneralUse/NoClients';
 import NoPermissionOperation from './User/NoPermissionFeedback/NoPermissionOperation';
 import { useSelector } from 'react-redux';
+import { Col, Container, Row, Spinner } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 //User
 const FundsContainer = lazy(() => import('./User/FundsContainer'))
@@ -65,6 +67,8 @@ const UserDashBoard = () => {
     const [NavInfoToggled, setNavInfoToggled] = useState(false)
     const [numberOfFunds, setNumberOfFunds] = useState(0);
 
+    const { t } = useTranslation();
+
     return (
         <div className="DashBoard growOpacity" style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/backGround/background.jpg)` }}>
             <Suspense fallback={<Loading />}>
@@ -81,7 +85,16 @@ const UserDashBoard = () => {
                                         admin && IndexClientSelected === -1 ?
                                             /*----------------------------------------------------------Admin----------------------------------------------------------*/
                                             <div className={`adminContainer tabContent`}>
-                                                <Suspense fallback={<Loading />}>
+                                                <Suspense fallback={
+                                                    <Container className="h-100" fluid>
+                                                        <Row className="d-flex justify-content-center align-items-center h-100">
+                                                            <Col className="d-flex justify-content-center align-items-center">
+                                                                <Spinner className="me-2" animation="border" variant="primary" />
+                                                                <span className="loadingText">{t("Loading")}</span>
+                                                            </Col>
+                                                        </Row>
+                                                    </Container>
+                                                }>
                                                     <Route path={`${path}/addAccount`}>
                                                         <AddAccount />
                                                     </Route>
@@ -131,7 +144,16 @@ const UserDashBoard = () => {
                                             /*----------------------------------------------------------Client----------------------------------------------------------*/
                                             <>
                                                 <NavBarTotal balanceChanged={balanceChanged} setBalanceChanged={setBalanceChanged} />
-                                                <Suspense fallback={<Loading />}>
+                                                <Suspense fallback={
+                                                    <Container className="h-100" fluid>
+                                                        <Row className="d-flex justify-content-center align-items-center h-100">
+                                                            <Col className="d-flex justify-content-center align-items-center">
+                                                                <Spinner className="me-2" animation="border" variant="primary" />
+                                                                <span className="loadingText">{t("Loading")}</span>
+                                                            </Col>
+                                                        </Row>
+                                                    </Container>
+                                                }>
                                                     <Route path={`${path}/accounts`}>
                                                         <FundsContainer
                                                             NavInfoToggled={NavInfoToggled}

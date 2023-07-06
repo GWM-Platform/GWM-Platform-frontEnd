@@ -127,7 +127,7 @@ const ActionConfirmationModal = ({ movement, setShowModal, action, show, reloadD
                                         <FontAwesomeIcon className="placeHolder" icon={faCircle} style={{ transform: "scale(1.5)" }} />
                                     </h1>
                                 </div>
-                                <h2 className="subTitle mt-4">{t("The ticket has been")} {t(action === "approve" ? "approved" : "reversed")} {t("succesfully")}</h2>
+                                <h2 className="subTitle mt-4">{t("The ticket has been")} {t(action === "approve" ? "approved" : "reverted")} {t("succesfully")}</h2>
                             </>
                             :
                             <>
