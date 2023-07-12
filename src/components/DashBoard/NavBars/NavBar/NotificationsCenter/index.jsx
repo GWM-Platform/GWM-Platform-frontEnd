@@ -9,8 +9,8 @@ import { useSelector } from 'react-redux';
 import { selectAllNotifications } from 'Slices/DashboardUtilities/notificationsSlice';
 import { DashBoardContext } from 'context/DashBoardContext';
 
-const { faBell, faBellSlash, faCog } = require("@fortawesome/free-solid-svg-icons")
-const { FontAwesomeIcon } = require("@fortawesome/react-fontawesome")
+import { faBell, faBellSlash, faCog } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 const NotificationsCenter = ({ active }) => {
     const { DashboardToastDispatch } = useContext(DashBoardContext)
 
