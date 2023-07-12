@@ -7,6 +7,8 @@ import "components/DashBoard/Admin/TicketsAdministration/index.css"
 import 'components/DashBoard/Admin/AssetsAdministration/index.css'
 import 'components/DashBoard/Admin/FundsAdministration/index.css'
 import 'components/DashBoard/Admin/OperationStatus/operationsForm.scss'
+import 'components/DashBoard/Admin/OperationStatus/operationsForm.scss'
+import 'components/DashBoard/User/MovementsTable/CardsContainer/MainCard/MainCardAccount/MovementsTab/index.css'
 
 import NavBar from './NavBars/NavBar';
 import NavInfo from './NavBars/NavInfo';

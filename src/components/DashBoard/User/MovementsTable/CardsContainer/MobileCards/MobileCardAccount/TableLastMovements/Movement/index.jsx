@@ -397,11 +397,16 @@ const Movement = ({ content, reloadData }) => {
     setShowModal(true)
   }
 
+  const transferNote = content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")
+
   return (
     <div className='mobileMovement'>
       <div className='d-flex justify-content-between'>
         <strong>
           {t(content.motive + (content.motive === "REPAYMENT" ? content.fundName ? "_" + content.fundName : "_" + content.fixedDepositId : ""), { fund: content.fundName, fixedDeposit: content.fixedDepositId })}
+          {content?.transferReceiver && <>, {t("to {{transferReceiver}}", { transferReceiver: content?.transferReceiver })}</>}
+          {content?.transferSender && <>, {t("from {{transferSender}}", { transferSender: content?.transferSender })}</>}
+          {(content?.transfer?.reverted && transferNote?.text === "Transferencia revertida") ? <>, {t("reversion")}</> : ""}
         </strong>
         <span className="text-nowrap" >{momentDate.format('L')}</span>
 
@@ -466,7 +471,7 @@ const Movement = ({ content, reloadData }) => {
             </button>
         }
         {
-          !!(content?.userEmail || content?.userName || content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")) &&
+          !!(content?.userEmail || content?.userName || transferNote) &&
           <OverlayTrigger
             show={showClick || showHover}
             placement="bottom"
@@ -483,16 +488,16 @@ const Movement = ({ content, reloadData }) => {
             }}
             overlay={
               <Tooltip className="mailTooltip" id="more-units-tooltip">
-                {!!(content.userEmail || content?.userName ) &&
+                {!!(content.userEmail || content?.userName) &&
                   <div>
                     {t('Operation performed by')}:<br />
-                    <span className="text-nowrap">{content?.userName || content?.userEmail }</span>
+                    <span className="text-nowrap">{content?.userName || content?.userEmail}</span>
                   </div>
                 }
-                {!!(content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")) &&
+                {!!(transferNote) &&
                   <div>
                     {t('Transfer note')}:<br />
-                    <span className="text-nowrap">"{content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE").text}"</span>
+                    <span className="text-nowrap">"{transferNote.text}"</span>
                   </div>
                 }
               </Tooltip>
@@ -512,7 +517,10 @@ const Movement = ({ content, reloadData }) => {
 
 
       <div className='d-flex justify-content-between'>
-        <span className={`${content.stateId === 3 ? 'text-red' : 'text-green'}`}>{t(getMoveStateById(content.stateId).name)}</span>
+        <span className={`${content.stateId === 3 ? 'text-red' : 'text-green'}`}>
+          {t(getMoveStateById(content.stateId).name)}
+          {(content?.transfer?.reverted && transferNote?.text !== "Transferencia revertida") ? <>, {t("reverted")}</> : ""}
+        </span>
         <span className={`${Math.sign(content.amount) === 1 ? 'text-green' : 'text-red'}`}>
           {Math.sign(content.amount) === 1 ? '+' : '-'}
           <FormattedNumber value={Math.abs(content.amount)} prefix="U$D " fixedDecimals={2} />

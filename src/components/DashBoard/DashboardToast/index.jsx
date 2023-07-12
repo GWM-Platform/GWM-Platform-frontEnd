@@ -10,7 +10,7 @@ const DashboardToasts = () => {
     const { DashboardToast } = useContext(DashBoardContext)
 
     return (
-        <ToastContainer className="p-3" style={{ zIndex: "10000" }} position="bottom-end">
+        <ToastContainer className="p-3" style={{ zIndex: "10000" }} position="top-end">
             {DashboardToast.map((toast, key) => {
                 return <ToastComponent key={key} ownKey={key} toast={toast} />
             })}

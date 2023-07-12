@@ -99,7 +99,11 @@ const TransferRow = ({ Movement, reloadData, anyWithActions }) => {
                     }
                     {
                         (Movement.reverted && transferNote?.text !== "Transferencia revertida") &&
-                        <Badge className='ms-1 ms-md-2' bg="info">{t("Reverted")}</Badge>
+                        <Badge className='ms-1 ms-md-2' bg="danger">{t("Reverted")}</Badge>
+                    }
+                     {
+                        (Movement.reverted && transferNote?.text === "Transferencia revertida") &&
+                        <Badge className='ms-1 ms-md-2' bg="info">{t("Reversion")}</Badge>
                     }
                     <Badge className='ms-1 ms-md-2' bg={status()?.bg}>{t(status().text)}</Badge>
                     {

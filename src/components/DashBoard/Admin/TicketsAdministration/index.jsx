@@ -73,7 +73,7 @@ const TicketsAdministration = () => {
                         fetching: false,
                         fetched: true,
                         valid: true,
-                        values: data
+                        values: [...data, { id: 99, name: "Reverted transfers" }]
                     }
                 })
             } else {

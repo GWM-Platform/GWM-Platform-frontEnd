@@ -978,5 +978,10 @@
   "Closes on": "Cierra el",
   "Duration (Agreed)": "Duración (acordada)",
   "Current_accounts": "Cuentas corrientes",
-  "You have unread notifications": "Tienes notificaciones sin leer"
+  "You have unread notifications": "Tienes notificaciones sin leer",
+  "Reversion": "Reversión",
+  "Reverted transfers": "Transferencias revertidas",
+  "reversion": "reversión",
+  "to {{transferReceiver}}": "a {{transferReceiver}}",
+  "from {{transferSender}}": "de {{transferSender}}"
 }

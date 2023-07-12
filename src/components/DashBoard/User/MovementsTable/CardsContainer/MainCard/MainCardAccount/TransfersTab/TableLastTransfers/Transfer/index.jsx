@@ -113,7 +113,10 @@ const Transfer = ({ content, actions, getTransfers }) => {
         {t(getMoveStateById(content.stateId).name)}
         {(content.reverted && transferNote?.text !== "Transferencia revertida") ? <>, {t("reverted")}</> : ""}
       </td>
-      <td className="tableConcept">{t(incomingTransfer() ? "Received from account" : "Sent to account")}{t("")}{" \""}{incomingTransfer() ? content.senderAlias : content.receiverAlias}{"\""}</td>
+      <td className="tableConcept">
+        {t(incomingTransfer() ? "Received from account" : "Sent to account")}{t("")}{" \""}{incomingTransfer() ? content.senderAlias : content.receiverAlias}{"\""}
+        {(content.reverted && transferNote?.text === "Transferencia revertida") ? <>, {t("reversion")}</> : ""}
+      </td>
       <td className={`tableAmount ${content.receiverId === Accounts[0]?.id ? 'text-green' : 'text-red'}`}>
         <span>{content.receiverId === Accounts[0]?.id ? '+' : '-'}</span>
         <FormattedNumber value={Math.abs(content.amount)} prefix="U$D " fixedDecimals={2} />

@@ -13,7 +13,7 @@ const StateSelector = ({ handleChange, TransactionStates }) => {
                     <option value="">{t("All")}</option>
                     {
                         TransactionStates.values.map(
-                            (state, key) => <option value={state.id} key={key}>{state.id}. {t(state.name)} </option>
+                            (state, key) => <option value={state.id} key={key}>{t(state.name)} </option>
 
                         )
                     }

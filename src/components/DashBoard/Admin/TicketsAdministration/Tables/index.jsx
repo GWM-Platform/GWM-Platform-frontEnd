@@ -573,7 +573,7 @@ const Tables = ({ state, messageVariants }) => {
             filterState: state,
             take: PaginationMovements.take,
             skip: PaginationMovements.skip,
-            onlyDepositsWithdraws:true
+            onlyDepositsWithdraws: true
         });
         setMovements({
             ...Movements,
@@ -682,9 +682,12 @@ const Tables = ({ state, messageVariants }) => {
         }
     }
 
+    const stateOnlyReverted = state === "99"
+
     const transfersInState = async () => {
         var url = `${process.env.REACT_APP_APIURL}/transfers/?` + new URLSearchParams({
-            filterState: state,
+            filterState: stateOnlyReverted ? null : state,
+            onlyReverted: stateOnlyReverted ?? null,
             take: PaginationTransfers.take,
             skip: PaginationTransfers.skip,
         });
@@ -815,12 +818,12 @@ const Tables = ({ state, messageVariants }) => {
             }
         }))
         setPaginationTransactions((prevState) => ({
-                ...prevState, ...{
-                    skip: 0,//Offset (in quantity of movements)
-                    take: 5,//Movements per page
-                    state: null
-                }
-            })
+            ...prevState, ...{
+                skip: 0,//Offset (in quantity of movements)
+                take: 5,//Movements per page
+                state: null
+            }
+        })
         )
         setPaginationTransfers((prevState) => ({
             ...prevState, ...{
@@ -831,22 +834,22 @@ const Tables = ({ state, messageVariants }) => {
         })
         )
         setPaginationFixedDeposits((prevState) => ({
-                ...prevState, ...{
-                    skip: 0,//Offset (in quantity of movements)
-                    take: 5,//Movements per page
-                    state: null
-                }
-            })
+            ...prevState, ...{
+                skip: 0,//Offset (in quantity of movements)
+                take: 5,//Movements per page
+                state: null
+            }
+        })
         )
     }, [state])
 
     useEffect(() => {
-        if (!searchMovementById.search) movementsInState()
+        if (!searchMovementById.search && !stateOnlyReverted) movementsInState()
         // eslint-disable-next-line
     }, [PaginationMovements, state, searchMovementById.search])
 
     useEffect(() => {
-        if (!searchTransactionById.search) transactionsInState()
+        if (!searchTransactionById.search && !stateOnlyReverted) transactionsInState()
         // eslint-disable-next-line
     }, [PaginationTransactions, state, searchTransactionById.search])
 
@@ -856,12 +859,12 @@ const Tables = ({ state, messageVariants }) => {
     }, [PaginationTransfers, state, searchTransferById.search])
 
     useEffect(() => {
-        if (!searchFixedDepositById.search) fixedDepositsInState()
+        if (!searchFixedDepositById.search && !stateOnlyReverted) fixedDepositsInState()
         // eslint-disable-next-line
     }, [PaginationFixedDeposits, state, searchFixedDepositById.search])
 
     useEffect(() => {
-        if (!searchPendingSettlementById.search) movementsPendingSettlement()
+        if (!searchPendingSettlementById.search && !stateOnlyReverted) movementsPendingSettlement()
         // eslint-disable-next-line
     }, [PaginationPendingSettlements, searchPendingSettlementById.search])
 
@@ -932,92 +935,113 @@ const Tables = ({ state, messageVariants }) => {
             <Message selected={0} messageVariants={messageVariants} />
             :
             <>
-                <div className='d-flex justify-content-between'>
-                    <Button variant="link" onClick={() => executeScroll(PurchaseAndSale)}>{t("Purchase and sale tickets")}</Button>
-                    <Button variant="link" onClick={() => executeScroll(AccountMovementsRef)}>{t("Account movements tickets")}</Button>
-                    <Button variant="link" onClick={() => executeScroll(PendingSettlementRef)}>{t("Approved tickets pending settlement")}</Button>
-                    <Button variant="link" onClick={() => executeScroll(TransferRef)}>{t("Transfer tickets")}</Button>
-                    <Button variant="link" onClick={() => executeScroll(FixedDepositsRef)}>{t("Time deposits")}</Button>
-                </div>
-                {/*-------------------------------Purchase and sale-------------------------- */}
-                <h1 ref={PurchaseAndSale} className="title">{t("Purchase and sale tickets")}:</h1>
-                <TicketSearch
-                    props={ticketSearchPropsTransfers}
-                />
                 {
-                    Transactions.fetching ?
-                        <Loading movements={PaginationMovements.take} />
-                        :
-                        !Transactions.valid ?
-                            <Message selected={3} messageVariants={messageVariants} />
-                            :
-                            Transactions.values.total === 0 ?
-                                <NoMovements movements={PaginationMovements.take} />
-                                :
-                                <>
-                                    <TransactionsTable UsersInfo={UsersInfo} FundInfo={FundInfo} take={PaginationMovements.take}
-                                        reloadData={reloadData} state={state} transactions={Transactions.values.transactions} />
-                                </>
-
+                    !stateOnlyReverted &&
+                    <div className='d-flex justify-content-between'>
+                        <Button variant="link" onClick={() => executeScroll(PurchaseAndSale)}>{t("Purchase and sale tickets")}</Button>
+                        <Button variant="link" onClick={() => executeScroll(AccountMovementsRef)}>{t("Account movements tickets")}</Button>
+                        <Button variant="link" onClick={() => executeScroll(PendingSettlementRef)}>{t("Approved tickets pending settlement")}</Button>
+                        <Button variant="link" onClick={() => executeScroll(TransferRef)}>{t("Transfer tickets")}</Button>
+                        <Button variant="link" onClick={() => executeScroll(FixedDepositsRef)}>{t("Time deposits")}</Button>
+                    </div>
                 }
+                {/*-------------------------------Purchase and sale-------------------------- */}
                 {
-                    Transactions.values.total > 0 ?
-                        <PaginationController PaginationData={PaginationTransactions} setPaginationData={setPaginationTransactions} total={Transactions.values.total} />
-                        :
-                        null
+                    !stateOnlyReverted &&
+                    <>
+                        <h1 ref={PurchaseAndSale} className="title">{t("Purchase and sale tickets")}:</h1>
+                        <TicketSearch
+                            props={ticketSearchPropsTransfers}
+                        />
+                        {
+                            Transactions.fetching ?
+                                <Loading movements={PaginationMovements.take} />
+                                :
+                                !Transactions.valid ?
+                                    <Message selected={3} messageVariants={messageVariants} />
+                                    :
+                                    Transactions.values.total === 0 ?
+                                        <NoMovements movements={PaginationMovements.take} />
+                                        :
+                                        <>
+                                            <TransactionsTable UsersInfo={UsersInfo} FundInfo={FundInfo} take={PaginationMovements.take}
+                                                reloadData={reloadData} state={state} transactions={Transactions.values.transactions} />
+                                        </>
+
+                        }
+                        {
+                            Transactions.values.total > 0 ?
+                                <PaginationController PaginationData={PaginationTransactions} setPaginationData={setPaginationTransactions} total={Transactions.values.total} />
+                                :
+                                null
+                        }
+                    </>
                 }
                 {/*-------------------------------Withdrawal and deposit-------------------------- */}
-                <div className='mt-3 w-100 d-flex' style={{ borderBottom: "1px solid gray" }} />
-                <h1 className="title" ref={AccountMovementsRef}>{t("Account movements tickets")}:</h1>
-                <TicketSearch
-                    props={ticketSearchPropsMovements}
-                />
                 {
-                    Movements.fetching ?
-                        <Loading movements={PaginationMovements.take} />
-                        :
-                        !Movements.valid ?
-                            <Message selected={5} messageVariants={messageVariants} />
-                            :
-                            Movements.values.total === 0 ?
-                                <NoMovements movements={PaginationMovements.take} />
+                    !stateOnlyReverted &&
+                    <>
+                        <div className='mt-3 w-100 d-flex' style={{ borderBottom: "1px solid gray" }} />
+                        <h1 className="title" ref={AccountMovementsRef}>{t("Account movements tickets")}:</h1>
+                        <TicketSearch
+                            props={ticketSearchPropsMovements}
+                        />
+                        {
+                            Movements.fetching ?
+                                <Loading movements={PaginationMovements.take} />
                                 :
-                                <>
-                                    <MovementsTable AccountInfo={AccountInfo} UsersInfo={UsersInfo}
-                                        reloadData={reloadData} state={state} take={PaginationMovements.take} movements={Movements.values.movements} />
+                                !Movements.valid ?
+                                    <Message selected={5} messageVariants={messageVariants} />
+                                    :
+                                    Movements.values.total === 0 ?
+                                        <NoMovements movements={PaginationMovements.take} />
+                                        :
+                                        <>
+                                            <MovementsTable AccountInfo={AccountInfo} UsersInfo={UsersInfo}
+                                                reloadData={reloadData} state={state} take={PaginationMovements.take} movements={Movements.values.movements} />
 
-                                </>
+                                        </>
+                        }
+                        {
+                            Movements.values.total > 0 ?
+                                <PaginationController PaginationData={PaginationMovements} setPaginationData={setPaginationMovements} total={Movements.values.total} />
+                                :
+                                null
+                        }
+                    </>
                 }
                 {
-                    Movements.values.total > 0 ?
-                        <PaginationController PaginationData={PaginationMovements} setPaginationData={setPaginationMovements} total={Movements.values.total} />
-                        :
-                        null
-                }
-                {/*-------------------------------Approved tickets pending settlement-------------------------- */}
-                <div className='mt-3 w-100 d-flex' style={{ borderBottom: "1px solid gray" }} />
-                <h1 className="title" ref={PendingSettlementRef}>{t("Approved tickets pending settlement")}:</h1>
-                <TicketSearch
-                    props={ticketSearchPropsPendingSettlement}
-                />
-                {
-                    PendingSettlements.fetching ?
-                        <Loading movements={PaginationPendingSettlements.take} />
-                        :
-                        !PendingSettlements.valid ?
-                            <Message selected={5} messageVariants={messageVariants} />
-                            :
-                            PendingSettlements.values.total === 0 ?
-                                <NoMovements movements={PaginationPendingSettlements.take} />
+                    !stateOnlyReverted &&
+                    <>
+                        {/*-------------------------------Approved tickets pending settlement-------------------------- */}
+                        <div className='mt-3 w-100 d-flex' style={{ borderBottom: "1px solid gray" }} />
+                        <h1 className="title" ref={PendingSettlementRef}>{t("Approved tickets pending settlement")}:</h1>
+                        <TicketSearch
+                            props={ticketSearchPropsPendingSettlement}
+                        />
+                        {
+                            PendingSettlements.fetching ?
+                                <Loading movements={PaginationPendingSettlements.take} />
                                 :
-                                <>
-                                    <MovementsTable AccountInfo={AccountInfo} UsersInfo={UsersInfo}
-                                        reloadData={reloadData} state={state} take={PaginationPendingSettlements.take} movements={PendingSettlements.values.movements} />
+                                !PendingSettlements.valid ?
+                                    <Message selected={5} messageVariants={messageVariants} />
+                                    :
+                                    PendingSettlements.values.total === 0 ?
+                                        <NoMovements movements={PaginationPendingSettlements.take} />
+                                        :
+                                        <>
+                                            <MovementsTable AccountInfo={AccountInfo} UsersInfo={UsersInfo}
+                                                reloadData={reloadData} state={state} take={PaginationPendingSettlements.take} movements={PendingSettlements.values.movements} />
 
-                                </>
+                                        </>
+                        }
+                    </>
                 }
                 {/*-------------------------------Transfers-------------------------- */}
-                <div className='mt-3 w-100 d-flex' style={{ borderBottom: "1px solid gray" }} />
+                {
+                    !stateOnlyReverted &&
+                    <div className='mt-3 w-100 d-flex' style={{ borderBottom: "1px solid gray" }} />
+                }
                 <h1 className="title" ref={TransferRef}>{t("Transfer tickets")}:</h1>
                 <TicketSearch
                     props={ticketSearchPropsTransfer}
@@ -1044,33 +1068,37 @@ const Tables = ({ state, messageVariants }) => {
                         :
                         null
                 }
-
-                {/*-------------------------------Fixed Deposits-------------------------- */}
-                <div className='mt-3 w-100 d-flex' style={{ borderBottom: "1px solid gray" }} />
-                <h1 className="title" ref={FixedDepositsRef}>{t("Time deposits")}:</h1>
-                <TicketSearch
-                    props={ticketSearchPropsFixedDeposits}
-                />
                 {
-                    FixedDeposits.fetching ?
-                        <Loading movements={PaginationFixedDeposits.take} />
-                        :
-                        !FixedDeposits.valid ?
-                            <Message selected={5} messageVariants={messageVariants} />
-                            :
-                            FixedDeposits.values.total === 0 ?
-                                <NoMovements movements={PaginationFixedDeposits.take} />
+                    !stateOnlyReverted &&
+                    <>
+                        {/*-------------------------------Fixed Deposits-------------------------- */}
+                        <div className='mt-3 w-100 d-flex' style={{ borderBottom: "1px solid gray" }} />
+                        <h1 className="title" ref={FixedDepositsRef}>{t("Time deposits")}:</h1>
+                        <TicketSearch
+                            props={ticketSearchPropsFixedDeposits}
+                        />
+                        {
+                            FixedDeposits.fetching ?
+                                <Loading movements={PaginationFixedDeposits.take} />
                                 :
-                                <>
-                                    <FixedDepositTable AccountInfo={AccountInfo} UsersInfo={UsersInfo}
-                                        reloadData={reloadData} state={state} take={PaginationFixedDeposits.take} movements={FixedDeposits.values.deposits} />
-                                </>
-                }
-                {
-                    FixedDeposits.values.total > 0 ?
-                        <PaginationController PaginationData={PaginationFixedDeposits} setPaginationData={setPaginationFixedDeposits} total={FixedDeposits.values.total} />
-                        :
-                        null
+                                !FixedDeposits.valid ?
+                                    <Message selected={5} messageVariants={messageVariants} />
+                                    :
+                                    FixedDeposits.values.total === 0 ?
+                                        <NoMovements movements={PaginationFixedDeposits.take} />
+                                        :
+                                        <>
+                                            <FixedDepositTable AccountInfo={AccountInfo} UsersInfo={UsersInfo}
+                                                reloadData={reloadData} state={state} take={PaginationFixedDeposits.take} movements={FixedDeposits.values.deposits} />
+                                        </>
+                        }
+                        {
+                            FixedDeposits.values.total > 0 ?
+                                <PaginationController PaginationData={PaginationFixedDeposits} setPaginationData={setPaginationFixedDeposits} total={FixedDeposits.values.total} />
+                                :
+                                null
+                        }
+                    </>
                 }
             </>
 

@@ -27,7 +27,7 @@ const Movement = ({ Movement }) => {
       <td className="tableId text-nowrap">
         {Movement.id}
         {
-          (!!(Movement?.userEmail) ||!!(Movement?.userName) || !!(transferNote) || !!(clientNote) || !!(denialMotive) || !!(adminNote)) &&
+          (!!(Movement?.userEmail) || !!(Movement?.userName) || !!(transferNote) || !!(clientNote) || !!(denialMotive) || !!(adminNote)) &&
           <OverlayTrigger
             show={showClick || showHover}
             placement="right"
@@ -91,9 +91,15 @@ const Movement = ({ Movement }) => {
       <td className="tableDate">
         {momentDate.format('L')}
       </td>
-      <td className={`tableConcept ${Movement.stateId === 3 ? 'text-red' : 'text-green'}`}>{t(getMoveStateById(Movement.stateId).name)}</td>
+      <td className={`tableConcept ${Movement.stateId === 3 ? 'text-red' : 'text-green'}`}>
+        {t(getMoveStateById(Movement.stateId).name)}
+        {(Movement?.transfer?.reverted && transferNote?.text !== "Transferencia revertida") ? <>, {t("reverted")}</> : ""}
+      </td>
       <td className="tableConcept">
         {t(Movement.motive + (Movement.motive === "REPAYMENT" ? Movement.fundName ? "_" + Movement.fundName : "_" + Movement.fixedDepositId : ""), { fund: Movement.fundName, fixedDeposit: Movement.fixedDepositId })}
+        {Movement?.transferReceiver && <>, {t("to {{transferReceiver}}", { transferReceiver: Movement?.transferReceiver })}</>}
+        {Movement?.transferSender && <>, {t("from {{transferSender}}", { transferSender: Movement?.transferSender })}</>}
+        {(Movement?.transfer?.reverted && transferNote?.text === "Transferencia revertida") ? <>, {t("reversion")}</> : ""}
       </td>
       <td className={`tableAmount ${Math.sign(Movement.amount) === 1 ? 'text-green' : 'text-red'}`}>
         <span>{Math.sign(Movement.amount) === 1 ? '+' : '-'}</span>

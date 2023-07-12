@@ -10,7 +10,7 @@ const ClientsSearch = ({ handleSearch, SearchText, cancelSearch, FilteredClients
     const { t } = useTranslation();
 
     return (
-        <InputGroup className={`my-3 searchBar ${FilteredClients.length > 0 || SearchText.length === 0 ? "" : "notfound"} ${(SearchText.length === 0 &&  FilteredClients.length === Clients.length) ? "" : "search"} `}>
+        <InputGroup className={`my-3 searchBar ${FilteredClients.length > 0 || SearchText.length === 0 ? "" : "notfound"} ${(SearchText.length === 0 && FilteredClients.length === Clients.length) ? "" : "search"} `}>
             <InputGroup.Text className="left" id="basic-addon1">
                 <FontAwesomeIcon className="icon" icon={faSearch} />
             </InputGroup.Text>
@@ -19,6 +19,7 @@ const ClientsSearch = ({ handleSearch, SearchText, cancelSearch, FilteredClients
                 value={SearchText}
                 placeholder={t("Search client")}
                 aria-label="Search"
+                onKeyDown={e => { if (e.key === 'Enter') search() }}
             />
             {
                 FilteredClients.length !== Clients.length &&
