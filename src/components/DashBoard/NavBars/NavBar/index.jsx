@@ -53,30 +53,6 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                 admin && IndexClientSelected === -1 ?
                                     /*----------------------------------------------------------Admin----------------------------------------------------------*/
                                     <>
-                                        <NavDropdown
-                                            active={itemSelectedLC === "timedeposit" || itemSelectedLC === "apl" || itemSelectedLC === "fundsadministration" || itemSelectedLC === "assetsadministration"}
-                                            className="px-0 transactionDropdown" title={t("Funds administration")} id="collasible-nav-dropdown">
-                                            <NavDropdown.Item
-                                                active={itemSelectedLC === "fundsadministration"}
-                                                onClick={() => { goTo("FundsAdministration") }}>
-                                                {t("Funds")}
-                                            </NavDropdown.Item>
-                                            <NavDropdown.Item
-                                                active={itemSelectedLC === "timedeposit"}
-                                                onClick={() => { goTo("TimeDeposit") }}>
-                                                {t("Time deposit")}
-                                            </NavDropdown.Item>
-                                            <NavDropdown.Item
-                                                active={itemSelectedLC === "assetsadministration"}
-                                                onClick={() => { goTo("AssetsAdministration") }}>
-                                                {t("Assets")}
-                                            </NavDropdown.Item>
-                                            <NavDropdown.Item
-                                                active={itemSelectedLC === "apl"}
-                                                onClick={() => { goTo("APL") }}>
-                                                APL
-                                            </NavDropdown.Item>
-                                        </NavDropdown>
                                         <Nav.Link
                                             className="px-2"
                                             active={itemSelectedLC === "ticketsadministration"}
@@ -115,6 +91,30 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                                 active={itemSelectedLC === "withdrawcash"}
                                                 onClick={() => { goTo("withdrawCash") }}>
                                                 {t("Withdraw cash")}
+                                            </NavDropdown.Item>
+                                        </NavDropdown>
+                                        <NavDropdown
+                                            active={itemSelectedLC === "timedeposit" || itemSelectedLC === "apl" || itemSelectedLC === "fundsadministration" || itemSelectedLC === "assetsadministration"}
+                                            className="px-0 transactionDropdown" title={t("Funds administration")} id="collasible-nav-dropdown">
+                                            <NavDropdown.Item
+                                                active={itemSelectedLC === "fundsadministration"}
+                                                onClick={() => { goTo("FundsAdministration") }}>
+                                                {t("Funds")}
+                                            </NavDropdown.Item>
+                                            <NavDropdown.Item
+                                                active={itemSelectedLC === "timedeposit"}
+                                                onClick={() => { goTo("TimeDeposit") }}>
+                                                {t("Time deposit")}
+                                            </NavDropdown.Item>
+                                            <NavDropdown.Item
+                                                active={itemSelectedLC === "assetsadministration"}
+                                                onClick={() => { goTo("AssetsAdministration") }}>
+                                                {t("Assets")}
+                                            </NavDropdown.Item>
+                                            <NavDropdown.Item
+                                                active={itemSelectedLC === "apl"}
+                                                onClick={() => { goTo("APL") }}>
+                                                APL
                                             </NavDropdown.Item>
                                         </NavDropdown>
                                     </>

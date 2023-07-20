@@ -937,7 +937,7 @@ const Tables = ({ state, messageVariants }) => {
             <>
                 {
                     !stateOnlyReverted &&
-                    <div className='d-flex justify-content-between'>
+                    <div className='d-flex justify-content-between overflow-auto'>
                         <Button variant="link" onClick={() => executeScroll(PurchaseAndSale)}>{t("Purchase and sale tickets")}</Button>
                         <Button variant="link" onClick={() => executeScroll(AccountMovementsRef)}>{t("Account movements tickets")}</Button>
                         <Button variant="link" onClick={() => executeScroll(PendingSettlementRef)}>{t("Approved tickets pending settlement")}</Button>

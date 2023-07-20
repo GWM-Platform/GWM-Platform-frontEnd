@@ -104,13 +104,13 @@ const ContainerLogin = () => {
             } else if (transferId) {
               destination = `Accounts?loc=history&client=${desiredClient}&id=${transferId}&type=transfers`
             } else {
-              destination = `FundsAdministration`
+              destination = `TicketsAdministration`
             }
           } else {
             if (desiredLocation && desiredId && desiredType) {
-              destination = `FundsAdministration?loc=${desiredLocation}&id=${desiredId}&type=${desiredType}`
+              destination = `TicketsAdministration?loc=${desiredLocation}&id=${desiredId}&type=${desiredType}`
             } else {
-              destination = `FundsAdministration`
+              destination = `TicketsAdministration`
             }
           }
         } else {

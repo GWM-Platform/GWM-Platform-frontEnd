@@ -23,7 +23,7 @@ const SetUserData = () => {
 
     const toDashBoard = () => {
         user.isAdmin ?
-            history.push(`/DashBoard/FundsAdministration`)
+            history.push(`/DashBoard/ticketsAdministration`)
             :
             history.push(`/DashBoard/accounts`)
     }

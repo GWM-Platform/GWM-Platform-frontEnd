@@ -465,10 +465,10 @@ export const DashBoardProvider = ({ children }) => {
                     let destination = `/DashBoard/${desiredLocation}?loc=${desiredLocation}&id=${desiredId}&type=${desiredType}`
                     history.push(destination);
                 } else {
-                    history.push(`/DashBoard/FundsAdministration`);
+                    history.push(`/DashBoard/ticketsAdministration`);
                 }
             } else {
-                history.push(`/DashBoard/FundsAdministration`);
+                history.push(`/DashBoard/ticketsAdministration`);
             }
         }
 

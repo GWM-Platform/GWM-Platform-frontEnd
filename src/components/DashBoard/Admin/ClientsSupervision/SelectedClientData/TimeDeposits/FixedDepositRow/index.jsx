@@ -204,7 +204,7 @@ const FixedDepositRow = ({ Movement }) => {
     return (
         <>
             <div className='mobileMovement'>
-                <div className='d-flex py-1 align-items-center' >
+                <div className='d-flex py-1 align-items-center flex-wrap flex-wrap' >
                     <span className="h5 mb-0 me-1">{t("Time deposit")}&nbsp;#{Movement.id}</span>
                     {
                         wasEdited(Movement) &&

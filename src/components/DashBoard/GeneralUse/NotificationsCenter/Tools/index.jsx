@@ -17,6 +17,7 @@ const Tools = () => {
     const { ClientSelected } = useContext(DashBoardContext);
     const dispatch = useDispatch()
 
+    //eslint-disable-next-line
     const [Pagination, setPagination] = useState({
         skip: 0,//Offset (in quantity of logs)
         take: 15,//Logs per page

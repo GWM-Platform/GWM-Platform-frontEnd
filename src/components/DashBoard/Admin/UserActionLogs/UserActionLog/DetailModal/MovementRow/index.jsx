@@ -99,7 +99,7 @@ const MovementRow = ({ Accounts, Clients, Movement }) => {
     return (
         <>
             <div className='mobileMovement'>
-                <div className='d-flex py-1 align-items-center' >
+                <div className='d-flex py-1 align-items-center flex-wrap' >
                     <span className="h5 mb-0 me-1 me-md-2">
                         {t("Movement")}&nbsp;#{Movement.id}
                     </span>

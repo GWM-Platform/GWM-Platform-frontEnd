@@ -59,15 +59,6 @@ const NavBarMobile = () => {
                                 <h1 className="section-label  mb-0 pb-0" >{t("Tickets")}</h1>
                             </div>
 
-                            <div
-                                xs="auto"
-                                onClick={() => { toFunds() }}
-                                className={`section ${itemSelectedLC === "fundsadministration" || itemSelectedLC === "assetsadministration" ? "selected" : ""}`}>
-                                <div className="d-flex justify-content-center">
-                                    <FontAwesomeIcon className="icon" icon={faChartLine} />
-                                </div>
-                                <h1 className="section-label  mb-0 pb-0  pb-0" >{t("Funds and Assets")}</h1>
-                            </div>
 
                             <div
                                 onClick={() => toAccountsAdmin()} xs="auto"
@@ -76,6 +67,16 @@ const NavBarMobile = () => {
                                     <FontAwesomeIcon className="icon" icon={faUser} />
                                 </div>
                                 <h1 className="section-label  mb-0 pb-0  " >{t("Accounts")}</h1>
+                            </div>
+
+                            <div
+                                xs="auto"
+                                onClick={() => { toFunds() }}
+                                className={`section ${itemSelectedLC === "fundsadministration" || itemSelectedLC === "assetsadministration" ? "selected" : ""}`}>
+                                <div className="d-flex justify-content-center">
+                                    <FontAwesomeIcon className="icon" icon={faChartLine} />
+                                </div>
+                                <h1 className="section-label  mb-0 pb-0  pb-0" >{t("Funds and Assets")}</h1>
                             </div>
 
                             <div className="section" onClick={() => toLogin()} xs="auto">
