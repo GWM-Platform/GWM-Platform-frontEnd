@@ -9,6 +9,12 @@ import 'components/DashBoard/Admin/FundsAdministration/index.css'
 import 'components/DashBoard/Admin/OperationStatus/operationsForm.scss'
 import 'components/DashBoard/Admin/OperationStatus/operationsForm.scss'
 import 'components/DashBoard/User/MovementsTable/CardsContainer/MainCard/MainCardAccount/MovementsTab/index.css'
+import 'components/DashBoard/User/FundsContainer/CardsContainer/FundCard/index.scss'
+import 'components/DashBoard/User/newTicket/TransferForm/TargetAccountSelector/index.scss'
+import 'components/DashBoard/User/newTicket/FixedDeposit/RuleSelector/RuleCard/index.css'
+import 'components/DashBoard/User/newTicket/FixedDeposit/RuleSelector/PreferentialCard/index.css'
+import 'components/DashBoard/User/newTicket/FixedDeposit/RuleSelector/PreferentialCard/index.css'
+import 'components/DashBoard/User/newTicket/BuyForm/FundSelector/FundCard/index.css'
 
 import NavBar from './NavBars/NavBar';
 import NavInfo from './NavBars/NavInfo';
