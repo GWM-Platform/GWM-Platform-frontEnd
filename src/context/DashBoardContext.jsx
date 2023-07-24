@@ -19,7 +19,7 @@ const reducerDashboardToast = (state, action) => {
             aux[action.toastKey] = { ...aux[action?.toastKey], Show: false }
             return aux;
         case 'hide_specific_key':
-            const index = aux.findIndex(toast => toast.key === action?.specificKey)
+            const index = aux.findIndex(toast => toast.key === action?.specificKey && toast.Show)
             if (index >= 0) {
                 aux[index] = { ...aux[index], Show: false }
             }

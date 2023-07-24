@@ -276,6 +276,8 @@
   "Your new password must have": "Tu nueva contraseña debe contener",
   "Client": "Cliente",
   "Purchase and sale tickets": "Tickets de compra y venta",
+  "Purchases and sales": "Compras y ventas",
+  "Account movements": "Movimientos de cuenta",
   "Purchase or sale ticket": "Ticket de compra o venta",
   "purchase or sale ticket": "ticket de compra o venta",
   "Withdrawal tickets": "Tickets de retiro",
@@ -596,6 +598,7 @@
   "Closed": "Cerrado",
   "Opened": "Abierto",
   "Approved tickets pending settlement": "Tickets aprobados pendientes de liquidación",
+  "Approved pending settlement": "Aprobados pendientes de liquidación",
   "Pending": "Pendiente",
   "Closed (Term completed)": "Cerrado (Plazo completo)",
   "Closed (Out of term)": "Cerrado (Fuera de termino)",
@@ -982,6 +985,6 @@
   "Reversion": "Reversión",
   "Reverted transfers": "Transferencias revertidas",
   "reversion": "reversión",
-  "to {{transferReceiver}}": "a {{transferReceiver}}",
-  "from {{transferSender}}": "de {{transferSender}}"
+  "Transfer to {{transferReceiver}}": "Transferencia a {{transferReceiver}}",
+  "Transfer from {{transferSender}}": "Transferencia de {{transferSender}}"
 }

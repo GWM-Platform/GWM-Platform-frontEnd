@@ -403,9 +403,12 @@ const Movement = ({ content, reloadData }) => {
     <div className='mobileMovement'>
       <div className='d-flex justify-content-between'>
         <strong>
-          {t(content.motive + (content.motive === "REPAYMENT" ? content.fundName ? "_" + content.fundName : "_" + content.fixedDepositId : ""), { fund: content.fundName, fixedDeposit: content.fixedDepositId })}
-          {content?.transferReceiver && <>, {t("to {{transferReceiver}}", { transferReceiver: content?.transferReceiver })}</>}
-          {content?.transferSender && <>, {t("from {{transferSender}}", { transferSender: content?.transferSender })}</>}
+          {
+            (!content?.transferReceiver && !content?.transferSender) &&
+            t(content.motive + (content.motive === "REPAYMENT" ? content.fundName ? "_" + content.fundName : "_" + content.fixedDepositId : ""), { fund: content.fundName, fixedDeposit: content.fixedDepositId })
+          }
+          {content?.transferReceiver && <>{t("Transfer to {{transferReceiver}}", { transferReceiver: content?.transferReceiver })}</>}
+          {content?.transferSender && <>{t("Transfer from {{transferSender}}", { transferSender: content?.transferSender })}</>}
           {(content?.transfer?.reverted && transferNote?.text === "Transferencia revertida") ? <>, {t("reversion")}</> : ""}
         </strong>
         <span className="text-nowrap" >{momentDate.format('L')}</span>

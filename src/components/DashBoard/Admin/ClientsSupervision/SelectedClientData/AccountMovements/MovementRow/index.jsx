@@ -96,9 +96,12 @@ const Movement = ({ Movement }) => {
         {(Movement?.transfer?.reverted && transferNote?.text !== "Transferencia revertida") ? <>, {t("reverted")}</> : ""}
       </td>
       <td className="tableConcept">
-        {t(Movement.motive + (Movement.motive === "REPAYMENT" ? Movement.fundName ? "_" + Movement.fundName : "_" + Movement.fixedDepositId : ""), { fund: Movement.fundName, fixedDeposit: Movement.fixedDepositId })}
-        {Movement?.transferReceiver && <>, {t("to {{transferReceiver}}", { transferReceiver: Movement?.transferReceiver })}</>}
-        {Movement?.transferSender && <>, {t("from {{transferSender}}", { transferSender: Movement?.transferSender })}</>}
+        {
+          (!Movement?.transferReceiver && !Movement?.transferSender) &&
+          t(Movement.motive + (Movement.motive === "REPAYMENT" ? Movement.fundName ? "_" + Movement.fundName : "_" + Movement.fixedDepositId : ""), { fund: Movement.fundName, fixedDeposit: Movement.fixedDepositId })
+        }
+        {Movement?.transferReceiver && <>{t("Transfer to {{transferReceiver}}", { transferReceiver: Movement?.transferReceiver })}</>}
+        {Movement?.transferSender && <>{t("Transfer from {{transferSender}}", { transferSender: Movement?.transferSender })}</>}
         {(Movement?.transfer?.reverted && transferNote?.text === "Transferencia revertida") ? <>, {t("reversion")}</> : ""}
       </td>
       <td className={`tableAmount ${Math.sign(Movement.amount) === 1 ? 'text-green' : 'text-red'}`}>

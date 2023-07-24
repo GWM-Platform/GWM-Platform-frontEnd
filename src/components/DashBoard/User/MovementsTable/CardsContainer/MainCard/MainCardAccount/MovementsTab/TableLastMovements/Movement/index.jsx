@@ -520,9 +520,12 @@ const Movement = ({ content, actions, reloadData }) => {
         {(content?.transfer?.reverted && transferNote?.text !== "Transferencia revertida") ? <>, {t("reverted")}</> : ""}
       </td>
       <td className="tableConcept">
-        {t(content.motive + (content.motive === "REPAYMENT" ? content.fundName ? "_" + content.fundName : "_" + content.fixedDepositId : ""), { fund: content.fundName, fixedDeposit: content.fixedDepositId })}
-        {content?.transferReceiver && <>, {t("to {{transferReceiver}}", { transferReceiver: content?.transferReceiver })}</>}
-        {content?.transferSender && <>, {t("from {{transferSender}}", { transferSender: content?.transferSender })}</>}
+        {
+          (!content?.transferReceiver && !content?.transferSender) &&
+          t(content.motive + (content.motive === "REPAYMENT" ? content.fundName ? "_" + content.fundName : "_" + content.fixedDepositId : ""), { fund: content.fundName, fixedDeposit: content.fixedDepositId })
+        }
+        {content?.transferReceiver && <>{t("Transfer to {{transferReceiver}}", { transferReceiver: content?.transferReceiver })}</>}
+        {content?.transferSender && <>{t("Transfer from {{transferSender}}", { transferSender: content?.transferSender })}</>}
         {(content?.transfer?.reverted && transferNote?.text === "Transferencia revertida") ? <>, {t("reversion")}</> : ""}
       </td>
       <td className={`tableAmount ${Math.sign(content.amount) === 1 ? 'text-green' : 'text-red'}`}>

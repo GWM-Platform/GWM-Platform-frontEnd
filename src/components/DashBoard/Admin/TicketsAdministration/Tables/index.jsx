@@ -938,10 +938,10 @@ const Tables = ({ state, messageVariants }) => {
                 {
                     !stateOnlyReverted &&
                     <div className='d-flex justify-content-between overflow-auto'>
-                        <Button variant="link" onClick={() => executeScroll(PurchaseAndSale)}>{t("Purchase and sale tickets")}</Button>
-                        <Button variant="link" onClick={() => executeScroll(AccountMovementsRef)}>{t("Account movements tickets")}</Button>
-                        <Button variant="link" onClick={() => executeScroll(PendingSettlementRef)}>{t("Approved tickets pending settlement")}</Button>
-                        <Button variant="link" onClick={() => executeScroll(TransferRef)}>{t("Transfer tickets")}</Button>
+                        <Button variant="link" onClick={() => executeScroll(PurchaseAndSale)}>{t("Purchases and sales")}</Button>
+                        <Button variant="link" onClick={() => executeScroll(AccountMovementsRef)}>{t("Account movements")}</Button>
+                        <Button variant="link" onClick={() => executeScroll(PendingSettlementRef)}>{t("Approved pending settlement")}</Button>
+                        <Button variant="link" onClick={() => executeScroll(TransferRef)}>{t("Transfers")}</Button>
                         <Button variant="link" onClick={() => executeScroll(FixedDepositsRef)}>{t("Time deposits")}</Button>
                     </div>
                 }
@@ -949,7 +949,7 @@ const Tables = ({ state, messageVariants }) => {
                 {
                     !stateOnlyReverted &&
                     <>
-                        <h1 ref={PurchaseAndSale} className="title">{t("Purchase and sale tickets")}:</h1>
+                        <h1 ref={PurchaseAndSale} className="title">{t("Purchases and sales")}:</h1>
                         <TicketSearch
                             props={ticketSearchPropsTransfers}
                         />
@@ -982,7 +982,7 @@ const Tables = ({ state, messageVariants }) => {
                     !stateOnlyReverted &&
                     <>
                         <div className='mt-3 w-100 d-flex' style={{ borderBottom: "1px solid gray" }} />
-                        <h1 className="title" ref={AccountMovementsRef}>{t("Account movements tickets")}:</h1>
+                        <h1 className="title" ref={AccountMovementsRef}>{t("Account movements")}:</h1>
                         <TicketSearch
                             props={ticketSearchPropsMovements}
                         />
@@ -1015,7 +1015,7 @@ const Tables = ({ state, messageVariants }) => {
                     <>
                         {/*-------------------------------Approved tickets pending settlement-------------------------- */}
                         <div className='mt-3 w-100 d-flex' style={{ borderBottom: "1px solid gray" }} />
-                        <h1 className="title" ref={PendingSettlementRef}>{t("Approved tickets pending settlement")}:</h1>
+                        <h1 className="title" ref={PendingSettlementRef}>{t("Approved pending settlement")}:</h1>
                         <TicketSearch
                             props={ticketSearchPropsPendingSettlement}
                         />
@@ -1042,7 +1042,7 @@ const Tables = ({ state, messageVariants }) => {
                     !stateOnlyReverted &&
                     <div className='mt-3 w-100 d-flex' style={{ borderBottom: "1px solid gray" }} />
                 }
-                <h1 className="title" ref={TransferRef}>{t("Transfer tickets")}:</h1>
+                <h1 className="title" ref={TransferRef}>{t("Transfers")}:</h1>
                 <TicketSearch
                     props={ticketSearchPropsTransfer}
                 />

@@ -28,14 +28,23 @@ const NotificationsCenter = ({ active }) => {
     const [alreadyNotifiedNew, setAlreadyNotifiedNew] = useState(false)
 
 
-    const hasNotifications = useCallback(
-        () => notifications?.total > 0,
-        [notifications?.total],
+    // const hasNotifications = useCallback(
+    //     () => notifications?.total > 0,
+    //     [notifications?.total],
+    // )
+
+
+    const unreadNotifications = useCallback(
+        () => {
+            return notifications?.notifications?.filter(notification => !notification.read)
+        },
+        [notifications?.notifications],
     )
 
+
     const hasUnreadNotifications = useCallback(
-        () => hasNotifications() && notifications?.notifications?.filter(notification => !notification.read).length > 0,
-        [hasNotifications, notifications],
+        () => unreadNotifications()?.length > 0,
+        [unreadNotifications],
     )
 
     let location = useLocation()
@@ -62,9 +71,9 @@ const NotificationsCenter = ({ active }) => {
                         {t("Notifications")}
                     </h1>
                     {
-                        hasNotifications() &&
+                        hasUnreadNotifications() &&
                         <Badge className='ms-1 mt-auto'>
-                            {notifications.total}
+                            {unreadNotifications().length}
                         </Badge>
                     }
                     {
@@ -82,10 +91,10 @@ const NotificationsCenter = ({ active }) => {
                     <CloseButton className='ms-auto' style={{ fontSize: ".85em" }} onClick={() => setShow(false)} type="button" title={t("Close")} />
                 </div>
                 {
-                    hasNotifications() ?
+                    hasUnreadNotifications() ?
                         <div className='notifications-container'>
                             {
-                                notifications?.notifications?.map(
+                                unreadNotifications()?.map(
                                     notification =>
                                         <Notification notification={notification} key={`notification-${notification.id}`} />
                                 )
