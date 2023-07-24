@@ -43,10 +43,13 @@ const Notification = ({ notification, fromPopup = true }) => {
     }, [notification.id]);
 
     const redirect = (route) => {
-        history.push(route)
+        history.push('/DashBoard/accounts')
+        setTimeout(() => {
+            history.push(route)
+        }, 200);
     }
 
-    const ApiMarkAsRead = () => {
+    const ApiMarkAsRead = (showToast = true) => {
         axios.patch(`/notifications/${notification.id}`, null,
             {
                 params: {
@@ -54,11 +57,15 @@ const Notification = ({ notification, fromPopup = true }) => {
                 }
             }
         ).then(function () {
-            DashboardToastDispatch({ type: "create", toastContent: { Icon: faCheckCircle, Title: "Notification mark as read" } });
+            if (showToast) {
+                DashboardToastDispatch({ type: "create", toastContent: { Icon: faCheckCircle, Title: "Notification mark as read" } });
+            }
             dispatch(markAsRead({ id: notification.id }))
         }).catch((err) => {
             if (err.message !== "canceled") {
-                DashboardToastDispatch({ type: "create", toastContent: { Icon: faTimesCircle, Title: "There was an error marking the notification as read" } });
+                if (showToast) {
+                    DashboardToastDispatch({ type: "create", toastContent: { Icon: faTimesCircle, Title: "There was an error marking the notification as read" } });
+                }
             }
         });
     }
@@ -73,11 +80,11 @@ const Notification = ({ notification, fromPopup = true }) => {
                         notification.movementId &&
                         (
                             notification.movement.transferId ?
-                                <Dropdown.Item onClick={() => redirect(`/DashBoard/history/history?id=${notification?.movement?.transferId}&type=transfers&SelectedTab=Transfers`)}>
+                                <Dropdown.Item onClick={() => { ApiMarkAsRead(false); redirect(`/DashBoard/history?id=${notification?.movement?.transferId}&type=transfers&SelectedTab=Transfers`) }}>
                                     {t('Go to transfer')}
                                 </Dropdown.Item>
                                 :
-                                <Dropdown.Item onClick={() => redirect(`/DashBoard/history/history?id=${notification?.movementId}&type=m`)}>
+                                <Dropdown.Item onClick={() => { ApiMarkAsRead(false); redirect(`/DashBoard/history?id=${notification?.movementId}&type=m`) }}>
                                     {t('Go to movement')}
                                 </Dropdown.Item>
                         )

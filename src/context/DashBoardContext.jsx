@@ -13,10 +13,16 @@ const reducerDashboardToast = (state, action) => {
 
     switch (action.type) {
         case 'create':
-            aux = [...aux, ...[{ Content: action?.toastContent, Show: true }]]
+            aux = [...aux, ...[{ Content: action?.toastContent, key: action?.key || "", noClose: (action.noClose || false), Show: true, }]]
             return aux
         case 'hide':
             aux[action.toastKey] = { ...aux[action?.toastKey], Show: false }
+            return aux;
+        case 'hide_specific_key':
+            const index = aux.findIndex(toast => toast.key === action?.specificKey)
+            if (index >= 0) {
+                aux[index] = { ...aux[index], Show: false }
+            }
             return aux;
         default:
             throw new Error();

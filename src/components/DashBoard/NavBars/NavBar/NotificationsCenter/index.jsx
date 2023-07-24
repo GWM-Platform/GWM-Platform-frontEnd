@@ -21,6 +21,10 @@ const NotificationsCenter = ({ active }) => {
     const history = useHistory()
 
     const [show, setShow] = useState(false)
+    const togglePopover = () => {
+        DashboardToastDispatch({ type: "hide_specific_key", specificKey: "UNREAD_NOTIFICATIONS" })
+        setShow(prevState => !prevState)
+    }
     const [alreadyNotifiedNew, setAlreadyNotifiedNew] = useState(false)
 
 
@@ -43,7 +47,7 @@ const NotificationsCenter = ({ active }) => {
 
     useEffect(() => {
         if (hasUnreadNotifications() && !alreadyNotifiedNew) {
-            DashboardToastDispatch({ type: "create", toastContent: { Icon: faBell, Title: "You have unread notifications" } });
+            DashboardToastDispatch({ type: "create", key: "UNREAD_NOTIFICATIONS", noClose: true, toastContent: { Icon: faBell, Title: "You have unread notifications" } });
             setAlreadyNotifiedNew(true)
         }
         //eslint-disable-next-line
@@ -126,7 +130,7 @@ const NotificationsCenter = ({ active }) => {
                 disabled={notificationsStatus !== "succeeded"}
                 id="popover-notifications-toggler" title={t("Notifications center")} type="button"
                 className={`nav-link noStyle ${show || active ? "active" : ""} ${hasUnreadNotifications() ? "unread-notifications" : ""}`}
-                onClick={() => setShow(prevState => !prevState)}
+                onClick={togglePopover}
             >
                 <div className="icon" >
                     <FontAwesomeIcon icon={faBell} />

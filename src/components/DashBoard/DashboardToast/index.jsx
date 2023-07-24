@@ -27,7 +27,7 @@ const ToastComponent = ({ ownKey, toast }) => {
     return (
         <Toast
             onClose={() => DashboardToastDispatch({ type: "hide", toastKey: ownKey })}
-            show={toast.Show} delay={3000} autohide >
+            show={toast.Show} delay={toast.noClose ? null : 3000} autohide={!toast.noClose} >
             <Toast.Header>
                 <strong className="me-auto">
                     {
