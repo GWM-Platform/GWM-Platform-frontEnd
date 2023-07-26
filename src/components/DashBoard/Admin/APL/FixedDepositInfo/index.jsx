@@ -26,7 +26,7 @@ const FixedDepositInfo = ({fullSettlement}) => {
                     {t("Fixed deposit debt as of today")}
                     <br />
                     <span style={{ fontWeight: "bolder" }}>
-                        <FormattedNumber prefix="U$S " value={fullSettlement?.debt?.fixedDeposits?.todaysDebt} fixedDecimals={2} />
+                        <FormattedNumber prefix="U$D " value={fullSettlement?.debt?.fixedDeposits?.todaysDebt} fixedDecimals={2} />
                     </span>
                 </h2>
             </div>
@@ -35,7 +35,7 @@ const FixedDepositInfo = ({fullSettlement}) => {
                     {t("Debts of fixed terms at maturity")}
                     <br />
                     <span style={{ fontWeight: "bolder" }}>
-                        <FormattedNumber prefix="U$S "value={fixedDepositAtClose()} fixedDecimals={2} />
+                        <FormattedNumber prefix="U$D "value={fixedDepositAtClose()} fixedDecimals={2} />
                     </span>
                 </h2>
             </div>

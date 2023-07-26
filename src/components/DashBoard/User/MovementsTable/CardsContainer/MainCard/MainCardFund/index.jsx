@@ -64,7 +64,7 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
                     <Col className="d-flex justify-content-between pe-5" sm="auto">
                         <Col className="pe-2">
                             <div className="containerHideInfo px-2 description" style={{ lineHeight: "1em" }}>
-                                <span>{t("Balance (U$S)")}:&nbsp;</span>
+                                <span>{t("Balance (U$D)")}:&nbsp;</span>
                                 <span style={{ fontWeight: "bolder" }}>
                                     <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={balanceInCash.toFixed(2)} prefix="" fixedDecimals={2} />
                                     <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={balanceInCash.toFixed(2)} prefix="" fixedDecimals={2} />

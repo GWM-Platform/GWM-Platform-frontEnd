@@ -257,7 +257,7 @@
   "Available": "Disponibles",
   "in total": "en total",
   "Balance (shares)": "Saldo (cuotapartes)",
-  "Balance (U$S)": "Saldo (U$S)",
+  "Balance (U$D)": "Saldo (U$D)",
   "Pending transactions (shares)": "Pendiente de liquidación (cuotapartes)",
   "Status": "Estado",
   "Performance": "Rendimiento",
@@ -986,5 +986,8 @@
   "Reverted transfers": "Transferencias revertidas",
   "reversion": "reversión",
   "Transfer to {{transferReceiver}}": "Transferencia a {{transferReceiver}}",
-  "Transfer from {{transferSender}}": "Transferencia de {{transferSender}}"
+  "Transfer from {{transferSender}}": "Transferencia de {{transferSender}}",
+  "The amount must be less than or equal to the holdings of the selected fund": "El monto debe ser menor o igual que las tenencias del fondo seleccionado",
+  "Approximate amount in U$S": "Monto aproximado en U$S",
+  "Holding":"Tenencia"
 }

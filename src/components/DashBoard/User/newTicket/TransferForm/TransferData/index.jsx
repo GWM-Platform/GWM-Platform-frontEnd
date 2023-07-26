@@ -1,13 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form, InputGroup, Row, Button, Accordion, Container } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
-import CurrencyInput from '@osdiab/react-currency-input-field';
+import CurrencyInput, { formatValue } from '@osdiab/react-currency-input-field';
 import { unMaskNumber } from 'utils/unmask';
 import { faMinusCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Decimal from 'decimal.js';
 
-const TransferData = ({ data, handleChange, TargetAccount, toggleAccordion, Balance }) => {
+const TransferData = ({ data, Funds, handleChange, TargetAccount, toggleAccordion, Balance }) => {
 
     const { t } = useTranslation();
 
@@ -18,10 +19,16 @@ const TransferData = ({ data, handleChange, TargetAccount, toggleAccordion, Bala
     const groupSeparator = process.env.REACT_APP_GROUPSEPARATOR ?? ','
     const inputRef = useRef()
 
-    const handleAmountChange = (value, name) => {
+    const share_transfer = useMemo(() => data.FundSelected !== "cash", [data.FundSelected])
+    const fund_selected = useMemo(() => share_transfer ? Funds?.find(fund => fund.fundId === data.FundSelected) : null, [Funds, data.FundSelected, share_transfer])
+    const sharePrice = useMemo(() => fund_selected?.fund?.sharePrice || 1, [fund_selected])
+    const max = useMemo(() => share_transfer ? Decimal(fund_selected?.shares || "0").toFixed(2) : Balance, [Balance, fund_selected?.shares, share_transfer])
+
+    const handleAmountChange = (value, updateAmountUsd = true) => {
         const decimalSeparator = process.env.REACT_APP_DECIMALSEPARATOR ?? '.'
 
         let fixedValue = value || ""
+        handleChange({ target: { id: 'value', value: fixedValue } })
         if (value) {
             let lastCharacter = value.slice(-1)
             if (lastCharacter === decimalSeparator) {
@@ -29,14 +36,48 @@ const TransferData = ({ data, handleChange, TargetAccount, toggleAccordion, Bala
             }
         }
         const unMaskedValue = unMaskNumber({ value: fixedValue || "" })
-        handleChange({
-            target:
-                { id: name ? name : 'amount', value: unMaskedValue }
-        })
+        handleChange({ target: { id: 'amount', value: unMaskedValue } })
+
+        if (share_transfer && updateAmountUsd) {
+            handleUSDAmountChange(
+                unMaskedValue === "" ?
+                    ""
+                    :
+                    formatValue({ value: Decimal(unMaskedValue).times(sharePrice).toFixed(2), groupSeparator: '.', decimalSeparator: ',' }).replaceAll(".", "")
+                ,
+                false
+            )
+        }
     }
+
     useEffect(() => {
         setInputValid(inputRef?.current?.checkValidity())
     }, [inputRef, data.amount])
+
+    const handleUSDAmountChange = (value, updateAmount = true) => {
+
+        const decimalSeparator = process.env.REACT_APP_DECIMALSEPARATOR ?? '.'
+
+        let fixedValue = value || ""
+        handleChange({ target: { id: 'usd_value', value: fixedValue } })
+        if (value) {
+            let lastCharacter = value.slice(-1)
+            if (lastCharacter === decimalSeparator) {
+                fixedValue = value.slice(0, -1)
+            }
+        }
+        const unMaskedValue = unMaskNumber({ value: fixedValue || "" })
+        handleChange({ target: { id: 'usd_amount', value: unMaskedValue } })
+        if (updateAmount) {
+            handleAmountChange(
+                unMaskedValue === "" ?
+                    ""
+                    :
+                    formatValue({ value: Decimal(unMaskedValue).div(sharePrice).toFixed(2), groupSeparator: '.', decimalSeparator: ',' }).replaceAll(".", "")
+                ,
+                false)
+        }
+    }
 
     return (
         <Accordion.Item eventKey="0" disabled>
@@ -47,7 +88,7 @@ const TransferData = ({ data, handleChange, TargetAccount, toggleAccordion, Bala
                             <span>
                                 <span className="d-inline-block numberContainer">
                                     <div className="d-flex justify-content-center align-items-center h-100 w-100">
-                                        <span className="number">2</span>
+                                        <span className="number">3</span>
                                     </div>
                                 </span>
                                 {t("Specify the amount you want to transfer")}
@@ -57,31 +98,39 @@ const TransferData = ({ data, handleChange, TargetAccount, toggleAccordion, Bala
                 </Container>
             </Accordion.Header>
             <Accordion.Body>
+
                 <InputGroup >
-                    <InputGroup.Text>U$D</InputGroup.Text>
+                    <InputGroup.Text>
+                        {
+                            share_transfer ?
+                                t("Shares")
+                                :
+                                t("U$D")
+                        }
+                    </InputGroup.Text>
                     {/*Shown input formatted*/}
                     <CurrencyInput
                         allowNegativeValue={false}
-                        name="currencyInput"
-                        defaultValue={data.amount}
+                        value={data.value}
                         decimalsLimit={2}
                         decimalSeparator={decimalSeparator}
                         groupSeparator={groupSeparator}
-                        onValueChange={(value, name) => handleAmountChange(value)}
+                        onValueChange={(value) => handleAmountChange(value)}
                         className={`form-control ${inputValid ? 'hardcoded-valid' : 'hardcoded-invalid'} `}
                     />
                 </InputGroup>
-                <InputGroup className="mb-3">
+
+                <InputGroup>
                     <Form.Control
                         className='d-none'
                         ref={inputRef}
                         onWheel={event => event.currentTarget.blur()}
                         disabled={false}
                         value={data.amount}
-                        step=".0001"
+                        step="0.01"
                         onChange={handleChange}
-                        min={1}
-                        max={Balance}
+                        min="0.01"
+                        max={max}
                         id="amount"
                         type="number"
                         required
@@ -92,8 +141,11 @@ const TransferData = ({ data, handleChange, TargetAccount, toggleAccordion, Bala
                             data.amount === "" ?
                                 t("You must enter how much you want to transfer")
                                 :
-                                data.amount > Balance ?
-                                    t("The amount must be less than or equal to the available cash of the selected account") + " (U$D " + Balance + ")"
+                                Decimal(max).lt(data.amount) ?
+                                    share_transfer ?
+                                        t("The amount must be less than or equal to the holdings of the selected fund") + " (" + max + " " + t("Shares") + ")"
+                                        :
+                                        t("The amount must be less than or equal to the available cash of the selected account") + " (U$D " + max + ")"
                                     :
                                     t("The amount must be greater than 0")
                         }
@@ -104,6 +156,26 @@ const TransferData = ({ data, handleChange, TargetAccount, toggleAccordion, Bala
                         }
                     </Form.Control.Feedback>
                 </InputGroup>
+
+                {
+                    share_transfer &&
+                    <>
+                        <Form.Label>{t("Approximate amount in U$S")}</Form.Label>
+                        <InputGroup className='mb-3'>
+                            {/*Shown input formatted*/}
+                            <CurrencyInput
+                                allowNegativeValue={false}
+                                value={data.usd_value}
+                                decimalsLimit={2}
+                                decimalSeparator={decimalSeparator}
+                                groupSeparator={groupSeparator}
+                                onValueChange={(value) => handleUSDAmountChange(value)}
+                                className={`form-control ${inputValid ? 'hardcoded-valid' : 'hardcoded-invalid'} `}
+                            />
+                        </InputGroup>
+                    </>
+                }
+
                 {
                     NoteActive ?
                         <div className="d-flex align-items-center mb-3">
