@@ -16,7 +16,7 @@ const PreferentialCard = ({ data, setData, handleChange }) => {
                     setData(prevState => ({ ...prevState, preferential: true, ruleSelected: "" }))
                     handleChange({ target: { id: "days", value: "" } })
                 }}>
-                <Card.Header><strong className="title">{t("Personalized plan")}</strong></Card.Header>
+                <Card.Header><strong className="title" style={{ fontSize: 16 }}>{t("Personalized")}</strong></Card.Header>
                 <Card.Body>
                     <Card.Title>
                         <strong>
