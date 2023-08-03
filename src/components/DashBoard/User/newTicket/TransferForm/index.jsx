@@ -24,19 +24,18 @@ const TransferForm = ({ balanceChanged }) => {
         })
     }, [])
 
-    const { token, contentReady, Accounts, AccountSelected, toLogin, ClientSelected } = useContext(DashBoardContext);
+    const { token, contentReady, Accounts, AccountSelected, toLogin, ClientSelected, hasPermission } = useContext(DashBoardContext);
 
     const history = useHistory()
 
     const [data, setData] = useState({
-        senderId: Accounts[0]?.id,
         alias: "",
         note: "",
         value: "",
         amount: "",
         usd_value: "",
         usd_amount: "",
-        FundSelected: 'cash'
+        FundSelected: hasPermission("TRANSFER_GENERATE") ? 'cash' : ""
     })
     const share_transfer = useMemo(() => data.FundSelected !== "cash", [data.FundSelected])
 
@@ -60,16 +59,18 @@ const TransferForm = ({ balanceChanged }) => {
             method: 'POST',
             body: JSON.stringify(
                 {
-                    senderId: data.senderId,
-                    receiverId: TargetAccount?.content?.id,
                     ...share_transfer ?
                         {
                             shares: data.amount,
-                            fundId: data.FundSelected
+                            fundId: data.FundSelected,
+                            senderId: ClientSelected?.id,
+                            receiverId: TargetAccount?.content?.clientId
                         }
                         :
                         {
                             amount: data.amount,
+                            senderId: AccountSelected?.id,
+                            receiverId: TargetAccount?.content?.id
                         },
                     note: data.note
                 }
@@ -127,10 +128,6 @@ const TransferForm = ({ balanceChanged }) => {
         setCollapsedFields(true)
     }
 
-    useEffect(() => {
-        setData(prevState => ({ ...prevState, senderId: Accounts[0]?.id || 0 }))
-    }, [Accounts])
-
     function useQuery() {
         const { search } = useLocation();
         return React.useMemo(() => new URLSearchParams(search), [search]);
@@ -166,10 +163,10 @@ const TransferForm = ({ balanceChanged }) => {
                         setData(prevSate => ({ ...prevSate, ...{ FundSelected: FundSelected } }))
                     } else {
                         openAccordion()
-                        setData(prevSate => ({ ...prevSate, ...{ FundSelected: 'cash' } }))
+                        setData(prevSate => ({ ...prevSate, ...{ FundSelected: hasPermission("TRANSFER_GENERATE") ? 'cash' : "" } }))
                     }
                 } else {
-                    setData(prevSate => ({ ...prevSate, ...{ FundSelected: 'cash' } }))
+                    setData(prevSate => ({ ...prevSate, ...{ FundSelected: hasPermission("TRANSFER_GENERATE") ? 'cash' : "" } }))
                 }
                 setFunds(dataFetched)
                 setFetchingFunds(false)

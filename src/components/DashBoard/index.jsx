@@ -69,7 +69,7 @@ const UserDashBoard = () => {
     axios.defaults.headers.common['Authorization'] = `Bearer ${sessionStorage.getItem("access_token")}`
     const userStatus = useSelector(state => state.user.status)
 
-    const { isMobile, admin, ClientSelected, balanceChanged, setBalanceChanged, setItemSelected, IndexClientSelected, UserClients, ClientPermissions, hasPermission } = useContext(DashBoardContext);
+    const { isMobile, admin, ClientSelected, balanceChanged, setBalanceChanged, setItemSelected, IndexClientSelected, UserClients, ClientPermissions, hasPermission, hasAnyTransferFundPermission } = useContext(DashBoardContext);
 
     const { path } = useRouteMatch()
     const [NavInfoToggled, setNavInfoToggled] = useState(false)
@@ -206,7 +206,7 @@ const UserDashBoard = () => {
                                                     </Route>
                                                     <Route path={`${path}/transfer`}>
                                                         {
-                                                            hasPermission('VIEW_ACCOUNT') && hasPermission('TRANSFER_GENERATE') ?
+                                                            hasAnyTransferFundPermission() || (hasPermission('VIEW_ACCOUNT') && hasPermission('TRANSFER_GENERATE')) ?
                                                                 <TransferForm balanceChanged={() => setBalanceChanged(true)} /> :
                                                                 <NoPermissionOperation />
                                                         }

@@ -13,7 +13,7 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
 
     const [Balance, setBalance] = useState({ fetching: false, value: 0 })
 
-    const { token, ClientSelected, itemSelected, contentReady, Accounts, hasPermission } = useContext(DashBoardContext)
+    const { token, ClientSelected, itemSelected, contentReady, AccountSelected, hasPermission } = useContext(DashBoardContext)
 
     const sectionsCashInAccount = ["buy", "withdraw", "sell", "transfer", "timedeposit"]
 
@@ -90,8 +90,8 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
                                     <>
                                         {t("Available cash")}:&nbsp;
                                         {
-                                            contentReady && Accounts[0] ?
-                                                <FormattedNumber className="growOpacity" value={Accounts[0].balance} prefix="U$D " fixedDecimals={2} />
+                                            contentReady && AccountSelected ?
+                                                <FormattedNumber className="growOpacity" value={AccountSelected.balance} prefix="U$D " fixedDecimals={2} />
                                                 :
                                                 <Spinner className="ms-2" animation="border" size="sm" />
                                         }

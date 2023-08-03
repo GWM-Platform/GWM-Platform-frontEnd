@@ -51,13 +51,16 @@ const Movement = ({ content, fundName }) => {
   const [showHover, setShowHover] = useState(false)
 
   const denialMotive = content?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
+  const incomingTransfer = () => content.receiverId === AccountSelected?.id
+  const isTransfer = content.receiverId || content.senderId
+  const transferNote = content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")
 
   return (
     <tr>
       <td className="tableId text-nowrap" style={{ whiteSpace: "nowrap" }}>
         {content.id}
         {
-          !!(content?.userEmail || content?.userName || !!(denialMotive)) &&
+          !!(content?.userEmail || content?.userName || !!(denialMotive) || !!(transferNote)) &&
           <OverlayTrigger
             show={showClick || showHover}
             placement="right"
@@ -74,16 +77,22 @@ const Movement = ({ content, fundName }) => {
             }}
             overlay={
               <Tooltip className="mailTooltip" id="more-units-tooltip">
-                {!!(content.userEmail || content?.userName ) &&
+                {!!(content.userEmail || content?.userName) &&
                   <div>
                     {t('Operation performed by')}:<br />
-                    <span className="text-nowrap">{content?.userName || content?.userEmail }</span>
+                    <span className="text-nowrap">{content?.userName || content?.userEmail}</span>
                   </div>
                 }
                 {!!(denialMotive) &&
                   <div>
                     {t('Denial motive')}:<br />
                     <span className="text-nowrap">"{denialMotive.text}"</span>
+                  </div>
+                }
+                {!!(transferNote) &&
+                  <div>
+                    {t('Transfer note')}:<br />
+                    <span className="text-nowrap">"{transferNote.text}"</span>
                   </div>
                 }
               </Tooltip>
@@ -99,8 +108,6 @@ const Movement = ({ content, fundName }) => {
             </span>
           </OverlayTrigger>
         }
-      </td>
-      <td className="text-center">
         {
           GeneratingPDF ?
             <Spinner animation="border" size="sm" />
@@ -111,16 +118,38 @@ const Movement = ({ content, fundName }) => {
         }
       </td>
       <td className="tableDate">{momentDate.format('L')}</td>
-      <td className={`tableConcept ${content.stateId === 3 ? 'text-red' : 'text-green'}`}>{t(getMoveStateById(content.stateId).name)}</td>
-      <td className={`tableConcept ${Math.sign(content.shares) === 1 ? 'text-green' : 'text-red'}`}>
-        <span>{Math.sign(content.shares) === 1 ? t('Purchase of') : t('Sale of')}{" "}</span>
+      <td className={`tableConcept ${content.stateId === 3 ? 'text-red' : 'text-green'}`}>
+        {t(getMoveStateById(content.stateId).name)}
+        {(content?.reverted && transferNote?.text !== "Transferencia revertida") ? <>, {t("reverted")}</> : ""}
+      </td>
+      <td className={`tableConcept ${isTransfer ? (incomingTransfer() ? 'text-green' : 'text-red') : (Math.sign(content.shares) === 1 ? 'text-green' : 'text-red')}`}>
+        {
+          isTransfer ?
+            t(
+              incomingTransfer() ?
+                "Transfer from {{transferSender}}"
+                :
+                "Transfer to {{transferReceiver}}",
+              {
+                transferReceiver: content.receiverAlias,
+                transferSender: content.senderAlias
+              }
+            )
+            :
+            <>
+              <span>{Math.sign(content.shares) === 1 ? t('Purchase') : t('Sale')}</span>
+            </>
+        }
+        ,&nbsp;
         <FormattedNumber value={Math.abs(content.shares)} fixedDecimals={2} />&nbsp;
-        {t(Math.abs(content.shares) === 1 ? "share" : "shares")}</td>
-      <td className="tableDescription d-none d-sm-table-cell ">
+        {t(Math.abs(content.shares) === 1 ? "share" : "shares")}
+        {(content?.reverted && transferNote?.text === "Transferencia revertida") ? <>, {t("reversion")}</> : ""}
+      </td>
+      <td className="tableDescription d-none d-sm-table-cell text-nowrap">
         <FormattedNumber prefix="U$D " value={content.sharePrice} fixedDecimals={2} />
       </td>
-      <td className={`tableAmount ${Math.sign(content.shares) === 1 ? 'text-green' : 'text-red'}`}>
-        {Math.sign(content.shares) === 1 ? '+' : '-'}
+      <td className={`tableAmount ${isTransfer ? (incomingTransfer() ? 'text-green' : 'text-red') : (Math.sign(content.shares) === 1 ? 'text-green' : 'text-red')}`}>
+        {isTransfer ? (incomingTransfer() ? '+' : '-') : (Math.sign(content.shares) === 1 ? '+' : '-')}
         <FormattedNumber prefix="U$D " value={amount.toString()} fixedDecimals={2} />
       </td>
     </tr>

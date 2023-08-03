@@ -2,25 +2,42 @@ import React, { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faExclamation, faCheck, faTimes, faMinusCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
-import { Modal, Button, Form } from 'react-bootstrap'
+
+import { faExclamation, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons'
+import { Modal, Button } from 'react-bootstrap'
 import { faCircle } from '@fortawesome/free-regular-svg-icons';
+import { useEffect } from 'react';
+import axios from 'axios';
+import { DashBoardContext } from 'context/DashBoardContext';
+import { useContext } from 'react';
+
+const TransferConfirmation = ({ isMovement = false, movement, setShowModal, action, show, reloadData }) => {
+
+    const { AccountSelected } = useContext(DashBoardContext)
 
 
-const ActionConfirmationModal = ({ transaction, setShowModal, action, show, reloadData }) => {
     const { t } = useTranslation();
-
+    const { ClientSelected } = useContext(DashBoardContext)
     const [ActionFetch, setActionFetch] = useState({ fetched: false, fetching: false, valid: false })
+    const [Transfer, setTransfer] = useState(isMovement ? {} : movement)
 
-    const [NoteActive, setNoteActive] = useState(false)
+    const incomingTransfer = () => movement.receiverId === AccountSelected?.id
 
-    const [data, setData] = useState({ note: "" })
+    useEffect(() => {
+        if (isMovement) {
+            axios.get(`/transfers/${movement.transferId}`, { params: { client: ClientSelected.id } })
+                .then((response) => {
+                    setTransfer(response.data)
+                }
+                )
+                .catch(
+                    (e) => {
+                        console.error(e)
+                    }
+                )
+        }
+    }, [movement, isMovement, ClientSelected.id])
 
-    const handleChange = (event) => {
-        let aux = data;
-        aux[event.target.id] = event.target.value;
-        setData(prevState => ({ ...prevState, ...aux }));
-    }
 
     const handleClose = () => {
         setActionFetch({
@@ -33,7 +50,7 @@ const ActionConfirmationModal = ({ transaction, setShowModal, action, show, relo
     }
 
 
-    const changeTransactionState = async () => {
+    const changeTransferState = async () => {
         setActionFetch({
             ...ActionFetch,
             fetching: true,
@@ -41,12 +58,11 @@ const ActionConfirmationModal = ({ transaction, setShowModal, action, show, relo
             valid: false
         })
 
-        const url = `${process.env.REACT_APP_APIURL}/${action === "revert" ? "share-transfers" : "transactions"}/${transaction.id}/${action}`;
+        const url = `${process.env.REACT_APP_APIURL}/${action === "approve" ? `movements/${movement.movementId}/clientCheck` : `movements/${movement.movementId}/clientDeny`}`;
         const token = sessionStorage.getItem("access_token")
 
         const response = await fetch(url, {
             method: 'POST',
-            body: JSON.stringify({ ...data.note !== "" ? { denialMotive: data.note !== "" ? data.note : null } : {} }),
             headers: {
                 Authorization: `Bearer ${token}`,
                 Accept: "*/*",
@@ -76,7 +92,7 @@ const ActionConfirmationModal = ({ transaction, setShowModal, action, show, relo
     }
 
     return (
-        <Modal className="deleteModal" size="sm" show={show} onHide={handleClose}>
+        <Modal className="deleteModal" show={show} onHide={handleClose}>
             <Modal.Body className="body">
                 <div className={!ActionFetch.fetched && !ActionFetch.fetching ? "show" : "hidden"}>
                     <div className="d-flex justify-content-center align-items-center">
@@ -106,39 +122,54 @@ const ActionConfirmationModal = ({ transaction, setShowModal, action, show, relo
                         </h1>
                     </div>
                     <h1 className="title"> {t("Are you sure?")}</h1>
-                    <h2 className="subTitle">{t("You are about to")} {t(action)} {t("the ticket with the id")} {t(transaction.id)}</h2>
-                    <h3 className="heading">{t("This action cannot be undone")}</h3>
-                    <div className={`px-3 mt-3 ${action !== "deny" ? "hidden" : ""}`}>
+                    <h2 className="subTitle">{t("You are about to")} {t(action === "deny" ? (isMovement ? (movement.motive === "TRANSFER_RECEIVE") : incomingTransfer()) ? action : "cancel" : action)} {t("transfer #")}{Transfer?.id}</h2>
+                    <ul>
+                        <li className="listedInfo">
+                            {t("Operation")}:&nbsp;
+                            <span className="emphasis">
+                                {
+                                    t(
+                                        `${(isMovement ? (movement.motive === "TRANSFER_RECEIVE") : incomingTransfer()) ?
+                                            "Incoming"
+                                            :
+                                            "Outgoing"
+                                        } transfer`
+                                    )
+                                }
+                            </span>
+                        </li>
+                        <li className="listedInfo">
+                            {t(`Transfer from`)}:&nbsp;
+                            <span className="emphasis text-nowrap">{Transfer?.senderAlias}
+                                {
+                                    !(isMovement ? (movement.motive === "TRANSFER_RECEIVE") : incomingTransfer()) ?
+                                        <>&nbsp;({t("You")})</>
+                                        :
+                                        ""
+                                }
+                            </span>
+                        </li>
+                        <li className="listedInfo">
+                            {t(`Transfer to`)}:&nbsp;
+                            <span className="emphasis text-nowrap">
+                                {Transfer?.receiverAlias}
+                                {
+                                    (isMovement ? (movement.motive === "TRANSFER_RECEIVE") : incomingTransfer()) ?
+                                        <>&nbsp;({t("You")})</>
+                                        :
+                                        ""
+                                }
+                            </span>
+                        </li>
                         {
-                            NoteActive ?
-                                <div className="d-flex align-items-center">
-                                    <Form.Control
-                                        placeholder={t("Denial motive")} required
-                                        value={data.note} type="text" id="note" maxLength="250"
-                                        onChange={(e) => { handleChange(e); }}
-                                    />
-
-                                    <button
-                                        type="button"
-                                        onClick={
-                                            () => {
-                                                handleChange({ target: { id: "note", value: "" } })
-                                                setNoteActive(false)
-                                            }
-                                        }
-                                        className="noStyle ms-2" title={t("Remove note")}>
-                                        <FontAwesomeIcon icon={faMinusCircle} />
-                                    </button>
-                                </div>
-                                :
-                                <div style={{ height: "38px" }} className="w-100 d-flex align-items-start">
-                                    <Button type="button" className="ms-auto" size="sm" variant="danger" onClick={() => setNoteActive(true)}>
-                                        <FontAwesomeIcon className="me-1" icon={faPlusCircle} />
-                                        {t("Add note")}
-                                    </Button>
-                                </div>
+                            !!(Transfer?.notes?.find(note => note?.noteType === "TRANSFER_MOTIVE")) &&
+                            <li className="listedInfo">
+                                {t('Transfer note')}:
+                                <span> "{Transfer?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")?.text}"</span>
+                            </li>
                         }
-                    </div>
+                    </ul>
+                    <h3 className="heading">{t("This action cannot be undone")}</h3>
                 </div>
                 <div className={ActionFetch.fetched && !ActionFetch.fetching ? "show" : "hidden"}>
                     {
@@ -170,7 +201,7 @@ const ActionConfirmationModal = ({ transaction, setShowModal, action, show, relo
                                         <FontAwesomeIcon className="placeHolder" icon={faCircle} style={{ transform: "scale(1.5)" }} />
                                     </h1>
                                 </div>
-                                <h2 className="subTitle mt-4">{t("The ticket has been")} {t(action === "approve" ? "approved" : "denied")} {t("succesfully")}</h2>
+                                <h2 className="subTitle mt-4">{t("The ticket has been")} {t(action === "approve" ? "approved" : (isMovement ? (movement.motive === "TRANSFER_RECEIVE") : incomingTransfer()) ? "denied" : "cancelled")} {t("succesfully")}</h2>
                             </>
                             :
                             <>
@@ -233,10 +264,54 @@ const ActionConfirmationModal = ({ transaction, setShowModal, action, show, relo
                         </h1>
                     </div>
                     <h1 className="title"> {t("Are you sure?")}</h1>
-                    <h2 className="subTitle">{t("You are about to")} {t(action)} {t("the ticket with the id")} {t(transaction.id)}</h2>
+                    <h2 className="subTitle">{t("You are about to")} {t(action)} {t("transfer #")} {Transfer?.id}</h2>
+                    <ul>
+                        <li className="listedInfo">
+                            {t("Operation")}:&nbsp;
+                            <span className="emphasis">
+                                {
+                                    t(
+                                        `${(isMovement ? (movement.motive === "TRANSFER_RECEIVE") : incomingTransfer()) ?
+                                            "Incoming"
+                                            :
+                                            "Outgoing"
+                                        } transfer`
+                                    )
+                                }
+                            </span>
+                        </li>
+                        <li className="listedInfo">
+                            {t(`Transfer from`)}:&nbsp;
+                            <span className="emphasis text-nowrap">{Transfer?.senderAlias}
+                                {
+                                    !(isMovement ? (movement.motive === "TRANSFER_RECEIVE") : incomingTransfer()) ?
+                                        <>&nbsp;({t("You")})</>
+                                        :
+                                        ""
+                                }
+                            </span>
+                        </li>
+                        <li className="listedInfo">
+                            {t(`Transfer to`)}:&nbsp;
+                            <span className="emphasis text-nowrap">
+                                {Transfer?.receiverAlias}
+                                {
+                                    (isMovement ? (movement.motive === "TRANSFER_RECEIVE") : incomingTransfer()) ?
+                                        <>&nbsp;({t("You")})</>
+                                        :
+                                        ""
+                                }
+                            </span>
+                        </li>
+                        {
+                            !!(Transfer?.notes?.find(note => note?.noteType === "TRANSFER_MOTIVE")) &&
+                            <li className="listedInfo">
+                                {t('Transfer note')}:
+                                <span> "{Transfer?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")?.text}"</span>
+                            </li>
+                        }
+                    </ul>
                     <h3 className="heading">{t("This action cannot be undone")}</h3>
-                    <div style={{ height: "38px" }} className="w-100 d-flex align-items-start">
-                    </div>
                 </div>
             </Modal.Body>
 
@@ -252,7 +327,7 @@ const ActionConfirmationModal = ({ transaction, setShowModal, action, show, relo
                             <Button variant="outline-secondary" onClick={() => handleClose()}>
                                 {t("Cancel")}
                             </Button>
-                            <Button variant="outline-success" onClick={() => { if (!ActionFetch.fetching) changeTransactionState() }}>
+                            <Button variant="outline-success" onClick={() => { if (!ActionFetch.fetching) changeTransferState() }}>
                                 <div className="iconContainer green">
                                     {t("Confirm")}
                                 </div>
@@ -264,4 +339,4 @@ const ActionConfirmationModal = ({ transaction, setShowModal, action, show, relo
         </Modal>
     )
 }
-export default ActionConfirmationModal
+export default TransferConfirmation

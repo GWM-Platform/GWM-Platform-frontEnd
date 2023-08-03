@@ -16,7 +16,7 @@ const SectionContent = ({ SectionSelected, selectSection, TabActive, setTabActiv
   }
 
   return (
-        <Col className={`SectionContent ${SectionSelected !== '' && TabActive ? 'SectionSelected' : ''}`}>
+        <Col className={`SectionContent ${SectionSelected !== '' && TabActive ? 'SectionSelected' : ''}`} sm={4} md={3}>
             <button type="button" className='sectionHeader d-block d-sm-none' onClick={() => returnToSelector()}>
                 <FontAwesomeIcon icon={faChevronLeft} />
                 <h1 className="sectionSelected">{t(SectionSelected)}</h1>

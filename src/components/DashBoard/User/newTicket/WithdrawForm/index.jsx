@@ -27,14 +27,14 @@ const WithdrawForm = ({ balanceChanged }) => {
     const [validated, setValidated] = useState(true);
     const [fetching, setFetching] = useState(false)
 
-    const { token, Accounts, contentReady } = useContext(DashBoardContext);
+    const { token, AccountSelected, contentReady } = useContext(DashBoardContext);
 
     let history = useHistory();
 
 
     const withdraw = async () => {
         setFetching(true)
-        var url = `${process.env.REACT_APP_APIURL}/accounts/${Accounts[0].id}/withdraw`;
+        var url = `${process.env.REACT_APP_APIURL}/accounts/${AccountSelected.id}/withdraw`;
         const response = await fetch(url, {
             method: 'POST',
             body: JSON.stringify({ amount: parseFloat(data.amount), note: data.note }),
@@ -92,7 +92,7 @@ const WithdrawForm = ({ balanceChanged }) => {
                             <Col xs="12">
                                 <WithdrawData
                                     handleSubmit={handleSubmit} validated={validated}
-                                    handleChange={handleChange} data={data} account={Accounts[0]} fetching={fetching} />
+                                    handleChange={handleChange} data={data} account={AccountSelected} fetching={fetching} />
                             </Col>
                     }
 
@@ -100,7 +100,7 @@ const WithdrawForm = ({ balanceChanged }) => {
             </Container>
             {
                 contentReady ?
-                    <ActionConfirmationModal fetching={fetching} setShowModal={setShowModal} show={ShowModal} action={withdraw} data={data} Balance={Accounts[0].balance} />
+                    <ActionConfirmationModal fetching={fetching} setShowModal={setShowModal} show={ShowModal} action={withdraw} data={data} Balance={AccountSelected.balance} />
                     :
                     null
             }

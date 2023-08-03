@@ -47,7 +47,7 @@ const ActionConfirmationModal = ({ TargetAccount, setShowModal, show, action, da
                         <li className="listedInfo">
                             {t("Transfer amount")}:&nbsp;
                             <FormattedNumber className="emphasis" prefix={share_transfer ? "" : "U$D "} value={data.amount.toString()} fixedDecimals={2} />
-                            {share_transfer && <span className='emphasis'>&nbsp;{t("Shares")}</span>}
+                            {share_transfer && <span className='emphasis'>&nbsp;{data.amount === 1 || data.amount === "1" ? t("share") : t("shares")}</span>}
                         </li>
                         {
                             data.note !== "" &&

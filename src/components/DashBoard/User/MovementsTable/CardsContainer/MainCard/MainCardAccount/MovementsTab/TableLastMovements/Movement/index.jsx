@@ -37,7 +37,7 @@ const Movement = ({ content, actions, reloadData }) => {
 
   var momentDate = moment(content.createdAt);
   const { t } = useTranslation();
-  const { getMoveStateById, AccountSelected, couldSign, hasPermission, toLogin, Accounts, hasSellPermission, hasBuyPermission, ClientSelected } = useContext(DashBoardContext)
+  const { getMoveStateById, AccountSelected, couldSign, hasPermission, toLogin, hasSellPermission, hasBuyPermission, ClientSelected } = useContext(DashBoardContext)
 
   const [GeneratingPDF, setGeneratingPDF] = useState(false)
   const [altGeneratingPDF, setAltGeneratingPDF] = useState(false)
@@ -308,7 +308,7 @@ const Movement = ({ content, actions, reloadData }) => {
 
   }
 
-  const incomingTransfer = (transfer) => transfer?.receiverId === Accounts[0]?.id
+  const incomingTransfer = (transfer) => transfer?.receiverId === AccountSelected?.id
 
   const renderAndDownloadTransferPDF = async (transfer) => {
     const blob = await ReactPDF.pdf(<TransferReceipt Transfer={{

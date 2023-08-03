@@ -276,7 +276,7 @@
   "Your new password must have": "Tu nueva contraseña debe contener",
   "Client": "Cliente",
   "Purchase and sale tickets": "Tickets de compra y venta",
-  "Purchases and sales": "Compras y ventas",
+  "Purchases, sales and share transfers": "Compras, ventas y transferencias de cuotapartes",
   "Account movements": "Movimientos de cuenta",
   "Purchase or sale ticket": "Ticket de compra o venta",
   "purchase or sale ticket": "ticket de compra o venta",
@@ -747,6 +747,7 @@
   "The client does not have any holdings or your user does not have access to view any of these": "El cliente no dispone de ninguna tenencia o su usuario no tiene acceso para ver ninguna de las mismas",
   "VIEW": "Ver",
   "BUY": "Comprar",
+  "TRANSFER": "Transferir",
   "SELL": "Vender",
   "The user will not be able to perform this action until they also have the following permissions": "El usuario no podrá realizar esta acción hasta que también tenga los siguientes permisos",
   "Also need the permissions": "Tambien necesita los permisos",
@@ -919,6 +920,7 @@
   "ADMIN_APPROVAL_PENDING": "Su ticket esta esperando la aprobacion de un administrador",
   "DEPOSIT_PERFORMED": "Su deposito ha sido acreditado",
   "TRANSFER_PENDING": "Hay una transferencia esperando ser aceptada",
+  "TRANSFER_RECEIVED": "Transferencia recibida",
   "ALIAS_UPDATED": "El alias de su cuenta ha sido actualizado",
   "Client pending": "Pendiente de cliente",
   "Admin sign pending": "Pendiente de firma de admin",
@@ -991,5 +993,9 @@
   "Approximate amount in U$S": "Monto aproximado en U$S",
   "Holding": "Tenencia",
   "From": "Desde",
-  "to": "hasta"
+  "to": "hasta",
+  "_at": "a",
+  "Share transfer from {{senderAlias}} to {{receiverAlias}}": "Transferencia de cuotapartes de {{senderAlias}} a {{receiverAlias}}",
+  "From {{senderAlias}} to {{receiverAlias}}": "De {{senderAlias}} a {{receiverAlias}}",
+  "Transfer of": "Transferencia de"
 }

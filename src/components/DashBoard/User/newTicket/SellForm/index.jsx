@@ -13,7 +13,7 @@ import NoSellFunds from '../NoSellFunds';
 import ReactGA from "react-ga4";
 
 const SellForm = ({ balanceChanged }) => {
-    const { token, ClientSelected, contentReady, Accounts } = useContext(DashBoardContext);
+    const { token, ClientSelected, contentReady, AccountSelected } = useContext(DashBoardContext);
     
     useEffect(() => {
         ReactGA.event({
@@ -171,7 +171,7 @@ const SellForm = ({ balanceChanged }) => {
                 </Row>
                 {
                     !!(data.FundSelected !== -1 && contentReady) &&
-                    <ActionConfirmationModal fetching={fetching} setShowModal={setShowModal} show={ShowModal} action={sell} data={data} Funds={Funds} Balance={Accounts[0]?.balance} />
+                    <ActionConfirmationModal fetching={fetching} setShowModal={setShowModal} show={ShowModal} action={sell} data={data} Funds={Funds} Balance={AccountSelected?.balance} />
 
                 }
             </Container>

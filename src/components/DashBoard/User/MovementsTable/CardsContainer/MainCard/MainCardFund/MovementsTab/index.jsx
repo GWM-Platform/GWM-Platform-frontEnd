@@ -143,7 +143,7 @@ const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
                             Movements.total > 0 ?
                                 <TableLastMovements
                                     content={Movements.transactions}
-                                    movements={Pagination.take}
+                                    movements={Pagination.take < Movements.total ? Pagination.take : Movements.total}
                                     fundName={Fund.fund.name}
                                 />
                                 :
@@ -155,7 +155,6 @@ const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
                             :
                             null
                     }
-
                 </div>
 
             </div>

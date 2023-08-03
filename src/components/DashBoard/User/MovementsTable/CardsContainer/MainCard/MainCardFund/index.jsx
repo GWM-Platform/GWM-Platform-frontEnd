@@ -15,6 +15,7 @@ import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import { useEffect } from 'react';
 import { fetchPerformance, selectPerformanceById } from 'Slices/DashboardUtilities/performancesSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import TransfersTab from './TransfersTab';
 
 const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
     const [SelectedTab, setSelectedTab] = useState("0")
@@ -130,9 +131,14 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
                     <Nav.Item>
                         <Nav.Link eventKey={"0"}>{t("Transactions")}</Nav.Link>
                     </Nav.Item>
-                    {/*<Nav.Item>
-                                <Nav.Link eventKey={"1"}>{t("Investment Evolution")}</Nav.Link>
-                            </Nav.Item>*/}
+                    {/*
+                        <Nav.Item>
+                            <Nav.Link eventKey={"1"}>{t("Investment Evolution")}</Nav.Link>
+                        </Nav.Item>
+                    */}
+                    <Nav.Item>
+                        <Nav.Link eventKey={"2"}>{t("Transfers")}</Nav.Link>
+                    </Nav.Item>
                 </Nav>
             </Container>
             {/*tabs content */}
@@ -144,7 +150,10 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
                                 Fund={Fund} SearchById={SearchById} setSearchById={setSearchById}
                                 resetSearchById={resetSearchById} handleMovementSearchChange={handleMovementSearchChange} />,
                         1:
-                            <FundDetail NavInfoToggled={NavInfoToggled} />
+                            <FundDetail NavInfoToggled={NavInfoToggled} />,
+                        2:
+                            <TransfersTab SearchById={SearchById} setSearchById={setSearchById} Fund={Fund}
+                                resetSearchById={resetSearchById} handleMovementSearchChange={handleMovementSearchChange} />
                     }[SelectedTab]
                 }
             </Container>

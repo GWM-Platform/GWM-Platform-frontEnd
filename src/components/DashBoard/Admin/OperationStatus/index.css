@@ -9,3 +9,8 @@
     font-size: 100px;
     color:green
 }
+
+.OperationStatus.failed .title,
+.OperationStatus.failed .statusIcon {
+  color: red;
+}

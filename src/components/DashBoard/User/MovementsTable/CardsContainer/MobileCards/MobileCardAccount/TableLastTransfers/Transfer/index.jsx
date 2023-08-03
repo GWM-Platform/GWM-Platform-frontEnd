@@ -14,7 +14,7 @@ import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 const Transfer = ({ content, getTransfers }) => {
 
-  const { getMoveStateById, Accounts, AccountSelected, hasPermission } = useContext(DashBoardContext)
+  const { getMoveStateById, AccountSelected, hasPermission } = useContext(DashBoardContext)
   const { t } = useTranslation()
 
   var momentDate = moment(content.createdAt);
@@ -26,7 +26,7 @@ const Transfer = ({ content, getTransfers }) => {
     setShowModal(true)
   }
 
-  const incomingTransfer = () => content.receiverId === Accounts[0]?.id
+  const incomingTransfer = () => content.receiverId === AccountSelected?.id
 
   const [GeneratingPDF, setGeneratingPDF] = useState(false)
 

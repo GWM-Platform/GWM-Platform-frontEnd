@@ -17,13 +17,13 @@ const FundCard = ({ Fund, ownKey, data, setData, openAccordion, showPrice }) => 
         setWidth(ref.current === null ? 200 : ref.current.clientWidth - 20)
     }, [ref]);
 
-    const { hasSellPermission } = useContext(DashBoardContext)
+    const { hasFundTransferPermission } = useContext(DashBoardContext)
 
     return (
 
         <Col xs="10" sm="6" md="4" lg="3"
             className={`py-1 growAnimation  FundCardContainer 
-        ${Fund.freeShares === 0 || !hasSellPermission(Fund.fund.id) ? " FundDisabled" : ""}
+        ${Fund.freeShares === 0 || !hasFundTransferPermission(Fund.fund.id) ? " FundDisabled" : ""}
         ${data.FundSelected === Fund.fundId ? " FundSelected" : ""} 
         `}>
             <Card

@@ -5,12 +5,13 @@ import { useTranslation } from "react-i18next";
 import { DashBoardContext } from 'context/DashBoardContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faFilePdf, faTimesCircle } from '@fortawesome/free-regular-svg-icons';
-import ActionConfirmationModal from 'components/DashBoard/User/MovementsTable/GeneralUse/TransferConfirmation'
+import ActionConfirmationModal from 'components/DashBoard/User/MovementsTable/GeneralUse/ShareTransferConfirmation'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import ReactPDF from '@react-pdf/renderer';
 import TransferReceipt from 'Receipts/TransferReceipt';
 import { OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import Decimal from 'decimal.js';
 
 const Transfer = ({ content, actions, getTransfers }) => {
 
@@ -57,6 +58,9 @@ const Transfer = ({ content, actions, getTransfers }) => {
   const [showHover, setShowHover] = useState(false)
 
   const transferNote = content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")
+  const decimalSharesAbs = new Decimal(content.shares).abs()
+  const decimalPrice = new Decimal(content.sharePrice)
+  const amount = new Decimal(decimalSharesAbs.times(decimalPrice))
 
   return (
     <tr>
@@ -114,23 +118,40 @@ const Transfer = ({ content, actions, getTransfers }) => {
         {(content.reverted && transferNote?.text !== "Transferencia revertida") ? <>, {t("reverted")}</> : ""}
       </td>
       <td className="tableConcept">
-        {t(incomingTransfer() ? "Received from account" : "Sent to account")}{t("")}{" \""}{incomingTransfer() ? content.senderAlias : content.receiverAlias}{"\""}
+        {
+          t(
+            incomingTransfer() ?
+              "Transfer from {{transferSender}}"
+              :
+              "Transfer to {{transferReceiver}}",
+            {
+              transferReceiver: content.receiverAlias,
+              transferSender: content.senderAlias
+            }
+          )
+        }
+
         {(content.reverted && transferNote?.text === "Transferencia revertida") ? <>, {t("reversion")}</> : ""}
       </td>
-      <td className={`tableAmount ${content.receiverId === AccountSelected?.id ? 'text-green' : 'text-red'}`}>
-        <span>{content.receiverId === AccountSelected?.id ? '+' : '-'}</span>
-        <FormattedNumber value={Math.abs(content.amount)} prefix="U$D " fixedDecimals={2} />
+      <td className="tableDescription d-none d-sm-table-cell text-nowrap">
+        <FormattedNumber value={Math.abs(content.shares)} fixedDecimals={2} />&nbsp;
+        {t(Math.abs(content.shares) === 1 ? "share" : "shares")}
+        &nbsp;{t("_at")}&nbsp;
+        <FormattedNumber prefix="U$D " value={content.sharePrice} fixedDecimals={2} />
+      </td>
+      <td className={`tableAmount ${incomingTransfer() ? 'text-green' : 'text-red'}`}>
+        {incomingTransfer() ? '+' : '-'}
+        <FormattedNumber prefix="U$D " value={amount.toString()} fixedDecimals={2} />
       </td>
       {
         !!(actions) &&
         <td className="Actions verticalCenter" >{
-          !!(content.stateId === 1) &&
+          !!(content.stateId === 5 && !incomingTransfer()) &&
           <div className="h-100 d-flex align-items-center justify-content-around">
             {
-              !!(incomingTransfer()) &&
               <>
                 {
-                  hasPermission("TRANSFER_APPROVE") &&
+                  hasPermission(`SHARE_TRANSFER_${content.fundId}`) &&
                   <div className="iconContainer green">
                     <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => launchModalConfirmation("approve")} />
                   </div>
@@ -139,7 +160,7 @@ const Transfer = ({ content, actions, getTransfers }) => {
             }
 
             {
-              hasPermission("TRANSFER_DENY") &&
+              hasPermission(`SHARE_TRANSFER_${content.fundId}`) &&
               <div className="iconContainer red">
                 <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => launchModalConfirmation("deny")} />
               </div>
@@ -149,7 +170,7 @@ const Transfer = ({ content, actions, getTransfers }) => {
 
       }
       {
-        !!(content.stateId === 1) &&
+        !!(content.stateId === 5) &&
         <ActionConfirmationModal incomingTransfer={incomingTransfer()} reloadData={getTransfers} movement={content} setShowModal={setShowModal} action={Action} show={ShowModal} />
       }
     </tr >

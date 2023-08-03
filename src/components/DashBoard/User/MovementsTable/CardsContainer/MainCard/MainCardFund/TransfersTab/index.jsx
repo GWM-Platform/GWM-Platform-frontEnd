@@ -1,27 +1,27 @@
 import React, { useState, useEffect, useContext } from 'react'
-
-import './index.css'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import TableLastMovements from './TableLastMovements';
-//import MovementsPagination from './MovementsPagination';
-import NoMovements from 'components/DashBoard/GeneralUse/NoMovements';
-import Loading from 'components/DashBoard/GeneralUse/Loading';
 import { useHistory } from 'react-router-dom';
 import { DashBoardContext } from 'context/DashBoardContext';
+
+import TableLastTransfers from './TableLastTransfers';
+import NoMovements from 'components/DashBoard/GeneralUse/NoMovements';
+import Loading from 'components/DashBoard/GeneralUse/Loading';
 import PaginationController from 'components/DashBoard/GeneralUse/PaginationController'
 import FilterOptions from 'components/DashBoard/GeneralUse/FilterOptions'
 
-const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
-    const { token, ClientSelected,AccountSelected } = useContext(DashBoardContext);
+import 'bootstrap/dist/css/bootstrap.min.css';
+// import '../MovementsTab/index.css'
+
+const TransfersTab = ({ Fund, SearchById, setSearchById, resetSearchById, handleTransferSearchChange }) => {
+    const { token, ClientSelected } = useContext(DashBoardContext);
     const history = useHistory();
 
-    const [Movements, setMovements] = useState({ movements: 0, total: 0 })
+    const [Transfers, setTransfers] = useState({ Transfers: 0, total: 0 })
 
-    const [FetchingMovements, setFetchingMovements] = useState(true);
+    const [FetchingTransfers, setFetchingTransfers] = useState(true);
 
     const [Pagination, setPagination] = useState({
-        skip: 0,//Offset (in quantity of movements)
-        take: 5,//Movements per page
+        skip: 0,//Offset (in quantity of Transfers)
+        take: 5,//Transfers per page
         state: null
     })
 
@@ -29,21 +29,19 @@ const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
         sessionStorage.clear(); history.push(`/login`);
     }
 
-    const getMovements = async () => {
-        var url = `${process.env.REACT_APP_APIURL}/movements/?` + new URLSearchParams(
+    const getTransfers = async () => {
+        var url = `${process.env.REACT_APP_APIURL}/share-transfers/?` + new URLSearchParams(
             Object.fromEntries(Object.entries(
                 {
-                    accountId:AccountSelected.id,
                     client: ClientSelected.id,
-                    filterAccount: Fund.id,
+                    filterFund: Fund.fund.id,
                     take: Pagination.take,
                     skip: Pagination.skip,
-                    filterState: Pagination.state===10 ? null :  Pagination.state,
-                    showDenied: Pagination.state===10 ? true : null
+                    filterState: Pagination.state
                 }
             ).filter(([_, v]) => v != null))
         );
-        setFetchingMovements(true)
+        setFetchingTransfers(true)
         const response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -55,27 +53,27 @@ const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
 
         if (response.status === 200) {
             const data = await response.json()
-            setMovements(data)
-            setFetchingMovements(false)
+            setTransfers(data)
+            setFetchingTransfers(false)
         } else {
             switch (response.status) {
                 default:
-                    console.error("Error ", response.status, " account movements")
+                    console.error("Error ", response.status, " account Transfers")
                     toLogin()
             }
         }
     }
 
-    const getMovementById = async (id) => {
+    const getTransferById = async (id) => {
         setSearchById((prevState) => ({ ...prevState, search: true }))
 
-        var url = `${process.env.REACT_APP_APIURL}/movements/${id}?` + new URLSearchParams(
+        var url = `${process.env.REACT_APP_APIURL}/share-transfer/${id}?` + new URLSearchParams(
             {
                 client: ClientSelected.id,
             })
 
-        setFetchingMovements(true)
-        setMovements([])
+        setFetchingTransfers(true)
+        setTransfers([])
         const response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -87,11 +85,11 @@ const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
 
         if (response.status === 200) {
             const data = await response.json()
-            setMovements(prevState => ({ ...prevState, ...{ movements: [data], total: 1 } }))
-            setFetchingMovements(false)
+            setTransfers(prevState => ({ ...prevState, ...{ transfers: [data], total: 1 } }))
+            setFetchingTransfers(false)
         } else {
-            setMovements(prevState => ({ ...prevState, ...{ movements: [], total: 0 } }))
-            setFetchingMovements(false)
+            setTransfers(prevState => ({ ...prevState, ...{ transfers: [], total: 0 } }))
+            setFetchingTransfers(false)
             switch (response.status) {
                 case 500:
                     break;
@@ -112,19 +110,19 @@ const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
     }, [Fund])
 
     useEffect(() => {
-        SearchById.search ? getMovementById(SearchById.value) : getMovements();
+        SearchById.search ? getTransferById(SearchById.value) : getTransfers();
         return () => {
         }
         // eslint-disable-next-line
     }, [Fund, Pagination, SearchById.search])
 
     const ticketSearchProps = {
-        fetching: FetchingMovements,
-        keyWord: "movement",
+        fetching: FetchingTransfers,
+        keyWord: "share transfer",
         SearchText: SearchById.value,
-        handleSearchChange: handleMovementSearchChange,
+        handleSearchChange: handleTransferSearchChange,
         cancelSearch: resetSearchById,
-        Search: () => getMovementById(SearchById.value)
+        Search: () => getTransferById(SearchById.value)
     }
 
     return (
@@ -132,23 +130,22 @@ const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
         <div className="p-0 h-100">
             <div className="d-flex align-items-start justify-content-center flex-column MovementsTableContainer">
                 <div className={`movementsTable growAnimation`}>
-                    <FilterOptions keyword={"transactions"} ticketSearch ticketSearchProps={ticketSearchProps} disabled={SearchById.search} movements Fund={Fund} setPagination={setPagination} movsPerPage={Pagination.take} total={Movements.total} />
+                    <FilterOptions keyword={"transfers"} ticketSearch ticketSearchProps={ticketSearchProps} disabled={SearchById.search} Fund={Fund} setPagination={setPagination} movsPerPage={Pagination.take} total={Transfers.total} />
                     {
-                        FetchingMovements ?
+                        FetchingTransfers ?
                             <Loading movements={Pagination.take} />
                             :
-                            Movements.total > 0 ?
-                                <TableLastMovements
-                                    movements={Pagination.take < Movements.total ? Pagination.take : Movements.total}
-                                    content={Movements.movements} 
-                                    reloadData={getMovements}
-                                    />
+                            Transfers.total > 0 ?
+                                <TableLastTransfers
+                                    movements={Pagination.take < Transfers.total ? Pagination.take : Transfers.total}
+                                    content={Transfers.transfers}
+                                    getTransfers={getTransfers} />
                                 :
                                 <NoMovements movements={Pagination.take} />
                     }
                     {
-                        Movements.total > 0 ?
-                            <PaginationController PaginationData={Pagination} setPaginationData={setPagination} total={Movements.total} />
+                        Transfers.total > 0 ?
+                            <PaginationController PaginationData={Pagination} setPaginationData={setPagination} total={Transfers.total} />
                             :
                             null
                     }
@@ -157,5 +154,5 @@ const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
         </div>
     )
 }
-export default MovementsTab
+export default TransfersTab
 

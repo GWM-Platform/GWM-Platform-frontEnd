@@ -23,7 +23,7 @@ const BuyForm = ({ balanceChanged }) => {
           })
     }, [])
     
-    const { token, ClientSelected, contentReady, Accounts, hasBuyPermission } = useContext(DashBoardContext);
+    const { token, ClientSelected, contentReady, AccountSelected, hasBuyPermission } = useContext(DashBoardContext);
 
     function useQuery() {
         const { search } = useLocation();
@@ -169,14 +169,14 @@ const BuyForm = ({ balanceChanged }) => {
                                 Funds?.length > 0 && Funds?.filter(Fund => hasBuyPermission(Fund.id))?.length > 0 ?
                                     <Col xs="12">
                                         <Accordion flush defaultActiveKey="0">
-                                            <FundSelector openAccordion={openAccordion} Account={Accounts[0]}
+                                            <FundSelector openAccordion={openAccordion} Account={AccountSelected}
                                                 Funds={Funds} data={data} setData={setData} />
                                         </Accordion>
                                         <Accordion flush activeKey={CollapsedFields ? "-1" : "0"}>
                                             <BuyData
                                                 handleSubmit={handleSubmit} validated={validated}
                                                 handleChange={handleChange} Funds={Funds} data={data}
-                                                toggleAccordion={toggleAccordion} Balance={Accounts[0]?.balance} fetching={fetching} />
+                                                toggleAccordion={toggleAccordion} Balance={AccountSelected?.balance} fetching={fetching} />
                                         </Accordion>
                                     </Col>
                                     :
@@ -186,7 +186,7 @@ const BuyForm = ({ balanceChanged }) => {
                 </Container>
                 {
                     !!(data.FundSelected !== -1 && contentReady) &&
-                    <ActionConfirmationModal fetching={fetching} setShowModal={setShowModal} show={ShowModal} action={buy} data={data} Funds={Funds} Balance={Accounts[0]?.balance} />
+                    <ActionConfirmationModal fetching={fetching} setShowModal={setShowModal} show={ShowModal} action={buy} data={data} Funds={Funds} Balance={AccountSelected?.balance} />
                 }
             </div>
         </div>

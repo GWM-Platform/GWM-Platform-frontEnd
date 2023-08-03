@@ -13,25 +13,59 @@ const TransactionRow = ({ transaction, user }) => {
   const { t } = useTranslation();
   const { getMoveStateById } = useContext(DashBoardContext)
 
+  const isTransfer = transaction.receiverId || transaction.senderId
+  const transferNote = transaction?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")
+
+
   return (
 
     <tr>
       <td className="tableDate">{momentDate.format('L')}</td>
-      <td >{user.alias}</td>
+      <td className='text-nowrap'>
+        {isTransfer ?
+          t("From {{senderAlias}} to {{receiverAlias}}", {
+            senderAlias: transaction.senderAlias,
+            receiverAlias: transaction.receiverAlias
+          })
+          : user.alias
+        }
+      </td>
       <td className={`tableConcept`}>
-        <span>{Math.sign(transaction.shares) === 1 ? t('Sale of') : t('Purchase of')}{" "}</span>
-        <FormattedNumber value={Math.abs(transaction.shares)} fixedDecimals={2} />&nbsp;
-        {t(Math.abs(transaction.shares) === 1 ? "share" : "shares")}</td>
+        {
+          isTransfer ?
+            <>
+              {t("Transfer of")}{" "}
+              <FormattedNumber value={Math.abs(transaction.shares)} fixedDecimals={2} />&nbsp;
+              {t(Math.abs(transaction.shares) === 1 ? "share" : "shares")}
+            </>
+            :
+            <>
+              <span>{Math.sign(transaction.shares) === 1 ? t('Sale of') : t('Purchase of')}{" "}</span>
+              <FormattedNumber value={Math.abs(transaction.shares)} fixedDecimals={2} />&nbsp;
+              {t(Math.abs(transaction.shares) === 1 ? "share" : "shares")}
+            </>
+        }
+      </td>
 
       <td className={`tableConcept ${transaction.stateId === 3 ? 'text-red' : 'text-green'}`}>
         {t(getMoveStateById(transaction.stateId).name)}
+        {(transaction?.reverted && transferNote?.text !== "Transferencia revertida") ? <>, {t("reverted")}</> : ""}
       </td>
-      <td className="tableDescription d-none d-sm-table-cell ">
+      <td className="tableDescription d-none d-sm-table-cell text-nowrap ">
         <FormattedNumber value={Math.abs(transaction.sharePrice)} prefix="U$D " fixedDecimals={2} />&nbsp;
       </td>
-      <td className={`tableAmount ${Math.sign(transaction.shares) === 1 ? 'text-red' : 'text-green'}`}>
-        <span>{Math.sign(transaction.shares) === 1 ? '-' : '+'}</span>
-        <FormattedNumber value={new Decimal(transaction.shares).times(transaction.sharePrice).abs()} prefix="U$D " fixedDecimals={2} />&nbsp;
+      <td className={`tableAmount ${isTransfer ? "" : (Math.sign(transaction.shares) === 1 ? 'text-red' : 'text-green')}`}>
+        {
+          isTransfer ?
+            <>
+              (<FormattedNumber value={new Decimal(transaction.shares).times(transaction.sharePrice).abs()} prefix="U$D " fixedDecimals={2} />)
+            </>
+            :
+            <>
+              <span>{Math.sign(transaction.shares) === 1 ? '-' : '+'}</span>
+              <FormattedNumber value={new Decimal(transaction.shares).times(transaction.sharePrice).abs()} prefix="U$D " fixedDecimals={2} />
+            </>
+        }
       </td>
     </tr>
   )

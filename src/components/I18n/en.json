@@ -781,6 +781,8 @@
     "ADMIN_APPROVAL_PENDING": "Your ticket is waiting for the approval of an administrator",
     "DEPOSIT_PERFORMED": "Your deposit has been accredited",
     "TRANSFER_PENDING": "There is a transfer waiting to be accepted",
+    "TRANSFER_RECEIVED": "Transfer received",
     "ALIAS_UPDATED": "The alias of your account has been updated",
-    "Current_accounts": "Accounts"
+    "Current_accounts": "Accounts",
+    "_at":"at"
 }

@@ -26,7 +26,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
         return React.useMemo(() => new URLSearchParams(search), [search]);
     }
 
-    const { PendingWithoutpossession, hasPermission } = useContext(DashBoardContext)
+    const { PendingWithoutpossession, hasPermission, AccountSelected } = useContext(DashBoardContext)
 
     const FundsWithPending = [...Funds, ...PendingWithoutpossession]
 
@@ -95,7 +95,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
     const handleMovementSearchChange = (event) => {
         setSearchById((prevState) => ({ ...prevState, value: event.target.value }))
     }
-    
+
     return (
         <Row className="HistoryCardsContainer d-flex align-items-stretch flex-md-nowrap ">
             {isMobile ?
@@ -229,7 +229,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
                     <Col className="px-2 pb-2 growAnimation" xs="12" xl="12" >
                         {Accounts.length === 1 ?
                             <MainCardAccount
-                                Fund={Accounts[0]}
+                                Fund={AccountSelected}
                                 Hide={Hide} setHide={setHide}
 
                                 SearchById={SearchById}

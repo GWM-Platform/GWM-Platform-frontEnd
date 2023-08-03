@@ -35,7 +35,7 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
 
 const Movement = ({ content, reloadData }) => {
   var momentDate = moment(content.createdAt);
-  const { getMoveStateById, AccountSelected, couldSign, toLogin, Accounts, hasSellPermission, hasBuyPermission, hasPermission } = useContext(DashBoardContext)
+  const { getMoveStateById, AccountSelected, couldSign, toLogin, hasSellPermission, hasBuyPermission, hasPermission } = useContext(DashBoardContext)
 
   const { t } = useTranslation()
 
@@ -310,7 +310,7 @@ const Movement = ({ content, reloadData }) => {
 
   }
 
-  const incomingTransfer = (transfer) => transfer.receiverId === Accounts[0]?.id
+  const incomingTransfer = (transfer) => transfer.receiverId === AccountSelected?.id
 
   const renderAndDownloadTransferPDF = async (transfer) => {
     const blob = await ReactPDF.pdf(<TransferReceipt Transfer={{
