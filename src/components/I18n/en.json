@@ -779,6 +779,7 @@
     "TICKET_LIQUIDATED": "Your withdraw was liquidated",
     "CLIENT_APPROVAL_PENDING": "There is a ticket is waiting for another user's signature",
     "ADMIN_APPROVAL_PENDING": "Your ticket is waiting for the approval of an administrator",
+    "TRANSFER_RECEIVED": "You have received a transfer",
     "DEPOSIT_PERFORMED": "Your deposit has been accredited",
     "TRANSFER_PENDING": "There is a transfer waiting to be accepted",
     "ALIAS_UPDATED": "The alias of your account has been updated",

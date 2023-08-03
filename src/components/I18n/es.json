@@ -904,6 +904,7 @@
   "SHARES_BUY_TICKET_APPROVED": "Compra de cuotapartes aprobada",
   "SHARES_SELL_TICKET_APPROVED": "Venta de cuotapartes aprobada",
   "FUND_CREATED": "¡Lanzamos un nuevo fondo!",
+  "TRANSFER_RECEIVED": "Has recibido una transferencia",
   "CLIENT_APROVAL_PENDING": "Ticket esperando su confirmación",
   "TRANSFER_DENIED": "Transferencia rechazada",
   "TRANSFER_APPROVED": "Transferencia aceptada",
