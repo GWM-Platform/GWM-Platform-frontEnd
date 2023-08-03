@@ -31,7 +31,7 @@ const TransactionsByFund = ({ AccountId, ClientId }) => {
                         valid: true,
                         content: response.data,
                     }))
-                setFundSelected(response?.data?.[0] || "")
+                setFundSelected(response?.data?.[0]?.id || "")
             }).catch((err) => {
                 if (err.message !== "canceled") {
                     if (err.response.status === "401") {
