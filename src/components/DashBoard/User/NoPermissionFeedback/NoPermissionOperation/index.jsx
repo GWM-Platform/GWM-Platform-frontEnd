@@ -7,9 +7,9 @@ const NoPermissionOperation = () => {
 
     return (
         <div className="h-100 d-flex align-items-center justify-content-center">
-            <h1>
+            <span className='text-center'>
                 {t("Apparently, your user does not have permissions to perform this operation")}
-            </h1>
+            </span>
         </div>
     )
 }
