@@ -64,7 +64,7 @@ const Transfer = ({ content, actions, getTransfers }) => {
         {content.id}
         {
           GeneratingPDF ?
-            <Spinner animation="border" size="sm" />
+            <Spinner className='mx-1' animation="border" size="sm" />
             :
             <button className='noStyle py-0' style={{ cursor: "pointer" }} onClick={() => renderAndDownloadPDF()}>
               <FontAwesomeIcon icon={faFilePdf} />

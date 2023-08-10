@@ -483,7 +483,7 @@ export const DashBoardProvider = ({ children }) => {
 
         const manageUrlUser = () => {
             const validRedirectedSections = ["history"]
-            const validTypes = ["m", "t", "transfers"]
+            const validTypes = ["m", "t", "transfers", "share-transfers"]
             if (desiredLocation && desiredId && desiredType && desiredClient) {
                 if (validRedirectedSections.includes(desiredLocation) && validTypes.includes(desiredType)) {
                     let destination = ""
@@ -495,6 +495,13 @@ export const DashBoardProvider = ({ children }) => {
                             destination = `/DashBoard/${desiredLocation}?loc=${desiredLocation}&id=${desiredId}&client=${desiredClient}&type=${desiredType}`
                             break;
                         case "t":
+                            if (desiredFundId) {
+                                destination = `/DashBoard/${desiredLocation}?loc=${desiredLocation}&id=${desiredId}&client=${desiredClient}&fundId=${desiredFundId}&type=${desiredType}`
+                            } else {
+                                destination = "/DashBoard/Accounts"
+                            }
+                            break;
+                        case "share-transfers":
                             if (desiredFundId) {
                                 destination = `/DashBoard/${desiredLocation}?loc=${desiredLocation}&id=${desiredId}&client=${desiredClient}&fundId=${desiredFundId}&type=${desiredType}`
                             } else {

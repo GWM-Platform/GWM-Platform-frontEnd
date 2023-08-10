@@ -11,7 +11,7 @@ import FilterOptions from 'components/DashBoard/GeneralUse/FilterOptions'
 import 'bootstrap/dist/css/bootstrap.min.css';
 // import '../MovementsTab/index.css'
 
-const TransfersTab = ({ Fund, SearchById, setSearchById, resetSearchById, handleTransferSearchChange }) => {
+const TransfersTab = ({ Fund, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
     const { token, ClientSelected } = useContext(DashBoardContext);
     const history = useHistory();
 
@@ -67,9 +67,10 @@ const TransfersTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
     const getTransferById = async (id) => {
         setSearchById((prevState) => ({ ...prevState, search: true }))
 
-        var url = `${process.env.REACT_APP_APIURL}/share-transfer/${id}?` + new URLSearchParams(
+        var url = `${process.env.REACT_APP_APIURL}/share-transfers/${id}?` + new URLSearchParams(
             {
                 client: ClientSelected.id,
+                filterFund: Fund.fund.id
             })
 
         setFetchingTransfers(true)
@@ -120,7 +121,7 @@ const TransfersTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
         fetching: FetchingTransfers,
         keyWord: "share transfer",
         SearchText: SearchById.value,
-        handleSearchChange: handleTransferSearchChange,
+        handleSearchChange: handleMovementSearchChange,
         cancelSearch: resetSearchById,
         Search: () => getTransferById(SearchById.value)
     }
@@ -130,7 +131,7 @@ const TransfersTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
         <div className="p-0 h-100">
             <div className="d-flex align-items-start justify-content-center flex-column MovementsTableContainer">
                 <div className={`movementsTable growAnimation`}>
-                    <FilterOptions keyword={"transfers"} ticketSearch ticketSearchProps={ticketSearchProps} disabled={SearchById.search} Fund={Fund} setPagination={setPagination} movsPerPage={Pagination.take} total={Transfers.total} />
+                    <FilterOptions keyword={"movements"} ticketSearch ticketSearchProps={ticketSearchProps} disabled={SearchById.search} Fund={Fund} setPagination={setPagination} movsPerPage={Pagination.take} total={Transfers.total} />
                     {
                         FetchingTransfers ?
                             <Loading movements={Pagination.take} />

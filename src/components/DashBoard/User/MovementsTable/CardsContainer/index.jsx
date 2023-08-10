@@ -38,15 +38,18 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
     const desiredId = useQuery().get("id")
     const desiredType = useQuery().get("type")
     const desiredFundId = useQuery().get("fundId")
-    const validTypes = ["m", "t", "transfers"]
+    const validTypes = ["m", "t", "transfers", "share-transfers"]
 
     const [categorySelected, setCategorySelected] = useState(
         desiredType ?
             validTypes.includes(desiredType) ?
-                desiredType === "t" ?
+                desiredType === "share-transfers" ?
                     Funds.length > 0 ? 1 : 0
                     :
-                    desiredType === "m" || desiredType === "transfers" ? 0 : 0
+                    desiredType === "t" ?
+                        Funds.length > 0 ? 1 : 0
+                        :
+                        desiredType === "m" || desiredType === "transfers" ? 0 : 0
                 :
                 Accounts.length > 0 && hasPermission('VIEW_ACCOUNT') ? 0 : Funds.length > 0 ? 1 : 0
             :
@@ -62,6 +65,12 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
             if (validTypes.includes(desiredType)) {
                 switch (desiredType) {
                     case "t":
+                        if (desiredFundId) {
+                            return getFundIndexById(desiredFundId).found
+                        } else {
+                            return false
+                        }
+                    case "share-transfers":
                         if (desiredFundId) {
                             return getFundIndexById(desiredFundId).found
                         } else {

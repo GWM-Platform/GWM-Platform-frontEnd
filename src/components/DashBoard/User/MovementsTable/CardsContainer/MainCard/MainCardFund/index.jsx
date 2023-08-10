@@ -16,9 +16,22 @@ import { useEffect } from 'react';
 import { fetchPerformance, selectPerformanceById } from 'Slices/DashboardUtilities/performancesSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import TransfersTab from './TransfersTab';
+import { useHistory, useLocation } from 'react-router-dom/cjs/react-router-dom.min';
 
 const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
-    const [SelectedTab, setSelectedTab] = useState("0")
+    const location = useLocation();
+    const history = useHistory()
+
+    function useQuery() {
+        const { search } = useLocation();
+
+        return React.useMemo(() => new URLSearchParams(search), [search]);
+    }
+
+    const desiredType = useQuery().get("type")
+    const desiredFundId = useQuery().get("fundId")
+
+    const [SelectedTab, setSelectedTab] = useState(desiredType ? "2" : "0")
     const { PendingTransactions, ClientSelected } = useContext(DashBoardContext)
     const { t } = useTranslation();
 
@@ -34,6 +47,28 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
             clientId: ClientSelected?.id
         }))
     }, [Fund, ClientSelected, dispatch])
+
+    useEffect(() => {
+        const resetQueryParams = () => {
+            const queryParams = new URLSearchParams(location.search);
+            queryParams.delete("type");
+            queryParams.delete("loc");
+            queryParams.delete("id");
+            queryParams.delete("client");
+            queryParams.delete("fundId");
+            const queryString = `?${queryParams.toString()}`;
+            history.replace({ pathname: location.pathname, search: queryString });
+        }
+        if (desiredFundId !== (Fund.fund.id + "")) {
+            resetQueryParams()
+        } else {
+            return () => {
+                resetQueryParams()
+            }
+        }
+        //eslint-disable-next-line
+    }, [Fund])
+
 
     return (
         <div className="movementsMainCardFund growAnimation mt-2">
