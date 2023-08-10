@@ -134,7 +134,7 @@ const CashCard = ({ Hide, setHide, Fund, cardsAmount, inScreenFunds, pendingCash
                         </h1>
                         {
                             performance &&
-                            <PerformanceComponent text={"Total performance"} />
+                            <PerformanceComponent withoutSelector text={"Total performance"} />
                         }
                         <div className="subTitle lighter mt-0 mb-0">
                             <span className='invisible'>{t("Balance (shares)")}:<span className="bolder"></span></span> <br />

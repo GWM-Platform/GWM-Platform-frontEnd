@@ -115,7 +115,7 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions, cardsAmount, inScr
                                         </Row>
                                     </Container>
                                 </h1>
-                                <PerformanceComponent text={"Performance"} fundId={Fund.fund.id} />
+                                <PerformanceComponent withoutSelector text={"Performance"} fundId={Fund.fund.id} />
 
                                 <Card.Text className="subTitle lighter mt-0 mb-0">
                                     {t("Balance (shares)")}:&nbsp;
