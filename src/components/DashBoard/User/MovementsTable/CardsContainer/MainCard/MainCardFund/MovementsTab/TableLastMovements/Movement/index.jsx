@@ -11,8 +11,14 @@ import { OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf } from '@fortawesome/free-regular-svg-icons';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import ShareTransferReceipt from 'Receipts/ShareTransferReceipt';
 
 const Movement = ({ content, fundName }) => {
+
+  const denialMotive = content?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
+  const incomingTransfer = () => content.receiverId === AccountSelected?.id
+  const isTransfer = content.receiverId || content.senderId
+  const transferNote = content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")
 
   Decimal.set({ precision: 100 })
 
@@ -28,17 +34,29 @@ const Movement = ({ content, fundName }) => {
 
   const renderAndDownloadPDF = async () => {
     setGeneratingPDF(true)
-    const blob = await ReactPDF.pdf(<TransactionReceipt Transaction={{
-      ...content, ...{
-        state: t(getMoveStateById(content.stateId).name),
-        accountAlias: AccountSelected.alias,
-        fundName: fundName
-      }
-    }} />).toBlob()
+    const blob = await ReactPDF.pdf(
+      isTransfer ?
+        <ShareTransferReceipt Transfer={{
+          ...content, ...{
+            state: t(getMoveStateById(content.stateId).name),
+            accountAlias: AccountSelected.alias,
+            incomingTransfer: incomingTransfer(),
+            AccountId: AccountSelected.id,
+            fundName: fundName
+          }
+        }} />
+        :
+        <TransactionReceipt Transaction={{
+          ...content, ...{
+            state: t(getMoveStateById(content.stateId).name),
+            accountAlias: AccountSelected.alias,
+            fundName: fundName
+          }
+        }} />).toBlob()
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
-    link.setAttribute('download', `${AccountSelected.alias} - ${t("Transaction")} #${content.id}.pdf`)
+    link.setAttribute('download', `${AccountSelected.alias} - ${t(isTransfer ? "Share transfer" : "Transaction")} #${content.id}.pdf`)
     // 3. Append to html page
     document.body.appendChild(link)
     // 4. Force download
@@ -47,13 +65,9 @@ const Movement = ({ content, fundName }) => {
     link.parentNode.removeChild(link)
     setGeneratingPDF(false)
   }
+  
   const [showClick, setShowClick] = useState(false)
   const [showHover, setShowHover] = useState(false)
-
-  const denialMotive = content?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
-  const incomingTransfer = () => content.receiverId === AccountSelected?.id
-  const isTransfer = content.receiverId || content.senderId
-  const transferNote = content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")
 
   return (
     <tr>

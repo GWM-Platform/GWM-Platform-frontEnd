@@ -448,6 +448,8 @@
     "The target account cannot be your own account": "The target account cannot be your own account",
     "Outgoing transfer": "Outgoing transfer",
     "Incoming transfer": "Incoming transfer",
+    "Outgoing share transfer": "Outgoing share transfer",
+    "Incoming share transfer": "Incoming share transfer",
     "Your account balance": "Your account balance",
     "Your account balance if you approve this transfer": "Your account balance if you approve this transfer",
     "transactions": "transactions",

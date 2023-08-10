@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useContext } from 'react';
 import { DashBoardContext } from 'context/DashBoardContext';
 
-const TableLastMovements = ({ content, movements, getTransfers }) => {
+const TableLastMovements = ({ content, movements, getTransfers, fundName }) => {
     const { t } = useTranslation();
     const { hasPermission, AccountSelected } = useContext(DashBoardContext)
     const anyWithActions = () => Object.values(content).some((movement) => (movement.senderId === AccountSelected?.id) && (movement.stateId === 5) && (hasPermission(`SHARE_TRANSFER_${movement.fundId}`)))
@@ -30,7 +30,7 @@ const TableLastMovements = ({ content, movements, getTransfers }) => {
                 </thead>
                 <tbody>
                     {content.map((transfer, key) =>
-                        <Transfer getTransfers={getTransfers} key={`transfer-${key}`} content={transfer} actions={anyWithActions()} />
+                        <Transfer getTransfers={getTransfers} key={`transfer-${key}`} content={transfer} actions={anyWithActions()} fundName={fundName} />
                     )}
                 </tbody>
             </Table>

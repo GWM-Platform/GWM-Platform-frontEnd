@@ -449,6 +449,8 @@
   "The target account cannot be your own account": "La cuenta destino no puede ser su propia cuenta",
   "Outgoing transfer": "Transferencia saliente",
   "Incoming transfer": "Transferencia entrante",
+  "Outgoing share transfer": "Transferencia de cuotapartes saliente",
+  "Incoming share transfer": "Transferencia de cuotapartes entrante",
   "Your account balance": "Saldo de su cuenta",
   "Your account balance if you approve this transfer": "Saldo de su cuenta si aprueba esta transferencia",
   "transactions": "transacciones",
@@ -997,5 +999,6 @@
   "_at": "a",
   "Share transfer from {{senderAlias}} to {{receiverAlias}}": "Transferencia de cuotapartes de {{senderAlias}} a {{receiverAlias}}",
   "From {{senderAlias}} to {{receiverAlias}}": "De {{senderAlias}} a {{receiverAlias}}",
-  "Transfer of": "Transferencia de"
+  "Transfer of": "Transferencia de",
+  "Share transfer": "Transferencia de cuotapartes"
 }

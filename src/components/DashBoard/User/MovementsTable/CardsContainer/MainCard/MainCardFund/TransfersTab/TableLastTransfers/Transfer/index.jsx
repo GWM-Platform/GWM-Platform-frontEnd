@@ -8,12 +8,12 @@ import { faCheckCircle, faFilePdf, faTimesCircle } from '@fortawesome/free-regul
 import ActionConfirmationModal from 'components/DashBoard/User/MovementsTable/GeneralUse/ShareTransferConfirmation'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import ReactPDF from '@react-pdf/renderer';
-import TransferReceipt from 'Receipts/TransferReceipt';
 import { OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import Decimal from 'decimal.js';
+import ShareTransferReceipt from 'Receipts/ShareTransferReceipt';
 
-const Transfer = ({ content, actions, getTransfers }) => {
+const Transfer = ({ content, actions, getTransfers, fundName }) => {
 
   var momentDate = moment(content.createdAt);
   const { t } = useTranslation();
@@ -33,18 +33,21 @@ const Transfer = ({ content, actions, getTransfers }) => {
 
   const renderAndDownloadPDF = async () => {
     setGeneratingPDF(true)
-    const blob = await ReactPDF.pdf(<TransferReceipt Transfer={{
-      ...content, ...{
-        state: t(getMoveStateById(content.stateId).name),
-        accountAlias: AccountSelected.alias,
-        incomingTransfer: incomingTransfer(),
-        AccountId: AccountSelected.id
-      }
-    }} />).toBlob()
+    const blob = await ReactPDF.pdf(
+      <ShareTransferReceipt Transfer={{
+        ...content, ...{
+          state: t(getMoveStateById(content.stateId).name),
+          accountAlias: AccountSelected.alias,
+          incomingTransfer: incomingTransfer(),
+          AccountId: AccountSelected.id,
+          fundName: fundName
+        }
+      }} />
+    ).toBlob()
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
-    link.setAttribute('download', `${AccountSelected.alias} - ${t("Transfer")} #${content.id}.pdf`)
+    link.setAttribute('download', `${AccountSelected.alias} - ${t("Share transfer")} #${content.id}.pdf`)
     // 3. Append to html page
     document.body.appendChild(link)
     // 4. Force download
