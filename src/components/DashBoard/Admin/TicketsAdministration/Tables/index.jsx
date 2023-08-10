@@ -518,7 +518,8 @@ const Tables = ({ state, messageVariants }) => {
 
     const transactionsInState = async () => {
         var url = `${process.env.REACT_APP_APIURL}/transactions/?` + new URLSearchParams({
-            filterState: state,
+            onlyReverted: stateOnlyReverted ?? null,
+            filterState: stateOnlyReverted ? null : state,
             take: PaginationTransactions.take,
             skip: PaginationTransactions.skip,
         });
@@ -849,7 +850,7 @@ const Tables = ({ state, messageVariants }) => {
     }, [PaginationMovements, state, searchMovementById.search])
 
     useEffect(() => {
-        if (!searchTransactionById.search && !stateOnlyReverted) transactionsInState()
+        if (!searchTransactionById.search ) transactionsInState()
         // eslint-disable-next-line
     }, [PaginationTransactions, state, searchTransactionById.search])
 
@@ -938,18 +939,17 @@ const Tables = ({ state, messageVariants }) => {
                 {
                     !stateOnlyReverted &&
                     <div className='d-flex justify-content-between overflow-auto'>
-                        <Button variant="link" onClick={() => executeScroll(PurchaseAndSale)}>{t("Purchases and sales")}</Button>
+                        <Button variant="link" onClick={() => executeScroll(PurchaseAndSale)}>{t("Purchases, sales and share transfers")}</Button>
                         <Button variant="link" onClick={() => executeScroll(AccountMovementsRef)}>{t("Account movements")}</Button>
                         <Button variant="link" onClick={() => executeScroll(PendingSettlementRef)}>{t("Approved pending settlement")}</Button>
                         <Button variant="link" onClick={() => executeScroll(TransferRef)}>{t("Transfers")}</Button>
                         <Button variant="link" onClick={() => executeScroll(FixedDepositsRef)}>{t("Time deposits")}</Button>
                     </div>
                 }
-                {/*-------------------------------Purchase and sale-------------------------- */}
+                {/*-------------------------------Purchase sale-and transfers------------------------- */}
                 {
-                    !stateOnlyReverted &&
                     <>
-                        <h1 ref={PurchaseAndSale} className="title">{t("Purchases and sales")}:</h1>
+                        <h1 ref={PurchaseAndSale} className="title">{t("Purchases, sales and share transfers")}:</h1>
                         <TicketSearch
                             props={ticketSearchPropsTransfers}
                         />

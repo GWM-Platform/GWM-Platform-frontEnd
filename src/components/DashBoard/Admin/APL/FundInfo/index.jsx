@@ -79,9 +79,9 @@ const FundInfo = ({ Fund }) => {
                             {t("Balance")}
                         </h2>
                         <div className="containerHideInfo d-inline">
-                            <FormattedNumber prefix="U$S " hidden className={`info ${Hide ? "shown" : "hidden"}`} value={balanceInCash} fixedDecimals={2} />
-                            <FormattedNumber prefix="U$S " className={`info ${Hide ? "hidden" : "shown"}`} value={balanceInCash} fixedDecimals={2} />
-                            <FormattedNumber prefix="U$S " className={`info placeholder`} value={balanceInCash} fixedDecimals={2} />
+                            <FormattedNumber prefix="U$D " hidden className={`info ${Hide ? "shown" : "hidden"}`} value={balanceInCash} fixedDecimals={2} />
+                            <FormattedNumber prefix="U$D " className={`info ${Hide ? "hidden" : "shown"}`} value={balanceInCash} fixedDecimals={2} />
+                            <FormattedNumber prefix="U$D " className={`info placeholder`} value={balanceInCash} fixedDecimals={2} />
                         </div>
                         <div className="hideInfoButton d-inline-flex align-items-center mt-1">
                             <FontAwesomeIcon

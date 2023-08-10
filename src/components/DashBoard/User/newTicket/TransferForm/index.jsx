@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect, useMemo } from 'react'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../operationsForm.scss'
@@ -11,6 +11,8 @@ import { DashBoardContext } from 'context/DashBoardContext';
 import ActionConfirmationModal from './ActionConfirmationModal';
 import { useHistory } from 'react-router-dom';
 import ReactGA from "react-ga4";
+import FundSelector from './FundSelector';
+import { useLocation } from 'react-router-dom/cjs/react-router-dom.min';
 
 const TransferForm = ({ balanceChanged }) => {
 
@@ -22,16 +24,20 @@ const TransferForm = ({ balanceChanged }) => {
         })
     }, [])
 
-    const { token, contentReady, Accounts, AccountSelected, toLogin } = useContext(DashBoardContext);
+    const { token, contentReady, Accounts, AccountSelected, toLogin, ClientSelected, hasPermission } = useContext(DashBoardContext);
 
     const history = useHistory()
 
     const [data, setData] = useState({
-        amount: "",
-        senderId: Accounts[0]?.id,
         alias: "",
-        note: ""
+        note: "",
+        value: "",
+        amount: "",
+        usd_value: "",
+        usd_amount: "",
+        FundSelected: hasPermission("TRANSFER_GENERATE") ? 'cash' : ""
     })
+    const share_transfer = useMemo(() => data.FundSelected !== "cash", [data.FundSelected])
 
     const [ShowModal, setShowModal] = useState(false)
     const [validated, setValidated] = useState(true);
@@ -48,14 +54,24 @@ const TransferForm = ({ balanceChanged }) => {
 
     const transfer = async () => {
         setTransfer(prevState => ({ ...prevState, fetching: true }))
-        var url = `${process.env.REACT_APP_APIURL}/transfers`
+        var url = `${process.env.REACT_APP_APIURL}/${share_transfer ? "share-transfers" : "transfers"}`
         const response = await fetch(url, {
             method: 'POST',
             body: JSON.stringify(
                 {
-                    senderId: data.senderId,
-                    receiverId: TargetAccount?.content?.id,
-                    amount: data.amount,
+                    ...share_transfer ?
+                        {
+                            shares: data.amount,
+                            fundId: data.FundSelected,
+                            senderId: ClientSelected?.id,
+                            receiverId: TargetAccount?.content?.clientId
+                        }
+                        :
+                        {
+                            amount: data.amount,
+                            senderId: AccountSelected?.id,
+                            receiverId: TargetAccount?.content?.id
+                        },
                     note: data.note
                 }
             ),
@@ -112,9 +128,68 @@ const TransferForm = ({ balanceChanged }) => {
         setCollapsedFields(true)
     }
 
+    function useQuery() {
+        const { search } = useLocation();
+        return React.useMemo(() => new URLSearchParams(search), [search]);
+    }
+
+    //If the user came from an specific fund, we use the query to auto select that one
+    let fundId = parseInt(useQuery().get("fund"))
+
+    const [Funds, setFunds] = useState([])
+    const fund_selected = useMemo(() => share_transfer ? Funds?.find(fund => fund.fundId === data.FundSelected) : null, [Funds, data.FundSelected, share_transfer])
+    const [FetchingFunds, setFetchingFunds] = useState(true)
+
     useEffect(() => {
-        setData(prevState => ({ ...prevState, senderId: Accounts[0]?.id || 0 }))
-    }, [Accounts])
+        const getFunds = async () => {
+            var url = `${process.env.REACT_APP_APIURL}/stakes/?` + new URLSearchParams({
+                client: ClientSelected.id,
+            });
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    Accept: "*/*",
+                    'Content-Type': 'application/json'
+                }
+            })
+
+            if (response.status === 200) {
+                const dataFetched = await response.json()
+                if (fundId) {
+                    const FundSelected = dataFetched.findIndex(fund => fund.fundId === fundId)
+                    if (FundSelected >= 0) {
+                        openAccordion()
+                        setData(prevSate => ({ ...prevSate, ...{ FundSelected: FundSelected } }))
+                    } else {
+                        openAccordion()
+                        setData(prevSate => ({ ...prevSate, ...{ FundSelected: hasPermission("TRANSFER_GENERATE") ? 'cash' : "" } }))
+                    }
+                } else {
+                    setData(prevSate => ({ ...prevSate, ...{ FundSelected: hasPermission("TRANSFER_GENERATE") ? 'cash' : "" } }))
+                }
+                setFunds(dataFetched)
+                setFetchingFunds(false)
+            } else {
+                switch (response.status) {
+                    case 500:
+                        console.error("Error. Vefique los datos ingresados")
+                        break;
+                    default:
+                        console.error(response.status)
+                }
+            }
+        }
+
+        getFunds()
+        let aux = data
+        aux.FundSelected = -1
+        setData(aux)
+        return () => {
+        }
+        // eslint-disable-next-line
+    }, [ClientSelected])
+
 
     return (
         <div className="tabContent">
@@ -123,10 +198,13 @@ const TransferForm = ({ balanceChanged }) => {
                 <Container className="h-100" >
                     <Row className="newTicket h-100 growAnimation">
                         {
-                            !contentReady || Accounts.length <= 0 ?
+                            (FetchingFunds || !contentReady || Accounts.length <= 0) ?
                                 <Loading />
                                 :
                                 <Col xs="12">
+                                    <Accordion flush defaultActiveKey="0">
+                                        <FundSelector showPrice={false} openAccordion={openAccordion} Funds={Funds} data={data} setData={setData} showAccount />
+                                    </Accordion>
                                     <Accordion flush defaultActiveKey="0">
                                         <TargetAccountSelector
                                             validated={validated} data={data} setData={setData} TargetAccount={TargetAccount} closeAccordion={closeAccordion}
@@ -134,6 +212,7 @@ const TransferForm = ({ balanceChanged }) => {
                                     </Accordion>
                                     <Accordion flush activeKey={CollapsedFields || TargetAccount.fetching || !TargetAccount.fetched || !TargetAccount.valid ? "-1" : "0"}>
                                         <TransferData
+                                            Funds={Funds}
                                             TargetAccount={TargetAccount} handleChange={handleChange} data={data} toggleAccordion={toggleAccordion} Balance={AccountSelected ? AccountSelected.balance : 0} />
                                     </Accordion>
                                 </Col>
@@ -142,9 +221,7 @@ const TransferForm = ({ balanceChanged }) => {
                 </Container>
                 {
                     !!(contentReady && Accounts.length) >= 1 &&
-                    <ActionConfirmationModal TargetAccount={TargetAccount} setShowModal={setShowModal} show={ShowModal} action={transfer} data={data} Balance={AccountSelected.balance} Transfer={Transfer} />
-
-
+                    <ActionConfirmationModal share_transfer={share_transfer} fund_selected={fund_selected} TargetAccount={TargetAccount} setShowModal={setShowModal} show={ShowModal} action={transfer} data={data} Balance={AccountSelected.balance} Transfer={Transfer} />
                 }
             </Form >
         </div >

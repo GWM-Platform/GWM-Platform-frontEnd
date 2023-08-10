@@ -41,7 +41,7 @@ const ActionConfirmationModal = ({ transaction, setShowModal, action, show, relo
             valid: false
         })
 
-        const url = `${process.env.REACT_APP_APIURL}/transactions/${transaction.id}/${action}`;
+        const url = `${process.env.REACT_APP_APIURL}/${action === "revert" ? "share-transfers" : "transactions"}/${transaction.id}/${action}`;
         const token = sessionStorage.getItem("access_token")
 
         const response = await fetch(url, {

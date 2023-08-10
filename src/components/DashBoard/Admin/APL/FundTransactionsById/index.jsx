@@ -78,7 +78,7 @@ const TransactionFundTable = ({ Id, UsersInfo, AccountInfo }) => {
                         :
                         Transactions.content.total > 0 ?
                             <TransactionsTable
-                                UsersInfo={UsersInfo} AccountInfo={AccountInfo} movements={Pagination.take} Transactions={Transactions} />
+                                UsersInfo={UsersInfo} AccountInfo={AccountInfo} movements={Pagination.take < Transactions.content.total ? Pagination.take : Transactions.content.total} Transactions={Transactions} />
                             :
                             <NoMovements movements={Pagination.take} />
                 }

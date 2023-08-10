@@ -26,6 +26,7 @@ const ContainerLogin = () => {
   const desiredType = useQuery().get("type")
   const desiredClient = useQuery().get("client")
   const transferId = useQuery().get("transferId")
+  const shareTransferId = useQuery().get("shareTransferId")
   const desiredFundId = useQuery().get("fundId")
 
   let history = useHistory();
@@ -103,6 +104,8 @@ const ContainerLogin = () => {
               destination = `Accounts?loc=${desiredLocation}&id=${desiredId}&type=${desiredType}&client=${desiredClient}${desiredFundId ? `&fundId=${desiredFundId}` : ""}`
             } else if (transferId) {
               destination = `Accounts?loc=history&client=${desiredClient}&id=${transferId}&type=transfers`
+            } else if (shareTransferId && desiredFundId) {
+              destination = `Accounts?loc=history&client=${desiredClient}&id=${shareTransferId}&type=share-transfers&fundId=${desiredFundId}`
             } else {
               destination = `TicketsAdministration`
             }
@@ -118,6 +121,8 @@ const ContainerLogin = () => {
             destination = `Accounts?loc=${desiredLocation}&id=${desiredId}&type=${desiredType}&client=${desiredClient}${desiredFundId ? `&fundId=${desiredFundId}` : ""}`
           } else if (transferId) {
             destination = `Accounts?loc=history&client=${desiredClient}&id=${transferId}&type=transfers`
+          } else if (shareTransferId) {
+            destination = `Accounts?loc=history&client=${desiredClient}&id=${shareTransferId}&type=share-transfers`
           } else {
             destination = `Accounts`
           }

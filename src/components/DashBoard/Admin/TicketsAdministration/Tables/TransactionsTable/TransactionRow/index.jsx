@@ -122,21 +122,27 @@ const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData })
     const clientNote = Transaction?.notes?.find(note => note.noteType === "CLIENT_NOTE")
     const denialMotive = Transaction?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
     const adminNote = Transaction?.notes?.find(note => note.noteType === "ADMIN_NOTE")
+    const isTransfer = Transaction.receiverId || Transaction.senderId
     return (
         <>
             <div className='mobileMovement'>
                 <div className='d-flex py-1 align-items-center flex-wrap' >
                     <span className="h5 mb-0 me-1 me-md-2">{t("Transaction")}&nbsp;#{Transaction.id}</span>
                     <div className='me-auto px-1 px-md-2' style={{ borderLeft: "1px solid lightgray", borderRight: "1px solid lightgray" }}>
-                        <span className="d-none d-md-inline">{t("Client")}:&nbsp;</span>
                         {
-                            UserTicketInfo.fetching ?
-                                <Spinner animation="border" size="sm" />
-                                :
-                                UserTicketInfo.valid ?
-                                    UserTicketInfo.value.alias
-                                    :
-                                    t("Undefined Client")
+                            UserTicketInfo.value.alias &&
+                            <>
+                                <span className="d-none d-md-inline">{t("Client")}:&nbsp;</span>
+                                {
+                                    UserTicketInfo.fetching ?
+                                        <Spinner animation="border" size="sm" />
+                                        :
+                                        UserTicketInfo.valid ?
+                                            UserTicketInfo.value.alias
+                                            :
+                                            t("Undefined Client")
+                                }
+                            </>
                         }
                     </div>
                     {
@@ -150,7 +156,25 @@ const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData })
                             </div>
                         </div>
                     }
+                    {
+                        !!(Transaction.stateId === 2 && !Transaction.reverted && moment().diff(moment(Transaction.createdAt), 'days') < 30) &&
+                        <div className="h-100 d-flex align-items-center justify-content-around Actions">
+                            <div className="iconContainer red me-1">
+                                <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => { launchModalConfirmation("revert") }} />
+                            </div>
+
+                        </div>
+                    }
+                    {
+                        (Transaction.reverted && transferNote?.text !== "Transferencia revertida") &&
+                        <Badge className='ms-1 ms-md-2' bg="danger">{t("Reverted")}</Badge>
+                    }
+                     {
+                        (Transaction.reverted && transferNote?.text === "Transferencia revertida") &&
+                        <Badge className='ms-1 ms-md-2' bg="info">{t("Reversion")}</Badge>
+                    }
                     <Badge className='ms-1 ms-md-2' bg={status()?.bg}>{t(status().text)}</Badge>
+                    
                     {
                         !!(Transaction?.userEmail || Transaction?.userName) &&
                         <div>
@@ -198,18 +222,24 @@ const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData })
                     <span >
                         {t("Concept")}:&nbsp;
                         {
-
                             FundTicketInfo.fetching ?
                                 <Spinner animation="border" size="sm" />
                                 :
-                                t(Math.sign(Transaction.shares) === -1 ? "STAKE_SELL" : "STAKE_BUY",
-                                    {
-                                        fund: FundTicketInfo.valid ?
-                                            FundTicketInfo.value.name
-                                            :
-                                            t("Undefined Fund")
-                                    }
-                                )
+                                isTransfer ?
+                                    t("Share transfer from {{senderAlias}} to {{receiverAlias}}",
+                                        {
+                                            senderAlias: Transaction.senderAlias,
+                                            receiverAlias: Transaction.receiverAlias
+                                        })
+                                    :
+                                    (t(Math.sign(Transaction.shares) === -1 ? "STAKE_SELL" : "STAKE_BUY",
+                                        {
+                                            fund: FundTicketInfo.valid ?
+                                                FundTicketInfo.value.name
+                                                :
+                                                t("Undefined Fund")
+                                        }
+                                    ))
                         }
                     </span>
                 </div >
@@ -252,10 +282,11 @@ const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData })
                 <Notes transferNote={transferNote} clientNote={clientNote} denialMotive={denialMotive} adminNote={adminNote} />
             </div >
             {
-                Transaction.stateId === 1 ?
+                !!(Transaction.stateId === 1) || !!(Transaction.stateId === 2 && !Transaction.reverted && moment().diff(moment(Transaction.createdAt), 'days') < 30) ?
                     <ActionConfirmationModal reloadData={reloadData} transaction={Transaction} setShowModal={setShowModal} action={Action} show={ShowModal} />
                     :
-                    null}
+                    null
+            }
         </>
     )
 }

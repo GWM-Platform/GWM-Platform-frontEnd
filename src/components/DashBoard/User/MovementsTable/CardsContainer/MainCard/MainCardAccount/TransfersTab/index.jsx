@@ -137,7 +137,7 @@ const TransfersTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
                             :
                             Transfers.total > 0 ?
                                 <TableLastTransfers
-                                    movements={Pagination.take}
+                                    movements={Pagination.take < Transfers.total ? Pagination.take : Transfers.total}
                                     content={Transfers.transfers} 
                                     getTransfers={getTransfers}/>
                                 :

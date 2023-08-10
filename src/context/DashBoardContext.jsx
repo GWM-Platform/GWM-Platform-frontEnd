@@ -24,6 +24,9 @@ const reducerDashboardToast = (state, action) => {
                 aux[index] = { ...aux[index], Show: false }
             }
             return aux;
+        case 'reset':
+            aux = []
+            return aux
         default:
             throw new Error();
     }
@@ -480,7 +483,7 @@ export const DashBoardProvider = ({ children }) => {
 
         const manageUrlUser = () => {
             const validRedirectedSections = ["history"]
-            const validTypes = ["m", "t", "transfers"]
+            const validTypes = ["m", "t", "transfers", "share-transfers"]
             if (desiredLocation && desiredId && desiredType && desiredClient) {
                 if (validRedirectedSections.includes(desiredLocation) && validTypes.includes(desiredType)) {
                     let destination = ""
@@ -492,6 +495,13 @@ export const DashBoardProvider = ({ children }) => {
                             destination = `/DashBoard/${desiredLocation}?loc=${desiredLocation}&id=${desiredId}&client=${desiredClient}&type=${desiredType}`
                             break;
                         case "t":
+                            if (desiredFundId) {
+                                destination = `/DashBoard/${desiredLocation}?loc=${desiredLocation}&id=${desiredId}&client=${desiredClient}&fundId=${desiredFundId}&type=${desiredType}`
+                            } else {
+                                destination = "/DashBoard/Accounts"
+                            }
+                            break;
+                        case "share-transfers":
                             if (desiredFundId) {
                                 destination = `/DashBoard/${desiredLocation}?loc=${desiredLocation}&id=${desiredId}&client=${desiredClient}&fundId=${desiredFundId}&type=${desiredType}`
                             } else {
@@ -598,6 +608,7 @@ export const DashBoardProvider = ({ children }) => {
             setClientPermissions((prevState) => ({ ...prevState, fetching: true, fetched: false, content: [] }))
             clearInterval(intervalId) // Cancelamos la ejecución automática al desmontar el componente
             dispatch(notificationsReset())
+            DashboardToastDispatch({ type: "reset" });
         }
         //  eslint-disable-next-line
     }, [ClientSelected])
@@ -621,6 +632,15 @@ export const DashBoardProvider = ({ children }) => {
     const hasBuyPermission = (fundId = -1) =>
         ClientPermissions?.content?.permissions?.map(permission => permission.action.split('_'))
             ?.filter(actionSplitted => actionSplitted?.includes('BUY') && actionSplitted?.includes('STAKES')) // Get all sell_stakes permissions
+            ?.filter(sellPermission => sellPermission?.includes("" + fundId))?.length > 0 ||// Verify that has a sell permission for the fund from parameter
+        isOwner()
+
+    const hasAnyTransferFundPermission = () => ClientPermissions?.content?.permissions?.map(permission => permission.action.split('_'))
+        ?.filter(actionSplitted => actionSplitted?.includes('TRANSFER') && actionSplitted?.includes('SHARE')).length > 0 || isOwner()
+
+    const hasFundTransferPermission = (fundId = -1) =>
+        ClientPermissions?.content?.permissions?.map(permission => permission.action.split('_'))
+            ?.filter(actionSplitted => actionSplitted?.includes('TRANSFER') && actionSplitted?.includes('SHARE')) // Get all sell_stakes permissions
             ?.filter(sellPermission => sellPermission?.includes("" + fundId))?.length > 0 ||// Verify that has a sell permission for the fund from parameter
         isOwner()
 
@@ -659,7 +679,8 @@ export const DashBoardProvider = ({ children }) => {
             token, admin, UserClients, ClientSelected, IndexClientSelected, setIndexClientSelected, balanceChanged, setBalanceChanged, TransactionStates, getMoveStateById,
             FetchingFunds, contentReady, PendingWithoutpossession, PendingTransactions, Accounts, Funds, itemSelected, setItemSelected, isMobile, width, toLogin, setContentReady,
             DashboardToast, DashboardToastDispatch, AccountSelected, setAccountSelected, Balance, allowedSymbols,
-            couldSign, ClientPermissions, hasPermission, hasSellPermission, hasBuyPermission, hasViewPermission, setClientPermissions, hasAnySellPermission, hasAnyBuyPermission
+            couldSign, ClientPermissions, hasPermission, hasSellPermission, hasBuyPermission, hasViewPermission, setClientPermissions, hasAnySellPermission, hasAnyBuyPermission,
+            hasAnyTransferFundPermission, hasFundTransferPermission
         }}>
         {children}
     </DashBoardContext.Provider>

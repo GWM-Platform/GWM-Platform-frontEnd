@@ -15,9 +15,23 @@ import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import { useEffect } from 'react';
 import { fetchPerformance, selectPerformanceById } from 'Slices/DashboardUtilities/performancesSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import TransfersTab from './TransfersTab';
+import { useHistory, useLocation } from 'react-router-dom/cjs/react-router-dom.min';
 
 const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
-    const [SelectedTab, setSelectedTab] = useState("0")
+    const location = useLocation();
+    const history = useHistory()
+
+    function useQuery() {
+        const { search } = useLocation();
+
+        return React.useMemo(() => new URLSearchParams(search), [search]);
+    }
+
+    const desiredType = useQuery().get("type")
+    const desiredFundId = useQuery().get("fundId")
+
+    const [SelectedTab, setSelectedTab] = useState(desiredType ? "2" : "0")
     const { PendingTransactions, ClientSelected } = useContext(DashBoardContext)
     const { t } = useTranslation();
 
@@ -33,6 +47,28 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
             clientId: ClientSelected?.id
         }))
     }, [Fund, ClientSelected, dispatch])
+
+    useEffect(() => {
+        const resetQueryParams = () => {
+            const queryParams = new URLSearchParams(location.search);
+            queryParams.delete("type");
+            queryParams.delete("loc");
+            queryParams.delete("id");
+            queryParams.delete("client");
+            queryParams.delete("fundId");
+            const queryString = `?${queryParams.toString()}`;
+            history.replace({ pathname: location.pathname, search: queryString });
+        }
+        if (desiredFundId !== (Fund.fund.id + "")) {
+            resetQueryParams()
+        } else {
+            return () => {
+                resetQueryParams()
+            }
+        }
+        //eslint-disable-next-line
+    }, [Fund])
+
 
     return (
         <div className="movementsMainCardFund growAnimation mt-2">
@@ -64,7 +100,7 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
                     <Col className="d-flex justify-content-between pe-5" sm="auto">
                         <Col className="pe-2">
                             <div className="containerHideInfo px-2 description" style={{ lineHeight: "1em" }}>
-                                <span>{t("Balance (U$S)")}:&nbsp;</span>
+                                <span>{t("Balance (U$D)")}:&nbsp;</span>
                                 <span style={{ fontWeight: "bolder" }}>
                                     <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={balanceInCash.toFixed(2)} prefix="" fixedDecimals={2} />
                                     <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={balanceInCash.toFixed(2)} prefix="" fixedDecimals={2} />
@@ -130,9 +166,14 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
                     <Nav.Item>
                         <Nav.Link eventKey={"0"}>{t("Transactions")}</Nav.Link>
                     </Nav.Item>
-                    {/*<Nav.Item>
-                                <Nav.Link eventKey={"1"}>{t("Investment Evolution")}</Nav.Link>
-                            </Nav.Item>*/}
+                    {/*
+                        <Nav.Item>
+                            <Nav.Link eventKey={"1"}>{t("Investment Evolution")}</Nav.Link>
+                        </Nav.Item>
+                    */}
+                    <Nav.Item>
+                        <Nav.Link eventKey={"2"}>{t("Transfers")}</Nav.Link>
+                    </Nav.Item>
                 </Nav>
             </Container>
             {/*tabs content */}
@@ -144,7 +185,10 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
                                 Fund={Fund} SearchById={SearchById} setSearchById={setSearchById}
                                 resetSearchById={resetSearchById} handleMovementSearchChange={handleMovementSearchChange} />,
                         1:
-                            <FundDetail NavInfoToggled={NavInfoToggled} />
+                            <FundDetail NavInfoToggled={NavInfoToggled} />,
+                        2:
+                            <TransfersTab SearchById={SearchById} setSearchById={setSearchById} Fund={Fund}
+                                resetSearchById={resetSearchById} handleMovementSearchChange={handleMovementSearchChange} />
                     }[SelectedTab]
                 }
             </Container>

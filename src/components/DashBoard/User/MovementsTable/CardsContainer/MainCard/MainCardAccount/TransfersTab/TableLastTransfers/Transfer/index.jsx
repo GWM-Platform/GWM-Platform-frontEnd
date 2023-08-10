@@ -16,7 +16,7 @@ const Transfer = ({ content, actions, getTransfers }) => {
 
   var momentDate = moment(content.createdAt);
   const { t } = useTranslation();
-  const { getMoveStateById, Accounts, AccountSelected, hasPermission } = useContext(DashBoardContext)
+  const { getMoveStateById, AccountSelected, hasPermission } = useContext(DashBoardContext)
 
   const [ShowModal, setShowModal] = useState(false)
   const [Action, setAction] = useState("approve")
@@ -26,7 +26,7 @@ const Transfer = ({ content, actions, getTransfers }) => {
     setShowModal(true)
   }
 
-  const incomingTransfer = () => content.receiverId === Accounts[0]?.id
+  const incomingTransfer = () => content.receiverId === AccountSelected?.id
 
   const [GeneratingPDF, setGeneratingPDF] = useState(false)
 
@@ -64,7 +64,7 @@ const Transfer = ({ content, actions, getTransfers }) => {
         {content.id}
         {
           GeneratingPDF ?
-            <Spinner animation="border" size="sm" />
+            <Spinner className='mx-1' animation="border" size="sm" />
             :
             <button className='noStyle py-0' style={{ cursor: "pointer" }} onClick={() => renderAndDownloadPDF()}>
               <FontAwesomeIcon icon={faFilePdf} />
@@ -117,8 +117,8 @@ const Transfer = ({ content, actions, getTransfers }) => {
         {t(incomingTransfer() ? "Received from account" : "Sent to account")}{t("")}{" \""}{incomingTransfer() ? content.senderAlias : content.receiverAlias}{"\""}
         {(content.reverted && transferNote?.text === "Transferencia revertida") ? <>, {t("reversion")}</> : ""}
       </td>
-      <td className={`tableAmount ${content.receiverId === Accounts[0]?.id ? 'text-green' : 'text-red'}`}>
-        <span>{content.receiverId === Accounts[0]?.id ? '+' : '-'}</span>
+      <td className={`tableAmount ${content.receiverId === AccountSelected?.id ? 'text-green' : 'text-red'}`}>
+        <span>{content.receiverId === AccountSelected?.id ? '+' : '-'}</span>
         <FormattedNumber value={Math.abs(content.amount)} prefix="U$D " fixedDecimals={2} />
       </td>
       {

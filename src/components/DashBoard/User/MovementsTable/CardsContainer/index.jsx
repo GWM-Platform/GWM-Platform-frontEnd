@@ -26,7 +26,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
         return React.useMemo(() => new URLSearchParams(search), [search]);
     }
 
-    const { PendingWithoutpossession, hasPermission } = useContext(DashBoardContext)
+    const { PendingWithoutpossession, hasPermission, AccountSelected } = useContext(DashBoardContext)
 
     const FundsWithPending = [...Funds, ...PendingWithoutpossession]
 
@@ -38,15 +38,18 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
     const desiredId = useQuery().get("id")
     const desiredType = useQuery().get("type")
     const desiredFundId = useQuery().get("fundId")
-    const validTypes = ["m", "t", "transfers"]
+    const validTypes = ["m", "t", "transfers", "share-transfers"]
 
     const [categorySelected, setCategorySelected] = useState(
         desiredType ?
             validTypes.includes(desiredType) ?
-                desiredType === "t" ?
+                desiredType === "share-transfers" ?
                     Funds.length > 0 ? 1 : 0
                     :
-                    desiredType === "m" || desiredType === "transfers" ? 0 : 0
+                    desiredType === "t" ?
+                        Funds.length > 0 ? 1 : 0
+                        :
+                        desiredType === "m" || desiredType === "transfers" ? 0 : 0
                 :
                 Accounts.length > 0 && hasPermission('VIEW_ACCOUNT') ? 0 : Funds.length > 0 ? 1 : 0
             :
@@ -62,6 +65,12 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
             if (validTypes.includes(desiredType)) {
                 switch (desiredType) {
                     case "t":
+                        if (desiredFundId) {
+                            return getFundIndexById(desiredFundId).found
+                        } else {
+                            return false
+                        }
+                    case "share-transfers":
                         if (desiredFundId) {
                             return getFundIndexById(desiredFundId).found
                         } else {
@@ -95,7 +104,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
     const handleMovementSearchChange = (event) => {
         setSearchById((prevState) => ({ ...prevState, value: event.target.value }))
     }
-    
+
     return (
         <Row className="HistoryCardsContainer d-flex align-items-stretch flex-md-nowrap ">
             {isMobile ?
@@ -229,7 +238,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
                     <Col className="px-2 pb-2 growAnimation" xs="12" xl="12" >
                         {Accounts.length === 1 ?
                             <MainCardAccount
-                                Fund={Accounts[0]}
+                                Fund={AccountSelected}
                                 Hide={Hide} setHide={setHide}
 
                                 SearchById={SearchById}

@@ -70,6 +70,15 @@ const Notification = ({ notification, fromPopup = true }) => {
         });
     }
 
+    const goToShareTransfer = (id) => {
+        axios.get(`/share-transfers/${id}`).then((response) => {
+            redirect(`/DashBoard/history?id=${id}&type=share-transfers&fundId=${response.data.fundId}`)
+            ApiMarkAsRead(false);
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
     const notificationMenu = (
         <Popover className="notification-options" id={`notification-options-${notification.id}`}>
             <Popover.Body ref={ref} className="p-0" >
@@ -83,10 +92,16 @@ const Notification = ({ notification, fromPopup = true }) => {
                                 <Dropdown.Item onClick={() => { ApiMarkAsRead(false); redirect(`/DashBoard/history?id=${notification?.movement?.transferId}&type=transfers&SelectedTab=Transfers`) }}>
                                     {t('Go to transfer')}
                                 </Dropdown.Item>
+
                                 :
-                                <Dropdown.Item onClick={() => { ApiMarkAsRead(false); redirect(`/DashBoard/history?id=${notification?.movementId}&type=m`) }}>
-                                    {t('Go to movement')}
-                                </Dropdown.Item>
+                                notification.movement.shareTransferId ?
+                                    <Dropdown.Item onClick={() => { goToShareTransfer(notification.movement.shareTransferId) }}>
+                                        {t('Go to transfer')}
+                                    </Dropdown.Item>
+                                    :
+                                    <Dropdown.Item onClick={() => { ApiMarkAsRead(false); redirect(`/DashBoard/history?id=${notification?.movementId}&type=m`) }}>
+                                        {t('Go to movement')}
+                                    </Dropdown.Item>
                         )
                     }
                     {

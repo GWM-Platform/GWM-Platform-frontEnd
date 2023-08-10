@@ -26,7 +26,7 @@ const TransactionsTable = ({ Transactions, movements, UsersInfo, AccountInfo }) 
                         <th className="tableHeader">{t("Client")}</th>
                         <th className="d-none d-sm-table-cell">{t("Concept")}</th>
                         <th className="d-none d-sm-table-cell">{t("State")}</th>
-                        <th className="tableDescription d-none d-sm-table-cell">{t("Share value")}</th>
+                        <th className="tableDescription d-none d-sm-table-cell">{t("Share price")}</th>
                         <th className="tableAmount">{t("Amount")}</th>
                     </tr>
                 </thead>

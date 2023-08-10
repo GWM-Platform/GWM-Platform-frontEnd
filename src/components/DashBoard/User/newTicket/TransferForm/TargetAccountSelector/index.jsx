@@ -184,7 +184,8 @@ const TargetAccountSelector = ({ data, setData, TargetAccount, setTargetAccount,
         return () => {
             controller.abort();
         };
-    }, [AccountSelected.id, toLogin, accountAlias])
+        //eslint-disable-next-line
+    }, [AccountSelected.id, accountAlias])
 
     useEffect(() => {
         let timer = null;
@@ -208,7 +209,7 @@ const TargetAccountSelector = ({ data, setData, TargetAccount, setTargetAccount,
                             <span>
                                 <span className="d-inline-block numberContainer">
                                     <div className="d-flex justify-content-center align-items-center h-100 w-100">
-                                        <span className="number">1</span>
+                                        <span className="number">2</span>
                                     </div>
                                 </span>
                                 {t("To transfer to")}:
@@ -272,23 +273,21 @@ const TargetAccountSelector = ({ data, setData, TargetAccount, setTargetAccount,
 
                 <div className="mb-3">
                     {
-                        TargetAccount.fetched ?
-                            <Form.Text className={!TargetAccount.valid ? "text-red" : "text-green"}>
-                                {
-                                    TargetAccount.valid ?
+                        <Form.Text className={!TargetAccount.valid ? TargetAccount.fetching ? "" : "text-red" : "text-green"}>
+                            {
+                                TargetAccount.fetched ?
+                                    (TargetAccount.valid ?
                                         t("Looks good") + "!"
                                         :
                                         data.alias === accountAlias ?
                                             t("The target account cannot be your own account")
                                             :
                                             t("The alias entered does not correspond to any GWM account")
-                                }
-                            </Form.Text>
-                            :
-                            TargetAccount.fetching ?
-                                t("Verifying alias")
-                                :
-                                null
+                                    )
+                                    :
+                                    TargetAccount.fetching && t("Verifying alias")
+                            }
+                        </Form.Text>
                     }
                 </div>
             </Accordion.Body>

@@ -13,7 +13,7 @@ import Loading from 'components/DashBoard/GeneralUse/Loading';
 import PaginationController from 'components/DashBoard/GeneralUse/PaginationController';
 import FilterOptions from './FilterOptions';
 
-const TransactionFundTable = ({ ClientId, FundId }) => {
+const TransactionFundTable = ({ AccountId, ClientId, FundId }) => {
 
     const { toLogin } = useContext(DashBoardContext)
 
@@ -96,7 +96,7 @@ const TransactionFundTable = ({ ClientId, FundId }) => {
                             :
                             Decimal(Transactions.content.transactions.length).gt(0) ?
                                 <>
-                                    <div style={{ minHeight: `calc( ( 0.5rem * 2 + 25.5px ) * ${Pagination.take + 1} )` }} className={`tableMovements`}>
+                                    <div style={{ minHeight: `calc( ( 0.5rem * 2 + 25.5px ) * ${(Pagination.take < Transactions.content.total ? Pagination.take : Transactions.content.total) + 1} )` }} className={`tableMovements`}>
                                         <Table className="ClientsTable mb-0" striped bordered hover>
                                             <thead className="verticalTop tableHeader solid-bg">
                                                 <tr>
@@ -110,7 +110,7 @@ const TransactionFundTable = ({ ClientId, FundId }) => {
                                             </thead>
                                             <tbody>
                                                 {
-                                                    Transactions.content.transactions.map((transaction, key) => <TransactionRow key={`account-transaction-${key}`} transaction={transaction} />)
+                                                    Transactions.content.transactions.map((transaction, key) => <TransactionRow AccountId={AccountId} key={`account-transaction-${key}`} transaction={transaction} />)
                                                 }
                                             </tbody>
                                         </Table>

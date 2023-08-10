@@ -10,7 +10,7 @@ import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
-const TransactionRow = ({ transaction }) => {
+const TransactionRow = ({ transaction, AccountId }) => {
 
   const { getMoveStateById } = useContext(DashBoardContext)
 
@@ -28,13 +28,16 @@ const TransactionRow = ({ transaction }) => {
 
   const denialMotive = transaction?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
   const adminNote = transaction?.notes?.find(note => note.noteType === "ADMIN_NOTE")
+  const incomingTransfer = () => transaction.receiverId === AccountId
+  const isTransfer = transaction.receiverId || transaction.senderId
+  const transferNote = transaction?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")
 
   return (
     <tr>
       <td className="tableId text-nowrap">
         {transaction.id}
         {
-          (!!(transaction?.userEmail) || !!(transaction?.userName) || !!(denialMotive) || !!(adminNote)) &&
+          (!!(transaction?.userEmail) || !!(transaction?.userName) || !!(denialMotive) || !!(adminNote) || !!(transferNote)) &&
           <OverlayTrigger
             show={showClick || showHover}
             placement="right"
@@ -69,6 +72,12 @@ const TransactionRow = ({ transaction }) => {
                     <span className="text-nowrap">"{adminNote.text}"</span>
                   </div>
                 }
+                {!!(transferNote) &&
+                  <div>
+                    {t('Transfer note')}:<br />
+                    <span className="text-nowrap">"{transferNote.text}"</span>
+                  </div>
+                }
               </Tooltip>
             }
           >
@@ -84,11 +93,35 @@ const TransactionRow = ({ transaction }) => {
         }
       </td>
       <td className="tableDate">{momentDate.format('L')}</td>
-      <td className={`tableConcept ${transaction.stateId === 3 ? 'text-red' : 'text-green'}`}>{t(getMoveStateById(transaction.stateId).name)}</td>
-      <td className={`tableConcept ${Math.sign(transaction.shares) === 1 ? 'text-green' : 'text-red'}`}>
-        <span>{Math.sign(transaction.shares) === 1 ? t('Purchase of') : t('Sale of')}{" "}</span>
+      <td className={`tableConcept ${transaction.stateId === 3 ? 'text-red' : 'text-green'}`}>
+        {t(getMoveStateById(transaction.stateId).name)}
+        {(transaction?.reverted && transferNote?.text !== "Transferencia revertida") ? <>, {t("reverted")}</> : ""}
+      </td>
+      <td className={`tableConcept ${isTransfer ? (incomingTransfer() ? 'text-green' : 'text-red') : (Math.sign(transaction.shares) === 1 ? 'text-green' : 'text-red')}`}>
+
+        {
+          isTransfer ?
+            t(
+              incomingTransfer() ?
+                "Transfer from {{transferSender}}"
+                :
+                "Transfer to {{transferReceiver}}",
+              {
+                transferReceiver: transaction.receiverAlias,
+                transferSender: transaction.senderAlias
+              }
+            )
+            :
+            <>
+              <span>{Math.sign(transaction.shares) === 1 ? t('Purchase') : t('Sale')}</span>
+
+            </>
+        }
+        ,&nbsp;
         <FormattedNumber value={Math.abs(transaction.shares)} fixedDecimals={2} />&nbsp;
-        {t(Math.abs(transaction.shares) === 1 ? "share" : "shares")}</td>
+        {t(Math.abs(transaction.shares) === 1 ? "share" : "shares")}
+        {(transaction?.reverted && transferNote?.text === "Transferencia revertida") ? <>, {t("reversion")}</> : ""}
+      </td>
       <td className="tableDescription d-none d-sm-table-cell ">
         <FormattedNumber prefix="U$D " value={transaction.sharePrice} fixedDecimals={2} />
       </td>

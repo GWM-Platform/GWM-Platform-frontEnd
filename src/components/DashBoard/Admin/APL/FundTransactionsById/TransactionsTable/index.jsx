@@ -17,7 +17,7 @@ const TransactionsTable = ({ Transactions, movements, UsersInfo, AccountInfo }) 
     }
 
     return (
-        <div className="mt-2" style={{ minHeight: `calc( ( 0.5rem * 2 + 25px ) * ${movements + 1} )` }}>
+        <div className="mt-2 overflow-auto" style={{ minHeight: `calc( ( 0.5rem * 2 + 25px ) * ${movements + 1} )` }}>
             <Table
                 id="tabletransactions" striped bordered hover className="mb-auto m-0" >
                 <thead >
@@ -26,7 +26,7 @@ const TransactionsTable = ({ Transactions, movements, UsersInfo, AccountInfo }) 
                         <th className="tableHeader">{t("Client")}</th>
                         <th className="d-none d-sm-table-cell">{t("Concept")}</th>
                         <th className="d-none d-sm-table-cell">{t("State")}</th>
-                        <th className="tableDescription d-none d-sm-table-cell">{t("Share value")}</th>
+                        <th className="tableDescription d-none d-sm-table-cell text-nowrap">{t("Share price")}</th>
                         <th className="tableAmount">{t("Amount")}</th>
                     </tr>
                 </thead>

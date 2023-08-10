@@ -139,7 +139,7 @@ const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
                             :
                             Movements.total > 0 ?
                                 <TableLastMovements
-                                    movements={Pagination.take}
+                                    movements={Pagination.take < Movements.total ? Pagination.take : Movements.total}
                                     content={Movements.movements} 
                                     reloadData={getMovements}
                                     />

@@ -8,7 +8,7 @@ import { useContext } from 'react';
 import { DashBoardContext } from 'context/DashBoardContext';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
-const ActionConfirmationModal = ({ TargetAccount, setShowModal, show, action, data, Balance, Transfer }) => {
+const ActionConfirmationModal = ({ TargetAccount, setShowModal, show, action, data, Balance, Transfer, share_transfer, fund_selected }) => {
 
     const { t } = useTranslation();
 
@@ -33,13 +33,21 @@ const ActionConfirmationModal = ({ TargetAccount, setShowModal, show, action, da
                             {t("Transfer from")}:&nbsp;
                             <span className="emphasis">{accountAlias}</span>
                         </li>
+                        {
+                            share_transfer &&
+                            <li className="listedInfo">
+                                {t("Fund")}:&nbsp;
+                                <span className="emphasis">{fund_selected?.fund?.name}</span>
+                            </li>
+                        }
                         <li className="listedInfo">
                             {t("Transfer to")}:&nbsp;
                             <span className="emphasis">{TargetAccount?.content?.alias}</span>
                         </li>
                         <li className="listedInfo">
                             {t("Transfer amount")}:&nbsp;
-                            <FormattedNumber className="emphasis" prefix="U$D " value={data.amount.toString()} fixedDecimals={2} />
+                            <FormattedNumber className="emphasis" prefix={share_transfer ? "" : "U$D "} value={data.amount.toString()} fixedDecimals={2} />
+                            {share_transfer && <span className='emphasis'>&nbsp;{data.amount === 1 || data.amount === "1" ? t("share") : t("shares")}</span>}
                         </li>
                         {
                             data.note !== "" &&

@@ -17,7 +17,7 @@ import './index.scss'
 import NotificationsCenter from './NotificationsCenter';
 
 const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
-    const { admin, IndexClientSelected, UserClients, itemSelected, hasPermission, hasAnySellPermission, hasAnyBuyPermission } = useContext(DashBoardContext)
+    const { admin, IndexClientSelected, UserClients, itemSelected, hasPermission, hasAnySellPermission, hasAnyBuyPermission, hasAnyTransferFundPermission } = useContext(DashBoardContext)
     const itemSelectedLC = itemSelected.toLowerCase()
     const { t } = useTranslation();
 
@@ -157,7 +157,7 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                             <NavDropdown.Item
                                                 active={itemSelectedLC === "transfer"}
                                                 onClick={() => { goTo("Transfer") }}
-                                                disabled={!hasPermission('TRANSFER_GENERATE') || !hasPermission('VIEW_ACCOUNT')}>
+                                                disabled={(!hasAnyTransferFundPermission()) && (!hasPermission('TRANSFER_GENERATE') || !hasPermission('VIEW_ACCOUNT'))}>
                                                 {t("to Transfer")}
                                             </NavDropdown.Item>
                                             <NavDropdown.Item
@@ -184,9 +184,9 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                 <LanguageSelector />
                             </div>
 
-                            <NotificationsCenter  active={itemSelectedLC === "notificationscenter"}/>
+                            <NotificationsCenter active={itemSelectedLC === "notificationscenter"} />
 
-                            <NavLink  className="d-block d-sm-none d-md-block nav-link" to="/Dashboard/Configuration?section=Password+and+authentication" activeClassName="active">
+                            <NavLink className="d-block d-sm-none d-md-block nav-link" to="/Dashboard/Configuration?section=Password+and+authentication" activeClassName="active">
                                 <FontAwesomeIcon icon={faCog} />
                             </NavLink>
 
@@ -342,7 +342,7 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                                 className="p-2"
                                                 active={itemSelectedLC === "transfer"}
                                                 onClick={() => { goTo("Transfer") }}
-                                                disabled={!hasPermission('TRANSFER_GENERATE') || !hasPermission('VIEW_ACCOUNT')}>
+                                                disabled={(!hasAnyTransferFundPermission()) && (!hasPermission('TRANSFER_GENERATE') || !hasPermission('VIEW_ACCOUNT'))}>
                                                 {t("to Transfer")}
                                             </NavDropdown.Item>
                                         </Popover.Body>

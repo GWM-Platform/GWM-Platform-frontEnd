@@ -276,7 +276,7 @@
     "Available": "Available",
     "in total": "in total",
     "Balance (shares)": "Balance (shares)",
-    "Balance (U$S)": "Balance (U$S)",
+    "Balance (U$D)": "Balance (U$D)",
     "Pending transactions (shares)": "Pending transactions (shares)",
     "Status": "Status",
     "Performance": "Performance",
@@ -448,6 +448,8 @@
     "The target account cannot be your own account": "The target account cannot be your own account",
     "Outgoing transfer": "Outgoing transfer",
     "Incoming transfer": "Incoming transfer",
+    "Outgoing share transfer": "Outgoing share transfer",
+    "Incoming share transfer": "Incoming share transfer",
     "Your account balance": "Your account balance",
     "Your account balance if you approve this transfer": "Your account balance if you approve this transfer",
     "transactions": "transactions",
@@ -782,6 +784,8 @@
     "TRANSFER_RECEIVED": "You have received a transfer",
     "DEPOSIT_PERFORMED": "Your deposit has been accredited",
     "TRANSFER_PENDING": "There is a transfer waiting to be accepted",
+    "TRANSFER_RECEIVED": "Transfer received",
     "ALIAS_UPDATED": "The alias of your account has been updated",
-    "Current_accounts": "Accounts"
+    "Current_accounts": "Accounts",
+    "_at":"at"
 }

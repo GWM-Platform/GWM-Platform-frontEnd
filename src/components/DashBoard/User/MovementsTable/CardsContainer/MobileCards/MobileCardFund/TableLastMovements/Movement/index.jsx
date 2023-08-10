@@ -10,8 +10,15 @@ import { faFilePdf } from '@fortawesome/free-regular-svg-icons';
 import ReactPDF from '@react-pdf/renderer';
 import TransactionReceipt from 'Receipts/TransactionReceipt';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import ShareTransferReceipt from 'Receipts/ShareTransferReceipt';
 
-const Movement = ({ content }) => {
+const Movement = ({ content, fundName = "" }) => {
+
+  const denialMotive = content?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
+  const incomingTransfer = () => content.receiverId === AccountSelected?.id
+  const isTransfer = content.receiverId || content.senderId
+  const transferNote = content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")
+
   var momentDate = moment(content.createdAt);
   const { t } = useTranslation();
   const { getMoveStateById, AccountSelected } = useContext(DashBoardContext)
@@ -20,16 +27,29 @@ const Movement = ({ content }) => {
 
   const renderAndDownloadPDF = async () => {
     setGeneratingPDF(true)
-    const blob = await ReactPDF.pdf(<TransactionReceipt Transaction={{
-      ...content, ...{
-        state: t(getMoveStateById(content.stateId).name),
-        accountAlias: AccountSelected.alias
-      }
-    }} />).toBlob()
+    const blob = await ReactPDF.pdf(
+      isTransfer ?
+        <ShareTransferReceipt Transfer={{
+          ...content, ...{
+            state: t(getMoveStateById(content.stateId).name),
+            accountAlias: AccountSelected.alias,
+            incomingTransfer: incomingTransfer(),
+            AccountId: AccountSelected.id,
+            fundName: fundName
+          }
+        }} />
+        :
+        <TransactionReceipt Transaction={{
+          ...content, ...{
+            state: t(getMoveStateById(content.stateId).name),
+            accountAlias: AccountSelected.alias,
+            fundName: fundName
+          }
+        }} />).toBlob()
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
-    link.setAttribute('download', `${AccountSelected.alias} - ${t("Transaction")} #${content.id}.pdf`)
+    link.setAttribute('download', `${AccountSelected.alias} - ${t(isTransfer ? "Share transfer" : "Transaction")} #${content.id}.pdf`)
     // 3. Append to html page
     document.body.appendChild(link)
     // 4. Force download
@@ -43,20 +63,35 @@ const Movement = ({ content }) => {
   const [showHover, setShowHover] = useState(false)
 
 
-
-  const denialMotive = content?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
-
-
-
   return (
     <div className='mobileMovement'>
       <div className='d-flex justify-content-between'>
-        <span >{Math.sign(content.shares) === 1 ? t('Purchase of') : t('Sale of')}&nbsp;
-          <FormattedNumber style={{ fontWeight: "bolder" }} value={Math.abs(content.shares)} prefix="" fixedDecimals={2} />&nbsp;
-          {t(Math.abs(content.shares) === 1 ? "share" : "shares")}, <FormattedNumber style={{ fontWeight: "bolder" }} value={content.sharePrice} prefix="U$D " fixedDecimals={2} />
-          {t(" each")}</span>
+        <span >
+          {
+            isTransfer ?
+              <>
+                {t(
+                  incomingTransfer() ?
+                    "Transfer from {{transferSender}}"
+                    :
+                    "Transfer to {{transferReceiver}}",
+                  {
+                    transferReceiver: content.receiverAlias,
+                    transferSender: content.senderAlias
+                  }
+                )}{(content?.reverted && transferNote?.text === "Transferencia revertida") ? <>, {t("reversion")}</> : ""},
+              </>
+              :
+              <>
+                <span>{Math.sign(content.shares) === 1 ? t('Purchase of') : t('Sale of')}</span>
+              </>
+          }
+          &nbsp;
+          <FormattedNumber className="text-nowrap" value={Math.abs(content.shares)} fixedDecimals={2} />&nbsp;
+          {t(Math.abs(content.shares) === 1 ? "share" : "shares")}, <FormattedNumber className="text-nowrap" style={{ fontWeight: "bolder" }} value={content.sharePrice} prefix="U$D " fixedDecimals={2} />
+          {t(" each")}
+        </span>
         <span className="text-nowrap" >{momentDate.format('L')}</span>
-
       </div>
 
       <button disabled={GeneratingPDF} className="noStyle px-0" style={{ cursor: "pointer" }} onClick={() => renderAndDownloadPDF()}>
@@ -74,7 +109,7 @@ const Movement = ({ content }) => {
       </button>
 
       {
-        !!(content?.userEmail || content?.userName || !!(denialMotive)) &&
+        !!(content?.userEmail || content?.userName || !!(denialMotive) || !!(transferNote)) &&
         <OverlayTrigger
           show={showClick || showHover}
           placement="right"
@@ -103,6 +138,12 @@ const Movement = ({ content }) => {
                   <span className="text-nowrap">"{denialMotive.text}"</span>
                 </div>
               }
+              {!!(transferNote) &&
+                <div>
+                  {t('Transfer note')}:<br />
+                  <span className="text-nowrap">"{transferNote.text}"</span>
+                </div>
+              }
             </Tooltip>
           }
         >
@@ -120,7 +161,8 @@ const Movement = ({ content }) => {
       <div className='d-flex justify-content-between'>
 
         <span className={`${content.stateId === 3 ? 'text-red' : 'text-green'}`}>{t(getMoveStateById(content.stateId).name)}</span>
-        <span className={`${Math.sign(content.shares) === 1 ? 'text-green' : 'text-red'}`}>{Math.sign(content.shares) === 1 ? '+' : '-'}
+        <span className={isTransfer ? (incomingTransfer() ? 'text-green' : 'text-red') : (Math.sign(content.shares) === 1 ? 'text-green' : 'text-red')}>
+          {isTransfer ? (incomingTransfer() ? '+' : '-') : (Math.sign(content.shares) === 1 ? '+' : '-')}
           <FormattedNumber style={{ fontWeight: "bolder" }} value={(Math.abs(content.shares) * content.sharePrice)} prefix="U$D " fixedDecimals={2} />
         </span>
       </div >

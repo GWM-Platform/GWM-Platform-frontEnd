@@ -13,7 +13,7 @@ import { useContext } from 'react';
 
 const TransferConfirmation = ({ isMovement = false, movement, setShowModal, action, show, reloadData }) => {
 
-    const { Accounts } = useContext(DashBoardContext)
+    const { AccountSelected } = useContext(DashBoardContext)
 
 
     const { t } = useTranslation();
@@ -21,7 +21,7 @@ const TransferConfirmation = ({ isMovement = false, movement, setShowModal, acti
     const [ActionFetch, setActionFetch] = useState({ fetched: false, fetching: false, valid: false })
     const [Transfer, setTransfer] = useState(isMovement ? {} : movement)
 
-    const incomingTransfer = () => movement.receiverId === Accounts[0]?.id
+    const incomingTransfer = () => movement.receiverId === AccountSelected?.id
 
     useEffect(() => {
         if (isMovement) {
