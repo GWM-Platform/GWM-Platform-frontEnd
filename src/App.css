@@ -506,5 +506,18 @@ table .Actions {
 
 .bg-mainColor {
   --bs-bg-opacity: 1;
-  background-color: rgba(var(--ticket-main-color-rgb),var(--bs-bg-opacity))!important;
+  background-color: rgba(
+    var(--ticket-main-color-rgb),
+    var(--bs-bg-opacity)
+  ) !important;
+}
+
+.inline-selector {
+  border: none;
+  padding: 0 1.75rem 0 0;
+  background-position: right 0.5rem center;
+  display: inline-block;
+  width: auto;
+  border-bottom: 1px solid lightgray;
+  border-radius: 0;
 }

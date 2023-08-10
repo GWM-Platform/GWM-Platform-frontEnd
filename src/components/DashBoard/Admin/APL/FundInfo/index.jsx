@@ -101,7 +101,6 @@ const FundInfo = ({ Fund }) => {
                         </div>
                     </Col>
                 </Col>
-                {/*
                 <Col sm="auto" >
                     {t("Performance")}{": "}
                     {
@@ -117,7 +116,6 @@ const FundInfo = ({ Fund }) => {
                             </span>
                     }
                 </Col>
-                */}
             </div>
         </div>
     )

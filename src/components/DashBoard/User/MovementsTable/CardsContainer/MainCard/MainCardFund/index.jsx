@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Col, Nav, Spinner } from 'react-bootstrap';
+import { Container, Col, Nav } from 'react-bootstrap';
 
 import { DashBoardContext } from 'context/DashBoardContext';
 import { useTranslation } from "react-i18next";
@@ -13,10 +13,9 @@ import FundDetail from './FundDetail';
 import './index.css'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import { useEffect } from 'react';
-import { fetchPerformance, selectPerformanceById } from 'Slices/DashboardUtilities/performancesSlice';
-import { useDispatch, useSelector } from 'react-redux';
 import TransfersTab from './TransfersTab';
 import { useHistory, useLocation } from 'react-router-dom/cjs/react-router-dom.min';
+import PerformanceComponent from 'components/DashBoard/GeneralUse/PerformanceComponent';
 
 const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
     const location = useLocation();
@@ -32,21 +31,11 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
     const desiredFundId = useQuery().get("fundId")
 
     const [SelectedTab, setSelectedTab] = useState(desiredType ? "2" : "0")
-    const { PendingTransactions, ClientSelected } = useContext(DashBoardContext)
+    const { PendingTransactions } = useContext(DashBoardContext)
     const { t } = useTranslation();
 
     const balanceInCash = Fund.shares ? (Fund.shares * Fund.fund.sharePrice) : 0
     const pendingshares = PendingTransactions.value.filter((transaction) => transaction.fundId === Fund.fund.id && Math.sign(transaction.shares) === +1).map((transaction) => transaction.shares).reduce((a, b) => a + b, 0).toFixed(2)
-
-    const dispatch = useDispatch()
-    const performance = useSelector(state => selectPerformanceById(state, Fund.fund.id))
-
-    useEffect(() => {
-        dispatch(fetchPerformance({
-            fund: Fund.fund.id,
-            clientId: ClientSelected?.id
-        }))
-    }, [Fund, ClientSelected, dispatch])
 
     useEffect(() => {
         const resetQueryParams = () => {
@@ -89,11 +78,9 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
                             <FormattedNumber style={{ fontWeight: "bolder" }} value={Fund.shares ? Fund.shares : 0} fixedDecimals={2} />
                         </h2>
                     </Col>
-
-                    {
-                        performance &&
-                        <PerformanceComponent text={"Performance"} performance={performance?.performance} status={performance?.status} />
-                    }
+                    <Col className='ms-auto' xs="auto">
+                        <PerformanceComponent text={"Performance"} fundId={Fund.fund.id} />
+                    </Col>
                 </div>
 
                 <div className="d-flex justify-content-between align-items-end pe-2">
@@ -195,26 +182,3 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
         </div>)
 }
 export default MainCardFund
-
-const PerformanceComponent = ({ text, performance = 0, status = "loading" }) => {
-    const { t } = useTranslation();
-
-    return (
-        /*TODO: show performance */
-        <span className='text-end w-100 d-block invisible' style={{ fontWeight: "300" }}>
-            {t(text)}:&nbsp;
-            {
-                status === "loading" ?
-                    <Spinner size="sm" className="me-2" animation="border" variant="primary" />
-                    :
-                    <strong>
-                        <FormattedNumber className={{
-                            '1': 'text-green',
-                            '-1': 'text-red'
-                        }[Math.sign(performance)]}
-                            value={performance} prefix="U$D " fixedDecimals={2} />
-                    </strong>
-            }
-        </span>
-    )
-}

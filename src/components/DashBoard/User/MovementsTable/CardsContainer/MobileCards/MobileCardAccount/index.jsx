@@ -70,8 +70,7 @@ const PerformanceComponent = ({ text, performance = 0, status = "loading" }) => 
     const { t } = useTranslation();
 
     return (
-        /*TODO: show performance */
-        <span className='text-start w-100 d-block invisible' style={{ fontWeight: "300" }}>
+        <span className='text-start w-100 d-block' style={{ fontWeight: "300" }}>
             {t(text)}:&nbsp;
             {
                 status === "loading" ?

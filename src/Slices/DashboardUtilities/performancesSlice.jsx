@@ -18,7 +18,7 @@ const performancesSlice = createSlice({
                 state[action?.payload?.fund || "totalPerformance"] = { status: 'succeeded', performance: action.payload.response }
             })
             .addCase(fetchPerformance.rejected, (state, action) => {
-                state[action?.payload?.fund || "totalPerformance"] = { status: 'error', performance: action.payload, error: action.error.message }
+                state[action?.meta?.arg?.fund || "totalPerformance"] = { status: 'error', performance: 0, error: action.error.message }
             })
     }
 })
@@ -39,6 +39,7 @@ export const fetchPerformance = createAsyncThunk(
         const response = await axios.get(`/clients/${params.clientId}/${params.totalPerformance ? "totalPerformance" : "fundPerformance"}`, {
             params: {
                 fund: params.totalPerformance ? undefined : params.fund,
+                year: params.year
             }
         })
 

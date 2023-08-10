@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Row, Col, Card, Button, Spinner } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -10,14 +10,10 @@ import Decimal from 'decimal.js'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import { useContext } from 'react';
 import { DashBoardContext } from 'context/DashBoardContext';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { fetchPerformance, selectPerformanceById } from 'Slices/DashboardUtilities/performancesSlice';
+import PerformanceComponent from 'components/DashBoard/GeneralUse/PerformanceComponent';
 
 const FundCard = ({ Hide, setHide, Fund, PendingTransactions, cardsAmount, inScreenFunds }) => {
-    const { hasSellPermission, hasBuyPermission, hasPermission, ClientSelected, isMobile } = useContext(DashBoardContext)
-
-    const dispatch = useDispatch()
+    const { hasSellPermission, hasBuyPermission, hasPermission, isMobile } = useContext(DashBoardContext)
 
     Decimal.set({ precision: 100 })
 
@@ -41,15 +37,6 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions, cardsAmount, inScr
     const toTickets = (operation) => {
         history.push(`${operation}?fund=${Fund.fund.id}`);
     }
-
-    const performance = useSelector(state => selectPerformanceById(state, Fund.fund.id))
-
-    useEffect(() => {
-        dispatch(fetchPerformance({
-            fund: Fund.fund.id,
-            clientId: ClientSelected?.id
-        }))
-    }, [Fund, ClientSelected, dispatch])
 
     return (
         <Col className="fund-col growAnimation" sm="6" md="6" lg="4" >
@@ -128,10 +115,8 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions, cardsAmount, inScr
                                         </Row>
                                     </Container>
                                 </h1>
-                                {
-                                    performance &&
-                                    <PerformanceComponent text={"Performance"} performance={performance?.performance} status={performance?.status} />
-                                }
+                                <PerformanceComponent text={"Performance"} fundId={Fund.fund.id} />
+
                                 <Card.Text className="subTitle lighter mt-0 mb-0">
                                     {t("Balance (shares)")}:&nbsp;
                                     <FormattedNumber className="bolder" value={Fund.shares ? Fund.shares : 0} prefix="" fixedDecimals={2} />
@@ -168,26 +153,3 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions, cardsAmount, inScr
     )
 }
 export default FundCard
-
-const PerformanceComponent = ({ text, performance = 0, status = "loading" }) => {
-    const { t } = useTranslation();
-
-    return (
-        /*TODO: show performance */
-        <span className='text-start w-100 d-block invisible' style={{ fontWeight: "300" }}>
-            {t(text)}:&nbsp;
-            {
-                status === "loading" ?
-                    <Spinner size="sm" className="me-2" animation="border" variant="primary" />
-                    :
-                    <strong>
-                        <FormattedNumber className={{
-                            '1': 'text-green',
-                            '-1': 'text-red'
-                        }[Math.sign(performance)]}
-                            value={performance} prefix="U$D " fixedDecimals={2} />
-                    </strong>
-            }
-        </span>
-    )
-}

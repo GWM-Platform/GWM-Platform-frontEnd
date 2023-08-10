@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import { Container, Row, Col, Card, Button, Spinner, OverlayTrigger, Popover } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
@@ -11,13 +11,10 @@ import { DashBoardContext } from 'context/DashBoardContext';
 import Decimal from 'decimal.js'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchPerformance, selectPerformanceById } from 'Slices/DashboardUtilities/performancesSlice';
+import PerformanceComponent from 'components/DashBoard/GeneralUse/PerformanceComponent';
 
 const CashCard = ({ Hide, setHide, Fund, cardsAmount, inScreenFunds, pendingCash, setShow, show }) => {
-    const { DashboardToastDispatch, isMobile, hasPermission, ClientSelected } = useContext(DashBoardContext)
-
-    const dispatch = useDispatch()
+    const { DashboardToastDispatch, isMobile, hasPermission } = useContext(DashBoardContext)
 
     Decimal.set({ precision: 100 })
 
@@ -36,14 +33,6 @@ const CashCard = ({ Hide, setHide, Fund, cardsAmount, inScreenFunds, pendingCash
         history.push(`/DashBoard/withdraw`);
     }
 
-    const performance = useSelector(state => selectPerformanceById(state, "totalPerformance"))
-
-    useEffect(() => {
-        dispatch(fetchPerformance({
-            totalPerformance: true,
-            clientId: ClientSelected?.id
-        }))
-    }, [ClientSelected, dispatch])
 
     return (
         <Col sm="6" md="6" lg="4" className={`fund-col  growAnimation ${Pinned && !isMobile ? "pinned" : ""}`}>
@@ -145,7 +134,7 @@ const CashCard = ({ Hide, setHide, Fund, cardsAmount, inScreenFunds, pendingCash
                         </h1>
                         {
                             performance &&
-                            <PerformanceComponent text={"Total performance"} performance={performance?.performance} status={performance?.status} />
+                            <PerformanceComponent text={"Total performance"} />
                         }
                         <div className="subTitle lighter mt-0 mb-0">
                             <span className='invisible'>{t("Balance (shares)")}:<span className="bolder"></span></span> <br />
@@ -236,26 +225,3 @@ const CashCard = ({ Hide, setHide, Fund, cardsAmount, inScreenFunds, pendingCash
     )
 }
 export default CashCard
-
-const PerformanceComponent = ({ text, performance = 0, status = "loading" }) => {
-    const { t } = useTranslation();
-
-    return (
-        /*TODO: show performance */
-        <span className='text-start w-100 d-block invisible' style={{ fontWeight: "300" }}>
-            {t(text)}:&nbsp;
-            {
-                status === "loading" ?
-                    <Spinner size="sm" className="me-2" animation="border" variant="primary" />
-                    :
-                    <strong>
-                        <FormattedNumber className={{
-                            '1': 'text-green',
-                            '-1': 'text-red'
-                        }[Math.sign(performance)]}
-                            value={performance} prefix="U$D " fixedDecimals={2} />
-                    </strong>
-            }
-        </span>
-    )
-}
