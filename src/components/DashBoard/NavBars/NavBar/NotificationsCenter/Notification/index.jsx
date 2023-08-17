@@ -12,7 +12,7 @@ import { faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icon
 import { markAsRead } from 'Slices/DashboardUtilities/notificationsSlice'
 import { useDispatch } from 'react-redux'
 
-const Notification = ({ notification, fromPopup = true }) => {
+const Notification = ({ notification }) => {
 
     const { t } = useTranslation()
     const { ClientSelected, DashboardToastDispatch } = useContext(DashBoardContext)
@@ -140,8 +140,22 @@ const Notification = ({ notification, fromPopup = true }) => {
                 }}
                 style={{ cursor: notification.path ? "pointer" : "" }}
             >
-                <h2 title={t(notification.type)} >
-                    {t(notification.type)}
+                <h2 title={t(
+                    ((
+                        notification.type === "FIXED_DEPOSIT_CLOSE" ||
+                        notification.type === "FIXED_DEPOSIT_PRECANCEL"
+                    ) ? "_" : "")
+                    +
+                    notification.type
+                )} >
+                    {t(
+                        ((
+                            notification.type === "FIXED_DEPOSIT_CLOSE" ||
+                            notification.type === "FIXED_DEPOSIT_PRECANCEL"
+                        ) ? "_" : "")
+                        +
+                        notification.type
+                    )}
                 </h2>
                 <h3>
                     {moment(notification.createdAt).fromNow()}

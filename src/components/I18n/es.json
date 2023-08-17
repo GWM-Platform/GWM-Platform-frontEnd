@@ -923,7 +923,6 @@
   "ADMIN_APPROVAL_PENDING": "Su ticket esta esperando la aprobacion de un administrador",
   "DEPOSIT_PERFORMED": "Su deposito ha sido acreditado",
   "TRANSFER_PENDING": "Hay una transferencia esperando ser aceptada",
-  "TRANSFER_RECEIVED": "Transferencia recibida",
   "ALIAS_UPDATED": "El alias de su cuenta ha sido actualizado",
   "Client pending": "Pendiente de cliente",
   "Admin sign pending": "Pendiente de firma de admin",
@@ -1001,5 +1000,7 @@
   "Share transfer from {{senderAlias}} to {{receiverAlias}}": "Transferencia de cuotapartes de {{senderAlias}} a {{receiverAlias}}",
   "From {{senderAlias}} to {{receiverAlias}}": "De {{senderAlias}} a {{receiverAlias}}",
   "Transfer of": "Transferencia de",
-  "Share transfer": "Transferencia de cuotapartes"
+  "Share transfer": "Transferencia de cuotapartes",
+  "_FIXED_DEPOSIT_CLOSE": "Su plazo fijo ha finalizado",
+  "_FIXED_DEPOSIT_PRECANCEL": "Su plazo ha sido pre-cancelado"
 }

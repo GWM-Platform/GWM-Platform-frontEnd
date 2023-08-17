@@ -784,8 +784,9 @@
     "TRANSFER_RECEIVED": "You have received a transfer",
     "DEPOSIT_PERFORMED": "Your deposit has been accredited",
     "TRANSFER_PENDING": "There is a transfer waiting to be accepted",
-    "TRANSFER_RECEIVED": "Transfer received",
     "ALIAS_UPDATED": "The alias of your account has been updated",
     "Current_accounts": "Accounts",
-    "_at":"at"
+    "_at": "at",
+    "_FIXED_DEPOSIT_CLOSE": "Your time deposit has finished",
+    "_FIXED_DEPOSIT_PRECANCEL": "Your time deposit has been pre-cancelled"
 }

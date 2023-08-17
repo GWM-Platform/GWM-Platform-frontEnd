@@ -1,23 +1,26 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Row, Col, Form, Button } from 'react-bootstrap'
+import { Container, Row, Col, Form, Button, Spinner } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { DashBoardContext } from 'context/DashBoardContext';
 import { useRef } from 'react';
 import { components } from "react-select";
 import Select from "react-select";
-
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import './index.scss'
 const Broadcast = () => {
 
     const { toLogin } = useContext(DashBoardContext)
 
     const { t } = useTranslation();
 
+    const emailBodyDefaultState = "<p><br></p>"
     const [formData, setFormData] = useState(
         {
             title: "",
-            emailBody: "",
+            emailBody: emailBodyDefaultState,
         }
     )
 
@@ -31,14 +34,14 @@ const Broadcast = () => {
     const [buttonDisabled, setButtonDisabled] = useState(false)
 
     const handleChange = (event) => {
-        setFormData(prevState => ({ ...prevState, [event.target.id]: event.target.value }));
+        setFormData(prevState => ({ ...prevState, [event?.target?.id]: event?.target?.value }));
     };
 
     const handleSubmit = (event) => {
         event.preventDefault();
         event.stopPropagation();
         const form = event.currentTarget;
-        if (form.checkValidity() === true) {
+        if (form.checkValidity() && formData.emailBody !== emailBodyDefaultState) {
             broadcast()
         }
         setValidated(true);
@@ -113,11 +116,6 @@ const Broadcast = () => {
             controller.abort();
         };
     }, [getClients])
-
-    useEffect(() => {
-        setButtonDisabled(selectedOptions.length === 0)
-        //eslint-disable-next-line
-    }, [selectedOptions])
 
     const filesInput = useRef(null)
 
@@ -353,7 +351,7 @@ const Broadcast = () => {
     }
 
     return (
-        <Container className="h-100">
+        <Container className="h-100 broadcast">
             <Row className="h-100 d-flex justify-content-center">
                 <Col className="growOpacity section">
                     <div className="header">
@@ -385,16 +383,17 @@ const Broadcast = () => {
                         <Form.Group className="mb-3" controlId='title'>
                             <Form.Label>{t("Email title")}</Form.Label>
                             <Form.Control
-                                onChange={handleChange} value={formData.title} className="mb-1" required  maxLength="250"
+                                onChange={handleChange} value={formData.title} className="mb-1" required maxLength="250"
                             />
                         </Form.Group>
 
-                        <Form.Group className="mb-3" controlId='emailBody'>
-                            <Form.Label>{t("Email body")}</Form.Label>
-                            <Form.Control as="textarea" maxLength="20000"
-                                onChange={handleChange} value={formData.emailBody} className="mb-1" style={{ height: "100px" }} required
-                            />
-                        </Form.Group>
+                        <Form.Label>{t("Email body")}</Form.Label>
+                        <ReactQuill
+                            required
+                            className={`mb-3 ${formData.emailBody !== emailBodyDefaultState ? "" : "invalid"}`}
+                            theme="snow"
+                            value={formData.emailBody} onChange={value => handleChange({ target: { id: "emailBody", value } })}
+                        />
 
                         <Form.Group controlId="formFileMultiple" className="mb-3">
                             <Form.Label>{t("Attached files")}</Form.Label>
@@ -402,7 +401,17 @@ const Broadcast = () => {
                         </Form.Group>
 
                         <p>{t(message)}</p>
-                        <Button className="mb-3" disabled={buttonDisabled} variant="danger" type="submit" >{t("Submit")}</Button>
+                        <Button className="mb-3" disabled={buttonDisabled || selectedOptions.length === 0} variant="danger" type="submit" >
+                            <Spinner
+                                as="span"
+                                animation="border"
+                                size="sm"
+                                role="status"
+                                aria-hidden="true"
+                                style={{ display: buttonDisabled ? "inline-block" : "none" }}
+                            />{' '}
+                            {t("Submit")}
+                        </Button>
                     </Form>
                 </Col>
             </Row>
