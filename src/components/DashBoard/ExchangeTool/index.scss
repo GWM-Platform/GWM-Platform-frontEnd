@@ -1,4 +1,4 @@
-.exchange-tool-button{
+.exchange-tool-button {
     position: absolute;
     right: 1em;
     bottom: 3.5em;
@@ -12,25 +12,39 @@
     filter: drop-shadow(0px 0px 5px black);
 }
 
-.exchange-modal{
-    .modal-title{
+.exchange-modal {
+    .modal-title {
         font-weight: 400;
         margin-left: .25em;
     }
-    h1{
+
+    h1 {
         margin-top: 0;
         margin-left: .25em;
         font-size: 18px;
         font-weight: 400;
     }
-    h3{
+
+    h3 {
         font-size: 14px;
         margin-left: .5em;
         margin-bottom: 1.25em;
         margin-top: .5em;
         font-weight: 400;
     }
-    .form-label{
+
+    .form-label {
         margin-left: .5em;
+    }
+
+    .input-group:has(.input-group-text) {
+        .form-control {
+            border-right: none
+        }
+        .input-group-text {
+            background-color: unset;
+            cursor: pointer;
+            color: rgb(101, 107, 112);
+        }
     }
 }

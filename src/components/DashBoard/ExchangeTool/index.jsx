@@ -2,12 +2,13 @@ import { faExchange } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import "./index.scss"
-import { Col, Form, Modal, Row } from "react-bootstrap";
+import { Col, Form, InputGroup, Modal, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import CurrencyInput, { formatValue } from "@osdiab/react-currency-input-field";
 import moment from "moment";
 import { unMaskNumber } from "utils/unmask";
 import Decimal from "decimal.js";
+import { faClipboard } from "@fortawesome/free-regular-svg-icons";
 const ExchangeTool = () => {
     const { t } = useTranslation()
     const decimalSeparator = process.env.REACT_APP_DECIMALSEPARATOR ?? '.'
@@ -62,7 +63,7 @@ const ExchangeTool = () => {
         }
 
     }
-
+    console.log(moment().format())
     return (
         <>
             <button onClick={handleShow} className="exchange-tool-button">
@@ -79,50 +80,64 @@ const ExchangeTool = () => {
                         </Col>
 
                         <Col md="8">
-                            <CurrencyInput
-                                allowNegativeValue={false}
-                                name="exchangeRate"
-                                value={data.exchangeRate}
-                                decimalsLimit={2}
-                                decimalSeparator={decimalSeparator}
-                                groupSeparator={groupSeparator}
-                                onValueChange={(value, name) => handleChange(value, name)}
-                                className="form-control"
-                                prefix="ARS "
-                            />
+                            <InputGroup>
+                                <CurrencyInput
+                                    allowNegativeValue={false}
+                                    name="exchangeRate"
+                                    value={data.exchangeRate}
+                                    decimalsLimit={2}
+                                    decimalSeparator={decimalSeparator}
+                                    groupSeparator={groupSeparator}
+                                    onValueChange={(value, name) => handleChange(value, name)}
+                                    className="form-control"
+                                    prefix="ARS "
+                                />
+                                <InputGroup.Text onClick={() => { navigator.clipboard.writeText(data.exchangeRate) }}>
+                                    <FontAwesomeIcon icon={faClipboard} />
+                                </InputGroup.Text>
+                            </InputGroup>
                         </Col>
                         <Col xs="12">
                             <h3>
                                 {
-                                    data.exchangeRate !== defaultExchangeRate ?
-                                        t("{{defaultExchangeRate}} as of {{date}}", {
-                                                date: moment("2023-08-31T14:25:17-03:00").format("L"), defaultExchangeRate: (
+                                    (data.exchangeRate !== defaultExchangeRate) &&
+                                    <>
+                                        <span style={{ cursor: "pointer", textDecoration: "underline" }} onClick={() => { handleChange(defaultExchangeRate, "exchangeRate") }}>
+                                            {
                                                 formatValue({
                                                     value: defaultExchangeRate,
                                                     groupSeparator: '.',
                                                     decimalSeparator: ',',
                                                     prefix: "ARS ",
                                                 })
-                                            )
-                                        })
-                                        :
-                                        t("As of {{date}}", { date: moment("2023-08-31T14:25:17-03:00").format("L") })
-                                }</h3>
+                                            }
+                                        </span>
+                                        &nbsp;
+                                    </>
+                                }
+                                {t("As of {{date}}", { date: moment("2023-08-31T14:25:17-03:00").format("L") })}
+                            </h3>
                         </Col>
 
                         <Col>
                             <Form.Group className="mb-3" >
                                 <Form.Label>USD</Form.Label>
-                                <CurrencyInput
-                                    allowNegativeValue={false}
-                                    name="sourceAmount"
-                                    value={data.sourceAmount}
-                                    decimalsLimit={2}
-                                    decimalSeparator={decimalSeparator}
-                                    groupSeparator={groupSeparator}
-                                    onValueChange={(value, name) => handleChange(value, name)}
-                                    className="form-control"
-                                />
+                                <InputGroup>
+                                    <CurrencyInput
+                                        allowNegativeValue={false}
+                                        name="sourceAmount"
+                                        value={data.sourceAmount}
+                                        decimalsLimit={2}
+                                        decimalSeparator={decimalSeparator}
+                                        groupSeparator={groupSeparator}
+                                        onValueChange={(value, name) => handleChange(value, name)}
+                                        className="form-control"
+                                    />
+                                    <InputGroup.Text onClick={() => { navigator.clipboard.writeText(data.sourceAmount) }}>
+                                        <FontAwesomeIcon icon={faClipboard} />
+                                    </InputGroup.Text>
+                                </InputGroup>
+
                             </Form.Group>
                         </Col>
                         <Col xs="auto" className="d-flex align-items-center">
@@ -131,16 +146,21 @@ const ExchangeTool = () => {
                         <Col>
                             <Form.Group className="mb-3">
                                 <Form.Label>ARS</Form.Label>
-                                <CurrencyInput
-                                    allowNegativeValue={false}
-                                    name="targetAmount"
-                                    value={data.targetAmount}
-                                    decimalsLimit={2}
-                                    decimalSeparator={decimalSeparator}
-                                    groupSeparator={groupSeparator}
-                                    onValueChange={(value, name) => handleChange(value, name)}
-                                    className="form-control"
-                                />
+                                <InputGroup>
+                                    <CurrencyInput
+                                        allowNegativeValue={false}
+                                        name="targetAmount"
+                                        value={data.targetAmount}
+                                        decimalsLimit={2}
+                                        decimalSeparator={decimalSeparator}
+                                        groupSeparator={groupSeparator}
+                                        onValueChange={(value, name) => handleChange(value, name)}
+                                        className="form-control"
+                                    />
+                                    <InputGroup.Text onClick={() => { navigator.clipboard.writeText(data.targetAmount) }}>
+                                        <FontAwesomeIcon icon={faClipboard} />
+                                    </InputGroup.Text>
+                                </InputGroup>
                             </Form.Group>
                         </Col>
                     </Row>
