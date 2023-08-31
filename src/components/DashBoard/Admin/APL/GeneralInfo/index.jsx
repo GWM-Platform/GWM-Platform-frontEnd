@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import FormattedNumber from "components/DashBoard/GeneralUse/FormattedNumber";
 import Decimal from "decimal.js";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Col, OverlayTrigger, Row, Spinner, Tooltip } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 
@@ -12,6 +12,7 @@ const GeneralInfo = ({ fullSettlement, setFullSettlement }) => {
 
     const [showFundClick, setShowFundClick] = useState(false)
     const [showFundHover, setShowFundHover] = useState(false)
+    const [Accounts, SetAccounts] = useState({ fetching: true, accounts: [] })
 
     useEffect(() => {
         const getDebt = () => {
@@ -48,6 +49,51 @@ const GeneralInfo = ({ fullSettlement, setFullSettlement }) => {
         //eslint-disable-next-line
     }, [])
 
+    useEffect(() => {
+        const getAccounts = () => {
+            SetAccounts((prevState) => ({ ...prevState, fetching: true }))
+
+            axios.get(`/accounts`, {
+                signal: signal,
+                params: {
+                    all: true
+                }
+            }).then(function (response) {
+                SetAccounts((prevState) => (
+                    {
+                        ...prevState,
+                        fetching: false,
+                        accounts: response?.data || [],
+                    }))
+            }).catch((err) => {
+                if (err.message !== "canceled") {
+                    SetAccounts((prevState) => (
+                        {
+                            ...prevState,
+                            fetching: false,
+                            accounts: [],
+                        }))
+                }
+            });
+        };
+
+        const controller = new AbortController();
+        const signal = controller.signal;
+        getAccounts(signal)
+
+        return () => {
+            controller.abort();
+        };
+        //eslint-disable-next-line
+    }, [])
+
+    const clientLoans = useMemo(() => (
+        Accounts.accounts
+            .filter(account => account.balance < 0)
+            .reduce((previousValue, currentValue) => Decimal(previousValue).plus(Decimal(currentValue.balance).abs()), Decimal(0))
+            .toFixed(2)
+    ), [Accounts])
+
     const fundTotalDebt = () => {
         return Object.keys(fullSettlement.debt.transactions).map(transaction => fullSettlement?.debt?.transactions?.[transaction]?.amount).reduce(
             (acumulator, operation) =>
@@ -73,14 +119,14 @@ const GeneralInfo = ({ fullSettlement, setFullSettlement }) => {
                 </h2>
                 <Col xs="12">
                     <h6 className="mb-0">
-                        {t("Total debt")} ({t("Current_accounts")} + {t("Fixed deposits")})
+                        {t("Total debt")} ({t("Fixed deposits")} + {t("Current_accounts")} - {t("Loans to clients")})
                     </h6>
                     <h4 className="mt-0">
                         {
-                            fullSettlement.fetching ?
+                            (fullSettlement.fetching || Accounts.fetching) ?
                                 <Spinner animation="border" size="sm" />
                                 :
-                                <FormattedNumber value={fullSettlement?.debt?.totalDebt} prefix="U$D " fixedDecimals={2} />
+                                <FormattedNumber value={fullSettlement?.debt?.totalDebt + Decimal(clientLoans).toNumber()} prefix="U$D " fixedDecimals={2} />
                         }
                     </h4>
                 </Col>
@@ -129,6 +175,19 @@ const GeneralInfo = ({ fullSettlement, setFullSettlement }) => {
                                 <Spinner animation="border" size="sm" />
                                 :
                                 <FormattedNumber value={fullSettlement?.debt?.accountsDebt} prefix="U$D " fixedDecimals={2} />
+                        }
+                    </h4>
+                </Col>
+                <Col xs="auto">
+                    <h6 className="mb-0">
+                        {t("Loans to clients")}
+                    </h6>
+                    <h4 className="mt-0">
+                        {
+                            Accounts.fetching ?
+                                <Spinner animation="border" size="sm" />
+                                :
+                                <FormattedNumber value={clientLoans} prefix="U$D " fixedDecimals={2} />
                         }
                     </h4>
                 </Col>

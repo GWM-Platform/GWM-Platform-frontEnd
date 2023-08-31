@@ -1018,5 +1018,6 @@
   "Currency converter": "Conversor de moneda",
   "1 USD is equivalent to": "1 USD es equivalente a",
   "As of {{date}}": "Al {{date}}",
-  "{{defaultExchangeRate}} as of {{date}}": "{{defaultExchangeRate}} al {{date}}"
+  "{{defaultExchangeRate}} as of {{date}}": "{{defaultExchangeRate}} al {{date}}",
+  "Loans to clients": "Prestamos a clientes"
 }
