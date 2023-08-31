@@ -39,6 +39,7 @@ import NoPermissionOperation from './User/NoPermissionFeedback/NoPermissionOpera
 import { useSelector } from 'react-redux';
 import { Col, Container, Row, Spinner } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import ExchangeTool from './ExchangeTool';
 
 //User
 const FundsContainer = lazy(() => import('./User/FundsContainer'))
@@ -146,6 +147,7 @@ const UserDashBoard = () => {
                                                     <Route exact path={`${path}/notificationsCenter`}>
                                                         <NotificationsCenter />
                                                     </Route>
+                                                    <ExchangeTool />
                                                 </Suspense>
                                             </div>
                                             :
@@ -228,6 +230,7 @@ const UserDashBoard = () => {
                                                         <NotificationsCenter />
                                                     </Route>
                                                 </Suspense>
+                                                <ExchangeTool />
                                             </>
                                     }
                                     <DashboardToast />

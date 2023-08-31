@@ -137,7 +137,7 @@ $border-color_3: white;
 .bolder {
 	font-weight: bolder;
 }
-.modal {
+.modal:not(.exchange-modal) {
 	.modal-content {
 		background-color: $background-color_1;
 		border: transparent;
@@ -165,6 +165,7 @@ $border-color_3: white;
 		border-color: $border-color_3;
 	}
 }
+
 @media (max-width: 568px) {
 	.fund-col {
 		&:first-of-type {
