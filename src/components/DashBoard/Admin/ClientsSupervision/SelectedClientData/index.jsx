@@ -20,7 +20,7 @@ import { DashBoardContext } from 'context/DashBoardContext';
 import DocumentForm from './DocumentForm';
 import DocumentsAccordion from './DocumentsAccordion';
 
-const SelectedAccountData = ({ Account, Client, users }) => {
+const SelectedAccountData = ({ Account, Client, users, setAccounts }) => {
 
     const { t } = useTranslation();
 
@@ -107,7 +107,7 @@ const SelectedAccountData = ({ Account, Client, users }) => {
 
                     </div>
                     <Accordion flush alwaysOpen>
-                        <AccountGeneralData Account={Account} Client={Client} />
+                        <AccountGeneralData setAccounts={setAccounts} Account={Account} Client={Client} />
                         <ClientUsersAccordion client={Client} users={clientUsers} getUsers={getUsers} ownersAmount={ownersAmount} />
                         <DocumentsAccordion client={Client} documents={documents} setDocuments={setDocuments} />
                         {clientFunds.length > 0 ? <FundsPossesion stakes={clientFunds} /> : null}

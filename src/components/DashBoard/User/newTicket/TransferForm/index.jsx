@@ -13,6 +13,7 @@ import { useHistory } from 'react-router-dom';
 import ReactGA from "react-ga4";
 import FundSelector from './FundSelector';
 import { useLocation } from 'react-router-dom/cjs/react-router-dom.min';
+import enrichAccount from 'utils/enrichAccount';
 
 const TransferForm = ({ balanceChanged }) => {
 
@@ -25,6 +26,8 @@ const TransferForm = ({ balanceChanged }) => {
     }, [])
 
     const { token, contentReady, Accounts, AccountSelected, toLogin, ClientSelected, hasPermission } = useContext(DashBoardContext);
+    const AccountSelectedEnriched = useMemo(() =>
+        enrichAccount(AccountSelected), [AccountSelected])
 
     const history = useHistory()
 
@@ -213,7 +216,7 @@ const TransferForm = ({ balanceChanged }) => {
                                     <Accordion flush activeKey={CollapsedFields || TargetAccount.fetching || !TargetAccount.fetched || !TargetAccount.valid ? "-1" : "0"}>
                                         <TransferData
                                             Funds={Funds}
-                                            TargetAccount={TargetAccount} handleChange={handleChange} data={data} toggleAccordion={toggleAccordion} Balance={AccountSelected ? AccountSelected.balance : 0} />
+                                            TargetAccount={TargetAccount} handleChange={handleChange} data={data} toggleAccordion={toggleAccordion} Balance={AccountSelectedEnriched ? AccountSelectedEnriched.totalAvailable : 0}  RealBalance={AccountSelectedEnriched ? AccountSelectedEnriched.balance : 0} />
                                     </Accordion>
                                 </Col>
                         }
@@ -221,7 +224,7 @@ const TransferForm = ({ balanceChanged }) => {
                 </Container>
                 {
                     !!(contentReady && Accounts.length) >= 1 &&
-                    <ActionConfirmationModal share_transfer={share_transfer} fund_selected={fund_selected} TargetAccount={TargetAccount} setShowModal={setShowModal} show={ShowModal} action={transfer} data={data} Balance={AccountSelected.balance} Transfer={Transfer} />
+                    <ActionConfirmationModal share_transfer={share_transfer} fund_selected={fund_selected} TargetAccount={TargetAccount} setShowModal={setShowModal} show={ShowModal} action={transfer} data={data} Balance={AccountSelectedEnriched.totalAvailable} Transfer={Transfer} />
                 }
             </Form >
         </div >

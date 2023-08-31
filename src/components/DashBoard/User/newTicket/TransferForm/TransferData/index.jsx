@@ -8,7 +8,7 @@ import { faMinusCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Decimal from 'decimal.js';
 
-const TransferData = ({ data, Funds, handleChange, TargetAccount, toggleAccordion, Balance }) => {
+const TransferData = ({ data, Funds, handleChange, TargetAccount, toggleAccordion, Balance, RealBalance }) => {
 
     const { t } = useTranslation();
 
@@ -78,6 +78,8 @@ const TransferData = ({ data, Funds, handleChange, TargetAccount, toggleAccordio
                 false)
         }
     }
+
+    const amountDeductedFromOverdraft = Decimal(data?.amount || 0).minus(RealBalance || 0).toNumber()
 
     return (
         <Accordion.Item eventKey="0" disabled>
@@ -152,7 +154,11 @@ const TransferData = ({ data, Funds, handleChange, TargetAccount, toggleAccordio
                     </Form.Control.Feedback>
                     <Form.Control.Feedback type="valid">
                         {
-                            t("Looks good") + "!"
+                            t("Looks good") + "! "
+                        }
+                        {
+                            amountDeductedFromOverdraft > 0 &&
+                            t("This movement will deduct {{amount}} from your overdraft balance", { amount: amountDeductedFromOverdraft })
                         }
                     </Form.Control.Feedback>
                 </InputGroup>

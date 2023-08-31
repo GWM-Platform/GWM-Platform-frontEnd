@@ -62,7 +62,9 @@ $border-color_2: var(--main-card-color);
 		}
 
 		.title-gray {
-			text-transform: capitalize;
+			.label{
+				font-size: 14px;
+			}
 			color: $color_3;
 			text-align: start;
 			font-size: 20px;

@@ -103,7 +103,7 @@ const DocumentsAccordion = ({ client, documents, setDocuments }) => {
                                 }
                                 <div className="mt-2 d-flex justify-content-end">
                                     <Link to={`/DashBoard/clientsSupervision/${client.id}/document`}>
-                                        <Button>{t("Add document")}</Button>
+                                        <Button size="sm">{t("Add document")}</Button>
                                     </Link>
                                 </div>
                             </>

@@ -1002,5 +1002,17 @@
   "Transfer of": "Transferencia de",
   "Share transfer": "Transferencia de cuotapartes",
   "_FIXED_DEPOSIT_CLOSE": "Su plazo fijo ha finalizado",
-  "_FIXED_DEPOSIT_PRECANCEL": "Su plazo ha sido pre-cancelado"
+  "_FIXED_DEPOSIT_PRECANCEL": "Su plazo ha sido pre-cancelado",
+  "Add overdraft": "Añadir descubierto",
+  "Overdraft": "Descubierto",
+  "Overdraft successfully set": "Descubierto configurado con exito",
+  "An error occurred while setting the overdraft": "Hubo un error al configurar el descubierto",
+  "Overdraft amount": "Monto del descubierto",
+  "Available funds": "Fondos disponibles",
+  "Available funds overview": "Resumen de fondos disponibles",
+  "Own funds": "Fondos propios",
+  "Available overdraft":"Descubierto disponible",
+  "This movement will deduct {{amount}} from your overdraft balance": "Este movimiento debitara {{amount}} de su saldo de descubierto",
+  "This movement will deduct {{amount}} from your overdraft": "Este movimiento debitara {{amount}} de su descubierto",
+  "Owed":"Adeudado"
 }

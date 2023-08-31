@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useMemo } from 'react'
 import { useHistory } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -11,6 +11,7 @@ import Loading from '../Loading';
 import ActionConfirmationModal from './ActionConfirmationModal';
 import ReactGA from "react-ga4";
 import { useEffect } from 'react';
+import enrichAccount from 'utils/enrichAccount';
 
 const WithdrawForm = ({ balanceChanged }) => {
 
@@ -81,6 +82,9 @@ const WithdrawForm = ({ balanceChanged }) => {
         setValidated(true);
     }
 
+    const AccountSelectedEnriched = useMemo(() =>
+        enrichAccount(AccountSelected), [AccountSelected])
+
     return (
         <div className={`d-flex flex-column h-100`}>
             <Container className="h-100">
@@ -92,7 +96,7 @@ const WithdrawForm = ({ balanceChanged }) => {
                             <Col xs="12">
                                 <WithdrawData
                                     handleSubmit={handleSubmit} validated={validated}
-                                    handleChange={handleChange} data={data} account={AccountSelected} fetching={fetching} />
+                                    handleChange={handleChange} data={data} account={AccountSelectedEnriched} fetching={fetching} />
                             </Col>
                     }
 
@@ -100,7 +104,7 @@ const WithdrawForm = ({ balanceChanged }) => {
             </Container>
             {
                 contentReady ?
-                    <ActionConfirmationModal fetching={fetching} setShowModal={setShowModal} show={ShowModal} action={withdraw} data={data} Balance={AccountSelected.balance} />
+                    <ActionConfirmationModal fetching={fetching} setShowModal={setShowModal} show={ShowModal} action={withdraw} data={data} Balance={AccountSelectedEnriched.balance} />
                     :
                     null
             }

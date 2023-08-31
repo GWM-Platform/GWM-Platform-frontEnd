@@ -1,16 +1,20 @@
-import React, { useRef } from 'react'
+import React, { useMemo, useRef } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Col, Card } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import { useContext } from 'react';
 import { DashBoardContext } from 'context/DashBoardContext';
+import enrichAccount from 'utils/enrichAccount';
 
 const AccountCard = ({ data, setData, openAccordion }) => {
     const { t } = useTranslation();
     const ref = useRef(null)
 
     const { hasPermission, AccountSelected } = useContext(DashBoardContext)
+
+    const AccountSelectedEnriched = useMemo(() =>
+        enrichAccount(AccountSelected), [AccountSelected])
 
     return (
 
@@ -25,7 +29,11 @@ const AccountCard = ({ data, setData, openAccordion }) => {
                 onClick={() => { setFundSelected(setData, "cash", openAccordion) }}>
                 <Card.Header><strong className="title">{t("Cash")}</strong></Card.Header>
                 <Card.Body>
-                    <Card.Title> {t("Holding")}{": "} <strong><FormattedNumber prefix="U$D " value={AccountSelected?.balance || 0} fixedDecimals={2} /></strong></Card.Title>
+                    <Card.Title> {t("Available funds")}{": "} <strong><FormattedNumber className="text-nowrap" prefix="U$D " value={AccountSelectedEnriched?.totalAvailable || 0} fixedDecimals={2} /></strong></Card.Title>
+                    {
+                        AccountSelectedEnriched.hasOverdraft &&
+                        <Card.Title> {t("Own funds")}{": "} <br /><strong><FormattedNumber className="text-nowrap" prefix="U$D " value={AccountSelectedEnriched?.ownFunds || 0} fixedDecimals={2} /></strong></Card.Title>
+                    }
                 </Card.Body>
             </Card>
         </Col>

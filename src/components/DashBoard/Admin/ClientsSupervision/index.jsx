@@ -139,7 +139,7 @@ const ClientsSupervision = () => {
                         {
                             Clients.content.map((client) =>
                                 <Route key={`client-data-${client.id}`} path={`/DashBoard/clientsSupervision/${client.id}`}>
-                                    <SelectedClientData users={users} Client={client} Account={getAccountByClientId(client.id)} />
+                                    <SelectedClientData setAccounts={setAccounts} users={users} Client={client} Account={getAccountByClientId(client.id)} />
                                 </Route>
                             )
                         }

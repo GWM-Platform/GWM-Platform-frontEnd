@@ -1,19 +1,25 @@
-import React, { useContext } from 'react'
+import React, { useContext, useMemo } from 'react'
 import { Container, Row, Col, Card, Button, Spinner, OverlayTrigger, Popover } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash, faEye, faThumbtack, faInfoCircle, faSlash } from '@fortawesome/free-solid-svg-icons'
 import { faCheckCircle, faClipboard } from '@fortawesome/free-regular-svg-icons'
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import './index.scss'
 import { DashBoardContext } from 'context/DashBoardContext';
 import Decimal from 'decimal.js'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import { useState } from 'react';
 import PerformanceComponent from 'components/DashBoard/GeneralUse/PerformanceComponent';
+import enrichAccount from 'utils/enrichAccount';
+import PopoverAvailableFunds from 'components/DashBoard/GeneralUse/PopoverAvailableFunds';
 
-const CashCard = ({ Hide, setHide, Fund, cardsAmount, inScreenFunds, pendingCash, setShow, show }) => {
+const CashCard = (props) => {
+
+    const { Hide, setHide, cardsAmount, inScreenFunds, pendingCash, setShow, show } = props
+    const Fund = useMemo(() => enrichAccount(props.Fund), [props.Fund])
+
     const { DashboardToastDispatch, isMobile, hasPermission } = useContext(DashBoardContext)
 
     Decimal.set({ precision: 100 })
@@ -89,7 +95,7 @@ const CashCard = ({ Hide, setHide, Fund, cardsAmount, inScreenFunds, pendingCash
                                     }
                                 </Row>
                             </Container>
-                            <Card.Text className="subTitle lighter mt-0 mb-1">
+                            <Card.Text className="lighter mt-0 mb-1">
                                 <span className='d-flex justify-content-between'>
                                     <span>
                                         {t("Alias")}: <span className="bolder">{Fund.alias}</span>
@@ -107,39 +113,69 @@ const CashCard = ({ Hide, setHide, Fund, cardsAmount, inScreenFunds, pendingCash
                                 </span>
                             </Card.Text>
                         </Card.Title>
-                        <h1 className="title-gray mt-0">
-                            <Container fluid className="px-0">
-                                <Row className="w-100 mx-0 d-flex justify-content-between gx-0">
-                                    <span className="pe-2 containerHideInfo">
-                                        <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={parseFloat(Fund.balance).toString()} prefix="U$D " fixedDecimals={2} />
-                                        <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={parseFloat(Fund.balance).toString()} prefix="U$D " fixedDecimals={2} />
-                                        <FormattedNumber className={`info placeholder`} value={parseFloat(Fund.balance).toString()} prefix="U$D " fixedDecimals={2} />
-                                    </span>
-                                    <button onClick={() => setHide(prevState => !prevState)} className="noStyle ps-0 hideInfoButton d-flex align-items-center">
-                                        <FontAwesomeIcon
-                                            className={`icon ${Hide ? "hidden" : "shown"}`}
-                                            icon={faEye}
-                                        />
-                                        <FontAwesomeIcon
-                                            className={`icon ${!Hide ? "hidden" : "shown"}`}
-                                            icon={faEyeSlash}
-                                        />
-                                        <FontAwesomeIcon
-                                            className="icon placeholder"
-                                            icon={faEyeSlash}
-                                        />
-                                    </button>
-                                </Row>
-                            </Container>
+                        <h1 className="title-gray my-0">
+                            {
+                                Fund.hasOverdraft ?
+                                    <>
+                                        <span className='label'>
+                                            {t("Available funds")}
+                                        </span>
+                                        <Container fluid className="px-0">
+                                            <Row className="w-100 mx-0 d-flex gx-0 align-items-center">
+                                                <span className="containerHideInfo">
+                                                    <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={parseFloat(Fund.totalAvailable).toString()} prefix="U$D " fixedDecimals={2} />
+                                                    <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={parseFloat(Fund.totalAvailable).toString()} prefix="U$D " fixedDecimals={2} />
+                                                    <FormattedNumber className={`info placeholder`} value={parseFloat(Fund.totalAvailable).toString()} prefix="U$D " fixedDecimals={2} />
+                                                </span>
+                                                <OverlayTrigger rootClose trigger="click" placement="auto-start" overlay={
+                                                    <PopoverAvailableFunds account={Fund} />
+                                                }>
+                                                    <button className="noStyle px-0 hideInfoButton d-inline-flex align-items-center" style={{ fontSize: "16px" }}>
+                                                        <FontAwesomeIcon className="icon pin" icon={faInfoCircle} />
+                                                        <FontAwesomeIcon className="icon placeholder" icon={faEyeSlash} />
+                                                    </button>
+                                                </OverlayTrigger>
+                                            </Row>
+                                        </Container>
+                                    </>
+                                    :
+                                    <>
+                                        <span className='label'>
+                                            {t("Balance")}
+                                        </span>
+                                        <Container fluid className="px-0">
+                                            <Row className="w-100 mx-0 d-flex justify-content-between gx-0">
+                                                <span className="pe-2 containerHideInfo">
+                                                    <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={parseFloat(Fund.balance).toString()} prefix="U$D " fixedDecimals={2} />
+                                                    <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={parseFloat(Fund.balance).toString()} prefix="U$D " fixedDecimals={2} />
+                                                    <FormattedNumber className={`info placeholder`} value={parseFloat(Fund.balance).toString()} prefix="U$D " fixedDecimals={2} />
+                                                </span>
+                                                <button onClick={() => setHide(prevState => !prevState)} className="noStyle ps-0 hideInfoButton d-flex align-items-center">
+                                                    <FontAwesomeIcon
+                                                        className={`icon ${Hide ? "hidden" : "shown"}`}
+                                                        icon={faEye}
+                                                    />
+                                                    <FontAwesomeIcon
+                                                        className={`icon ${!Hide ? "hidden" : "shown"}`}
+                                                        icon={faEyeSlash}
+                                                    />
+                                                    <FontAwesomeIcon
+                                                        className="icon placeholder"
+                                                        icon={faEyeSlash}
+                                                    />
+                                                </button>
+                                            </Row>
+                                        </Container>
+                                    </>
+                            }
                         </h1>
+
                         {
                             performance &&
                             <PerformanceComponent withoutSelector text={"Total performance"} />
                         }
-                        <div className="subTitle lighter mt-0 mb-0">
-                            <span className='invisible'>{t("Balance (shares)")}:<span className="bolder"></span></span> <br />
-                        </div>
-                        <div className="subTitle lighter mt-0 mb-0">
+
+                        <div className="lighter mt-0 mb-0">
                             <span className='d-flex justify-content-between'>
                                 {
                                     pendingCash().calculated ?
@@ -169,11 +205,6 @@ const CashCard = ({ Hide, setHide, Fund, cardsAmount, inScreenFunds, pendingCash
                                                         <span className={`bolder ${pendingCash().overView.Deposits.isPositive ? "text-green" : "text-red"}`}>
                                                             {pendingCash().overView.Deposits.isPositive ? "+" : "-"}
                                                             <FormattedNumber value={pendingCash().overView.Deposits.valueAbs} prefix="U$D " fixedDecimals={2} />
-                                                        </span><br />
-                                                        <Link to="history?SelectedTab=Transfers">{t("Pending transfers")}</Link>:&nbsp;
-                                                        <span className={`bolder ${pendingCash().overView.Transfers.isPositive ? "text-green" : "text-red"}`}>
-                                                            {pendingCash().overView.Transfers.isPositive ? "+" : "-"}
-                                                            <FormattedNumber value={pendingCash().overView.Transfers.valueAbs} prefix="U$D " fixedDecimals={2} />
                                                         </span><br />
                                                         {t("Pending total")}:&nbsp;
                                                         <span className={`bolder ${pendingCash().isPositive ? "text-green" : "text-red"}`}>

@@ -6,6 +6,7 @@ import { unMaskNumber } from 'utils/unmask';
 import CurrencyInput from '@osdiab/react-currency-input-field';
 import { faMinusCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Decimal from 'decimal.js';
 
 
 const WithdrawData = ({ data, handleChange, validated, handleSubmit, account, fetching }) => {
@@ -38,6 +39,8 @@ const WithdrawData = ({ data, handleChange, validated, handleSubmit, account, fe
     useEffect(() => {
         setInputValid(inputRef?.current?.checkValidity())
     }, [inputRef, data.amount])
+
+    const amountDeductedFromOverdraft = Decimal(data?.amount || 0).minus(account?.balance || 0).toNumber()
 
     return (
         <>
@@ -82,7 +85,7 @@ const WithdrawData = ({ data, handleChange, validated, handleSubmit, account, fe
                         step=".01"
                         onChange={handleChange}
                         min="0.01"
-                        max={account.balance}
+                        max={account.totalAvailable}
                         id="amount"
                         type="number"
                         required
@@ -94,47 +97,50 @@ const WithdrawData = ({ data, handleChange, validated, handleSubmit, account, fe
                             data.amount === "" ?
                                 t("You must enter how much you want to withdraw")
                                 :
-                                data.amount > account.balance ?
-                                    t("The amount must be less than or equal to the available cash of the selected account") + " ($" + account.balance + ")"
+                                data.amount > account.totalAvailable ?
+                                    t("The amount must be less than or equal to the available cash of the selected account") + " ($" + account.totalAvailable + ")"
                                     :
                                     t("The amount must be greater than 0")
                         }
                     </Form.Control.Feedback>
                     <Form.Control.Feedback type="valid">
-                        {t("Looks good")}!
+                        {t("Looks good")}! {
+                              amountDeductedFromOverdraft > 0 &&
+                              t("This movement will deduct {{amount}} from your overdraft balance", { amount: amountDeductedFromOverdraft })
+                        }
                     </Form.Control.Feedback>
                 </InputGroup>
                 {
-                            NoteActive ?
-                                <div className="d-flex align-items-center mb-3">
-                                    <Form.Control
-                                        placeholder={t("Withdrawal note")}
-                                        value={data.note} type="text" id="note" maxLength="250"
-                                        onChange={(e) => { handleChange(e); }}
-                                        required
-                                    />
+                    NoteActive ?
+                        <div className="d-flex align-items-center mb-3">
+                            <Form.Control
+                                placeholder={t("Withdrawal note")}
+                                value={data.note} type="text" id="note" maxLength="250"
+                                onChange={(e) => { handleChange(e); }}
+                                required
+                            />
 
-                                    <button
-                                        type="button"
-                                        onClick={
-                                            () => {
-                                                handleChange({ target: { id: "note", value: "" } })
-                                                setNoteActive(false)
-                                            }
-                                        }
-                                        className="noStyle ms-2" title={t("Remove note")}>
-                                        <FontAwesomeIcon icon={faMinusCircle} />
-                                    </button>
-                                </div>
+                            <button
+                                type="button"
+                                onClick={
+                                    () => {
+                                        handleChange({ target: { id: "note", value: "" } })
+                                        setNoteActive(false)
+                                    }
+                                }
+                                className="noStyle ms-2" title={t("Remove note")}>
+                                <FontAwesomeIcon icon={faMinusCircle} />
+                            </button>
+                        </div>
 
-                                :
-                                <div style={{ height: "38px" }} className="mb-3 w-100 d-flex align-items-start">
-                                    <Button type="button" className="ms-auto" size="sm" variant="danger" onClick={() => setNoteActive(true)}>
-                                        <FontAwesomeIcon className="me-1" icon={faPlusCircle} />
-                                        {t("Add note")}
-                                    </Button>
-                                </div>
-                        }
+                        :
+                        <div style={{ height: "38px" }} className="mb-3 w-100 d-flex align-items-start">
+                            <Button type="button" className="ms-auto" size="sm" variant="danger" onClick={() => setNoteActive(true)}>
+                                <FontAwesomeIcon className="me-1" icon={faPlusCircle} />
+                                {t("Add note")}
+                            </Button>
+                        </div>
+                }
                 <Container className='px-sm-0'>
                     <div className='d-flex justify-content-end'>
                         <Button disabled={fetching || data.amount === "" || data.amount <= 0}

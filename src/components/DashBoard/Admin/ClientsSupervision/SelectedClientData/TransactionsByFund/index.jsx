@@ -77,9 +77,7 @@ const TransactionsByFund = ({ AccountId, ClientId }) => {
                                     {!!(Funds.valid) ?
                                         Funds.content.map((fund, key) => <option key={`funds-selector-option-${fund.id}`} value={fund.id}>{fund.name}</option>)
                                         :
-                                        <Form.Select disabled={!Funds.valid} onChange={handleChange} value={FundSelected} aria-label="Default select example">
-                                            <option value="" disabled>{t("Open this select menu")}</option>
-                                        </Form.Select>
+                                        <option value="" disabled>{t("Open this select menu")}</option>
                                     }
                                 </Form.Select>
                             </Form.Group>

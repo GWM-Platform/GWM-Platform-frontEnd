@@ -83,11 +83,14 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions, cardsAmount, inScr
                                         }
                                     </Row>
                                 </Container>
-                                <Card.Text className="subTitle lighter  mt-0 mb-1">{t("Share price")}:&nbsp;
+                                <Card.Text className="lighter  mt-0 mb-1">{t("Share price")}:&nbsp;
                                     <FormattedNumber className="bolder" value={Fund.fund.sharePrice} prefix="U$D " fixedDecimals={2} /><br />
                                 </Card.Text>
                             </Card.Title>
                             <Container fluid className="px-0">
+                                <span className='label invisible'>
+                                    {t("Available funds")}
+                                </span>
                                 <h1 className="title-gray mt-0">
                                     <Container fluid className="px-0">
                                         <Row className="mx-0 w-100 gx-0 d-flex justify-content-between">
@@ -117,11 +120,11 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions, cardsAmount, inScr
                                 </h1>
                                 <PerformanceComponent withoutSelector text={"Performance"} fundId={Fund.fund.id} />
 
-                                <Card.Text className="subTitle lighter mt-0 mb-0">
+                                <Card.Text className="lighter mt-0 mb-0">
                                     {t("Balance (shares)")}:&nbsp;
                                     <FormattedNumber className="bolder" value={Fund.shares ? Fund.shares : 0} prefix="" fixedDecimals={2} />
                                 </Card.Text>
-                                <Card.Text className="subTitle lighter mt-0 mb-0">
+                                <Card.Text className="lighter mt-0 mb-0">
                                     {t("Pending transactions")}&nbsp;({t("shares")}):&nbsp;<FormattedNumber className="bolder text-green" value={pendingShares()} prefix="+" fixedDecimals={2} />
                                 </Card.Text>
                             </Container>

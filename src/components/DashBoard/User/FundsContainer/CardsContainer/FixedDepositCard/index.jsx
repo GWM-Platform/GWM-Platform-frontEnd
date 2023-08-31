@@ -141,7 +141,7 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, cardsAmount, inScreenFu
                                     </Row>
                                 </Container>
 
-                                <Card.Text className="subTitle lighter mt-0 mt-0 mb-1">
+                                <Card.Text className="lighter mt-0 mt-0 mb-1">
                                     {t("Elapsed")}:&nbsp;
                                     <span className="bolder">
                                         <span className="growOpacity" >
@@ -156,6 +156,9 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, cardsAmount, inScreenFu
                             <Container fluid className="px-0">
                                 <Row className="d-flex justify-content-between">
                                     <h1 className="title-gray">
+                                        <span className='label invisible'>
+                                            {t("Available funds")}
+                                        </span>
                                         <Container fluid className="px-0">
                                             <Row className="mx-0 w-100 gx-0 d-flex justify-content-between">
                                                 <div className="pe-2 containerHideInfo">
@@ -182,30 +185,30 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, cardsAmount, inScreenFu
                                             </Row>
                                         </Container>
                                     </h1>
-                                    <Card.Text className="subTitle lighter my-0">
+                                    <Card.Text className="lighter my-0">
                                         {t("Establishment date")}:&nbsp;
                                         <span className="bolder">
                                             {FixedDeposit?.startDate ? moment(FixedDeposit?.startDate).format('L') : moment().format('L')}
                                         </span><br />
                                     </Card.Text>
-                                    <Card.Text className="subTitle lighter my-0">
+                                    <Card.Text className="lighter my-0">
                                         {t("Due date")}:&nbsp;
                                         <span className="bolder">
                                             {FixedDeposit?.endDate ? moment(FixedDeposit?.endDate).format('L') : moment().add(getDuration(FixedDeposit), "days").format('L')}
                                         </span>
                                         {wasEdited(FixedDeposit) && " *"}
                                     </Card.Text>
-                                    <Card.Text className="subTitle lighter my-0">
+                                    <Card.Text className="lighter my-0">
                                         {t("Anual rate")}:&nbsp;
                                         <FormattedNumber className={`bolder`} value={getAnualRate(FixedDeposit)} suffix="%" fixedDecimals={2} />
                                         {wasEdited(FixedDeposit) && " *"}
                                         <br />
                                     </Card.Text>
-                                    <Card.Text className="subTitle lighter my-0">
+                                    <Card.Text className="lighter my-0">
                                         {t("Initial investment")}:&nbsp;
                                         <FormattedNumber className={`bolder`} value={FixedDeposit.initialAmount} prefix="U$D " fixedDecimals={2} />
                                     </Card.Text>
-                                    <Card.Text className="subTitle lighter my-0">
+                                    <Card.Text className="lighter my-0">
                                         {t("Amount on due date")}:&nbsp;
                                         <span className="bolder">&nbsp;
                                             {
