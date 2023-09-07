@@ -12,9 +12,9 @@ import TicketSearch from 'components/DashBoard/GeneralUse/TicketSearch'
 
 import { useTranslation } from 'react-i18next';
 import FixedDepositTable from './FixedDepositsTable';
-import { Button } from 'react-bootstrap';
+import { Button, Col } from 'react-bootstrap';
 
-const Tables = ({ state, messageVariants }) => {
+const Tables = ({ state, messageVariants, client }) => {
 
     const token = sessionStorage.getItem('access_token')
 
@@ -522,6 +522,7 @@ const Tables = ({ state, messageVariants }) => {
             filterState: stateOnlyReverted ? null : state,
             take: PaginationTransactions.take,
             skip: PaginationTransactions.skip,
+            client: client?.value
         });
         setTransactions({
             ...Transactions,
@@ -572,6 +573,7 @@ const Tables = ({ state, messageVariants }) => {
     const movementsInState = async () => {
         var url = `${process.env.REACT_APP_APIURL}/movements/?` + new URLSearchParams({
             filterState: state,
+            client: client?.value,
             take: PaginationMovements.take,
             skip: PaginationMovements.skip,
             onlyDepositsWithdraws: true
@@ -627,6 +629,7 @@ const Tables = ({ state, messageVariants }) => {
             filterState: 2,//Only search for approved
             take: 100,//Does not have pagination, take as much as possible
             skip: 0,//Does not have pagination
+            client: client?.value
         });
         setPendingSettlements({
             ...PendingSettlements,
@@ -691,6 +694,7 @@ const Tables = ({ state, messageVariants }) => {
             onlyReverted: stateOnlyReverted ?? null,
             take: PaginationTransfers.take,
             skip: PaginationTransfers.skip,
+            client: client?.value
         });
         setTransfers(prevState => ({
             ...prevState,
@@ -743,7 +747,7 @@ const Tables = ({ state, messageVariants }) => {
             filterState: state,
             take: PaginationFixedDeposits.take,
             skip: PaginationFixedDeposits.skip,
-            client: "all"
+            client: client?.value ? client?.value : "all"
         });
         setFixedDeposits(prevState => ({
             ...prevState,
@@ -847,27 +851,27 @@ const Tables = ({ state, messageVariants }) => {
     useEffect(() => {
         if (!searchMovementById.search && !stateOnlyReverted) movementsInState()
         // eslint-disable-next-line
-    }, [PaginationMovements, state, searchMovementById.search])
+    }, [PaginationMovements, state, client, searchMovementById.search])
 
     useEffect(() => {
-        if (!searchTransactionById.search ) transactionsInState()
+        if (!searchTransactionById.search) transactionsInState()
         // eslint-disable-next-line
-    }, [PaginationTransactions, state, searchTransactionById.search])
+    }, [PaginationTransactions, state, client, searchTransactionById.search])
 
     useEffect(() => {
         if (!searchTransferById.search) transfersInState()
         // eslint-disable-next-line
-    }, [PaginationTransfers, state, searchTransferById.search])
+    }, [PaginationTransfers, state, client, searchTransferById.search])
 
     useEffect(() => {
         if (!searchFixedDepositById.search && !stateOnlyReverted) fixedDepositsInState()
         // eslint-disable-next-line
-    }, [PaginationFixedDeposits, state, searchFixedDepositById.search])
+    }, [PaginationFixedDeposits, state, client, searchFixedDepositById.search])
 
     useEffect(() => {
         if (!searchPendingSettlementById.search && !stateOnlyReverted) movementsPendingSettlement()
         // eslint-disable-next-line
-    }, [PaginationPendingSettlements, searchPendingSettlementById.search])
+    }, [PaginationPendingSettlements, client, searchPendingSettlementById.search])
 
     const reloadData = () => {
         transactionsInState()
@@ -946,6 +950,9 @@ const Tables = ({ state, messageVariants }) => {
                         <Button variant="link" onClick={() => executeScroll(FixedDepositsRef)}>{t("Time deposits")}</Button>
                     </div>
                 }
+                <Col xs="12" >
+                    <div className="w-100 my-3" style={{ borderBottom: "1px solid lightgray" }} />
+                </Col>
                 {/*-------------------------------Purchase sale-and transfers------------------------- */}
                 {
                     <>

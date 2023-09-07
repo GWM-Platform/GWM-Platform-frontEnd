@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Row } from 'react-bootstrap'
+import { Col, Container, Row } from 'react-bootstrap'
 import StateSelector from './StateSelector'
 import Message from './Message'
 import Tables from './Tables'
 import './index.css'
+import ClientSelector from './ClientSelector';
+import { useTranslation } from 'react-i18next';
 const TicketsAdministration = () => {
 
     const messageVariants = [
@@ -105,7 +107,9 @@ const TicketsAdministration = () => {
             }
         })
     }
+    const { t } = useTranslation();
 
+    const [client, setClient] = useState("")
     return (
         <Container className="h-100 TicketsAdministration">
             <Row className="pb-2">
@@ -120,8 +124,18 @@ const TicketsAdministration = () => {
                                 <Message selected={2} messageVariants={messageVariants} />
                                 :
                                 <>
-                                    <StateSelector handleChange={handleChange} TransactionStates={TransactionStates} />
-                                    <Tables state={TransactionStates.selected} messageVariants={messageVariants} />
+                                    <Col xs="12">
+                                        <div className="header">
+                                            <h1 className="title">{t("Tickets administration")}</h1>
+                                        </div>
+                                    </Col>
+                                    <Col md="6">
+                                        <StateSelector handleChange={handleChange} TransactionStates={TransactionStates} />
+                                    </Col>
+                                    <Col md="6">
+                                        <ClientSelector client={client} setClient={setClient} />
+                                    </Col>
+                                    <Tables state={TransactionStates.selected} messageVariants={messageVariants} client={client} />
                                 </>
                 }
             </Row>
