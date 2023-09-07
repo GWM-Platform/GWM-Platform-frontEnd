@@ -520,4 +520,18 @@ table .Actions {
   width: auto;
   border-bottom: 1px solid lightgray;
   border-radius: 0;
+  outline: unset;
+  box-shadow: unset!important;
+}
+
+.inline-date-selector {
+  border: none;
+  padding: 0 0 0 0;
+  background-position: right 0.5rem center;
+  display: inline-block;
+  width: auto;
+  border-bottom: 1px solid lightgray;
+  border-radius: 0;
+  outline: unset;
+  box-shadow: unset!important;
 }

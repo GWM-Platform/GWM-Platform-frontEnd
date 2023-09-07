@@ -671,7 +671,7 @@
   "Operation performed by": "Operación realizada por",
   "Partial balance": "Saldo parcial",
   "Maximum ({{maximum}})": "Máximo ({{maximum}})",
-  "All except denied": "Todos salvo rechados",
+  "All except denied": "Todos salvo rechazados",
   "All (including denied)": "Todos (incluyendo rechazados)",
   "Account Alias": "Alias de la cuenta",
   "Partial balance (Cash)": "Saldo parcial (Cta. cte.)",
@@ -1019,5 +1019,15 @@
   "1 USD is equivalent to": "1 USD es equivalente a",
   "As of {{date}}": "Al {{date}}",
   "{{defaultExchangeRate}} as of {{date}}": "{{defaultExchangeRate}} al {{date}}",
-  "Loans to clients": "Prestamos a clientes"
+  "Loans to clients": "Prestamos a clientes",
+  "Official market": "Mercado oficial",
+  "Parallel market": "Mercado paralelo",
+  "sell_quote": "Venta",
+  "buy_quote": "Compra",
+  "Average": "Promedio",
+  "_at_quote": "al",
+  "Market": "Mercado",
+  "User name": "Nombre del usuario",
+  "OVERDRAFT_UPDATE": "Actualización del descubierto",
+  "SHARE_TRANSFER_CREATE": "Creación de transferencias de cuotapartes"
 }

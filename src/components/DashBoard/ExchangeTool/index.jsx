@@ -1,10 +1,10 @@
 import { faExchange } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "./index.scss"
 import { Col, Form, InputGroup, Modal, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import CurrencyInput, { formatValue } from "@osdiab/react-currency-input-field";
+import CurrencyInput from "@osdiab/react-currency-input-field";
 import moment from "moment";
 import { unMaskNumber } from "utils/unmask";
 import Decimal from "decimal.js";
@@ -17,14 +17,23 @@ const ExchangeTool = () => {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    const defaultExchangeRate = "730"
+
+    const defaultValues = useMemo(() => ({
+        date: moment().format("L"),
+        market: "paralelo",
+        operation: "venta"
+    }), [])
+
     const [data, setData] = useState({
         sourceAmount: "",
         targetAmount: "",
-        exchangeRate: defaultExchangeRate
+        exchangeRate: "",
+        date: defaultValues.date,
+        market: defaultValues.market,
+        operation: defaultValues.operation
     });
 
-    const handleChange = (value, name) => {
+    const handleChange = (value, name, realEvent = false) => {
         if (name === "sourceAmount") {
             const unMaskedSourceAmount = unMaskNumber({ value })
             if (value !== undefined) {
@@ -53,17 +62,180 @@ const ExchangeTool = () => {
                 if (data.sourceAmount !== "") {
                     const unMaskedExchangeRate = unMaskNumber({ value })
                     const calculatedTargetAmount = Decimal(unMaskedSourceAmount).times(unMaskedExchangeRate).toFixed(2)
-                    setData(prevState => ({ ...prevState, targetAmount: calculatedTargetAmount, exchangeRate: value }))
+                    setData(prevState => ({
+                        ...prevState, targetAmount: calculatedTargetAmount, exchangeRate: value, ...realEvent ? {
+                            date: "",
+                            operation: "",
+                            market: ""
+                        } : {}
+                    }))
                 } else {
                     setData(prevState => ({ ...prevState, targetAmount: "", exchangeRate: value }))
                 }
             } else {
                 setData(prevState => ({ ...prevState, exchangeRate: "", targetAmount: data.sourceAmount }))
             }
+        } else {
+            setData(prevState => ({ ...prevState, [name]: value }))
+            if (name === "date") {
+                selectFromApiData(data.market, data.operation, value)
+            }
+
+            if (name === "operation") {
+                selectFromApiData(data.market, value, data.date)
+            }
+
+            if (name === "market") {
+                selectFromApiData(value, data.operation, data.date)
+            }
         }
 
     }
-    console.log(moment().format())
+
+    const selectFromApiData = (market, operation, date) => {
+        if (market === "oficial") {
+            const quote = oficialExchangeRate.exchangeRates.find(exchangeRate => exchangeRate.fecha === date)
+            if (quote) {
+                const exchangeValue = operation === "venta" ? quote.venta : operation === "compra" ? quote.compra : (Decimal(quote.compra).add(quote.venta).div(2).toString())
+                handleChange(exchangeValue.replaceAll(".", ","), "exchangeRate")
+            }
+        }
+        if (market === "paralelo") {
+            const quote = paraleloExchangeRate.exchangeRates.find(exchangeRate => exchangeRate.fecha === date)
+            if (quote) {
+                const exchangeValue = operation === "venta" ? quote.venta : operation === "compra" ? quote.compra : (Decimal(quote.compra).add(quote.venta).div(2).toString())
+                handleChange(exchangeValue.replaceAll(".", ","), "exchangeRate")
+            }
+        }
+    }
+
+    const [paraleloExchangeRate, setParaleloExchangeRate] = useState({
+        exchangeRates: [],
+        fetching: false
+    })
+    useEffect(() => {
+        const fetchData = async () => {
+            setParaleloExchangeRate({ ...{ exchangeRates: [], fetching: true } })
+            try {
+                const response = await fetch(
+                    `https://mercados.ambito.com/dolar/informal/historico-general/${moment().subtract(1, "month").format("YYYY-MM-DD")}/${moment().add(2, "day").format("YYYY-MM-DD")}`,
+                    {
+                        headers: {
+                            "accept": "*/*",
+                            "accept-language": "es-419,es;q=0.9,es-ES;q=0.8,en;q=0.7,en-GB;q=0.6,en-US;q=0.5,hu;q=0.4",
+                            "sec-ch-ua": "\"Chromium\";v=\"116\", \"Not)A;Brand\";v=\"24\", \"Microsoft Edge\";v=\"116\"",
+                            "sec-ch-ua-mobile": "?0",
+                            "sec-ch-ua-platform": "\"Windows\"",
+                            "sec-fetch-dest": "empty",
+                            "sec-fetch-mode": "cors",
+                            "sec-fetch-site": "same-site"
+                        },
+                        referrer: "https://www.ambito.com/",
+                        referrerPolicy: "strict-origin-when-cross-origin",
+                        method: "GET",
+                        mode: "cors",
+                        credentials: "omit"
+                    }
+                );
+
+                if (!response.ok) {
+                    console.error(`Fetch failed with status ${response.status}`);
+                    setParaleloExchangeRate({ ...{ exchangeRates: [], fetching: false } })
+                }
+
+                const data = await response.json();
+                const guide = data.find(exchangeRate => exchangeRate.some(item => (item === "Venta" || item === "Compra" || item === "Promedio")))
+                setParaleloExchangeRate({
+                    ...{
+                        exchangeRates:
+                            data
+                                .filter(item => item !== guide)
+                                .map(item => ({
+                                    venta: (item[guide.findIndex(item => item === "Venta")] + "").replaceAll(",", "."),
+                                    compra: (item[guide.findIndex(item => item === "Compra")] + "").replaceAll(",", "."),
+                                    fecha: moment(item[guide.findIndex(item => item === "Fecha")], "DD/MM/YYYY").format("L")
+                                })).filter((date, i, self) =>
+                                    self.findIndex(d => d.fecha === date.fecha) === i
+                                ),
+                        fetching: false
+                    }
+                })
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    const [oficialExchangeRate, setOficialExchangeRate] = useState({
+        exchangeRates: [],
+        fetching: false
+    })
+
+    useEffect(() => {
+        const fetchData = async () => {
+            setOficialExchangeRate({ ...{ exchangeRates: [], fetching: true } })
+            try {
+                const response = await fetch(
+                    `https://mercados.ambito.com/dolar/oficial/historico-general/${moment().subtract(1, "month").format("YYYY-MM-DD")}/${moment().add(1, "day").format("YYYY-MM-DD")}`,
+                    {
+                        headers: {
+                            "accept": "*/*",
+                            "accept-language": "es-419,es;q=0.9,es-ES;q=0.8,en;q=0.7,en-GB;q=0.6,en-US;q=0.5,hu;q=0.4",
+                            "sec-ch-ua": "\"Chromium\";v=\"116\", \"Not)A;Brand\";v=\"24\", \"Microsoft Edge\";v=\"116\"",
+                            "sec-ch-ua-mobile": "?0",
+                            "sec-ch-ua-platform": "\"Windows\"",
+                            "sec-fetch-dest": "empty",
+                            "sec-fetch-mode": "cors",
+                            "sec-fetch-site": "same-site"
+                        },
+                        referrer: "https://www.ambito.com/",
+                        referrerPolicy: "strict-origin-when-cross-origin",
+                        method: "GET",
+                        mode: "cors",
+                        credentials: "omit"
+                    }
+                );
+
+                if (!response.ok) {
+                    console.error(`Fetch failed with status ${response.status}`);
+                    setOficialExchangeRate({ ...{ exchangeRates: [], fetching: false } })
+                }
+
+                const data = await response.json();
+                const guide = data.find(exchangeRate => exchangeRate.some(item => (item === "Venta" || item === "Compra" || item === "Promedio")))
+                setOficialExchangeRate({
+                    ...{
+                        exchangeRates:
+                            data
+                                .filter(item => item !== guide)
+                                .map(item => ({
+                                    venta: (item[guide.findIndex(item => item === "Venta")] + "").replaceAll(",", "."),
+                                    compra: (item[guide.findIndex(item => item === "Compra")] + "").replaceAll(",", "."),
+                                    fecha: moment(item[guide.findIndex(item => item === "Fecha")], "DD/MM/YYYY").format("L")
+                                })).filter((date, i, self) =>
+                                    self.findIndex(d => d.fecha === date.fecha) === i
+                                ),
+                        fetching: false
+                    }
+                })
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        if (paraleloExchangeRate.exchangeRates.length > 0) {
+            selectFromApiData(defaultValues.market, defaultValues.operation, defaultValues.date)
+        }
+        //eslint-disable-next-line
+    }, [paraleloExchangeRate.exchangeRates, defaultValues.market, defaultValues.operation, defaultValues.date])
+
+
     return (
         <>
             <button onClick={handleShow} className="exchange-tool-button">
@@ -76,10 +248,47 @@ const ExchangeTool = () => {
                 <Modal.Body>
                     <Row>
                         <Col xs="12">
+                            <h3>
+                                <span>
+                                    <Form.Select className='inline-selector' onChange={e => handleChange(e.target.value, e.target.id)} value={data.market} id="market">
+                                        <option disabled value="">{t("Market")}</option>
+                                        <option value="oficial">{t("Official market")}</option>
+                                        <option value="paralelo">{t("Parallel market")}</option>
+                                    </Form.Select>
+                                </span>
+                                <div className="mx-2 pb-1 d-inline" style={{ borderLeft: "1px solid lightgray" }} />
+                                <span>
+                                    <Form.Select className='inline-selector me-2' onChange={e => handleChange(e.target.value, e.target.id)} value={data.operation} id="operation">
+                                        <option disabled value="">{t("Valor")}</option>
+                                        <option value="venta">{t("sell_quote")}</option>
+                                        <option value="compra">{t("buy_quote")}</option>
+                                        <option value="promedio">{t("Average")}</option>
+                                    </Form.Select>
+                                </span>
+                                {t("_at_quote")}
+                                <span>
+                                    <Form.Select disabled={data.operation === "" || data.market === ""} className='inline-selector ms-2' onChange={e => handleChange(e.target.value, e.target.id)} value={data.date} id="date">
+                                        <option disabled value="">{t("Date")}</option>
+                                        {
+                                            data.market === "oficial" && oficialExchangeRate.exchangeRates.map((exchangeRate, index) => {
+                                                return <option key={index} value={exchangeRate.fecha}>{moment(exchangeRate.fecha, "DD/MM/YYYY").format("L")}</option>
+                                            })
+                                        }
+                                        {
+                                            data.market === "paralelo" && paraleloExchangeRate.exchangeRates.map((exchangeRate, index) => {
+                                                return <option key={index} value={exchangeRate.fecha}>{moment(exchangeRate.fecha, "DD/MM/YYYY").format("L")}</option>
+                                            })
+                                        }
+                                    </Form.Select>
+                                </span>
+                            </h3>
+                        </Col>
+
+                        <Col xs="12">
                             <h1>{t("1 USD is equivalent to")}</h1>
                         </Col>
 
-                        <Col md="8">
+                        <Col md="8" className="mb-2">
                             <InputGroup>
                                 <CurrencyInput
                                     allowNegativeValue={false}
@@ -88,7 +297,7 @@ const ExchangeTool = () => {
                                     decimalsLimit={2}
                                     decimalSeparator={decimalSeparator}
                                     groupSeparator={groupSeparator}
-                                    onValueChange={(value, name) => handleChange(value, name)}
+                                    onValueChange={(value, name) => handleChange(value, name, true)}
                                     className="form-control"
                                     prefix="ARS "
                                 />
@@ -97,27 +306,7 @@ const ExchangeTool = () => {
                                 </InputGroup.Text>
                             </InputGroup>
                         </Col>
-                        <Col xs="12">
-                            <h3>
-                                {
-                                    (data.exchangeRate !== defaultExchangeRate) &&
-                                    <>
-                                        <span style={{ cursor: "pointer", textDecoration: "underline" }} onClick={() => { handleChange(defaultExchangeRate, "exchangeRate") }}>
-                                            {
-                                                formatValue({
-                                                    value: defaultExchangeRate,
-                                                    groupSeparator: '.',
-                                                    decimalSeparator: ',',
-                                                    prefix: "ARS ",
-                                                })
-                                            }
-                                        </span>
-                                        &nbsp;
-                                    </>
-                                }
-                                {t("As of {{date}}", { date: moment("2023-08-31T14:25:17-03:00").format("L") })}
-                            </h3>
-                        </Col>
+                        <div className="w-100" />
 
                         <Col>
                             <Form.Group className="mb-3" >

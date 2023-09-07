@@ -788,5 +788,8 @@
     "Current_accounts": "Accounts",
     "_at": "at",
     "_FIXED_DEPOSIT_CLOSE": "Your time deposit has finished",
-    "_FIXED_DEPOSIT_PRECANCEL": "Your time deposit has been pre-cancelled"
+    "_FIXED_DEPOSIT_PRECANCEL": "Your time deposit has been pre-cancelled",
+    "sell_quote": "Sell",
+    "buy_quote": "Buy",
+    "_at_quote": "at"
 }
