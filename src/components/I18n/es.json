@@ -1029,5 +1029,6 @@
   "Market": "Mercado",
   "User name": "Nombre del usuario",
   "OVERDRAFT_UPDATE": "Actualización del descubierto",
-  "SHARE_TRANSFER_CREATE": "Creación de transferencias de cuotapartes"
+  "SHARE_TRANSFER_CREATE": "Creación de transferencias de cuotapartes",
+  "the fixed deposit with the id": "el plazo fijo con el id"
 }

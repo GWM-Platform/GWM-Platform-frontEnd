@@ -10,10 +10,21 @@ import { getAnualRate, getDuration, wasEdited } from 'utils/fixedDeposit';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import Notes from 'components/DashBoard/Admin/TicketsAdministration/Tables/Notes';
+import { faTimesCircle } from '@fortawesome/free-regular-svg-icons';
+import ActionConfirmationModal from 'components/DashBoard/Admin/TicketsAdministration/Tables/FixedDepositsTable/FixedDepositRow/ActionConfirmationModal'
 
-const FixedDepositRow = ({ Movement }) => {
+const FixedDepositRow = ({ Movement, reloadData }) => {
     const { t } = useTranslation();
     const { toLogin } = useContext(DashBoardContext);
+
+    const [ShowModal, setShowModal] = useState(false)
+    const [Action, setAction] = useState("approve")
+
+
+    const launchModalConfirmation = (action) => {
+        setAction(action)
+        setShowModal(true)
+    }
 
     const status = () => {
         switch (Movement.stateId) {
@@ -211,6 +222,14 @@ const FixedDepositRow = ({ Movement }) => {
                         <span className="h5 mb-0 me-1 me-md-2">({t("Personalized  *")})</span>}
                     <Badge className='ms-auto' bg={status()?.bg}>{t(status().text)}</Badge>
                     {
+                        !!(Movement.stateId === 2 && !Movement.closed) &&
+                        <div className="h-100 d-flex align-items-center justify-content-around Actions ms-2">
+                            <div className="iconContainer red me-1">
+                                <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => { launchModalConfirmation("close") }} />
+                            </div>
+                        </div>
+                    }
+                    {
                         (!!(Movement?.userEmail) || !!(Movement?.userName)) &&
                         <OverlayTrigger
                             show={showClick || showHover}
@@ -331,7 +350,12 @@ const FixedDepositRow = ({ Movement }) => {
                 <Notes transferNote={transferNote} clientNote={clientNote} denialMotive={denialMotive} adminNote={adminNote} />
 
             </div >
-
+            {
+                Movement.stateId === 1 || Movement.stateId === 6 || (Movement.stateId === 2 && !Movement.closed) ?
+                    <ActionConfirmationModal reloadData={reloadData} movement={Movement} setShowModal={setShowModal} action={Action} show={ShowModal} />
+                    :
+                    null
+            }
         </>
     )
 }

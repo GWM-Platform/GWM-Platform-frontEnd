@@ -176,7 +176,7 @@ const TimeDeposits = ({ AccountId, ClientId }) => {
                             Decimal(TimeDeposits.content.deposits.length).gt(0) ?
                                 <div style={{ minHeight: `calc( ( 0.5rem * 2 + 25.5px ) * ${Pagination.take + 1} )` }}
                                     className={`tableMovements w-1 overflow-auto `}>
-                                    {TimeDeposits.content.deposits.map((deposit, key) => <FixedDepositRow Movement={deposit} key={`fixed-deposit-${key}`} />)}
+                                    {TimeDeposits.content.deposits.map((deposit, key) => <FixedDepositRow reloadData={getTimeDeposits} Movement={deposit} key={`fixed-deposit-${key}`} />)}
                                 </div>
                                 :
                                 <NoMovements movements={Decimal(Pagination.take).toNumber()} />
