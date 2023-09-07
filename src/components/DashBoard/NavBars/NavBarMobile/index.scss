@@ -1,6 +1,6 @@
 $color_1: black;
 $color_2: var(--blue-main);
-$color_3: rgba(0,0,0,0.4);
+$color_3: rgba(0, 0, 0, 0.4);
 $background-color_1: var(--footer-background);
 
 .navBarMobile {
@@ -9,12 +9,15 @@ $background-color_1: var(--footer-background);
 	position: sticky;
 	bottom: 0;
 	z-index: 10;
+
 	.section.selected {
 		color: $color_2;
 	}
+
 	.section {
 		color: $color_3;
 		flex-shrink: 1;
+
 		.section-label {
 			text-align: center;
 			font-size: 9px;
@@ -23,16 +26,39 @@ $background-color_1: var(--footer-background);
 			transition: all 0.5s;
 			padding: .2em;
 			margin-top: .1em;
+			white-space: nowrap;
 		}
 	}
+
 	.rowNavBarMobile {
 		overflow-x: auto;
 	}
 }
+
 @media (max-width: 400px) {
 	.navBarMobile {
 		.rowNavBarMobile {
 			justify-content: start !important;
+		}
+	}
+}
+
+@media (max-width: 270px) {
+	.navBarMobile {
+		.section {
+			.section-label {
+				font-size: 7px;
+			}
+		}
+	}
+}
+
+@media (max-width: 240px) {
+	.navBarMobile {
+		.section {
+			.section-label {
+				display: none;
+			}
 		}
 	}
 }

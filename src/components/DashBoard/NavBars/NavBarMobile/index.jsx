@@ -76,7 +76,7 @@ const NavBarMobile = () => {
                                 <div className="d-flex justify-content-center">
                                     <FontAwesomeIcon className="icon" icon={faChartLine} />
                                 </div>
-                                <h1 className="section-label  mb-0 pb-0  pb-0" >{t("Funds and Assets")}</h1>
+                                <h1 className="section-label  mb-0 pb-0  pb-0" >{t("Funds")}</h1>
                             </div>
 
                             <div className="section" onClick={() => toLogin()} xs="auto">
