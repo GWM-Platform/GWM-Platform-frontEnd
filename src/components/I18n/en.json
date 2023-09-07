@@ -791,5 +791,7 @@
     "_FIXED_DEPOSIT_PRECANCEL": "Your time deposit has been pre-cancelled",
     "sell_quote": "Sell",
     "buy_quote": "Buy",
-    "_at_quote": "at"
+    "_at_quote": "at",
+    "OVERDRAFT_UPDATE":"Overdraft update",
+    "SHARE_TRANSFER_CREATE": "Share transfer creation"
 }
