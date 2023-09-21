@@ -191,6 +191,27 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
             })
         }
 
+        const getClientPendingSettlement = async () => {
+            axios.get(`/movements`, {
+                params: {
+                    limit: 50,
+                    skip: 0,
+                    client: ClientSelected.id,
+                    filterState: 2
+                }
+            }).then(function (response) {
+                const withdrawals = response?.data?.movements?.filter(movement => movement.motive === "WITHDRAWAL") || []
+                setPendingMovements(prevState => ({
+                    ...prevState,
+                    ...{
+                        fetching: false,
+                        fetched: true,
+                        value: [...prevState.value, ...withdrawals]
+                    }
+                }))
+            })
+        }
+
         const getPendingTransfers = () => {
             setPendingTransfers(prevState => ({
                 ...prevState,
@@ -242,7 +263,9 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
             })
         }
 
+
         getPendingMovements()
+        getClientPendingSettlement()
         getPendingTransfers()
     }, [token, ClientSelected.id])
 

@@ -29,10 +29,9 @@ const AccountCard = ({ data, setData, openAccordion }) => {
                 onClick={() => { setFundSelected(setData, "cash", openAccordion) }}>
                 <Card.Header><strong className="title">{t("Cash")}</strong></Card.Header>
                 <Card.Body>
-                    <Card.Title> {t("Available funds")}{": "} <strong><FormattedNumber className="text-nowrap" prefix="U$D " value={AccountSelectedEnriched?.totalAvailable || 0} fixedDecimals={2} /></strong></Card.Title>
-                    {
-                        AccountSelectedEnriched.hasOverdraft &&
-                        <Card.Title> {t("Own funds")}{": "} <br /><strong><FormattedNumber className="text-nowrap" prefix="U$D " value={AccountSelectedEnriched?.ownFunds || 0} fixedDecimals={2} /></strong></Card.Title>
+                    <Card.Title> {t("Balance")}{": "} <strong><FormattedNumber className="text-nowrap" prefix="U$D " value={AccountSelectedEnriched?.balance || 0} fixedDecimals={2} /></strong></Card.Title>
+                    {AccountSelectedEnriched?.totalAvailable !== AccountSelectedEnriched?.balance &&
+                        <Card.Title> {t("Available funds")}{": "} <strong><FormattedNumber className="text-nowrap" prefix="U$D " value={AccountSelectedEnriched?.totalAvailable || 0} fixedDecimals={2} /></strong></Card.Title>
                     }
                 </Card.Body>
             </Card>

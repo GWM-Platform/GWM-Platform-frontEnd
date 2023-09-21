@@ -40,7 +40,7 @@ const WithdrawData = ({ data, handleChange, validated, handleSubmit, account, fe
         setInputValid(inputRef?.current?.checkValidity())
     }, [inputRef, data.amount])
 
-    const amountDeductedFromOverdraft = Decimal(data?.amount || 0).minus(account?.balance || 0).toNumber()
+    const amountDeductedFromOverdraft = account?.balance > 0 ? Decimal(data?.amount || 0).minus(account?.balance || 0).toNumber() : data.amount
 
     return (
         <>
