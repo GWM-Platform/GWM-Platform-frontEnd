@@ -14,22 +14,26 @@ const PopoverAvailableFunds = React.forwardRef(
             <Popover id="popover-overview-own-funds" {...props} ref={ref} >
                 <Popover.Header>{t("Available funds overview")}</Popover.Header>
                 <Popover.Body className="pt-1 pb-2">
-                    {t("Own funds")}:&nbsp;
-                    <span className="bolder" style={{ color: "rgb(105, 105, 105)" }}>
-                        <FormattedNumber value={account.ownFunds} prefix="U$D " fixedDecimals={2} />
-                    </span><br />
+
                     {t("Available overdraft")}:&nbsp;
                     <span className="bolder" style={{ color: "rgb(105, 105, 105)" }}>
                         <FormattedNumber value={account.overdraftAvailable} prefix="U$D " fixedDecimals={2} />
                     </span><br />
                     {
-                        account.owed !== 0 &&
-                        <>
-                            {t("Owed")}:&nbsp;
-                            <span className="bolder" style={{ color: "rgb(105, 105, 105)" }}>
-                                <FormattedNumber value={account.owed} prefix="U$D " fixedDecimals={2} />
-                            </span>
-                        </>
+                        account.owed !== 0 ?
+                            <>
+                                {t("Owed")}:&nbsp;
+                                <span className="bolder text-nowrap" style={{ color: "rgb(105, 105, 105)" }}>
+                                    <FormattedNumber value={account.owed} prefix="U$D " fixedDecimals={2} />
+                                </span>
+                            </>
+                            :
+                            <>
+                                {t("Total balance")}:&nbsp;
+                                <span className="bolder text-nowrap" style={{ color: "rgb(105, 105, 105)" }}>
+                                    <FormattedNumber value={account.totalAvailable} prefix="U$D " fixedDecimals={2} />
+                                </span><br />
+                            </>
                     }
                 </Popover.Body>
             </Popover>

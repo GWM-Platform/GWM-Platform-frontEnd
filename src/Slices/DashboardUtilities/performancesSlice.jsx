@@ -12,13 +12,31 @@ const performancesSlice = createSlice({
     extraReducers(builder) {
         builder
             .addCase(fetchPerformance.pending, (state, action) => {
-                state[action?.meta?.arg?.fund || "totalPerformance"] = { status: 'loading', performance: 0 }
+                const key = (
+                    action?.meta?.arg?.fixedDepositId ?
+                        "fixedDeposit"
+                        :
+                        (action?.meta?.arg?.fund || "totalPerformance")
+                )
+                state[key] = { status: 'loading', performance: 0 }
             })
             .addCase(fetchPerformance.fulfilled, (state, action) => {
-                state[action?.payload?.fund || "totalPerformance"] = { status: 'succeeded', performance: action.payload.response }
+                const key = (
+                    action?.payload?.fixedDepositId ?
+                        "fixedDeposit"
+                        :
+                        (action?.payload?.fund || "totalPerformance")
+                )
+                state[key] = { status: 'succeeded', performance: action.payload.response }
             })
             .addCase(fetchPerformance.rejected, (state, action) => {
-                state[action?.meta?.arg?.fund || "totalPerformance"] = { status: 'error', performance: 0, error: action.error.message }
+                const key = (
+                    action?.meta?.arg?.fixedDepositId ?
+                        "fixedDeposit"
+                        :
+                        (action?.meta?.arg?.fund || "totalPerformance")
+                )
+                state[key] = { status: 'error', performance: 0, error: action.error.message }
             })
     }
 })
@@ -36,17 +54,26 @@ export const fetchPerformance = createAsyncThunk(
             }
         }
 
-        const response = await axios.get(`/clients/${params.clientId}/${params.totalPerformance ? "totalPerformance" : "fundPerformance"}`, {
+        const response = await axios.get(
+            `/clients/${params.clientId}/${params.fixedDepositId ?
+                "fixedDepositsPerformance"
+                :
+                (params.totalPerformance ?
+                    "totalPerformance"
+                    :
+                    "fundPerformance")
+            }`, {
             params: {
+                fixedDepositId: params.fixedDepositId,
                 fund: params.totalPerformance ? undefined : params.fund,
                 year: params.year
             }
         })
 
-        return { response: response.data, fund: params.fund }
+        return { response: response.data, fund: params.fund, fixedDepositId: params.fixedDepositId }
     }
 )
 
-export const selectPerformanceById = (state, fundId) => {
-    return state.performances?.[fundId]
+export const selectPerformanceById = (state, key) => {
+    return state.performances?.[key]
 }

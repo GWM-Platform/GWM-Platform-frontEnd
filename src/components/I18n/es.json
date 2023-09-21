@@ -428,6 +428,7 @@
   "Select the account for which you want to generate a withdrawal ticket": "Seleccione la cuenta para la cual quiere generar un ticket de retiro",
   "Withdraw cash from an account": "Retirar Dinero de una Cuenta",
   "The amount must be less than or equal to the available cash of the selected account": "La cantidad debe ser menor o igual al balance de la cuenta seleccionada",
+  "The amount must be less than or equal to the available cash of your account": "La cantidad debe ser menor o igual al balance de su cuenta",
   "Date that will appear as when the operation was performed": "Fecha que aparecerá como cuando se realizó la operación",
   "You must enter the date that will appear as when the operation was performed": "Debe ingresar la fecha que aparecerá como cuando se realizó la operación",
   "Operation status": "Estado de la operación",

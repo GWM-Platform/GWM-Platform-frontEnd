@@ -19,7 +19,7 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, cardsAmount, inScreenFu
 
     const ellapsedDays = () => (
         Math.floor(new Date().getTime() / 1000 / 60 / 60 / 24) -
-        Math.floor(new Date(FixedDeposit?.startDate).getTime() / 1000 / 60 / 60 / 24)
+        Math.floor(new Date(FixedDeposit?.startDate || FixedDeposit?.creationDate).getTime() / 1000 / 60 / 60 / 24)
     ) ?? 0
 
     const [profit, setProfit] = useState({ fetching: false, fetched: false, valid: false, value: 0 })
@@ -96,16 +96,17 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, cardsAmount, inScreenFu
     }, [])
 
     return (
-        <Col className="fund-col growAnimation" sm="6" md="6" lg="4" >
-            <Card className="FundCard FixedDeposit h-100">
+        <Col className="fund-col growAnimation" sm="6" md="6" lg="4" style={{ maxHeight: "100%" }}  >
+            <Card className="FundCard FixedDeposit h-100" style={{ maxHeight: "100%", display: "flex" }}>
                 <Card.Header
                     className="header d-flex align-items-center justify-content-center"
+                    style={{ flex: "none" }}
                 >
                     <div className="currencyContainer d-flex align-items-center justify-content-center">
                         <FontAwesomeIcon color='white' icon={faPiggyBank} />
                     </div>
                 </Card.Header>
-                <Card.Body className="body">
+                <Card.Body className="body" style={{ flexGrow: "1", overflow: "overlay" }}>
                     <Container fluid className="px-0">
                         <Row className="mx-0 w-100 gx-0">
                             <Card.Title className="my-0" >
@@ -115,7 +116,7 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, cardsAmount, inScreenFu
                                             <h1 className="title m-0">
                                                 {t("Time deposit")}&nbsp;{FixedDeposit.id}
                                                 &nbsp;{!!(isPending(FixedDeposit)) ?
-                                                    <span style={{ textTransform: "none" }}>({t("Pending approval")})</span>
+                                                    <span style={{ textTransform: "none", fontSize: "12px" }}>({t("Pending approval")})</span>
                                                     :
                                                     wasEdited(FixedDeposit) &&
                                                     <span style={{ textTransform: "none" }}>({t("Personalized  *")})</span>}
@@ -224,6 +225,8 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, cardsAmount, inScreenFu
                         </Row>
                     </Container>
                 </Card.Body>
+                <Card.Footer className="footer m-0 p-0" style={{ flex: "none" }}>
+                </Card.Footer>
             </Card >
         </Col >
 

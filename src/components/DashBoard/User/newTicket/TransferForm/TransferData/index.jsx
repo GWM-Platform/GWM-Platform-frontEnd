@@ -156,10 +156,12 @@ const TransferData = ({ data, Funds, handleChange, TargetAccount, toggleAccordio
                         {
                             t("Looks good") + "! "
                         }
-                        {
-                            amountDeductedFromOverdraft > 0 &&
-                            t("This movement will deduct {{amount}} from your overdraft balance", { amount: amountDeductedFromOverdraft })
-                        }
+                        <span style={{ color: "orange" }}>
+                            {
+                                amountDeductedFromOverdraft > 0 &&
+                                t("This movement will deduct {{amount}} from your overdraft balance", { amount: amountDeductedFromOverdraft })
+                            }
+                        </span>
                     </Form.Control.Feedback>
                 </InputGroup>
 

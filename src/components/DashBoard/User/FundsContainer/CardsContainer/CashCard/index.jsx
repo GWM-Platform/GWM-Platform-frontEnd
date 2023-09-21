@@ -39,18 +39,18 @@ const CashCard = (props) => {
         history.push(`/DashBoard/withdraw`);
     }
 
-
     return (
-        <Col sm="6" md="6" lg="4" className={`fund-col  growAnimation ${Pinned && !isMobile ? "pinned" : ""}`}>
-            <Card className="h-100 cashCard">
+        <Col sm="6" md="6" lg="4" className={`fund-col  growAnimation ${Pinned && !isMobile ? "pinned" : ""}`} style={{ maxHeight: "100%" }}>
+            <Card className="h-100 cashCard" style={{ maxHeight: "100%", display: "flex" }}>
                 <Card.Header
                     className="header d-flex align-items-center justify-content-center"
+                    style={{ flex: "none" }}
                 >
                     <span className="currencyContainer d-flex align-items-center justify-content-center">
                         <img className="currency px-0 mx-0" alt="cash" src={process.env.PUBLIC_URL + '/images/FundsLogos/cash.svg'} />
                     </span>
                 </Card.Header>
-                <Card.Body className="body">
+                <Card.Body className="body" style={{ flexGrow: "1", overflow: "overlay" }}>
                     <Row >
                         <Card.Title className="my-0" >
                             <Container fluid className="px-0">
@@ -118,14 +118,14 @@ const CashCard = (props) => {
                                 Fund.hasOverdraft ?
                                     <>
                                         <span className='label'>
-                                            {t("Available funds")}
+                                            {t("Balance")}
                                         </span>
                                         <Container fluid className="px-0">
                                             <Row className="w-100 mx-0 d-flex gx-0 align-items-center">
                                                 <span className="containerHideInfo">
-                                                    <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={parseFloat(Fund.totalAvailable).toString()} prefix="U$D " fixedDecimals={2} />
-                                                    <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={parseFloat(Fund.totalAvailable).toString()} prefix="U$D " fixedDecimals={2} />
-                                                    <FormattedNumber className={`info placeholder`} value={parseFloat(Fund.totalAvailable).toString()} prefix="U$D " fixedDecimals={2} />
+                                                    <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={parseFloat(Fund.balance).toString()} prefix="U$D " fixedDecimals={2} />
+                                                    <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={parseFloat(Fund.balance).toString()} prefix="U$D " fixedDecimals={2} />
+                                                    <FormattedNumber className={`info placeholder`} value={parseFloat(Fund.balance).toString()} prefix="U$D " fixedDecimals={2} />
                                                 </span>
                                                 <OverlayTrigger rootClose trigger="click" placement="auto-start" overlay={
                                                     <PopoverAvailableFunds account={Fund} />
@@ -233,7 +233,7 @@ const CashCard = (props) => {
                         </div>
                     </Row>
                 </Card.Body>
-                <Card.Footer className="footer mt-2 m-0 p-0">
+                <Card.Footer className="footer mt-2 m-0 p-0" style={{ flex: "none" }}>
                     <Row className="d-flex justify-content-center m-0">
                         <Col xs="6" className="d-flex justify-content-center p-0 m-0">
                             <Button

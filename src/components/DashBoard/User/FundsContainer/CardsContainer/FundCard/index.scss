@@ -11,17 +11,27 @@ $border-color_2: var(--main-card-color);
 $border-color_3: white;
 
 .cardsContainer {
+	@media (min-width: 576px) {
+		max-height: 90%;
+
+		.row {
+			max-height: 100%
+		}
+	}
+
 	.FundCard {
 		border: 1px transparent;
 		border-radius: 30px;
 		background-color: $background-color_1;
 		filter: drop-shadow(0px 0px 3px gray);
+
 		.header {
 			border-radius: 30px 30px 0px 0px;
 			border: 1px solid;
 			border-color: $border-color_1;
 			font-size: 60px;
 			background-color: $background-color_2;
+
 			.currencyContainer {
 				>.currency {
 					font-size: 30px;
@@ -32,6 +42,7 @@ $border-color_3: white;
 					padding: 0;
 					width: 30px;
 				}
+
 				font-size: 30px;
 				border: white 1px solid;
 				border-radius: 50%;
@@ -40,46 +51,54 @@ $border-color_3: white;
 				margin: .3em 0em;
 			}
 		}
+
 		.body {
 			border-left: 1px solid;
 			border-right: 1px solid;
 			border-bottom: 1px solid;
 			border-color: $border-color_1;
 			background-color: $background-color_3;
+
 			.title {
 				color: $color_2;
 				text-transform: uppercase;
 				text-align: start;
 				font-size: 20px;
 			}
+
 			.title-gray {
 				text-transform: capitalize;
 				color: $color_3;
 				text-align: start;
 				font-size: 20px;
 			}
+
 			.subTitle {
 				color: $color_2;
 				text-align: start;
 				font-size: 17px;
 			}
+
 			.balanceAmount {
 				padding: 0;
 				text-align: end;
 				font-size: 20px;
 				color: $color_3;
 			}
+
 			.balance {
 				padding: 0;
 				float: right;
 				font-size: 17px;
 			}
 		}
+
 		.footer {
 			background-color: $background-color_1;
 			border: none;
 			border-radius: 0px 0px 30px 30px;
 			border-color: $border-color_2;
+
 			.button {
 				display: flex;
 				justify-content: center;
@@ -91,35 +110,56 @@ $border-color_3: white;
 				border-color: $border-color_1;
 				color: $color_4;
 				width: 100%;
+
 				.label {
 					font-size: 20px;
 					margin: 0;
 				}
+
 				&:disabled {
 					background-color: $background-color_3 !important;
 					opacity: .9;
 					cursor: not-allowed;
 				}
 			}
+
 			.button.disabled {
 				background-color: $background-color_3 !important;
 				opacity: .9;
 				cursor: not-allowed;
 			}
+
 			.left {
 				border-radius: 0px 0px 0px 30px;
 			}
+
 			.right {
 				border-radius: 0px 0px 30px 0px;
 			}
 		}
 	}
+
+	.card-body {
+		padding: calc(var(--bs-card-spacer-y) / 2) var(--bs-card-spacer-x);
+	}
+
 	.FundCard.FixedDeposit {
-		.body {
-			border-radius: 0 0 30px 30px;
+		.card-body {
+			border-bottom: transparent !important;
+		}
+
+		.card-footer {
+			margin-top: 0;
+			min-height: 40px;
+			background-color: white;
+			border-left: 1px solid;
+			border-right: 1px solid;
+			border-bottom: 1px solid;
+			border-color: var(--blue-main);
 		}
 	}
 }
+
 .cashCard {
 	.body {
 		.title {
@@ -130,34 +170,42 @@ $border-color_3: white;
 		}
 	}
 }
+
 .lighter {
 	font-weight: lighter;
 	font-weight: lighter;
 }
+
 .bolder {
 	font-weight: bolder;
 }
+
 .modal:not(.exchange-modal) {
 	.modal-content {
 		background-color: $background-color_1;
 		border: transparent;
 	}
+
 	.header {
 		background-color: $background-color_4;
 		border-color: $border-color_3;
 		border-radius: 30px 30px 0 0;
 		border-color: $border-color_3;
+
 		.title {
 			color: $color_1;
 		}
 	}
+
 	.body {
 		background-color: $background-color_4;
 		border-color: $border-color_3;
+
 		.help {
 			color: $color_1;
 		}
 	}
+
 	.footer {
 		background-color: $background-color_4;
 		border-color: $border-color_3;
@@ -171,6 +219,7 @@ $border-color_3: white;
 		&:first-of-type {
 			margin-top: 1rem;
 		}
+
 		padding-left: 1rem;
 		padding-right: 1rem;
 		margin-bottom: 1rem;
@@ -183,28 +232,34 @@ $border-color_3: white;
 		.header {
 			.currencyContainer {
 				>.currency {
-					font-size: 20px!important;
-					width: 20px!important;
+					font-size: 20px !important;
+					width: 20px !important;
 				}
-				font-size: 20px!important;
+
+				font-size: 20px !important;
 			}
 		}
+
 		.body {
 			.title {
-				font-size: 16px!important;
+				font-size: 16px !important;
 			}
+
 			.title-gray {
-				font-size: 18px!important;
+				font-size: 18px !important;
 			}
+
 			.subTitle {
-				font-size: 14px!important;
+				font-size: 14px !important;
 			}
 		}
+
 		.footer {
 			.button {
-				height: 1.5em!important;
+				height: 1.5em !important;
+
 				.label {
-					font-size: 14px!important;
+					font-size: 14px !important;
 				}
 			}
 		}

@@ -9,6 +9,7 @@ import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 
 import MovementsTab from './MovementsTab';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
+import PerformanceComponent from 'components/DashBoard/GeneralUse/PerformanceComponent';
 
 const MainCardFixedDeposit = ({ FixedDepositsStats, Hide, setHide }) => {
     const [SelectedTab, setSelectedTab] = useState("0")
@@ -17,22 +18,27 @@ const MainCardFixedDeposit = ({ FixedDepositsStats, Hide, setHide }) => {
     return (
         <div className="movementsMainCardFund growAnimation mt-2">
             <div className="bg-white info ms-0 mb-2 px-0">
-                <div className="d-flex justify-content-between align-items-end pe-2">
-                    <h1 className="m-0 title px-2">
-                        {t("Time deposits")}
-                    </h1>
+                <div className="d-flex justify-content-between align-items-start pe-2">
+                    <Col className="d-flex justify-content-between pe-5" sm="auto">
+                        <h1 className="m-0 title px-2">
+                            {t("Time deposits")}
+                            {t("Cash")}
+                        </h1>
+                    </Col>
+                    <Col className='ms-auto' xs="auto">
+                        <PerformanceComponent text="Performance" fixedDepositId='1'/>
+                    </Col>
                 </div>
                 <div className="d-flex justify-content-between align-items-end pe-2">
                     <Col className="d-flex justify-content-between pe-5" sm="auto">
                         <Col className="pe-2">
                             <div className="containerHideInfo px-2 description">
-                                <span>{t("Balance (U$D)")}:&nbsp;</span>
+                                <span>{t("Balance")}:&nbsp;</span>
                                 <span style={{ fontWeight: "bolder" }}>
-                                    <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={FixedDepositsStats?.balance} prefix="" fixedDecimals={2} />
-                                    <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={FixedDepositsStats?.balance} prefix="" fixedDecimals={2} />
-                                    <FormattedNumber className={`info placeholder`} value={FixedDepositsStats?.balance} prefix="" fixedDecimals={2} />
+                                    <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={FixedDepositsStats?.balance} prefix="U$D" fixedDecimals={2} />
+                                    <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={FixedDepositsStats?.balance} prefix="U$D" fixedDecimals={2} />
+                                    <FormattedNumber className={`info placeholder`} value={FixedDepositsStats?.balance} prefix="U$D" fixedDecimals={2} />
                                 </span>
-
                             </div>
                         </Col>
                         <Col sm="auto" className="hideInfoButton d-flex align-items-center">
@@ -51,23 +57,6 @@ const MainCardFixedDeposit = ({ FixedDepositsStats, Hide, setHide }) => {
                                 icon={faEyeSlash}
                             />
                         </Col>
-                    </Col>
-                    <Col sm="auto" >
-
-                        <span className='text-end w-100 d-block' style={{ fontWeight: "300" }}>
-                            {t("Performance")}:&nbsp;
-                            <strong className={{
-                                '1': 'text-green',
-                                '-1': 'text-red'
-                            }[Math.sign(FixedDepositsStats?.performancePercentage ? FixedDepositsStats?.performancePercentage : 0)]}>
-                                <FormattedNumber
-                                    value={FixedDepositsStats?.performancePercentage ? FixedDepositsStats?.performancePercentage : 0} suffix="%" fixedDecimals={2} />
-                                &nbsp;(
-                                <FormattedNumber
-                                    value={FixedDepositsStats?.performanceCash ? FixedDepositsStats?.performanceCash : 0} prefix="U$D " fixedDecimals={2} />
-                                )
-                            </strong>
-                        </span>
                     </Col>
                 </div>
                 <div className="d-flex justify-content-between align-items-end px-2">

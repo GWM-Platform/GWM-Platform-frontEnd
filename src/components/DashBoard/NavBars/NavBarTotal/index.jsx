@@ -97,11 +97,11 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
                             {
                                 sectionsCashInAccount.includes(itemSelected.toLowerCase()) && hasPermission("VIEW_ACCOUNT") ?
                                     <>
-                                        {t("Available funds")}:&nbsp;
+                                        {t("Cash balance")}:&nbsp;
                                         {
                                             contentReady && AccountSelected ?
                                                 <>
-                                                    <FormattedNumber className="growOpacity" value={AccountSelectedEnriched.totalAvailable} prefix="U$D " fixedDecimals={2} />
+                                                    <FormattedNumber className="growOpacity" value={AccountSelectedEnriched.balance} prefix="U$D " fixedDecimals={2} />
                                                     {
                                                         (AccountSelectedEnriched.hasOverdraft && usesOverdraft) &&
                                                         <OverlayTrigger rootClose trigger="click" placement="bottom" overlay={

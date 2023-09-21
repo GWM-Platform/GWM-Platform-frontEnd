@@ -98,16 +98,18 @@ const WithdrawData = ({ data, handleChange, validated, handleSubmit, account, fe
                                 t("You must enter how much you want to withdraw")
                                 :
                                 data.amount > account.totalAvailable ?
-                                    t("The amount must be less than or equal to the available cash of the selected account") + " ($" + account.totalAvailable + ")"
+                                    t("The amount must be less than or equal to the available cash of your account") + " ($" + account.totalAvailable + ")"
                                     :
                                     t("The amount must be greater than 0")
                         }
                     </Form.Control.Feedback>
                     <Form.Control.Feedback type="valid">
-                        {t("Looks good")}! {
-                              amountDeductedFromOverdraft > 0 &&
-                              t("This movement will deduct {{amount}} from your overdraft balance", { amount: amountDeductedFromOverdraft })
-                        }
+                        {t("Looks good")}! <span style={{ color: "orange" }}>
+                            {
+                                amountDeductedFromOverdraft > 0 &&
+                                t("This movement will deduct {{amount}} from your overdraft balance", { amount: amountDeductedFromOverdraft })
+                            }
+                        </span>
                     </Form.Control.Feedback>
                 </InputGroup>
                 {

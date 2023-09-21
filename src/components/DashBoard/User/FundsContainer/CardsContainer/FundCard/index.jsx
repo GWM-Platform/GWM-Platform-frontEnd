@@ -39,9 +39,12 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions, cardsAmount, inScr
     }
 
     return (
-        <Col className="fund-col growAnimation" sm="6" md="6" lg="4" >
-            <Card className="FundCard h-100">
-                <Card.Header className="header d-flex align-items-center justify-content-center">
+        <Col className="fund-col growAnimation" sm="6" md="6" lg="4" style={{ maxHeight: "100%" }}>
+            <Card className="FundCard h-100" style={{ maxHeight: "100%", display: "flex" }}>
+                <Card.Header
+                    className="header d-flex align-items-center justify-content-center"
+                    style={{ flex: "none" }}
+                >
                     <div className="currencyContainer d-flex align-items-center justify-content-center">
                         {
                             <img className="currency px-0 mx-0" alt=""
@@ -53,7 +56,7 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions, cardsAmount, inScr
                         }
                     </div>
                 </Card.Header>
-                <Card.Body className="body">
+                <Card.Body className="body" style={{ flexGrow: "1", overflow: "overlay" }}>
                     <Container fluid className="px-0">
                         <Row className="mx-0 w-100 gx-0">
                             <Card.Title className="my-0" >
@@ -131,7 +134,7 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions, cardsAmount, inScr
                         </Row>
                     </Container>
                 </Card.Body>
-                <Card.Footer className="footer mt-2 m-0 p-0">
+                <Card.Footer className="footer mt-2 m-0 p-0" style={{ flex: "none" }}>
                     <Row className="d-flex justify-content-center m-0">
                         <Col xs="6" className="d-flex justify-content-center p-0 m-0">
                             <Button

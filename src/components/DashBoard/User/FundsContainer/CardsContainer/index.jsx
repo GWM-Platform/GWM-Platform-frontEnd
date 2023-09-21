@@ -247,7 +247,7 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
     }, [token, ClientSelected.id])
 
     return (
-        <Container className={`px-0 d-flex justify-content-center FundsContainerWidth cardsContainer p-relative`}>
+        <Container className={`px-0 d-flex justify-content-center FundsContainerWidth cardsContainer p-relative`} >
             <Row ref={FundsContainer}
                 className={`d-flex align-items-stretch mx-0 w-100 
                 ${totalCards() < CardWidth ?
