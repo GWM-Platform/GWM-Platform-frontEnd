@@ -79,7 +79,7 @@ const TransferData = ({ data, Funds, handleChange, TargetAccount, toggleAccordio
         }
     }
 
-    const amountDeductedFromOverdraft = RealBalance > 0 ? Decimal(data?.amount || 0).minus(RealBalance || 0).toNumber() : data.amount
+    const amountDeductedFromOverdraft = data.FundSelected === "cash" ? RealBalance > 0 ? Decimal(data?.amount || 0).minus(RealBalance || 0).toNumber() : data.amount : 0
 
     return (
         <Accordion.Item eventKey="0" disabled>

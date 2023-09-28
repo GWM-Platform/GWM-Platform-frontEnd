@@ -6,13 +6,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEyeSlash, faEye, faPiggyBank } from '@fortawesome/free-solid-svg-icons'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import TableLastFixedDeposits from './TableLastFixedDeposits';
+import PerformanceComponent from 'components/DashBoard/GeneralUse/PerformanceComponent';
 
 const MobileCardFixedDeposits = ({ FixedDepositsStats, Hide, setHide }) => {
     // eslint-disable-next-line
     const { t } = useTranslation();
-
-    const Performance = FixedDepositsStats?.performancePercentage
-    const PerformanceInCash = FixedDepositsStats?.performanceCash
+    
     const ActiveFixedDeposits = FixedDepositsStats?.activeDeposits
     const balanceInCash = FixedDepositsStats?.balance
 
@@ -63,21 +62,7 @@ const MobileCardFixedDeposits = ({ FixedDepositsStats, Hide, setHide }) => {
                                     />
                                 </Col>
                             </div>
-                            <span className='left'>
-                                {t("Performance")}:&nbsp;
-                                <strong className={{
-                                    '1': 'text-green',
-                                    '-1': 'text-red'
-                                }[Math.sign(Performance || 0)]}>
-                                    <FormattedNumber
-                                        value={Performance || 0} suffix="%" fixedDecimals={2} />
-                                    &nbsp;(
-                                    <FormattedNumber
-                                        value={PerformanceInCash || 0} prefix="U$D " fixedDecimals={2} />
-                                    )
-                                </strong>
-                            </span>
-                            <br />
+                            <PerformanceComponent text="Performance" fixedDepositId='1'/>
                             <span className="left">
                                 {t("Active time deposits")}:&nbsp;{ActiveFixedDeposits}
                             </span>

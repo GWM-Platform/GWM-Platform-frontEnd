@@ -59,7 +59,8 @@ const FundsContainer = ({ isMobile, setItemSelected }) => {
 
     return (
         <Container fluid
-            className={`accountParent tabContent px-0  d-flex align-items-start align-items-md-center`}>
+            className={`accountParent tabContent px-0  d-flex align-items-start align-items-sm-center`}
+            onScroll={() => document.body.click()}>
             {
                 FetchingFunds || !contentReady || !Mounted || FixedDeposits.fetching
                     ?

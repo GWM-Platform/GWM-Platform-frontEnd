@@ -105,6 +105,12 @@ const Notification = ({ notification }) => {
                         )
                     }
                     {
+                        notification.type === "OVERDRAFT_UPDATE" &&
+                        <Dropdown.Item onClick={() => { redirect(`/DashBoard/Accounts?highlight=overdraft`) }}>
+                            {t('View detail')}
+                        </Dropdown.Item>
+                    }
+                    {
                         notification.movement &&
                         <>
                             <Dropdown.Item onClick={() => setShowModal(true)}>
@@ -114,7 +120,7 @@ const Notification = ({ notification }) => {
                         </>
                     }
                     {
-                        ((notification.movementId || notification.movement) && !notification.read) && <Dropdown.Divider />
+                        ((notification.movementId || notification.movement || notification.type === "OVERDRAFT_UPDATE") && !notification.read) && <Dropdown.Divider />
                     }
                     {
                         !notification.read &&

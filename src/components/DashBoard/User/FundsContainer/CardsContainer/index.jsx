@@ -88,7 +88,6 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
         }
     )
 
-    const [show, setShow] = useState(false);
 
     const pendingCash = () => {
         if (PendingMovements.fetched && PendingTransactions.fetched && PendingTransfers.fetched && !(PendingMovements.fetching || PendingTransactions.fetching || PendingTransfers.fetching)) {
@@ -270,12 +269,12 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
     }, [token, ClientSelected.id])
 
     return (
-        <Container className={`px-0 d-flex justify-content-center FundsContainerWidth cardsContainer p-relative`} >
+        <Container className={`px-0 d-flex justify-content-center FundsContainerWidth cardsContainer my-auto p-relative`} >
             <Row ref={FundsContainer}
-                className={`d-flex align-items-stretch mx-0 w-100 
-                ${totalCards() < CardWidth ?
-                        "justify-content-center" : ""}
-                 pb-2 flex-wrap flex-sm-nowrap overflow-hidden `}>
+                className={
+                    `overflow-hidden w-100  mx-0 pb-2 d-flex  flex-wrap flex-sm-nowrap align-items-stretch 
+                    ${totalCards() < CardWidth ? "justify-content-center" : ""}`
+                }>
                 {
                     hasPermission('VIEW_ACCOUNT') ?
                         Accounts.map(
@@ -284,8 +283,6 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
                                     inScreenFunds={CardWidth}
                                     PendingTransactions={PendingTransactions} key={`account-${account.id || key}`} Hide={Hide} setHide={setHide} Fund={account}
                                     pendingCash={pendingCash}
-                                    setShow={setShow}
-                                    show={show}
                                 />
                         )
                         :

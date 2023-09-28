@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react'
+import React, { useContext, useEffect, useMemo } from 'react'
 import { Container, Row, Col, Card, Button, Spinner, OverlayTrigger, Popover } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
@@ -14,10 +14,11 @@ import { useState } from 'react';
 import PerformanceComponent from 'components/DashBoard/GeneralUse/PerformanceComponent';
 import enrichAccount from 'utils/enrichAccount';
 import PopoverAvailableFunds from 'components/DashBoard/GeneralUse/PopoverAvailableFunds';
+import { useLocation } from 'react-router-dom/cjs/react-router-dom';
 
 const CashCard = (props) => {
 
-    const { Hide, setHide, cardsAmount, inScreenFunds, pendingCash, setShow, show } = props
+    const { Hide, setHide, cardsAmount, inScreenFunds, pendingCash } = props
     const Fund = useMemo(() => enrichAccount(props.Fund), [props.Fund])
 
     const { DashboardToastDispatch, isMobile, hasPermission } = useContext(DashBoardContext)
@@ -38,6 +39,21 @@ const CashCard = (props) => {
     const toWithdraw = (type) => {
         history.push(`/DashBoard/withdraw`);
     }
+
+    const useQuery = () => {
+        const { search } = useLocation();
+        return React.useMemo(() => new URLSearchParams(search), [search]);
+    }
+
+    const highlightOverdraft = useQuery().get("highlight") === "overdraft"
+
+    useEffect(() => {
+        if (highlightOverdraft) {
+            document.getElementById("overdraft").click()
+        }
+    }, [highlightOverdraft])
+
+
 
     return (
         <Col sm="6" md="6" lg="4" className={`fund-col  growAnimation ${Pinned && !isMobile ? "pinned" : ""}`} style={{ maxHeight: "100%" }}>
@@ -62,7 +78,7 @@ const CashCard = (props) => {
                                     </Col>
                                     {
                                         !!(cardsAmount > inScreenFunds && !isMobile) &&
-                                        <button className="noStyle px-0 hideInfoButton d-flex align-items-center" onClick={() => { setPinned(prevState => !prevState); setShow(false) }}                                            >
+                                        <button className="noStyle px-0 hideInfoButton d-flex align-items-center" onClick={() => { setPinned(prevState => !prevState) }}                                            >
                                             <div className={Pinned ? "" : "opacity-0 d-none"}>
                                                 <FontAwesomeIcon
                                                     className={`icon pin ${Pinned ? "active" : ""}`}
@@ -128,9 +144,9 @@ const CashCard = (props) => {
                                                     <FormattedNumber className={`info placeholder`} value={parseFloat(Fund.balance).toString()} prefix="U$D " fixedDecimals={2} />
                                                 </span>
                                                 <OverlayTrigger rootClose trigger="click" placement="auto-start" overlay={
-                                                    <PopoverAvailableFunds account={Fund} />
+                                                    <PopoverAvailableFunds account={Fund} highlightOverdraft={highlightOverdraft}/>
                                                 }>
-                                                    <button className="noStyle px-0 hideInfoButton d-inline-flex align-items-center" style={{ fontSize: "16px" }}>
+                                                    <button id="overdraft" className="noStyle px-0 hideInfoButton d-inline-flex align-items-center" style={{ fontSize: "16px" }}>
                                                         <FontAwesomeIcon className="icon pin" icon={faInfoCircle} />
                                                         <FontAwesomeIcon className="icon placeholder" icon={faEyeSlash} />
                                                     </button>
@@ -181,13 +197,13 @@ const CashCard = (props) => {
                                     pendingCash().calculated ?
                                         <div className='d-flex align-items-center'>
                                             <span>{t("Pending transactions")}:&nbsp;
-                                                <span className={`bolder ${pendingCash().isPositive ? "text-green" : "text-red"}`}>
+                                                <span className={`bolder ${pendingCash().isPositive ? "text-green" : "text-red"} text-nowrap`}>
                                                     {pendingCash().isPositive ? "+" : "-"}
                                                     <FormattedNumber value={pendingCash().valueAbs} prefix="U$D " fixedDecimals={2} />
                                                 </span>
                                             </span>
 
-                                            <OverlayTrigger show={show} trigger="click" placement="auto-start" overlay={
+                                            <OverlayTrigger rootClose trigger="click" placement="auto-start" overlay={
                                                 <Popover id="popover-overview-cash" >
                                                     <Popover.Header>{t("Overview of pending transactions")}</Popover.Header>
                                                     <Popover.Body className="pt-1 pb-2">
@@ -214,7 +230,7 @@ const CashCard = (props) => {
                                                     </Popover.Body>
                                                 </Popover>
                                             }>
-                                                <button onBlur={() => setShow(false)} onClick={() => setShow(prevState => !prevState)}
+                                                <button
                                                     className="noStyle px-0 hideInfoButton d-inline-flex align-items-center">
                                                     <FontAwesomeIcon className="icon pin" icon={faInfoCircle} />
                                                     <FontAwesomeIcon

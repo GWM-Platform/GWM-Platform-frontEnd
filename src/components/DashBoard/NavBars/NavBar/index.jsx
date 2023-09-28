@@ -17,7 +17,7 @@ import './index.scss'
 import NotificationsCenter from './NotificationsCenter';
 
 const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
-    const { admin, IndexClientSelected, UserClients, itemSelected, hasPermission, hasAnySellPermission, hasAnyBuyPermission, hasAnyTransferFundPermission } = useContext(DashBoardContext)
+    const { admin, IndexClientSelected, UserClients, itemSelected, hasPermission, hasAnySellPermission, hasAnyBuyPermission, hasAnyTransferFundPermission, isMobile } = useContext(DashBoardContext)
     const itemSelectedLC = itemSelected.toLowerCase()
     const { t } = useTranslation();
 
@@ -183,8 +183,10 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                             <div className="d-block d-sm-none d-md-block" style={{ paddingBottom: "5px" }}>
                                 <LanguageSelector />
                             </div>
-
-                            <NotificationsCenter active={itemSelectedLC === "notificationscenter"} />
+                            {
+                                !isMobile &&
+                                <NotificationsCenter active={itemSelectedLC === "notificationscenter"} />
+                            }
 
                             <NavLink className="d-block d-sm-none d-md-block nav-link" to="/Dashboard/Configuration?section=Password+and+authentication" activeClassName="active">
                                 <FontAwesomeIcon icon={faCog} />

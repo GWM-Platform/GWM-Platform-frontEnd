@@ -19,7 +19,7 @@ const editedDuration = (FixedDeposit) =>
   getEditedDuration(FixedDeposit) !== getOriginalDuration(FixedDeposit);
 
 const getDuration = (FixedDeposit) => getOriginalDuration(FixedDeposit);
-console.log(getDuration())
+
 const wasEdited = (FixedDeposit) => {
   return FixedDeposit.motive==="BID_OFFER";
 };

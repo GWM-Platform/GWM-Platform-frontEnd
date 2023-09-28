@@ -1,23 +1,19 @@
 import React, { useContext } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Card, Container, Col, Row, Spinner } from 'react-bootstrap';
+import { Card, Container, Col, Row } from 'react-bootstrap';
 import TableLastMovements from './TableLastMovements';
 import { useTranslation } from "react-i18next";
 import { DashBoardContext } from 'context/DashBoardContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchPerformance, selectPerformanceById } from 'Slices/DashboardUtilities/performancesSlice';
-import { useEffect } from 'react';
+import PerformanceComponent from 'components/DashBoard/GeneralUse/PerformanceComponent';
 
 const MobileCard = ({ Fund, Hide, setHide }) => {
     // eslint-disable-next-line
 
-    const { PendingTransactions, ClientSelected } = useContext(DashBoardContext);
+    const { PendingTransactions } = useContext(DashBoardContext);
     const { t } = useTranslation();
-
-
 
     const balanceInCash = Fund.shares ? (Fund.shares * Fund.fund.sharePrice) : 0
     const pendingshares = PendingTransactions.value.filter((transaction) => transaction.fundId === Fund.fund.id && Math.sign(transaction.shares) === +1).map((transaction) => transaction.shares).reduce((a, b) => a + b, 0).toFixed(2)
@@ -29,16 +25,6 @@ const MobileCard = ({ Fund, Hide, setHide }) => {
     }
 
     const hasCustomImage = () => Fund.fund.imageUrl ? checkImage(Fund.fund.imageUrl) : false
-
-    const dispatch = useDispatch()
-    const performance = useSelector(state => selectPerformanceById(state, Fund.fund.id))
-
-    useEffect(() => {
-        dispatch(fetchPerformance({
-            fund: Fund.fund.id,
-            clientId: ClientSelected?.id
-        }))
-    }, [Fund, ClientSelected, dispatch])
 
     return (
         <Card className="movementsCardMobile">
@@ -101,10 +87,7 @@ const MobileCard = ({ Fund, Hide, setHide }) => {
                                     />
                                 </Col>
                             </div>
-                            {
-                                performance &&
-                                <PerformanceComponent text={"Performance"} performance={performance?.performance} status={performance?.status} />
-                            }
+                            <PerformanceComponent text={"Performance"} fundId={Fund.fund.id} />
                             <span className="left">
                                 {t("Pending transactions (shares)")}:&nbsp;
                                 <FormattedNumber style={{ fontWeight: "bolder" }} value={pendingshares ? pendingshares : 0} fixedDecimals={2} />
@@ -118,25 +101,3 @@ const MobileCard = ({ Fund, Hide, setHide }) => {
     )
 }
 export default MobileCard
-
-const PerformanceComponent = ({ text, performance = 0, status = "loading" }) => {
-    const { t } = useTranslation();
-
-    return (
-        <span className='text-start w-100 d-block' style={{ fontWeight: "300" }}>
-            {t(text)}:&nbsp;
-            {
-                status === "loading" ?
-                    <Spinner size="sm" className="me-2" animation="border" variant="primary" />
-                    :
-                    <strong>
-                        <FormattedNumber className={{
-                            '1': 'text-green',
-                            '-1': 'text-red'
-                        }[Math.sign(performance)]}
-                            value={performance} prefix="U$D " fixedDecimals={2} />
-                    </strong>
-            }
-        </span>
-    )
-}

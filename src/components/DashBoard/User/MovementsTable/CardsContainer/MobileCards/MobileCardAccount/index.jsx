@@ -1,31 +1,14 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Card, Container, Col, Row, Spinner } from 'react-bootstrap';
+import { Card, Container, Col, Row } from 'react-bootstrap';
 import TableLastMovements from './TableLastMovements';
 import { useTranslation } from "react-i18next";
 import TableLastTransfers from './TableLastTransfers';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchPerformance, selectPerformanceById } from 'Slices/DashboardUtilities/performancesSlice';
-import { useContext } from 'react';
-import { DashBoardContext } from 'context/DashBoardContext';
-import { useEffect } from 'react';
+import PerformanceComponent from 'components/DashBoard/GeneralUse/PerformanceComponent';
 
 const MobileCard = ({ account }) => {
     const { t } = useTranslation();
-    const { ClientSelected } = useContext(DashBoardContext)
-
-    const dispatch = useDispatch()
-
-    const performance = useSelector(state => selectPerformanceById(state, "totalPerformance"))
-
-    useEffect(() => {
-        dispatch(fetchPerformance({
-            totalPerformance: true,
-            clientId: ClientSelected?.id
-        }))
-    }, [ClientSelected, dispatch])
-
     return (
         <>
             <Card className="movementsCardMobile">
@@ -52,7 +35,7 @@ const MobileCard = ({ account }) => {
                                 </Card.Text>
                                 {
                                     performance &&
-                                    <PerformanceComponent text={"Performance"} performance={performance?.performance} status={performance?.status} />
+                                    <PerformanceComponent text="Total performance" />
                                 }
                             </Col>
                             <TableLastMovements account={account} />
@@ -65,25 +48,3 @@ const MobileCard = ({ account }) => {
     )
 }
 export default MobileCard
-
-const PerformanceComponent = ({ text, performance = 0, status = "loading" }) => {
-    const { t } = useTranslation();
-
-    return (
-        <span className='text-start w-100 d-block' style={{ fontWeight: "300" }}>
-            {t(text)}:&nbsp;
-            {
-                status === "loading" ?
-                    <Spinner size="sm" className="me-2" animation="border" variant="primary" />
-                    :
-                    <strong>
-                        <FormattedNumber className={{
-                            '1': 'text-green',
-                            '-1': 'text-red'
-                        }[Math.sign(performance)]}
-                            value={performance} prefix="U$D " fixedDecimals={2} />
-                    </strong>
-            }
-        </span>
-    )
-}

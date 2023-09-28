@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react'
+import React, { useContext, useMemo, useState } from 'react'
 import { Popover, OverlayTrigger, Badge, CloseButton } from "react-bootstrap";
 import { useTranslation } from 'react-i18next';
 import './index.scss'
@@ -12,7 +12,7 @@ import { DashBoardContext } from 'context/DashBoardContext';
 import { faBell, faBellSlash, faCog } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 const NotificationsCenter = ({ active }) => {
-    const { DashboardToastDispatch } = useContext(DashBoardContext)
+    const { DashboardToastDispatch, getDashboardToastByKey } = useContext(DashBoardContext)
 
     const notifications = useSelector(selectAllNotifications)
     const notificationsStatus = useSelector(state => state.notifications.status)
@@ -25,25 +25,18 @@ const NotificationsCenter = ({ active }) => {
         DashboardToastDispatch({ type: "hide_specific_key", specificKey: "UNREAD_NOTIFICATIONS" })
         setShow(prevState => !prevState)
     }
-    const [alreadyNotifiedNew, setAlreadyNotifiedNew] = useState(false)
 
+    const notificationsNoticeToastAlreadyCreated = useMemo(() => getDashboardToastByKey('UNREAD_NOTIFICATIONS'), [getDashboardToastByKey])
 
-    // const hasNotifications = useCallback(
-    //     () => notifications?.total > 0,
-    //     [notifications?.total],
-    // )
-
-
-    const unreadNotifications = useCallback(
+    const unreadNotifications = useMemo(
         () => {
             return notifications?.notifications?.filter(notification => !notification.read)
         },
         [notifications?.notifications],
     )
 
-
-    const hasUnreadNotifications = useCallback(
-        () => unreadNotifications()?.length > 0,
+    const hasUnreadNotifications = useMemo(
+        () => unreadNotifications?.length > 0,
         [unreadNotifications],
     )
 
@@ -55,12 +48,11 @@ const NotificationsCenter = ({ active }) => {
     }, [location])
 
     useEffect(() => {
-        if (hasUnreadNotifications() && !alreadyNotifiedNew) {
-            DashboardToastDispatch({ type: "create", key: "UNREAD_NOTIFICATIONS", noClose: true, toastContent: { Icon: faBell, Title: "You have unread notifications" } });
-            setAlreadyNotifiedNew(true)
+        if (hasUnreadNotifications && !notificationsNoticeToastAlreadyCreated) {
+            DashboardToastDispatch({ type: "create", key: "UNREAD_NOTIFICATIONS", noClose: true, onClick: () => setShow(true), toastContent: { Icon: faBell, Title: "You have unread notifications" } });
         }
         //eslint-disable-next-line
-    }, [hasUnreadNotifications])
+    }, [hasUnreadNotifications, notificationsNoticeToastAlreadyCreated])
 
 
     const popover = (
@@ -71,9 +63,9 @@ const NotificationsCenter = ({ active }) => {
                         {t("Notifications")}
                     </h1>
                     {
-                        hasUnreadNotifications() &&
+                        hasUnreadNotifications &&
                         <Badge className='ms-1 mt-auto'>
-                            {unreadNotifications().length}
+                            {unreadNotifications.length}
                         </Badge>
                     }
                     {
@@ -91,10 +83,10 @@ const NotificationsCenter = ({ active }) => {
                     <CloseButton className='ms-auto' style={{ fontSize: ".85em" }} onClick={() => setShow(false)} type="button" title={t("Close")} />
                 </div>
                 {
-                    hasUnreadNotifications() ?
+                    hasUnreadNotifications ?
                         <div className='notifications-container'>
                             {
-                                unreadNotifications()?.map(
+                                unreadNotifications?.map(
                                     notification =>
                                         <Notification notification={notification} key={`notification-${notification.id}`} />
                                 )
@@ -138,7 +130,7 @@ const NotificationsCenter = ({ active }) => {
             <button
                 disabled={notificationsStatus !== "succeeded"}
                 id="popover-notifications-toggler" title={t("Notifications center")} type="button"
-                className={`nav-link noStyle ${show || active ? "active" : ""} ${hasUnreadNotifications() ? "unread-notifications" : ""}`}
+                className={`nav-link noStyle ${show || active ? "active" : ""} ${hasUnreadNotifications ? "unread-notifications" : ""}`}
                 onClick={togglePopover}
             >
                 <div className="icon" >

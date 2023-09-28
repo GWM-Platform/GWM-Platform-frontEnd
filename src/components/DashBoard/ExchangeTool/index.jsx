@@ -238,8 +238,8 @@ const ExchangeTool = () => {
 
     return (
         <>
-            <button onClick={handleShow} className="exchange-tool-button">
-                <FontAwesomeIcon icon={faExchange} />
+            <button onClick={handleShow} className="exchange-tool-button m-0 p-0">
+                <FontAwesomeIcon icon={faExchange} className="m-0 p-0"/>
             </button>
             <Modal className="exchange-modal" show={show} onHide={handleClose}>
                 <Modal.Header closeButton>

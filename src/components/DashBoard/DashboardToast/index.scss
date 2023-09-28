@@ -1,0 +1,20 @@
+.toast-container {
+    .toast {
+        .toast-header {
+            border-bottom: 0;
+            border-radius: 0.375rem
+        }
+    }
+
+    @media (max-width: 576px) {
+        min-width: 100%;
+        .toast{
+            margin-bottom: 0.75rem;
+        }
+        .toast,
+        .toast-header {
+            min-width: 100%;
+
+        }
+    }
+}

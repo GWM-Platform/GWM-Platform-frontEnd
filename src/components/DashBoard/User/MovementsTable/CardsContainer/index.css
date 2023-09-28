@@ -148,7 +148,7 @@
 	}
 }
 
-@media (max-width: 568px) {
+@media (max-width: 576px) {
 	.movementsCardMobile:first-of-type {
 		margin-top: 1rem;
 	}

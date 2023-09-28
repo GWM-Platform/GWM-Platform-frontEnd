@@ -1,7 +1,7 @@
 import { fetchNotifications, reset as notificationsReset } from 'Slices/DashboardUtilities/notificationsSlice';
 import { fetchUser, reset as resetUser, selectUserEmail, selectUserId } from 'Slices/DashboardUtilities/userSlice';
 import axios from 'axios';
-import React, { useReducer, useRef } from 'react'
+import React, { useCallback, useReducer, useRef } from 'react'
 import { createContext, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -13,7 +13,7 @@ const reducerDashboardToast = (state, action) => {
 
     switch (action.type) {
         case 'create':
-            aux = [...aux, ...[{ Content: action?.toastContent, key: action?.key || "", noClose: (action.noClose || false), Show: true, }]]
+            aux = [...aux, ...[{ Content: action?.toastContent, key: action?.key || "", onClick: action.onClick, noClose: (action.noClose || false), Show: true, }]]
             return aux
         case 'hide':
             aux[action.toastKey] = { ...aux[action?.toastKey], Show: false }
@@ -91,6 +91,7 @@ export const DashBoardProvider = ({ children }) => {
     })
 
     const [DashboardToast, DashboardToastDispatch] = useReducer(reducerDashboardToast, DashboardToastInitialState);
+    const getDashboardToastByKey = useCallback((key) => DashboardToast.find(toast => toast.key === key), [DashboardToast])
 
     const [ClientPermissions, setClientPermissions] = useState({
         fetching: true,
@@ -680,7 +681,7 @@ export const DashBoardProvider = ({ children }) => {
             FetchingFunds, contentReady, PendingWithoutpossession, PendingTransactions, Accounts, Funds, itemSelected, setItemSelected, isMobile, width, toLogin, setContentReady,
             DashboardToast, DashboardToastDispatch, AccountSelected, setAccountSelected, Balance, allowedSymbols,
             couldSign, ClientPermissions, hasPermission, hasSellPermission, hasBuyPermission, hasViewPermission, setClientPermissions, hasAnySellPermission, hasAnyBuyPermission,
-            hasAnyTransferFundPermission, hasFundTransferPermission
+            hasAnyTransferFundPermission, hasFundTransferPermission, getDashboardToastByKey
         }}>
         {children}
     </DashBoardContext.Provider>
