@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Spinner, Row, Container, Col } from 'react-bootstrap';
 import { DashBoardContext } from 'context/DashBoardContext';
 import axios from 'axios';
+import GeneralPerformance from './CardsContainer/GeneralPerformance';
 
 const FundsContainer = ({ isMobile, setItemSelected }) => {
 
@@ -57,9 +58,12 @@ const FundsContainer = ({ isMobile, setItemSelected }) => {
 
     const numberOfFunds = () => Accounts.length + Funds.length + PendingWithoutpossession.length + (FixedDeposits?.content?.deposits?.length > 0 ? 1 : 0)
 
+    const [value, setValue] = useState("")
+
+
     return (
         <Container fluid
-            className={`accountParent tabContent px-0  d-flex align-items-start align-items-sm-center`}
+            className={`accountParent p-relative tabContent px-0  d-flex align-items-start align-items-sm-center`}
             onScroll={() => document.body.click()}>
             {
                 FetchingFunds || !contentReady || !Mounted || FixedDeposits.fetching
@@ -82,16 +86,20 @@ const FundsContainer = ({ isMobile, setItemSelected }) => {
                             </Row>
                         </Container>
                         :
-                        <CardsContainer
-                            FixedDeposits={FixedDeposits.content}
-                            PendingWithoutpossession={PendingWithoutpossession}
-                            PendingTransactions={PendingTransactions}
+                        <>
+                            <GeneralPerformance value={value} setValue={setValue} />
+                            <CardsContainer
+                                value={value}
+                                FixedDeposits={FixedDeposits.content}
+                                PendingWithoutpossession={PendingWithoutpossession}
+                                PendingTransactions={PendingTransactions}
 
-                            setItemSelected={setItemSelected}
-                            isMobile={isMobile}
-                            Funds={Funds}
-                            Accounts={Accounts}
-                        />
+                                setItemSelected={setItemSelected}
+                                isMobile={isMobile}
+                                Funds={Funds}
+                                Accounts={Accounts}
+                            />
+                        </>
             }
 
         </Container>

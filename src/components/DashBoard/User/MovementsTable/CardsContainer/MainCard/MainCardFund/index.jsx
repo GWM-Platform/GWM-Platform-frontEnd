@@ -28,9 +28,8 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
     }
 
     const desiredType = useQuery().get("type")
-    const desiredFundId = useQuery().get("fundId")
 
-    const [SelectedTab, setSelectedTab] = useState(desiredType ? "2" : "0")
+    const [SelectedTab, setSelectedTab] = useState(desiredType === "share-transfer" ? "2" : "0")
     const { PendingTransactions } = useContext(DashBoardContext)
     const { t } = useTranslation();
 
@@ -48,15 +47,9 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
             const queryString = `?${queryParams.toString()}`;
             history.replace({ pathname: location.pathname, search: queryString });
         }
-        if (desiredFundId !== (Fund.fund.id + "")) {
-            resetQueryParams()
-        } else {
-            return () => {
-                resetQueryParams()
-            }
-        }
+        resetQueryParams()
         //eslint-disable-next-line
-    }, [Fund])
+    }, [])
 
 
     return (
@@ -79,7 +72,7 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
                         </h2>
                     </Col>
                     <Col className='ms-auto' xs="auto">
-                        <PerformanceComponent text={"Performance"} fundId={Fund.fund.id} />
+                        <PerformanceComponent className='performance-component' text={"Accumulated performance"} fundId={Fund.fund.id} />
                     </Col>
                 </div>
 

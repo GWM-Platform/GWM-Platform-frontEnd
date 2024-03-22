@@ -88,8 +88,12 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, setNumberOfF
 
         if (contentReady) {
             if (hasPermission("FIXED_DEPOSIT_VIEW")) {
-                getFixedDeposits()
-                getFixedDepositsStats()
+                if(!FixedDeposits.fetched){
+                    getFixedDeposits()
+                }
+                if(!FixedDepositsStats.fetched){
+                    getFixedDepositsStats()
+                }
             } else {
                 setFixedDeposits((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, content: { deposits: [] } } }))
                 setFixedDepositsStats((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, content: {} } }))
@@ -109,7 +113,7 @@ const MovementsTable = ({ isMobile, setItemSelected, numberOfFunds, setNumberOfF
                         <Row className="d-flex justify-content-center align-items-center h-100">
                             <Col className="d-flex justify-content-center align-items-center">
                                 <Spinner className={`me-2 ${error === "The client does not have any holdings or your user does not have access to view any of these" ? "d-none" : ""}`} animation="border" variant="primary" />
-                                <span className={`d-none d-md-block ${error==="Loading" ? "loadingText" : "text-center"}`}>{t(error)}</span>
+                                <span className={`d-none d-md-block ${error === "Loading" ? "loadingText" : "text-center"}`}>{t(error)}</span>
                                 <span className="d-block d-md-none loadingText">{t("Loading")}</span>
                             </Col>
                         </Row>

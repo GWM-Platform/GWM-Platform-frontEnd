@@ -3,11 +3,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Col, Row } from 'react-bootstrap';
 import { useTranslation } from "react-i18next";
 import { useRef } from 'react'
-import './index.css'
+import './index.scss'
 import { faPiggyBank } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import Decimal from 'decimal.js';
+import PerformanceComponent from 'components/DashBoard/GeneralUse/PerformanceComponent';
 //Parent key 0-> Fund;Parent key 1->Cash
 const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownKey, selected, Hide, categorySelected, resetSearchById }) => {
     const select = () => {
@@ -43,7 +44,7 @@ const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownK
 
     return (
         <Container fluid className="pt-0 pb-2 px-1 growAnimation" ref={ref} >
-            <Row className={`secondaryCard ${parentKey === categorySelected && selected === ownKey ? "selected" : null} mx-0 px-0`} onClick={select}>
+            <Row className={`secondaryCard ${parentKey === categorySelected && selected === ownKey ? "selected" : null} flex-nowrap mx-0 px-0`} onClick={select}>
                 <Col lg="auto" className="d-none d-sm-none d-md-none d-lg-flex currencyCol d-flex align-items-center">
                     <div className="currencyContainer d-flex align-items-center justify-content-center">
                         {(() => {
@@ -87,7 +88,9 @@ const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownK
                                 <FormattedNumber className={`info placeholder`} value={balanceInCash().toString()} prefix="U$D " fixedDecimals={2} />
                             </div>
                         </h2>
-                        <span className="funds-description">{t("Balance")}</span>
+                        <span className={parentKey=== 0 ? "invisible" : ""}>
+                            <PerformanceComponent className='performance-component' withoutSelector text={"Accumulated performance"} fundId={parentKey === 1 ? Fund?.fundId : ""} fixedDepositId={parentKey === 2 ? "1" : ""} />
+                        </span>
                     </div>
                 </Col>
             </Row>

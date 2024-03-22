@@ -1,30 +1,95 @@
 .cardsContainer .arrow {
-	top: 50%;
-	font-size: 30px;
-	position: absolute;
-	z-index: 10;
-	width: auto;
-	cursor: initial;
-	opacity: 0;
-	transition: opacity 1s;
-	align-items: center;
-	transform: translateY(-50%);
+  top: 50%;
+  font-size: 30px;
+  position: absolute;
+  z-index: 10;
+  width: auto;
+  cursor: initial;
+  opacity: 0;
+  transition: opacity 1s;
+  align-items: center;
+  transform: translateY(-50%);
 }
 .cardsContainer .arrow.opacity-1 {
-	opacity: 1;
-	cursor: pointer;
+  opacity: 1;
+  cursor: pointer;
 }
 .cardsContainer .arrow.right {
-	right: 0;
-	transform: translate(1rem, -50%);
+  right: 0;
+  transform: translate(1rem, -50%);
 }
 .cardsContainer .arrow.left {
-	left: 0;
-	transform: translate(-1rem, -50%);
+  left: 0;
+  transform: translate(-1rem, -50%);
 }
 
-.cardsContainer .arrow .chevron{
-    font-size: 30px;
-    height: 1em;
-    display: block;
+.cardsContainer .arrow .chevron {
+  font-size: 30px;
+  height: 1em;
+  display: block;
+}
+
+.general-performance-wrapper {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+  background-color: white;
+  border: 0 solid transparent;
+  padding: 0.5rem 1rem;
+  z-index: 1;
+  transition: transform 0.5s;
+  filter: drop-shadow(0px 0px 5px black);
+  border-bottom-right-radius: 0.5rem;
+}
+.general-performance-wrapper.collapsed {
+  transform: translate(-50%, -100%);
+}
+.general-performance-wrapper .general-performance {
+  position: relative;
+}
+
+.general-performance-wrapper .collapser-button {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  border: 0 solid transparent;
+  background: var(--blue-main);
+  border-radius: 0 0 0.5rem 0.5rem;
+  color: #fff;
+  font-size: 0.7rem !important;
+}
+
+.general-performance-wrapper .collapser-button * {
+  font-size: 0.7rem !important;
+}
+
+.general-performance-wrapper.collapsed .collapser-button {
+  transform: rotate(180deg);
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+@media (max-width: 368px) {
+	.general-performance-wrapper * {
+	  font-size: 12px;
+	}
+  }
+  
+
+@media (min-width: 368px) {
+  .general-performance-wrapper *:not(.collapser-button) {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 900px) {
+  .general-performance-wrapper *:not(.collapser-button) {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 1500px) {
+  .general-performance-wrapper *:not(.collapser-button) {
+    font-size: 18px;
+  }
 }

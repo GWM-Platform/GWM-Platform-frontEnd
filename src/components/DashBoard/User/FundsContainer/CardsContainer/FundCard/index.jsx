@@ -12,7 +12,7 @@ import { useContext } from 'react';
 import { DashBoardContext } from 'context/DashBoardContext';
 import PerformanceComponent from 'components/DashBoard/GeneralUse/PerformanceComponent';
 
-const FundCard = ({ Hide, setHide, Fund, PendingTransactions, cardsAmount, inScreenFunds }) => {
+const FundCard = ({ Hide, setHide, Fund, PendingTransactions, cardsAmount, inScreenFunds, value }) => {
     const { hasSellPermission, hasBuyPermission, hasPermission, isMobile } = useContext(DashBoardContext)
 
     Decimal.set({ precision: 100 })
@@ -38,10 +38,15 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions, cardsAmount, inScr
         history.push(`${operation}?fund=${Fund.fund.id}`);
     }
 
+    const goToHistory = () => {
+        history.push(`/DashBoard/history?type=t&fundId=${Fund.fund.id}`);
+    }
+
     return (
         <Col className="fund-col growAnimation" sm="6" md="6" lg="4" style={{ maxHeight: "100%" }}>
-            <Card className="FundCard h-100" style={{ maxHeight: "100%", display: "flex" }}>
+            <Card className="FundCard h-100" style={{ maxHeight: "100%", display: "flex", cursor: "pointer" }}>
                 <Card.Header
+                    onClick={goToHistory}
                     className="header d-flex align-items-center justify-content-center"
                     style={{ flex: "none" }}
                 >
@@ -56,7 +61,7 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions, cardsAmount, inScr
                         }
                     </div>
                 </Card.Header>
-                <Card.Body className="body" style={{ flexGrow: "1", overflow: "overlay" }}>
+                <Card.Body onClick={goToHistory} className="body" style={{ flexGrow: "1", overflow: "overlay" }}>
                     <Container fluid className="px-0">
                         <Row className="mx-0 w-100 gx-0">
                             <Card.Title className="my-0" >
@@ -105,12 +110,12 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions, cardsAmount, inScr
                                             <div className="ps-0 hideInfoButton d-flex align-items-center">
                                                 <FontAwesomeIcon
                                                     className={`icon ${Hide ? "hidden" : "shown"}`}
-                                                    onClick={() => { setHide(!Hide) }}
+                                                    onClick={(e) => { e.stopPropagation(); setHide(!Hide) }}
                                                     icon={faEye}
                                                 />
                                                 <FontAwesomeIcon
                                                     className={`icon ${!Hide ? "hidden" : "shown"}`}
-                                                    onClick={() => { setHide(!Hide) }}
+                                                    onClick={(e) => { e.stopPropagation(); setHide(!Hide) }}
                                                     icon={faEyeSlash}
                                                 />
                                                 <FontAwesomeIcon
@@ -121,7 +126,7 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions, cardsAmount, inScr
                                         </Row>
                                     </Container>
                                 </h1>
-                                <PerformanceComponent withoutSelector text={"Performance"} fundId={Fund.fund.id} />
+                                <PerformanceComponent withoutSelector text={"Accumulated performance"} fundId={Fund.fund.id} valueExternal={value} />
 
                                 <Card.Text className="lighter mt-0 mb-0">
                                     {t("Balance (shares)")}:&nbsp;

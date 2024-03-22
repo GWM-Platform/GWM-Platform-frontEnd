@@ -280,7 +280,9 @@
     "Pending transactions (shares)": "Pending transactions (shares)",
     "Status": "Status",
     "Performance": "Performance",
+    "Accumulated performance": "Accumulated performance",
     "FeePart Price (updated": "FeePart Price (updated",
+    "Operate": "Operate",
     "Now": "Now",
     "Welcome to Global Wealth Management!": "Welcome to Global Wealth Management!",
     "You are about to start investing with GWM": "You are about to start investing with GWM",
@@ -792,6 +794,6 @@
     "sell_quote": "Sell",
     "buy_quote": "Buy",
     "_at_quote": "at",
-    "OVERDRAFT_UPDATE":"Overdraft update",
+    "OVERDRAFT_UPDATE": "Overdraft update",
     "SHARE_TRANSFER_CREATE": "Share transfer creation"
 }

@@ -18,7 +18,11 @@ const performancesSlice = createSlice({
                         :
                         (action?.meta?.arg?.fund || "totalPerformance")
                 )
-                state[key] = { status: 'loading', performance: 0 }
+                const year = action?.meta?.arg?.year || "total"
+                if (!state[key]) {
+                    state[key] = {}
+                }
+                state[key][year] = { ...state[key][year], status: 'loading' }
             })
             .addCase(fetchPerformance.fulfilled, (state, action) => {
                 const key = (
@@ -27,7 +31,11 @@ const performancesSlice = createSlice({
                         :
                         (action?.payload?.fund || "totalPerformance")
                 )
-                state[key] = { status: 'succeeded', performance: action.payload.response }
+                const year = action?.payload?.year || "total"
+                if (!state[key]) {
+                    state[key] = {}
+                }
+                state[key][year] = { status: 'succeeded', performance: action.payload.response }
             })
             .addCase(fetchPerformance.rejected, (state, action) => {
                 const key = (
@@ -36,7 +44,11 @@ const performancesSlice = createSlice({
                         :
                         (action?.meta?.arg?.fund || "totalPerformance")
                 )
-                state[key] = { status: 'error', performance: 0, error: action.error.message }
+                const year = action?.meta?.arg?.year || "total"
+                if (!state[key]) {
+                    state[key] = {}
+                }
+                state[key][year] = { status: 'error', performance: 0, error: action.error.message }
             })
     }
 })
@@ -70,10 +82,10 @@ export const fetchPerformance = createAsyncThunk(
             }
         })
 
-        return { response: response.data, fund: params.fund, fixedDepositId: params.fixedDepositId }
+        return { response: response.data, fund: params.fund, fixedDepositId: params.fixedDepositId, year: params.year }
     }
 )
 
-export const selectPerformanceById = (state, key) => {
-    return state.performances?.[key]
+export const selectPerformanceById = (state, key, year) => {
+    return state.performances?.[key]?.[year || "total"]
 }

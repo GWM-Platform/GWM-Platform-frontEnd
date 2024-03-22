@@ -135,7 +135,7 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                             }}>
                                             {t("History")}
                                         </Nav.Link>
-                                        <NavDropdown className="px-0 transactionDropdown" active={itemSelectedLC === "timedeposit" || itemSelectedLC === "buy" || itemSelectedLC === "sell" || itemSelectedLC === "deposit" || itemSelectedLC === "withdraw" || itemSelectedLC === "transfer"} title={t("Transactions")} id="collasible-nav-dropdown">
+                                        <NavDropdown className="px-0 transactionDropdown" active={itemSelectedLC === "timedeposit" || itemSelectedLC === "buy" || itemSelectedLC === "sell" || itemSelectedLC === "deposit" || itemSelectedLC === "withdraw" || itemSelectedLC === "transfer"} title={t("Operate")} id="collasible-nav-dropdown">
                                             <NavDropdown.Item
                                                 active={itemSelectedLC === "buy"}
                                                 onClick={() => { goTo("buy") }}

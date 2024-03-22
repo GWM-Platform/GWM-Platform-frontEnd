@@ -5,7 +5,6 @@ import TableLastMovements from './TableLastMovements';
 import { useTranslation } from "react-i18next";
 import TableLastTransfers from './TableLastTransfers';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
-import PerformanceComponent from 'components/DashBoard/GeneralUse/PerformanceComponent';
 
 const MobileCard = ({ account }) => {
     const { t } = useTranslation();
@@ -33,10 +32,6 @@ const MobileCard = ({ account }) => {
                                         <FormattedNumber value={account.balance} prefix="U$D " fixedDecimals={2} />
                                     </span>
                                 </Card.Text>
-                                {
-                                    performance &&
-                                    <PerformanceComponent text="Total performance" />
-                                }
                             </Col>
                             <TableLastMovements account={account} />
                             <TableLastTransfers account={account} />

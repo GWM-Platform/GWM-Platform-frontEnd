@@ -38,7 +38,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
     const desiredId = useQuery().get("id")
     const desiredType = useQuery().get("type")
     const desiredFundId = useQuery().get("fundId")
-    const validTypes = ["m", "t", "transfers", "share-transfers"]
+    const validTypes = ["m", "t", "t-d", "transfers", "share-transfers"]
 
     const [categorySelected, setCategorySelected] = useState(
         desiredType ?
@@ -49,19 +49,22 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
                     desiredType === "t" ?
                         Funds.length > 0 ? 1 : 0
                         :
-                        desiredType === "m" || desiredType === "transfers" ? 0 : 0
+                        desiredType === "t-d" ?
+                            2
+                            :
+                            desiredType === "m" || desiredType === "transfers" ? 0 : 0
                 :
                 Accounts.length > 0 && hasPermission('VIEW_ACCOUNT') ? 0 : Funds.length > 0 ? 1 : 0
             :
             Accounts.length > 0 && hasPermission('VIEW_ACCOUNT') ? 0 : Funds.length > 0 ? 1 : 0
     )
 
-    const [selected, setSelected] = useState(desiredType === "t" && desiredFundId ? getFundIndexById(desiredFundId).found ? getFundIndexById(desiredFundId).index : 0 : 0)
+    const [selected, setSelected] = useState(desiredType ==="t-d" ? undefined :desiredType === "t" && desiredFundId ? getFundIndexById(desiredFundId).found ? getFundIndexById(desiredFundId).index : 0 : 0)
     const [Hide, setHide] = useState(false)
     const [collapseSecondary, setCollapseSecondary] = useState(false)
 
     const performSearch = () => {
-        if (desiredType) {
+        if (desiredType && desiredId) {
             if (validTypes.includes(desiredType)) {
                 switch (desiredType) {
                     case "t":

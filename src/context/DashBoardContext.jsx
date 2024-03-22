@@ -208,7 +208,9 @@ export const DashBoardProvider = ({ children }) => {
             })
             var url = `${process.env.REACT_APP_APIURL}/transactions/?` + new URLSearchParams({
                 client: ClientSelected.id,
-                filterState: 1
+                filterState: 1,
+                take: 50,
+                skip: 0,
             });
             const response = await fetch(url, {
                 method: 'GET',
@@ -248,10 +250,11 @@ export const DashBoardProvider = ({ children }) => {
                     fetching: true,
                 }
             }))
-            axios.get(`/transfers`, {
+            axios.get(`/transactions`, {
                 params: {
                     limit: 50,
                     skip: 0,
+                    take: 50,
                     client: ClientSelected.id,
                     filterState: 5
                 }

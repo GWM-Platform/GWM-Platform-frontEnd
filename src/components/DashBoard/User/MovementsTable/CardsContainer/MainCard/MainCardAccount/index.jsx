@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Col, Nav } from 'react-bootstrap';
 
@@ -13,7 +13,6 @@ import TransfersTab from './TransfersTab';
 import FundDetail from './FundDetail';
 import './index.css'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
-import PerformanceComponent from 'components/DashBoard/GeneralUse/PerformanceComponent';
 
 const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
 
@@ -43,6 +42,22 @@ const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, reset
 
     const balanceInCash = Fund.balance
 
+    useEffect(() => {
+        const resetQueryParams = () => {
+            const queryParams = new URLSearchParams(location.search);
+            queryParams.delete("type");
+            queryParams.delete("loc");
+            queryParams.delete("id");
+            queryParams.delete("client");
+            queryParams.delete("fundId");
+            const queryString = `?${queryParams.toString()}`;
+            history.replace({ pathname: location.pathname, search: queryString });
+        }
+        resetQueryParams()
+        //eslint-disable-next-line
+    }, [])
+
+    
     return (
         <div className="movementsMainCardAccount growAnimation mt-2">
             <div className="bg-white info ms-0 mb-2 px-0">
@@ -51,9 +66,6 @@ const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, reset
                         <h1 className="m-0 title px-2">
                             {t("Cash")}
                         </h1>
-                    </Col>
-                    <Col className='ms-auto' xs="auto">
-                        <PerformanceComponent text={"Total performance"} />
                     </Col>
                 </div>
                 <div className="d-flex justify-content-between align-items-end pe-2 pb-2 border-bottom-main">

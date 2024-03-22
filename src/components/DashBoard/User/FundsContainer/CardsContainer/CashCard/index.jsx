@@ -11,7 +11,6 @@ import { DashBoardContext } from 'context/DashBoardContext';
 import Decimal from 'decimal.js'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import { useState } from 'react';
-import PerformanceComponent from 'components/DashBoard/GeneralUse/PerformanceComponent';
 import enrichAccount from 'utils/enrichAccount';
 import PopoverAvailableFunds from 'components/DashBoard/GeneralUse/PopoverAvailableFunds';
 import { useLocation } from 'react-router-dom/cjs/react-router-dom';
@@ -53,21 +52,24 @@ const CashCard = (props) => {
         }
     }, [highlightOverdraft])
 
-
+    const goToHistory = () => {
+        history.push(`/DashBoard/history`);
+    }
 
     return (
-        <Col sm="6" md="6" lg="4" className={`fund-col  growAnimation ${Pinned && !isMobile ? "pinned" : ""}`} style={{ maxHeight: "100%" }}>
+        <Col sm="6" md="6" lg="4" className={`fund-col  growAnimation ${Pinned && !isMobile ? "pinned" : ""}`} style={{ maxHeight: "100%", cursor: "pointer" }}>
             <Card className="h-100 cashCard" style={{ maxHeight: "100%", display: "flex" }}>
                 <Card.Header
                     className="header d-flex align-items-center justify-content-center"
+                    onClick={() => goToHistory()}
                     style={{ flex: "none" }}
                 >
                     <span className="currencyContainer d-flex align-items-center justify-content-center">
                         <img className="currency px-0 mx-0" alt="cash" src={process.env.PUBLIC_URL + '/images/FundsLogos/cash.svg'} />
                     </span>
                 </Card.Header>
-                <Card.Body className="body" style={{ flexGrow: "1", overflow: "overlay" }}>
-                    <Row >
+                <Card.Body onClick={() => goToHistory()} className="body" style={{ flexGrow: "1", overflow: "overlay" }}>
+                    <Row className='flex-column h-100'>
                         <Card.Title className="my-0" >
                             <Container fluid className="px-0">
                                 <Row className="mx-0 w-100 my-0">
@@ -78,7 +80,7 @@ const CashCard = (props) => {
                                     </Col>
                                     {
                                         !!(cardsAmount > inScreenFunds && !isMobile) &&
-                                        <button className="noStyle px-0 hideInfoButton d-flex align-items-center" onClick={() => { setPinned(prevState => !prevState) }}                                            >
+                                        <button className="noStyle px-0 hideInfoButton d-flex align-items-center" onClick={(e) => { e.stopPropagation(); setPinned(prevState => !prevState) }}                                            >
                                             <div className={Pinned ? "" : "opacity-0 d-none"}>
                                                 <FontAwesomeIcon
                                                     className={`icon pin ${Pinned ? "active" : ""}`}
@@ -116,7 +118,8 @@ const CashCard = (props) => {
                                     <span>
                                         {t("Alias")}: <span className="bolder">{Fund.alias}</span>
                                     </span>
-                                    <button className="noStyle px-0 hideInfoButton d-inline-flex align-items-center" onClick={() => {
+                                    <button className="noStyle px-0 hideInfoButton d-inline-flex align-items-center" onClick={(e) => {
+                                        e.stopPropagation();
                                         DashboardToastDispatch({ type: "create", toastContent: { Icon: faCheckCircle, Title: "Alias succesfully copied!" } });
                                         navigator.clipboard.writeText(Fund.alias)
                                     }}>
@@ -136,7 +139,7 @@ const CashCard = (props) => {
                                         <span className='label'>
                                             {t("Balance")}
                                         </span>
-                                        <Container fluid className="px-0">
+                                        <Container fluid className="px-0 mb-2">
                                             <Row className="w-100 mx-0 d-flex gx-0 align-items-center">
                                                 <span className="containerHideInfo">
                                                     <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={parseFloat(Fund.balance).toString()} prefix="U$D " fixedDecimals={2} />
@@ -144,9 +147,9 @@ const CashCard = (props) => {
                                                     <FormattedNumber className={`info placeholder`} value={parseFloat(Fund.balance).toString()} prefix="U$D " fixedDecimals={2} />
                                                 </span>
                                                 <OverlayTrigger rootClose trigger="click" placement="auto-start" overlay={
-                                                    <PopoverAvailableFunds account={Fund} highlightOverdraft={highlightOverdraft}/>
+                                                    <PopoverAvailableFunds account={Fund} highlightOverdraft={highlightOverdraft} />
                                                 }>
-                                                    <button id="overdraft" className="noStyle px-0 hideInfoButton d-inline-flex align-items-center" style={{ fontSize: "16px" }}>
+                                                    <button onClick={e => e.stopPropagation()} id="overdraft" className="noStyle px-0 hideInfoButton d-inline-flex align-items-center" style={{ fontSize: "16px" }}>
                                                         <FontAwesomeIcon className="icon pin" icon={faInfoCircle} />
                                                         <FontAwesomeIcon className="icon placeholder" icon={faEyeSlash} />
                                                     </button>
@@ -166,7 +169,7 @@ const CashCard = (props) => {
                                                     <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={parseFloat(Fund.balance).toString()} prefix="U$D " fixedDecimals={2} />
                                                     <FormattedNumber className={`info placeholder`} value={parseFloat(Fund.balance).toString()} prefix="U$D " fixedDecimals={2} />
                                                 </span>
-                                                <button onClick={() => setHide(prevState => !prevState)} className="noStyle ps-0 hideInfoButton d-flex align-items-center">
+                                                <button onClick={(e) => { e.stopPropagation(); setHide(prevState => !prevState) }} className="noStyle ps-0 hideInfoButton d-flex align-items-center">
                                                     <FontAwesomeIcon
                                                         className={`icon ${Hide ? "hidden" : "shown"}`}
                                                         icon={faEye}
@@ -185,13 +188,7 @@ const CashCard = (props) => {
                                     </>
                             }
                         </h1>
-
-                        {
-                            performance &&
-                            <PerformanceComponent withoutSelector text={"Total performance"} />
-                        }
-
-                        <div className="lighter mt-0 mb-0">
+                        <div className="lighter mt-auto mb-0">
                             <span className='d-flex justify-content-between'>
                                 {
                                     pendingCash().calculated ?
@@ -231,6 +228,7 @@ const CashCard = (props) => {
                                                 </Popover>
                                             }>
                                                 <button
+                                                    onClick={e => e.stopPropagation()}
                                                     className="noStyle px-0 hideInfoButton d-inline-flex align-items-center">
                                                     <FontAwesomeIcon className="icon pin" icon={faInfoCircle} />
                                                     <FontAwesomeIcon

@@ -1,18 +1,21 @@
 import { fetchPerformance, selectPerformanceById } from "Slices/DashboardUtilities/performancesSlice";
 import { DashBoardContext } from "context/DashBoardContext";
 import moment from "moment";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { Form, Placeholder } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import FormattedNumber from "../FormattedNumber";
 
-const PerformanceComponent = ({ text, fundId = "", fixedDepositId = "", withoutSelector = false }) => {
+const PerformanceComponent = ({ text, fundId = "", fixedDepositId = "", withoutSelector = false, className = "", setValueExternal = false, valueExternal = false }) => {
     const { t } = useTranslation();
 
     const dispatch = useDispatch()
     const { ClientSelected } = useContext(DashBoardContext)
-    const [value, setValue] = useState("")
+    const [valueInternal, setValueInternal] = useState("")
+
+    const value = useMemo(() => valueExternal !== false ? valueExternal : valueInternal, [valueExternal, valueInternal])
+    const setValue = useCallback((params) => setValueExternal !== false ? setValueExternal(params) : setValueInternal(params), [setValueExternal])
 
     const performanceObject = useSelector(state =>
         selectPerformanceById(
@@ -20,7 +23,8 @@ const PerformanceComponent = ({ text, fundId = "", fixedDepositId = "", withoutS
             fixedDepositId !== "" ?
                 `fixedDeposit`
                 :
-                (fundId !== "" ? fundId : "totalPerformance")
+                (fundId !== "" ? fundId : "totalPerformance"),
+            value
         )
     )
 
@@ -46,9 +50,8 @@ const PerformanceComponent = ({ text, fundId = "", fixedDepositId = "", withoutS
         }
         return años;
     }
-
     return (
-        <span className='text-start w-100 d-block' style={{ fontWeight: "300" }}>
+        <span className={`text-start w-100 d-block ${className}`} style={{ fontWeight: "300" }}>
             <span className="text-nowrap">
                 {t(text)}
                 {
@@ -67,7 +70,7 @@ const PerformanceComponent = ({ text, fundId = "", fixedDepositId = "", withoutS
                 :&nbsp;
             </span>
             {
-                status === "loading" ?
+                status === "loading" && (performance === null || performance === undefined) ?
                     <Placeholder style={{ width: "8ch" }} animation="wave" className="placeholder" />
                     :
                     <strong className="text-nowrap">

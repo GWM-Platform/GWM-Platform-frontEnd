@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Col, Nav } from 'react-bootstrap';
 
@@ -10,10 +10,28 @@ import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 import MovementsTab from './MovementsTab';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import PerformanceComponent from 'components/DashBoard/GeneralUse/PerformanceComponent';
+import { useHistory, useLocation } from 'react-router-dom/cjs/react-router-dom.min';
 
 const MainCardFixedDeposit = ({ FixedDepositsStats, Hide, setHide }) => {
     const [SelectedTab, setSelectedTab] = useState("0")
     const { t } = useTranslation();
+
+    const location = useLocation();
+    const history = useHistory()
+    useEffect(() => {
+        const resetQueryParams = () => {
+            const queryParams = new URLSearchParams(location.search);
+            queryParams.delete("type");
+            queryParams.delete("loc");
+            queryParams.delete("id");
+            queryParams.delete("client");
+            queryParams.delete("fundId");
+            const queryString = `?${queryParams.toString()}`;
+            history.replace({ pathname: location.pathname, search: queryString });
+        }
+        resetQueryParams()
+        //eslint-disable-next-line
+    }, [])
 
     return (
         <div className="movementsMainCardFund growAnimation mt-2">
@@ -22,11 +40,10 @@ const MainCardFixedDeposit = ({ FixedDepositsStats, Hide, setHide }) => {
                     <Col className="d-flex justify-content-between pe-5" sm="auto">
                         <h1 className="m-0 title px-2">
                             {t("Time deposits")}
-                            {t("Cash")}
                         </h1>
                     </Col>
                     <Col className='ms-auto' xs="auto">
-                        <PerformanceComponent text="Performance" fixedDepositId='1'/>
+                        <PerformanceComponent className='performance-component' text="Performance" fixedDepositId='1' />
                     </Col>
                 </div>
                 <div className="d-flex justify-content-between align-items-end pe-2">
@@ -35,9 +52,9 @@ const MainCardFixedDeposit = ({ FixedDepositsStats, Hide, setHide }) => {
                             <div className="containerHideInfo px-2 description">
                                 <span>{t("Balance")}:&nbsp;</span>
                                 <span style={{ fontWeight: "bolder" }}>
-                                    <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={FixedDepositsStats?.balance} prefix="U$D" fixedDecimals={2} />
-                                    <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={FixedDepositsStats?.balance} prefix="U$D" fixedDecimals={2} />
-                                    <FormattedNumber className={`info placeholder`} value={FixedDepositsStats?.balance} prefix="U$D" fixedDecimals={2} />
+                                    <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={FixedDepositsStats?.balance} prefix="U$D " fixedDecimals={2} />
+                                    <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={FixedDepositsStats?.balance} prefix="U$D " fixedDecimals={2} />
+                                    <FormattedNumber className={`info placeholder`} value={FixedDepositsStats?.balance} prefix="U$D " fixedDecimals={2} />
                                 </span>
                             </div>
                         </Col>

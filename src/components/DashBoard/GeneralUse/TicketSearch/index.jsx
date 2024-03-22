@@ -27,7 +27,7 @@ const Search = ({ props }) => {
     return (
         <Form onSubmit={handleSubmit}>
             <Form.Label>{t("Ticket N°")}</Form.Label>
-            <InputGroup className={`searchBar  ${SearchText.length === 0 ? "" : "search"} `}>
+            <InputGroup className={`searchBar  ${SearchText?.length === 0 ? "" : "search"} `}>
                 <Form.Control
                     onChange={handleSearchChange}
                     value={SearchText}
@@ -37,10 +37,10 @@ const Search = ({ props }) => {
                     disabled={fetching}
                     required
                 />
-                <Button disabled={fetching || SearchText.length <= 0} style={{ borderColor: "#ced4da" }} className="btn-main d-flex align-items-center" variant="outline-secondary" onClick={() => cancelSearch()} id="basic-addon1">
+                <Button disabled={fetching || SearchText?.length <= 0} style={{ borderColor: "#ced4da" }} className="btn-main d-flex align-items-center" variant="outline-secondary" onClick={() => cancelSearch()} id="basic-addon1">
                     <FontAwesomeIcon className="icon" icon={faTimes} />
                 </Button>
-                <Button disabled={fetching || SearchText.length <= 0} variant="outline-secondary" style={{ borderColor: "#ced4da" }} className="btn-main right d-flex align-items-center" type="submit" id="basic-addon1">
+                <Button disabled={fetching || SearchText?.length <= 0} variant="outline-secondary" style={{ borderColor: "#ced4da" }} className="btn-main right d-flex align-items-center" type="submit" id="basic-addon1">
                     {fetching ?
                         <Spinner animation="border" size="sm" />
                         :

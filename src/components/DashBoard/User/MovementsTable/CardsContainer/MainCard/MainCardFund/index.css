@@ -1,93 +1,97 @@
 .movementsMainCardFund .history-tabs {
-    border: none;
-    background-color: rgb(243, 244, 246);
-    color: rgb(111, 111, 111)
+  border: none;
+  background-color: rgb(243, 244, 246);
+  color: rgb(111, 111, 111);
+}
+
+.movementsMainCardFund .performance-component {
+  font-size: 17px;
 }
 
 .movementsMainCardFund .history-tabs .nav-link {
-    border-radius: 0;
-    border: none;
-    border-top: transparent 3px solid;
+  border-radius: 0;
+  border: none;
+  border-top: transparent 3px solid;
 }
 
-.movementsMainCardFund .history-tabs .nav-item>.active {
-    border-radius: 0;
-    border: none;
-    border-top: var(--blue-main) 3px solid;
+.movementsMainCardFund .history-tabs .nav-item > .active {
+  border-radius: 0;
+  border: none;
+  border-top: var(--blue-main) 3px solid;
 }
 
 .movementsMainCardFund .nav-link:hover {
-	border-color: transparent;
-    color: black;
+  border-color: transparent;
+  color: black;
 }
 
 .movementsMainCardFund .filter .form-control {
-    border-radius: 20px;
+  border-radius: 20px;
 }
 
 .movementsMainCardFund .details .title {
-    text-transform: capitalize;
-    font-size: 20px;
-    font-weight: 400;
-    color: var(--main-color)
+  text-transform: capitalize;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--main-color);
 }
 
 .movementsMainCardFund .details .text {
-    font-size: 17px;
-    font-weight: 200;
-    width: 100%;
-    border-bottom: var(--main-color) 1px solid;
+  font-size: 17px;
+  font-weight: 200;
+  width: 100%;
+  border-bottom: var(--main-color) 1px solid;
 }
 
-.movementsMainCardFund .details .text>.amount {
-    text-align: end;
-    font-size: 17px;
-    font-weight: 400;
-    color: var(--main-color)
+.movementsMainCardFund .details .text > .amount {
+  text-align: end;
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--main-color);
 }
 
 .movementsMainCardFund .border-bottom-main {
-    border-bottom: var(--main-color) 1px solid;
+  border-bottom: var(--main-color) 1px solid;
 }
 
 .movementsMainCardFund .border-bottom-none {
-    border-bottom: none!important;
+  border-bottom: none !important;
 }
 
 .movementsMainCardFund .info .left {
-    font-size: 17px;
-    font-weight: 300;
-    color:black
+  font-size: 17px;
+  font-weight: 300;
+  color: black;
 }
 .movementsMainCardFund .info .description {
-    font-size: 17px;
-    font-weight: 200;
+  font-size: 17px;
+  font-weight: 200;
 }
 
 .movementsMainCardFund .info .title {
-    text-transform: uppercase;
-    color: black;
-    font-weight: 600;
-    font-size: 23px;
+  text-transform: uppercase;
+  color: black;
+  font-weight: 600;
+  font-size: 23px;
 }
 
 .movementsMainCardFund .info .edit {
-    color: black;
-    font-weight: 400;
-    font-size: 16px;
+  color: black;
+  font-weight: 400;
+  font-size: 16px;
 }
 
 .movementsMainCardFund .info .content {
-    color: var(--main-color);
-    font-weight: 400;
-    font-size: 16px;
+  color: var(--main-color);
+  font-weight: 400;
+  font-size: 16px;
 }
 
 .movementsMainCardFund .loadingMovements {
-    height: calc( 100vh - 465px );
-    transition:all 0.5s
+  height: calc(100vh - 465px);
+  transition: all 0.5s;
 }
 
-.movementsMainCardFund .loadingMovements.navInfoToggled{
-    height: calc( 100vh - 465px + 76px)
+.movementsMainCardFund .loadingMovements.navInfoToggled {
+  height: calc(100vh - 465px + 76px);
 }
