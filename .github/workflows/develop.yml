@@ -1,0 +1,45 @@
+name: Deploy to SFTP
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Build React app
+        env:
+          REACT_APP_APIURL: https://api.gemfasa.com
+          REACT_APP_DECIMALSEPARATOR: ","
+          REACT_APP_GATAGID: G-4KY7PEMZ5L
+          REACT_APP_GDRIVESERVICEACCOUTEMAIL: gwmplatform@iconic-rampart-314816.iam.gserviceaccount.com
+          REACT_APP_GROUPSEPARATOR: "."
+          REACT_APP_SENTRYDSN: https://a0502ecf94e3423b9c313da04990340f@o1366134.ingest.sentry.io/6662586
+          REACT_APP_SENTRYENVIROMENT: "testing"
+          
+        run: yarn build
+
+      - name: Upload to SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        with:
+            local_path: './build/*'
+            remote_path: '/gwm/panel/build'
+            delete_remote_files: false
+            username: 'ubuntu'
+            server: '3.14.250.36'
+            port: 22
+            ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }} 
+      - name: Clean old files
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
+          chmod 600 private_key.pem
+          ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@3.14.250.36 "find /gwm/panel/build -type f -mtime +7 -delete"
