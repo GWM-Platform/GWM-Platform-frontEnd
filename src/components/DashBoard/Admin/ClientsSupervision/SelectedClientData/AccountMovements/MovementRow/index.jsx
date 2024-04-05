@@ -21,6 +21,7 @@ const Movement = ({ Movement }) => {
   const clientNote = Movement?.notes?.find(note => note.noteType === "CLIENT_NOTE")
   const denialMotive = Movement?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
   const adminNote = Movement?.notes?.find(note => note.noteType === "ADMIN_NOTE")
+  const partialLiquidate = Movement?.notes?.find(note => note.noteType === "PARTIAL_LIQUIDATE_MOTIVE")
 
   return (
     <tr>
@@ -74,6 +75,14 @@ const Movement = ({ Movement }) => {
                     <span className="text-nowrap">"{adminNote.text}"</span>
                   </div>
                 }
+                {
+                  !!(partialLiquidate) &&
+                  <div className='d-flex justify-content-between'>
+                    <span >
+                      "{partialLiquidate.text}" ({partialLiquidate.userName})
+                    </span>
+                  </div>
+                }
               </Tooltip>
             }
           >
@@ -103,6 +112,7 @@ const Movement = ({ Movement }) => {
         {Movement?.transferReceiver && <>{t("Transfer to {{transferReceiver}}", { transferReceiver: Movement?.transferReceiver })}</>}
         {Movement?.transferSender && <>{t("Transfer from {{transferSender}}", { transferSender: Movement?.transferSender })}</>}
         {(Movement?.transfer?.reverted && transferNote?.text === "Transferencia revertida") ? <>, {t("reversion")}</> : ""}
+        {!!(partialLiquidate) && <> ({t("Partial liquidation")})</>}
       </td>
       <td className={`tableAmount ${Math.sign(Movement.amount) === 1 ? 'text-green' : 'text-red'}`}>
         <span>{Math.sign(Movement.amount) === 1 ? '+' : '-'}</span>

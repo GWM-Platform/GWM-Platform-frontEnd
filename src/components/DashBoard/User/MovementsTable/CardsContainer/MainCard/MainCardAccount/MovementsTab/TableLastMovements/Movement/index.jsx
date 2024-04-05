@@ -397,15 +397,18 @@ const Movement = ({ content, actions, reloadData }) => {
   }
 
   const transferNote = content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")
+  const partialLiquidate = content?.notes?.find(note => note.noteType === "PARTIAL_LIQUIDATE_MOTIVE")
   const clientNote = content?.notes?.find(note => note.noteType === "CLIENT_NOTE")
   const denialMotive = content?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
+
+
 
   return (
     <tr>
       <td className="tableId text-nowrap">
         {content.id}
         {
-          !!(content?.userEmail || content?.userName || !!(transferNote) || !!(clientNote) || !!(denialMotive)) &&
+          !!(content?.userEmail || content?.userName || !!(transferNote) || !!(clientNote) || !!(denialMotive) || !!(partialLiquidate)) &&
           <OverlayTrigger
             show={showClick || showHover}
             placement="right"
@@ -444,6 +447,12 @@ const Movement = ({ content, actions, reloadData }) => {
                   <div>
                     {t('Denial motive')}:<br />
                     <span className="text-nowrap">"{denialMotive.text}"</span>
+                  </div>
+                }
+                {
+                  !!(partialLiquidate) &&
+                  <div>
+                    <span className="text-nowrap">"{partialLiquidate.text}"</span>
                   </div>
                 }
               </Tooltip>
@@ -527,6 +536,9 @@ const Movement = ({ content, actions, reloadData }) => {
         {content?.transferReceiver && <>{t("Transfer to {{transferReceiver}}", { transferReceiver: content?.transferReceiver })}</>}
         {content?.transferSender && <>{t("Transfer from {{transferSender}}", { transferSender: content?.transferSender })}</>}
         {(content?.transfer?.reverted && transferNote?.text === "Transferencia revertida") ? <>, {t("reversion")}</> : ""}
+        {
+          !!(partialLiquidate) && <> ({t("Partial liquidation")})</>
+        }
       </td>
       <td className={`tableAmount ${Math.sign(content.amount) === 1 ? 'text-green' : 'text-red'}`}>
         <span>{Math.sign(content.amount) === 1 ? '+' : '-'}</span>

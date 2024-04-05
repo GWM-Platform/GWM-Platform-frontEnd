@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next';
 
 
-const Notes = ({ transferNote, clientNote, denialMotive, adminNote }) => {
+const Notes = ({ transferNote, clientNote, denialMotive, adminNote, partialLiquidate }) => {
     const { t } = useTranslation();
     return (
         <>
@@ -40,6 +40,13 @@ const Notes = ({ transferNote, clientNote, denialMotive, adminNote }) => {
                     <span >
                         <span className="d-inline">{t('Admin note')}:&nbsp;</span>
                         "{adminNote.text}"
+                    </span>
+                </div>
+            }
+            {!!(partialLiquidate) &&
+                <div className='d-flex justify-content-between'>
+                    <span >
+                        "{partialLiquidate.text}" ({partialLiquidate.userName})
                     </span>
                 </div>
             }

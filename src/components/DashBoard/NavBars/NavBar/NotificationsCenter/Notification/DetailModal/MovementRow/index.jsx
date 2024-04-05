@@ -61,6 +61,7 @@ const MovementRow = ({ Movement }) => {
   const clientNote = Movement?.notes?.find(note => note.noteType === "CLIENT_NOTE")
   const denialMotive = Movement?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
   const adminNote = Movement?.notes?.find(note => note.noteType === "ADMIN_NOTE")
+  const partialLiquidate = Movement?.notes?.find(note => note.noteType === "PARTIAL_LIQUIDATE_MOTIVE")
 
   return (
     <>
@@ -154,6 +155,13 @@ const MovementRow = ({ Movement }) => {
                     <div>
                       {t('Admin note')}:<br />
                       <span className="text-nowrap">"{adminNote.text}"</span>
+                    </div>
+                  }
+                  {!!(partialLiquidate) &&
+                    <div className='d-flex justify-content-between'>
+                      <span >
+                        "{partialLiquidate.text}" ({partialLiquidate.userName})
+                      </span>
                     </div>
                   }
                 </Tooltip>

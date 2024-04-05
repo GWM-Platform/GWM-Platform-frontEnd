@@ -116,10 +116,10 @@ const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, coul
     const clientNote = Movement?.notes?.find(note => note.noteType === "CLIENT_NOTE")
     const denialMotive = Movement?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
     const adminNote = Movement?.notes?.find(note => note.noteType === "ADMIN_NOTE")
+    const partialLiquidate = Movement?.notes?.find(note => note.noteType === "PARTIAL_LIQUIDATE_MOTIVE")
 
     const userEmail = useSelector(selectUserEmail)
     const userId = useSelector(selectUserId)
-
     return (
         <>
             <div className='mobileMovement'>
@@ -230,7 +230,7 @@ const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, coul
                         {momentDate.format('L')}
                     </span>
                 </div >
-                <Notes transferNote={transferNote} clientNote={clientNote} denialMotive={denialMotive} adminNote={adminNote} />
+                <Notes transferNote={transferNote} clientNote={clientNote} denialMotive={denialMotive} adminNote={adminNote}  partialLiquidate={partialLiquidate}/>
             </div >
             {
                 !!(Movement.stateId === 1 || couldLiquidate(Movement)) &&

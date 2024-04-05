@@ -112,6 +112,24 @@
 		transform: scale(1.1);
 	}
 }
+
+.action-status {
+    position: absolute!important;
+}
+.action-status.hidden {
+	pointer-events: none!important;
+}
+.esqueleton {
+	position: relative!important;
+	transition: max-height 0.5s,ease opacity 0.5s!important;
+}
+.esqueleton.hidden {
+	max-height: 13rem;
+	pointer-events: none!important;
+}
+.esqueleton.show {
+	max-height: 100vw;
+}
 .deleteModal .hidden,
 .editModal .hidden {
 	position: absolute;
