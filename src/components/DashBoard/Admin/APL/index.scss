@@ -1,5 +1,16 @@
 .APL {
 
+    .clickable {
+        color: rgb(0, 108, 225);
+        text-decoration: underline;
+
+        &:hover {
+            color: #0056b3
+        }
+
+        cursor: pointer;
+    }
+
     .title {
         color: black;
         font-weight: 600;
@@ -207,9 +218,11 @@
             }
         }
     }
-    .recharts-tooltip-cursor{
+
+    .recharts-tooltip-cursor {
         cursor: pointer;
     }
+
     .fixed-deposit-item {
         height: 100%;
         width: 100%;

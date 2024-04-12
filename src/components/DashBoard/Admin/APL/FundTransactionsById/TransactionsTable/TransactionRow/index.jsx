@@ -16,6 +16,9 @@ const TransactionRow = ({ transaction, user }) => {
   const isTransfer = transaction.receiverId || transaction.senderId
   const transferNote = transaction?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")
 
+  // const fixedShares = Decimal(transaction.shares || 0).abs().toFixed(2)
+  const fixedSharePrice = Decimal(transaction.sharePrice || 0).abs().toFixed(2)
+
   return (
 
     <tr>
@@ -34,12 +37,14 @@ const TransactionRow = ({ transaction, user }) => {
           isTransfer ?
             <>
               {t("Transfer of")}{" "}
+              {/* <FormattedNumber value={Math.abs(fixedShares)} fixedDecimals={2} />&nbsp; */}
               <FormattedNumber value={Math.abs(transaction.shares)} fixedDecimals={sharesDecimalPlaces} />&nbsp;
               {t(Math.abs(transaction.shares) === 1 ? "share" : "shares")}
             </>
             :
             <>
               <span>{Math.sign(transaction.shares) === 1 ? t('Sale of') : t('Purchase of')}{" "}</span>
+              {/* <FormattedNumber value={fixedShares} fixedDecimals={2} />&nbsp; */}
               <FormattedNumber value={Math.abs(transaction.shares)} fixedDecimals={sharesDecimalPlaces} />&nbsp;
               {t(Math.abs(transaction.shares) === 1 ? "share" : "shares")}
             </>
@@ -51,18 +56,19 @@ const TransactionRow = ({ transaction, user }) => {
         {(transaction?.reverted && transferNote?.text !== "Transferencia revertida") ? <>, {t("reverted")}</> : ""}
       </td>
       <td className="tableDescription d-none d-sm-table-cell text-nowrap ">
-        <FormattedNumber value={Math.abs(transaction.sharePrice)} prefix="U$D " fixedDecimals={2} />&nbsp;
+        <FormattedNumber value={fixedSharePrice} prefix="U$D " fixedDecimals={2} />&nbsp;
       </td>
       <td className={`tableAmount ${isTransfer ? "" : (Math.sign(transaction.shares) === 1 ? 'text-red' : 'text-green')}`}>
         {
           isTransfer ?
             <>
-              (<FormattedNumber value={new Decimal(transaction.shares).times(transaction.sharePrice).abs()} prefix="U$D " fixedDecimals={2} />)
+              (<FormattedNumber value={fixedSharePrice} prefix="U$D " fixedDecimals={2} />)
             </>
             :
             <>
               <span>{Math.sign(transaction.shares) === 1 ? '-' : '+'}</span>
-              <FormattedNumber value={new Decimal(transaction.shares).times(transaction.sharePrice).abs()} prefix="U$D " fixedDecimals={2} />
+              {/* <FormattedNumber value={Decimal(fixedShares).times(fixedSharePrice).toFixed(2)} prefix="U$D " fixedDecimals={2} /> */}
+              <FormattedNumber value={Decimal(transaction.shares).times(fixedSharePrice).toFixed(2)} prefix="U$D " fixedDecimals={2} />
             </>
         }
       </td>

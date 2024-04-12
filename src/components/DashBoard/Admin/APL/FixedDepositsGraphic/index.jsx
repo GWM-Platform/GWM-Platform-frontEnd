@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next';
 import { Bar, BarChart, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Cell } from 'recharts';
@@ -9,26 +9,28 @@ import { Badge, Col, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 
 const FixedDepositsGraphic = ({ data }) => {
-    const [selectedMonth, setSelectedMonth] = useState(0)
+    const [selectedMonth, setSelectedMonth] = useState(null)
 
     const { t } = useTranslation()
 
     const { i18n } = useTranslation();
 
     moment.locale("EN")
-    const formattedData =
-        data?.map(
-            item => ({ month: moment(`${item.name} ${item.year}`, 'MMMM YYYY'), debt: item.debt, monthDeposits: item.monthDeposits })
-        )?.map(
-            (item, index) => {
-                const month = item.month.locale(i18n.language).format('MMMM, yy')
-                const capitalizedMonth = month.charAt(0).toUpperCase() + month.slice(1);
-                return (
-                    { index: index, month: capitalizedMonth, debt: item.debt, monthDeposits: item.monthDeposits }
-                )
-            }
-        )
+    const formattedData = useMemo(() => data?.map(
+        item => ({ month: moment(`${item.name} ${item.year}`, 'MMMM YYYY'), debt: item.debt, monthDeposits: item.monthDeposits })
+    )?.map(
+        (item, index) => {
+            const month = item.month.locale(i18n.language).format('MMMM, yy')
+            const capitalizedMonth = month.charAt(0).toUpperCase() + month.slice(1);
+            return (
+                { index: index, month: capitalizedMonth, debt: item.debt, monthDeposits: item.monthDeposits }
+            )
+        }
+    ), [data, i18n.language])
+
     moment.locale(i18n.language)
+
+    const selectedDetail = useMemo(() => (selectedMonth === null ? { monthDeposits: formattedData.map(month => month.monthDeposits).flat() } : formattedData?.[selectedMonth]), [formattedData, selectedMonth])
 
     const CustomTooltip = ({ active, payload, label }) => {
         if (active && payload && payload.length) {
@@ -54,7 +56,9 @@ const FixedDepositsGraphic = ({ data }) => {
                     data={formattedData} margin={{ top: 15, right: 20, bottom: 10, left: 20 }}
                     onClick={
                         props => {
-                            if (props?.activePayload?.[0]?.payload?.monthDeposits?.length > 0) {
+                            if (selectedMonth === props?.activeTooltipIndex) {
+                                setSelectedMonth(null);
+                            } else if (props?.activePayload?.[0]?.payload?.monthDeposits?.length > 0) {
                                 setSelectedMonth(props?.activeTooltipIndex);
                                 setTimeout(() => { ref?.current?.scrollIntoView({ block: "start", behavior: "smooth" }) }, 150);
                             }
@@ -78,17 +82,17 @@ const FixedDepositsGraphic = ({ data }) => {
                 </BarChart>
             </ResponsiveContainer>
             {
-                formattedData?.[selectedMonth]?.monthDeposits?.length > 0 &&
+                selectedDetail?.monthDeposits?.length > 0 &&
                 <div ref={ref}>
 
                     <div style={{ borderBottom: "1px solid lightgrey" }} className='mb-2' />
                     <h2 className='mb-3 d-flex align-items-center'>
-                        <span>{formattedData?.[selectedMonth]?.month}</span>
-                        &nbsp;<Badge bg="mainColor">{formattedData?.[selectedMonth]?.monthDeposits?.length}</Badge>
+                        <span>{selectedDetail?.month || "General"}</span>
+                        &nbsp;<Badge bg="mainColor">{selectedDetail?.monthDeposits?.length}</Badge>
                     </h2>
                     <Row className='align-items-stretch g-2'>
                         {
-                            formattedData?.[selectedMonth]?.monthDeposits?.map((monthDeposit, key) =>
+                            selectedDetail?.monthDeposits?.map((monthDeposit, key) =>
                                 <Col key={key} sm="10" md="4" lg="4" xl="3">
                                     <div className="fixed-deposit-item">
                                         <h3>

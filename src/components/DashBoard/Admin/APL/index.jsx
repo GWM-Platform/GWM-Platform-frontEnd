@@ -116,7 +116,7 @@ const APL = () => {
       <Container className="my-2 APL">
         <Row className="d-flex justify-content-center gy-3  py-1">
           <Col md="12">
-            <GeneralInfo fullSettlement={fullSettlement} setFullSettlement={setFullSettlement} />
+            <GeneralInfo fullSettlement={fullSettlement} setFullSettlement={setFullSettlement} clients={UsersInfo.value} />
           </Col>
           <Col md="12">
             <FundSelector SelectedFund={SelectedFund} setSelectedFund={setSelectedFund} Funds={Funds.content} />
@@ -129,7 +129,7 @@ const APL = () => {
                 </Col>
                 :
                 <Col md="12">
-                  <FundInfo Fund={FundSelected} />
+                  <FundInfo Fund={FundSelected} clients={UsersInfo.value} />
                 </Col>
               :
               null

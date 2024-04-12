@@ -1036,5 +1036,7 @@
   "the fixed deposit with the id": "el plazo fijo con el id",
   "Amount to be liquidated": "Monto a liquidar",
   "The maximum amount is": "El monto máximo es",
-  "Partial liquidation": "Liquidación parcial"
+  "Partial liquidation": "Liquidación parcial",
+  "Shares by client": "Cuotapartes por cliente",
+  "Accounts debt detail": "Detalle de deudas de cuentas corrientes"
 }

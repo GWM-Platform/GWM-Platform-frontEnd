@@ -13,7 +13,6 @@ import { markAsRead } from 'Slices/DashboardUtilities/notificationsSlice'
 import { useDispatch } from 'react-redux'
 
 const Notification = ({ notification }) => {
-    console.log(notification)
     const { t } = useTranslation()
     const { ClientSelected, DashboardToastDispatch } = useContext(DashBoardContext)
     const dispatch = useDispatch()
