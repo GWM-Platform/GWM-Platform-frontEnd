@@ -5,11 +5,14 @@ import Decimal from "decimal.js";
 
 const FormattedNumber = ({ style, className, value = 0, prefix = "", suffix = "", fixedDecimals = 0, hidden }) => {
     Decimal.set({ precision: 100 })
-    
+
+    const groupSeparator = process.env.REACT_APP_GROUPSEPARATOR ?? ','
+    const decimalSeparator = process.env.REACT_APP_DECIMALSEPARATOR ?? '.'
+
     const FormattedValue = () => formatValue({
-        value: new Decimal(value).toFixed(fixedDecimals),
-        groupSeparator: '.',
-        decimalSeparator: ',',
+        value: Decimal(value).toFixed(fixedDecimals).replace(/\.?0+$/, ""),
+        groupSeparator,
+        decimalSeparator,
         prefix: prefix,
         suffix: suffix
     })

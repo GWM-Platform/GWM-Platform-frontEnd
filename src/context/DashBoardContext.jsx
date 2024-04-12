@@ -678,13 +678,15 @@ export const DashBoardProvider = ({ children }) => {
         //TODO: integrate outgoing transfer (incoming in transfer in "pending client" state cannot be signed, the sender should do it) 
         return (userId ? userId !== movement.userId : userEmail ? userEmail !== movement?.userEmail : false) && hasPermissionToSign()
     }
+    const sharesDecimalPlaces = isNaN(parseInt(process.env.REACT_APP_SHARESDECIMALPLACES)) ? 2 : parseInt(process.env.REACT_APP_SHARESDECIMALPLACES)
+
     return <DashBoardContext.Provider
         value={{
             token, admin, UserClients, ClientSelected, IndexClientSelected, setIndexClientSelected, balanceChanged, setBalanceChanged, TransactionStates, getMoveStateById,
             FetchingFunds, contentReady, PendingWithoutpossession, PendingTransactions, Accounts, Funds, itemSelected, setItemSelected, isMobile, width, toLogin, setContentReady,
             DashboardToast, DashboardToastDispatch, AccountSelected, setAccountSelected, Balance, allowedSymbols,
             couldSign, ClientPermissions, hasPermission, hasSellPermission, hasBuyPermission, hasViewPermission, setClientPermissions, hasAnySellPermission, hasAnyBuyPermission,
-            hasAnyTransferFundPermission, hasFundTransferPermission, getDashboardToastByKey
+            hasAnyTransferFundPermission, hasFundTransferPermission, getDashboardToastByKey, sharesDecimalPlaces
         }}>
         {children}
     </DashBoardContext.Provider>

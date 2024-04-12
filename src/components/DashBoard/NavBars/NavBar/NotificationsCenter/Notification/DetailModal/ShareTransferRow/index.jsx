@@ -11,7 +11,7 @@ import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 const ShareTransferRow = ({ content }) => {
   var momentDate = moment(content.createdAt);
   const { t } = useTranslation();
-  const { getMoveStateById, AccountSelected } = useContext(DashBoardContext)
+  const { getMoveStateById, AccountSelected, sharesDecimalPlaces } = useContext(DashBoardContext)
 
 
   const [showClick, setShowClick] = useState(false)
@@ -114,7 +114,7 @@ const ShareTransferRow = ({ content }) => {
       <div>
         {t("Amount")}:&nbsp;
         {isTransfer ? (incomingTransfer() ? '+' : '-') : (Math.sign(content.shares) === 1 ? '+' : '-')}
-        <FormattedNumber className="text-nowrap" value={Math.abs(content.shares)} fixedDecimals={2} />&nbsp;
+        <FormattedNumber className="text-nowrap" value={Math.abs(content.shares)} fixedDecimals={sharesDecimalPlaces } />&nbsp;
         {t(Math.abs(content.shares) === 1 ? "share" : "shares")}, <FormattedNumber className="text-nowrap" value={content.sharePrice} prefix="U$D " fixedDecimals={2} />
         {t(" each")}
         <span>

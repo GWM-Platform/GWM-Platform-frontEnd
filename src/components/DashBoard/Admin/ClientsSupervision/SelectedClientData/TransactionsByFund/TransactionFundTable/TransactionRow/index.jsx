@@ -12,7 +12,7 @@ import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 const TransactionRow = ({ transaction, AccountId }) => {
 
-  const { getMoveStateById } = useContext(DashBoardContext)
+  const { getMoveStateById, sharesDecimalPlaces } = useContext(DashBoardContext)
 
   Decimal.set({ precision: 100 })
 
@@ -118,7 +118,7 @@ const TransactionRow = ({ transaction, AccountId }) => {
             </>
         }
         ,&nbsp;
-        <FormattedNumber value={Math.abs(transaction.shares)} fixedDecimals={2} />&nbsp;
+        <FormattedNumber value={Math.abs(transaction.shares)} fixedDecimals={sharesDecimalPlaces} />&nbsp;
         {t(Math.abs(transaction.shares) === 1 ? "share" : "shares")}
         {(transaction?.reverted && transferNote?.text === "Transferencia revertida") ? <>, {t("reversion")}</> : ""}
       </td>

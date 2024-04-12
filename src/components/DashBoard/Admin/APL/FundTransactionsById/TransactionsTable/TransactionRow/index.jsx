@@ -11,11 +11,10 @@ const TransactionRow = ({ transaction, user }) => {
 
   var momentDate = moment(transaction.createdAt);
   const { t } = useTranslation();
-  const { getMoveStateById } = useContext(DashBoardContext)
+  const { getMoveStateById,sharesDecimalPlaces } = useContext(DashBoardContext)
 
   const isTransfer = transaction.receiverId || transaction.senderId
   const transferNote = transaction?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")
-
 
   return (
 
@@ -35,13 +34,13 @@ const TransactionRow = ({ transaction, user }) => {
           isTransfer ?
             <>
               {t("Transfer of")}{" "}
-              <FormattedNumber value={Math.abs(transaction.shares)} fixedDecimals={2} />&nbsp;
+              <FormattedNumber value={Math.abs(transaction.shares)} fixedDecimals={sharesDecimalPlaces} />&nbsp;
               {t(Math.abs(transaction.shares) === 1 ? "share" : "shares")}
             </>
             :
             <>
               <span>{Math.sign(transaction.shares) === 1 ? t('Sale of') : t('Purchase of')}{" "}</span>
-              <FormattedNumber value={Math.abs(transaction.shares)} fixedDecimals={2} />&nbsp;
+              <FormattedNumber value={Math.abs(transaction.shares)} fixedDecimals={sharesDecimalPlaces} />&nbsp;
               {t(Math.abs(transaction.shares) === 1 ? "share" : "shares")}
             </>
         }

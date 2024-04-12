@@ -25,7 +25,7 @@ jobs:
           REACT_APP_GROUPSEPARATOR: "."
           REACT_APP_SENTRYDSN: https://a0502ecf94e3423b9c313da04990340f@o1366134.ingest.sentry.io/6662586
           REACT_APP_SENTRYENVIROMENT: "testing"
-          
+          REACT_APP_SHARESDECIMALPLACES: "5"
         run: yarn build
 
       - name: Upload to SFTP

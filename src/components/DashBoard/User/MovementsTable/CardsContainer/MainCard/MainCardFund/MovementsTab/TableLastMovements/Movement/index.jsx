@@ -24,7 +24,7 @@ const Movement = ({ content, fundName }) => {
 
   var momentDate = moment(content.createdAt);
   const { t } = useTranslation();
-  const { getMoveStateById, AccountSelected } = useContext(DashBoardContext)
+  const { getMoveStateById, AccountSelected, sharesDecimalPlaces } = useContext(DashBoardContext)
 
   const decimalSharesAbs = new Decimal(content.shares).abs()
   const decimalPrice = new Decimal(content.sharePrice)
@@ -65,7 +65,7 @@ const Movement = ({ content, fundName }) => {
     link.parentNode.removeChild(link)
     setGeneratingPDF(false)
   }
-  
+
   const [showClick, setShowClick] = useState(false)
   const [showHover, setShowHover] = useState(false)
 
@@ -155,7 +155,7 @@ const Movement = ({ content, fundName }) => {
             </>
         }
         ,&nbsp;
-        <FormattedNumber value={Math.abs(content.shares)} fixedDecimals={2} />&nbsp;
+        <FormattedNumber value={Math.abs(content.shares)} fixedDecimals={sharesDecimalPlaces} />&nbsp;
         {t(Math.abs(content.shares) === 1 ? "share" : "shares")}
         {(content?.reverted && transferNote?.text === "Transferencia revertida") ? <>, {t("reversion")}</> : ""}
       </td>

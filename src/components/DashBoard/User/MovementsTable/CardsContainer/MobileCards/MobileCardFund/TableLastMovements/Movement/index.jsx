@@ -21,7 +21,7 @@ const Movement = ({ content, fundName = "" }) => {
 
   var momentDate = moment(content.createdAt);
   const { t } = useTranslation();
-  const { getMoveStateById, AccountSelected } = useContext(DashBoardContext)
+  const { getMoveStateById, AccountSelected, sharesDecimalPlaces } = useContext(DashBoardContext)
 
   const [GeneratingPDF, setGeneratingPDF] = useState(false)
 
@@ -87,7 +87,7 @@ const Movement = ({ content, fundName = "" }) => {
               </>
           }
           &nbsp;
-          <FormattedNumber className="text-nowrap" value={Math.abs(content.shares)} fixedDecimals={2} />&nbsp;
+          <FormattedNumber className="text-nowrap" value={Math.abs(content.shares)} fixedDecimals={sharesDecimalPlaces} />&nbsp;
           {t(Math.abs(content.shares) === 1 ? "share" : "shares")}, <FormattedNumber className="text-nowrap" style={{ fontWeight: "bolder" }} value={content.sharePrice} prefix="U$D " fixedDecimals={2} />
           {t(" each")}
         </span>

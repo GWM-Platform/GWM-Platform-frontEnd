@@ -11,7 +11,7 @@ const TransactionRow = ({ transaction, user }) => {
 
   var momentDate = moment(transaction.createdAt);
   const { t } = useTranslation();
-  const { getMoveStateById } = useContext(DashBoardContext)
+  const { getMoveStateById, sharesDecimalPlaces } = useContext(DashBoardContext)
 
   return (
 
@@ -20,7 +20,7 @@ const TransactionRow = ({ transaction, user }) => {
       <td >{user.alias}</td>
       <td className={`tableConcept`}>
         <span>{Math.sign(transaction.shares) === 1 ? t('Sale of') : t('Purchase of')}{" "}</span>
-        <FormattedNumber value={Math.abs(transaction.shares)} fixedDecimals={2} />&nbsp;
+        <FormattedNumber value={Math.abs(transaction.shares)} fixedDecimals={sharesDecimalPlaces} />&nbsp;
         {t(Math.abs(transaction.shares) === 1 ? "share" : "shares")}</td>
 
       <td className={`tableConcept ${transaction.stateId === 3 ? 'text-red' : 'text-green'}`}>

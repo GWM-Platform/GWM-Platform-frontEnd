@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icons'
@@ -11,9 +11,11 @@ import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import Decimal from 'decimal.js';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import Notes from '../../Notes';
+import { DashBoardContext } from 'context/DashBoardContext';
 
 const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData }) => {
     const { t } = useTranslation();
+    const { sharesDecimalPlaces } = useContext(DashBoardContext)
 
     var momentDate = moment(Transaction.createdAt);
 
@@ -247,7 +249,7 @@ const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData })
                 <div className='d-flex justify-content-between' style={{ borderBottom: "1px solid 1px solid rgb(240,240,240)" }}>
                     <span >
                         {t("Shares")}:&nbsp;
-                        <FormattedNumber value={Transaction.shares} fixedDecimals={2} />
+                        <FormattedNumber value={Transaction.shares} fixedDecimals={sharesDecimalPlaces} />
 
                     </span>
                 </div >

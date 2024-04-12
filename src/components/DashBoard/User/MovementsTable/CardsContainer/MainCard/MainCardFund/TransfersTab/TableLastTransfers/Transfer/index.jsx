@@ -17,7 +17,7 @@ const Transfer = ({ content, actions, getTransfers, fundName }) => {
 
   var momentDate = moment(content.createdAt);
   const { t } = useTranslation();
-  const { getMoveStateById, AccountSelected, hasPermission } = useContext(DashBoardContext)
+  const { getMoveStateById, AccountSelected, hasPermission, sharesDecimalPlaces } = useContext(DashBoardContext)
 
   const [ShowModal, setShowModal] = useState(false)
   const [Action, setAction] = useState("approve")
@@ -137,7 +137,7 @@ const Transfer = ({ content, actions, getTransfers, fundName }) => {
         {(content.reverted && transferNote?.text === "Transferencia revertida") ? <>, {t("reversion")}</> : ""}
       </td>
       <td className="tableDescription d-none d-sm-table-cell text-nowrap">
-        <FormattedNumber value={Math.abs(content.shares)} fixedDecimals={2} />&nbsp;
+        <FormattedNumber value={Math.abs(content.shares)} fixedDecimals={sharesDecimalPlaces} />&nbsp;
         {t(Math.abs(content.shares) === 1 ? "share" : "shares")}
         &nbsp;{t("_at")}&nbsp;
         <FormattedNumber prefix="U$D " value={content.sharePrice} fixedDecimals={2} />
