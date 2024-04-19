@@ -255,4 +255,15 @@
         }
 
     }
+
+    .btn-check+.btn {
+        border-color: var(--blue-main);
+    }
+
+    .btn-check:checked+.btn,
+    .btn-check+.btn.active {
+        color: var(--bs-btn-active-color);
+        background-color: var(--blue-main);
+        border-color: var(--blue-main);
+    }
 }

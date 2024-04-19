@@ -1,10 +1,10 @@
-import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import { faInfoCircle, faSort, faSortDown, faSortUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import FormattedNumber from "components/DashBoard/GeneralUse/FormattedNumber";
 import Decimal from "decimal.js";
 import React, { useEffect, useMemo, useState } from "react";
-import { Col, Collapse, OverlayTrigger, Row, Spinner, Tooltip } from "react-bootstrap";
+import { ButtonGroup, Col, Collapse, OverlayTrigger, Row, Spinner, Table, ToggleButton, Tooltip } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 
 const GeneralInfo = ({ fullSettlement, setFullSettlement, clients }) => {
@@ -107,6 +107,42 @@ const GeneralInfo = ({ fullSettlement, setFullSettlement, clients }) => {
 
     const [open, setOpen] = useState(false);
 
+    const [tableView, setTableView] = useState(true)
+
+    const [sortField, setSortField] = useState(null);
+    const [sortDirection, setSortDirection] = useState('asc');
+    const sortData = (field) => {
+        if (sortField === field && sortDirection === 'desc') {
+            setSortField(null);
+            setSortDirection('asc');
+        }
+        else {
+            let direction = 'asc';
+            if (sortField === field && sortDirection === 'asc') {
+                direction = 'desc';
+            }
+            setSortField(field);
+            setSortDirection(direction);
+        }
+    };
+
+    const sortedAccounts = useMemo(() => (
+        [...Accounts.accounts].filter(account => account.balance > 0).map(account => {
+            const client = clients.find(client => client.id === account.clientId)
+            return ({ ...account, client, clientCompleteName: `${client.firstName} ${client.lastName}` })
+        }).sort((a, b) => {
+            if (sortField && a[sortField] && b[sortField]) {
+                if (typeof a[sortField] === 'string') {
+                    return sortDirection === 'asc' ? a[sortField].localeCompare(b[sortField]) : b[sortField].localeCompare(a[sortField]);
+                } else {
+                    return sortDirection === 'asc' ? a[sortField] - b[sortField] : b[sortField] - a[sortField];
+                }
+            }
+            return 0;
+        })
+    ), [Accounts.accounts, clients, sortDirection, sortField])
+    const total = useMemo(() => [...Accounts.accounts || []].reduce((accum, account)=> (accum.add(account.balance)),Decimal(0)), [Accounts.accounts])
+
     return (
         <div className="general-info box-shadow">
             <h1 className="mt-0">
@@ -201,55 +237,101 @@ const GeneralInfo = ({ fullSettlement, setFullSettlement, clients }) => {
                         }
                     </h4>
                 </Col>
-
                 <Collapse in={open}>
                     <Row>
                         <Col className="mb-2" xs="12">
                             <div style={{ borderBottom: "1px solid lightgrey" }} />
                         </Col>
-                        <Col xs="12">
+                        <Col xs="auto">
                             <h2>
                                 {t("Accounts debt detail")}
                             </h2>
                         </Col>
+                        <Col className="ms-auto" xs="auto">
+                            <ButtonGroup>
+                                <ToggleButton
+                                    type="radio"
+                                    style={{ lineHeight: "1em", display: "flex" }}
+                                    variant="outline-primary"
+                                    name="radio"
+                                    value={true}
+                                    checked={tableView}
+                                    active={tableView}
+                                    onClick={(e) => setTableView(true)}
+                                    title={t("Table View")}
+                                >
+                                    <img src={`${process.env.PUBLIC_URL}/images/generalUse/table${tableView ? "" : "-active"}.svg`} alt="performance" />
+                                </ToggleButton>
+                                <ToggleButton
+                                    style={{ lineHeight: "1em", display: "flex" }}
+                                    type="radio"
+                                    variant="outline-primary"
+                                    name="radio"
+                                    value={false}
+                                    checked={!tableView}
+                                    active={!tableView}
+                                    onClick={(e) => setTableView(false)}
+                                    title={t("Grid View")}
+                                >
+                                    <img src={`${process.env.PUBLIC_URL}/images/generalUse/grid${tableView ? "-active" : ""}.svg`} alt="performance" />
+                                </ToggleButton>
+                            </ButtonGroup>
+                        </Col>
                         <div className='d-flex flex-wrap'>
                             {
-                                Accounts.accounts.filter(account => account.balance > 0).map(account => {
-                                    console.log(account)
-                                    const client = clients.find(client => client.id === account.clientId)
-                                    return (
+                                tableView ?
+                                    <Table striped bordered hover className="mb-auto m-0 mt-2" >
+                                        <thead >
+                                            <tr>
+                                                <th className="tableHeader" onClick={() => sortData('clientCompleteName')} style={{ cursor: "pointer" }}>
+                                                    <span className='d-flex'>
+
+                                                        <span>
+                                                            {t("Client")}
+                                                        </span>
+                                                        <FontAwesomeIcon className='ms-auto' icon={sortField === "clientCompleteName" ? (sortDirection === "asc" ? faSortUp : faSortDown) : faSort} />
+                                                    </span>
+                                                </th>
+                                                <th className="tableHeader" onClick={() => sortData('balance')} style={{ cursor: "pointer" }}>
+                                                    <span className='d-flex'>
+                                                        <span>
+                                                            {t("Balance")}
+                                                        </span>
+                                                        <FontAwesomeIcon className="ms-auto" icon={sortField === "balance" ? (sortDirection === "asc" ? faSortUp : faSortDown) : faSort} />
+                                                    </span>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {
+                                                sortedAccounts.map(account => {
+
+                                                    return (
+                                                        <tr key={account.clientId}>
+                                                            <td className="tableDate">{account?.clientCompleteName}</td>
+                                                            <td className="tableDate"><FormattedNumber value={account.balance} prefix="U$D " fixedDecimals={2} /></td>
+                                                        </tr>
+                                                    )
+                                                })
+                                            }
+                                            <tr >
+                                                <td className="tableDate"><strong>Total</strong></td>
+                                                <td className="tableDate"><strong><FormattedNumber value={total} prefix="U$D " fixedDecimals={2} /></strong></td>
+                                            </tr>
+                                        </tbody>
+                                    </Table>
+                                    :
+                                    sortedAccounts.map(account => (
                                         <Col lg="3">
                                             <h2 className="mt-2 pe-2 topic text-nowrap">
-                                                {client?.firstName} {client?.lastName}
+                                                {account?.clientCompleteName}
                                                 <br />
                                                 <span style={{ fontWeight: "bolder" }}>
                                                     <FormattedNumber value={account.balance} prefix="U$D " fixedDecimals={2} />
                                                 </span>
                                             </h2>
                                         </Col>
-                                        // <h4 className="mt-0">
-                                        //     <FormattedNumber value={account.balance} prefix="U$D " fixedDecimals={2} />
-                                        // </h4>
-                                    )
-                                })
-                                // stakes.content.map(stake => {
-                                //     const client = clients.find(client => client.id === stake.clientId)
-                                //     return (
-                                //         <div className='me-4'>
-                                //             <h2 className="mt-2 pe-2 topic text-nowrap">
-                                //                 {client?.firstName} {client?.lastName}
-                                //                 <br />
-                                //                 <span style={{ fontWeight: "bolder" }}>
-                                //                     <FormattedNumber value={stake?.shares} fixedDecimals={2} />
-                                //                     &nbsp;{t("shares")}
-                                //                 </span>
-                                //             </h2>
-                                //             <h6 className="mt-0">
-                                //                 <FormattedNumber value={stake?.shares * (stake.fund.sharePrice || 1)} prefix="U$D " fixedDecimals={2} />
-                                //             </h6>
-                                //         </div>
-                                //     )
-                                // })
+                                    ))
                             }
                         </div>
                     </Row>
@@ -260,13 +342,6 @@ const GeneralInfo = ({ fullSettlement, setFullSettlement, clients }) => {
                 {
                     !!(fullSettlement?.debt?.transactions) &&
                     <>
-                        {/* <Row> */}
-                        {/* <Col className="my-2" xs="12">
-                            <div style={{ borderBottom: "1px solid lightgrey" }} />
-                        </Col>
-                        <h2 className="mb-2">
-                            {t("Funds")}
-                        </h2> */}
                         <Col xs="12">
                             <h6 className="mb-0">
                                 {t("Total debt")} ({t("Funds")})
@@ -317,39 +392,6 @@ const GeneralInfo = ({ fullSettlement, setFullSettlement, clients }) => {
                                 }
                             </h4>
                         </Col>
-                        {/* </Row> */}
-                        {/* <Collapse in={open}>
-                        <Row>
-                            {
-                                Object.keys(fullSettlement?.debt?.transactions).map(
-                                    fund =>
-                                        <Col xs="auto" key={fund}>
-                                            <h6 className="mb-0">
-                                                {t("\"{{fund}}\" debt", { fund })}
-                                            </h6>
-                                            <h4 className="mb-0">
-                                                {
-                                                    fullSettlement.fetching ?
-                                                        <Spinner animation="border" size="sm" />
-                                                        :
-                                                        <FormattedNumber value={fullSettlement?.debt?.transactions?.[fund]?.amount} prefix="U$D " fixedDecimals={2} />
-                                                }
-                                            </h4>
-                                            <h6 className="mt-0">
-                                                {
-                                                    fullSettlement.fetching ?
-                                                        <Spinner animation="border" size="sm" />
-                                                        :
-                                                        <>
-                                                            <FormattedNumber value={fullSettlement?.debt?.transactions?.[fund]?.soldShares} fixedDecimals={2} /> {t("shares")}
-                                                        </>
-                                                }
-                                            </h6>
-                                        </Col>
-                                )
-                            }
-                        </Row>
-                    </Collapse> */}
                     </>
                 }
             </Row>

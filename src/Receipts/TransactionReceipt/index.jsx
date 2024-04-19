@@ -14,11 +14,11 @@ const TransactionReceipt = ({ Transaction }) => {
 
   const decimalSharesAbs = new Decimal(Transaction?.shares || 0).abs()
   const decimalPrice = new Decimal(Transaction?.sharePrice || 0)
-  const amount = new Decimal(decimalSharesAbs.times(decimalPrice))
+  const amount = new Decimal(Decimal(decimalSharesAbs.toFixed(2)).times(decimalPrice))
 
   return (
     <Document>
-      <Page size={[841.89,450 ]} style={{ display: 'block', height: '100%', width: '100%' }}>
+      <Page size={[841.89, 450]} style={{ display: 'block', height: '100%', width: '100%' }}>
         <Image fixed src={`${process.env.PUBLIC_URL}/images/PDF/background.jpg`} style={styles.pageBackground} />
         <View
           style={styles.container}

@@ -1038,5 +1038,8 @@
   "The maximum amount is": "El monto máximo es",
   "Partial liquidation": "Liquidación parcial",
   "Shares by client": "Cuotapartes por cliente",
-  "Accounts debt detail": "Detalle de deudas de cuentas corrientes"
+  "Accounts debt detail": "Detalle de deudas de cuentas corrientes",
+  "Debt": "Deuda",
+  "Shares holding": "Tenencia de cuotapartes",
+  "Dolarized": "Dolarizado"
 }

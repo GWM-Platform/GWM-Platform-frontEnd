@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import { useContext } from 'react';
 import { DashBoardContext } from 'context/DashBoardContext';
+import Decimal from 'decimal.js'
 
 const FundCard = ({ Fund, ownKey, data, setData, setSome, some, openAccordion }) => {
     const { t } = useTranslation();
@@ -20,7 +21,7 @@ const FundCard = ({ Fund, ownKey, data, setData, setSome, some, openAccordion })
 
     return (
 
-        <Col xs="10" sm="6" md="4"lg="3"
+        <Col xs="10" sm="6" md="4" lg="3"
             className={`py-1 growAnimation  FundCardContainer 
         ${Fund.freeShares === 0 || !hasSellPermission(Fund.fund.id) ? " FundDisabled" : ""}
         ${data.FundSelected === ownKey ? " FundSelected" : ""} 
@@ -32,7 +33,7 @@ const FundCard = ({ Fund, ownKey, data, setData, setSome, some, openAccordion })
                 <Card.Header><strong className="title">{Fund.fund.name}</strong></Card.Header>
                 <Card.Body>
                     <Card.Title> {t("Shares")}{": "} <strong>{<FormattedNumber value={(Fund.shares)} fixedDecimals={2} />}</strong></Card.Title>
-                    <Card.Title> {t("Holdings value")}{": "} <strong><FormattedNumber prefix="U$D " value={(Fund.fund.sharePrice * Fund.shares)} fixedDecimals={2} /></strong></Card.Title>
+                    <Card.Title> {t("Holdings value")}{": "} <strong><FormattedNumber prefix="U$D " value={(Decimal(Fund.shares || 0).times(Fund.fund.sharePrice || 1))} fixedDecimals={2} /></strong></Card.Title>
                     <Container fluid className="px-0">
                         <Row className="d-flex justify-content-between">
                             <Col md="auto">

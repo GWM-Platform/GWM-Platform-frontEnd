@@ -11,6 +11,7 @@ import FundsPossesion from './FundsPossesion';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css'
+import './index.scss'
 import { Link, Route, Switch } from 'react-router-dom';
 import ClientUsersAccordion from './ClientUsersAccordion';
 import ConnectForm from './ConnectForm';

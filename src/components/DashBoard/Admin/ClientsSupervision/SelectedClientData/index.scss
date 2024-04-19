@@ -1,0 +1,124 @@
+.fund-selector {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    flex-wrap: nowrap;
+    overflow: hidden;
+    padding: 10px 0px;
+
+    >* {
+        padding: 0 .25rem;
+
+
+    }
+
+    .fund-item {
+        height: 100%;
+        width: 100%;
+        background-color: white;
+        padding: 1rem;
+        border-radius: 1rem;
+        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+        text-align: start;
+        transition: all 0.5s;
+
+        &.selected {
+            box-shadow: rgba(8, 32, 68, 0.3) 0px 4px 12px;
+        }
+
+        .content-container {
+            height: 100%;
+            width: 100%;
+
+            .fund-icon {
+                font-weight: 700;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 1.5em;
+                height: 1.5em;
+                background-color: var(--blue-main);
+                border-radius: .5em .5em .5em .5em;
+
+                img {
+                    height: 1em
+                }
+            }
+
+            >* {
+                display: block;
+            }
+        }
+
+    }
+
+    .scrollController {
+        position: absolute;
+        height: calc(100% - 20px);
+        width: 100%;
+        pointer-events: none;
+
+        &::after,
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 25px;
+            transition: all 0.5s;
+            background: none;
+            border: none;
+
+        }
+
+        &::before {
+            left: 0;
+            opacity: 0;
+
+            &.scrollLeft {
+                opacity: 1;
+            }
+        }
+
+        &::after {
+            right: 0;
+            opacity: 0;
+
+        }
+
+        &.scrollRight {
+            &::after {
+                opacity: 1;
+            }
+        }
+
+        &.scrollLeft {
+            &::before {
+                opacity: 1;
+            }
+        }
+
+        .control {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            pointer-events: all;
+            transition: all 0.5s;
+            background: none;
+            border: none;
+            color: var(--header-account-card-selected);
+
+            &.hidden {
+                opacity: 0;
+            }
+
+            &.right {
+                right: -20px;
+            }
+
+            &.left {
+                left: -20px
+            }
+        }
+    }
+}
