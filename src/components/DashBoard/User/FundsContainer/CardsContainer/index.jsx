@@ -99,12 +99,12 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
             ).reduce((previousValue, currentValue) => new Decimal(previousValue).plus(new Decimal(currentValue)), 0)
 
             //Retiros unicamente, compra y venta se ven reflejados en otro lado
-            const PendingWithdrawals = PendingMovements.value.filter((movement) => movement.motive === "WITHDRAWAL")
+            const PendingWithdrawals = PendingMovements.value.filter((movement) => movement.motive === "WITHDRAWAL" || movement.motive === "PENALTY_WITHDRAWAL")
             const pendingCashFromWithdrawals = PendingWithdrawals.map((movement) => new Decimal(movement.amount))
                 .reduce((previousValue, currentValue) => new Decimal(previousValue).plus(new Decimal(currentValue)), 0)
 
             //Depositos unicamente, compra y venta se ven reflejados en otro lado
-            const PendingDeposits = PendingMovements.value.filter((movement) => movement.motive === "DEPOSIT")
+            const PendingDeposits = PendingMovements.value.filter((movement) => movement.motive === "DEPOSIT" || movement.motive === "PROFIT_DEPOSIT")
             const pendingCashFromDeposits = PendingDeposits.map((movement) => new Decimal(movement.amount))
                 .reduce((previousValue, currentValue) => new Decimal(previousValue).plus(new Decimal(currentValue)), 0)
 
@@ -199,7 +199,7 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
                     filterState: 2
                 }
             }).then(function (response) {
-                const withdrawals = response?.data?.movements?.filter(movement => movement.motive === "WITHDRAWAL") || []
+                const withdrawals = response?.data?.movements?.filter(movement => movement.motive === "WITHDRAWAL" || movement.motive === "PENALTY_WITHDRAWAL") || []
                 setPendingMovements(prevState => ({
                     ...prevState,
                     ...{

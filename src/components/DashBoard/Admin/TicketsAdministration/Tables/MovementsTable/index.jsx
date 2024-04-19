@@ -5,7 +5,7 @@ import MovementRow from './MovementRow'
 
 const MovementsTable = ({ AccountInfo, UsersInfo, movements, state, reloadData, take }) => {
 
-    const couldLiquidate = (movement) => movement.motive === "WITHDRAWAL" && movement.stateId === 2
+    const couldLiquidate = (movement) => (movement.motive === "WITHDRAWAL" || movement.motive === "PENALTY_WITHDRAWAL") && movement.stateId === 2
     const anyWithActions = () => Object.values(movements).some((movement) => movement.stateId === 1 || couldLiquidate(movement))
 
     return (

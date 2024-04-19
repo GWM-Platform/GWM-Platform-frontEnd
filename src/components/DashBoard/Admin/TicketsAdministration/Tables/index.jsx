@@ -653,7 +653,7 @@ const Tables = ({ state, messageVariants, client }) => {
             setPendingSettlements(
                 prevState => {
                     //only withdrawals
-                    const withdrawals = data.movements.filter(movement => movement.motive === "WITHDRAWAL")
+                    const withdrawals = data.movements.filter(movement => movement.motive === "WITHDRAWAL" || movement.motive === "PENALTY_WITHDRAWAL")
                     return ({
                         ...prevState,
                         ...{

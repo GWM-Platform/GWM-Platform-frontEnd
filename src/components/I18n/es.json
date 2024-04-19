@@ -366,7 +366,11 @@
   "Selling (in shares)": "Vendiendo (en cuotapartes)",
   "Selling (in cash)": "Vendiendo (en dinero)",
   "DEPOSIT": "Deposito",
+  "PROFIT_DEPOSIT": "Deposito (bonificacíon)",
+  "Bonus": "Bonificacíon",
   "WITHDRAWAL": "Retiro",
+  "PENALTY_WITHDRAWAL": "Retiro (penalidad)",
+  "Penalty": "Penalidad",
   "STAKE_BUY": "Compra de cuotapartes de {{fund}}",
   "STAKE_SELL": "Venta de cuotapartes de {{fund}}",
   "REPAYMENT_FUND": "Devolución por ticket rechazado (Fondo {{fund}})",
@@ -1041,5 +1045,6 @@
   "Accounts debt detail": "Detalle de deudas de cuentas corrientes",
   "Debt": "Deuda",
   "Shares holding": "Tenencia de cuotapartes",
-  "Dolarized": "Dolarizado"
+  "Dolarized": "Dolarizado",
+  "Include this movement in performance calculations": "Incluir este movimiento en cálculos de rendimiento"
 }

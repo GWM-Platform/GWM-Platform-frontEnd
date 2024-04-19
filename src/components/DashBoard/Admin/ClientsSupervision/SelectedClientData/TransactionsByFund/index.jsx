@@ -1,21 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
-import { Accordion, Col, Container, Form, Row } from 'react-bootstrap'
+import { Accordion, Col } from 'react-bootstrap'
 import TransactionFundTable from './TransactionFundTable';
 import axios from 'axios';
 import { useMemo } from 'react';
 import { DashBoardContext } from 'context/DashBoardContext';
+import FundSelector from 'components/DashBoard/Admin/APL/FundSelector';
 const TransactionsByFund = ({ AccountId, ClientId }) => {
     const { t } = useTranslation();
 
     const { toLogin } = useContext(DashBoardContext)
 
     const [FundSelected, setFundSelected] = useState("")
-
-    const handleChange = (event) => {
-        setFundSelected(event.target.value)
-    }
 
     const initialState = useMemo(() => ({ fetching: true, fetched: false, valid: false, content: [] }), [])
     const [Funds, setFunds] = useState(initialState)
@@ -68,23 +65,10 @@ const TransactionsByFund = ({ AccountId, ClientId }) => {
         <Accordion.Item eventKey="4">
             <Accordion.Header>{t("Transactions by fund")}</Accordion.Header>
             <Accordion.Body className='px-0'>
-                <Container fluid>
-                    <Row>
-                        <Col>
-                            <Form.Group className="mb-3">
-                                <Form.Label >{t("Fund")}</Form.Label>
-                                <Form.Select disabled={!Funds.valid} onChange={handleChange} value={FundSelected}>
-                                    {!!(Funds.valid) ?
-                                        Funds.content.map((fund, key) => <option key={`funds-selector-option-${fund.id}`} value={fund.id}>{fund.name}</option>)
-                                        :
-                                        <option value="" disabled>{t("Open this select menu")}</option>
-                                    }
-                                </Form.Select>
-                            </Form.Group>
+                <Col md="12">
+                    <FundSelector SelectedFund={FundSelected} setSelectedFund={setFundSelected} Funds={Funds.content} />
+                </Col>
 
-                        </Col>
-                    </Row>
-                </Container>
                 {
                     FundSelected === "" ? null :
                         <TransactionFundTable AccountId={AccountId} ClientId={ClientId} FundId={FundSelected} />

@@ -1,6 +1,10 @@
 {
     "DEPOSIT": "Deposit",
+    "PROFIT_DEPOSIT": "Deposit (Bonus)",
+    "Bonus": "Bonus",
     "WITHDRAWAL": "Withdrawal",
+    "PENALTY_WITHDRAWAL": "Withdraw (Bonus)",
+    "Penalty": "Penalty",
     "STAKE_BUY": "Purchase of {{fund}} shares",
     "STAKE_SELL": "Sale of {{fund}} shares",
     "REPAYMENT_FUND": "Refund due to denied ticket (Fund {{fund}})",

@@ -10,7 +10,6 @@ import { BrowserTracing } from '@sentry/tracing';
 import * as Sentry from "@sentry/react";
 
 ReactGA.initialize(process.env.REACT_APP_GATAGID);
-console.log(process.env.REACT_APP_SENTRYDSN)
 Sentry.init({
   dsn: process.env.REACT_APP_SENTRYDSN,
   tracesSampleRate: 1.0,

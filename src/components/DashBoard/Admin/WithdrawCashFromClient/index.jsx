@@ -28,7 +28,8 @@ const WithdrawCashFromClient = () => {
             idSelected: "",
             date: moment().format(moment.HTML5_FMT.DATETIME_LOCAL),
             account: "",
-            note: ""
+            note: "",
+            affectsProfit: false
         }
     )
 
@@ -47,7 +48,8 @@ const WithdrawCashFromClient = () => {
             body: JSON.stringify({
                 amount: parseFloat(data.amount),
                 date: moment(data.date).format(),
-                note: NoteActive ? data.note : undefined
+                note: NoteActive ? data.note : undefined,
+                affectsProfit: data.affectsProfit
             }),
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -72,7 +74,7 @@ const WithdrawCashFromClient = () => {
 
     const handleChange = (event) => {
         let aux = data;
-        aux[event.target.id] = event.target.value;
+        aux[event.target.id] = event.target.type === "checkbox" ? event.target.checked : event.target.value;
         setData({ ...data, ...aux });
     }
 
@@ -291,7 +293,9 @@ const WithdrawCashFromClient = () => {
                                 }
                             </Form.Control.Feedback>
                         </InputGroup>
-
+                        <Form.Group className="mb-3" controlId="affectsProfit">
+                            <Form.Check checked={data.affectsProfit} onChange={handleChange} type="checkbox" label={`${t("Include this movement in performance calculations")} (${t("Penalty")}).`} />
+                        </Form.Group>
                         {
                             NoteActive ?
                                 <div className="d-flex align-items-center mb-3">

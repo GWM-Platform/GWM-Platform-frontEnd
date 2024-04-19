@@ -28,7 +28,8 @@ const DepositCashToClient = () => {
             amount: "",
             date: moment().format(moment.HTML5_FMT.DATETIME_LOCAL),
             account: "",
-            note: ""
+            note: "",
+            affectsProfit: false
         }
     )
     const [validated, setValidated] = useState(true);
@@ -46,7 +47,8 @@ const DepositCashToClient = () => {
             body: JSON.stringify({
                 amount: parseFloat(data.amount),
                 date: moment(data.date).format(),
-                note: NoteActive ? data.note : undefined
+                note: NoteActive ? data.note : undefined,
+                affectsProfit: data.affectsProfit
             }),
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -71,7 +73,7 @@ const DepositCashToClient = () => {
 
     const handleChange = (event) => {
         let aux = data;
-        aux[event.target.id] = event.target.value;
+        aux[event.target.id] = event.target.type === "checkbox" ? event.target.checked : event.target.value;
 
         setData({ ...data, ...aux });
     }
@@ -236,7 +238,7 @@ const DepositCashToClient = () => {
                         </Form.Group>
 
                         <Form.Label>{t("Amount")}</Form.Label>
-                        <InputGroup className="mb-3">
+                        <InputGroup>
                             <InputGroup.Text>U$D</InputGroup.Text>
                             {/*Shown input formatted*/}
                             <CurrencyInput
@@ -279,7 +281,9 @@ const DepositCashToClient = () => {
                                 }
                             </Form.Control.Feedback>
                         </InputGroup>
-
+                        <Form.Group className="mb-3" controlId="affectsProfit">
+                            <Form.Check checked={data.affectsProfit} onChange={handleChange} type="checkbox" label={`${t("Include this movement in performance calculations")} (${t("Bonus")}).`} />
+                        </Form.Group>
                         {
                             NoteActive ?
                                 <div className="d-flex align-items-center mb-3">
