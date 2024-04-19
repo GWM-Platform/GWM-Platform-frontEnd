@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronCircleLeft } from '@fortawesome/free-solid-svg-icons'
@@ -7,7 +7,6 @@ import { Accordion } from 'react-bootstrap'
 import AccountGeneralData from './AccountGeneralData'
 import AccountMovements from './AccountMovements'
 import TransactionsByFund from './TransactionsByFund'
-import FundsPossesion from './FundsPossesion';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css'
@@ -91,7 +90,7 @@ const SelectedAccountData = ({ Account, Client, users, setAccounts }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [Client.id])
 
-    const [clientFunds] = useState(stakes?.content?.filter(stake => stake.clientId === Client.id))
+    const clientFunds = useMemo(() => stakes?.content?.filter(stake => stake.clientId === Client.id), [Client.id, stakes?.content])
     const ownersAmount = clientUsers?.content?.filter(user => user?.isOwner)?.length || 0
 
     return (
@@ -111,9 +110,8 @@ const SelectedAccountData = ({ Account, Client, users, setAccounts }) => {
                         <AccountGeneralData setAccounts={setAccounts} Account={Account} Client={Client} />
                         <ClientUsersAccordion client={Client} users={clientUsers} getUsers={getUsers} ownersAmount={ownersAmount} />
                         <DocumentsAccordion client={Client} documents={documents} setDocuments={setDocuments} />
-                        {clientFunds.length > 0 ? <FundsPossesion stakes={clientFunds} /> : null}
-                        <AccountMovements ClientId={Client.id} AccountId={Account.id} />
-                        <TransactionsByFund ClientId={Client.id} AccountId={Account.id} />
+                        <AccountMovements ClientId={Client.id} AccountId={Account.id}  Account={Account} />
+                        <TransactionsByFund ClientId={Client.id} AccountId={Account.id} clientFunds={clientFunds} />
                         <TimeDeposits ClientId={Client.id} AccountId={Account.id} />
                     </Accordion>
                 </div>

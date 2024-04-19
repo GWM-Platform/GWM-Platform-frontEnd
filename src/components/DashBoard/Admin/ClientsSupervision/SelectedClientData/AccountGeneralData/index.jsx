@@ -8,6 +8,7 @@ import { DashBoardContext } from 'context/DashBoardContext';
 import { faCheckCircle, faEdit, faTimesCircle } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import OverdraftPopover from '../OverdraftPopover';
+import PerformanceComponent from 'components/DashBoard/GeneralUse/PerformanceComponent';
 
 const AccountGeneralData = ({ Account, Client, setAccounts }) => {
     const { t } = useTranslation();
@@ -66,7 +67,7 @@ const AccountGeneralData = ({ Account, Client, setAccounts }) => {
                 if (err.response.status === "401") {
                     toLogin()
                 } else {
-                    DashboardToastDispatch({ type: "create", toastContent: { Icon: faTimesCircle, Title: "An error occurred while setting the overdraft"} })
+                    DashboardToastDispatch({ type: "create", toastContent: { Icon: faTimesCircle, Title: "An error occurred while setting the overdraft" } })
                     setRequest((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
                 }
             }
@@ -107,6 +108,7 @@ const AccountGeneralData = ({ Account, Client, setAccounts }) => {
                                     <FormattedNumber className="emphasis" value={balanceTotal.value} prefix="U$D " fixedDecimals={2} />
                             }
                             </h1>
+                            <PerformanceComponent textAlign="text-end" numberFw={"fw-bold"} text={"Total performance"} clientId={Client.id} />
                             <h1 className="Info text-end">{t("Cash balance")}: <FormattedNumber className="emphasis" value={Account.balance} prefix="U$D " fixedDecimals={2} /></h1>
                             {
                                 !!(Account.overdraft) &&

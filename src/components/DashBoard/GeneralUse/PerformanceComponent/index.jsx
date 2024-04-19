@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import FormattedNumber from "../FormattedNumber";
 
-const PerformanceComponent = ({ text, fundId = "", fixedDepositId = "", withoutSelector = false, className = "", setValueExternal = false, valueExternal = false }) => {
+const PerformanceComponent = ({ text, fundId = "", fixedDepositId = "", withoutSelector = false, className = "", setValueExternal = false, valueExternal = false, clientId = false, textAlign = "text-start", numberFw = "" }) => {
     const { t } = useTranslation();
 
     const dispatch = useDispatch()
@@ -38,9 +38,9 @@ const PerformanceComponent = ({ text, fundId = "", fixedDepositId = "", withoutS
                 :
                 (fundId !== "" ? { fund: fundId } : { totalPerformance: true }),
             ...value !== "" ? { year: value } : {},
-            clientId: ClientSelected?.id
+            clientId: clientId || ClientSelected?.id
         }))
-    }, [fundId, fixedDepositId, ClientSelected, dispatch, value])
+    }, [fundId, fixedDepositId, ClientSelected, dispatch, value, clientId])
 
     const yearsArraySince = (initialYear = 2022) => {
         const años = [];
@@ -51,7 +51,7 @@ const PerformanceComponent = ({ text, fundId = "", fixedDepositId = "", withoutS
         return años;
     }
     return (
-        <span className={`text-start w-100 d-block ${className}`} style={{ fontWeight: "300" }}>
+        <span className={`${textAlign} w-100 d-block ${className}`} style={{ fontWeight: "300" }}>
             <span className="text-nowrap">
                 {t(text)}
                 {
@@ -73,7 +73,7 @@ const PerformanceComponent = ({ text, fundId = "", fixedDepositId = "", withoutS
                 status === "loading" && (performance === null || performance === undefined) ?
                     <Placeholder style={{ width: "8ch" }} animation="wave" className="placeholder" />
                     :
-                    <strong className="text-nowrap">
+                    <strong className={`text-nowrap ${numberFw}`}>
                         <FormattedNumber className={{
                             '1': 'text-green',
                             '-1': 'text-red'

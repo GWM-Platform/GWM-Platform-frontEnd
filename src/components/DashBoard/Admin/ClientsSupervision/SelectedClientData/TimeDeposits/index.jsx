@@ -11,6 +11,7 @@ import NoMovements from 'components/DashBoard/GeneralUse/NoMovements';
 import PaginationController from 'components/DashBoard/GeneralUse/PaginationController';
 import FixedDepositRow from './FixedDepositRow';
 import FilterOptions from './FilterOptions';
+import PerformanceComponent from 'components/DashBoard/GeneralUse/PerformanceComponent';
 
 const TimeDeposits = ({ AccountId, ClientId }) => {
 
@@ -157,11 +158,7 @@ const TimeDeposits = ({ AccountId, ClientId }) => {
                             </div>
                         </Col>
                         <Col className="ms-auto" xs="auto">
-                            {t("Performance")}:&nbsp;
-                            <FormattedNumber value={FixedDepositsStats?.content?.performancePercentage || 0} suffix="%" fixedDecimals={2} />
-                            &nbsp;(
-                            <FormattedNumber value={FixedDepositsStats?.content?.performanceCash || 0} prefix="U$D " fixedDecimals={2} />
-                            )
+                            <PerformanceComponent numberFw="fw-bold" className='performance-component' text="Performance" fixedDepositId='1' clientId={ClientId} />
                         </Col>
                         <Col xs="12">
                             {t("Active time deposits")}:&nbsp;

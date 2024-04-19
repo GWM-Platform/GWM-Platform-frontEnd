@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, useMemo } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
-import { Accordion, Container, Table } from 'react-bootstrap'
+import { Accordion, Col, Container, Row, Table } from 'react-bootstrap'
 import MovementRow from './MovementRow'
 import axios from 'axios';
 import { DashBoardContext } from 'context/DashBoardContext';
@@ -11,8 +11,9 @@ import Loading from 'components/DashBoard/GeneralUse/Loading';
 import { useCallback } from 'react';
 import PaginationController from 'components/DashBoard/GeneralUse/PaginationController';
 import FilterOptions from './FilterOptions';
+import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
-const AccountMovements = ({ AccountId, ClientId }) => {
+const AccountMovements = ({ AccountId, ClientId, Account }) => {
 
     const { toLogin } = useContext(DashBoardContext)
 
@@ -86,11 +87,27 @@ const AccountMovements = ({ AccountId, ClientId }) => {
     return (
 
         <Accordion.Item eventKey="2">
-            <Accordion.Header>{t("Cash movements")}</Accordion.Header>
+            <Accordion.Header>{t("Cash")}</Accordion.Header>
             <Accordion.Body className='px-0'>
                 <div className="d-flex align-items-start justify-content-center flex-column MovementsTableContainer">
                     <div className={`movementsTable growAnimation`}>
                         <Container fluid className='mb-2'>
+                            {
+                                Account &&
+                                <Row>
+                                    <Col xs="auto">
+                                        {t("Balance")}:&nbsp;
+                                        <FormattedNumber style={{ fontWeight: "bolder" }} value={Account?.balance} prefix="U$D " suffix="" fixedDecimals={2} />
+                                    </Col>
+                                    <Col xs="auto" className='ms-auto'>
+                                        {t("Overdraft")}:&nbsp;
+                                        <FormattedNumber style={{ fontWeight: "bolder" }} value={Account?.overdraft} prefix="U$D " suffix="" fixedDecimals={2} />
+                                    </Col>
+                                    <Col xs="12" className='my-3'>
+                                        <div style={{ borderBottom: "1px solid lightgray" }}></div>
+                                    </Col>
+                                </Row>
+                            }
                             <FilterOptions total={Movements.content.total} keyword={"transactions"} disabled={false} Fund={AccountId} setPagination={setPagination} movsPerPage={Pagination.take} />
                             {
                                 Movements.fetching ?
