@@ -62,13 +62,13 @@ const TransactionRow = ({ transaction, user }) => {
         {
           isTransfer ?
             <>
-              (<FormattedNumber value={fixedSharePrice} prefix="U$D " fixedDecimals={2} />)
+              (<FormattedNumber value={Decimal(transaction.shares).times(fixedSharePrice).abs().toFixed(2)} prefix="U$D " fixedDecimals={2} />)
             </>
             :
             <>
-              <span>{Math.sign(transaction.shares) === 1 ? '-' : '+'}</span>
+              <span>{(Math.sign(transaction.shares) === 1) ? '-' : '+'}</span>
               {/* <FormattedNumber value={Decimal(fixedShares).times(fixedSharePrice).toFixed(2)} prefix="U$D " fixedDecimals={2} /> */}
-              <FormattedNumber value={Decimal(transaction.shares).times(fixedSharePrice).toFixed(2)} prefix="U$D " fixedDecimals={2} />
+              <FormattedNumber value={Decimal(transaction.shares).times(fixedSharePrice).abs().toFixed(2)} prefix="U$D " fixedDecimals={2} />
             </>
         }
       </td>
