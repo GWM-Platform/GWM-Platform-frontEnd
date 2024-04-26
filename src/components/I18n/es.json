@@ -1047,5 +1047,8 @@
   "Debt": "Deuda",
   "Shares holding": "Tenencia de cuotapartes",
   "Dolarized": "Dolarizado",
-  "Include this movement in performance calculations": "Incluir este movimiento en cálculos de rendimiento"
+  "Include this movement in performance calculations": "Incluir este movimiento en cálculos de rendimiento",
+  "Today": "Hoy",
+  "Historic prices": "Precios históricos",
+  "Cash holdings": "Tenencias de cuentas corrientes"
 }

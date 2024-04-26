@@ -9,8 +9,10 @@ const FormattedNumber = ({ style, className, value = 0, prefix = "", suffix = ""
     const groupSeparator = process.env.REACT_APP_GROUPSEPARATOR ?? ','
     const decimalSeparator = process.env.REACT_APP_DECIMALSEPARATOR ?? '.'
 
+    const decimal = Decimal(value).toFixed(fixedDecimals)
+    const significantDecimals = (decimal.split('.')[1] || '').replace(/0+$/, '').length
     const FormattedValue = () => formatValue({
-        value: Decimal(value).toFixed(fixedDecimals).replace(/\.?0+$/, ""),
+        value: significantDecimals > 2 ? decimal.replace(/\.?0+$/, "") : Decimal(decimal).toFixed(2),
         groupSeparator,
         decimalSeparator,
         prefix: prefix,

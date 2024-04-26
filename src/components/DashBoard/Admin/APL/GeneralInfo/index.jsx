@@ -127,7 +127,7 @@ const GeneralInfo = ({ fullSettlement, setFullSettlement, clients }) => {
     };
 
     const sortedAccounts = useMemo(() => (
-        [...Accounts.accounts].filter(account => account.balance > 0).map(account => {
+        [...Accounts.accounts].map(account => {
             const client = clients.find(client => client.id === account.clientId)
             return ({ ...account, client, clientCompleteName: `${client.firstName} ${client.lastName}` })
         }).sort((a, b) => {
@@ -141,7 +141,18 @@ const GeneralInfo = ({ fullSettlement, setFullSettlement, clients }) => {
             return 0;
         })
     ), [Accounts.accounts, clients, sortDirection, sortField])
-    const total = useMemo(() => [...Accounts.accounts || []].reduce((accum, account)=> (accum.add(account.balance)),Decimal(0)), [Accounts.accounts])
+    const total = useMemo(() => [...Accounts.accounts || []].reduce((accum, account) => (accum.add(account.balance)), Decimal(0)), [Accounts.accounts])
+
+    useEffect(() => {
+        if (open) {
+            setTimeout(() => {
+                document.getElementById("accounts-table").scrollIntoView({ behavior: "smooth" })
+            }, 100);
+        }
+    }, [open])
+
+    // TODO: Add pending account movements
+    // TODO: Clients debt = balances (including loans) + pending movements
 
     return (
         <div className="general-info box-shadow">
@@ -205,22 +216,14 @@ const GeneralInfo = ({ fullSettlement, setFullSettlement, clients }) => {
                 </Col>
                 <Col xs="auto">
                     <h6 className="mb-0">
-                        {t("Accounts debt")}
+                        {t("Cash holdings")}
                     </h6>
-                    <h4 className="mt-0 mb-0">
+                    <h4 className="mt-0">
                         {
-                            fullSettlement.fetching ?
+                            Accounts.fetching ?
                                 <Spinner animation="border" size="sm" />
                                 :
-                                <FormattedNumber value={fullSettlement?.debt?.accountsDebt} prefix="U$D " fixedDecimals={2} />
-                        }
-
-                        &nbsp;
-                        {
-                            !fullSettlement.fetching &&
-                            <h6 className="mt-0 clickable d-inline-block" onClick={() => setOpen(prevState => !prevState)}>
-                                {t("Detalle")}
-                            </h6>
+                                <FormattedNumber value={Decimal(total).add(clientLoans)} prefix="U$D " fixedDecimals={2} />
                         }
                     </h4>
                 </Col>
@@ -237,7 +240,28 @@ const GeneralInfo = ({ fullSettlement, setFullSettlement, clients }) => {
                         }
                     </h4>
                 </Col>
-                <Collapse in={open}>
+                <Col xs="auto">
+                    <h6 className="mb-0">
+                        {t("Accounts debt")}
+                    </h6>
+                    <h4 className="mt-0 mb-0">
+                        {
+                            fullSettlement.fetching ?
+                                <Spinner animation="border" size="sm" />
+                                :
+                                <FormattedNumber value={total} prefix="U$D " fixedDecimals={2} />
+                        }
+
+                        &nbsp;
+                        {
+                            !fullSettlement.fetching &&
+                            <h6 className="mt-0 clickable d-inline-block" onClick={() => setOpen(prevState => !prevState)}>
+                                {t("Detalle")}
+                            </h6>
+                        }
+                    </h4>
+                </Col>
+                <Collapse in={open} id="accounts-table">
                     <Row>
                         <Col className="mb-2" xs="12">
                             <div style={{ borderBottom: "1px solid lightgrey" }} />
@@ -292,12 +316,12 @@ const GeneralInfo = ({ fullSettlement, setFullSettlement, clients }) => {
                                                         <FontAwesomeIcon className='ms-auto' icon={sortField === "clientCompleteName" ? (sortDirection === "asc" ? faSortUp : faSortDown) : faSort} />
                                                     </span>
                                                 </th>
-                                                <th className="tableHeader" onClick={() => sortData('balance')} style={{ cursor: "pointer" }}>
+                                                <th className="tableHeader text-end" onClick={() => sortData('balance')} style={{ cursor: "pointer" }}>
                                                     <span className='d-flex'>
-                                                        <span>
+                                                        <span className="ms-auto me-2">
                                                             {t("Balance")}
                                                         </span>
-                                                        <FontAwesomeIcon className="ms-auto" icon={sortField === "balance" ? (sortDirection === "asc" ? faSortUp : faSortDown) : faSort} />
+                                                        <FontAwesomeIcon icon={sortField === "balance" ? (sortDirection === "asc" ? faSortUp : faSortDown) : faSort} />
                                                     </span>
                                                 </th>
                                             </tr>
@@ -309,14 +333,14 @@ const GeneralInfo = ({ fullSettlement, setFullSettlement, clients }) => {
                                                     return (
                                                         <tr key={account.clientId}>
                                                             <td className="tableDate">{account?.clientCompleteName}</td>
-                                                            <td className="tableDate"><FormattedNumber value={account.balance} prefix="U$D " fixedDecimals={2} /></td>
+                                                            <td className="tableDate text-end"><FormattedNumber value={account.balance} prefix="U$D " fixedDecimals={2} /></td>
                                                         </tr>
                                                     )
                                                 })
                                             }
                                             <tr >
                                                 <td className="tableDate"><strong>Total</strong></td>
-                                                <td className="tableDate"><strong><FormattedNumber value={total} prefix="U$D " fixedDecimals={2} /></strong></td>
+                                                <td className="tableDate text-end"><strong><FormattedNumber value={total} prefix="U$D " fixedDecimals={2} /></strong></td>
                                             </tr>
                                         </tbody>
                                     </Table>

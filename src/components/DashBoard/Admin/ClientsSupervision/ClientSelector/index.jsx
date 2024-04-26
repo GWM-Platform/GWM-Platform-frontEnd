@@ -9,7 +9,7 @@ import { useHistory } from 'react-router-dom';
 const ClientSelector = ({ Clients }) => {
     const { t } = useTranslation();
 
-    const [FilteredClients, setFilteredClients] = useState(Clients)
+    const [FilteredClients, setFilteredClients] = useState(Clients.sort((a, b) => a.alias.localeCompare(b.alias)))
     const [SearchText, setSearchText] = useState("")
 
     const handleSearch = (event) => {
