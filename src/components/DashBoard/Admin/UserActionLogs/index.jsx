@@ -1,6 +1,6 @@
 
 import axios from "axios";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useMemo } from "react";
 import { useState } from "react";
 import { Accordion, AccordionContext, Button, Col, Container, Form, Row, Table, useAccordionButton } from "react-bootstrap";
 import Loading from 'components/DashBoard/User/MovementsTable/CardsContainer/MainCard/MainCardFund/MovementsTab/Loading';
@@ -285,6 +285,50 @@ const UserActionLogs = () => {
         // eslint-disable-next-line
     }, [])
 
+    const initialState = useMemo(() => ({ fetching: true, fetched: false, valid: false, content: [] }), [])
+    const [Funds, setFunds] = useState(initialState)
+    useEffect(() => {
+        const getFunds = (signal) => {
+            axios.get(`/funds`, { signal: signal }).then(function (response) {
+                setFunds((prevState) => (
+                    {
+                        ...prevState,
+                        fetching: false,
+                        fetched: true,
+                        valid: true,
+                        content: response.data,
+                    }))
+            }).catch((err) => {
+                if (err.message !== "canceled") {
+                    if (err.response.status === "401") {
+                        toLogin()
+                    } else {
+                        setFunds((prevState) => (
+                            {
+                                ...prevState,
+                                fetching: false,
+                                fetched: true,
+                                valid: false,
+                                content: [],
+                            }))
+                    }
+
+
+                }
+            });
+        }
+        getFunds();
+
+        return () => {
+            setFunds((prevState) => (
+                {
+                    ...prevState,
+                    initialState
+                }))
+        }
+        //eslint-disable-next-line
+    }, [])
+
     const ContextAwareToggle = ({ children, eventKey, callback }) => {
         const { activeEventKey } = useContext(AccordionContext);
 
@@ -440,7 +484,7 @@ const UserActionLogs = () => {
                                                 <tbody>
                                                     {
                                                         Events.content.events.map(
-                                                            Log => <UserActionLog key={`user-log-${Log.id}`} User={selectUserById(Log.userId)} Log={Log} Users={Users.content} Accounts={Accounts.content} Clients={Clients.content} />
+                                                            Log => <UserActionLog Funds={Funds.content} key={`user-log-${Log.id}`} User={selectUserById(Log.userId)} Log={Log} Users={Users.content} Accounts={Accounts.content} Clients={Clients.content} />
                                                         )
                                                     }
                                                 </tbody>
