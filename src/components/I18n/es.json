@@ -1050,5 +1050,9 @@
   "Include this movement in performance calculations": "Incluir este movimiento en cálculos de rendimiento",
   "Today": "Hoy",
   "Historic prices": "Precios históricos",
-  "Cash holdings": "Tenencias de cuentas corrientes"
+  "Cash holdings": "Tenencias de cuentas corrientes",
+  "The historic price has been edited succesfully": "El precio historico ha sido editado correctamente",
+  "Failed to edit the historic price": "La edición del precio historico falló",
+  "You are about to edit an historic price": "Estas a punto de editar un precio historico",
+  "This action will change results of performance calculations and cannot be undone": "Esta acción cambiará los resultados de los cálculos de rendimiento y no se puede deshacer"
 }

@@ -11,13 +11,17 @@ import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useMemo } from 'react';
-import { faSort, faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faPencil, faSort, faSortDown, faSortUp, faTimes } from '@fortawesome/free-solid-svg-icons';
 import Decimal from 'decimal.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchFundHistory, selectFundHistoryByFundId } from 'Slices/DashboardUtilities/fundHistorySlice';
 import NoMovements from 'components/DashBoard/GeneralUse/NoMovements';
-import Loading from '../../Loading';
 import moment from 'moment';
+import CurrencyInput from '@osdiab/react-currency-input-field';
+import 'components/DashBoard/Admin/AssetsAdministration/index.css';
+import ActionConfirmationModal from './ActionConfirmationModal';
+import Loading from 'components/DashBoard/GeneralUse/Loading';
+
 const FundInfo = ({ Fund, clients }) => {
     const { token } = useContext(DashBoardContext)
     // const [Hide, setHide] = useState(false)
@@ -393,6 +397,8 @@ const FundHistory = ({ Fund, open }) => {
     }, [open])
 
 
+
+
     return (
         <Collapse in={open} id="historic-prices-table" style={{ scrollMarginTop: "1rem", overflow: "clip" }}>
             <div className='transaction-table box-shadow mb-2 mt-4' >
@@ -427,12 +433,7 @@ const FundHistory = ({ Fund, open }) => {
                                     {
                                         sortedFundPrices.map(stake => {
                                             return (
-                                                <tr key={stake.id}>
-                                                    <td className="tableDate">
-                                                        {stake.today ? stake.priceDate : moment(stake.priceDate).format('L')}
-                                                    </td>
-                                                    <td className="tableDate"><FormattedNumber value={stake?.sharePrice} prefix="U$D " fixedDecimals={2} /></td>
-                                                </tr>
+                                                <HistoricPrice key={stake.id} stake={stake} />
                                             )
                                         })
                                     }
@@ -443,6 +444,110 @@ const FundHistory = ({ Fund, open }) => {
                 }
             </div>
         </Collapse>
+    )
+}
+
+const HistoricPrice = ({ stake }) => {
+    const [value, setValue] = useState(0)
+    const [active, setActive] = useState(false)
+    const [ShowModal, setShowModal] = useState(false)
+
+    const decimalSeparator = process.env.REACT_APP_DECIMALSEPARATOR ?? '.'
+    const groupSeparator = process.env.REACT_APP_GROUPSEPARATOR ?? ','
+
+    useEffect(() => {
+        setValue(stake?.sharePrice)
+    }, [stake?.sharePrice])
+
+    const couldEdit = useMemo(() => {
+        try {
+            const fixedValue = (value + "").replaceAll(decimalSeparator, ".")
+            const numericValue = Decimal(fixedValue !== "" ? fixedValue : 0)
+            return numericValue.gt(0) && !numericValue.eq(stake.sharePrice)
+        } catch {
+            setValue(stake.sharePrice)
+        }
+    }, [decimalSeparator, stake.sharePrice, value])
+
+    const cancelEdit = () => {
+        setValue(stake.sharePrice)
+        document.getElementById(`currencyInput-${stake.id}`).blur()
+    }
+    const confirmEdit = () => {
+        if (couldEdit) {
+            setShowModal(true)
+        } else {
+            cancelEdit()
+        }
+    }
+
+    return (
+        <tr key={stake.id} className='historic-price'>
+            <td className="tableDate">
+                {stake.today ? stake.priceDate : moment(stake.priceDate).format('L')}
+            </td>
+            <td className="tableDate">
+                {
+                    stake.today ?
+                        <FormattedNumber value={stake?.sharePrice} prefix="U$D " fixedDecimals={2} />
+                        :
+                        <div className='d-flex'>
+                            <CurrencyInput
+                                allowNegativeValue={false}
+                                prefix='U$D '
+                                name="currencyInput"
+                                // defaultValue={data.value}
+                                decimalsLimit={2}
+                                decimalSeparator={decimalSeparator}
+                                groupSeparator={groupSeparator}
+                                onValueChange={(value, name, a) => {
+                                    setValue(isNaN(a.float) ? "" : (value || ""))
+                                }
+                                }
+                                id={`currencyInput-${stake.id}`}
+                                className="form-control me-2"
+                                value={value}
+                                onFocus={() => setActive(true)}
+                                onBlur={(e) => {
+                                    if (e?.relatedTarget?.getAttribute("data-type") === "confirm") {
+                                        confirmEdit()
+                                    } else {
+                                        cancelEdit()
+                                    }
+                                    setActive(false)
+                                }}
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter") {
+                                        confirmEdit()
+                                    }
+                                    if (e.key === "Escape") {
+                                        cancelEdit()
+                                    }
+                                }}
+                            />
+                            {
+                                active ?
+                                    <>
+                                        <button data-type="cancel" className={`no-style btn ms-auto ${active ? "" : ""}`} type="button" >
+                                            <FontAwesomeIcon icon={faTimes} />
+                                        </button>
+                                        {
+                                            couldEdit &&
+                                            <button data-type="confirm" className={`no-style btn ms-2 ${active ? "" : "d-none"}`} type="button">
+                                                <FontAwesomeIcon icon={faCheck} />
+                                            </button>
+                                        }
+                                    </>
+                                    :
+                                    <button className={`'ms-auto no-style btn ${active ? "d-none" : ""}`} type="button" onClick={() => document.getElementById(`currencyInput-${stake.id}`).focus()} >
+                                        <FontAwesomeIcon icon={faPencil} />
+                                    </button>
+                            }
+                            <ActionConfirmationModal setShowModal={setShowModal} show={ShowModal} id={stake.id} cancel={cancelEdit} sharePrice={(value + "").replaceAll(decimalSeparator, ".")} />
+                        </div>
+                }
+            </td>
+        </tr>
     )
 }
 
