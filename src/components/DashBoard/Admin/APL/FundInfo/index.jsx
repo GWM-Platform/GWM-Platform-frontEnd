@@ -466,6 +466,7 @@ const HistoricPrice = ({ stake }) => {
             return numericValue.gt(0) && !numericValue.eq(stake.sharePrice)
         } catch {
             setValue(stake.sharePrice)
+            return false
         }
     }, [decimalSeparator, stake.sharePrice, value])
 
@@ -512,7 +513,9 @@ const HistoricPrice = ({ stake }) => {
                                     if (e?.relatedTarget?.getAttribute("data-type") === "confirm") {
                                         confirmEdit()
                                     } else {
-                                        cancelEdit()
+                                        if(!ShowModal){
+                                            cancelEdit()
+                                        }
                                     }
                                     setActive(false)
                                 }}
