@@ -509,13 +509,9 @@ const HistoricPrice = ({ stake }) => {
                                 className="form-control me-2"
                                 value={value}
                                 onFocus={() => setActive(true)}
-                                onBlur={(e) => {
-                                    if (e?.relatedTarget?.getAttribute("data-type") === "confirm") {
-                                        confirmEdit()
-                                    } else {
-                                        if(!ShowModal){
-                                            cancelEdit()
-                                        }
+                                onBlur={() => {
+                                    if (!ShowModal) {
+                                        cancelEdit()
                                     }
                                     setActive(false)
                                 }}
@@ -531,12 +527,16 @@ const HistoricPrice = ({ stake }) => {
                             {
                                 active ?
                                     <>
-                                        <button data-type="cancel" className={`no-style btn ms-auto ${active ? "" : ""}`} type="button" >
+                                        <button className={`no-style btn ms-auto ${active ? "" : ""}`} type="button" >
                                             <FontAwesomeIcon icon={faTimes} />
                                         </button>
                                         {
                                             couldEdit &&
-                                            <button data-type="confirm" className={`no-style btn ms-2 ${active ? "" : "d-none"}`} type="button">
+                                            <button className={`no-style btn ms-2 ${active ? "" : "d-none"}`} type="button" onMouseDown={(e) => {
+                                                e.preventDefault();
+                                                e.stopPropagation();
+                                                confirmEdit();
+                                            }}>
                                                 <FontAwesomeIcon icon={faCheck} />
                                             </button>
                                         }
