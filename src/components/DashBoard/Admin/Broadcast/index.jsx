@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col, Form, Button, Spinner } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next';
@@ -7,12 +7,24 @@ import { DashBoardContext } from 'context/DashBoardContext';
 import { useRef } from 'react';
 import { components } from "react-select";
 import Select from "react-select";
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+// import ReactQuill from 'react-quill';
+// import 'react-quill/dist/quill.snow.css';
 import './index.scss'
-const Broadcast = () => {
+import { faTimesCircle } from '@fortawesome/free-regular-svg-icons';
+import Editor from './quill';
+import { ModalPreview } from './ModalPreview';
 
-    const { toLogin } = useContext(DashBoardContext)
+const maxClients = 45
+const Broadcast = () => {
+    // console.log(process.env.REACT_APP_FLICKR_KEY,process.env.REACT_APP_FLICKR_KEYFLICKR_SECRET)
+
+    const { toLogin, DashboardToastDispatch } = useContext(DashBoardContext)
+
+    const maximumReached = useCallback(
+        () => {
+            DashboardToastDispatch({ type: "create", toastContent: { Icon: faTimesCircle, Title: "Maximum number of recipents reached" } })
+        }, [DashboardToastDispatch]
+    )
 
     const { t } = useTranslation();
 
@@ -46,6 +58,17 @@ const Broadcast = () => {
         }
         setValidated(true);
     }
+    const emailBodyWihtImagesStyles = useCallback(
+        () => {
+            let parser = new DOMParser();
+            let doc = parser.parseFromString(formData.emailBody, "text/html");
+            let images = doc.querySelectorAll('img');
+            images.forEach(img => {
+                img.style.width = '100%';
+                img.style.display = 'block';
+            });
+            return new XMLSerializer().serializeToString(doc)
+        }, [formData.emailBody])
 
     const broadcast = async () => {
 
@@ -64,8 +87,8 @@ const Broadcast = () => {
         }
 
         formDataSubmit.append("title", formData.title)
-        formDataSubmit.append("emailBody", formData.emailBody)
 
+        formDataSubmit.append("emailBody", emailBodyWihtImagesStyles())
         axios.post(`/users/broadcast`, formDataSubmit)
             .then(function (response) {
                 setMessage("The broadcast was successfully sent")
@@ -105,7 +128,8 @@ const Broadcast = () => {
                 setClients((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
             }
         });
-    }, [toLogin, setClients]);
+        //eslint-disable-next-line
+    }, [setClients]);
 
     useEffect(() => {
         const controller = new AbortController();
@@ -147,9 +171,7 @@ const Broadcast = () => {
     }
 
     const handleChangeMultiSelect = (selectedOption) => {
-
         setSelectedOptions(prevState => {
-
             const previouslyAllSelected = prevState?.filter(option => option?.value === "*")?.length > 0
             const actuallyAllSelected = selectedOption?.filter(option => option?.value === "*")?.length > 0
 
@@ -184,7 +206,7 @@ const Broadcast = () => {
         });
     };
 
-    const values = () => {
+    const values = useMemo(() => {
         return clients?.fetched
             ? [
                 { label: "All clients", value: "*" },
@@ -200,14 +222,14 @@ const Broadcast = () => {
                     })
                 )]
             : []
-    }
+    }, [clients?.content, clients?.fetched])
 
     const filterOption = ({ label, value }, string) => {
         // default search
         if (label?.includes(string) || value?.includes(string)) return true;
 
         // check if a group as the filter string as label
-        const groupOptions = values()?.filter((group) =>
+        const groupOptions = values?.filter((group) =>
             group?.label?.toLowerCase()?.includes(string?.toLowerCase())
         );
 
@@ -308,6 +330,16 @@ const Broadcast = () => {
         //eslint-disable-next-line
     }, [selectedOptions])
 
+    useEffect(() => {
+        const uniqueValues = [...new Set(values.flatMap(option => (option.options || []).map(option => option.value)))]
+        const sortedSelectedOptions = selectedOptions.sort((a, b) => uniqueValues.indexOf(a.value) - uniqueValues.indexOf(b.value)).filter(selectedOption => uniqueValues.includes(selectedOption.value));
+        // const sortedOptions = selectedOptions.
+        if (sortedSelectedOptions.length > maxClients) {
+            setSelectedOptions(sortedSelectedOptions.slice(0, maxClients))
+            maximumReached()
+        }
+    }, [maximumReached, selectedOptions, values])
+
     const selectUsersByClientId = (clientId) => {
         setSelectedOptions(prevState => {
             let aux = [...prevState]
@@ -350,6 +382,8 @@ const Broadcast = () => {
         );
     }
 
+    const [show, setShow] = useState(false)
+
     return (
         <Container className="h-100 broadcast">
             <Row className="h-100 d-flex justify-content-center">
@@ -367,7 +401,7 @@ const Broadcast = () => {
                                     isMulti isClearable isLoading={clients.fetching}
                                     closeMenuOnSelect={false} hideSelectedOptions={false}
                                     noOptionsMessage={() => t("No options")} placeholder={t("Select recipients")}
-                                    filterOption={filterOption} options={values()} components={{ Option, MultiValue, GroupHeading }}
+                                    filterOption={filterOption} options={values} components={{ Option, MultiValue, GroupHeading }}
                                     className="w-100 mb-2"
                                     classNames={{
                                         groupHeading: () => ("groupHeading"),
@@ -388,12 +422,15 @@ const Broadcast = () => {
                         </Form.Group>
 
                         <Form.Label>{t("Email body")}</Form.Label>
-                        <ReactQuill
+                        {/* <ReactQuill
                             required
                             className={`mb-3 ${formData.emailBody !== emailBodyDefaultState ? "" : "invalid"}`}
                             theme="snow"
                             value={formData.emailBody} onChange={value => handleChange({ target: { id: "emailBody", value } })}
-                        />
+                        /> */}
+                        <Editor value={formData.emailBody} handleChange={value => {
+                            handleChange({ target: { id: "emailBody", value } })
+                        }} />
 
                         <Form.Group controlId="formFileMultiple" className="mb-3">
                             <Form.Label>{t("Attached files")}</Form.Label>
@@ -401,17 +438,23 @@ const Broadcast = () => {
                         </Form.Group>
 
                         <p>{t(message)}</p>
-                        <Button className="mb-3" disabled={buttonDisabled || selectedOptions.length === 0} variant="danger" type="submit" >
-                            <Spinner
-                                as="span"
-                                animation="border"
-                                size="sm"
-                                role="status"
-                                aria-hidden="true"
-                                style={{ display: buttonDisabled ? "inline-block" : "none" }}
-                            />{' '}
-                            {t("Submit")}
-                        </Button>
+                        <ModalPreview show={show} setShow={setShow} formData={formData} emailBodyWihtImagesStyles={emailBodyWihtImagesStyles} />
+                        <div className='d-flex justify-content-end'>
+                            <Button className="mb-3 me-2" disabled={buttonDisabled || selectedOptions.length === 0} variant="danger" type="button" onClick={() => setShow(true)}>
+                                {t("Preview")}
+                            </Button>
+                            <Button className="mb-3" disabled={buttonDisabled || selectedOptions.length === 0} variant="danger" type="submit" >
+                                <Spinner
+                                    as="span"
+                                    animation="border"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                    style={{ display: buttonDisabled ? "inline-block" : "none" }}
+                                />{' '}
+                                {t("Submit")}
+                            </Button>
+                        </div>
                     </Form>
                 </Col>
             </Row>
