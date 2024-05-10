@@ -1,9 +1,10 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faLock,faUser } from '@fortawesome/free-solid-svg-icons'
+import { faLock, faUser } from '@fortawesome/free-solid-svg-icons'
 import { Col, Row, Spinner, Card, Form, InputGroup, FormControl, Button } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
+import { ToggleReveal } from './ToggleReveal';
 
 const FormDesktop = ({ handleChange, handleSubmit, buttonDisabled, error, buttonContent, setButtonContent, loading, setLoading, data, setData }) => {
 
@@ -35,13 +36,15 @@ const FormDesktop = ({ handleChange, handleSubmit, buttonDisabled, error, button
                                 <InputGroup.Text>
                                     <FontAwesomeIcon icon={faLock} />
                                 </InputGroup.Text>
-                                <FormControl
-                                    type="password"
-                                    placeholder={t('Password')}
-                                    onChange={handleChange}
-                                    id="password"
-                                    required
-                                />
+                                <ToggleReveal>
+                                    <FormControl
+                                        type="password"
+                                        placeholder={t('Password')}
+                                        onChange={handleChange}
+                                        id="password"
+                                        required
+                                    />
+                                </ToggleReveal>
                             </InputGroup>
                         </Col>
                         <Col xs="12" className="text-right">

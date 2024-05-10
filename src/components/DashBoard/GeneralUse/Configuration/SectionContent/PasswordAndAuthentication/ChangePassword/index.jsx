@@ -8,6 +8,7 @@ import { passwordStrength } from 'check-password-strength'
 import { DashBoardContext } from 'context/DashBoardContext';
 import { Col, Row, Container, Form, Button, Spinner } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
+import { ToggleReveal } from 'components/Containerlogin/FormDesktop/ToggleReveal'
 
 const ChangePassword = ({ scrollIntoView }) => {
   const { toLogin, allowedSymbols } = useContext(DashBoardContext)
@@ -121,18 +122,26 @@ const ChangePassword = ({ scrollIntoView }) => {
                 }
                 <Col md={12} className=" mb-2">
                   <h1 className="label mt-0" >{t('Old Password')}</h1>
-                  <Form.Control required id="password" onChange={(event) => { handleChange(event) }} value={data.password} type="password" maxLength={80} />
+                  <div className='d-flex'>
+                    <ToggleReveal>
+                      <Form.Control required id="password" onChange={(event) => { handleChange(event) }} value={data.password} type="password" maxLength={80} />
+                    </ToggleReveal>
+                  </div>
                 </Col>
 
                 <Col md={12} className=" mb-2">
                   <h1 className="label mt-0">{t('New Password')}</h1>
-                  <Form.Control
-                    required
-                    id="newPassword"
-                    onChange={handleChange}
-                    value={data.newPassword}
-                    type="password"
-                    maxLength={80} />
+                  <div className='d-flex'>
+                    <ToggleReveal>
+                      <Form.Control
+                        required
+                        id="newPassword"
+                        onChange={handleChange}
+                        value={data.newPassword}
+                        type="password"
+                        maxLength={80} />
+                    </ToggleReveal>
+                  </div>
                   <Form.Text className="text-muted formText">
                     <p className="validation mb-0">{t('Your new password must have')}:
                       <br />

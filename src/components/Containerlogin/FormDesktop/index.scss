@@ -1,0 +1,42 @@
+input::-ms-reveal {
+    display: none;
+}
+
+.form-control.is-invalid+.reveal-button,
+.was-validated .form-control:invalid+.reveal-button,
+.form-control.is-valid+.reveal-button,
+.was-validated .form-control:valid+.reveal-button {
+    padding-right: calc(1.5em + 0.75rem);
+}
+
+.password-reveal-wrapper {
+    position: relative;
+    flex: 1 1 auto;
+    width: 1%;
+    min-width: 0;
+
+    .reveal-button {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        padding-right: 0.75rem;
+        color: #212529;
+
+        .icon-placeholder {
+            visibility: hidden;
+        }
+
+        .icon-indicator {
+            position: absolute;
+            top: 50%;
+            bottom: 0;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+            &.hidden {
+                visibility: hidden;
+            }
+        }
+    }
+}

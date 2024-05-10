@@ -8,6 +8,7 @@ import { faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icon
 import { useHistory } from 'react-router-dom';
 import LanguageSelector from 'components/LanguageSelector';
 import './index.scss'
+import { ToggleReveal } from 'components/Containerlogin/FormDesktop/ToggleReveal';
 
 const SetPassword = () => {
     const toLogin = () => {
@@ -124,17 +125,21 @@ const SetPassword = () => {
                                                 <Col xs="12">
                                                     <Form.Group>
                                                         <Form.Label>{t("New Password")}</Form.Label>
-                                                        <Form.Control
-                                                            id="password"
-                                                            placeholder={t("New Password")}
-                                                            type="password"
-                                                            value={Data.password}
-                                                            onChange={handleChange}
-                                                            isValid={validation.value === "Medium" || validation.value === "Strong"}
-                                                            isInvalid={validation.value !== "Medium" && validation.value !== "Strong"}
-                                                            onFocus={() => setShowRequirements(true)}
-                                                            onBlur={() => setShowRequirements(false)}
-                                                        />
+                                                        <div className='d-flex'>
+                                                            <ToggleReveal>
+                                                                <Form.Control
+                                                                    id="password"
+                                                                    placeholder={t("New Password")}
+                                                                    type="password"
+                                                                    value={Data.password}
+                                                                    onChange={handleChange}
+                                                                    isValid={validation.value === "Medium" || validation.value === "Strong"}
+                                                                    isInvalid={validation.value !== "Medium" && validation.value !== "Strong"}
+                                                                    onFocus={() => setShowRequirements(true)}
+                                                                    onBlur={() => setShowRequirements(false)}
+                                                                />
+                                                            </ToggleReveal>
+                                                        </div>
                                                         <Form.Control.Feedback>{t("Looks good")}!</Form.Control.Feedback>
                                                         <div className={ShowRequirements ? "expanded" : "collapsed"}>
                                                             <Form.Text className={`text-muted formText mb-4`}>
@@ -160,15 +165,19 @@ const SetPassword = () => {
                                                     </Form.Group>
                                                     <Form.Group>
                                                         <Form.Label>{t("Password Confirmation")}</Form.Label>
-                                                        <Form.Control
-                                                            id="passwordConfirm"
-                                                            type="password"
-                                                            placeholder={t("Password Confirmation")}
-                                                            value={Data.passwordConfirm}
-                                                            onChange={handleChange}
-                                                            isInvalid={Data.password !== Data.passwordConfirm || (validation.value !== "Medium" && validation.value !== "Strong")}
-                                                            isValid={Data.password === Data.passwordConfirm && (validation.value === "Medium" || validation.value === "Strong")}
-                                                        />
+                                                        <div className='d-flex'>
+                                                            <ToggleReveal>
+                                                                <Form.Control
+                                                                    id="passwordConfirm"
+                                                                    type="password"
+                                                                    placeholder={t("Password Confirmation")}
+                                                                    value={Data.passwordConfirm}
+                                                                    onChange={handleChange}
+                                                                    isInvalid={Data.password !== Data.passwordConfirm || (validation.value !== "Medium" && validation.value !== "Strong")}
+                                                                    isValid={Data.password === Data.passwordConfirm && (validation.value === "Medium" || validation.value === "Strong")}
+                                                                />
+                                                            </ToggleReveal>
+                                                        </div>
                                                         <Form.Control.Feedback type="valid">{t("Looks good")}!</Form.Control.Feedback>
                                                         <Form.Control.Feedback type="invalid">
                                                             {

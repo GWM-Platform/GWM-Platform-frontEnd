@@ -9,6 +9,7 @@ import { faKey, faLock, faUser, faChevronLeft } from '@fortawesome/free-solid-sv
 import { useTranslation } from "react-i18next";
 import { Col, Row, Container, Card, Form, Button, InputGroup } from 'react-bootstrap'
 import { passwordStrength } from 'check-password-strength'
+import { ToggleReveal } from 'components/Containerlogin/FormDesktop/ToggleReveal';
 
 const ContainerForgotPassword = () => {
   const isMountedRef = useRef(null);
@@ -173,18 +174,21 @@ const ContainerForgotPassword = () => {
                     <InputGroup.Text>
                       <FontAwesomeIcon icon={faLock} />
                     </InputGroup.Text>
-                    <Form.Control
-                      onFocus={() => setShowRequirements(true)}
-                      onBlur={() => setShowRequirements(false)}
-                      type="password"
-                      placeholder={t("Password")}
-                      autoComplete="new-password"
-                      required
-                      pattern={`(?=.*[${escapeRegExp(symbols)}])(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}`}
-                      onChange={handleChange}
-                      id="password"
-                      value={data.password}
-                    />
+                    <ToggleReveal>
+                      <Form.Control
+                        style={{ borderBottomLeftRadius: 0, borderTopLeftRadius: 0 }}
+                        onFocus={() => setShowRequirements(true)}
+                        onBlur={() => setShowRequirements(false)}
+                        type="password"
+                        placeholder={t("Password")}
+                        autoComplete="new-password"
+                        required
+                        pattern={`(?=.*[${escapeRegExp(symbols)}])(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}`}
+                        onChange={handleChange}
+                        id="password"
+                        value={data.password}
+                      />
+                    </ToggleReveal>
                   </InputGroup>
                   <div className={ShowRequirements ? "expanded" : "collapsed"}>
                     <Form.Text className={`text-muted formText mb-4`}>
@@ -212,15 +216,18 @@ const ContainerForgotPassword = () => {
                     <InputGroup.Text>
                       <FontAwesomeIcon icon={faLock} />
                     </InputGroup.Text>
-                    <Form.Control
-                      type="password"
-                      placeholder={t("Confirm password")}
-                      autoComplete="new-password"
-                      required onChange={handleChange}
-                      pattern={escapeRegExp(data.password)}
-                      id="passwordConfirm"
-                      value={data.passwordConfirm}
-                    />
+                    <ToggleReveal>
+                      <Form.Control
+                        style={{ borderBottomLeftRadius: 0, borderTopLeftRadius: 0 }}
+                        type="password"
+                        placeholder={t("Confirm password")}
+                        autoComplete="new-password"
+                        required onChange={handleChange}
+                        pattern={escapeRegExp(data.password)}
+                        id="passwordConfirm"
+                        value={data.passwordConfirm}
+                      />
+                    </ToggleReveal>
                   </InputGroup>
 
                   <Form.Text className="text-muted  formText">

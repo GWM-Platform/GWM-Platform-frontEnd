@@ -5,6 +5,7 @@ import { faLock } from '@fortawesome/free-solid-svg-icons'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { Col, Row, Spinner, Card, Form, InputGroup, FormControl, Button } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
+import { ToggleReveal } from '../FormDesktop/ToggleReveal';
 
 const FormMobile = ({ handleChange, handleSubmit, buttonDisabled, setButtonDisabled, error, setError, buttonContent, setButtonContent, loading, setLoading, data, setData }) => {
     const { t } = useTranslation();
@@ -33,15 +34,17 @@ const FormMobile = ({ handleChange, handleSubmit, buttonDisabled, setButtonDisab
                         <InputGroup.Text>
                             <FontAwesomeIcon icon={faLock} />
                         </InputGroup.Text>
-                        <FormControl
-                            type="password"
-                            placeholder={t('Password')}
-                            autoComplete="current-password"
-                            onChange={handleChange}
-                            id="password"
-                            value={data.password}
-                            required
-                        />
+                        <ToggleReveal>
+                            <FormControl
+                                type="password"
+                                placeholder={t('Password')}
+                                autoComplete="current-password"
+                                onChange={handleChange}
+                                id="password"
+                                value={data.password}
+                                required
+                            />
+                        </ToggleReveal>
                     </InputGroup>
                 </Col>
                 <Col xs="12" className="text-right">
