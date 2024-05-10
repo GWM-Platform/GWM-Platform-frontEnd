@@ -1,21 +1,25 @@
 import { fetchPerformance, selectPerformanceById } from "Slices/DashboardUtilities/performancesSlice";
 import { DashBoardContext } from "context/DashBoardContext";
-import moment from "moment";
+import moment, { min } from "moment";
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { Form, Placeholder } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import FormattedNumber from "../FormattedNumber";
 
-const PerformanceComponent = ({ text, fundId = "", fixedDepositId = "", withoutSelector = false, className = "", setValueExternal = false, valueExternal = false, clientId = false, textAlign = "text-start", numberFw = "" }) => {
+const PerformanceComponent = ({ text, fundId = "", fixedDepositId = "", withoutSelector = false, className = "", setValueExternal = false, valueExternal = false, clientId = false, textAlign = "text-start", numberFw = "", monthValueExternal = false, setMonthValueExternal = false }) => {
     const { t } = useTranslation();
 
     const dispatch = useDispatch()
     const { ClientSelected } = useContext(DashBoardContext)
     const [valueInternal, setValueInternal] = useState("")
+    const [monthValueInternal, setMonthValueInternal] = useState("")
 
     const value = useMemo(() => valueExternal !== false ? valueExternal : valueInternal, [valueExternal, valueInternal])
     const setValue = useCallback((params) => setValueExternal !== false ? setValueExternal(params) : setValueInternal(params), [setValueExternal])
+
+    const monthValue = useMemo(() => monthValueExternal !== false ? monthValueExternal : monthValueInternal, [monthValueExternal, monthValueInternal])
+    const setMonthValue = useCallback((params) => setMonthValueExternal !== false ? setMonthValueExternal(params) : setMonthValueInternal(params), [setMonthValueExternal])
 
     const performanceObject = useSelector(state =>
         selectPerformanceById(
@@ -38,9 +42,10 @@ const PerformanceComponent = ({ text, fundId = "", fixedDepositId = "", withoutS
                 :
                 (fundId !== "" ? { fund: fundId } : { totalPerformance: true }),
             ...value !== "" ? { year: value } : {},
+            ...monthValue !== "" ? { month: monthValue } : {},
             clientId: clientId || ClientSelected?.id
         }))
-    }, [fundId, fixedDepositId, ClientSelected, dispatch, value, clientId])
+    }, [fundId, fixedDepositId, ClientSelected, dispatch, value, clientId, monthValue])
 
     const yearsArraySince = (initialYear = 2022) => {
         const años = [];
@@ -50,6 +55,40 @@ const PerformanceComponent = ({ text, fundId = "", fixedDepositId = "", withoutS
         }
         return años;
     }
+
+    // null for not setted, moment for setted, false if not allowed
+    const minMonthForFunds = false
+    // moment().set("year", 2024).set("month", 1).startOf("month")
+    const minMonthForFixedDeposits = null
+
+    // lower date between funds and fixed deposits (check if fixed deposits is null, if it is, it will return funds date if it isnt null)
+    const minMonthGeneral = ((minMonthForFunds === false) || (minMonthForFixedDeposits === false)) ? false : (minMonthForFixedDeposits === null ? minMonthForFunds : (minMonthForFunds === null ? minMonthForFixedDeposits : min(minMonthForFunds, minMonthForFixedDeposits)))
+
+    const currentModeMinMonth = useMemo(() => {
+        if (fundId !== "") {
+            return minMonthForFunds
+        } else if (fixedDepositId !== "") {
+            return minMonthForFixedDeposits
+        } else {
+            return minMonthGeneral
+        }
+    }, [fundId, fixedDepositId, minMonthForFunds, minMonthGeneral])
+
+    // genera el array con los nombres de los meses, hasta el mes corriente si value es igual al año corriente
+    const months = moment.months().slice(currentModeMinMonth === null || currentModeMinMonth === false ? 0 : currentModeMinMonth.get("month"), (value === moment().year() + "") ? moment().month() + 1 : 12)
+
+    // if year is selected (value)
+    // based on modes (fund mode if !== "", fixed deposit mode if !== "" or general if === "" and fixedDepositId === "")
+    // if value is after minMonth for each mode, it will show the month selector
+    const showMonthSelector = useMemo(() => {
+        if (value && currentModeMinMonth !== false) {
+            return currentModeMinMonth === null ? true : moment(`${value}-12`).isAfter(currentModeMinMonth)
+        } else {
+            return false;
+        }
+    }, [currentModeMinMonth, value]);
+
+
     return (
         <span className={`${textAlign} w-100 d-block ${className}`} style={{ fontWeight: "300" }}>
             <span className="text-nowrap">
@@ -57,7 +96,10 @@ const PerformanceComponent = ({ text, fundId = "", fixedDepositId = "", withoutS
                 {
                     !withoutSelector &&
                     <span>
-                        <Form.Select className='inline-selector ms-2' onChange={e => setValue(e.target.value)} value={value} id="type">
+                        <Form.Select className='inline-selector ms-2' onChange={e => {
+                            setValue(e.target.value)
+                            setMonthValue("")
+                        }} value={value} id="year">
                             <option value="">{t("General")}</option>
                             {
                                 yearsArraySince(2022).map(year => (
@@ -65,6 +107,22 @@ const PerformanceComponent = ({ text, fundId = "", fixedDepositId = "", withoutS
                                 ))
                             }
                         </Form.Select>
+
+                        {
+                            showMonthSelector &&
+                            <Form.Select
+                                style={{ textTransform: "capitalize" }} className='inline-selector ms-2'
+                                onChange={e => setMonthValue(e.target.value)} value={monthValue} id="month"
+                            >
+                                <option value="">{t("Acumulated")}</option>
+                                {
+
+                                    months.map((month, index) => (
+                                        <option value={index + 1} key={index} style={{ textTransform: "capitalize" }}>{month}</option>
+                                    ))
+                                }
+                            </Form.Select>
+                        }
                     </span>
                 }
                 :&nbsp;

@@ -78,7 +78,8 @@ export const fetchPerformance = createAsyncThunk(
             params: {
                 fixedDepositId: params.fixedDepositId,
                 fund: params.totalPerformance ? undefined : params.fund,
-                year: params.year
+                year: params.year,
+                month: params.month,
             }
         })
 
