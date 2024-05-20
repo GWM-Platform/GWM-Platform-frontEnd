@@ -57,8 +57,7 @@ const PerformanceComponent = ({ text, fundId = "", fixedDepositId = "", withoutS
     }
 
     // null for not setted, moment for setted, false if not allowed
-    const minMonthForFunds = false
-    // moment().set("year", 2024).set("month", 1).startOf("month")
+    const minMonthForFunds = moment().set("year", 2024).set("month", 0).startOf("month")
     const minMonthForFixedDeposits = null
 
     // lower date between funds and fixed deposits (check if fixed deposits is null, if it is, it will return funds date if it isnt null)
