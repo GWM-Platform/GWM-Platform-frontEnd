@@ -117,7 +117,7 @@ const PerformanceComponent = ({ text, fundId = "", fixedDepositId = "", withoutS
                                 {
 
                                     months.map((month, index) => (
-                                        <option value={index + 1} key={index} style={{ textTransform: "capitalize" }}>{month}</option>
+                                        <option value={index} key={index} style={{ textTransform: "capitalize" }}>{month}</option>
                                     ))
                                 }
                             </Form.Select>
