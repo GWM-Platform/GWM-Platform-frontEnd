@@ -17,7 +17,7 @@
 	margin-top: 0;
 }
 .mainCardCol {
-	transition: width 1.5s;
+	transition: width .5s;
 }
 .collapser {
 	position: absolute;
@@ -26,7 +26,7 @@
 	transform: translateY(-50%);
 	font-size: 30px;
 	cursor: pointer;
-	transition: ease all 1.5s;
+	transition: ease all .5s;
 }
 .collapser .chevron{
 	font-size: 30px;

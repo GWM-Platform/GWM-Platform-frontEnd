@@ -1058,5 +1058,8 @@
   "Failed to edit the historic price": "La edición del precio historico falló",
   "You are about to edit an historic price": "Estas a punto de editar un precio historico",
   "This action will change results of performance calculations and cannot be undone": "Esta acción cambiará los resultados de los cálculos de rendimiento y no se puede deshacer",
-  "Acumulated": "Acumulada"
+  "Acumulated": "Acumulada",
+  "Maximum": "Máximo",
+  "First operation": "Primer operación",
+  " (Current)":" (Actual)"
 }

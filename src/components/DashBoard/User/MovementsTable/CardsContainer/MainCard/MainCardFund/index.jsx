@@ -16,6 +16,8 @@ import { useEffect } from 'react';
 import TransfersTab from './TransfersTab';
 import { useHistory, useLocation } from 'react-router-dom/cjs/react-router-dom.min';
 import PerformanceComponent from 'components/DashBoard/GeneralUse/PerformanceComponent';
+import { useDispatch } from 'react-redux';
+import { fetchTransactions } from 'Slices/DashboardUtilities/transactionsSlice';
 
 const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
     const location = useLocation();
@@ -51,6 +53,21 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
         //eslint-disable-next-line
     }, [])
 
+    const dispatch = useDispatch()
+    const { ClientSelected } = useContext(DashBoardContext)
+
+    useEffect(() => {
+        const newParams = {
+            client: ClientSelected.id,
+            filterFund: Fund.fund.id,
+            take: 1,
+            skip: 0,
+            sort: "ASC"
+        }
+        // if (params.filterFund !== newParams.filterFund) {
+        dispatch(fetchTransactions(newParams))
+        // }
+    }, [ClientSelected.id, Fund.fund.id, dispatch])
 
     return (
         <div className="movementsMainCardFund growAnimation mt-2">
@@ -148,11 +165,11 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
                     </Nav.Item>
 
                     <Nav.Item>
-                        <Nav.Link eventKey={"1"}>{t("Historic prices")}</Nav.Link>
+                        <Nav.Link eventKey={"2"}>{t("Transfers")}</Nav.Link>
                     </Nav.Item>
 
                     <Nav.Item>
-                        <Nav.Link eventKey={"2"}>{t("Transfers")}</Nav.Link>
+                        <Nav.Link eventKey={"1"}>{t("Historic prices")}</Nav.Link>
                     </Nav.Item>
                 </Nav>
             </Container>
@@ -165,7 +182,7 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
                                 Fund={Fund} SearchById={SearchById} setSearchById={setSearchById}
                                 resetSearchById={resetSearchById} handleMovementSearchChange={handleMovementSearchChange} />,
                         1:
-                            <FundDetail fundId={Fund?.fund?.id} />,
+                            <FundDetail fund={Fund?.fund} />,
                         2:
                             <TransfersTab SearchById={SearchById} setSearchById={setSearchById} Fund={Fund}
                                 resetSearchById={resetSearchById} handleMovementSearchChange={handleMovementSearchChange} />

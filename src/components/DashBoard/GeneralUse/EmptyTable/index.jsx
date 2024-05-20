@@ -8,11 +8,11 @@ import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
-const EmptyTable = ({ NavInfoToggled,className="" }) => {
+const EmptyTable = ({ NavInfoToggled, className = "", style = {} }) => {
   //To use the translations from i18n
   const { t } = useTranslation();
   return (
-    <Row className={`w-100 d-flex loadingMovements ${className} ${NavInfoToggled ? "navInfoToggled" : ""} justify-content-center align-items-center`}>
+    <Row className={`w-100 d-flex loadingMovements ${className} ${NavInfoToggled ? "navInfoToggled" : ""} justify-content-center align-items-center`} style={style}>
       <Col
         className="d-flex justify-content-center align-items-center"
       >
