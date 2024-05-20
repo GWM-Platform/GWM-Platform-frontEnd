@@ -146,11 +146,11 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
                     <Nav.Item>
                         <Nav.Link eventKey={"0"}>{t("Transactions")}</Nav.Link>
                     </Nav.Item>
-                    {/*
-                        <Nav.Item>
-                            <Nav.Link eventKey={"1"}>{t("Investment Evolution")}</Nav.Link>
-                        </Nav.Item>
-                    */}
+
+                    <Nav.Item>
+                        <Nav.Link eventKey={"1"}>{t("Historic prices")}</Nav.Link>
+                    </Nav.Item>
+
                     <Nav.Item>
                         <Nav.Link eventKey={"2"}>{t("Transfers")}</Nav.Link>
                     </Nav.Item>
@@ -165,7 +165,7 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
                                 Fund={Fund} SearchById={SearchById} setSearchById={setSearchById}
                                 resetSearchById={resetSearchById} handleMovementSearchChange={handleMovementSearchChange} />,
                         1:
-                            <FundDetail NavInfoToggled={NavInfoToggled} />,
+                            <FundDetail fundId={Fund?.fund?.id} />,
                         2:
                             <TransfersTab SearchById={SearchById} setSearchById={setSearchById} Fund={Fund}
                                 resetSearchById={resetSearchById} handleMovementSearchChange={handleMovementSearchChange} />
