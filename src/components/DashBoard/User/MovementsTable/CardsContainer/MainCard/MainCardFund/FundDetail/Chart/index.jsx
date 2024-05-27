@@ -49,6 +49,7 @@ const Chart = ({ Height, Width, fund }) => {
     }, [dispatch, fundHistoryStatus])
 
     const max = fundHistory.reduce((prev, current) => (prev.sharePrice > current.sharePrice) ? prev : current, {})
+
     return (
         <>
 
@@ -75,7 +76,11 @@ const Chart = ({ Height, Width, fund }) => {
                             <Label value={t("First operation")} position="insideLeft" />
                         </ReferenceLine>
                     }
-                    <Line type="monotone" dataKey="sharePrice" stroke="#808080" />
+                    <Line isAnimationActive={false}type="monotone" dataKey="sharePrice" stroke="#082044" strokeWidth={2}
+                        // dot={{ stroke: '#082044', strokeWidth: 2 }}
+                        dot={<CustomizedDot />}
+
+                    />
                 </LineChart>
             </ResponsiveContainer>
             {
@@ -149,3 +154,11 @@ const TooltipRubros = ({ label, payload, focusBar }) => {
     }
     return null;
 };
+
+const CustomizedDot = (props) => {
+    const { cx, cy } = props;
+  
+    return (
+        <circle cx={cx} cy={cy} r="4" fill="#082044" strokeWidth="2" stroke="#fff" className="recharts-dot" />
+    );
+  };
