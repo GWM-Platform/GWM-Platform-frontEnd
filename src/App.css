@@ -35,10 +35,13 @@
   --table-border: rgba(78, 65, 30, 0.5);
   --th-color: rgba(201, 74, 74, 0.295);
   --tr-color: rgb(240, 148, 148);
+  --bs-tooltip-max-width: 250px;
 }
 
 /* width */
-
+.approvedByTooltip .tooltip-inner {
+  text-align: start;
+}
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;

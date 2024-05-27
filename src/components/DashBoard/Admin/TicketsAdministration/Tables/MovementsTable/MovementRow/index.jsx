@@ -11,6 +11,7 @@ import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { selectUserEmail, selectUserId } from 'Slices/DashboardUtilities/userSlice';
 import { useSelector } from 'react-redux';
 import Notes from '../../Notes';
+import { ApprovedByUsers } from '../../TransactionsTable/TransactionRow';
 
 const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, couldLiquidate }) => {
 
@@ -138,6 +139,7 @@ const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, coul
                                     :
                                     t("Undefined Client")
                         }
+                        <ApprovedByUsers approvedBy={Movement?.approvedBy} />
                     </div>
                     {
                         !!((Movement.stateId === 1) || couldLiquidate(Movement)) &&
@@ -230,7 +232,7 @@ const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, coul
                         {momentDate.format('L')}
                     </span>
                 </div >
-                <Notes transferNote={transferNote} clientNote={clientNote} denialMotive={denialMotive} adminNote={adminNote}  partialLiquidate={partialLiquidate}/>
+                <Notes transferNote={transferNote} clientNote={clientNote} denialMotive={denialMotive} adminNote={adminNote} partialLiquidate={partialLiquidate} />
             </div >
             {
                 !!(Movement.stateId === 1 || couldLiquidate(Movement)) &&

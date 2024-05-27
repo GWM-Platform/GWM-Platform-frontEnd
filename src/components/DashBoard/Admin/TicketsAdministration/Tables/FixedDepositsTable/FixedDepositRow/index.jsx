@@ -13,6 +13,7 @@ import { userId } from 'utils/userId';
 import { wasEdited } from 'utils/fixedDeposit';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import Notes from '../../Notes';
+import { ApprovedByUsers } from '../../TransactionsTable/TransactionRow';
 
 const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
     const { t } = useTranslation();
@@ -236,7 +237,7 @@ const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
     const clientNote = Movement?.notes?.find(note => note.noteType === "CLIENT_NOTE")
     const denialMotive = Movement?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
     const adminNote = Movement?.notes?.find(note => note.noteType === "ADMIN_NOTE")
-
+    console.log(Movement)
     return (
         <>
             <div className='mobileMovement'>
@@ -253,6 +254,7 @@ const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
                                     :
                                     t("Undefined Client")
                         }
+                        <ApprovedByUsers approvedBy={Movement?.approvedBy} />
                     </div>
 
                     <div className='me-auto'></div>

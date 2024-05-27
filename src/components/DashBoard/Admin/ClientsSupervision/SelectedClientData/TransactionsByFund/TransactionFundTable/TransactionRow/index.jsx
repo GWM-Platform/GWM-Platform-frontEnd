@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from 'moment';
 import { useTranslation } from "react-i18next";
@@ -6,9 +6,7 @@ import Decimal from 'decimal.js';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import { useContext } from 'react';
 import { DashBoardContext } from 'context/DashBoardContext';
-import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { ApprovedByUsers } from 'components/DashBoard/Admin/TicketsAdministration/Tables/TransactionsTable/TransactionRow';
 
 const TransactionRow = ({ transaction, AccountId }) => {
 
@@ -16,8 +14,6 @@ const TransactionRow = ({ transaction, AccountId }) => {
 
   Decimal.set({ precision: 100 })
 
-  const [showClick, setShowClick] = useState(false)
-  const [showHover, setShowHover] = useState(false)
 
   var momentDate = moment(transaction.createdAt);
   const { t } = useTranslation();
@@ -36,61 +32,19 @@ const TransactionRow = ({ transaction, AccountId }) => {
     <tr>
       <td className="tableId text-nowrap">
         {transaction.id}
-        {
-          (!!(transaction?.userEmail) || !!(transaction?.userName) || !!(denialMotive) || !!(adminNote) || !!(transferNote)) &&
-          <OverlayTrigger
-            show={showClick || showHover}
-            placement="right"
-            delay={{ show: 250, hide: 400 }}
-            popperConfig={{
-              modifiers: [
-                {
-                  name: 'offset',
-                  options: {
-                    offset: [0, 0],
-                  },
-                },
-              ],
-            }}
-            overlay={
-              <Tooltip className="mailTooltip" id="more-units-tooltip">
-                {!!(transaction.userEmail || transaction.userName) &&
-                  <div>
-                    {t('Operation performed by')}:<br />
-                    <span className="text-nowrap">{transaction?.userName || transaction.userEmail}</span>
-                  </div>
-                }
-                {!!(denialMotive) &&
-                  <div>
-                    {t('Denial motive')}:<br />
-                    <span className="text-nowrap">"{denialMotive.text}"</span>
-                  </div>
-                }
-                {!!(adminNote) &&
-                  <div>
-                    {t('Admin note')}:<br />
-                    <span className="text-nowrap">"{adminNote.text}"</span>
-                  </div>
-                }
-                {!!(transferNote) &&
-                  <div>
-                    {t('Transfer note')}:<br />
-                    <span className="text-nowrap">"{transferNote.text}"</span>
-                  </div>
-                }
-              </Tooltip>
-            }
-          >
-            <span>
-              <button
-                onBlur={() => setShowClick(false)}
-                onClick={() => setShowClick(prevState => !prevState)}
-                onMouseEnter={() => setShowHover(true)}
-                onMouseLeave={() => setShowHover(false)}
-                type="button" className="noStyle"  ><FontAwesomeIcon icon={faInfoCircle} /></button>
-            </span>
-          </OverlayTrigger>
-        }
+        <ApprovedByUsers
+          approvedBy={transaction?.approvedBy || []}
+          aditionalLines={[
+            ...!!(transaction?.userName || transaction?.userEmail) ?
+              [`${t('Performed by')}: ${transaction?.userName || transaction?.userEmail}`] : [],
+            ...!!(transferNote) ?
+              [`${t('Transfer note')}${transferNote.userName ? ` (${transferNote.userName})` : ""}: "${transferNote.text}"`] : [],
+            ...!!(denialMotive) ?
+              [`${t('Denial motive')}${denialMotive.userName ? ` (${denialMotive.userName})` : ""}: "${denialMotive.text}"`] : [],
+            ...!!(adminNote) ?
+              [`${t('Admin note')}${adminNote.userName ? ` (${adminNote.userName})` : ""}: "${adminNote.text}"`] : [],
+          ]}
+        />
       </td>
       <td className="tableDate">{momentDate.format('L')}</td>
       <td className={`tableConcept ${transaction.stateId === 3 ? 'text-red' : 'text-green'}`}>

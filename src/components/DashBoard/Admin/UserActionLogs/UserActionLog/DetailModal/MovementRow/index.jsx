@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Badge, OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap'
+import { Badge, Spinner } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { ApprovedByUsers } from 'components/DashBoard/Admin/TicketsAdministration/Tables/TransactionsTable/TransactionRow';
 
 const MovementRow = ({ Accounts, Clients, Movement }) => {
 
@@ -93,8 +92,6 @@ const MovementRow = ({ Accounts, Clients, Movement }) => {
         //eslint-disable-next-line
     }, [Movement, Accounts, Clients])
 
-    const [showClick, setShowClick] = useState(false)
-    const [showHover, setShowHover] = useState(false)
 
     return (
         <>
@@ -103,44 +100,7 @@ const MovementRow = ({ Accounts, Clients, Movement }) => {
                     <span className="h5 mb-0 me-1 me-md-2">
                         {t("Movement")}&nbsp;#{Movement.id}
                     </span>
-                    {
-                        !!(Movement?.userEmail || Movement?.userName) &&
-                        <div className='px-1 px-md-2' style={{ borderLeft: "1px solid lightgray", borderRight: "1px solid lightgray" }}>
-                            <OverlayTrigger
-                                show={showClick || showHover}
-                                placement="right"
-                                delay={{ show: 250, hide: 400 }}
-                                popperConfig={{
-                                    modifiers: [
-                                        {
-                                            name: 'offset',
-                                            options: {
-                                                offset: [0, 0],
-                                            },
-                                        },
-                                    ],
-                                }}
-                                overlay={
-                                    <Tooltip className="mailTooltip" id="more-units-tooltip">
-                                        <div>
-                                            {t('Operation performed by')}:<br />
-                                            <span className="text-nowrap">{Movement?.userName || Movement?.userEmail}</span>
-                                        </div>
-                                    </Tooltip>
-                                }
-                            >
-                                <span>
-                                    <button
-                                        onBlur={() => setShowClick(false)}
-                                        onClick={() => setShowClick(prevState => !prevState)}
-                                        onMouseEnter={() => setShowHover(true)}
-                                        onMouseLeave={() => setShowHover(false)}
-                                        type="button" className="noStyle"  ><FontAwesomeIcon icon={faInfoCircle} /></button>
-                                </span>
-                            </OverlayTrigger>
-                        </div>
-                    }
-                    <div className='me-auto px-1 px-md-2' style={{ borderLeft: "1px solid lightgray", borderRight: "1px solid lightgray" }}>
+                    <div className='px-1 px-md-1' style={{ borderLeft: "1px solid lightgray", borderRight: "1px solid lightgray" }}>
                         {
                             ClientAccountInfo.fetching ?
                                 <Spinner animation="border" size="sm" />
@@ -151,8 +111,8 @@ const MovementRow = ({ Accounts, Clients, Movement }) => {
                                     t("Undefined Client")
                         }
                     </div>
-
-                    <Badge className='ms-1 ms-md-2' bg={status()?.bg}>{t(status().text)}</Badge>
+                    <ApprovedByUsers approvedBy={Movement.approvedBy} aditionalLines={[...!!(Movement?.userName || Movement?.userEmail) ? [`${t('Performed by')}: ${Movement?.userName || Movement?.userEmail}`] : []]} />
+                    <Badge className='ms-auto' bg={status()?.bg}>{t(status().text)}</Badge>
                 </div >
 
                 <div className='w-100 d-flex' style={{ borderBottom: "1px solid lightgray" }} />

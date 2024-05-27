@@ -333,14 +333,14 @@ const GeneralInfo = ({ fullSettlement, setFullSettlement, clients }) => {
                                                     return (
                                                         <tr key={account.clientId}>
                                                             <td className="tableDate">{account?.clientCompleteName}</td>
-                                                            <td className="tableDate text-end"><FormattedNumber value={account.balance} prefix="U$D " fixedDecimals={2} /></td>
+                                                            <td className="tableDate text-end"><FormattedNumber value={account.balance} prefix="U$D " fixedDecimals={2} styledSybol /></td>
                                                         </tr>
                                                     )
                                                 })
                                             }
                                             <tr >
                                                 <td className="tableDate"><strong>Total</strong></td>
-                                                <td className="tableDate text-end"><strong><FormattedNumber value={total} prefix="U$D " fixedDecimals={2} /></strong></td>
+                                                <td className="tableDate text-end"><strong><FormattedNumber value={total} prefix="U$D " fixedDecimals={2} styledSybol /></strong></td>
                                             </tr>
                                         </tbody>
                                     </Table>
@@ -351,7 +351,7 @@ const GeneralInfo = ({ fullSettlement, setFullSettlement, clients }) => {
                                                 {account?.clientCompleteName}
                                                 <br />
                                                 <span style={{ fontWeight: "bolder" }}>
-                                                    <FormattedNumber value={account.balance} prefix="U$D " fixedDecimals={2} />
+                                                    <FormattedNumber value={account.balance} prefix="U$D " fixedDecimals={2} styledSybol />
                                                 </span>
                                             </h2>
                                         </Col>

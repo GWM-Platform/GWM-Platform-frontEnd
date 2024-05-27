@@ -3,7 +3,7 @@ import { formatValue } from "@osdiab/react-currency-input-field";
 import Decimal from "decimal.js";
 
 
-const FormattedNumber = ({ style, className, value = 0, prefix = "", suffix = "", fixedDecimals = 0, hidden }) => {
+const FormattedNumber = ({ style, className, value = 0, prefix = "", suffix = "", fixedDecimals = 0, hidden, styledSybol = false }) => {
     Decimal.set({ precision: 100 })
 
     const groupSeparator = process.env.REACT_APP_GROUPSEPARATOR ?? ','
@@ -11,7 +11,6 @@ const FormattedNumber = ({ style, className, value = 0, prefix = "", suffix = ""
 
     // const decimal = Decimal(value).toFixed(fixedDecimals)
     // const significantDecimals = (decimal.split('.')[1] || '').replace(/0+$/, '').length
-    
     const FormattedValue = () => formatValue({
         value: Decimal(value).toFixed(fixedDecimals),
         // significantDecimals > 2 ? decimal.replace(/\.?0+$/, "") : Decimal(decimal).toFixed(2),
@@ -22,7 +21,7 @@ const FormattedNumber = ({ style, className, value = 0, prefix = "", suffix = ""
     })
 
     return (
-        <span style={style} className={className}>
+        <span style={style} className={`${className} ${styledSybol ? Decimal(value).lt(0) ? 'text-red' : 'text-green' : ""} `}>
             {
                 hidden ?
                     FormattedValue().replace(/./g, "*")

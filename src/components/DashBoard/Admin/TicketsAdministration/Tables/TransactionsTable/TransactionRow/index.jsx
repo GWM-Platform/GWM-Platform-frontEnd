@@ -9,9 +9,11 @@ import moment from 'moment';
 import ActionConfirmationModal from './ActionConfirmationModal'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import Decimal from 'decimal.js';
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { faCircleInfo, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import Notes from '../../Notes';
 import { DashBoardContext } from 'context/DashBoardContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchusers, selectAllusers } from 'Slices/DashboardUtilities/usersSlice';
 
 const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData }) => {
     const { t } = useTranslation();
@@ -125,6 +127,7 @@ const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData })
     const denialMotive = Transaction?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
     const adminNote = Transaction?.notes?.find(note => note.noteType === "ADMIN_NOTE")
     const isTransfer = Transaction.receiverId || Transaction.senderId
+
     return (
         <>
             <div className='mobileMovement'>
@@ -146,6 +149,7 @@ const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData })
                                 }
                             </>
                         }
+                        <ApprovedByUsers approvedBy={Transaction?.approvedBy} />
                     </div>
                     {
                         !!(Transaction.stateId === 1) &&
@@ -171,12 +175,12 @@ const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData })
                         (Transaction.reverted && transferNote?.text !== "Transferencia revertida") &&
                         <Badge className='ms-1 ms-md-2' bg="danger">{t("Reverted")}</Badge>
                     }
-                     {
+                    {
                         (Transaction.reverted && transferNote?.text === "Transferencia revertida") &&
                         <Badge className='ms-1 ms-md-2' bg="info">{t("Reversion")}</Badge>
                     }
                     <Badge className='ms-1 ms-md-2' bg={status()?.bg}>{t(status().text)}</Badge>
-                    
+
                     {
                         !!(Transaction?.userEmail || Transaction?.userName) &&
                         <div>
@@ -294,3 +298,52 @@ const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData })
 }
 export default TransactionRow
 
+
+export const ApprovedByUsers = ({ approvedBy, label = "Approved by", aditionalLines = [] }) => {
+    const { t } = useTranslation()
+    const usersStatus = useSelector(state => state.users.status)
+    const users = useSelector(selectAllusers)
+    const dispatch = useDispatch()
+    useEffect(() => {
+        if (usersStatus === 'idle') {
+            dispatch(fetchusers({ all: true }))
+        }
+    }, [dispatch, usersStatus])
+
+    return (
+        (approvedBy?.length > 0 || aditionalLines?.length > 0) &&
+        <span style={{ display: "inline-flex" }}>
+            &nbsp;
+            <OverlayTrigger
+                placement="auto"
+                trigger={['hover', 'focus']}
+                overlay={
+                    <Tooltip className="approvedByTooltip" id="more-units-tooltip">
+                        {
+                            approvedBy.length > 0 &&
+                            <>{t(label)}:&nbsp;
+                                {approvedBy.length > 1 ? <br /> : <></>}
+                                {
+                                    approvedBy.map((user, index) => {
+                                        const userFound = typeof user === 'number' ? users?.find(userFind => userFind.id === user) || "Nombre desconocido" : user
+                                        return <React.Fragment key={index}>
+                                            {
+                                                typeof user === 'number' ? (userFound.firstName + " " + userFound.lastName) : user
+                                            }
+                                            <br />
+                                        </React.Fragment>
+                                    })
+                                }
+                            </>
+                        }
+                        {aditionalLines.map((line, index) => <React.Fragment key={index}>{line}<br /></React.Fragment>)}
+                    </Tooltip>
+                }
+            >
+                <button className="no-style btn" type="button" style={{ lineHeight: "1em" }}>
+                    <FontAwesomeIcon icon={faCircleInfo} />
+                </button>
+            </OverlayTrigger>
+        </span>
+    )
+}

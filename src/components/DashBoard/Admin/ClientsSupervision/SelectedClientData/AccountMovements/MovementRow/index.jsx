@@ -1,21 +1,16 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from 'moment';
 import { useTranslation } from "react-i18next";
 import { DashBoardContext } from 'context/DashBoardContext';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { ApprovedByUsers } from 'components/DashBoard/Admin/TicketsAdministration/Tables/TransactionsTable/TransactionRow';
 
 const Movement = ({ Movement }) => {
   var momentDate = moment(Movement.createdAt);
   const { t } = useTranslation();
   const { getMoveStateById } = useContext(DashBoardContext)
 
-
-  const [showClick, setShowClick] = useState(false)
-  const [showHover, setShowHover] = useState(false)
 
   const transferNote = Movement?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")
   const clientNote = Movement?.notes?.find(note => note.noteType === "CLIENT_NOTE")
@@ -27,75 +22,23 @@ const Movement = ({ Movement }) => {
     <tr>
       <td className="tableId text-nowrap">
         {Movement.id}
-        {
-          (!!(Movement?.userEmail) || !!(Movement?.userName) || !!(transferNote) || !!(clientNote) || !!(denialMotive) || !!(adminNote)) &&
-          <OverlayTrigger
-            show={showClick || showHover}
-            placement="right"
-            delay={{ show: 250, hide: 400 }}
-            popperConfig={{
-              modifiers: [
-                {
-                  name: 'offset',
-                  options: {
-                    offset: [0, 0],
-                  },
-                },
-              ],
-            }}
-            overlay={
-              <Tooltip className="mailTooltip" id="more-units-tooltip">
-                {!!(Movement.userEmail || Movement.userName) &&
-                  <div>
-                    {t('Operation performed by')}:<br />
-                    <span className="text-nowrap">{Movement?.userName || Movement.userEmail}</span>
-                  </div>
-                }
-                {!!(transferNote) &&
-                  <div>
-                    {t('Transfer note')}:<br />
-                    <span className="text-nowrap">"{transferNote.text}"</span>
-                  </div>
-                }
-                {!!(clientNote) &&
-                  <div>
-                    {t('Personal note')}:<br />
-                    <span className="text-nowrap">"{clientNote.text}"</span>
-                  </div>
-                }
-                {!!(denialMotive) &&
-                  <div>
-                    {t('Denial motive')}:<br />
-                    <span className="text-nowrap">"{denialMotive.text}"</span>
-                  </div>
-                }
-                {!!(adminNote) &&
-                  <div>
-                    {t('Admin note')}:<br />
-                    <span className="text-nowrap">"{adminNote.text}"</span>
-                  </div>
-                }
-                {
-                  !!(partialLiquidate) &&
-                  <div className='d-flex justify-content-between'>
-                    <span >
-                      "{partialLiquidate.text}" ({partialLiquidate.userName})
-                    </span>
-                  </div>
-                }
-              </Tooltip>
-            }
-          >
-            <span>
-              <button
-                onBlur={() => setShowClick(false)}
-                onClick={() => setShowClick(prevState => !prevState)}
-                onMouseEnter={() => setShowHover(true)}
-                onMouseLeave={() => setShowHover(false)}
-                type="button" className="noStyle"  ><FontAwesomeIcon icon={faInfoCircle} /></button>
-            </span>
-          </OverlayTrigger>
-        }
+        <ApprovedByUsers
+          approvedBy={Movement.approvedBy}
+          aditionalLines={[
+            ...!!(Movement?.userName || Movement?.userEmail) ?
+              [`${t('Performed by')}: ${Movement?.userName || Movement?.userEmail}`] : [],
+            ...!!(transferNote) ?
+              [`${t('Transfer note')}${transferNote.userName ? ` (${transferNote.userName})` : ""}: "${transferNote.text}"`] : [],
+            ...!!(clientNote) ?
+              [`${t('Personal note')}${clientNote.userName ? ` (${clientNote.userName})` : ""}: "${clientNote.text}"`] : [],
+            ...!!(denialMotive) ?
+              [`${t('Denial motive')}${denialMotive.userName ? ` (${denialMotive.userName})` : ""}: "${denialMotive.text}"`] : [],
+            ...!!(adminNote) ?
+              [`${t('Admin note')}${adminNote.userName ? ` (${adminNote.userName})` : ""}: "${adminNote.text}"`] : [],
+            ...!!(partialLiquidate) ?
+              [`"${partialLiquidate.text}" (${partialLiquidate.userName})`] : []
+          ]}
+        />
       </td>
       <td className="tableDate">
         {momentDate.format('L')}

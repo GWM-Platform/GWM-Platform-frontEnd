@@ -345,7 +345,7 @@ const UserActionLogs = () => {
                 <h1 className="title">{children}</h1>
                 <Button
                     className="ms-auto"
-                    style={{ backgroundColor: isCurrentEventKey ? 'purple' : '' }}
+                    style={{ backgroundColor: isCurrentEventKey ? 'purple' : '', alignSelf: "center" }}
                     onClick={decoratedOnClick}
                     type="button"><FontAwesomeIcon icon={faSlidersH} /></Button>
             </div>

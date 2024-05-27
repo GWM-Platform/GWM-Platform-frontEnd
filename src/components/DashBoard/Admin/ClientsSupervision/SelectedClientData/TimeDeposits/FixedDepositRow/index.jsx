@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Badge, OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap';
+import { Badge, Spinner } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { DashBoardContext } from 'context/DashBoardContext';
@@ -8,10 +8,9 @@ import moment from 'moment';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import { getAnualRate, getDuration, wasEdited } from 'utils/fixedDeposit';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import Notes from 'components/DashBoard/Admin/TicketsAdministration/Tables/Notes';
 import { faTimesCircle } from '@fortawesome/free-regular-svg-icons';
 import ActionConfirmationModal from 'components/DashBoard/Admin/TicketsAdministration/Tables/FixedDepositsTable/FixedDepositRow/ActionConfirmationModal'
+import { ApprovedByUsers } from 'components/DashBoard/Admin/TicketsAdministration/Tables/TransactionsTable/TransactionRow';
 
 const FixedDepositRow = ({ Movement, reloadData }) => {
     const { t } = useTranslation();
@@ -204,9 +203,6 @@ const FixedDepositRow = ({ Movement, reloadData }) => {
         //eslint-disable-next-line
     }, [])
 
-    const [showClick, setShowClick] = useState(false)
-    const [showHover, setShowHover] = useState(false)
-
     const transferNote = Movement?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")
     const clientNote = Movement?.notes?.find(note => note.noteType === "CLIENT_NOTE")
     const denialMotive = Movement?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
@@ -229,42 +225,21 @@ const FixedDepositRow = ({ Movement, reloadData }) => {
                             </div>
                         </div>
                     }
-                    {
-                        (!!(Movement?.userEmail) || !!(Movement?.userName)) &&
-                        <OverlayTrigger
-                            show={showClick || showHover}
-                            delay={{ show: 250, hide: 400 }}
-                            popperConfig={{
-                                modifiers: [
-                                    {
-                                        name: 'offset',
-                                        options: {
-                                            offset: [0, 0],
-                                        },
-                                    },
-                                ],
-                            }}
-                            overlay={
-                                <Tooltip className="mailTooltip" id="more-units-tooltip">
-                                    {!!(Movement.userName || Movement?.userEmail) &&
-                                        <div>
-                                            {t('Operation performed by')}:<br />
-                                            <span className="text-nowrap">{Movement?.userName || Movement?.userEmail}</span>
-                                        </div>
-                                    }
-                                </Tooltip>
-                            }
-                        >
-                            <span>
-                                <button
-                                    onBlur={() => setShowClick(false)}
-                                    onClick={() => setShowClick(prevState => !prevState)}
-                                    onMouseEnter={() => setShowHover(true)}
-                                    onMouseLeave={() => setShowHover(false)}
-                                    type="button" className="noStyle pe-0 ps-1"  ><FontAwesomeIcon icon={faInfoCircle} /></button>
-                            </span>
-                        </OverlayTrigger>
-                    }
+                    <ApprovedByUsers
+                        approvedBy={Movement.approvedBy}
+                        aditionalLines={[
+                            ...!!(Movement?.userName || Movement?.userEmail) ?
+                                [`${t('Performed by')}: ${Movement?.userName || Movement?.userEmail}`] : [],
+                            ...!!(transferNote) ?
+                                [`${t('Transfer note')}${transferNote.userName ? ` (${transferNote.userName})` : ""}: "${transferNote.text}"`] : [],
+                            ...!!(clientNote) ?
+                                [`${t('Personal note')}${clientNote.userName ? ` (${clientNote.userName})` : ""}: "${clientNote.text}"`] : [],
+                            ...!!(denialMotive) ?
+                                [`${t('Denial motive')}${denialMotive.userName ? ` (${denialMotive.userName})` : ""}: "${denialMotive.text}"`] : [],
+                            ...!!(adminNote) ?
+                                [`${t('Admin note')}${adminNote.userName ? ` (${adminNote.userName})` : ""}: "${adminNote.text}"`] : []
+                        ]}
+                    />
                 </div >
                 <div className='w-100 d-flex' style={{ borderBottom: "1px solid lightgray" }} />
 
@@ -347,7 +322,6 @@ const FixedDepositRow = ({ Movement, reloadData }) => {
                     </span>
                 </div >
 
-                <Notes transferNote={transferNote} clientNote={clientNote} denialMotive={denialMotive} adminNote={adminNote} />
 
             </div >
             {

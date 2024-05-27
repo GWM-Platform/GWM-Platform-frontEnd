@@ -13,7 +13,6 @@ import Loading from 'components/DashBoard/GeneralUse/Loading';
 const Chart = ({ Height, Width, fund }) => {
     const { t } = useTranslation()
     const dispatch = useDispatch()
-    console.log(fund)
     const transactionStatus = useSelector(state => state.transactions.status)
     const firstTransaction = useSelector(selectAllTransactions)?.transactions?.[0]
     const fundHistoryRedux = useSelector(state => selectFundHistoryByFundId(state, fund?.id))
@@ -49,14 +48,6 @@ const Chart = ({ Height, Width, fund }) => {
         }
     }, [dispatch, fundHistoryStatus])
 
-
-    // useEffect(() => {
-    //     axios.get("/transactions/", { filterFund: fundId, })
-    //         .then((response) => { console.log(response.data) })
-    //         .catch((response) => { console.log(response) })
-    // }, [fundId])
-
-    // get greater value from sharePrice
     const max = fundHistory.reduce((prev, current) => (prev.sharePrice > current.sharePrice) ? prev : current, {})
     return (
         <>

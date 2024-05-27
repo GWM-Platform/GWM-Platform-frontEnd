@@ -99,7 +99,7 @@ const PerformanceComponent = ({ text, fundId = "", fixedDepositId = "", withoutS
                             setValue(e.target.value)
                             setMonthValue("")
                         }} value={value} id="year">
-                            <option value="">{t("General")}</option>
+                            <option value="">{t("Acumulated")}</option>
                             {
                                 yearsArraySince(2022).map(year => (
                                     <option value={year} key={year}>{year}</option>
@@ -113,7 +113,7 @@ const PerformanceComponent = ({ text, fundId = "", fixedDepositId = "", withoutS
                                 style={{ textTransform: "capitalize" }} className='inline-selector ms-2'
                                 onChange={e => setMonthValue(e.target.value)} value={monthValue} id="month"
                             >
-                                <option value="">{t("Acumulated")}</option>
+                                <option value="">{t("Total")}</option>
                                 {
 
                                     months.map((month, index) => (
