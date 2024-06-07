@@ -15,6 +15,7 @@ const CreateFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
         initialSharePrice: "",
         spreadsheetId: "",
         imageUrl: "",
+        disabled: false
     })
 
     const [ImageUrl, setImageUrl] = useState({
@@ -99,7 +100,7 @@ const CreateFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
 
     const handleChange = (event) => {
         let aux = data
-        aux[event.target.id] = event.target.value
+        aux[event.target.id] = event.target.type === "checkbox" ? event.target.checked : parseInt(event.target.value) || event.target.value
         setData({ ...data, ...aux })
     }
 

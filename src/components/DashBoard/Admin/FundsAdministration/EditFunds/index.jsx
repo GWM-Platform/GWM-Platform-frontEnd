@@ -9,7 +9,8 @@ const EditFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
     const [data, setData] = useState({
         name: Funds[Action.fund].name,
         spreadsheetId: Funds[Action.fund].spreadsheetId,
-        imageUrl: Funds[Action.fund].imageUrl ? Funds[Action.fund].imageUrl : ""
+        imageUrl: Funds[Action.fund].imageUrl ? Funds[Action.fund].imageUrl : "",
+        disabled: Funds[Action.fund].disabled
     })
 
     const [EditRequest, setEditRequest] = useState({
@@ -41,7 +42,7 @@ const EditFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
 
     const handleChange = (event) => {
         let aux = data
-        aux[event.target.id] = parseInt(event.target.value) || event.target.value
+        aux[event.target.id] = event.target.type === "checkbox" ? event.target.checked : parseInt(event.target.value) || event.target.value
         setData({ ...data, ...aux })
     }
 

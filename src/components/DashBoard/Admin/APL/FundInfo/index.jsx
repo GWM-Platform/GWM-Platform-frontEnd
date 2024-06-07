@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 //eslint-disable-next-line
-import { ButtonGroup, Col, Collapse, Row, Spinner, Table, ToggleButton } from 'react-bootstrap'
+import { Badge, ButtonGroup, Col, Collapse, Row, Spinner, Table, ToggleButton } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
@@ -105,7 +105,7 @@ const FundInfo = ({ Fund, clients }) => {
     const sortedStakes = useMemo(() => (
         [...stakes.content].map(stake => {
             const client = clients.find(client => client.id === stake.clientId)
-            return ({ ...stake, client, clientCompleteName: `${client.firstName} ${client.lastName}` })
+            return ({ ...stake, client, clientCompleteName: `${client?.firstName} ${client?.lastName}` })
         }).sort((a, b) => {
             if (sortField && a[sortField] && b[sortField]) {
                 if (typeof a[sortField] === 'string') {
@@ -135,7 +135,7 @@ const FundInfo = ({ Fund, clients }) => {
             <div className="fundInfo bg-white info ms-0">
                 <div className="d-flex justify-content-between align-items-start">
                     <h1 className="m-0 title pe-2">
-                        {t("Fund")} "{t(Fund.name)}"
+                        {t("Fund")} "{t(Fund.name)}" {Fund.disabled && <Badge style={{ fontSize: "0.5em" }} bg="danger" className='ms-auto'>{t("Disabled")}</Badge>}
                     </h1>
                     <h2 className="left">
                         {t("Share price")}

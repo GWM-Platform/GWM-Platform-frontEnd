@@ -20,8 +20,8 @@ const FundCard = ({ Fund, ownKey, data, setData, openAccordion, Account }) => {
     const { hasBuyPermission } = useContext(DashBoardContext)
 
     return (
-        <Col xs="10" sm="6" md="4"lg="3"
-            className={`py-1 pe-1 growAnimation FundCardContainer ${Fund.freeShares === 0 || Fund.sharePrice > Account.balance || Fund.sharePrice === 0 || !hasBuyPermission(Fund.id) ? " FundDisabled" : ""
+        <Col xs="10" sm="6" md="4" lg="3"
+            className={`py-1 pe-1 growAnimation FundCardContainer ${Fund.freeShares === 0 || Fund.sharePrice > Account.balance || Fund.sharePrice === 0 ||  Fund.disabled || !hasBuyPermission(Fund.id) ? " FundDisabled" : ""
                 }${data.FundSelectedId === Fund.id ? " FundSelected" : ""
                 } 
         `}>

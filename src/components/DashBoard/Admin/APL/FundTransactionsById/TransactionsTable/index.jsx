@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Table } from 'react-bootstrap'
 import TransactionRow from './TransactionRow'
 
-const TransactionsTable = ({ Transactions, movements, UsersInfo, AccountInfo }) => {
+const TransactionsTable = ({ Transactions, movements, UsersInfo }) => {
     const { t } = useTranslation();
 
     const userInfoById = (clientId) => {

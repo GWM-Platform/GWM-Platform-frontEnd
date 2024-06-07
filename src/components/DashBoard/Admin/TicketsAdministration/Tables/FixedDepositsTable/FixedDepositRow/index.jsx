@@ -237,7 +237,7 @@ const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
     const clientNote = Movement?.notes?.find(note => note.noteType === "CLIENT_NOTE")
     const denialMotive = Movement?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
     const adminNote = Movement?.notes?.find(note => note.noteType === "ADMIN_NOTE")
-    console.log(Movement)
+
     return (
         <>
             <div className='mobileMovement'>

@@ -44,11 +44,11 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions, cardsAmount, inScr
 
     return (
         <Col className="fund-col growAnimation" sm="6" md="6" lg="4" style={{ maxHeight: "100%" }}>
-            <Card className="FundCard h-100" style={{ maxHeight: "100%", display: "flex", cursor: "pointer" }}>
+            <Card className="FundCard h-100" style={{ maxHeight: "100%", display: "flex" }}>
                 <Card.Header
                     onClick={goToHistory}
                     className="header d-flex align-items-center justify-content-center"
-                    style={{ flex: "none" }}
+                    style={{ flex: "none", cursor: "pointer" }}
                 >
                     <div className="currencyContainer d-flex align-items-center justify-content-center">
                         {
@@ -61,7 +61,7 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions, cardsAmount, inScr
                         }
                     </div>
                 </Card.Header>
-                <Card.Body onClick={goToHistory} className="body" style={{ flexGrow: "1", overflow: "overlay" }}>
+                <Card.Body onClick={goToHistory} className="body" style={{ flexGrow: "1", overflow: "overlay", cursor: "pointer" }}>
                     <Container fluid className="px-0">
                         <Row className="mx-0 w-100 gx-0">
                             <Card.Title className="my-0" >
@@ -143,14 +143,14 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions, cardsAmount, inScr
                     <Row className="d-flex justify-content-center m-0">
                         <Col xs="6" className="d-flex justify-content-center p-0 m-0">
                             <Button
-                                disabled={!hasBuyPermission(Fund?.fund?.id) || !hasPermission('VIEW_ACCOUNT')}
+                                disabled={!hasBuyPermission(Fund?.fund?.id) || !hasPermission('VIEW_ACCOUNT') || Fund.fund.disabled}
                                 onClick={() => toTickets("buy")} className="me-1 button left">
                                 <span className="label">{t("Buy")}</span>
                             </Button>
                         </Col>
                         <Col xs="6" className="d-flex justify-content-center p-0 m-0">
                             <Button
-                                disabled={!hasSellPermission(Fund?.fund?.id)}
+                                disabled={!hasSellPermission(Fund?.fund?.id) || Fund.fund.disabled}
                                 onClick={() => toTickets("sell")} className="ms-1 button right">
                                 <span className="label">{t("Sell")}</span>
                             </Button>

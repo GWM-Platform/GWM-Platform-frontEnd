@@ -94,7 +94,14 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                             </NavDropdown.Item>
                                         </NavDropdown>
                                         <NavDropdown
-                                            active={itemSelectedLC === "timedeposit" || itemSelectedLC === "apl" || itemSelectedLC === "fundsadministration" || itemSelectedLC === "assetsadministration"}
+                                            active={
+                                                [
+                                                    "timedeposit",
+                                                    "apl",
+                                                    "fundsadministration",
+                                                    "assetsadministration",
+                                                    "operations"].includes(itemSelectedLC)
+                                            }
                                             className="px-0 transactionDropdown" title={t("Funds administration")} id="collasible-nav-dropdown">
                                             <NavDropdown.Item
                                                 active={itemSelectedLC === "fundsadministration"}
@@ -115,6 +122,11 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                                 active={itemSelectedLC === "apl"}
                                                 onClick={() => { goTo("APL") }}>
                                                 APL
+                                            </NavDropdown.Item>
+                                            <NavDropdown.Item
+                                                active={itemSelectedLC === "operations"}
+                                                onClick={() => { goTo("operations") }}>
+                                                {t("Operations")}
                                             </NavDropdown.Item>
                                         </NavDropdown>
                                     </>

@@ -364,7 +364,7 @@ const UserActionLogs = () => {
                     <Loading />
                     :
                     <Col className="section growOpacity h-100 d-flex flex-column">
-                        <Accordion >
+                        <Accordion style={{ borderBottom: "1px solid #b3b3b3" }} >
                             <ContextAwareToggle eventKey="0">{t("User action logs")}</ContextAwareToggle>
                             <Accordion.Collapse eventKey="0">
                                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
@@ -455,9 +455,7 @@ const UserActionLogs = () => {
                                                 Confirmar
                                             </Button>
                                         </Col>
-                                        <Col xs="12">
-                                            <div className="w-100" style={{ borderBottom: "1px solid black" }} />
-                                        </Col>
+                                        <div className="w-100 m-0 mb-2" />
                                     </Row>
                                 </Form>
                             </Accordion.Collapse>

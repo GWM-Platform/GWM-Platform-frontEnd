@@ -19,8 +19,7 @@ const APL = () => {
   const [Funds, setFunds] = useState({ fetching: true, fetched: false, content: [] })
   const [SelectedFund, setSelectedFund] = useState("")
 
-  const [UsersInfo, SetUsersInfo] = useState({ fetching: true, value: {} })
-  const [AccountInfo, SetAccountInfo] = useState({ fetching: true, value: {} })
+  const [UsersInfo, SetUsersInfo] = useState({ fetching: true, value: [] })
 
 
   useEffect(() => {
@@ -50,29 +49,6 @@ const APL = () => {
       }
     }
 
-    const getAccounts = async () => {
-      var url = `${process.env.REACT_APP_APIURL}/accounts/?all=true`
-
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "*/*",
-          'Content-Type': 'application/json'
-        }
-      })
-
-      if (response.status === 200) {
-        const data = await response.json()
-        SetAccountInfo(prevState => ({ ...prevState, ...{ fetching: false, value: data } }))
-      } else {
-        switch (response.status) {
-          default:
-            console.log(response)
-        }
-      }
-    }
-
     const getUsersInfo = async () => {
       var url = `${process.env.REACT_APP_APIURL}/clients/?` + new URLSearchParams({
         all: true,
@@ -98,7 +74,6 @@ const APL = () => {
       }
     }
     getFunds()
-    getAccounts()
     getUsersInfo()
 
     return () => {
@@ -142,7 +117,7 @@ const APL = () => {
                 </Col>
                 :
                 <Col md="12">
-                  <FundTransactionsById UsersInfo={UsersInfo} AccountInfo={AccountInfo} Id={FundSelected?.id} />
+                  <FundTransactionsById UsersInfo={UsersInfo} Id={FundSelected?.id} />
                 </Col>
               :
               null

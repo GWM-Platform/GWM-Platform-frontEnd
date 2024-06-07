@@ -261,6 +261,12 @@ const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, se
                     </Form.Control.Feedback>
                 </FloatingLabel>
 
+                <Form.Check
+                    checked={data.disabled}
+                    label={t("Fund disabled for operations")}
+                    onChange={handleChange}
+                    id="disabled"
+                />
                 <div className="d-flex justify-content-end">
                     <Button variant="danger" type="submit" className="mb-3">
                         <Spinner animation="border" variant="light"
