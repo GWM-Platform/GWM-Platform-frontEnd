@@ -15,7 +15,7 @@ const Chart = ({ Height, Width, fund }) => {
     const dispatch = useDispatch()
     const transactionStatus = useSelector(state => state.transactions.status)
     const firstTransaction = useSelector(selectAllTransactions)?.transactions?.[0]
-    const fundHistoryRedux = useSelector(state => selectFundHistoryByFundId(state, fund?.id))
+    const fundHistoryRedux = useSelector(state => selectFundHistoryByFundId(state, fund?.id)).sort((a, b) => moment(a.priceDate).diff(moment(b.priceDate)))
     // Filter to only show history after the first transaction
     const fundHistory = useMemo(() => {
 
