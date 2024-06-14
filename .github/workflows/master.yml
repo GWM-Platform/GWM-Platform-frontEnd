@@ -46,4 +46,4 @@ jobs:
         run: |
           echo "${{ secrets.SSH_PROD_PRIVATE_KEY }}" > private_key.pem
           chmod 600 private_key.pem
-          ssh -o StrictHostKeyChecking=no -i private_key.pem gwm@159.203.103.104 "find /gwm/panel/build -type f -mtime +7 -delete"
+          ssh -o StrictHostKeyChecking=no -i private_key.pem gwm@159.203.103.104 "find /var/www/html/panel/build -type f -mtime +7 -delete"
