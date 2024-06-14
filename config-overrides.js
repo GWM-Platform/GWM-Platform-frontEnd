@@ -1,7 +1,6 @@
 const webpack = require("webpack")
 
 module.exports = function override(config, env) {
-    //do stuff with the webpack config...
     config.resolve.fallback = {
         ...config.resolve.fallback,
         zlib: require.resolve("browserify-zlib"),
@@ -18,8 +17,12 @@ module.exports = function override(config, env) {
             Buffer: ["buffer", "Buffer"],
         }),
     ]
-    // console.log(config.resolve)
-    // console.log(config.plugins)
+    // Configuración de splitChunks para extraer paquetes específicos
+    config.optimization.splitChunks = {
+        chunks: 'all',
+        minSize: 10000,
+        maxSize: 250000,
+    };
 
-    return config
-}
+    return config;
+};
