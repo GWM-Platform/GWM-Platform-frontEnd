@@ -94,7 +94,7 @@ const ActionConfirmationModal = ({ Operation, setShowModal, action, show, reload
                                         <FontAwesomeIcon className="placeHolder" icon={faCircle} style={{ transform: "scale(1.5)" }} />
                                     </h1>
                                 </div>
-                                <h2 className="subTitle mt-4">{t("The ticket has been")} {t(action === "approve" ? "approved" : action === "liquidate" ? "liquidated" : "denied")} {t("succesfully")}</h2>
+                                <h2 className="subTitle mt-4">{t("The operation has been")} {t(action === "approve" ? "approved" : action === "liquidate" ? "liquidated" : "denied")} {t("succesfully")}</h2>
                             </>
                             :
                             <>
@@ -124,7 +124,7 @@ const ActionConfirmationModal = ({ Operation, setShowModal, action, show, reload
                                         <FontAwesomeIcon className="placeHolder" icon={faCircle} style={{ transform: "scale(1.5)" }} />
                                     </h1>
                                 </div>
-                                <h2 className="subTitle mt-4">{t("Failed to")}{" "}{t(action)}{" "}{t("the ticket")}</h2>
+                                <h2 className="subTitle mt-4">{t("Failed to")}{" "}{t(action)}{" "}{t("the operation")}</h2>
                             </>
                     }
                 </div>

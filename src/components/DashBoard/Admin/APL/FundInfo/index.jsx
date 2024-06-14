@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 //eslint-disable-next-line
-import { Badge, ButtonGroup, Col, Collapse, Row, Spinner, Table, ToggleButton } from 'react-bootstrap'
+import { Badge, ButtonGroup, Col, Collapse, Modal, Row, Spinner, Table, ToggleButton } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
@@ -21,6 +21,9 @@ import CurrencyInput from '@osdiab/react-currency-input-field';
 import 'components/DashBoard/Admin/AssetsAdministration/index.css';
 import ActionConfirmationModal from './ActionConfirmationModal';
 import Loading from 'components/DashBoard/GeneralUse/Loading';
+import { fetchFunds, selectAllFunds } from 'Slices/DashboardUtilities/fundsSlice';
+import EditFunds from '../../FundsAdministration/EditFunds';
+import { faEdit } from '@fortawesome/free-regular-svg-icons';
 
 const FundInfo = ({ Fund, clients }) => {
     const { token } = useContext(DashBoardContext)
@@ -65,6 +68,34 @@ const FundInfo = ({ Fund, clients }) => {
         /*TODO - Show again when the backend is fixed*/
         // getPerformance()
     }, [Fund, token])
+
+    useEffect(() => {
+        const getTypes = async () => {
+            var url = `${process.env.REACT_APP_APIURL}/assets/types`;
+
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    Accept: "*/*",
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+
+            if (response.status === 200) {
+                const data = await response.json()
+                setAssetTypes(data)
+            } else {
+                switch (response.status) {
+                    default:
+                        console.error(response.status)
+                }
+            }
+        }
+
+        getTypes()
+        //eslint-disable-next-line
+    }, [])
 
     const [open, setOpen] = useState(false)
     const [openHistoricPrices, setOpenHistoricPrices] = useState(false)
@@ -130,13 +161,25 @@ const FundInfo = ({ Fund, clients }) => {
             }, 100);
         }
     }, [open])
+
+    const [AssetTypes, setAssetTypes] = useState([])
+    const [Action, setAction] = useState({ fund: -1, action: -1 })//Action===0 -> edit; Action===1 -> create
+
+    const dispatch = useDispatch()
+    const funds = useSelector(selectAllFunds)
+    const ownKey = funds.findIndex(fund => fund.id === Fund.id)
+
     return (
         <>
             <div className="fundInfo bg-white info ms-0">
-                <div className="d-flex justify-content-between align-items-start">
+                <div className="d-flex align-items-start">
                     <h1 className="m-0 title pe-2">
                         {t("Fund")} "{t(Fund.name)}" {Fund.disabled && <Badge style={{ fontSize: "0.5em" }} bg="danger" className='ms-auto'>{t("Disabled")}</Badge>}
                     </h1>
+                    <FontAwesomeIcon className="me-auto ms-2" style={{ cursor: "pointer",marginTop: ".4em" }} icon={faEdit} onClick={() =>
+                        setAction({ ...Action, ...{ action: 0, fund: ownKey } })
+                    } />
+
                     <h2 className="left">
                         {t("Share price")}
                         <br />
@@ -150,6 +193,22 @@ const FundInfo = ({ Fund, clients }) => {
                         </span>
                     </h2>
                 </div>
+                {
+                    Action.action === 0 &&
+                    <Modal show
+                        onHide={() => setAction({ ...Action, ...{ action: -1, fund: -1 } })}
+                        size="lg"
+                    >
+                        <Modal.Header closeButton style={{ background: "white" }}>
+                            <Modal.Title id="example-modal-sizes-title-lg">
+                                {t("Fund edit form for")}{" \""}{Fund.name}{"\""}
+                            </Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body style={{ background: "white", display: "flex", justifyContent: "center", borderBottomLeftRadius: "var(--bs-modal-inner-border-radius)", borderBottomRightRadius: "var(--bs-modal-inner-border-radius)" }} >
+                            <EditFunds withoutHeader Funds={funds} AssetTypes={AssetTypes} chargeFunds={() => { dispatch(fetchFunds()) }} Action={Action} setAction={setAction} />
+                        </Modal.Body>
+                    </Modal>
+                }
                 <div className='d-flex'>
                     <div className='me-4'>
                         <h2 className="mt-2 pe-2 topic">

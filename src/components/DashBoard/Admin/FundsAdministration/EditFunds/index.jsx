@@ -4,7 +4,7 @@ import { Col } from 'react-bootstrap'
 
 import EditForm from './EditForm'
 import EditResult from './EditResult'
-const EditFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
+const EditFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction, withoutHeader = false }) => {
     const [validated, setValidated] = useState(false);
     const [data, setData] = useState({
         name: Funds[Action.fund].name,
@@ -33,7 +33,7 @@ const EditFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
         const form = event.currentTarget;
         event.preventDefault();
         event.stopPropagation();
-    
+
         if (form.checkValidity() && ImageUrl.fetched && ImageUrl.valid) {
             editFund()
         }
@@ -110,6 +110,7 @@ const EditFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
                         Funds={Funds} Action={Action} />
                     :
                     <EditForm
+                        withoutHeader={withoutHeader}
                         ImageUrl={ImageUrl} setImageUrl={setImageUrl} checkImage={checkImage}
                         data={data} setData={setData} handleChange={handleChange} handleSubmit={handleSubmit} EditRequest={EditRequest}
                         Funds={Funds} Action={Action} setAction={setAction} validated={validated} AssetTypes={AssetTypes}

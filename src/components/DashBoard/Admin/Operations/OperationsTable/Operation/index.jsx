@@ -58,13 +58,13 @@ const Operation = ({ Operation, User, fetchOperationsParams = {} }) => {
             <td className="Alias" title={currentUserId + "" === Operation.userId + "" ? t("Another admin must approve or deny this ticket") : null}>
                 {
                     Operation.stateId === 1 &&
-                    <div className={`h-100 d-flex align-items-center justify-content-around Actions ${currentUserId + "" === Operation.userId + "" ? "disabled" : ""}`}>
+                    <div className={`h-100 d-flex align-items-center justify-content-around Actions`}>
                         {
                             <>
-                                <div className="iconContainer green me-1">
+                                <div className={`iconContainer green me-1 ${currentUserId + "" === Operation.userId + "" ? "disabled" : ""}`}>
                                     <FontAwesomeIcon className="icon me-2" icon={faCheckCircle} onClick={() => { launchModalConfirmation("approve") }} />
                                 </div>
-                                <div className="iconContainer red me-1">
+                                <div className="iconContainer red me-1"  >
                                     <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => { launchModalConfirmation("deny") }} />
                                 </div>
                             </>

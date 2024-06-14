@@ -10,13 +10,15 @@ import GeneralInfo from './GeneralInfo';
 import './index.scss'
 import FixedDepositInfo from './FixedDepositInfo';
 import FixedDepositsGraphic from './FixedDepositsGraphic';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchFunds, selectAllFunds } from 'Slices/DashboardUtilities/fundsSlice';
 
 const APL = () => {
   const { token } = useContext(DashBoardContext)
+  const dispatch = useDispatch()
 
   const [fullSettlement, setFullSettlement] = useState({ fetching: false, debt: {} })
 
-  const [Funds, setFunds] = useState({ fetching: true, fetched: false, content: [] })
   const [SelectedFund, setSelectedFund] = useState("")
 
   const [UsersInfo, SetUsersInfo] = useState({ fetching: true, value: [] })
@@ -25,29 +27,7 @@ const APL = () => {
   useEffect(() => {
     const abortController = new AbortController()   // creating an AbortController
 
-    const getFunds = async () => {
-      var url = `${process.env.REACT_APP_APIURL}/funds`;
-      setFunds((prevState) => ({ ...prevState, fetching: true, fetched: false }))
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          Accept: "*/*",
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-          signal: abortController.signal
-        }
-      })
 
-      if (response.status === 200) {
-        const data = await response.json()
-        setFunds((prevState) => ({ ...prevState, content: data, fetching: false, fetched: true }))
-      } else {
-        switch (response.status) {
-          default:
-            console.error(response.status)
-        }
-      }
-    }
 
     const getUsersInfo = async () => {
       var url = `${process.env.REACT_APP_APIURL}/clients/?` + new URLSearchParams({
@@ -73,7 +53,7 @@ const APL = () => {
         }
       }
     }
-    getFunds()
+    dispatch(fetchFunds())
     getUsersInfo()
 
     return () => {
@@ -82,10 +62,11 @@ const APL = () => {
     //eslint-disable-next-line
   }, [])
 
-  const FundSelected = Funds?.content?.find(Fund => Fund.id === SelectedFund)
+  const funds = useSelector(selectAllFunds)
+  const FundSelected = funds?.find(Fund => Fund.id === SelectedFund)
 
   return (
-    Funds.fetching ?
+    funds.lenght ?
       <Loading />
       :
       <Container className="my-2 APL">
@@ -94,7 +75,7 @@ const APL = () => {
             <GeneralInfo fullSettlement={fullSettlement} setFullSettlement={setFullSettlement} clients={UsersInfo.value} />
           </Col>
           <Col md="12">
-            <FundSelector SelectedFund={SelectedFund} setSelectedFund={setSelectedFund} Funds={Funds.content} />
+            <FundSelector SelectedFund={SelectedFund} setSelectedFund={setSelectedFund} Funds={funds} />
           </Col>
           {
             SelectedFund !== "" ?
