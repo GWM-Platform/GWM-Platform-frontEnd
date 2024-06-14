@@ -18,6 +18,8 @@ import { getAnualRate, getDuration } from 'utils/fixedDeposit';
 import TransferReceipt from 'Receipts/TransferReceipt';
 import TransactionReceipt from 'Receipts/TransactionReceipt';
 import ActionConfirmationModal from 'components/DashBoard/User/MovementsTable/GeneralUse/TransferConfirmation'
+import { selectFundById } from 'Slices/DashboardUtilities/fundsSlice';
+import { useSelector } from 'react-redux';
 
 const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
   <button
@@ -398,6 +400,7 @@ const Movement = ({ content, reloadData }) => {
   }
 
   const transferNote = content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")
+  const fund = useSelector(state => selectFundById(state, Movement.fundId))
 
   return (
     <div className='mobileMovement'>
@@ -542,11 +545,11 @@ const Movement = ({ content, reloadData }) => {
         !!(content.stateId === 5 && couldSign(content)) &&
         <div className="h-100 d-flex align-items-center justify-content-around">
 
-          <div className={`iconContainer green ${!couldSign(content) ? "not-allowed" : ""}`}>
+          <div className={`iconContainer green ${!couldSign(content) || fund.disabled ? "not-allowed" : ""}`}>
             <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => { if (couldSign(content)) { launchModalConfirmation("approve") } }} />
           </div>
 
-          <div className={`iconContainer red ${!couldSign(content) ? "not-allowed" : ""}`}>
+          <div className={`iconContainer red ${!couldSign(content) || fund.disabled ? "not-allowed" : ""}`}>
             <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => { if (couldSign(content)) { launchModalConfirmation("deny") } }} />
           </div>
 

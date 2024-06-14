@@ -17,6 +17,8 @@ import { getAnualRate, getDuration } from 'utils/fixedDeposit';
 import TransferReceipt from 'Receipts/TransferReceipt';
 import TransactionReceipt from 'Receipts/TransactionReceipt';
 import ActionConfirmationModal from 'components/DashBoard/User/MovementsTable/GeneralUse/TransferConfirmation'
+import { useSelector } from 'react-redux';
+import { selectFundById } from 'Slices/DashboardUtilities/fundsSlice';
 
 
 const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
@@ -401,8 +403,8 @@ const Movement = ({ content, actions, reloadData }) => {
   const clientNote = content?.notes?.find(note => note.noteType === "CLIENT_NOTE")
   const denialMotive = content?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
 
-
-
+  const fund = useSelector(state => selectFundById(state, content.fundId))
+  console.log(fund)
   return (
     <tr>
       <td className="tableId text-nowrap">
@@ -554,7 +556,7 @@ const Movement = ({ content, actions, reloadData }) => {
       </td>
       {
         !!(actions) &&
-        <td className="Actions verticalCenter" >
+        <td className={`Actions verticalCenter ${fund?.disabled ? "disabled" : ""}`} >
           {
             !!(content.stateId === 5) &&
             <div className="h-100 d-flex align-items-center justify-content-around">

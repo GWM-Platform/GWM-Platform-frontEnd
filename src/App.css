@@ -524,7 +524,7 @@ table .Actions {
   border-bottom: 1px solid lightgray;
   border-radius: 0;
   outline: unset;
-  box-shadow: unset!important;
+  box-shadow: unset !important;
 }
 
 .inline-date-selector {
@@ -536,5 +536,5 @@ table .Actions {
   border-bottom: 1px solid lightgray;
   border-radius: 0;
   outline: unset;
-  box-shadow: unset!important;
+  box-shadow: unset !important;
 }

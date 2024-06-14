@@ -1,3 +1,4 @@
+import { fetchFunds } from 'Slices/DashboardUtilities/fundsSlice';
 import { fetchNotifications, reset as notificationsReset } from 'Slices/DashboardUtilities/notificationsSlice';
 import { fetchUser, reset as resetUser, selectUserEmail, selectUserId } from 'Slices/DashboardUtilities/userSlice';
 import axios from 'axios';
@@ -453,6 +454,7 @@ export const DashBoardProvider = ({ children }) => {
         getUserData();
 
         transactionsStates()
+        dispatch(fetchFunds())
 
         return () => {
             dispatch(resetUser())

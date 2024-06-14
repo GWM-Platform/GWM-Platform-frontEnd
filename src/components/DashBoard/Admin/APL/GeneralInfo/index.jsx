@@ -128,8 +128,8 @@ const GeneralInfo = ({ fullSettlement, setFullSettlement, clients }) => {
 
     const sortedAccounts = useMemo(() => (
         [...Accounts.accounts].map(account => {
-            const client = clients.find(client => client.id === account.clientId)
-            return ({ ...account, client, clientCompleteName: `${client.firstName} ${client.lastName}` })
+            const client = (clients || [])?.find(client => client.id === account.clientId)
+            return ({ ...account, client, clientCompleteName: `${client?.firstName} ${client?.lastName}` })
         }).sort((a, b) => {
             if (sortField && a[sortField] && b[sortField]) {
                 if (typeof a[sortField] === 'string') {

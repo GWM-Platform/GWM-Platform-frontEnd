@@ -800,5 +800,7 @@
     "buy_quote": "Buy",
     "_at_quote": "at",
     "OVERDRAFT_UPDATE": "Overdraft update",
-    "SHARE_TRANSFER_CREATE": "Share transfer creation"
+    "SHARE_TRANSFER_CREATE": "Share transfer creation",
+    "LIQUIDATE_FUND" :"Fund settlement",
+    "share_price": "share price"
 }

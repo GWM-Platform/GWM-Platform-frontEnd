@@ -85,10 +85,10 @@ const CreateFunds = ({ data, setData, CreateRequest, handleChange, Action, setAc
 
     const [inputValid, setInputValid] = useState(false)
     const [inputSharesValid, setInputSharesValid] = useState(false)
-    
+
     const decimalSeparator = process.env.REACT_APP_DECIMALSEPARATOR ?? '.'
     const groupSeparator = process.env.REACT_APP_GROUPSEPARATOR ?? ','
-   
+
     const inputRef = useRef()
     const inputSharesRef = useRef()
 
@@ -305,6 +305,13 @@ const CreateFunds = ({ data, setData, CreateRequest, handleChange, Action, setAc
                         {t("It seems that the url entered is not valid, please check if I copied it correctly")}
                     </Form.Control.Feedback>
                 </FloatingLabel>
+                
+                <Form.Check
+                    checked={data.disabled}
+                    label={t("Fund disabled for operations")}
+                    onChange={handleChange}
+                    id="disabled"
+                />
 
                 {/*------------------------------------------------------------------------------------------------------------------------------------------ */}
 

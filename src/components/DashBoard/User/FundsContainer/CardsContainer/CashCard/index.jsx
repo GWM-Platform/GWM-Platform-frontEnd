@@ -57,18 +57,18 @@ const CashCard = (props) => {
     }
 
     return (
-        <Col sm="6" md="6" lg="4" className={`fund-col  growAnimation ${Pinned && !isMobile ? "pinned" : ""}`} style={{ maxHeight: "100%", cursor: "pointer" }}>
+        <Col sm="6" md="6" lg="4" className={`fund-col  growAnimation ${Pinned && !isMobile ? "pinned" : ""}`} style={{ maxHeight: "100%" }}>
             <Card className="h-100 cashCard" style={{ maxHeight: "100%", display: "flex" }}>
                 <Card.Header
                     className="header d-flex align-items-center justify-content-center"
                     onClick={() => goToHistory()}
-                    style={{ flex: "none" }}
+                    style={{ flex: "none", cursor: "pointer" }}
                 >
                     <span className="currencyContainer d-flex align-items-center justify-content-center">
                         <img className="currency px-0 mx-0" alt="cash" src={process.env.PUBLIC_URL + '/images/FundsLogos/cash.svg'} />
                     </span>
                 </Card.Header>
-                <Card.Body onClick={() => goToHistory()} className="body" style={{ flexGrow: "1", overflow: "overlay" }}>
+                <Card.Body onClick={() => goToHistory()} className="body" style={{ flexGrow: "1", overflow: "overlay", cursor: "pointer" }}>
                     <Row className='flex-column h-100'>
                         <Card.Title className="my-0" >
                             <Container fluid className="px-0">

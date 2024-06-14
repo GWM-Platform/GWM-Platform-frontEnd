@@ -214,6 +214,10 @@
   "approve": "aprobar",
   "deny": "rechazar",
   "the ticket with the id": "el ticket con el id",
+  "the opearation with the id": "la operación con el id",
+  "Another admin must approve or deny this ticket": "Otro administrador debe aprobar o rechazar este ticket",
+  "the operation": "La operación",
+  "The operation has been": "La operación",
   "transfer #": "la transferencia #",
   "The ticket has been": "El ticket fue",
   "approved": "aprobado",
@@ -1062,6 +1066,13 @@
   "Acumulated": "Acumulado",
   "Maximum": "Máximo",
   "First operation": "Primer operación",
-  " (Current)":" (Actual)",
-  "Approved by": "Aprobado por"
+  " (Current)": " (Actual)",
+  "Approved by": "Aprobado por",
+  "LIQUIDATE_FUND": "Liquidación de fondo",
+  "Create operation": "Crear operación",
+  "An error occurred, please try again": "Ha ocurrido un error, intentelo de nuevo mas tarde",
+  "share_price": "precio de la cuotaparte",
+  "Fund disabled for operations": "Fondo deshabilitado para operaciones",
+  "Disabled": "Deshabilitado",
+  "Fund disabled": "Fondo deshabilitado"
 }

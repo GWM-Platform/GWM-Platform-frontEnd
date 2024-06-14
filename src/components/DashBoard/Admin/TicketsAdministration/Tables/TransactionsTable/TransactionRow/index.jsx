@@ -14,6 +14,8 @@ import Notes from '../../Notes';
 import { DashBoardContext } from 'context/DashBoardContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchusers, selectAllusers } from 'Slices/DashboardUtilities/usersSlice';
+import { selectUserEmail, selectUserId } from 'Slices/DashboardUtilities/userSlice';
+import { selectFundById } from 'Slices/DashboardUtilities/fundsSlice';
 
 const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData }) => {
     const { t } = useTranslation();
@@ -128,6 +130,10 @@ const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData })
     const adminNote = Transaction?.notes?.find(note => note.noteType === "ADMIN_NOTE")
     const isTransfer = Transaction.receiverId || Transaction.senderId
 
+    const userEmail = useSelector(selectUserEmail)
+    const userId = useSelector(selectUserId)
+    const fund = useSelector(state => selectFundById(state, Transaction.fundId))
+
     return (
         <>
             <div className='mobileMovement'>
@@ -153,8 +159,8 @@ const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData })
                     </div>
                     {
                         !!(Transaction.stateId === 1) &&
-                        <div className="h-100 d-flex align-items-center justify-content-around Actions">
-                            <div className="iconContainer green me-1">
+                        <div className={`h-100 d-flex align-items-center justify-content-around Actions ${fund?.disabled ? "disabled" : ""}`}>
+                            <div className={`iconContainer green me-1 ${(userId ? userId !== Transaction.userId : userEmail ? userEmail !== Transaction?.userEmail : false) ? "disabled" : ""}`}>
                                 <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => { launchModalConfirmation("approve") }} />
                             </div>
                             <div className="iconContainer red me-1">
@@ -180,7 +186,7 @@ const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData })
                         <Badge className='ms-1 ms-md-2' bg="info">{t("Reversion")}</Badge>
                     }
                     <Badge className='ms-1 ms-md-2' bg={status()?.bg}>{t(status().text)}</Badge>
-
+                    {fund?.disabled && <Badge bg="danger" className='ms-2'>{t("Fund disabled")}</Badge>}
                     {
                         !!(Transaction?.userEmail || Transaction?.userName) &&
                         <div>

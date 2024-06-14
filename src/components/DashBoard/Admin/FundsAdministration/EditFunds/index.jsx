@@ -4,12 +4,13 @@ import { Col } from 'react-bootstrap'
 
 import EditForm from './EditForm'
 import EditResult from './EditResult'
-const EditFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
+const EditFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction, withoutHeader = false }) => {
     const [validated, setValidated] = useState(false);
     const [data, setData] = useState({
         name: Funds[Action.fund].name,
         spreadsheetId: Funds[Action.fund].spreadsheetId,
-        imageUrl: Funds[Action.fund].imageUrl ? Funds[Action.fund].imageUrl : ""
+        imageUrl: Funds[Action.fund].imageUrl ? Funds[Action.fund].imageUrl : "",
+        disabled: Funds[Action.fund].disabled
     })
 
     const [EditRequest, setEditRequest] = useState({
@@ -32,7 +33,7 @@ const EditFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
         const form = event.currentTarget;
         event.preventDefault();
         event.stopPropagation();
-    
+
         if (form.checkValidity() && ImageUrl.fetched && ImageUrl.valid) {
             editFund()
         }
@@ -41,7 +42,7 @@ const EditFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
 
     const handleChange = (event) => {
         let aux = data
-        aux[event.target.id] = parseInt(event.target.value) || event.target.value
+        aux[event.target.id] = event.target.type === "checkbox" ? event.target.checked : parseInt(event.target.value) || event.target.value
         setData({ ...data, ...aux })
     }
 
@@ -109,6 +110,7 @@ const EditFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
                         Funds={Funds} Action={Action} />
                     :
                     <EditForm
+                        withoutHeader={withoutHeader}
                         ImageUrl={ImageUrl} setImageUrl={setImageUrl} checkImage={checkImage}
                         data={data} setData={setData} handleChange={handleChange} handleSubmit={handleSubmit} EditRequest={EditRequest}
                         Funds={Funds} Action={Action} setAction={setAction} validated={validated} AssetTypes={AssetTypes}

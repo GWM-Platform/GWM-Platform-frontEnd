@@ -8,8 +8,8 @@ import CurrencyInput from '@osdiab/react-currency-input-field';
 import { unMaskNumber } from 'utils/unmask';
 //import FundAssets from './FundAssets'
 
-const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, setAction, validated, handleSubmit, AssetTypes, ImageUrl, setImageUrl, checkImage }) => {
-
+const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, setAction, validated, handleSubmit, AssetTypes, ImageUrl, setImageUrl, checkImage, withoutHeader = false }) => {
+    console.log(withoutHeader)
     const { t } = useTranslation();
 
     const [show, setShow] = useState(false);
@@ -114,12 +114,15 @@ const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, se
 
     return (
         <div className="editForm">
-            <div className="header">
-                <h1 className="title">
-                    {t("Fund edit form for")}{" \""}{Funds[Action.fund].name}{"\""}
-                </h1>
-                <FontAwesomeIcon className="button icon" onClick={() => { setAction({ ...Action, ...{ action: -1, fund: -1 } }) }} icon={faChevronCircleLeft} />
-            </div>
+            {
+                !withoutHeader &&
+                <div className="header">
+                    <h1 className="title">
+                        {t("Fund edit form for")}{" \""}{Funds[Action.fund].name}{"\""}
+                    </h1>
+                    <FontAwesomeIcon className="button icon" onClick={() => { setAction({ ...Action, ...{ action: -1, fund: -1 } }) }} icon={faChevronCircleLeft} />
+                </div>
+            }
             <Form ref={ref} noValidate validated={validated} onSubmit={handleSubmit}>
 
                 {/*------------------------------------------------------------------------------------------------------------------------------------------ */}
@@ -261,6 +264,12 @@ const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, se
                     </Form.Control.Feedback>
                 </FloatingLabel>
 
+                <Form.Check
+                    checked={data.disabled}
+                    label={t("Fund disabled for operations")}
+                    onChange={handleChange}
+                    id="disabled"
+                />
                 <div className="d-flex justify-content-end">
                     <Button variant="danger" type="submit" className="mb-3">
                         <Spinner animation="border" variant="light"

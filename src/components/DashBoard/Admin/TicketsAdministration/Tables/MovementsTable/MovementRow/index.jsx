@@ -12,6 +12,7 @@ import { selectUserEmail, selectUserId } from 'Slices/DashboardUtilities/userSli
 import { useSelector } from 'react-redux';
 import Notes from '../../Notes';
 import { ApprovedByUsers } from '../../TransactionsTable/TransactionRow';
+import { selectFundById } from 'Slices/DashboardUtilities/fundsSlice';
 
 const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, couldLiquidate }) => {
 
@@ -121,6 +122,8 @@ const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, coul
 
     const userEmail = useSelector(selectUserEmail)
     const userId = useSelector(selectUserId)
+    const fund = useSelector(state => selectFundById(state, Movement.fundId))
+
     return (
         <>
             <div className='mobileMovement'>
@@ -143,7 +146,7 @@ const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, coul
                     </div>
                     {
                         !!((Movement.stateId === 1) || couldLiquidate(Movement)) &&
-                        <div className="h-100 d-flex align-items-center justify-content-around Actions">
+                        <div className={`h-100 d-flex align-items-center justify-content-around Actions ${fund?.disabled ? "disabled" : ""}`}>
                             {couldLiquidate(Movement) ?
                                 <div className="iconContainer green me-1">
                                     <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => { launchModalConfirmation("liquidate") }} />
@@ -166,6 +169,7 @@ const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, coul
                         </div>
                     }
                     <Badge className='ms-1 ms-md-2' bg={status()?.bg}>{t(status().text)}</Badge>
+                    {fund?.disabled && <Badge bg="danger" className='ms-2'>{t("Fund disabled")}</Badge>}
                     {
                         !!(Movement?.userEmail || Movement.userName) &&
                         <div>

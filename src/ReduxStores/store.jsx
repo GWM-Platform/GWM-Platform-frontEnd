@@ -6,6 +6,8 @@ import userReducer from 'Slices/DashboardUtilities/userSlice'
 import fundHistoryReducer from 'Slices/DashboardUtilities/fundHistorySlice'
 import transactionsReducer from 'Slices/DashboardUtilities/transactionsSlice'
 import usersReducer from 'Slices/DashboardUtilities/usersSlice'
+import operationsReducer from 'Slices/DashboardUtilities/operationsSlice'
+import fundsReducer from 'Slices/DashboardUtilities/fundsSlice'
 
 
 export default configureStore({
@@ -15,6 +17,8 @@ export default configureStore({
     user: userReducer,
     fundHistory: fundHistoryReducer,
     transactions: transactionsReducer,
-    users: usersReducer
+    users: usersReducer,
+    operations: operationsReducer,
+    funds: fundsReducer
   },
 }) 

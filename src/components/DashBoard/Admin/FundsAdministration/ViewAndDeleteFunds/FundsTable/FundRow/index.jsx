@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt, faEdit, faEye } from '@fortawesome/free-regular-svg-icons'
 import DeleteConfirmationModal from './DeleteConfirmationModal'
-import { OverlayTrigger, Popover } from 'react-bootstrap';
+import { Badge, OverlayTrigger, Popover } from 'react-bootstrap';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
 const FundRow = ({ Fund, AssetTypes, chargeFunds, setAction, Action, ownKey }) => {
@@ -40,7 +40,10 @@ const FundRow = ({ Fund, AssetTypes, chargeFunds, setAction, Action, ownKey }) =
     return (
         <>
             <tr className="fundRow">
-                <td className="Name">{Fund.name}</td>
+                <td className="Name">
+                    {Fund.disabled && <Badge bg="danger" className='ms-2'>{t("Disabled")}</Badge>}
+                    {Fund.name}
+                    </td>
                 <td className="Type">{AssetTypes[getAssetTypeById(AssetTypes, Fund.typeId)].name}</td>
                 <td className="Shares">
                     <FormattedNumber value={Fund.shares} prefix="" fixedDecimals={2} />
