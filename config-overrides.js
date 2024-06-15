@@ -22,23 +22,6 @@ module.exports = function override(config, env) {
         chunks: 'all',
         minSize: 10000,
         maxSize: 250000,
-        cacheGroups: {
-            vendor: {
-                test: /[\\/]node_modules[\\/]/, // Selecciona solo los módulos dentro de node_modules
-                name(module) {
-                    // Obtiene el nombre del paquete. Por ejemplo, node_modules/packageName/not/this/part.js
-                    // se convertirá en 'npm.packageName'
-                    const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-                    return `npm.${packageName.replace('@', '')}`;
-                },
-                priority: -10 // Prioridad para este grupo de caché
-            },
-            default: {
-                minChunks: 2,
-                priority: -20,
-                reuseExistingChunk: true
-            }
-        }
     };
 
     return config;
