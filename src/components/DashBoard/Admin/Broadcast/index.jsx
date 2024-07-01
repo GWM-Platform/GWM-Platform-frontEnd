@@ -13,6 +13,8 @@ import './index.scss'
 import { faTimesCircle } from '@fortawesome/free-regular-svg-icons';
 import Editor from './quill';
 import { ModalPreview } from './ModalPreview';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchusers, selectAllusers } from 'Slices/DashboardUtilities/usersSlice';
 
 const maxClients = 45
 const Broadcast = () => {
@@ -39,8 +41,20 @@ const Broadcast = () => {
     const [selectedOptions, setSelectedOptions] = useState([])
 
     const [message, setMessage] = useState()
+    const usersStatus = useSelector(state => state.users.status)
+    const users = useSelector(selectAllusers)
+    const dispatch = useDispatch()
+    useEffect(() => {
+        if (usersStatus === 'idle') {
+            dispatch(fetchusers({ all: true }))
+        }
+    }, [dispatch, usersStatus])
 
-    const [clients, setClients] = useState({ fetching: true, fetched: false, valid: false, content: [] })
+    const [Clients, setClients] = useState({ fetching: true, fetched: false, valid: false, content: [] })
+    const getUserById = useCallback((id) => users.find(user => user.id === id), [users],
+    )
+
+    const clients = useMemo(() => ({ ...Clients, content: Clients.content.map(client => ({ ...client, users: client.users.filter(userToClient => getUserById(userToClient?.userId)?.enabled) })) }), [Clients, getUserById])
 
     const [validated, setValidated] = useState(false);
     const [buttonDisabled, setButtonDisabled] = useState(false)
@@ -107,6 +121,7 @@ const Broadcast = () => {
                 }
             });
     }
+
 
     const getClients = useCallback((signal) => {
         setClients((prevState) => ({ ...prevState, fetching: true, fetched: false }))

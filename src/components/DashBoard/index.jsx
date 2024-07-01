@@ -105,7 +105,7 @@ const UserDashBoard = () => {
                                                         </Row>
                                                     </Container>
                                                 }>
-                                                    <Route path={`${path}/addAccount`}>
+                                                    <Route path={`${path}/users`}>
                                                         <AddAccount />
                                                     </Route>
                                                     <Route path={`${path}/broadcast`}>

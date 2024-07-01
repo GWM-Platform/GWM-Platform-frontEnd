@@ -1074,5 +1074,17 @@
   "share_price": "precio de la cuotaparte",
   "Fund disabled for operations": "Fondo deshabilitado para operaciones",
   "Disabled": "Deshabilitado",
-  "Fund disabled": "Fondo deshabilitado"
+  "Fund disabled": "Fondo deshabilitado",
+  "Enabled": "Habilitado",
+  "Email verified": "Email verificado",
+  "Email not verified": "Email no verificado",
+  "Access enabled": "Acceso habilitado",
+  "Access disabled": "Acceso deshabilitado",
+  "Disable access": "Deshabilitar acceso",
+  "Enable access": "Habilitar acceso",
+  "Another admin must approve this operation": "Otro administrador debe aprobar esta operación",
+  "Users administration": "Administración de usuarios",
+  "Phone": "Teléfono",
+  "Administrator": "Administrador",
+  "Users": "Usuarios"
 }

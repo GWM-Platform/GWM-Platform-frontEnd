@@ -93,6 +93,25 @@ const UserItem = ({ ownersAmount, client, user, getUsers }) => {
         });
     }
 
+    const toggleUserStatus = () => {
+        setRequest((prevState) => ({ ...prevState, fetching: true, fetched: false }))
+        axios.patch(`/users/${user.id}/${user.enabled ? "disable" : "enable"}`)
+            .then(function (response) {
+                setRequest(() => (
+                    {
+                        fetching: false,
+                        fetched: true,
+                        valid: true,
+                    }))
+                getUsers()
+            }).catch((err) => {
+                if (err.message !== "canceled") {
+                    if (err.response.status === "401") toLogin()
+                    setRequest((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
+                }
+            });
+    }
+
     return (
         <div className="d-flex Actions py-2 align-items-center user" style={{ borderBottom: " 1px solid lightgray" }}>
             <div className="mb-0 pe-1 pe-md-2" >
@@ -110,9 +129,18 @@ const UserItem = ({ ownersAmount, client, user, getUsers }) => {
                     <Badge size="sm" bg={user.verified ? "success" : "danger"}>
                         {
                             user.verified ?
-                                t("Active")
+                                t("Email verified")
                                 :
-                                t("Not active")
+                                t("Email not verified")
+                        }
+                    </Badge>
+                    &nbsp;
+                    <Badge size="sm" bg={user.enabled ? "success" : "danger"}>
+                        {
+                            user.enabled ?
+                                t("Access enabled")
+                                :
+                                t("Access disabled")
                         }
                     </Badge>
                 </h1>
@@ -166,6 +194,9 @@ const UserItem = ({ ownersAmount, client, user, getUsers }) => {
                                         {t('Resend activation email')}
                                     </Dropdown.Item>
                                 }
+                                <Dropdown.Item onClick={toggleUserStatus}>
+                                    {t(user.enabled ? 'Disable access' : 'Enable access')}
+                                </Dropdown.Item>
                                 <Dropdown.Divider />
                                 <Dropdown.Item disabled={user.isOwner && ownersAmount === 1} onClick={() => disconnectUserToClient()} >
                                     {t('Disconnect user')}

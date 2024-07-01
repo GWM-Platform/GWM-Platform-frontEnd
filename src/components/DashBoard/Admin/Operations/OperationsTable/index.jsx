@@ -1,10 +1,12 @@
 
 
-import React, { 
+import React, {
     // useContext,
-     useEffect, useMemo } from "react";
+    useEffect, useMemo
+} from "react";
 import { useState } from "react";
-import { Accordion, Button, Col, Form, Row, Table
+import {
+    Accordion, Button, Col, Form, Row, Table
     // , AccordionContext, useAccordionButton 
 } from "react-bootstrap";
 import Loading from 'components/DashBoard/User/MovementsTable/CardsContainer/MainCard/MainCardFund/MovementsTab/Loading';
@@ -243,7 +245,7 @@ export const OperationsTable = ({ Users, Accounts, Clients, eventOptions }) => {
     )
 }
 
-export const ContextAwareToggle = ({ children, eventKey, callback, create = false }) => {
+export const ContextAwareToggle = ({ children, eventKey, callback, create = false, buttonText = "Create operation" }) => {
     const { t } = useTranslation()
     // const { activeEventKey } = useContext(AccordionContext);
 
@@ -265,7 +267,7 @@ export const ContextAwareToggle = ({ children, eventKey, callback, create = fals
                     style={{ alignSelf: "center" }}
                     onClick={create}
                     type="button">
-                    {t("Create operation")}
+                    {t(buttonText)}
 
                 </Button>
             }
