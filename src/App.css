@@ -38,6 +38,9 @@
   --bs-tooltip-max-width: 250px;
 }
 
+.card-body, .card-body *{
+  overscroll-behavior-x: none;
+}
 /* width */
 .approvedByTooltip .tooltip-inner {
   text-align: start;

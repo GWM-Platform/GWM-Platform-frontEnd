@@ -70,7 +70,7 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
     }, [ClientSelected.id, Fund.fund.id, dispatch])
 
     return (
-        <div className="movementsMainCardFund growAnimation mt-2">
+        <div className="movementsMainCardFund growAnimation pt-2">
             <div className="bg-white info ms-0 mb-2 px-0">
                 <div className="d-flex justify-content-between align-items-end pe-2 mb-1">
                     <h1 className="m-0 title px-2">

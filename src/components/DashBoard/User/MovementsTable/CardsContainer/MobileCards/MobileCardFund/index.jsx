@@ -1,6 +1,6 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Card, Container, Col, Row } from 'react-bootstrap';
+import { Card, Container, Col, Row, Collapse } from 'react-bootstrap';
 import TableLastMovements from './TableLastMovements';
 import { useTranslation } from "react-i18next";
 import { DashBoardContext } from 'context/DashBoardContext';
@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import PerformanceComponent from 'components/DashBoard/GeneralUse/PerformanceComponent';
+import FundDetail from '../../MainCard/MainCardFund/FundDetail';
 
 const MobileCard = ({ Fund, Hide, setHide }) => {
     // eslint-disable-next-line
@@ -94,6 +95,7 @@ const MobileCard = ({ Fund, Hide, setHide }) => {
                             </span>
                         </Col>
                         <TableLastMovements Fund={Fund} />
+                        <Graphic Fund={Fund} />
                     </Row>
                 </Container>
             </Card.Body>
@@ -101,3 +103,28 @@ const MobileCard = ({ Fund, Hide, setHide }) => {
     )
 }
 export default MobileCard
+
+const Graphic = ({ Fund }) => {
+    const { t } = useTranslation();
+
+    const [open, setOpen] = useState(false);
+
+    return (
+        <div className='p-0 mt-2 col-md-12 chart-mobile'>
+            <Container fluid className="p-0"
+                onClick={() => setOpen(!open)}
+                aria-expanded={open}>
+                <Row className="d-flex justify-content-end">
+                    <Col >
+                        <h2 className={`my-2 toggler-mobile ${open ? "toggled" : ""}`}>{t("Historic prices")}</h2>
+                    </Col>
+                </Row>
+            </Container>
+            <Collapse in={open}>
+                <div>
+                    <FundDetail maxHeight="60vh" fund={Fund.fund} margin={{}} />
+                </div>
+            </Collapse>
+        </div>
+    )
+}

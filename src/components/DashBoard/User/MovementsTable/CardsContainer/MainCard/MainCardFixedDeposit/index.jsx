@@ -34,7 +34,7 @@ const MainCardFixedDeposit = ({ FixedDepositsStats, Hide, setHide }) => {
     }, [])
 
     return (
-        <div className="movementsMainCardFund growAnimation mt-2">
+        <div className="movementsMainCardFund growAnimation pt-2">
             <div className="bg-white info ms-0 mb-2 px-0">
                 <div className="d-flex justify-content-between align-items-start pe-2">
                     <Col className="d-flex justify-content-between pe-5" sm="auto">
