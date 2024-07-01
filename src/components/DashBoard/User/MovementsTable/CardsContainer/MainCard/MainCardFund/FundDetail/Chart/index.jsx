@@ -38,7 +38,7 @@ const Chart = ({ Height, Width, fund }) => {
                 sharePrice: fund.sharePrice,
                 currentQuote: true
             }] : []
-        ]
+        ].map(a => ({ ...a, datePriceParsed: Date.parse(a.priceDate) }))
     }, [firstTransaction, fund, fundHistoryRedux])
 
     const fundHistoryStatus = useSelector(state => state.fundHistory.status)
@@ -56,31 +56,32 @@ const Chart = ({ Height, Width, fund }) => {
             <ResponsiveContainer width="100%" height={350}>
                 <LineChart width={Width} height={Height} data={fundHistory} margin={{ top: 5, right: 90, bottom: 5, left: 20 }}>
                     <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-                    <XAxis dataKey="priceDate" angle={0} dx={20} tickFormatter={dateFormatter} padding={{ left: 30 }} />
+                    <XAxis angle={0} dx={20} scale="time" type='number' domain={[fundHistory[0].priceDate, fundHistory[fundHistory.length - 1].priceDate]} dataKey="datePriceParsed" tickFormatter={dateFormatter} padding={{ left: 10 }} />
                     <YAxis tickFormatter={numberFormatter} padding={{ top: 30 }} />
                     <Tooltip
                         content={(props) => (<TooltipRubros {...props} />)}
                         label={"Share price"}
                         formatter={(value) => numberFormatter(value, 2, "U$D ")}
                         labelFormatter={dateFormatter} />
-                    <ReferenceLine y={max.sharePrice} stroke="green"  >
+                    <ReferenceLine strokeDasharray="6 6" y={max.sharePrice} stroke="green"  >
                         <Label value={t("Maximum")} position="top" />
                     </ReferenceLine>
-                    {
-                        fundHistory?.[0]?.firstTransaction &&
-                        <ReferenceLine x={fundHistory?.[0]?.priceDate}
-                            stroke="green"
-                            position="insideRight"
-                            ifOverflow='extendDomain'
-                        >
-                            <Label value={t("First operation")} position="insideLeft" />
-                        </ReferenceLine>
-                    }
-                    <Line isAnimationActive={false}type="monotone" dataKey="sharePrice" stroke="#082044" strokeWidth={2}
+                    <Line isAnimationActive={false} type="monotone" dataKey="sharePrice" stroke="#082044" strokeWidth={2}
                         // dot={{ stroke: '#082044', strokeWidth: 2 }}
                         dot={<CustomizedDot />}
 
                     />
+                    {
+                        fundHistory?.[0]?.firstTransaction &&
+                        <ReferenceLine x={fundHistory?.[0]?.datePriceParsed}
+                            stroke="green"
+                            isFront
+                            strokeDasharray="6 6"
+                            ifOverflow='extendDomain'
+                        >
+                            <Label style={{fill: "#000000", dy: -10}} value={t("First operation")} position="insideLeft" />
+                            </ReferenceLine>
+                    }
                 </LineChart>
             </ResponsiveContainer>
             {
