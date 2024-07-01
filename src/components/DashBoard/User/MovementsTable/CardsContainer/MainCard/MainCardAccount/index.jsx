@@ -59,7 +59,7 @@ const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, reset
 
     
     return (
-        <div className="movementsMainCardAccount growAnimation mt-2">
+        <div className="movementsMainCardAccount growAnimation pt-2">
             <div className="bg-white info ms-0 mb-2 px-0">
                 <div className="d-flex justify-content-between align-items-start pe-2">
                     <Col className="d-flex justify-content-between pe-5" sm="auto">

@@ -59,7 +59,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
             Accounts.length > 0 && hasPermission('VIEW_ACCOUNT') ? 0 : Funds.length > 0 ? 1 : 0
     )
 
-    const [selected, setSelected] = useState(desiredType ==="t-d" ? undefined :desiredType === "t" && desiredFundId ? getFundIndexById(desiredFundId).found ? getFundIndexById(desiredFundId).index : 0 : 0)
+    const [selected, setSelected] = useState(desiredType === "t-d" ? undefined : desiredType === "t" && desiredFundId ? getFundIndexById(desiredFundId).found ? getFundIndexById(desiredFundId).index : 0 : 0)
     const [Hide, setHide] = useState(false)
     const [collapseSecondary, setCollapseSecondary] = useState(false)
 
@@ -109,7 +109,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
     }
 
     return (
-        <Row className="HistoryCardsContainer d-flex align-items-stretch flex-md-nowrap ">
+        <Row className="HistoryCardsContainer d-flex align-items-stretch flex-md-nowrap h-100">
             {isMobile ?
                 Accounts.length >= 1 || FundsWithPending.length >= 1 ?
                     <Col md="12" className="ps-2 ps-sm-2 ps-md-2 ps-md-0 ps-lg-0 pe-2 pt-0 growAnimation" >
@@ -137,7 +137,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
                 :
                 numberOfFunds > 1 ?
                     <>
-                        <Col className="px-2 p-relative mainCardCol growAnimation" md="12"
+                        <Col className="px-2 p-relative mainCardCol growAnimation  overflow-auto" md="12"
                             lg={collapseSecondary ? "12" : "8"} xl={collapseSecondary ? "12" : "9"} >
                             {(() => {
                                 switch (categorySelected) {
@@ -174,10 +174,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
                             </div>
                         </Col>
                         <Col sm="4" md="4" lg="4" xl="3"
-                            className={
-                                `secondaryCardContainer growAnimation
-                                ${collapseSecondary ? "collapsed" : "expanded"} px-0 pe-2 pt-0 h-100`
-                            }>
+                            className={`secondaryCardContainer growAnimation overflow-auto ${collapseSecondary ? "collapsed" : "expanded"} px-0 pe-2 pt-0 h-100`}>
 
                             {
                                 !!(Accounts.length > 0 && hasPermission('VIEW_ACCOUNT')) &&
