@@ -50,7 +50,9 @@ const TableLastMovements = ({ Fund }) => {
             if (response.status === 200) {
                 const data = await response.json()
                 setMovements(data ? { ...data } : { ...{ transactions: [], total: 0 } })
-
+                if (data.transactions.length > 0 && !open) {
+                    setOpen(true)
+                }
             } else {
                 switch (response.status) {
                     default:

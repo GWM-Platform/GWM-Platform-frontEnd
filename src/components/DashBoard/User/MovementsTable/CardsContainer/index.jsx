@@ -110,9 +110,12 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
 
     return (
         <Row className="HistoryCardsContainer d-flex align-items-stretch flex-md-nowrap h-100">
+            {
+                isMobile && <style>{`.tabContent{ overflow-y: hidden!important } .mobile-container{ overflow: overlay; height: 100%;  scroll-snap-type: y mandatory; } .movementsCardMobile{ scroll-snap-align: center }`}</style>
+            }
             {isMobile ?
                 Accounts.length >= 1 || FundsWithPending.length >= 1 ?
-                    <Col md="12" className="ps-2 ps-sm-2 ps-md-2 ps-md-0 ps-lg-0 pe-2 pt-0 growAnimation" >
+                    <Col md="12" className="ps-2 ps-sm-2 ps-md-2 ps-md-0 ps-lg-0 pe-2 pt-0 growAnimation mobile-container" >
                         {hasPermission('VIEW_ACCOUNT') &&
                             <>
                                 {

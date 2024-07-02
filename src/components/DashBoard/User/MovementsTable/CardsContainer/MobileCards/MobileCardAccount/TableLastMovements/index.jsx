@@ -33,7 +33,7 @@ const TableLastMovements = ({ account }) => {
         var url = `${process.env.REACT_APP_APIURL}/movements/?` + new URLSearchParams(
             Object.fromEntries(Object.entries(
                 {
-                    accountId:account.id,
+                    accountId: account.id,
                     client: ClientSelected.id,
                     filterAccount: account.id,
                     take: Options.take,
@@ -56,6 +56,9 @@ const TableLastMovements = ({ account }) => {
         if (response.status === 200) {
             const data = await response.json()
             setMovements(data ? { ...data } : { ...{ movements: [], total: 0 } })
+            if (data && data.movements.length > 0 && !open) {
+                setOpen(true)
+            }
             setFetchingMovements(false)
         } else {
             switch (response.status) {
@@ -65,7 +68,7 @@ const TableLastMovements = ({ account }) => {
             }
         }
     }
-    
+
     useEffect(() => {
         getMovements()
         // eslint-disable-next-line 

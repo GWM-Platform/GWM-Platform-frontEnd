@@ -42,6 +42,9 @@ const TableLastFixedDeposits = () => {
             ).then(function (response) {
                 if (response.status < 300 && response.status >= 200) {
                     setFixedDeposits((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, valid: true, content: response?.data || {} } }))
+                    if (response.data.deposits.length > 0 && !open) {
+                        setOpen(true)
+                    }
                 } else {
                     switch (response.status) {
                         case 401:

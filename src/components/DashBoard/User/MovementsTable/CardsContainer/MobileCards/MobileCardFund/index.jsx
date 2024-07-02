@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, Container, Col, Row, Collapse } from 'react-bootstrap';
 import TableLastMovements from './TableLastMovements';
@@ -112,7 +112,21 @@ const Graphic = ({ Fund }) => {
     return (
         <div className='p-0 mt-2 col-md-12 chart-mobile'>
             <Container fluid className="p-0"
-                onClick={() => setOpen(!open)}
+                onClick={() => {
+                    setOpen(!open)
+                    if (!open) {
+                        setTimeout(() => {
+                            const elemento = document.getElementById("chart-mobile").closest(".card-body");
+                            if (elemento) {
+                                const posicionDestino = elemento.scrollHeight;
+                                elemento.scroll({
+                                    top: posicionDestino,
+                                    behavior: 'smooth'
+                                });
+                            }
+                        }, 350)
+                    }
+                }}
                 aria-expanded={open}>
                 <Row className="d-flex justify-content-end">
                     <Col >
@@ -121,7 +135,7 @@ const Graphic = ({ Fund }) => {
                 </Row>
             </Container>
             <Collapse in={open}>
-                <div>
+                <div id="chart-mobile">
                     <FundDetail maxHeight="60vh" fund={Fund.fund} margin={{}} />
                 </div>
             </Collapse>
