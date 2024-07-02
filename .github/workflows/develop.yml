@@ -40,11 +40,11 @@ jobs:
             remote_path: '/gwm/panel/build'
             delete_remote_files: false
             username: 'ubuntu'
-            server: '3.14.250.36'
+            server: '3.14.253.138'
             port: 22
             ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }} 
       - name: Clean old files
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
           chmod 600 private_key.pem
-          ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@3.14.250.36 "find /gwm/panel/build -type f -mtime +7 -delete"
+          ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@3.14.253.138 "find /gwm/panel/build -type f -mtime +7 -delete"

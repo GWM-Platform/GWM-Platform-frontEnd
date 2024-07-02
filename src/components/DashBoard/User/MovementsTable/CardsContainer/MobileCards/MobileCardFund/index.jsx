@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, Container, Col, Row, Collapse } from 'react-bootstrap';
 import TableLastMovements from './TableLastMovements';
