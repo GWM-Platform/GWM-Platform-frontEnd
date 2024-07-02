@@ -136,7 +136,7 @@ const Graphic = ({ Fund }) => {
             </Container>
             <Collapse in={open}>
                 <div id="chart-mobile">
-                    <FundDetail maxHeight="60vh" fund={Fund.fund} margin={{}} />
+                    <FundDetail maxHeight="55vh" fund={Fund.fund} margin={{}} />
                 </div>
             </Collapse>
         </div>
