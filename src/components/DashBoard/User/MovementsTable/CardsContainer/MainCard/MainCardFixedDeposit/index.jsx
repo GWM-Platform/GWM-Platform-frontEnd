@@ -11,6 +11,7 @@ import MovementsTab from './MovementsTab';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import PerformanceComponent from 'components/DashBoard/GeneralUse/PerformanceComponent';
 import { useHistory, useLocation } from 'react-router-dom/cjs/react-router-dom.min';
+import { PrintButton, PrintDefaultWrapper, usePrintDefaults } from 'utils/usePrint';
 
 const MainCardFixedDeposit = ({ FixedDepositsStats, Hide, setHide }) => {
     const [SelectedTab, setSelectedTab] = useState("0")
@@ -33,8 +34,39 @@ const MainCardFixedDeposit = ({ FixedDepositsStats, Hide, setHide }) => {
         //eslint-disable-next-line
     }, [])
 
+    const { handlePrint, getPageMargins, componentRef, title, aditionalStyles } = usePrintDefaults(
+        {
+            aditionalStyles: `@media print { 
+                .historyContent{ padding: 0!important; page-break-before: avoid; }
+                .main-card-header{ page-break-inside: avoid; page-break-before: avoid; margin-top: 1rem; }
+                .movementsMainCardFund{ overflow: visible!important; }
+                .tabs-container,select,.hideInfoButton, .accordion, button, td[data-column-name="actions"], th[data-column-name="actions"],td[data-column-name="ticket"], th[data-column-name="ticket"]{ display: none!important; }
+                td, td * , th , th * {
+                    font-size: 14px;
+                    width: auto;
+                }
+                .tableDescription {
+                    text-wrap: normal
+                }
+                .tableConcept, .tableDate, .tableAmount, .tableDescription  {
+                    width: auto;
+                    max-width: unset
+                }
+                .badge {
+                    color: #fff!important
+                }
+                .historyContent {
+                    padding-right: .5rem !important;
+                    padding-left: .5rem !important;
+                }
+            }`,
+            title: `Cuenta corriente`,
+            bodyClass: "ProveedoresObra"
+        }
+    )
+
     return (
-        <div className="movementsMainCardFund growAnimation pt-2">
+        <PrintDefaultWrapper className="movementsMainCardFund growAnimation pt-2" aditionalStyles={aditionalStyles} ref={componentRef} getPageMargins={getPageMargins} title={title} >
             <div className="bg-white info ms-0 mb-2 px-0">
                 <div className="d-flex justify-content-between align-items-start pe-2">
                     <Col className="d-flex justify-content-between pe-5" sm="auto">
@@ -43,12 +75,12 @@ const MainCardFixedDeposit = ({ FixedDepositsStats, Hide, setHide }) => {
                         </h1>
                     </Col>
                     <Col className='ms-auto' xs="auto">
-                        <PerformanceComponent className='performance-component' text="Performance" fixedDepositId='1' />
+                        <PrintButton className="w-100 h-100" variant="info" handlePrint={handlePrint} />
                     </Col>
                 </div>
-                <div className="d-flex justify-content-between align-items-end pe-2">
-                    <Col className="d-flex justify-content-between pe-5" sm="auto">
-                        <Col className="pe-2">
+                <div className="d-flex justify-content-between align-items-end pe-2 w-100" >
+                    <Col className="d-flex w-100" sm="auto">
+                        <Col className="pe-2" xs="auto">
                             <div className="containerHideInfo px-2 description">
                                 <span>{t("Balance")}:&nbsp;</span>
                                 <span style={{ fontWeight: "bolder" }}>
@@ -74,6 +106,9 @@ const MainCardFixedDeposit = ({ FixedDepositsStats, Hide, setHide }) => {
                                 icon={faEyeSlash}
                             />
                         </Col>
+                        <Col className='ms-auto' xs="auto">
+                            <PerformanceComponent className='performance-component' text="Performance" fixedDepositId='1' />
+                        </Col>
                     </Col>
                 </div>
                 <div className="d-flex justify-content-between align-items-end px-2">
@@ -82,9 +117,10 @@ const MainCardFixedDeposit = ({ FixedDepositsStats, Hide, setHide }) => {
                         {FixedDepositsStats?.activeDeposits}
                     </Col>
                 </div>
+                <div className="border-bottom-main" />
             </div>
             {/*tabs controller*/}
-            <Container fluid className="px-0">
+            <Container fluid className="px-0 tabs-container">
                 <Nav className="history-tabs" variant="tabs" activeKey={SelectedTab} onSelect={(e) => { setSelectedTab(e) }}>
                     <Nav.Item>
                         <Nav.Link eventKey={"0"}>{t("Time Deposits history")}</Nav.Link>
@@ -100,7 +136,8 @@ const MainCardFixedDeposit = ({ FixedDepositsStats, Hide, setHide }) => {
                     }[SelectedTab]
                 }
             </Container>
-        </div>)
+        </PrintDefaultWrapper>
+    )
 }
 export default MainCardFixedDeposit
 

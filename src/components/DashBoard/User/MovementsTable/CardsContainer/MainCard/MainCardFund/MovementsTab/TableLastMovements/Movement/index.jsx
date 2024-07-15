@@ -71,7 +71,7 @@ const Movement = ({ content, fundName }) => {
 
   return (
     <tr>
-      <td className="tableId text-nowrap" style={{ whiteSpace: "nowrap" }}>
+      <td className="tableId text-nowrap" data-column-name="ticket" style={{ whiteSpace: "nowrap" }}>
         {content.id}
         {
           !!(content?.userEmail || content?.userName || !!(denialMotive) || !!(transferNote)) &&

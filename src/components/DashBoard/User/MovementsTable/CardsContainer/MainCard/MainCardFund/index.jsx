@@ -76,8 +76,18 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
                 .historyContent{ padding: 0!important; page-break-before: avoid; }
                 .main-card-header{ page-break-inside: avoid; page-break-before: avoid; margin-top: 1rem; }
                 .movementsMainCardFund{ overflow: visible!important; }
-                .tabs-container,select,.hideInfoButton, .accordion, button, td[data-column-name="actions"], th[data-column-name="actions"]{ display: none!important; },
-
+                .tabs-container,select,.hideInfoButton, .accordion, button, td[data-column-name="actions"], th[data-column-name="actions"],td[data-column-name="ticket"], th[data-column-name="ticket"]{ display: none!important; }
+                td, td * , th , th * {
+                    font-size: 14px;
+                    width: auto;
+                }
+                .tableDescription {
+                    text-wrap: normal
+                }
+                .tableConcept, .tableDate, .tableAmount, .tableDescription  {
+                    width: auto;
+                    max-width: unset
+                }
             }`,
             title: `Cuenta corriente`,
             bodyClass: "ProveedoresObra"
@@ -106,7 +116,7 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
                         {t("Share price")}:&nbsp;
                         <FormattedNumber style={{ fontWeight: "bolder" }} value={Fund.fund.sharePrice} prefix="U$D " suffix="" fixedDecimals={2} />
                     </h2>
-                    
+
                 </div>
 
                 <div className="d-flex justify-content-between align-items-end pe-2">

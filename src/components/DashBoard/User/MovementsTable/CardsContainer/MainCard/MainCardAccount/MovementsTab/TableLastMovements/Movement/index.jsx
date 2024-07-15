@@ -407,7 +407,7 @@ const Movement = ({ content, actions, reloadData }) => {
 
   return (
     <tr>
-      <td className="tableId text-nowrap">
+      <td className="tableId text-nowrap" data-column-name="ticket">
         {content.id}
         {
           !!(content?.userEmail || content?.userName || !!(transferNote) || !!(clientNote) || !!(denialMotive) || !!(partialLiquidate)) &&

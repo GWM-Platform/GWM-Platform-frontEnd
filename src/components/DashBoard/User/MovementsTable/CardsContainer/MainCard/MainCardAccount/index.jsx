@@ -64,8 +64,18 @@ const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, reset
                 .historyContent{ padding: 0!important; page-break-before: avoid; }
                 .main-card-header{ page-break-inside: avoid; page-break-before: avoid; margin-top: 1rem; }
                 .movementsMainCardAccount{ overflow: visible!important; }
-                .tabs-container,.hideInfoButton, .accordion, button, td[data-column-name="actions"], th[data-column-name="actions"]{ display: none!important; },
-
+                .tabs-container,.hideInfoButton, .accordion, button, td[data-column-name="actions"], th[data-column-name="actions"],td[data-column-name="ticket"], th[data-column-name="ticket"]{ display: none!important; }
+                td, td * , th , th * {
+                    font-size: 14px;
+                    width: auto;
+                }
+                .tableDescription {
+                    text-wrap: normal
+                }
+                .tableConcept, .tableDate, .tableAmount, .tableDescription  {
+                    width: auto;
+                    max-width: unset
+                }
             }`,
             title: `Cuenta corriente`,
             bodyClass: "ProveedoresObra"
