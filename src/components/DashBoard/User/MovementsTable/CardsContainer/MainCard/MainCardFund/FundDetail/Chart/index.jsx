@@ -27,15 +27,15 @@ const Chart = ({ fund, margin = { top: 5, right: 90, bottom: 5, left: 20 } }) =>
                 fundId: fund?.id,
                 id: 0,
                 firstTransaction: true,
-                priceDate: firstTransaction.createdAt,
-                sharePrice: firstTransaction.sharePrice
+                priceDate: firstTransaction.createdAt || moment().format(),
+                sharePrice: firstTransaction.sharePrice || 0
             }] : [],
             ...filtered,
             ...fund ? [{
                 fundId: fund?.id,
                 id: 999,
                 priceDate: moment().format(),
-                sharePrice: fund.sharePrice,
+                sharePrice: fund.sharePrice || 0,
                 currentQuote: true
             }] : []
         ].map(a => ({ ...a, datePriceParsed: Date.parse(a?.priceDate) }))
@@ -48,58 +48,36 @@ const Chart = ({ fund, margin = { top: 5, right: 90, bottom: 5, left: 20 } }) =>
         }
     }, [dispatch, fundHistoryStatus])
 
-    const max = fundHistory.reduce((prev, current) => (prev.sharePrice > current.sharePrice) ? prev : current, {})
-    const min = fundHistory.reduce((prev, current) => (prev.sharePrice < current.sharePrice) ? prev : current, {})
+    const max = useMemo(() => fundHistory.reduce((prev, current) => (prev.sharePrice > current.sharePrice) ? prev : current, { sharePrice: -Infinity, priceDate: moment().format() }), [fundHistory])
+    const min = useMemo(() => fundHistory.reduce((prev, current) => (prev.sharePrice < current.sharePrice) ? prev : current, { sharePrice: +Infinity, priceDate: moment().format() }), [fundHistory])
 
-    const roundDataMaxUp = (dataMax) => {
-        console.log(dataMax)
-        // Increment dataMax slightly to ensure the domain is always greater.
-        const incrementedDataMax = dataMax * 1.01; // Increment by 1% instead of 5%
+    const adjustDataRange = useMemo(() => {
+        // Calcular la diferencia y el orden de magnitud de la diferencia
+        const difference = max.sharePrice - min.sharePrice;
+        const orderOfMagnitude = Math.floor(Math.log10(difference));
 
-        // Calculate the order of magnitude of the incremented dataMax.
-        const orderOfMagnitude = Math.floor(Math.log10(incrementedDataMax));
-
-        // Decide the rounding factor based on the order of magnitude.
-        let roundingFactor;
-        if (orderOfMagnitude >= 3) { // Thousands or more
-            roundingFactor = Math.pow(10, orderOfMagnitude - 1); // Use a smaller rounding factor
-        } else if (orderOfMagnitude === 2) { // Hundreds
-            roundingFactor = 50; // Use 50 as rounding factor for more granularity
-        } else if (orderOfMagnitude === 1) { // Tens
-            roundingFactor = 5; // Use 5 as rounding factor for even more granularity
-        } else { // Units
-            roundingFactor = 1; // No change for units
+        // Determinar los factores de ajuste basados en el orden de magnitud
+        let adjustmentFactor;
+        if (orderOfMagnitude >= 3) {
+            adjustmentFactor = Math.pow(10, orderOfMagnitude - 2);
+        } else if (orderOfMagnitude === 2) {
+            adjustmentFactor = 10;
+        } else if (orderOfMagnitude === 1) {
+            adjustmentFactor = 1;
+        } else {
+            adjustmentFactor = 0.1;
         }
 
-        // Round up to the nearest rounding factor.
-        return Math.ceil(incrementedDataMax / roundingFactor) * roundingFactor;
-    }
+        // Ajustar dataMin y dataMax
+        const adjustedDataMin = Math.floor((min.sharePrice - difference * 0.05) / adjustmentFactor) * adjustmentFactor;
+        const adjustedDataMax = Math.ceil((max.sharePrice + difference * 0.05) / adjustmentFactor) * adjustmentFactor;
 
-    const roundDataMinDown = (dataMin) => {
-        // Decrement dataMin slightly to ensure the result is less than or equal to dataMin and greater than 0.
-        const decrementedDataMin = dataMin * 0.99; // Decrement by 1%
+        // Asegurar que adjustedDataMin sea mayor que 0
+        const finalDataMin = Math.max(1, adjustedDataMin);
+        const finalDataMax = adjustedDataMax;
 
-        // Calculate the order of magnitude of the decremented dataMin.
-        const orderOfMagnitude = Math.floor(Math.log10(decrementedDataMin));
-
-        // Decide the rounding factor based on the order of magnitude.
-        let roundingFactor;
-        if (orderOfMagnitude >= 3) { // Thousands or more
-            roundingFactor = Math.pow(10, orderOfMagnitude - 1); // Use a smaller rounding factor
-        } else if (orderOfMagnitude === 2) { // Hundreds
-            roundingFactor = 50; // Use 50 as rounding factor for more granularity
-        } else if (orderOfMagnitude === 1) { // Tens
-            roundingFactor = 5; // Use 5 as rounding factor for even more granularity
-        } else { // Units
-            roundingFactor = 1; // No change for units
-        }
-
-        // Round down to the nearest rounding factor, ensuring the result is greater than 0.
-        const roundedResult = Math.max(1, Math.floor(decrementedDataMin / roundingFactor) * roundingFactor);
-
-        return roundedResult;
-    }
-
+        return { finalDataMin, finalDataMax };
+    }, [max.sharePrice, min.sharePrice])
     return (
         <>
 
@@ -109,8 +87,8 @@ const Chart = ({ fund, margin = { top: 5, right: 90, bottom: 5, left: 20 } }) =>
                     <XAxis angle={0} dx={20} scale="time" type='number' domain={[fundHistory[0]?.priceDate, fundHistory[fundHistory.length - 1]?.priceDate]} dataKey="datePriceParsed" tickFormatter={dateFormatter} />
                     <YAxis
                         domain={[
-                            roundDataMinDown,
-                            roundDataMaxUp
+                            adjustDataRange.finalDataMin,
+                            adjustDataRange.finalDataMax
                         ]}
                         tickFormatter={(value) => numberFormatter(value)} padding={{ top: 30 }} />
                     <Tooltip

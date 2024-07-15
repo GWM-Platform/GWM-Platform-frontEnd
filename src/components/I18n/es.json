@@ -1074,5 +1074,7 @@
   "share_price": "precio de la cuotaparte",
   "Fund disabled for operations": "Fondo deshabilitado para operaciones",
   "Disabled": "Deshabilitado",
-  "Fund disabled": "Fondo deshabilitado"
+  "Fund disabled": "Fondo deshabilitado",
+  "Grid View": "Vista de grilla",
+  "Table View": "Vista de tabla"
 }

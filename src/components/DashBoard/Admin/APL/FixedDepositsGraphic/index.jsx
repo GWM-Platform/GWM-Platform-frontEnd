@@ -10,6 +10,8 @@ import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSort, faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons';
 import Decimal from 'decimal.js';
+import TableIcon from '../icons/TableIcon';
+import GridIcon from '../icons/GridIcon';
 
 const FixedDepositsGraphic = ({ data }) => {
     const [selectedMonth, setSelectedMonth] = useState(null)
@@ -139,7 +141,7 @@ const FixedDepositsGraphic = ({ data }) => {
                                 onClick={(e) => setTableView(true)}
                                 title={t("Table View")}
                             >
-                                <img src={`${process.env.PUBLIC_URL}/images/generalUse/table${tableView ? "" : "-active"}.svg`} alt="performance" />
+                                <TableIcon active={tableView} style={{ height: "1em", width: "1em", display: "block" }} />
                             </ToggleButton>
                             <ToggleButton
                                 style={{ lineHeight: "1em", display: "flex" }}
@@ -152,7 +154,8 @@ const FixedDepositsGraphic = ({ data }) => {
                                 onClick={(e) => setTableView(false)}
                                 title={t("Grid View")}
                             >
-                                <img src={`${process.env.PUBLIC_URL}/images/generalUse/grid${tableView ? "-active" : ""}.svg`} alt="performance" />
+                                <GridIcon active={!tableView} style={{ height: "1em", width: "1em", display: "block" }} />
+                                {/* <img src={`${process.env.PUBLIC_URL}/images/generalUse/grid${tableView ? "-active" : ""}.svg`} alt="performance" /> */}
                             </ToggleButton>
                         </ButtonGroup>
                     </h2>

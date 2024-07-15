@@ -11,7 +11,7 @@ import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useMemo } from 'react';
-import { faCheck, faPencil, faSort, faSortDown, faSortUp, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faLineChart, faPencil, faSort, faSortDown, faSortUp, faTimes } from '@fortawesome/free-solid-svg-icons';
 import Decimal from 'decimal.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchFundHistory, selectFundHistoryByFundId } from 'Slices/DashboardUtilities/fundHistorySlice';
@@ -24,6 +24,10 @@ import Loading from 'components/DashBoard/GeneralUse/Loading';
 import { fetchFunds, selectAllFunds } from 'Slices/DashboardUtilities/fundsSlice';
 import EditFunds from '../../FundsAdministration/EditFunds';
 import { faEdit } from '@fortawesome/free-regular-svg-icons';
+import GridIcon from '../icons/GridIcon';
+import TableIcon from '../icons/TableIcon';
+import Chart from 'components/DashBoard/User/MovementsTable/CardsContainer/MainCard/MainCardFund/FundDetail/Chart';
+import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 
 const FundInfo = ({ Fund, clients }) => {
     const { token } = useContext(DashBoardContext)
@@ -176,7 +180,7 @@ const FundInfo = ({ Fund, clients }) => {
                     <h1 className="m-0 title pe-2">
                         {t("Fund")} "{t(Fund.name)}" {Fund.disabled && <Badge style={{ fontSize: "0.5em" }} bg="danger" className='ms-auto'>{t("Disabled")}</Badge>}
                     </h1>
-                    <FontAwesomeIcon className="me-auto ms-2" style={{ cursor: "pointer",marginTop: ".4em" }} icon={faEdit} onClick={() =>
+                    <FontAwesomeIcon className="me-auto ms-2" style={{ cursor: "pointer", marginTop: ".4em" }} icon={faEdit} onClick={() =>
                         setAction({ ...Action, ...{ action: 0, fund: ownKey } })
                     } />
 
@@ -297,7 +301,7 @@ const FundInfo = ({ Fund, clients }) => {
                                         onClick={(e) => setTableView(true)}
                                         title={t("Table View")}
                                     >
-                                        <img src={`${process.env.PUBLIC_URL}/images/generalUse/table${tableView ? "" : "-active"}.svg`} alt="performance" />
+                                        <TableIcon active={tableView} style={{ height: "1em", width: "1em", display: "block" }} />
                                     </ToggleButton>
                                     <ToggleButton
                                         style={{ lineHeight: "1em", display: "flex" }}
@@ -310,7 +314,8 @@ const FundInfo = ({ Fund, clients }) => {
                                         onClick={(e) => setTableView(false)}
                                         title={t("Grid View")}
                                     >
-                                        <img src={`${process.env.PUBLIC_URL}/images/generalUse/grid${tableView ? "-active" : ""}.svg`} alt="performance" />
+                                        <GridIcon active={!tableView} style={{ height: "1em", width: "1em", display: "block" }} />
+                                        {/* <img src={`${process.env.PUBLIC_URL}/images/generalUse/grid${tableView ? "-active" : ""}.svg`} alt="performance" /> */}
                                     </ToggleButton>
                                 </ButtonGroup>
                             </Col>
@@ -353,7 +358,11 @@ const FundInfo = ({ Fund, clients }) => {
 
                                                 return (
                                                     <tr key={stake.clientId}>
-                                                        <td className="tableDate">{stake?.clientCompleteName}</td>
+                                                        <td className="tableDate">
+                                                            <Link style={{ fontSize: "1em" }} to={`/DashBoard/clientsSupervision/${stake.clientId}`}>
+                                                                {stake?.clientCompleteName}
+                                                            </Link>
+                                                        </td>
                                                         <td className="tableDate"><FormattedNumber value={stake?.shares} fixedDecimals={2} />&nbsp;{t("shares")}</td>
                                                         <td className="tableDate"><FormattedNumber value={stake?.shares * (stake.fund.sharePrice || 1)} prefix="U$D " fixedDecimals={2} /></td>
                                                     </tr>
@@ -368,27 +377,31 @@ const FundInfo = ({ Fund, clients }) => {
                                     </tbody>
                                 </Table>
                                 :
-                                <div className='d-flex flex-wrap'>
+                                <Row className='align-items-stretch g-2'>
                                     {
                                         sortedStakes.map(stake => {
                                             return (
-                                                <div className='me-4' key={stake.clientId}>
-                                                    <h2 className="mt-2 pe-2 topic text-nowrap">
-                                                        {stake?.clientCompleteName}
-                                                        <br />
-                                                        <span style={{ fontWeight: "bolder" }}>
-                                                            <FormattedNumber value={stake?.shares} fixedDecimals={2} />
-                                                            &nbsp;{t("shares")}
-                                                        </span>
-                                                    </h2>
-                                                    <h6 className="mt-0">
-                                                        <FormattedNumber value={stake?.shares * (stake.fund.sharePrice || 1)} prefix="U$D " fixedDecimals={2} />
-                                                    </h6>
-                                                </div>
+                                                <Col key={stake.clientId} sm="10" md="4" lg="4" xl="3">
+                                                    <div className="fixed-deposit-item">
+                                                        <h2 className="mt-0 pe-2 topic text-nowrap">
+                                                            <Link style={{ fontWeight: 300, fontSize: "17px" }} to={`/DashBoard/clientsSupervision/${stake.clientId}`}>
+                                                                {stake?.clientCompleteName}
+                                                            </Link>
+                                                            <br />
+                                                            <span style={{ fontWeight: "bolder" }}>
+                                                                <FormattedNumber value={stake?.shares} fixedDecimals={2} />
+                                                                &nbsp;{t("shares")}
+                                                            </span>
+                                                        </h2>
+                                                        <h6 className="mt-0">
+                                                            <FormattedNumber value={stake?.shares * (stake.fund.sharePrice || 1)} prefix="U$D " fixedDecimals={2} />
+                                                        </h6>
+                                                    </div>
+                                                </Col>
                                             )
                                         })
                                     }
-                                </div>
+                                </Row>
 
                         }
                     </div>
@@ -455,49 +468,90 @@ const FundHistory = ({ Fund, open }) => {
         }
     }, [open])
 
-
-
-
+    const [tableView, setTableView] = useState(true)
     return (
         <Collapse in={open} id="historic-prices-table" style={{ scrollMarginTop: "1rem", overflow: "clip" }}>
             <div className='transaction-table box-shadow mb-2 mt-4' >
-                <h1 className="m-0 title pe-2">{t("Historic prices")}</h1>
+                <div className='d-flex'>
+
+                    <h1 className="m-0 title pe-2">{t("Historic prices")}</h1>
+                    <div className="ms-auto">
+                        <ButtonGroup>
+                            <ToggleButton
+                                type="radio"
+                                style={{ lineHeight: "1em", display: "flex" }}
+                                variant="outline-primary"
+                                name="radio"
+                                value={true}
+                                checked={tableView}
+                                active={tableView}
+                                onClick={(e) => setTableView(true)}
+                                title={t("Table View")}
+                            >
+                                <TableIcon active={tableView} style={{ height: "1em", width: "1em", display: "block" }} />
+                            </ToggleButton>
+                            <ToggleButton
+                                style={{ lineHeight: "1em", display: "flex" }}
+                                type="radio"
+                                variant="outline-primary"
+                                name="radio"
+                                value={false}
+                                checked={!tableView}
+                                active={!tableView}
+                                onClick={(e) => setTableView(false)}
+                                title={t("Grid View")}
+                            >
+                                <FontAwesomeIcon icon={faLineChart} style={{ color: tableView ? "#082044" : "#FFF" }} />
+                                {/* <GridIcon active={!tableView} style={{ height: "1em", width: "1em", display: "block" }} /> */}
+                                {/* <img src={`${process.env.PUBLIC_URL}/images/generalUse/grid${tableView ? "-active" : ""}.svg`} alt="performance" /> */}
+                            </ToggleButton>
+                        </ButtonGroup>
+                    </div>
+                </div>
+
                 {
                     fundHistoryStatus === "loading" ?
                         <Loading movements={5} />
                         :
                         fundHistory.length > 0 ?
-                            <Table striped bordered hover className="mb-auto m-0 mt-2" >
-                                <thead >
-                                    <tr>
-                                        <th className="tableHeader" onClick={() => sortData('priceDate')} style={{ cursor: "pointer" }}>
-                                            <span className='d-flex'>
-                                                <span>
-                                                    {t("Date")}
-                                                </span>
-                                                <FontAwesomeIcon className="ms-auto" icon={sortField === "priceDate" ? (sortDirection === "asc" ? faSortUp : faSortDown) : faSort} />
-                                            </span>
-                                        </th>
-                                        <th className="tableHeader" onClick={() => sortData('sharePrice')} style={{ cursor: "pointer" }}>
-                                            <span className='d-flex'>
-                                                <span>
-                                                    {t("Price")}
-                                                </span>
-                                                <FontAwesomeIcon className="ms-auto" icon={sortField === "sharePrice" ? (sortDirection === "asc" ? faSortUp : faSortDown) : faSort} />
-                                            </span>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {
-                                        sortedFundPrices.map(stake => {
-                                            return (
-                                                <HistoricPrice key={stake.id} stake={stake} />
-                                            )
-                                        })
-                                    }
-                                </tbody>
-                            </Table>
+                            (
+                                tableView ?
+                                    <Table striped bordered hover className="mb-auto m-0 mt-2" >
+                                        <thead >
+                                            <tr>
+                                                <th className="tableHeader" onClick={() => sortData('priceDate')} style={{ cursor: "pointer" }}>
+                                                    <span className='d-flex'>
+                                                        <span>
+                                                            {t("Date")}
+                                                        </span>
+                                                        <FontAwesomeIcon className="ms-auto" icon={sortField === "priceDate" ? (sortDirection === "asc" ? faSortUp : faSortDown) : faSort} />
+                                                    </span>
+                                                </th>
+                                                <th className="tableHeader" onClick={() => sortData('sharePrice')} style={{ cursor: "pointer" }}>
+                                                    <span className='d-flex'>
+                                                        <span>
+                                                            {t("Price")}
+                                                        </span>
+                                                        <FontAwesomeIcon className="ms-auto" icon={sortField === "sharePrice" ? (sortDirection === "asc" ? faSortUp : faSortDown) : faSort} />
+                                                    </span>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {
+                                                sortedFundPrices.map(stake => {
+                                                    return (
+                                                        <HistoricPrice key={stake.id} stake={stake} />
+                                                    )
+                                                })
+                                            }
+                                        </tbody>
+                                    </Table>
+                                    :
+                                    <div style={{ height: "50vh", marginTop: "1rem" }}>
+                                        <Chart fund={Fund} />
+                                    </div>
+                            )
                             :
                             <NoMovements movements={5} />
                 }

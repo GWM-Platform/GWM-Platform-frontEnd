@@ -6,6 +6,9 @@ import Decimal from "decimal.js";
 import React, { useEffect, useMemo, useState } from "react";
 import { ButtonGroup, Col, Collapse, OverlayTrigger, Row, Spinner, Table, ToggleButton, Tooltip } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import TableIcon from "../icons/TableIcon";
+import GridIcon from "../icons/GridIcon";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
 const GeneralInfo = ({ fullSettlement, setFullSettlement, clients }) => {
     const { t } = useTranslation()
@@ -273,35 +276,38 @@ const GeneralInfo = ({ fullSettlement, setFullSettlement, clients }) => {
                         </Col>
                         <Col className="ms-auto" xs="auto">
                             <ButtonGroup>
-                                <ToggleButton
-                                    type="radio"
-                                    style={{ lineHeight: "1em", display: "flex" }}
-                                    variant="outline-primary"
-                                    name="radio"
-                                    value={true}
-                                    checked={tableView}
-                                    active={tableView}
-                                    onClick={(e) => setTableView(true)}
-                                    title={t("Table View")}
-                                >
-                                    <img src={`${process.env.PUBLIC_URL}/images/generalUse/table${tableView ? "" : "-active"}.svg`} alt="performance" />
-                                </ToggleButton>
-                                <ToggleButton
-                                    style={{ lineHeight: "1em", display: "flex" }}
-                                    type="radio"
-                                    variant="outline-primary"
-                                    name="radio"
-                                    value={false}
-                                    checked={!tableView}
-                                    active={!tableView}
-                                    onClick={(e) => setTableView(false)}
-                                    title={t("Grid View")}
-                                >
-                                    <img src={`${process.env.PUBLIC_URL}/images/generalUse/grid${tableView ? "-active" : ""}.svg`} alt="performance" />
-                                </ToggleButton>
+                                <ButtonGroup>
+                                    <ToggleButton
+                                        type="radio"
+                                        style={{ lineHeight: "1em", display: "flex" }}
+                                        variant="outline-primary"
+                                        name="radio"
+                                        value={true}
+                                        checked={tableView}
+                                        active={tableView}
+                                        onClick={(e) => setTableView(true)}
+                                        title={t("Table View")}
+                                    >
+                                        <TableIcon active={tableView} style={{ height: "1em", width: "1em", display: "block" }} />
+                                    </ToggleButton>
+                                    <ToggleButton
+                                        style={{ lineHeight: "1em", display: "flex" }}
+                                        type="radio"
+                                        variant="outline-primary"
+                                        name="radio"
+                                        value={false}
+                                        checked={!tableView}
+                                        active={!tableView}
+                                        onClick={(e) => setTableView(false)}
+                                        title={t("Grid View")}
+                                    >
+                                        <GridIcon active={!tableView} style={{ height: "1em", width: "1em", display: "block" }} />
+                                        {/* <img src={`${process.env.PUBLIC_URL}/images/generalUse/grid${tableView ? "-active" : ""}.svg`} alt="performance" /> */}
+                                    </ToggleButton>
+                                </ButtonGroup>
                             </ButtonGroup>
                         </Col>
-                        <div className='d-flex flex-wrap'>
+                        <div className='d-flex flex-wrap' style={{ gap: ".5em" }}>
                             {
                                 tableView ?
                                     <Table striped bordered hover className="mb-auto m-0 mt-2" >
@@ -332,7 +338,11 @@ const GeneralInfo = ({ fullSettlement, setFullSettlement, clients }) => {
 
                                                     return (
                                                         <tr key={account.clientId}>
-                                                            <td className="tableDate">{account?.clientCompleteName}</td>
+                                                            <td className="tableDate">
+                                                                <Link style={{ fontSize: "1em" }} to={`/DashBoard/clientsSupervision/${account.clientId}`}>
+                                                                    {account?.clientCompleteName}
+                                                                </Link>
+                                                            </td>
                                                             <td className="tableDate text-end"><FormattedNumber value={account.balance} prefix="U$D " fixedDecimals={2} styledSybol /></td>
                                                         </tr>
                                                     )
@@ -345,17 +355,25 @@ const GeneralInfo = ({ fullSettlement, setFullSettlement, clients }) => {
                                         </tbody>
                                     </Table>
                                     :
-                                    sortedAccounts.map(account => (
-                                        <Col lg="3">
-                                            <h2 className="mt-2 pe-2 topic text-nowrap">
-                                                {account?.clientCompleteName}
-                                                <br />
-                                                <span style={{ fontWeight: "bolder" }}>
-                                                    <FormattedNumber value={account.balance} prefix="U$D " fixedDecimals={2} styledSybol />
-                                                </span>
-                                            </h2>
-                                        </Col>
-                                    ))
+                                    <Row className='align-items-stretch g-2'>
+                                        {
+                                            sortedAccounts.map(account => (
+                                                <Col key={account.id} sm="10" md="4" lg="4" xl="3">
+                                                    <div className="fixed-deposit-item">
+                                                        <h2 className="mt-0 pe-2 topic text-nowrap">
+                                                            <Link style={{ fontWeight: 300, fontSize: "17px" }} to={`/DashBoard/clientsSupervision/${account.clientId}`}>
+                                                                {account?.clientCompleteName}
+                                                            </Link>
+                                                            <br />
+                                                            <span style={{ fontWeight: 600,fontSize: "20px" }}>
+                                                                <FormattedNumber value={account.balance} prefix="U$D " fixedDecimals={2} styledSybol />
+                                                            </span>
+                                                        </h2>
+                                                    </div>
+                                                </Col>
+                                            ))}
+
+                                    </Row>
                             }
                         </div>
                     </Row>
