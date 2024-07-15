@@ -402,6 +402,7 @@ const Movement = ({ content, actions, reloadData }) => {
   const partialLiquidate = content?.notes?.find(note => note.noteType === "PARTIAL_LIQUIDATE_MOTIVE")
   const clientNote = content?.notes?.find(note => note.noteType === "CLIENT_NOTE")
   const denialMotive = content?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
+  const fundLiquidate = content?.notes?.find(note => note.noteType === "FUND_LIQUIDATE")
 
   const fund = useSelector(state => selectFundById(state, content.fundId))
   console.log(fund)
@@ -410,7 +411,7 @@ const Movement = ({ content, actions, reloadData }) => {
       <td className="tableId text-nowrap">
         {content.id}
         {
-          !!(content?.userEmail || content?.userName || !!(transferNote) || !!(clientNote) || !!(denialMotive) || !!(partialLiquidate)) &&
+          !!(content?.userEmail || content?.userName || !!(transferNote) || !!(clientNote) || !!(denialMotive) || !!(fundLiquidate) || !!(partialLiquidate)) &&
           <OverlayTrigger
             show={showClick || showHover}
             placement="right"
@@ -430,7 +431,7 @@ const Movement = ({ content, actions, reloadData }) => {
                 {!!(content.userEmail || content?.userName) &&
                   <div>
                     {t('Operation performed by')}:<br />
-                    <span className="text-nowrap">{content?.userName || content?.userEmail}</span>
+                    <span className="text-nowrap">{fundLiquidate ? t("Administration") : content?.userName || content?.userEmail}</span>
                   </div>
                 }
                 {!!(transferNote) &&
@@ -455,6 +456,12 @@ const Movement = ({ content, actions, reloadData }) => {
                   !!(partialLiquidate) &&
                   <div>
                     <span className="text-nowrap">"{partialLiquidate.text}"</span>
+                  </div>
+                }
+                {
+                  !!(fundLiquidate) &&
+                  <div>
+                    <span className="text-nowrap">"{fundLiquidate.text}"</span>
                   </div>
                 }
               </Tooltip>
@@ -533,7 +540,12 @@ const Movement = ({ content, actions, reloadData }) => {
       <td className="tableConcept">
         {
           (!content?.transferReceiver && !content?.transferSender) &&
-          t(content.motive + (content.motive === "REPAYMENT" ? content.fundName ? "_" + content.fundName : "_" + content.fixedDepositId : ""), { fund: content.fundName, fixedDeposit: content.fixedDepositId })
+          (
+            fundLiquidate ?
+              <>{t("Fund liquidation")} {content.fundName}</>
+              :
+              t(content.motive + (content.motive === "REPAYMENT" ? content.fundName ? "_" + content.fundName : "_" + content.fixedDepositId : ""), { fund: content.fundName, fixedDeposit: content.fixedDepositId })
+          )
         }
         {content?.transferReceiver && <>{t("Transfer to {{transferReceiver}}", { transferReceiver: content?.transferReceiver })}</>}
         {content?.transferSender && <>{t("Transfer from {{transferSender}}", { transferSender: content?.transferSender })}</>}
