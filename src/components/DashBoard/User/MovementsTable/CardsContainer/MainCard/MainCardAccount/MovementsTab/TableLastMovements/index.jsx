@@ -39,7 +39,7 @@ const TableLastMovements = ({ content, movements, reloadData }) => {
                         <th className="tableDescription d-none d-sm-table-cell">{t("Amount")}</th>
                         <th className="tableDescription d-none d-sm-table-cell">{t("Balance")}</th>
                         {
-                            anyWithActions() && <th className='Actions'>{t("Action")}</th>
+                            anyWithActions() && <th className='Actions' data-column-name="actions" >{t("Action")}</th>
                         }
                     </tr>
                 </thead>

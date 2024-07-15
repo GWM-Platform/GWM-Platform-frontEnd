@@ -21,7 +21,7 @@ const TransfersTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
 
     const [Pagination, setPagination] = useState({
         skip: 0,//Offset (in quantity of Transfers)
-        take: 5,//Transfers per page
+        take: 100,//Transfers per page
         state: null
     })
 
@@ -104,7 +104,7 @@ const TransfersTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
         setPagination((prevState) => ({
             ...prevState, ...{
                 skip: 0,
-                take: 5,
+                take: 100,
                 state: null
             }
         }))
@@ -131,7 +131,7 @@ const TransfersTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
         <div className="p-0 h-100">
             <div className="d-flex align-items-start justify-content-center flex-column MovementsTableContainer">
                 <div className={`movementsTable growAnimation`}>
-                    <FilterOptions keyword={"movements"} ticketSearch ticketSearchProps={ticketSearchProps} disabled={SearchById.search} Fund={Fund} setPagination={setPagination} movsPerPage={Pagination.take} total={Transfers.total} />
+                    <FilterOptions keyword={"movements"} ticketSearch ticketSearchProps={ticketSearchProps} disabled={SearchById.search} Fund={Fund} setPagination={setPagination} movsPerPage={Pagination.take} total={Transfers.total} defaultMoves={100} />
                     {
                         FetchingTransfers ?
                             <Loading movements={Pagination.take} />

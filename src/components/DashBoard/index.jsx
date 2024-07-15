@@ -40,6 +40,7 @@ import { useSelector } from 'react-redux';
 import { Col, Container, Row, Spinner } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import ExchangeTool from './ExchangeTool';
+import PrintLoading from 'components/PrintLoading';
 
 //User
 const FundsContainer = lazy(() => import('./User/FundsContainer'))
@@ -240,6 +241,7 @@ const UserDashBoard = () => {
                                     <DashboardToast />
                                     <Footer />
                                     <NavBarMobile setItemSelected={setItemSelected} />
+                                    <PrintLoading />
                                 </>
                                 :
                                 <Loading />
