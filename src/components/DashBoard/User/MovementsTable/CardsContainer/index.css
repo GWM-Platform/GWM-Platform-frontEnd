@@ -58,7 +58,7 @@
 	border-radius: 30px;
 	font-weight: 300;
 
-	max-height: 65vh;
+	max-height: 80%;
     overflow: hidden;
 }
 .movementsCardMobile .card-header {

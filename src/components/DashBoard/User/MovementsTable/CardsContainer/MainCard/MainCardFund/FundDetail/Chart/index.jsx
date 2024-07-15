@@ -49,6 +49,56 @@ const Chart = ({ fund, margin = { top: 5, right: 90, bottom: 5, left: 20 } }) =>
     }, [dispatch, fundHistoryStatus])
 
     const max = fundHistory.reduce((prev, current) => (prev.sharePrice > current.sharePrice) ? prev : current, {})
+    const min = fundHistory.reduce((prev, current) => (prev.sharePrice < current.sharePrice) ? prev : current, {})
+
+    const roundDataMaxUp = (dataMax) => {
+        console.log(dataMax)
+        // Increment dataMax slightly to ensure the domain is always greater.
+        const incrementedDataMax = dataMax * 1.01; // Increment by 1% instead of 5%
+
+        // Calculate the order of magnitude of the incremented dataMax.
+        const orderOfMagnitude = Math.floor(Math.log10(incrementedDataMax));
+
+        // Decide the rounding factor based on the order of magnitude.
+        let roundingFactor;
+        if (orderOfMagnitude >= 3) { // Thousands or more
+            roundingFactor = Math.pow(10, orderOfMagnitude - 1); // Use a smaller rounding factor
+        } else if (orderOfMagnitude === 2) { // Hundreds
+            roundingFactor = 50; // Use 50 as rounding factor for more granularity
+        } else if (orderOfMagnitude === 1) { // Tens
+            roundingFactor = 5; // Use 5 as rounding factor for even more granularity
+        } else { // Units
+            roundingFactor = 1; // No change for units
+        }
+
+        // Round up to the nearest rounding factor.
+        return Math.ceil(incrementedDataMax / roundingFactor) * roundingFactor;
+    }
+
+    const roundDataMinDown = (dataMin) => {
+        // Decrement dataMin slightly to ensure the result is less than or equal to dataMin and greater than 0.
+        const decrementedDataMin = dataMin * 0.99; // Decrement by 1%
+
+        // Calculate the order of magnitude of the decremented dataMin.
+        const orderOfMagnitude = Math.floor(Math.log10(decrementedDataMin));
+
+        // Decide the rounding factor based on the order of magnitude.
+        let roundingFactor;
+        if (orderOfMagnitude >= 3) { // Thousands or more
+            roundingFactor = Math.pow(10, orderOfMagnitude - 1); // Use a smaller rounding factor
+        } else if (orderOfMagnitude === 2) { // Hundreds
+            roundingFactor = 50; // Use 50 as rounding factor for more granularity
+        } else if (orderOfMagnitude === 1) { // Tens
+            roundingFactor = 5; // Use 5 as rounding factor for even more granularity
+        } else { // Units
+            roundingFactor = 1; // No change for units
+        }
+
+        // Round down to the nearest rounding factor, ensuring the result is greater than 0.
+        const roundedResult = Math.max(1, Math.floor(decrementedDataMin / roundingFactor) * roundingFactor);
+
+        return roundedResult;
+    }
 
     return (
         <>
@@ -57,7 +107,12 @@ const Chart = ({ fund, margin = { top: 5, right: 90, bottom: 5, left: 20 } }) =>
                 <LineChart data={fundHistory} margin={margin}>
                     <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
                     <XAxis angle={0} dx={20} scale="time" type='number' domain={[fundHistory[0]?.priceDate, fundHistory[fundHistory.length - 1]?.priceDate]} dataKey="datePriceParsed" tickFormatter={dateFormatter} />
-                    <YAxis tickFormatter={(value) => numberFormatter(value)} padding={{ top: 30 }} />
+                    <YAxis
+                        domain={[
+                            roundDataMinDown,
+                            roundDataMaxUp
+                        ]}
+                        tickFormatter={(value) => numberFormatter(value)} padding={{ top: 30 }} />
                     <Tooltip
                         content={(props) => (<TooltipRubros {...props} />)}
                         label={"Share price"}
@@ -65,6 +120,12 @@ const Chart = ({ fund, margin = { top: 5, right: 90, bottom: 5, left: 20 } }) =>
                         labelFormatter={dateFormatter} />
                     <ReferenceLine ifOverflow='extendDomain' strokeDasharray="6 6" y={max.sharePrice} stroke="green"  >
                         <Label value={t("Maximum")} position="top" />
+                    </ReferenceLine>
+                    {/* To make domain min static as max */}
+                    <ReferenceLine ifOverflow='extendDomain' stroke="00000000" y={min.sharePrice}
+                    // strokeDasharray="6 6" stroke="red"
+                    >
+                        {/* <Label value={t("Min")} position="top" /> */}
                     </ReferenceLine>
                     <Line isAnimationActive={false} type="monotone" dataKey="sharePrice" stroke="#082044" strokeWidth={2}
                         // dot={{ stroke: '#082044', strokeWidth: 2 }}
@@ -78,7 +139,7 @@ const Chart = ({ fund, margin = { top: 5, right: 90, bottom: 5, left: 20 } }) =>
                         </ReferenceLine>
                     }
                     <Brush
-                        dataKey="datePriceParsed" height={30} stroke="#8884d8" tickFormatter={dateFormatter}
+                        dataKey="datePriceParsed" height={30} stroke="#082044" tickFormatter={dateFormatter}
                         startIndex={fundHistory.findIndex(history => moment(history.datePriceParsed).year() === moment().year())} endIndex={fundHistory.length - 1}
                     />
                 </LineChart>
