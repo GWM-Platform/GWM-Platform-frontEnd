@@ -38,6 +38,7 @@ const MainCardFixedDeposit = ({ FixedDepositsStats, Hide, setHide }) => {
         {
             aditionalStyles: `@media print { 
                 .historyContent{ padding: 0!important; page-break-before: avoid; }
+                .mobileMovement{ page-break-inside: avoid;  }
                 .main-card-header{ page-break-inside: avoid; page-break-before: avoid; margin-top: 1rem; }
                 .movementsMainCardFund{ overflow: visible!important; }
                 .tabs-container,select,.hideInfoButton, .accordion, button, td[data-column-name="actions"], th[data-column-name="actions"],td[data-column-name="ticket"], th[data-column-name="ticket"]{ display: none!important; }
