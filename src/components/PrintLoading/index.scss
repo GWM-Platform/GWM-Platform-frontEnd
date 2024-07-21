@@ -1,0 +1,41 @@
+.PrintLoading {
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.5s;
+
+    .print-icon {
+        opacity: 0;
+        transition: all 1s;
+    }
+
+    &.active {
+        transition: all 0s;
+        opacity: 1;
+
+        .print-icon {
+            opacity: 1;
+        }
+    }
+
+    background: white;
+    z-index: 1100;
+    position: absolute;
+    inset: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@keyframes breath {
+    0% {
+        opacity: 0.6;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.6;
+    }
+}

@@ -1,0 +1,87 @@
+.LoadingDropdownButton {
+	position: relative;
+	font-size: 1rem;
+
+	img {
+		transition: all 0.2s;
+		display: block;
+		height: 1rem;
+	}
+
+	&:not(:focus) {
+		img {
+			opacity: .7;
+		}
+	}
+
+	&:focus {
+		box-shadow: none !important;
+	}
+
+	&:hover {
+		img {
+			opacity: 1;
+		}
+	}
+}
+
+@media print {
+	.printContainer {
+		width: 100%;
+
+		// .title-wrapper {}
+
+		.print-header {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			flex-direction: row;
+			height: 70px;
+			width: 100%;
+			background-color: #082044;
+			padding: 20px;
+		}
+
+		.print-header-logo {
+			height: 35px;
+			width: 35px;
+			background-color: white;
+			border-radius: 50%;
+			padding: 5px;
+		}
+
+		.print-header-text-container {
+
+
+			.print-header-text {
+				font-size: 16px;
+				color: rgba(255, 255, 255, .95)
+			}
+
+			.print-header-date {
+				font-size: 14px;
+				color: rgba(255, 255, 255, .95)
+			}
+		}
+	}
+
+	.header,
+	.header-space,
+	.footer,
+	.footer-space {
+		height: 100px;
+	}
+	header,body {
+		page-break-before: avoid;
+		page-break-after: avoid;
+	}
+	.header {
+		position: fixed;
+		top: 0;
+	}
+
+	.footer {
+		position: fixed;
+		bottom: 0;
+	}
+}

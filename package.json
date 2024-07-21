@@ -57,6 +57,7 @@
 		"react-redux": "^8.0.5",
 		"react-router-dom": "^5.2.0",
 		"react-select": "^5.7.0",
+		"react-to-print": "^2.15.1",
 		"recharts": "^2.1.6",
 		"sass": "^1.52.1",
 		"source-map-explorer": "^2.5.3",

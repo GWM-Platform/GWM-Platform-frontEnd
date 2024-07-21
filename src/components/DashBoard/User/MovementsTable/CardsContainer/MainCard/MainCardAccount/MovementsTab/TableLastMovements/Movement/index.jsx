@@ -405,10 +405,10 @@ const Movement = ({ content, actions, reloadData }) => {
   const fundLiquidate = content?.notes?.find(note => note.noteType === "FUND_LIQUIDATE")
 
   const fund = useSelector(state => selectFundById(state, content.fundId))
-  console.log(fund)
+
   return (
     <tr>
-      <td className="tableId text-nowrap">
+      <td className="tableId text-nowrap" data-column-name="ticket">
         {content.id}
         {
           !!(content?.userEmail || content?.userName || !!(transferNote) || !!(clientNote) || !!(denialMotive) || !!(fundLiquidate) || !!(partialLiquidate)) &&
@@ -568,7 +568,7 @@ const Movement = ({ content, actions, reloadData }) => {
       </td>
       {
         !!(actions) &&
-        <td className={`Actions verticalCenter ${fund?.disabled ? "disabled" : ""}`} >
+        <td className={`Actions verticalCenter ${fund?.disabled ? "disabled" : ""}`} data-column-name="actions" >
           {
             !!(content.stateId === 5) &&
             <div className="h-100 d-flex align-items-center justify-content-around">

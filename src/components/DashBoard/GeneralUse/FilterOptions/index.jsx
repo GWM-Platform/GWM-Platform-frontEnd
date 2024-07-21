@@ -8,7 +8,7 @@ import TicketSearch from 'components/DashBoard/GeneralUse/TicketSearch'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, ticketSearch, ticketSearchProps, movements }) => {
+const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, ticketSearch, ticketSearchProps, movements, defaultMoves = 5 }) => {
     const { t } = useTranslation();
     const { TransactionStates } = useContext(DashBoardContext)
 
@@ -43,11 +43,11 @@ const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, ti
     useEffect(() => {
         setFilterOptions((prevState) => ({
             ...prevState, ...{
-                moves: 5,
+                moves: defaultMoves,
                 state: ""
             }
         }))
-    }, [Fund])
+    }, [Fund, defaultMoves])
 
     return (
         <Accordion flush>

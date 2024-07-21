@@ -20,7 +20,7 @@ const MovementsTab = () => {
 
     const [Pagination, setPagination] = useState({
         skip: 0,//Offset (in quantity of movements)
-        take: 5,//Movements per page
+        take: 100,//Movements per page
         state: null
     })
 
@@ -98,7 +98,7 @@ const MovementsTab = () => {
         setPagination((prevState) => ({
             ...prevState, ...{
                 skip: 0,
-                take: 5,
+                take: 100,
                 state: null
             }
         }))
@@ -122,7 +122,7 @@ const MovementsTab = () => {
         <div className="p-0 h-100">
             <div className="d-flex align-items-start justify-content-center flex-column MovementsTableContainer">
                 <div className={`movementsTable growAnimation`}>
-                    <FilterOptions keyword={"transactions"} ticketSearch ticketSearchProps={ticketSearchProps} disabled={SearchById.search} setPagination={setPagination} movsPerPage={Pagination.take} total={FixedDeposits.content.total} />
+                    <FilterOptions keyword={"transactions"} ticketSearch ticketSearchProps={ticketSearchProps} disabled={SearchById.search} setPagination={setPagination} movsPerPage={Pagination.take} total={FixedDeposits.content.total} defaultMoves={100} />
                     {
                         FixedDeposits.fetching ?
                             <Loading movements="5"

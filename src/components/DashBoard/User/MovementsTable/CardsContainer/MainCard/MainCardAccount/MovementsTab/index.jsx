@@ -12,7 +12,7 @@ import PaginationController from 'components/DashBoard/GeneralUse/PaginationCont
 import FilterOptions from 'components/DashBoard/GeneralUse/FilterOptions'
 
 const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
-    const { token, ClientSelected,AccountSelected } = useContext(DashBoardContext);
+    const { token, ClientSelected, AccountSelected } = useContext(DashBoardContext);
     const history = useHistory();
 
     const [Movements, setMovements] = useState({ movements: 0, total: 0 })
@@ -21,7 +21,7 @@ const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
 
     const [Pagination, setPagination] = useState({
         skip: 0,//Offset (in quantity of movements)
-        take: 5,//Movements per page
+        take: 100,//Movements per page
         state: null
     })
 
@@ -33,13 +33,13 @@ const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
         var url = `${process.env.REACT_APP_APIURL}/movements/?` + new URLSearchParams(
             Object.fromEntries(Object.entries(
                 {
-                    accountId:AccountSelected.id,
+                    accountId: AccountSelected.id,
                     client: ClientSelected.id,
                     filterAccount: Fund.id,
                     take: Pagination.take,
                     skip: Pagination.skip,
-                    filterState: Pagination.state===10 ? null :  Pagination.state,
-                    showDenied: Pagination.state===10 ? true : null
+                    filterState: Pagination.state === 10 ? null : Pagination.state,
+                    showDenied: Pagination.state === 10 ? true : null
                 }
             ).filter(([_, v]) => v != null))
         );
@@ -105,7 +105,7 @@ const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
         setPagination((prevState) => ({
             ...prevState, ...{
                 skip: 0,
-                take: 5,
+                take: 100,
                 state: null
             }
         }))
@@ -132,7 +132,7 @@ const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
         <div className="p-0 h-100">
             <div className="d-flex align-items-start justify-content-center flex-column MovementsTableContainer">
                 <div className={`movementsTable growAnimation`}>
-                    <FilterOptions keyword={"transactions"} ticketSearch ticketSearchProps={ticketSearchProps} disabled={SearchById.search} movements Fund={Fund} setPagination={setPagination} movsPerPage={Pagination.take} total={Movements.total} />
+                    <FilterOptions keyword={"transactions"} ticketSearch ticketSearchProps={ticketSearchProps} disabled={SearchById.search} movements Fund={Fund} setPagination={setPagination} movsPerPage={Pagination.take} total={Movements.total} defaultMoves={100} />
                     {
                         FetchingMovements ?
                             <Loading movements={Pagination.take} />
@@ -140,9 +140,9 @@ const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
                             Movements.total > 0 ?
                                 <TableLastMovements
                                     movements={Pagination.take < Movements.total ? Pagination.take : Movements.total}
-                                    content={Movements.movements} 
+                                    content={Movements.movements}
                                     reloadData={getMovements}
-                                    />
+                                />
                                 :
                                 <NoMovements movements={Pagination.take} />
                     }
