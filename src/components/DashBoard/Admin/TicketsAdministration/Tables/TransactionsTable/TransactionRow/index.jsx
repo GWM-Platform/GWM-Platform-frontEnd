@@ -133,7 +133,7 @@ const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData })
     const userEmail = useSelector(selectUserEmail)
     const userId = useSelector(selectUserId)
     const fund = useSelector(state => selectFundById(state, Transaction.fundId))
-
+    console.log(userId !== Transaction.userId, Transaction.userEmail, (userId ? userId !== Transaction.userId : userEmail ? userEmail !== Transaction?.userEmail : false) ? "disabled" : "")
     return (
         <>
             <div className='mobileMovement'>
@@ -160,7 +160,7 @@ const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData })
                     {
                         !!(Transaction.stateId === 1) &&
                         <div className={`h-100 d-flex align-items-center justify-content-around Actions ${fund?.disabled ? "disabled" : ""}`}>
-                            <div className={`iconContainer green me-1 ${(userId ? userId !== Transaction.userId : userEmail ? userEmail !== Transaction?.userEmail : false) ? "disabled" : ""}`}>
+                            <div className={`iconContainer green me-1 ${(userId ? (userId === Transaction.userId) : (userEmail ? (userEmail !== Transaction?.userEmail) : false)) ? "disabled" : ""}`}>
                                 <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => { launchModalConfirmation("approve") }} />
                             </div>
                             <div className="iconContainer red me-1">

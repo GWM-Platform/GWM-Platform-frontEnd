@@ -117,7 +117,7 @@ const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, se
             {
                 !withoutHeader &&
                 <div className="header">
-                    <h1 className="title">
+                    <h1 className="title fw-normal">
                         {t("Fund edit form for")}{" \""}{Funds[Action.fund].name}{"\""}
                     </h1>
                     <FontAwesomeIcon className="button icon" onClick={() => { setAction({ ...Action, ...{ action: -1, fund: -1 } }) }} icon={faChevronCircleLeft} />

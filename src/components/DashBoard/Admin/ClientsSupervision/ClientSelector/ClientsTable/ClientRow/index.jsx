@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Spinner } from 'react-bootstrap'
+import { Badge, Spinner } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
@@ -37,6 +37,7 @@ const ClientRow = ({ Client, show }) => {
     return (
         <tr className={`ClientRow ${show ? '' : 'd-none'}`}>
             <td className="Alias">{Client.alias}</td>
+            <td className="Alias"><Badge bg={Client.enabled ? "success" : "danger"}>{t(Client.enabled ? "Enabled" : "Disabled")}</Badge></td>
             <td className="Alias">
                 {
                     balanceTotal.fetching ?

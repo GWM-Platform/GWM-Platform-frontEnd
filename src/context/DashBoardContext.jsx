@@ -2,7 +2,7 @@ import { fetchFunds } from 'Slices/DashboardUtilities/fundsSlice';
 import { fetchNotifications, reset as notificationsReset } from 'Slices/DashboardUtilities/notificationsSlice';
 import { fetchUser, reset as resetUser, selectUserEmail, selectUserId } from 'Slices/DashboardUtilities/userSlice';
 import axios from 'axios';
-import React, { useCallback, useReducer, useRef } from 'react'
+import React, { useCallback, useMemo, useReducer, useRef } from 'react'
 import { createContext, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -64,8 +64,8 @@ export const DashBoardProvider = ({ children }) => {
 
     const [UserClients, setUserClients] = useState({ fetching: true, content: [], fetched: false, valid: false })
 
-    const [ClientSelected, setClientSelected] = useState({})
     const [IndexClientSelected, setIndexClientSelected] = useState(-1)
+    const ClientSelected = useMemo(() => UserClients.content[IndexClientSelected] || {}, [IndexClientSelected, UserClients.content])
 
     const [contentReady, setContentReady] = useState(false);
 
@@ -98,6 +98,7 @@ export const DashBoardProvider = ({ children }) => {
         fetching: true,
         fetched: false,
         valid: false,
+        clientId: -1,
         content: []
     })
 
@@ -127,11 +128,9 @@ export const DashBoardProvider = ({ children }) => {
             sessionStorage.clear();
             history.push(`/login`);
         }
-
         const getAccountsAndFunds = async () => {
             setFetchingFunds(true)
             setAccounts([])
-
             const [responseAccounts, responseFunds] = await Promise.all(
                 [
                     hasPermission('VIEW_ACCOUNT') ? getAccounts() : null,
@@ -275,9 +274,6 @@ export const DashBoardProvider = ({ children }) => {
             setContentReady(false)
             setPendingWithoutpossession([])
             getAccountsAndFunds()
-        }
-
-        return () => {
         }
         // eslint-disable-next-line
     }, [ClientSelected, itemSelected, ClientPermissions])
@@ -530,11 +526,9 @@ export const DashBoardProvider = ({ children }) => {
 
         if (UserClients.fetched) {
             if (userDashboardSelected()) {
-                setClientSelected(UserClients.content[IndexClientSelected])
                 manageUrlUser()
                 setBalanceChanged(true)
             } else if (adminDashboardSelected()) {
-                setClientSelected({})
                 manageUrlAdmin()
             }
         }
@@ -572,6 +566,7 @@ export const DashBoardProvider = ({ children }) => {
                 fetching: true,
                 fetched: false,
                 valid: false,
+                clientId: ClientSelected.id,
                 content: []
             }))
             axios.get(`/permissions`, {
@@ -594,7 +589,6 @@ export const DashBoardProvider = ({ children }) => {
                 }
             });
         }
-
         if (ClientSelected?.id) {
             getPermissions()
         } else {
@@ -611,7 +605,7 @@ export const DashBoardProvider = ({ children }) => {
 
         dispatch(fetchNotifications({ client: ClientSelected?.id }))
         return () => {
-            setClientPermissions((prevState) => ({ ...prevState, fetching: true, fetched: false, content: [] }))
+            setClientPermissions((prevState) => ({ ...prevState, fetching: true, fetched: false, content: [], clientId: -1, }))
             clearInterval(intervalId) // Cancelamos la ejecución automática al desmontar el componente
             dispatch(notificationsReset())
             DashboardToastDispatch({ type: "reset" });
@@ -620,8 +614,7 @@ export const DashBoardProvider = ({ children }) => {
     }, [ClientSelected])
 
     const isOwner = () => ClientPermissions?.content?.permissions?.filter(permission => permission.action === "OWNER")?.length > 0
-
-    const hasPermission = (Permission) => ClientPermissions?.content?.permissions?.filter(permission => permission.action === Permission)?.length > 0 || isOwner()
+    const hasPermission = (Permission) => (ClientPermissions.clientId === ClientSelected.id) && (ClientPermissions?.content?.permissions?.filter(permission => permission.action === Permission)?.length > 0 || isOwner())
 
     const hasAnySellPermission = () => ClientPermissions?.content?.permissions?.map(permission => permission.action.split('_'))
         ?.filter(actionSplitted => actionSplitted?.includes('SELL') && actionSplitted?.includes('STAKES')).length > 0 || isOwner()

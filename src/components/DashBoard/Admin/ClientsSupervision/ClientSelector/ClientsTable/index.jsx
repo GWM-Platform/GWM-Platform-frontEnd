@@ -13,7 +13,7 @@ const ClientsTable = ({ FilteredClients }) => {
 
     const [Pagination, setPagination] = useState({
         skip: 0,//Offset (in quantity of movements)
-        take: 5,//Movements per page
+        take: 15,//Movements per page
         state: null
     })
 
@@ -30,6 +30,7 @@ const ClientsTable = ({ FilteredClients }) => {
                     <thead className="verticalTop tableHeader solid-bg">
                         <tr>
                             <th className="Alias">{t("Alias")}</th>
+                            <th >{t("Status")}</th>
                             <th className="Balance">{t("Total balance")}</th>
                             <th ></th>
                         </tr>

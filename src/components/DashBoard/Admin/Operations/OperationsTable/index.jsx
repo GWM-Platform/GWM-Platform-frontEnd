@@ -259,7 +259,7 @@ export const ContextAwareToggle = ({ children, eventKey, callback, create = fals
     return (
         <div
             className="header d-flex " style={{ borderBottom: "unset", padding: "0.5em 0", margin: 0 }}>
-            <h1 className="title my-0" style={{ fontSize: "30px", fontWeight: "300", borderBottom: "unset" }}>{children}</h1>
+            <h1 className="title my-0 fw-normal" style={{ fontSize: "30px", fontWeight: "300", borderBottom: "unset" }}>{children}</h1>
             {
                 create &&
                 <Button

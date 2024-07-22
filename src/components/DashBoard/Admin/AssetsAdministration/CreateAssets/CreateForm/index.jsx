@@ -39,7 +39,7 @@ const CreateAssets = ({ data, CreateRequest, handleChange, Action, setAction, va
     return (
         <div className="editForm">
             <div className="header">
-                <h1 className="title">
+                <h1 className="title fw-normal">
                     {t("Asset Create form")}
                 </h1>
                 <FontAwesomeIcon className="button icon" onClick={() => { setAction({ ...Action, ...{ action: -1, Asset: -1 } }) }} icon={faChevronCircleLeft} />

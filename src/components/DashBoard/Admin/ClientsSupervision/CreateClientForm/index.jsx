@@ -67,7 +67,7 @@ const CreateClientForm = ({ getClients }) => {
                 <Col xs="12">
                     <div className="growOpacity section">
                         <div className="header">
-                            <h1 className="title">
+                            <h1 className="title fw-normal">
                                 {t("Create client")}
                             </h1>
                             <Link className="button icon" to={`/DashBoard/clientsSupervision`}>

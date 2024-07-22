@@ -342,7 +342,7 @@ const UserActionLogs = () => {
         return (
             <div
                 className="header d-flex  mb-0">
-                <h1 className="title">{children}</h1>
+                <h1 className="title fw-normal">{children}</h1>
                 <Button
                     className="ms-auto"
                     style={{ backgroundColor: isCurrentEventKey ? 'purple' : '', alignSelf: "center" }}

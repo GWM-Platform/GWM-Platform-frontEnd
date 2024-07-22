@@ -15,6 +15,7 @@ import Editor from './quill';
 import { ModalPreview } from './ModalPreview';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchusers, selectAllusers } from 'Slices/DashboardUtilities/usersSlice';
+import { fetchclients, selectAllclients } from 'Slices/DashboardUtilities/clientsSlice';
 
 const maxClients = 45
 const Broadcast = () => {
@@ -50,11 +51,11 @@ const Broadcast = () => {
         }
     }, [dispatch, usersStatus])
 
-    const [Clients, setClients] = useState({ fetching: true, fetched: false, valid: false, content: [] })
     const getUserById = useCallback((id) => users.find(user => user.id === id), [users],
     )
-
-    const clients = useMemo(() => ({ ...Clients, content: Clients.content.map(client => ({ ...client, users: client.users.filter(userToClient => getUserById(userToClient?.userId)?.enabled) })) }), [Clients, getUserById])
+    const clientStatus = useSelector(state => state.clients.status)
+    const Clients = useSelector(selectAllclients)
+    const clients = useMemo(() => Clients.filter(client => client.enabled).map(client => ({ ...client, users: client.users.filter(userToClient => getUserById(userToClient?.userId)?.enabled) })), [Clients, getUserById])
 
     const [validated, setValidated] = useState(false);
     const [buttonDisabled, setButtonDisabled] = useState(false)
@@ -123,44 +124,16 @@ const Broadcast = () => {
     }
 
 
-    const getClients = useCallback((signal) => {
-        setClients((prevState) => ({ ...prevState, fetching: true, fetched: false }))
-        axios.get(`/clients`, {
-            params: { all: true, showUsers: true },
-            signal: signal,
-        }).then(function (response) {
-            setClients((prevState) => (
-                {
-                    ...prevState,
-                    fetching: false,
-                    fetched: true,
-                    valid: true,
-                    content: response.data,
-                }))
-        }).catch((err) => {
-            if (err.message !== "canceled") {
-                if (err.response.status === "401") toLogin()
-                setClients((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
-            }
-        });
-        //eslint-disable-next-line
-    }, [setClients]);
-
     useEffect(() => {
-        const controller = new AbortController();
-        const signal = controller.signal;
-        getClients(signal)
+        dispatch(fetchclients({ all: true, showUsers: true }))
+    }, [dispatch])
 
-        return () => {
-            controller.abort();
-        };
-    }, [getClients])
 
     const filesInput = useRef(null)
 
     var allSelectedArray = [{ label: "All clients", value: "*" }]
 
-    for (let client of clients.content) {
+    for (let client of clients) {
         let appendToArray = []
         appendToArray = client.users.map(
             userToClient => ({ value: userToClient?.user?.email, label: userToClient?.user?.email, email: userToClient?.user?.email })
@@ -173,7 +146,7 @@ const Broadcast = () => {
     }
 
     var allOwnersArray = [{ label: "Owners", value: "*owners" }]
-    for (let client of clients.content) {
+    for (let client of clients) {
         let appendToArray = []
         appendToArray = client.users.filter(user => user?.isOwner).map(
             userToClient => ({ value: userToClient?.user?.email, label: userToClient?.user?.email, email: userToClient?.user?.email })
@@ -222,11 +195,11 @@ const Broadcast = () => {
     };
 
     const values = useMemo(() => {
-        return clients?.fetched
+        return clientStatus === "succeeded"
             ? [
                 { label: "All clients", value: "*" },
                 { label: "Owners", value: "*owners" },
-                ...clients?.content?.map(
+                ...clients?.map(
                     client => ({
                         label: client.alias,
                         value: client.alias,
@@ -237,7 +210,7 @@ const Broadcast = () => {
                     })
                 )]
             : []
-    }, [clients?.content, clients?.fetched])
+    }, [clients])
 
     const filterOption = ({ label, value }, string) => {
         // default search
@@ -284,7 +257,7 @@ const Broadcast = () => {
         );
     }
 
-    const getClientById = (clientId) => clients?.content?.find(client => client.id === clientId)
+    const getClientById = (clientId) => clients?.find(client => client.id === clientId)
 
     useEffect(() => {
 
@@ -404,7 +377,7 @@ const Broadcast = () => {
             <Row className="h-100 d-flex justify-content-center">
                 <Col className="growOpacity section">
                     <div className="header">
-                        <h1 className="title">{t("Broadcast to users")}</h1>
+                        <h1 className="title fw-normal">{t("Broadcast to users")}</h1>
                     </div>
                     <Form noValidate validated={validated} onSubmit={handleSubmit}>
                         <Form.Group className="mb-3">
@@ -413,7 +386,7 @@ const Broadcast = () => {
                                 <Select
 
                                     value={selectedOptions} onChange={handleChangeMultiSelect}
-                                    isMulti isClearable isLoading={clients.fetching}
+                                    isMulti isClearable isLoading={clientStatus !== "succeeded"}
                                     closeMenuOnSelect={false} hideSelectedOptions={false}
                                     noOptionsMessage={() => t("No options")} placeholder={t("Select recipients")}
                                     filterOption={filterOption} options={values} components={{ Option, MultiValue, GroupHeading }}

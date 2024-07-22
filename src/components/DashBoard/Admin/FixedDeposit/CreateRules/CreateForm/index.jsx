@@ -39,7 +39,7 @@ const CreateForm = ({ data, fetchingCreateRequest, handleChange, ActionDispatch,
     return (
         <div className="editForm">
             <div className="header">
-                <h1 className="title">
+                <h1 className="title fw-normal">
                     {t("Rule creation")}
                 </h1>
                 <FontAwesomeIcon className="button icon" onClick={() => ActionDispatch({ type: "view" })} icon={faChevronCircleLeft} />

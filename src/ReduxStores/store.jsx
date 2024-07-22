@@ -3,6 +3,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import notificationsReducer from 'Slices/DashboardUtilities/notificationsSlice'
 import performancesReducer from 'Slices/DashboardUtilities/performancesSlice'
 import userReducer from 'Slices/DashboardUtilities/userSlice'
+import clientsReducer from 'Slices/DashboardUtilities/clientsSlice'
 import fundHistoryReducer from 'Slices/DashboardUtilities/fundHistorySlice'
 import transactionsReducer from 'Slices/DashboardUtilities/transactionsSlice'
 import usersReducer from 'Slices/DashboardUtilities/usersSlice'
@@ -18,6 +19,7 @@ export default configureStore({
     fundHistory: fundHistoryReducer,
     transactions: transactionsReducer,
     users: usersReducer,
+    clients: clientsReducer,
     operations: operationsReducer,
     funds: fundsReducer
   },

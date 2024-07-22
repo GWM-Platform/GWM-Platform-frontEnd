@@ -11,6 +11,8 @@ import BaseSelect from "react-select";
 import FixRequiredSelect from 'components/DashBoard/GeneralUse/Forms/FixRequiredSelect';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinusCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchclients, selectAllclients } from 'Slices/DashboardUtilities/clientsSlice';
 
 const WithdrawCashFromClient = () => {
     const { toLogin } = useContext(DashBoardContext)
@@ -187,13 +189,19 @@ const WithdrawCashFromClient = () => {
     );
 
     const accountSelectedValid = () => data?.account?.value
+    const dispatch = useDispatch()
+    const clients = useSelector(selectAllclients)
+    const getClientById = (id) => clients.find(client => client.id === id)
+    useEffect(() => {
+        dispatch(fetchclients({ all: true, showUsers: true }))
+    }, [dispatch])
 
     return (
         <Container className="h-100 AssetsAdministration">
             <Row className="h-100 d-flex justify-content-center">
                 <Col className="newTicket h-100 growAnimation section" sm="12">
                     <div className="header">
-                        <h1 className="title">{t("Withdraw cash from an account")}</h1>
+                        <h1 className="title fw-normal">{t("Withdraw cash from an account")}</h1>
                     </div>
                     <Form noValidate validated={validated} onSubmit={handleSubmit}>
                         <Form.Group className="mb-3">
@@ -210,7 +218,8 @@ const WithdrawCashFromClient = () => {
                                 options={Accounts.value.map((Account) => (
                                     {
                                         label: `${t("Account Alias")}: ${Account.alias} / ${t("Account Id")}: ${Account.id} / ${t("Actual Balance")}: ${Account.balance}`,
-                                        value: Account.id
+                                        value: Account.id,
+                                        isDisabled: !getClientById(Account.clientId)?.enabled
                                     }
                                 ))}
                             />

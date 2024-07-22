@@ -1086,5 +1086,11 @@
   "Users administration": "Administración de usuarios",
   "Phone": "Teléfono",
   "Administrator": "Administrador",
-  "Users": "Usuarios"
+  "Users": "Usuarios",
+  "Fund liquidation": "Liquidación de fondo",
+  "Disable client": "Deshabilitar cliente",
+  "Enable client": "Habilitar cliente",
+  "The client you are trying to use is disabled": "El cliente que esta intentando utilizar está deshabilitado",
+  "Please contact administration for assistance in regaining access to it": "Comuníquese con la administración para obtener ayuda y recuperar el acceso a él",
+  "Client disabled": "Cliente deshabilitado"
 }
