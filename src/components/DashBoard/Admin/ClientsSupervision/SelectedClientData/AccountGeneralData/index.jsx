@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
 import { Accordion, Spinner, Container, Row, Col, Button } from 'react-bootstrap'
@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import OverdraftPopover from '../OverdraftPopover';
 import PerformanceComponent from 'components/DashBoard/GeneralUse/PerformanceComponent';
 
-const AccountGeneralData = ({ Account, Client, setAccounts }) => {
+const AccountGeneralData = ({ Account, Client, setAccounts, toggleClient }) => {
     const { t } = useTranslation();
     const { toLogin, DashboardToastDispatch } = useContext(DashBoardContext)
 
@@ -88,6 +88,26 @@ const AccountGeneralData = ({ Account, Client, setAccounts }) => {
     const handleClosePopover = () => {
         document.body.click()
     };
+    const accountAndTotalBalanceZero = useMemo(() => Account.balance === 0 && balanceTotal.value === 0, [Account.balance, balanceTotal.value])
+    const clientDisabled = useMemo(() => !Client.enabled, [Client.enabled])
+    const toggleClientStatus = () => {
+        setRequest((prevState) => ({ ...prevState, fetching: true, fetched: false }))
+        axios.patch(`/clients/${Client.id}/${Client.enabled ? "disable" : "enable"}`)
+            .then(function (response) {
+                setRequest(() => (
+                    {
+                        fetching: false,
+                        fetched: true,
+                        valid: true,
+                    }))
+                toggleClient(Client.id)
+            }).catch((err) => {
+                if (err.message !== "canceled") {
+                    if (err.response.status === "401") toLogin()
+                    setRequest((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
+                }
+            });
+    }
 
     return (
         <Accordion.Item eventKey="0">
@@ -135,11 +155,12 @@ const AccountGeneralData = ({ Account, Client, setAccounts }) => {
                                 </h1>
 
                             }
-                            {
-                                !(Account.overdraft) &&
-                                <div className='d-flex mt-3'>
+                            <div className='d-flex mt-3 justify-content-end'>
+
+                                {
+                                    !(Account.overdraft) &&
                                     <OverdraftPopover handleSubmit={handleSubmit} setOverdraft={setOverdraft} overdraft={overdraft}>
-                                        <Button size="sm" className='ms-auto'>
+                                        <Button size="sm">
                                             <Spinner
                                                 as="span"
                                                 animation="border"
@@ -152,8 +173,12 @@ const AccountGeneralData = ({ Account, Client, setAccounts }) => {
                                             {t("Add overdraft")}
                                         </Button>
                                     </OverdraftPopover>
-                                </div>
-                            }
+                                }
+                                {
+                                    (accountAndTotalBalanceZero || clientDisabled) &&
+                                    <Button size="sm" className="ms-2" onClick={toggleClientStatus}>{Client.enabled ? t("Disable client") : t("Enable client")}</Button>
+                                }
+                            </div>
                         </Col>
                     </Row>
                 </Container>

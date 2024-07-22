@@ -31,7 +31,7 @@ const ClientSelector = ({ Clients }) => {
     return (
         <Col className="section growOpacity">
             <div className="header d-flex">
-                <h1 className="title">{t("Clients supervision")}</h1>
+                <h1 className="title fw-normal">{t("Clients supervision")}</h1>
                 <Button className="ms-auto" onClick={() => history.push("/DashBoard/clientsSupervision/create-client")}>
                     {t("Create client")}
                 </Button>

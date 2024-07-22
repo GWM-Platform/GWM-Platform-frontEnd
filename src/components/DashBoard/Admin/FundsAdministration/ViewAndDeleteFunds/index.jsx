@@ -4,11 +4,16 @@ import { Col } from 'react-bootstrap'
 import FundsTable from './FundsTable'
 import FundsSearch from './FundsSearch'
 import NoFunds from './NoFunds'
+import { useTranslation } from 'react-i18next';
 
-const ViewDeleteAndCreateFunds = ({Funds, SearchText, handleSearch, cancelSearch, AssetTypes, FilteredFunds, chargeFunds, setAction, Action }) => {
+const ViewDeleteAndCreateFunds = ({ Funds, SearchText, handleSearch, cancelSearch, AssetTypes, FilteredFunds, chargeFunds, setAction, Action }) => {
+    const { t } = useTranslation()
 
     return (
         <Col sm="12" className="ViewDeleteAndCreateFunds">
+            <div className="header-with-border">
+                <h1 className="title">{t("Funds")}</h1>
+            </div>
             {Funds.length > 0 ?
                 <>
                     <FundsSearch

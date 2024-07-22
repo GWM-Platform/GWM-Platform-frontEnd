@@ -1077,5 +1077,22 @@
   "Fund disabled": "Fondo deshabilitado",
   "Grid View": "Vista de grilla",
   "Table View": "Vista de tabla",
-  "Fund liquidation": "Liquidación de fondo"
+  "Enabled": "Habilitado",
+  "Email verified": "Email verificado",
+  "Email not verified": "Email no verificado",
+  "Access enabled": "Acceso habilitado",
+  "Access disabled": "Acceso deshabilitado",
+  "Disable access": "Deshabilitar acceso",
+  "Enable access": "Habilitar acceso",
+  "Another admin must approve this operation": "Otro administrador debe aprobar esta operación",
+  "Users administration": "Administración de usuarios",
+  "Phone": "Teléfono",
+  "Administrator": "Administrador",
+  "Users": "Usuarios",
+  "Fund liquidation": "Liquidación de fondo",
+  "Disable client": "Deshabilitar cliente",
+  "Enable client": "Habilitar cliente",
+  "The client you are trying to use is disabled": "El cliente que esta intentando utilizar está deshabilitado",
+  "Please contact administration for assistance in regaining access to it": "Comuníquese con la administración para obtener ayuda y recuperar el acceso a él",
+  "Client disabled": "Cliente deshabilitado"
 }

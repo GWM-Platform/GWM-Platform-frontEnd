@@ -159,7 +159,7 @@ const GeneralInfo = ({ fullSettlement, setFullSettlement, clients }) => {
 
     return (
         <div className="general-info box-shadow">
-            <h1 className="mt-0">
+            <h1 className="mt-0 fw-normal">
                 {t("APL")}
             </h1>
             <Row>

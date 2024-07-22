@@ -40,7 +40,7 @@ const EditAssets = ({ data, EditRequest, handleChange, Assets, Action, setAction
     return (
         <div className="editForm">
             <div className="header">
-                <h1 className="title">
+                <h1 className="title fw-normal">
                     {t("Asset edit form for")}{" \""}{Assets[Action.Asset].name}{"\""}
                 </h1>
                 <FontAwesomeIcon className="button icon" onClick={() => { setAction({ ...Action, ...{ action: -1, Asset: -1 } }) }} icon={faChevronCircleLeft} />

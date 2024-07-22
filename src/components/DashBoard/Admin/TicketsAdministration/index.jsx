@@ -126,7 +126,7 @@ const TicketsAdministration = () => {
                                 <>
                                     <Col xs="12">
                                         <div className="header">
-                                            <h1 className="title">{t("Tickets administration")}</h1>
+                                            <h1 className="title fw-normal">{t("Tickets administration")}</h1>
                                         </div>
                                     </Col>
                                     <Col md="6">

@@ -120,7 +120,7 @@ const CreateFunds = ({ data, setData, CreateRequest, handleChange, Action, setAc
     return (
         <div className="editForm">
             <div className="header">
-                <h1 className="title">
+                <h1 className="title fw-normal">
                     {t("Fund Create form")}
                 </h1>
                 <FontAwesomeIcon className="button icon" onClick={() => { setAction({ ...Action, ...{ action: -1, fund: -1 } }) }} icon={faChevronCircleLeft} />
