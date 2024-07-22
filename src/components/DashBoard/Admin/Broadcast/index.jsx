@@ -210,7 +210,7 @@ const Broadcast = () => {
                     })
                 )]
             : []
-    }, [clients])
+    }, [clientStatus, clients])
 
     const filterOption = ({ label, value }, string) => {
         // default search
