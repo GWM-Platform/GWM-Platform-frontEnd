@@ -38,7 +38,8 @@
   --bs-tooltip-max-width: 250px;
 }
 
-.card-body, .card-body *{
+.card-body,
+.card-body * {
   overscroll-behavior-x: none;
 }
 /* width */
@@ -93,6 +94,16 @@ body,
   flex: none;
 }
 
+.btn-check:checked + .btn,
+.btn-check + .btn.active {
+  color: var(--bs-btn-active-color);
+  background-color: var(--blue-main);
+  border-color: var(--blue-main)!important;
+}
+
+.btn-check + .btn {
+  border-color: var(--blue-main)!important;
+}
 .tabContent {
   overflow-y: overlay;
   -webkit-overflow-scrolling: touch;

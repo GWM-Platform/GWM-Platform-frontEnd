@@ -10,6 +10,8 @@ import usersReducer from 'Slices/DashboardUtilities/usersSlice'
 import operationsReducer from 'Slices/DashboardUtilities/operationsSlice'
 import fundsReducer from 'Slices/DashboardUtilities/fundsSlice'
 import PrintHtmlReducer from 'Slices/DashboardUtilities/PrintHtmlSlice'
+import movementsReduecer from 'Slices/DashboardUtilities/movementsSlice'
+
 
 export default configureStore({
   reducer: {
@@ -23,5 +25,6 @@ export default configureStore({
     operations: operationsReducer,
     funds: fundsReducer,
     PrintHtml: PrintHtmlReducer,
+    movements: movementsReduecer
   },
 }) 

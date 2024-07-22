@@ -82,7 +82,7 @@ const UserDashBoard = () => {
     const { t } = useTranslation();
 
     useEffect(() => {
-        if ((ClientSelected.enabled === false && UserClients.content.find(client => client.enabled)) || admin) {
+        if ((ClientSelected.enabled === false && (UserClients.content.find(client => client.enabled) || admin))) {
             setIndexClientSelected(-1)
         }
     }, [ClientSelected.enabled, UserClients, admin, setIndexClientSelected])

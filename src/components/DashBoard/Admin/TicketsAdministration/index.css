@@ -12,7 +12,17 @@
 .TicketsAdministration .header .title {
   font-size: 30px;
 }
-
+#unified-table {
+  th,
+  td {
+    border-width: 1px;
+  }
+}
+@media screen{
+  .printContainer {
+      height: 100%;
+  }              
+}
 .TicketsAdministration .verticalTop th {
   vertical-align: top;
 }
