@@ -231,7 +231,7 @@ const TicketsAdministration = () => {
                                             <ClientSelector client={client} setClient={setClient} />
                                         </Col>
                                         {
-                                            tableView &&
+                                            tableView && false &&
                                             <>
                                                 <Col md="6">
                                                     <Form.Group className="mt-2 mb-3">
