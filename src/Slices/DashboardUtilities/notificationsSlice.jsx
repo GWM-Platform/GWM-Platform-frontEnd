@@ -22,6 +22,9 @@ const notificationsSlice = createSlice({
             if (notification) {
                 notification.read = true
             }
+        },
+        markAllAsRead: (state, action) => {
+            state.notifications.notifications = state.notifications.notifications.map(notification => ({ ...notification, read: true }))
         }
     },
     extraReducers(builder) {
@@ -39,7 +42,7 @@ const notificationsSlice = createSlice({
             })
     }
 })
-export const { reset, markAsRead } = notificationsSlice.actions
+export const { reset, markAsRead, markAllAsRead } = notificationsSlice.actions
 
 export default notificationsSlice.reducer
 
@@ -59,7 +62,7 @@ export const fetchNotifications = createAsyncThunk(
                 take: params.take || 50,
                 client: params.client,
                 startDate: params?.startDate ? moment(params.startDate).format(moment.HTML5_FMT.DATE) : null,
-                endDate: params?.endDate ? moment(params.endDate).add(1,"day").format(moment.HTML5_FMT.DATE) : null,
+                endDate: params?.endDate ? moment(params.endDate).add(1, "day").format(moment.HTML5_FMT.DATE) : null,
             }
         })
         return response.data
