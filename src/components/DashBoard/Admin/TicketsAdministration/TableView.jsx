@@ -11,18 +11,25 @@ import { DashBoardContext } from 'context/DashBoardContext';
 import moment from 'moment';
 import NoMovements from 'components/DashBoard/GeneralUse/NoMovements';
 import Loading from 'components/DashBoard/GeneralUse/Loading';
+import { unMaskNumber } from '.';
 
 export const TableView = ({ state, client, FilterOptions }) => {
+
+    const movementsStatus = useSelector(state => state.movements.status)
+    const movements = useSelector(selectAllMovements)
+
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(fetchMovements({
+            ...FilterOptions,
             state,
             client,
-            ...FilterOptions
+            ...FilterOptions.fromAmount ? { fromAmount: unMaskNumber({ value: FilterOptions.fromAmount }) } : {},
+            ...FilterOptions.toAmount ? { toAmount: unMaskNumber({ value: FilterOptions.toAmount }) } : {},
         }))
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [client, dispatch, state, FilterOptions])
-    const movements = useSelector(selectAllMovements)
-    const movementsStatus = useSelector(state => state.movements.status)
+
     const [sortField, setSortField] = useState(null);
     const [sortDirection, setSortDirection] = useState('asc');
     const sortData = (field) => {
@@ -87,9 +94,9 @@ export const TableView = ({ state, client, FilterOptions }) => {
     ), [movements?.movements, sortDirection, sortField, t])
     // sort multiples
     return (
-        <Row id="table-container" className='flex-grow-1 h-100 w-100 overflow-hidden' style={{ flexShrink: 1 }}>
+        <Row id="table-container" className={`flex-grow-1 w-100 ${(movementsStatus === "loading" || sortedMovements.length === 0) ? "overflow-hidden" : ""}`} style={{ flexShrink: 1 }}>
             <Col xs="12" className="h-100">
-                <div className="h-100" style={{ overflow: "auto" }}>
+                <div className={(movementsStatus === "loading" || sortedMovements.length === 0) ? "h-100" : ""} style={{ overflow: "auto" }}>
                     {
                         movementsStatus === "loading" ? <Loading className="h-100" /> :
                             (

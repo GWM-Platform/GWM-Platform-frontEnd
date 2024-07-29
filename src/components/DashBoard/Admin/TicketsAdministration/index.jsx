@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { ButtonGroup, Col, Form, Row, ToggleButton } from 'react-bootstrap'
 import StateSelector from './StateSelector'
@@ -11,6 +11,8 @@ import TableIcon from '../APL/icons/TableIcon';
 import GridIcon from '../APL/icons/GridIcon';
 import { TableView } from './TableView';
 import { PrintButton, PrintDefaultWrapper, usePrintDefaults } from 'utils/usePrint';
+import SingleSelectById from './SingleSelectById';
+import CurrencyInput from '@osdiab/react-currency-input-field';
 
 const TicketsAdministration = () => {
 
@@ -164,15 +166,34 @@ const TicketsAdministration = () => {
 
     const FilterOptionsDefaultState = {
         fromDate: "",
-        toDate: ""
+        toDate: "",
+        filterMotive: "",
+        fromAmount: "",
+        toAmount: ""
     }
 
     const [FilterOptions, setFilterOptions] = useState(FilterOptionsDefaultState)
     const handleChangeFilterOptions = (e) => (setFilterOptions(prevState => ({ ...prevState, [e.target.id]: e.target.value })))
+    const options = useMemo(() => [
+        { value: 'DEPOSIT', label: t('DEPOSIT') },
+        { value: 'WITHDRAWAL', label: t('WITHDRAWAL') },
+        { value: 'STAKE_BUY', label: t('STAKE_BUY_') },
+        { value: 'STAKE_SELL', label: t('STAKE_SELL_') },
+        { value: 'REPAYMENT', label: t('REPAYMENT') },
+        { value: 'FIXED_DEPOSIT_CREATE', label: t('FIXED_DEPOSIT_CREATE_') },
+        { value: 'FIXED_DEPOSIT_CLOSE', label: t('FIXED_DEPOSIT_CLOSE_') },
+        { value: 'TRANSFER_SEND', label: t('TRANSFER_SEND') },
+        { value: 'TRANSFER_RECEIVE', label: t('TRANSFER_RECEIVE') },
+        { value: 'BID_OFFER', label: t('BID_OFFER_') },
+        { value: 'SHARE_TRANSFER_SEND', label: t('SHARE_TRANSFER_SEND') },
+        { value: 'SHARE_TRANSFER_RECEIVE', label: t('SHARE_TRANSFER_RECEIVE') },
+        { value: 'PROFIT_DEPOSIT', label: t('PROFIT_DEPOSIT') },
+        { value: 'PENALTY_WITHDRAWAL', label: t('PENALTY_WITHDRAWAL') }
+    ], [t])
 
     return (
         <PrintDefaultWrapper className="TicketsAdministration container" aditionalStyles={aditionalStyles} ref={componentRef} getPageMargins={getPageMargins} title={title} >
-            <Row id="section-row" className={`pb-2 ${tableView ? "flex-nowrap h-100 w-100 flex-column overflow-hidden" : ""}`}>
+            <Row id="section-row" className={`pb-2 ${tableView ? "flex-nowrap h-100 flex-column" : ""}`}>
                 {
                     TransactionStates.fetching ?
                         <Message selected={0} messageVariants={messageVariants} />
@@ -224,17 +245,56 @@ const TicketsAdministration = () => {
                                         </Col>
                                     </Row>
                                     <Row className="pb-2" id="filters">
-                                        <Col md="6">
+                                        <Col md={tableView ? "4" : "6"}>
                                             <StateSelector handleChange={handleChange} TransactionStates={TransactionStates} />
                                         </Col>
-                                        <Col md="6">
+                                        <Col md={tableView ? "4" : "6"}>
                                             <ClientSelector client={client} setClient={setClient} />
                                         </Col>
                                         {
-                                            tableView && false &&
+                                            tableView &&
                                             <>
-                                                <Col md="6">
-                                                    <Form.Group className="mt-2 mb-3">
+                                                <Col md="4">
+                                                    <Form.Group className="mt-2 mb-2">
+                                                        <Form.Label>{t("Concept")}</Form.Label>
+                                                        <SingleSelectById isClearable placeholder={t('Concept')} handleChange={handleChangeFilterOptions} FormData={FilterOptions} id='filterMotive' options={options} />
+                                                    </Form.Group>
+                                                </Col>
+                                                <Col md="3">
+                                                    <Form.Group className="mb-2">
+                                                        <Form.Label>{t("from_amount")}</Form.Label>
+                                                        <CurrencyInput
+                                                            name="currencyInput"
+                                                            decimalsLimit={2}
+                                                            decimalSeparator={decimalSeparator}
+                                                            groupSeparator={groupSeparator}
+                                                            onValueChange={(value, name, a) => { handleChangeFilterOptions({ target: { id: "fromAmount", value: value } }) }}
+                                                            id="fromAmount"
+                                                            placeholder={t('from_amount')}
+                                                            className="form-control"
+                                                            value={FilterOptions.fromAmount}
+                                                        />
+                                                    </Form.Group>
+                                                </Col>
+
+                                                <Col md="3">
+                                                    <Form.Group className="mb-2">
+                                                        <Form.Label>{t("to_amount")}</Form.Label>
+                                                        <CurrencyInput
+                                                            name="currencyInput"
+                                                            decimalsLimit={2}
+                                                            decimalSeparator={decimalSeparator}
+                                                            groupSeparator={groupSeparator}
+                                                            onValueChange={(value, name, a) => { handleChangeFilterOptions({ target: { id: "toAmount", value: value } }) }}
+                                                            id="toAmount"
+                                                            placeholder={t('to_amount')}
+                                                            className="form-control"
+                                                            value={FilterOptions.toAmount}
+                                                        />
+                                                    </Form.Group>
+                                                </Col>
+                                                <Col md="3">
+                                                    <Form.Group className="mb-2">
                                                         <Form.Label>{t("from_date")}</Form.Label>
                                                         <Form.Control
                                                             placeholder={t('from_date')}
@@ -246,8 +306,8 @@ const TicketsAdministration = () => {
                                                         />
                                                     </Form.Group>
                                                 </Col>
-                                                <Col md="6">
-                                                    <Form.Group className="mt-2 mb-3">
+                                                <Col md="3">
+                                                    <Form.Group className="mb-2">
                                                         <Form.Label>{t("to_date")}</Form.Label>
                                                         <Form.Control
                                                             placeholder={t('to_date')}
@@ -277,3 +337,12 @@ const TicketsAdministration = () => {
 export default TicketsAdministration
 
 
+export const decimalSeparator = process.env.REACT_APP_DECIMALSEPARATOR ?? '.'
+export const groupSeparator = process.env.REACT_APP_GROUPSEPARATOR ?? ','
+export const unMaskNumber = ({
+    decimalSymbol = decimalSeparator,
+    thoushandSeparatorSymbol = groupSeparator,
+    value = '',
+    prefix = '$',
+    suffix = '%'
+  }) => (value ? (value + "") : "").replaceAll(decimalSymbol, '.').replaceAll(' ', '').replaceAll(prefix, '').replaceAll(suffix, '')

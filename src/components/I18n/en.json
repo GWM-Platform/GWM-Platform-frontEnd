@@ -16,6 +16,15 @@
     "FIXED_DEPOSIT_CREATE": "Investment in time deposit #{{fixedDeposit}}",
     "FIXED_DEPOSIT_CLOSE": "Close of time deposit #{{fixedDeposit}}",
     "BID_OFFER": "Investment in personalized time deposit #{{fixedDeposit}}",
+    "FIXED_DEPOSIT_CREATE_": "Investment in time deposit",
+    "FIXED_DEPOSIT_CLOSE_": "Close of time deposit",
+    "BID_OFFER_": "Investment in personalized time deposit",
+    "SHARE_TRANSFER_SEND": "Outgoing share transfer",
+    "SHARE_TRANSFER_RECEIVE": "Incoming share transfer",
+    "STAKE_BUY_": "Purchase of shares",
+    "STAKE_SELL_": "Sale of shares",
+    "from_amount": "Min amount",
+    "to_amount": "Max amount",
     "Pendiente": "Pending",
     "Aprobado": "Approved",
     "Denegado": "Denied",
@@ -801,6 +810,6 @@
     "_at_quote": "at",
     "OVERDRAFT_UPDATE": "Overdraft update",
     "SHARE_TRANSFER_CREATE": "Share transfer creation",
-    "LIQUIDATE_FUND" :"Fund settlement",
+    "LIQUIDATE_FUND": "Fund settlement",
     "share_price": "share price"
 }
