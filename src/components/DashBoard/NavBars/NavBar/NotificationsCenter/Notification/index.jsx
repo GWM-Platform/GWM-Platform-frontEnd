@@ -78,6 +78,26 @@ const Notification = ({ notification }) => {
         })
     }
 
+    const couldGoToDetail = notification.type === "OVERDRAFT_UPDATE" || notification.movementId
+    const goToDetail = () => {
+        ApiMarkAsRead(false)
+        if (notification.type === "OVERDRAFT_UPDATE") {
+            redirect(`/DashBoard/Accounts?highlight=overdraft`)
+        } else {
+            if (notification.movement.transferId) {
+                redirect(`/DashBoard/history?id=${notification?.movement?.transferId}&type=transfers&SelectedTab=Transfers`)
+            } else {
+                if (notification.movement.shareTransferId) {
+                    goToShareTransfer(notification.movement.shareTransferId)
+                } else {
+                    ApiMarkAsRead(false)
+                    redirect(`/DashBoard/history?id=${notification?.movementId}&type=m`)
+                }
+            }
+        }
+    }
+
+
     const notificationMenu = (
         <Popover className="notification-options" id={`notification-options-${notification.id}`}>
             <Popover.Body ref={ref} className="p-0" >
@@ -138,12 +158,14 @@ const Notification = ({ notification }) => {
             <div
                 className='notification-resume' title={t(notification.eventType)}
                 onClick={() => {
-                    if (notification.path) {
-                        history.push(notification.path)
+                    if (couldGoToDetail) {
+                        goToDetail()
                         setShow(false)
                     }
                 }}
-                style={{ cursor: notification.path ? "pointer" : "" }}
+
+
+                style={{ cursor: couldGoToDetail ? "pointer" : "" }}
             >
                 <h2 title={t(
                     ((
