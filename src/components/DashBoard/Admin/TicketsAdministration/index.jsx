@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { ButtonGroup, Col, Form, Row, ToggleButton } from 'react-bootstrap'
+import { Button, ButtonGroup, Col, Form, Row, ToggleButton } from 'react-bootstrap'
 import StateSelector from './StateSelector'
 import Message from './Message'
 import Tables from './Tables'
@@ -13,6 +13,9 @@ import { TableView } from './TableView';
 import { PrintButton, PrintDefaultWrapper, usePrintDefaults } from 'utils/usePrint';
 import SingleSelectById from './SingleSelectById';
 import CurrencyInput from '@osdiab/react-currency-input-field';
+import { faFileExcel } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { exportToExcel } from 'utils/exportToExcel';
 
 const TicketsAdministration = () => {
 
@@ -212,6 +215,20 @@ const TicketsAdministration = () => {
                                                 {
                                                     tableView && <PrintButton className="me-2" variant="info" handlePrint={handlePrint} />
                                                 }
+                                                {
+                                                    tableView &&
+                                                    <Button className="me-2 print-button no-style" variant="info" onClick={() => exportToExcel(
+                                                        {
+                                                            filename: "Tickets",
+                                                            sheetName: "Tickets",
+                                                            dataTableName: "unified-tickets-table"
+                                                            // excludedColumns: ["actions"],
+                                                            // plainNumberColumns: ["unit_floor", "unit_unitNumber", "unit_typology"]
+                                                        }
+                                                    )} >
+                                                        <FontAwesomeIcon icon={faFileExcel} />
+                                                    </Button>
+                                                }
                                                 <ButtonGroup>
                                                     <ToggleButton
                                                         style={{ lineHeight: "1em", display: "flex" }}
@@ -345,4 +362,4 @@ export const unMaskNumber = ({
     value = '',
     prefix = '$',
     suffix = '%'
-  }) => (value ? (value + "") : "").replaceAll(decimalSymbol, '.').replaceAll(' ', '').replaceAll(prefix, '').replaceAll(suffix, '')
+}) => (value ? (value + "") : "").replaceAll(decimalSymbol, '.').replaceAll(' ', '').replaceAll(prefix, '').replaceAll(suffix, '')

@@ -32,6 +32,7 @@
 		"check-password-strength": "^2.0.3",
 		"chokidar": "^3.5.2",
 		"decimal.js": "^10.3.1",
+		"exceljs": "^4.4.0",
 		"html2canvas": "^1.0.0",
 		"i18next": "^20.3.2",
 		"i18next-browser-languagedetector": "^6.1.2",

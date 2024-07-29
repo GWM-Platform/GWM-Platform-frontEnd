@@ -103,7 +103,7 @@ export const TableView = ({ state, client, FilterOptions }) => {
                                 (sortedMovements.length === 0) ?
                                     <NoMovements className="h-100" />
                                     :
-                                    <Table id="unified-table" striped bordered hover className="mb-auto m-0 p-0" style={{ borderCollapse: "separate", borderSpacing: 0 }}>
+                                    <Table data-table-name="unified-tickets-table" id="unified-table" striped bordered hover className="mb-auto m-0 p-0" style={{ borderCollapse: "separate", borderSpacing: 0 }}>
                                         <thead style={{ position: "sticky", top: 0, background: "white" }}>
                                             <tr>
                                                 <th className="tableHeader" onClick={() => sortData('createdAt')} style={{ cursor: "pointer" }}>
