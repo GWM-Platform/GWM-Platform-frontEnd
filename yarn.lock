@@ -1233,6 +1233,11 @@
   resolved "https://registry.yarnpkg.com/@csstools/selector-specificity/-/selector-specificity-2.1.1.tgz#c9c61d9fe5ca5ac664e1153bb0aa0eba1c6d6308"
   integrity sha512-jwx+WCqszn53YHOfvFMJJRd/B2GqkCBt+1MJSG6o5/s8+ytHMvDZXsJgUEWLk12UnLd7HYKac4BYU5i/Ron1Cw==
 
+"@david.kucsai/react-pdf-table@^0.4.1":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@david.kucsai/react-pdf-table/-/react-pdf-table-0.4.1.tgz#e34da7c11afff0823608bdb3a2127366d0c30b39"
+  integrity sha512-YCnRtvbiB3/OHIYZ4pHlOE6VChK8I8SqT1AqmRnUOUrPEKxNviZyZmMHTUhqORtUAYNUsqFBoLSRNBXrzRfcsw==
+
 "@emotion/babel-plugin@^11.10.5":
   version "11.10.5"
   resolved "https://registry.yarnpkg.com/@emotion/babel-plugin/-/babel-plugin-11.10.5.tgz#65fa6e1790ddc9e23cc22658a4c5dea423c55c3c"

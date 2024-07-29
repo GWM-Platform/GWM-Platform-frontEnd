@@ -68,7 +68,7 @@ export const exportToExcel = async ({ filename = "Archivo", sheetName = "Hoja 1"
             }
 
 
-            const regex = /^-?U\$D ?[0-9().,-]*$/;
+            const regex = /^[+-]?U\$D ?[0-9().,-]*$/;
             if (regex.test(value) && value !== "" && value !== "-") {
                 const isPlainNumber = cell.getAttribute("plain-text") === "true" || plainNumberColumns.includes(cell.getAttribute("data-column-name"))
                 const isStrictPlainNumber = strictPlainNumberColumns.includes(cell.getAttribute("data-column-name"))

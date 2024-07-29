@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Col, Nav } from 'react-bootstrap';
+import { Container, Col, Nav, Button } from 'react-bootstrap';
 
 import { useTranslation } from "react-i18next";
 import { useState } from 'react';
@@ -14,6 +14,8 @@ import FundDetail from './FundDetail';
 import './index.css'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import { PrintButton, PrintDefaultWrapper, usePrintDefaults } from 'utils/usePrint';
+import { faFileExcel } from '@fortawesome/free-regular-svg-icons';
+import { exportToExcel } from 'utils/exportToExcel';
 
 const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
 
@@ -85,14 +87,28 @@ const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, reset
     return (
         <PrintDefaultWrapper className="movementsMainCardAccount growAnimation pt-2" aditionalStyles={aditionalStyles} ref={componentRef} getPageMargins={getPageMargins} title={title} >
             <div className="main-card-header bg-white info ms-0 mb-2 px-0">
-                <div className="d-flex justify-content-between align-items-start pe-2">
-                    <Col className="d-flex justify-content-between pe-5" sm="auto">
+                <div className="d-flex align-items-start pe-2">
+                    <Col className="d-flex justify-content-between pe-5 me-auto" sm="auto">
                         <h1 className="m-0 title px-2">
                             {t("Cash")}
                         </h1>
                     </Col>
                     <Col xs="auto">
                         <PrintButton className="w-100 h-100" variant="info" handlePrint={handlePrint} />
+                    </Col>
+                    <Col xs="auto" className='ms-2'>
+
+                        <Button className="me-2 print-button no-style" variant="info" onClick={() => exportToExcel(
+                            {
+                                filename: "Cuenta corriente",
+                                sheetName: "Cuenta corriente",
+                                dataTableName: "cta-cte-movements",
+                                excludedColumns: ["ticket", "actions"],
+                                // plainNumberColumns: ["unit_floor", "unit_unitNumber", "unit_typology"]
+                            }
+                        )} >
+                            <FontAwesomeIcon icon={faFileExcel} />
+                        </Button>
                     </Col>
                 </div>
                 <div className="d-flex justify-content-between align-items-end pe-2 pb-2 border-bottom-main">
@@ -132,7 +148,6 @@ const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, reset
                         history.replace({ pathname: location.pathname, search: params.toString() })
                         setSelectedTab(e)
                     }}
-
                 >
                     <Nav.Item>
                         <Nav.Link eventKey={"Movements"}>{t("Transactions")}</Nav.Link>

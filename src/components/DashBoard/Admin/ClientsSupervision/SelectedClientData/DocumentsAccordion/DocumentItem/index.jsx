@@ -181,7 +181,7 @@ const DocumentItem = ({ Document, getDocuments, client }) => {
                                 TagsCollapsed ?
                                     <>
                                         <Badge className="tag overview" bg="secondary">
-                                            {t(Document.onyAdmin ? "Admin" : "Admin and client")}
+                                            {t(Document.adminDocument ? "Admin" : "Admin and client")}
                                         </Badge>
                                         {
                                             !!(hasTags) &&
