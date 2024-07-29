@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Col, Nav, Button } from 'react-bootstrap';
+import { Container, Col, Nav, Button, Spinner } from 'react-bootstrap';
 
 import { useTranslation } from "react-i18next";
 import { useState } from 'react';
@@ -16,6 +16,9 @@ import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import { PrintButton, PrintDefaultWrapper, usePrintDefaults } from 'utils/usePrint';
 import { faFileExcel } from '@fortawesome/free-regular-svg-icons';
 import { exportToExcel } from 'utils/exportToExcel';
+import MovementReceipt from 'TableExport/MovementTable';
+import ReactPDF from '@react-pdf/renderer';
+import { DashBoardContext } from 'context/DashBoardContext';
 
 const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
 
@@ -60,7 +63,7 @@ const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, reset
         //eslint-disable-next-line
     }, [])
 
-    const { handlePrint, getPageMargins, componentRef, title, aditionalStyles } = usePrintDefaults(
+    const { getPageMargins, componentRef, title, aditionalStyles } = usePrintDefaults(
         {
             aditionalStyles: `@media print { 
                 .historyContent{ padding: 0!important; page-break-before: avoid; }
@@ -84,6 +87,26 @@ const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, reset
         }
     )
 
+    const [Movements, setMovements] = useState({ movements: 0, total: 0 })
+    const [rendering, setRendering] = useState(false)
+    const { getMoveStateById } = useContext(DashBoardContext)
+
+    const renderAndDownloadTablePDF = async () => {
+        setRendering(true)
+        const blob = await ReactPDF.pdf(<MovementReceipt movements={Movements.movements} getMoveStateById={getMoveStateById} />).toBlob()
+        const url = URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = url
+        link.setAttribute('download', `${t("Cash_movements")}.pdf`)
+        // 3. Append to html page
+        document.body.appendChild(link)
+        // 4. Force download
+        link.click()
+        // 5. Clean up and remove the link
+        link.parentNode.removeChild(link)
+        setRendering(false)
+    }
+
     return (
         <PrintDefaultWrapper className="movementsMainCardAccount growAnimation pt-2" aditionalStyles={aditionalStyles} ref={componentRef} getPageMargins={getPageMargins} title={title} >
             <div className="main-card-header bg-white info ms-0 mb-2 px-0">
@@ -94,14 +117,19 @@ const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, reset
                         </h1>
                     </Col>
                     <Col xs="auto">
-                        <PrintButton className="w-100 h-100" variant="info" handlePrint={handlePrint} />
+                        {
+                            rendering ?
+                                <Spinner animation="border" size="sm" />
+                                :
+                                <PrintButton className="w-100 h-100" variant="info" handlePrint={renderAndDownloadTablePDF} />
+                        }
                     </Col>
                     <Col xs="auto" className='ms-2'>
 
                         <Button className="me-2 print-button no-style" variant="info" onClick={() => exportToExcel(
                             {
-                                filename: "Cuenta corriente",
-                                sheetName: "Cuenta corriente",
+                                filename: t("Cash_movements"),
+                                sheetName: t("Cash_movements"),
                                 dataTableName: "cta-cte-movements",
                                 excludedColumns: ["ticket", "actions"],
                                 // plainNumberColumns: ["unit_floor", "unit_unitNumber", "unit_typology"]
@@ -162,7 +190,9 @@ const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, reset
                 {
                     {
                         Movements:
-                            <MovementsTab SearchById={SearchById} setSearchById={setSearchById} Fund={Fund}
+                            <MovementsTab
+                                Movements={Movements} setMovements={setMovements}
+                                SearchById={SearchById} setSearchById={setSearchById} Fund={Fund}
                                 resetSearchById={resetSearchById} handleMovementSearchChange={handleMovementSearchChange} />,
                         Transfers:
                             <TransfersTab SearchById={SearchById} setSearchById={setSearchById} Fund={Fund}

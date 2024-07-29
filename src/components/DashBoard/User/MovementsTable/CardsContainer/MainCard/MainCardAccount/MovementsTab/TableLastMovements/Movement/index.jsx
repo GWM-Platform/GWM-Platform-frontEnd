@@ -36,7 +36,6 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
 ));
 
 const Movement = ({ content, actions, reloadData }) => {
-  console.log(content)
   var momentDate = moment(content.createdAt);
   const { t } = useTranslation();
   const { getMoveStateById, AccountSelected, couldSign, hasPermission, toLogin, hasSellPermission, hasBuyPermission, ClientSelected } = useContext(DashBoardContext)

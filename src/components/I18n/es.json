@@ -1108,5 +1108,6 @@
   "Enable client": "Habilitar cliente",
   "The client you are trying to use is disabled": "El cliente que esta intentando utilizar está deshabilitado",
   "Please contact administration for assistance in regaining access to it": "Comuníquese con la administración para obtener ayuda y recuperar el acceso a él",
-  "Client disabled": "Cliente deshabilitado"
+  "Client disabled": "Cliente deshabilitado",
+  "Cash_movements": "Movimientos de cuenta corriente"
 }
