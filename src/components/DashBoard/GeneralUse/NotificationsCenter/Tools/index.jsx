@@ -1,20 +1,56 @@
 
+import { faCheckCircle, faTimesCircle } from "@fortawesome/free-regular-svg-icons";
 import { faSlidersH } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { fetchNotifications } from "Slices/DashboardUtilities/notificationsSlice";
+import { fetchNotifications, markAllAsRead, selectAllNotifications } from "Slices/DashboardUtilities/notificationsSlice";
 import { DashBoardContext } from "context/DashBoardContext";
 import moment from "moment";
-import React from "react";
+import React, { useMemo } from "react";
 import { useState } from "react";
 import { useContext } from "react";
 import { Accordion, AccordionContext, Button, Col, Form, Row, useAccordionButton } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import axios from 'axios'
 
 const Tools = () => {
 
     const { t } = useTranslation();
-    const { ClientSelected } = useContext(DashBoardContext);
+    const { DashboardToastDispatch, ClientSelected } = useContext(DashBoardContext)
+    const notifications = useSelector(selectAllNotifications)
+
+    const unreadNotifications = useMemo(
+        () => {
+            return notifications?.notifications?.filter(notification => !notification.read)
+        },
+        [notifications?.notifications],
+    )
+
+
+    const ApiMarkAllAsRead = (showToast = true) => {
+        axios.patch(`/notifications`,
+            {
+                notificationIds: unreadNotifications?.map(notification => notification.id)
+            },
+            {
+                params: {
+                    client: ClientSelected.id
+                }
+            }
+        ).then(function () {
+            if (showToast) {
+                DashboardToastDispatch({ type: "create", toastContent: { Icon: faCheckCircle, Title: "All notifications have been marked as read" } });
+            }
+            dispatch(markAllAsRead({ id: unreadNotifications?.map(notification => notification.id) }))
+        }).catch((err) => {
+            if (err.message !== "canceled") {
+                if (showToast) {
+                    DashboardToastDispatch({ type: "create", toastContent: { Icon: faTimesCircle, Title: "There was an error marking all the notifications as read" } });
+                }
+            }
+        });
+    }
+
     const dispatch = useDispatch()
 
     //eslint-disable-next-line
@@ -56,8 +92,14 @@ const Tools = () => {
             <div
                 className="header d-flex  mb-0">
                 <h1 className="title">{children}</h1>
+                <div className="ms-auto" />
+                {
+                    unreadNotifications.length > 0 &&
+                    <Button className="me-2" type="button" onClick={ApiMarkAllAsRead}>
+                        {t("Mark all as read")}
+                    </Button>
+                }
                 <Button
-                    className="ms-auto"
                     style={{ backgroundColor: isCurrentEventKey ? 'purple' : '' }}
                     onClick={decoratedOnClick}
                     type="button">
@@ -83,6 +125,7 @@ const Tools = () => {
             setValidated(true)
         }
     }
+
 
     return (
         <Accordion >
