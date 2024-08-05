@@ -14,7 +14,7 @@ const ClientDisabled = () => {
                         <Card.Body className="p-4">
                             <h1>{t("Client disabled")}</h1>
                             <h2>{t("The client you are trying to use is disabled")}.</h2>
-                            <h2>{t("Please contact administration for assistance in regaining access to it")}.</h2>
+                            <h2>{t("Contact via email or WhatsApp to receive help")}.</h2>
                         </Card.Body>
                     </Card>
                 </Col>

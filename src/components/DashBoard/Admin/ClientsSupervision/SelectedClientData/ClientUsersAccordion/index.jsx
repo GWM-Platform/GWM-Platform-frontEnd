@@ -27,11 +27,14 @@ const ClientUsersAccordion = ({ client, users, getUsers, ownersAmount }) => {
                                 :
                                 <NoMovements movements={4} />
                     }
-                    <div className="mt-2 d-flex justify-content-end">
-                        <Link to={`/DashBoard/clientsSupervision/${client.id}/connectUserToClient`}>
-                            <Button disabled={users.fetching}>{t("Connect a new user")}</Button>
-                        </Link>
-                    </div>
+                    {
+                        client.enabled &&
+                        <div className="mt-2 d-flex justify-content-end">
+                            <Link to={`/DashBoard/clientsSupervision/${client.id}/connectUserToClient`}>
+                                <Button disabled={users.fetching}>{t("Connect a new user")}</Button>
+                            </Link>
+                        </div>
+                    }
                 </Accordion.Body>
             </Accordion.Item>
         </Accordion>

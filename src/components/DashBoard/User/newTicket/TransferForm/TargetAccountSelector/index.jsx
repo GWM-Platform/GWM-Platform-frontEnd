@@ -254,7 +254,7 @@ const TargetAccountSelector = ({ data, setData, TargetAccount, setTargetAccount,
                     <Form.Control
                         onKeyDown={(e) => handleOnkeyDown(e)}
                         placeholder={t("Enter account alias")} value={data.alias} type="text" id="alias" required
-                        className={`${TargetAccount.fetched || validated ? TargetAccount.valid ? "hardcoded-valid" : "hardcoded-invalid" : "hardcoded-novalidate"}`}
+                        className={`${TargetAccount.fetched || validated ? (TargetAccount.valid && !(data.alias === accountAlias)) ? "hardcoded-valid" : "hardcoded-invalid" : "hardcoded-novalidate"}`}
                         onChange={(e) => {
                             handleChange(e);
                             filterAlias(e.target.value)
@@ -262,6 +262,7 @@ const TargetAccountSelector = ({ data, setData, TargetAccount, setTargetAccount,
                             closeAccordion();
                             setTargetAccount(prevState => ({ ...prevState, ...{ fetching: false, fetched: false, valid: false } }))
                         }}
+                        pattern={data.alias === accountAlias ? '()' : null}
                         onFocus={(e) => handleFocus(e)}
                         disabled={Suggestions.status === "loading" || Suggestions.status === "idle"}
                         onBlur={() => {
@@ -275,18 +276,22 @@ const TargetAccountSelector = ({ data, setData, TargetAccount, setTargetAccount,
                     {
                         <Form.Text className={!TargetAccount.valid ? TargetAccount.fetching ? "" : "text-red" : "text-green"}>
                             {
-                                TargetAccount.fetched ?
-                                    (TargetAccount.valid ?
-                                        t("Looks good") + "!"
-                                        :
-                                        data.alias === accountAlias ?
-                                            t("The target account cannot be your own account")
-                                            :
-                                            t("The alias entered does not correspond to any GWM account")
-                                    )
+                                data.alias === accountAlias ?
+                                    t("The target account cannot be your own account")
                                     :
-                                    TargetAccount.fetching && t("Verifying alias")
+                                    TargetAccount.fetched ?
+                                        (TargetAccount.valid ?
+                                            t("Looks good") + "!"
+                                            :
+                                            data.clientEnabled === false ?
+                                                t("The client you are trying to transfer money to is not enabled")
+                                                :
+                                                t("The alias entered does not correspond to any GWM account")
+                                        )
+                                        :
+                                        TargetAccount.fetching && t("Verifying alias")
                             }
+
                         </Form.Text>
                     }
                 </div>
