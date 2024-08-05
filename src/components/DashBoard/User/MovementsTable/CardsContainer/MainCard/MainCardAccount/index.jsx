@@ -16,7 +16,7 @@ import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import { PrintButton, PrintDefaultWrapper, usePrintDefaults } from 'utils/usePrint';
 import { faFileExcel } from '@fortawesome/free-regular-svg-icons';
 import { exportToExcel } from 'utils/exportToExcel';
-import MovementReceipt from 'TableExport/MovementTable';
+import MovementTable from 'TableExport/MovementTable';
 import ReactPDF from '@react-pdf/renderer';
 import { DashBoardContext } from 'context/DashBoardContext';
 
@@ -94,7 +94,7 @@ const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, reset
     const renderAndDownloadTablePDF = async () => {
         setRendering(true)
         const blob = await ReactPDF.pdf(
-            <MovementReceipt
+            <MovementTable
                 movements={Movements.movements}
                 headerInfo={{
                     clientName:

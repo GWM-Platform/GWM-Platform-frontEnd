@@ -545,11 +545,11 @@ const Movement = ({ content, reloadData }) => {
         !!(content.stateId === 5 && couldSign(content)) &&
         <div className="h-100 d-flex align-items-center justify-content-around">
 
-          <div className={`iconContainer green ${!couldSign(content) || fund.disabled ? "not-allowed" : ""}`}>
+          <div className={`iconContainer green ${!couldSign(content) || fund?.disabled ? "not-allowed" : ""}`}>
             <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => { if (couldSign(content)) { launchModalConfirmation("approve") } }} />
           </div>
 
-          <div className={`iconContainer red ${!couldSign(content) || fund.disabled ? "not-allowed" : ""}`}>
+          <div className={`iconContainer red ${!couldSign(content) || fund?.disabled ? "not-allowed" : ""}`}>
             <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => { if (couldSign(content)) { launchModalConfirmation("deny") } }} />
           </div>
 

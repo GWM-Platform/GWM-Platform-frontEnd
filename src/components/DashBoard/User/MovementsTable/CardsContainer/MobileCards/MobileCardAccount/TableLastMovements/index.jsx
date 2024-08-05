@@ -6,12 +6,14 @@ import { useTranslation } from "react-i18next";
 import { DashBoardContext } from 'context/DashBoardContext';
 import FilterOptionsMobile from '../../FilterOptionsMobile';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilter } from '@fortawesome/free-solid-svg-icons';
+import { faFilter, faPrint } from '@fortawesome/free-solid-svg-icons';
 import MoreAndLess from '../../MoreAndLess';
+import MovementTable from 'TableExport/MovementTable';
+import ReactPDF from '@react-pdf/renderer';
 
 const TableLastMovements = ({ account }) => {
 
-    const { token, toLogin, ClientSelected } = useContext(DashBoardContext);
+    const { token, toLogin, ClientSelected, getMoveStateById } = useContext(DashBoardContext);
     const { t } = useTranslation();
 
     const [open, setOpen] = useState(false);
@@ -22,7 +24,7 @@ const TableLastMovements = ({ account }) => {
 
     const [Options, setOptions] = useState({
         skip: 0,//Offset (in quantity of movements)
-        take: 5,//Movements per page
+        take: 100,//Movements per page
         state: null
     })
 
@@ -73,6 +75,32 @@ const TableLastMovements = ({ account }) => {
         getMovements()
         // eslint-disable-next-line 
     }, [account, Options])
+    const [rendering, setRendering] = useState(false)
+
+    const renderAndDownloadTablePDF = async () => {
+        setRendering(true)
+        const blob = await ReactPDF.pdf(
+            <MovementTable
+                movements={movements.movements}
+                headerInfo={{
+                    clientName:
+                        `${ClientSelected?.firstName === undefined ? "" : ClientSelected?.firstName === "-" ? "" : ClientSelected?.firstName
+                        }${ClientSelected?.lastName === undefined ? "" : ClientSelected?.lastName === "-" ? "" : ` ${ClientSelected?.lastName}`
+                        }`,
+                    balance: account.balance
+                }} getMoveStateById={getMoveStateById} />).toBlob()
+        const url = URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = url
+        link.setAttribute('download', `${t("Cash_movements")}.pdf`)
+        // 3. Append to html page
+        document.body.appendChild(link)
+        // 4. Force download
+        link.click()
+        // 5. Clean up and remove the link
+        link.parentNode.removeChild(link)
+        setRendering(false)
+    }
 
     return (
         <Col md="12" className="p-0 mt-2">
@@ -92,7 +120,15 @@ const TableLastMovements = ({ account }) => {
                     <Collapse in={open}>
                         <div className="movementsTable mb-3">
                             <div className='py-1 d-flex justify-content-end'>
-                                <Button className="ms-1 buttonFilter" variant="danger" onClick={() => handleShow()}>
+                                <Button className="ms-1 buttonFilter" variant="danger" onClick={renderAndDownloadTablePDF} size='sm'>
+                                    {
+                                        rendering ?
+                                            <Spinner animation="border" size="sm" />
+                                            :
+                                            <FontAwesomeIcon icon={faPrint} />
+                                    }
+                                </Button>
+                                <Button className="ms-1 buttonFilter" variant="danger" onClick={() => handleShow()} size='sm'>
                                     <FontAwesomeIcon icon={faFilter} />
                                 </Button>
                             </div>

@@ -23,7 +23,7 @@ const FundCard = ({ Fund, ownKey, data, setData, setSome, some, openAccordion })
 
         <Col xs="10" sm="6" md="4" lg="3"
             className={`py-1 growAnimation  FundCardContainer 
-        ${Fund.freeShares === 0 || !hasSellPermission(Fund.fund.id) || Fund.fund.disabled ? " FundDisabled" : ""}
+        ${Fund.freeShares === 0 || !hasSellPermission(Fund.fund.id) || Fund.fund?.disabled ? " FundDisabled" : ""}
         ${data.FundSelected === ownKey ? " FundSelected" : ""} 
         `}>
             <Card

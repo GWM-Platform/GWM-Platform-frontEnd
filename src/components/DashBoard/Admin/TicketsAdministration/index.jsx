@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import TableIcon from '../APL/icons/TableIcon';
 import GridIcon from '../APL/icons/GridIcon';
 import { TableView } from './TableView';
-import { PrintButton, PrintDefaultWrapper, usePrintDefaults } from 'utils/usePrint';
+import { PrintDefaultWrapper, usePrintDefaults } from 'utils/usePrint';
 import SingleSelectById from './SingleSelectById';
 import CurrencyInput from '@osdiab/react-currency-input-field';
 import { faFileExcel } from '@fortawesome/free-regular-svg-icons';
@@ -124,7 +124,7 @@ const TicketsAdministration = () => {
     const [tableView, setTableView] = useState(false)
     const [collapse, setCollapse] = useState(true)
 
-    const { handlePrint, getPageMargins, componentRef, title, aditionalStyles } = usePrintDefaults(
+    const { getPageMargins, componentRef, title, aditionalStyles } = usePrintDefaults(
         {
             aditionalStyles: `@media print { 
                 .historyContent{ padding: 0!important; page-break-before: avoid; }
@@ -214,9 +214,9 @@ const TicketsAdministration = () => {
                                         <Col xs="12">
                                             <div className="header d-flex align-items-center">
                                                 <h1 className="title fw-normal me-auto">{t("Tickets administration")}</h1>
-                                                {
+                                                {/* {
                                                     tableView && <PrintButton className="me-2" variant="info" handlePrint={handlePrint} />
-                                                }
+                                                } */}
                                                 {
                                                     tableView &&
                                                     <Button className="me-2 print-button no-style" variant="info" onClick={() => exportToExcel(
@@ -231,7 +231,7 @@ const TicketsAdministration = () => {
                                                         <FontAwesomeIcon icon={faFileExcel} />
                                                     </Button>
                                                 }
-                                                <ButtonGroup className='me-2'>
+                                                <ButtonGroup className='d-none d-lg-inline-flex me-2'>
                                                     <ToggleButton
                                                         type="radio"
                                                         style={{ lineHeight: "1em", display: "flex" }}

@@ -78,7 +78,7 @@ const CreateForm = ({ eventOptions }) => {
         dispatch(fetchFunds())
     }, [dispatch])
 
-    const fundOptions = useMemo(() => funds.map(fund => ({ label: fund.name, value: fund.id, isDisabled: fund.disabled })), [funds])
+    const fundOptions = useMemo(() => funds.map(fund => ({ label: fund.name, value: fund.id, isDisabled: fund?.disabled })), [funds])
 
     useEffect(() => {
         if (data?.fund?.value) {
