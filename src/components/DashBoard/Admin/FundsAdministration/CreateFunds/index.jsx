@@ -92,7 +92,7 @@ const CreateFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
         const form = event.currentTarget;
         event.preventDefault();
         event.stopPropagation();
-        if (form.checkValidity() && ImageUrl.fetched && ImageUrl.valid) {
+        if (form.checkValidity() && !CreateRequest.fetching && ImageUrl.fetched && ImageUrl.valid) {
             createFund()
         }
         setValidated(true);

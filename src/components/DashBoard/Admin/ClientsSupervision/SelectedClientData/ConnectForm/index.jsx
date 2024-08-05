@@ -51,7 +51,7 @@ const ConnectForm = ({ client, users, ownersAmount, clientUsers, getUsers }) => 
         event.preventDefault();
         event.stopPropagation();
         const form = event.currentTarget;
-        if (form.checkValidity() === true) {
+        if (form.checkValidity() && !Request.fetching) {
             connectUserToClient(clientId)
         }
         setValidated(true);

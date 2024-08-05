@@ -271,7 +271,7 @@ const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, se
                     id="disabled"
                 />
                 <div className="d-flex justify-content-end">
-                    <Button variant="danger" type="submit" className="mb-3">
+                    <Button variant="danger" type="submit" className="mb-3" disabled={EditRequest.fetching}>
                         <Spinner animation="border" variant="light"
                             className={`${EditRequest.fetching ? "d-inline-block" : "d-none"} littleSpinner me-1`} />
                         {t("Submit")}

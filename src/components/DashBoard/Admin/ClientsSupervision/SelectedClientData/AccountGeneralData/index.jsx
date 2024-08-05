@@ -79,7 +79,7 @@ const AccountGeneralData = ({ Account, Client, setAccounts, toggleClient }) => {
         event.preventDefault();
         event.stopPropagation();
         const form = event.currentTarget;
-        if (form.checkValidity() === true) {
+        if (form.checkValidity() && !Request.fetching) {
             handleClosePopover()
             setOverdraftApi()
         }
@@ -160,7 +160,7 @@ const AccountGeneralData = ({ Account, Client, setAccounts, toggleClient }) => {
                                 {
                                     !(Account.overdraft) &&
                                     <OverdraftPopover handleSubmit={handleSubmit} setOverdraft={setOverdraft} overdraft={overdraft}>
-                                        <Button size="sm">
+                                        <Button size="sm" disabled={Request.fetching} >
                                             <Spinner
                                                 as="span"
                                                 animation="border"

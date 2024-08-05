@@ -91,7 +91,7 @@ const DocumentForm = ({ client, documents }) => {
         event.preventDefault();
         event.stopPropagation();
         const form = event.currentTarget;
-        if (form.checkValidity()) {
+        if (form.checkValidity() && !Request.fetching) {
             selectedDocument ?
                 editDocument(clientId)
                 :

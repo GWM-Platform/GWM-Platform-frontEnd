@@ -74,7 +74,7 @@ const EditRule = ({ ActionDispatch, rule, FixedDeposit, getFixedDepositPlans }) 
         const form = event.currentTarget;
         event.preventDefault();
         event.stopPropagation();
-        if (form.checkValidity()) {
+        if (form.checkValidity() && !EditRequest.fetching) {
             editRule()
         }
         setValidated(true);
@@ -90,7 +90,7 @@ const EditRule = ({ ActionDispatch, rule, FixedDeposit, getFixedDepositPlans }) 
         <>
             {
                 EditRequest.fetched ?
-                    <EditResult ActionDispatch={ActionDispatch} EditRequest={EditRequest} getFixedDepositPlans={getFixedDepositPlans}/>
+                    <EditResult ActionDispatch={ActionDispatch} EditRequest={EditRequest} getFixedDepositPlans={getFixedDepositPlans} />
                     :
                     <EditForm
                         fetchingEditRequest={EditRequest?.fetching} ActionDispatch={ActionDispatch}
