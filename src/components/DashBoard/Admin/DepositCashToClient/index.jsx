@@ -14,7 +14,7 @@ import { faMinusCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
 const DepositCashToClient = () => {
     const { toLogin } = useContext(DashBoardContext)
-
+    const [fetching, setFetching] = useState(false)
     const [Accounts, setAccounts] = useState(
         {
             fetching: true,
@@ -41,6 +41,7 @@ const DepositCashToClient = () => {
     const { t } = useTranslation();
 
     const deposit = async () => {
+        setFetching(true)
         var url = `${process.env.REACT_APP_APIURL}/accounts/${data?.account?.value}/deposit`;
         const response = await fetch(url, {
             method: 'POST',
@@ -60,6 +61,7 @@ const DepositCashToClient = () => {
         if (response.status === 201) {
             history.push(`/DashBoard/operationResult`);
         } else {
+            setFetching(false)
             switch (response.status) {
                 case 500:
                     console.error(response.status)
@@ -82,7 +84,7 @@ const DepositCashToClient = () => {
         event.preventDefault();
         event.stopPropagation();
         const form = event.currentTarget;
-        if (form.checkValidity()) {
+        if (form.checkValidity() && !fetching) {
             if (token === null) {
                 toLogin()
             } else {
@@ -317,7 +319,7 @@ const DepositCashToClient = () => {
                         }
 
                         <div className='d-flex pb-3'>
-                            <Button className="ms-auto" disabled={data.amount === "" || data.amount <= 0}
+                            <Button className="ms-auto" disabled={data.amount === "" || data.amount <= 0 || fetching}
                                 variant="danger" type="submit">{t("Submit")}</Button>
                         </div>
                     </Form>

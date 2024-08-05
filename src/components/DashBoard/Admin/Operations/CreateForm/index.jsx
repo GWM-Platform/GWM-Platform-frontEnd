@@ -67,7 +67,7 @@ const CreateForm = ({ eventOptions }) => {
         event.preventDefault();
         event.stopPropagation();
         const form = event.currentTarget;
-        if (form.checkValidity() && data?.type?.value && data?.type?.value) {
+        if (form.checkValidity() && !fetchingCreateRequest && data?.type?.value && data?.type?.value) {
             createOperation()
         }
         setValidated(true);
@@ -166,7 +166,7 @@ const CreateForm = ({ eventOptions }) => {
                 }
 
                 <div className="d-flex justify-content-end">
-                    <Button variant="danger" type="submit" className="mb-3">
+                    <Button variant="danger" type="submit" className="mb-3" disabled={fetchingCreateRequest}>
                         <Spinner animation="border" variant="light"
                             className={`${fetchingCreateRequest ? "d-inline-block" : "d-none"} littleSpinner me-2`} />
                         {t("Submit")}

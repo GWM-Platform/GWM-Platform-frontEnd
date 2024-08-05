@@ -23,7 +23,7 @@ const EditAssets = ({ Assets, AssetTypes, chargeAssets, Action, setAction }) => 
         const form = event.currentTarget;
         event.preventDefault();
         event.stopPropagation();
-        if (form.checkValidity()) {
+        if (form.checkValidity() && !EditRequest.fetching) {
             editAsset()
         }
         setValidated(true);

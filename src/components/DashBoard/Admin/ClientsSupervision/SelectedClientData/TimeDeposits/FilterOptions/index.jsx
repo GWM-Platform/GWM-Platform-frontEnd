@@ -28,7 +28,7 @@ const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, ti
         event.preventDefault();
         event.stopPropagation();
         const form = event.currentTarget;
-        if (form.checkValidity() === true) {
+        if (form.checkValidity()) {
             setPagination((prevState) => ({
                 ...prevState, ...{
                     take: filterOptions.moves,

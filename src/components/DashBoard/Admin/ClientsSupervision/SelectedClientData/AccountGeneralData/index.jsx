@@ -79,7 +79,7 @@ const AccountGeneralData = ({ Account, Client, setAccounts }) => {
         event.preventDefault();
         event.stopPropagation();
         const form = event.currentTarget;
-        if (form.checkValidity() === true) {
+        if (form.checkValidity() && !Request.fetching) {
             handleClosePopover()
             setOverdraftApi()
         }
@@ -139,7 +139,7 @@ const AccountGeneralData = ({ Account, Client, setAccounts }) => {
                                 !(Account.overdraft) &&
                                 <div className='d-flex mt-3'>
                                     <OverdraftPopover handleSubmit={handleSubmit} setOverdraft={setOverdraft} overdraft={overdraft}>
-                                        <Button size="sm" className='ms-auto'>
+                                        <Button size="sm" disabled={Request.fetching} className='ms-auto'>
                                             <Spinner
                                                 as="span"
                                                 animation="border"

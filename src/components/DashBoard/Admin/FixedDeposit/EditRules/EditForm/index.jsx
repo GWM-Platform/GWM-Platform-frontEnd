@@ -74,14 +74,14 @@ const EditForm = ({ data, fetchingEditRequest, handleChange, ActionDispatch, val
                     label={t("Rate")}
                     className="mb-3 hideFormControl"
                 >
-                    <Form.Control ref={inputRef}required onChange={handleChange} id="rate" value={data.rate} min="0.01" step="0.01" type="number" placeholder={t("Rate")} />
+                    <Form.Control ref={inputRef} required onChange={handleChange} id="rate" value={data.rate} min="0.01" step="0.01" type="number" placeholder={t("Rate")} />
                     <Form.Control.Feedback type="invalid">
                         {t("The rate must be greater than 0")}
                     </Form.Control.Feedback>
                 </FloatingLabel>
 
                 <div className="d-flex justify-content-end">
-                    <Button variant="danger" type="submit" className="mb-3">
+                    <Button variant="danger" type="submit" className="mb-3" disabled={fetchingEditRequest}>
                         <Spinner animation="border" variant="light"
                             className={`${fetchingEditRequest ? "d-inline-block" : "d-none"} littleSpinner me-2`} />
                         {t("Submit")}

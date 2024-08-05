@@ -143,7 +143,7 @@ const UserActionLogs = () => {
         const form = event.currentTarget;
         event.preventDefault();
         event.stopPropagation();
-        if (form.checkValidity()) {
+        if (form.checkValidity() && !Events.status === "loading") {
             setPagination(prevState => ({ ...prevState, skip: 0 }))
             getEvents()
         } else {
@@ -446,12 +446,12 @@ const UserActionLogs = () => {
                                         </Col>
                                         <div className="w-100 m-0"></div>
                                         <Col xs="auto" className="ms-auto">
-                                            <Button type="button" onClick={() => setFilterOptions({ ...FilterOptionsDefaultState })}>
+                                            <Button type="button" onClick={() => setFilterOptions({ ...FilterOptionsDefaultState })} disabled={Events.status === "loading"}>
                                                 Cancelar
                                             </Button>
                                         </Col>
                                         <Col xs="auto">
-                                            <Button type="submit">
+                                            <Button type="submit" disabled={Events.status === "loading"}>
                                                 Confirmar
                                             </Button>
                                         </Col>

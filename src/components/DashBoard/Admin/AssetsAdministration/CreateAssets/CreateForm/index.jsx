@@ -99,7 +99,7 @@ const CreateAssets = ({ data, CreateRequest, handleChange, Action, setAction, va
                 
 
                 <div className="d-flex justify-content-end">
-                    <Button variant="danger" type="submit" className="mb-3">
+                    <Button variant="danger" type="submit" className="mb-3" disabled={CreateRequest.fetching}>
                         <Spinner animation="border" variant="light"
                             className={`${CreateRequest.fetching ? "d-inline-block" : "d-none"} littleSpinner ms-1`} />
                         {t("Submit")}

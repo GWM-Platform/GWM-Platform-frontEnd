@@ -34,7 +34,7 @@ const EditFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction, withoutH
         event.preventDefault();
         event.stopPropagation();
 
-        if (form.checkValidity() && ImageUrl.fetched && ImageUrl.valid) {
+        if (form.checkValidity() && !EditRequest.fetching && ImageUrl.fetched && ImageUrl.valid) {
             editFund()
         }
         setValidated(true);

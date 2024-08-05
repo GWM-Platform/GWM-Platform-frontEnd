@@ -42,7 +42,7 @@ const AddAccount = () => {
         event.preventDefault();
         event.stopPropagation();
         const form = event.currentTarget;
-        if (form.checkValidity() === true) {
+        if (form.checkValidity() && !buttonDisabled) {
             signup(formData)
         }
         setValidated(true);
