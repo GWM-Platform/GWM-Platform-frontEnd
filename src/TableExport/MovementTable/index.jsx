@@ -18,7 +18,7 @@ const paginate = (array, pageSize) => {
 };
 
 
-const MovementTable = ({ movements, getMoveStateById }) => {
+const MovementTable = ({ movements, headerInfo }) => {
     Decimal.set({ precision: 100 })
 
     const { t } = useTranslation();
@@ -94,11 +94,11 @@ const MovementTable = ({ movements, getMoveStateById }) => {
             alignItems: 'center',
             justifyContent: 'space-between',
             flexDirection: 'row',
-            height: '70px',
+            height: '60px',
             width: '100%',
             backgroundColor: '#082044',
             padding: '20px',
-            marginBottom: '15px',
+            marginBottom: '5px',
             image: {
                 height: '35px',
                 width: '35px',
@@ -111,8 +111,8 @@ const MovementTable = ({ movements, getMoveStateById }) => {
                     fontSize: "16px",
                     color: "rgba(255,255,255,.95)"
                 },
-                date: {
-                    fontSize: "14px",
+                smaller: {
+                    fontSize: "12px",
                     color: "rgba(255,255,255,.95)"
                 }
             }
@@ -120,89 +120,10 @@ const MovementTable = ({ movements, getMoveStateById }) => {
         body: {
             display: 'flex',
             flexDirection: 'row',
-            height: 'calc( 100% - 70px )',
+            height: 'calc( 100% - 60px )',
             width: '100%',
             padding: "20px",
             backgroundColor: 'rgba(245,245,245)',
-            biggerCol: {
-                flex: "5 1 auto",
-                height: "100%",
-            },
-            smallerCol: {
-                flex: "3 1 auto",
-                height: "100%",
-                label: {
-                    fontSize: "14px",
-                    textAlign: "right",
-                    marginBottom: "5px"
-                },
-                data: {
-                    fontSize: "14px",
-                    textAlign: "right"
-                },
-                section: {
-
-                    marginBottom: "15px"
-                }
-            },
-            label: {
-                fontSize: "14px",
-            },
-            data: {
-                fontSize: "14px",
-                textAlign: "right"
-            },
-            section: {
-                width: "100%",
-                display: "flex",
-                justifyContent: "space-between",
-                flexDirection: "row",
-                marginBottom: "10px"
-            },
-            cuentaYEstado: {
-                marginBottom: "20px",
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: "space-between",
-                estado: {
-                    info: {
-                        paddingLeft: "10px",
-                        paddingRight: "10px",
-                        height: "100%",
-                        backgroundColor: "rgb(13,202,240 )",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center"
-                    },
-                    success: {
-                        paddingLeft: "10px",
-                        paddingRight: "10px",
-                        height: "100%",
-                        backgroundColor: "rgb(25,135,84)",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center"
-                    },
-                    primary: {
-                        paddingLeft: "10px",
-                        paddingRight: "10px",
-                        height: "100%",
-                        backgroundColor: "rgb(13,110,253)",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center"
-                    },
-                    danger: {
-                        paddingLeft: "10px",
-                        paddingRight: "10px",
-                        height: "100%",
-                        backgroundColor: "rgb(220,53,69)",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center"
-                    }
-                }
-            }
         }
     }
 
@@ -213,24 +134,35 @@ const MovementTable = ({ movements, getMoveStateById }) => {
                     <Image fixed src={`${process.env.PUBLIC_URL}/images/PDF/background.jpg`} style={styles.pageBackground} />
                     <View style={styles.container}>
                         <View style={styles.header}>
-                            <Image src={`${process.env.PUBLIC_URL}/images/PDF/logo.png`} style={styles.header.image} />
                             <View style={styles.header.textContainer}>
-                                <Text style={styles.header.textContainer.text}>{t("Cash_movements")}</Text>
+
+                                <Text style={styles.header.textContainer.text}>{t("Cash")}, {t("Client")} {headerInfo?.clientName}</Text>
+                                <Text style={styles.header.textContainer.smaller}>
+                                    {t("Balance")}: {formatValue({
+                                        value: (headerInfo?.balance || 0) + "",
+                                        decimalScale: "2",
+                                        groupSeparator,
+                                        decimalSeparator,
+                                        prefix: "U$D "
+                                    })
+                                    }
+                                </Text>
                             </View>
+                            <Image src={`${process.env.PUBLIC_URL}/images/PDF/logo.png`} style={styles.header.image} />
                         </View>
                         <View>
                             <View style={styles.table}>
                                 <View style={styles.tableRow}>
-                                    <View style={{ ...styles.tableColDate, borderColor: "#000000" }}>
+                                    <View style={{ ...styles.tableColDate, borderColor: "#202020" }}>
                                         <Text style={styles.tableHeader}>{t("Date")}</Text>
                                     </View>
-                                    <View style={{ ...styles.tableColWidthLeft, borderColor: "#000000" }}>
+                                    <View style={{ ...styles.tableColWidthLeft, borderColor: "#202020" }}>
                                         <Text style={styles.tableHeader}>{t("Description")}</Text>
                                     </View>
-                                    <View style={{ ...styles.tableColAmount, borderColor: "#000000" }}>
+                                    <View style={{ ...styles.tableColAmount, borderColor: "#202020" }}>
                                         <Text style={{ ...styles.tableHeader, textAlign: "right" }}>{t("Amount")}</Text>
                                     </View>
-                                    <View style={{ ...styles.tableColBalance, borderColor: "#000000" }}>
+                                    <View style={{ ...styles.tableColBalance, borderColor: "#202020" }}>
                                         <Text style={{ ...styles.tableHeader, textAlign: "right" }}>{t("Balance")}</Text>
                                     </View>
                                 </View>

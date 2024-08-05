@@ -89,11 +89,20 @@ const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, reset
 
     const [Movements, setMovements] = useState({ movements: 0, total: 0 })
     const [rendering, setRendering] = useState(false)
-    const { getMoveStateById } = useContext(DashBoardContext)
+    const { getMoveStateById, ClientSelected } = useContext(DashBoardContext)
 
     const renderAndDownloadTablePDF = async () => {
         setRendering(true)
-        const blob = await ReactPDF.pdf(<MovementReceipt movements={Movements.movements} getMoveStateById={getMoveStateById} />).toBlob()
+        const blob = await ReactPDF.pdf(
+            <MovementReceipt
+                movements={Movements.movements}
+                headerInfo={{
+                    clientName:
+                        `${ClientSelected?.firstName === undefined ? "" : ClientSelected?.firstName === "-" ? "" : ClientSelected?.firstName
+                        }${ClientSelected?.lastName === undefined ? "" : ClientSelected?.lastName === "-" ? "" : ` ${ClientSelected?.lastName}`
+                        }`,
+                    balance: balanceInCash.toString()
+                }} getMoveStateById={getMoveStateById} />).toBlob()
         const url = URL.createObjectURL(blob)
         const link = document.createElement('a')
         link.href = url
