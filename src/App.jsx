@@ -25,6 +25,7 @@ import axios from 'axios';
 import { Provider } from 'react-redux';
 import store from 'ReduxStores/store';
 import SetUserData from 'components/SetUserData';
+// import TestPDF from 'components/TestPDF';
 
 function App() {
 
@@ -52,7 +53,9 @@ function App() {
                   <Route exact path="/">
                     <Landing />
                   </Route>
-
+                  {/* <Route exact path="/test-pdf">
+                    <TestPDF />
+                  </Route> */}
                   <Route exact path="/login">
                     <Containerlogin />
                   </Route>

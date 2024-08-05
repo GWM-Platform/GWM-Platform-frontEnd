@@ -122,7 +122,7 @@ const TicketsAdministration = () => {
 
     const [client, setClient] = useState("")
     const [tableView, setTableView] = useState(false)
-    const [collapse, setCollapse] = useState(false)
+    const [collapse, setCollapse] = useState(true)
 
     const { handlePrint, getPageMargins, componentRef, title, aditionalStyles } = usePrintDefaults(
         {
