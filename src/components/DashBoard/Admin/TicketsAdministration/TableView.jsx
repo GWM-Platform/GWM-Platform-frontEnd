@@ -94,7 +94,7 @@ export const TableView = ({ state, client, FilterOptions }) => {
     ), [movements?.movements, sortDirection, sortField, t])
     // sort multiples
     return (
-        <Row id="table-container" className={`flex-grow-1 w-100 ${(movementsStatus === "loading" || sortedMovements.length === 0) ? "overflow-hidden" : ""}`} style={{ flexShrink: 1 }}>
+        <Row id="table-container" className={`flex-grow-1 px-0 mx-0 w-100 ${(movementsStatus === "loading" || sortedMovements.length === 0) ? "overflow-hidden" : ""}`} style={{ flexShrink: 1 }}>
             <Col xs="12" className="h-100">
                 <div className={(movementsStatus === "loading" || sortedMovements.length === 0) ? "h-100" : ""} style={{ overflow: "auto" }}>
                     {

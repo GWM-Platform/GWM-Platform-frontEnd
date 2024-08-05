@@ -16,6 +16,7 @@ import CurrencyInput from '@osdiab/react-currency-input-field';
 import { faFileExcel } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { exportToExcel } from 'utils/exportToExcel';
+import { faCompress, faExpand } from '@fortawesome/free-solid-svg-icons';
 
 const TicketsAdministration = () => {
 
@@ -121,6 +122,7 @@ const TicketsAdministration = () => {
 
     const [client, setClient] = useState("")
     const [tableView, setTableView] = useState(false)
+    const [collapse, setCollapse] = useState(false)
 
     const { handlePrint, getPageMargins, componentRef, title, aditionalStyles } = usePrintDefaults(
         {
@@ -195,7 +197,7 @@ const TicketsAdministration = () => {
     ], [t])
 
     return (
-        <PrintDefaultWrapper className="TicketsAdministration container" aditionalStyles={aditionalStyles} ref={componentRef} getPageMargins={getPageMargins} title={title} >
+        <PrintDefaultWrapper className={`TicketsAdministration ${collapse ? "container" : "container-fluid"}`} aditionalStyles={aditionalStyles} ref={componentRef} getPageMargins={getPageMargins} title={title} >
             <Row id="section-row" className={`pb-2 ${tableView ? "flex-nowrap h-100 flex-column" : ""}`}>
                 {
                     TransactionStates.fetching ?
@@ -208,7 +210,7 @@ const TicketsAdministration = () => {
                                 <Message selected={2} messageVariants={messageVariants} />
                                 :
                                 <>
-                                    <Row className="pb-2">
+                                    <Row className="pb-2 px-0 mx-0">
                                         <Col xs="12">
                                             <div className="header d-flex align-items-center">
                                                 <h1 className="title fw-normal me-auto">{t("Tickets administration")}</h1>
@@ -229,6 +231,35 @@ const TicketsAdministration = () => {
                                                         <FontAwesomeIcon icon={faFileExcel} />
                                                     </Button>
                                                 }
+                                                <ButtonGroup className='me-2'>
+                                                    <ToggleButton
+                                                        type="radio"
+                                                        style={{ lineHeight: "1em", display: "flex" }}
+                                                        variant="outline-primary"
+                                                        name="radio"
+                                                        value={true}
+                                                        checked={collapse}
+                                                        active={collapse}
+                                                        onClick={(e) => setCollapse(true)}
+                                                        title={t("Collapse")}
+                                                    >
+                                                        <FontAwesomeIcon color={collapse ? "#FFFFFF" : "#082044"} icon={faCompress} />
+                                                    </ToggleButton>
+                                                    <ToggleButton
+                                                        style={{ lineHeight: "1em", display: "flex" }}
+                                                        type="radio"
+                                                        variant="outline-primary"
+                                                        name="radio"
+                                                        value={false}
+                                                        checked={!collapse}
+                                                        active={!collapse}
+                                                        onClick={(e) => setCollapse(false)}
+                                                        title={t("Expand")}
+                                                    >
+                                                        <FontAwesomeIcon color={collapse ? "#082044" : "#FFFFFF"} icon={faExpand} />
+                                                    </ToggleButton>
+
+                                                </ButtonGroup>
                                                 <ButtonGroup>
                                                     <ToggleButton
                                                         style={{ lineHeight: "1em", display: "flex" }}
@@ -261,7 +292,7 @@ const TicketsAdministration = () => {
                                             </div>
                                         </Col>
                                     </Row>
-                                    <Row className="pb-2" id="filters">
+                                    <Row className="pb-2 px-0 mx-0" id="filters">
                                         <Col md={tableView ? "4" : "6"}>
                                             <StateSelector handleChange={handleChange} TransactionStates={TransactionStates} />
                                         </Col>
