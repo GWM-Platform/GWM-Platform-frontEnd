@@ -1,14 +1,30 @@
 import React from 'react'
 
-import { Document, Page, Text, View, Image } from '@react-pdf/renderer'
-//import Lato from 'Fonts/Lato-Regular.ttf'
+import { Document, Page, Text, View, Image, Font } from '@react-pdf/renderer'
+//import SF from 'Fonts/SF-Regular.ttf'
 import { useTranslation } from 'react-i18next'
 import Decimal from 'decimal.js'
 // import { DataTableCell, TableBody, TableCell, TableHeader, Table } from '@david.kucsai/react-pdf-table'
 import moment from 'moment'
 import { formatValue } from '@osdiab/react-currency-input-field'
 import { decimalSeparator, groupSeparator } from 'components/DashBoard/Admin/TicketsAdministration'
+import SfLight from './Fonts/SF/SF-Pro-Text-Light.otf'
+import SfMedium from './Fonts/SF/SF-Pro-Text-Medium.otf'
+import SfRegular from './Fonts/SF/SF-Pro-Text-Regular.otf'
+import SfBold from './Fonts/SF/SF-Pro-Text-Bold.otf'
+import SfSemiBold from './Fonts/SF/SF-Pro-Text-Semibold.otf'
 
+// Registrar la fuente
+Font.register({
+    family: 'SF',
+    fonts: [
+        { src: SfBold, fontWeight: 'bold' },
+        { src: SfRegular },
+        { src: SfMedium, fontWeight: 'medium' },
+        { src: SfSemiBold, fontWeight: 'semibold' },
+        { src: SfLight, fontWeight: 'light' },
+    ]
+});
 
 const paginate = (array, pageSize) => {
     return array.reduce((acc, _, i) => {
@@ -57,22 +73,28 @@ const MovementTable = ({ movements, headerInfo }) => {
             margin: "auto", flexDirection: "row"
         },
         tableColDate: {
-            width: "10%", borderStyle: "solid", borderColor: "#dee2e6", borderBottomWidth: 1, borderLeftWidth: 0, borderTopWidth: 0
+            width: "12%", borderStyle: "solid", borderColor: "rgb(222, 226, 230)", borderBottomWidth: 1, borderLeftWidth: 0, borderTopWidth: 0
         },
         tableColWidthLeft: {
-            width: `${100 - greaterAmount.length - greaterBalance.length - 10}%`, borderStyle: "solid", borderColor: "#dee2e6", borderBottomWidth: 1, borderLeftWidth: 0, borderTopWidth: 0
+            width: `${100 - (greaterAmount.length + 2) - (greaterBalance.length + 2) - 12}%`, borderStyle: "solid", borderColor: "rgb(222, 226, 230)", borderBottomWidth: 1, borderLeftWidth: 0, borderTopWidth: 0
         },
         tableColAmount: {
-            width: `${greaterAmount.length}%`, borderStyle: "solid", borderColor: "#dee2e6", borderBottomWidth: 1, borderLeftWidth: 0, borderTopWidth: 0
+            width: `${greaterAmount.length + 2}%`, borderStyle: "solid", borderColor: "rgb(222, 226, 230)", borderBottomWidth: 1, borderLeftWidth: 0, borderTopWidth: 0
         },
         tableColBalance: {
-            width: `${greaterBalance.length}%`, borderStyle: "solid", borderColor: "#dee2e6", borderBottomWidth: 1, borderLeftWidth: 0, borderTopWidth: 0
+            width: `${greaterBalance.length + 2}%`, borderStyle: "solid", borderColor: "rgb(222, 226, 230)", borderBottomWidth: 1, borderLeftWidth: 0, borderTopWidth: 0
         },
         tableCell: {
-            margin: 3, fontSize: 10
+            margin: 3, fontSize: 10, fontFamily: 'SF', fontWeight: 'light'
         },
         tableHeader: {
-            fontWeight: 700, margin: 3, fontSize: 12,
+            margin: 3, fontSize: 10, fontFamily: 'SF', fontWeight: 'bold'
+        },
+        textRed: {
+            color: "rgb(255, 0, 0)"
+        },
+        textGreen: {
+            color: "rgb(71, 116, 79)"
         },
         pageBackground: {
             position: 'absolute',
@@ -94,35 +116,47 @@ const MovementTable = ({ movements, headerInfo }) => {
             alignItems: 'center',
             justifyContent: 'space-between',
             flexDirection: 'row',
-            height: '60px',
+            height: '50px',
             width: '100%',
-            backgroundColor: '#082044',
-            padding: '20px',
-            marginBottom: '5px',
+            // backgroundColor: '#082044',
+            borderBottomWidth: '1px',
+            // borderBottomColor: 'rgb(8, 32, 68)',
+            borderBottomColor:"rgb(120, 120, 120)",
+            borderBottomStyle: 'solid',
+            // padding: '20px',
+            // marginBottom: '3px',
             image: {
                 height: '35px',
                 width: '35px',
                 backgroundColor: 'white',
                 borderRadius: '50%',
-                padding: '5px'
+                padding: '5px',
+                marginRight: '5px'
             },
             textContainer: {
                 text: {
                     fontSize: "16px",
-                    color: "rgba(255,255,255,.95)"
+                    fontFamily: 'SF',
+                },
+                textBold: {
+                    fontSize: "16px",
+                    fontFamily: 'SF',
+                    fontWeight: 'bold',
                 },
                 smaller: {
                     fontSize: "12px",
-                    color: "rgba(255,255,255,.95)"
+                    fontFamily: 'SF',
+                    fontWeight: 'light',
                 }
             }
         },
         body: {
             display: 'flex',
             flexDirection: 'row',
-            height: 'calc( 100% - 60px )',
+            height: 'calc( 100% - 50px )',
             width: '100%',
             padding: "20px",
+            paddingTop: "0",
             backgroundColor: 'rgba(245,245,245)',
         }
     }
@@ -136,7 +170,9 @@ const MovementTable = ({ movements, headerInfo }) => {
                         <View style={styles.header}>
                             <View style={styles.header.textContainer}>
 
-                                <Text style={styles.header.textContainer.text}>{t("Cash")}, {t("Client")} {headerInfo?.clientName}</Text>
+                                <Text style={styles.header.textContainer.text}>
+                                    <Text style={styles.header.textContainer.textBold}>{t("Cash")}</Text>, {t("Client")} {headerInfo?.clientName}
+                                </Text>
                                 <Text style={styles.header.textContainer.smaller}>
                                     {t("Balance")}: {formatValue({
                                         value: (headerInfo?.balance || 0) + "",
@@ -153,16 +189,16 @@ const MovementTable = ({ movements, headerInfo }) => {
                         <View>
                             <View style={styles.table}>
                                 <View style={styles.tableRow}>
-                                    <View style={{ ...styles.tableColDate, borderColor: "#202020" }}>
+                                    <View style={{ ...styles.tableColDate, borderColor: "rgb(120, 120, 120)" }}>
                                         <Text style={styles.tableHeader}>{t("Date")}</Text>
                                     </View>
-                                    <View style={{ ...styles.tableColWidthLeft, borderColor: "#202020" }}>
+                                    <View style={{ ...styles.tableColWidthLeft, borderColor: "rgb(120, 120, 120)" }}>
                                         <Text style={styles.tableHeader}>{t("Description")}</Text>
                                     </View>
-                                    <View style={{ ...styles.tableColAmount, borderColor: "#202020" }}>
+                                    <View style={{ ...styles.tableColAmount, borderColor: "rgb(120, 120, 120)" }}>
                                         <Text style={{ ...styles.tableHeader, textAlign: "right" }}>{t("Amount")}</Text>
                                     </View>
-                                    <View style={{ ...styles.tableColBalance, borderColor: "#202020" }}>
+                                    <View style={{ ...styles.tableColBalance, borderColor: "rgb(120, 120, 120)" }}>
                                         <Text style={{ ...styles.tableHeader, textAlign: "right" }}>{t("Balance")}</Text>
                                     </View>
                                 </View>
@@ -200,7 +236,7 @@ const MovementTable = ({ movements, headerInfo }) => {
                                                     </Text>
                                                 </View>
                                                 <View style={styles.tableColAmount}>
-                                                    <Text style={{ ...styles.tableCell, textAlign: "right" }} >
+                                                    <Text style={{ ...styles.tableCell, ...Math.sign(content.amount) === 1 ? styles.textGreen : styles.textRed, textAlign: "right" }} >
                                                         {
                                                             `${Math.sign(content.amount) === 1 ? '+' : '-'
                                                             }${formatValue({
