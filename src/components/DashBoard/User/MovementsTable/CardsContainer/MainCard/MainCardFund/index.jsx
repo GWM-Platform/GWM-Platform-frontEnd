@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Col, Nav } from 'react-bootstrap';
+import { Container, Col, Nav, Spinner } from 'react-bootstrap';
 
 import { DashBoardContext } from 'context/DashBoardContext';
 import { useTranslation } from "react-i18next";
@@ -19,6 +19,9 @@ import PerformanceComponent from 'components/DashBoard/GeneralUse/PerformanceCom
 import { useDispatch } from 'react-redux';
 import { fetchTransactions } from 'Slices/DashboardUtilities/transactionsSlice';
 import { PrintButton, PrintDefaultWrapper, usePrintDefaults } from 'utils/usePrint';
+import ReactPDF from '@react-pdf/renderer';
+import TransactionTable from 'TableExport/TransactionTable';
+import axios from 'axios'
 
 const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
     const location = useLocation();
@@ -33,7 +36,7 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
     const desiredType = useQuery().get("type")
 
     const [SelectedTab, setSelectedTab] = useState(desiredType === "share-transfer" ? "2" : "0")
-    const { PendingTransactions } = useContext(DashBoardContext)
+    const { PendingTransactions, AccountSelected, sharesDecimalPlaces } = useContext(DashBoardContext)
     const { t } = useTranslation();
 
     const balanceInCash = Fund.shares ? (Fund.shares * Fund.fund.sharePrice) : 0
@@ -70,7 +73,7 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
         // }
     }, [ClientSelected.id, Fund.fund.id, dispatch])
 
-    const { handlePrint, getPageMargins, componentRef, title, aditionalStyles } = usePrintDefaults(
+    const { getPageMargins, componentRef, title, aditionalStyles } = usePrintDefaults(
         {
             aditionalStyles: `@media print { 
                 .historyContent{ padding: 0!important; page-break-before: avoid; }
@@ -94,6 +97,57 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
         }
     )
 
+    const [performance, setPerformance] = useState(0)
+    const [Movements, setMovements] = useState({
+        transactions: 0,
+        total: 0,//Total of movements with the filters applied
+    })
+
+    useEffect(() => {
+        axios.get(`/clients/${ClientSelected.id}/fundPerformance?fund=${Fund.fund.id}`)
+            .then(response => {
+                setPerformance(response.data)
+            })
+            .catch(err => {
+                setPerformance(0)
+            })
+    }, [ClientSelected.id, Fund.fund.id])
+
+    const [rendering, setRendering] = useState(false)
+
+    const renderAndDownloadTablePDF = async () => {
+        setRendering(true)
+        const blob = await ReactPDF.pdf(
+            <TransactionTable
+                transactions={Movements.transactions}
+                headerInfo={{
+                    fundName: Fund.fund.name,
+                    balance: Fund.shares ? Fund.shares : 0,
+                    sharePrice: Fund.fund.sharePrice,
+                    balanceInCash: balanceInCash.toFixed(2),
+                    pendingshares: pendingshares ? pendingshares : 0,
+                    performance: performance,
+                    clientName:
+                        `${ClientSelected?.firstName === undefined ? "" : ClientSelected?.firstName === "-" ? "" : ClientSelected?.firstName
+                        }${ClientSelected?.lastName === undefined ? "" : ClientSelected?.lastName === "-" ? "" : ` ${ClientSelected?.lastName}`
+                        }`,
+                }}
+                sharesDecimalPlaces={sharesDecimalPlaces}
+                AccountSelected={AccountSelected}
+            />).toBlob()
+        const url = URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = url
+        link.setAttribute('download', `${t("Fund {{fund}} movements", { fund: Fund.fund.name })}.pdf`)
+        // 3. Append to html page
+        document.body.appendChild(link)
+        // 4. Force download
+        link.click()
+        // 5. Clean up and remove the link
+        link.parentNode.removeChild(link)
+        setRendering(false)
+    }
+
     return (
         <PrintDefaultWrapper className="movementsMainCardFund growAnimation pt-2" aditionalStyles={aditionalStyles} ref={componentRef} getPageMargins={getPageMargins} title={title} >
             <div className="bg-white main-card-header info ms-0 mb-2 px-0">
@@ -102,7 +156,12 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
                         {t(Fund.fund.name)}
                     </h1>
                     <Col xs="auto">
-                        <PrintButton className="w-100 h-100" variant="info" handlePrint={handlePrint} />
+                        {
+                            rendering ?
+                                <Spinner animation="border" size="sm" />
+                                :
+                                <PrintButton className="w-100 h-100" variant="info" handlePrint={renderAndDownloadTablePDF} />
+                        }
                     </Col>
                 </div>
                 <div className="d-flex justify-content-between align-items-start pe-2">
@@ -208,6 +267,7 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
                     {
                         0:
                             <MovementsTab
+                                Movements={Movements} setMovements={setMovements}
                                 Fund={Fund} SearchById={SearchById} setSearchById={setSearchById}
                                 resetSearchById={resetSearchById} handleMovementSearchChange={handleMovementSearchChange} />,
                         1:

@@ -9,14 +9,10 @@ import Loading from 'components/DashBoard/GeneralUse/Loading';
 import PaginationController from 'components/DashBoard/GeneralUse/PaginationController'
 import FilterOptions from 'components/DashBoard/GeneralUse/FilterOptions'
 
-const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
+const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handleMovementSearchChange, Movements, setMovements }) => {
     const history = useHistory();
     const { token, ClientSelected } = useContext(DashBoardContext)
 
-    const [Movements, setMovements] = useState({
-        transactions: 0,
-        total: 0,//Total of movements with the filters applied
-    })
 
     const [FetchingMovements, setFetchingMovements] = useState(true);
 

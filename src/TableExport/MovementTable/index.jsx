@@ -184,7 +184,7 @@ const MovementTable = ({ movements, headerInfo }) => {
                                     }
                                 </Text>
                             </View>
-                            <Image src={`${process.env.PUBLIC_URL}/images/PDF/logo.png`} style={styles.header.image} />
+                            {/* <Image src={`${process.env.PUBLIC_URL}/images/PDF/logo.png`} style={styles.header.image} /> */}
                         </View>
                         <View>
                             <View style={styles.table}>
