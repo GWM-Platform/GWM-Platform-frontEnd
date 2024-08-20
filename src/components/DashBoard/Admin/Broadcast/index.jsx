@@ -16,6 +16,7 @@ import { ModalPreview } from './ModalPreview';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchusers, selectAllusers } from 'Slices/DashboardUtilities/usersSlice';
 import { fetchclients, selectAllclients } from 'Slices/DashboardUtilities/clientsSlice';
+import { EditorTipTap } from './EditorTipTap';
 
 const maxClients = 45
 const Broadcast = () => {
@@ -97,9 +98,7 @@ const Broadcast = () => {
         }
 
         let receivers = selectedOptions.map(receiver => receiver.email)
-        for (var j = 0; j < receivers.length; j++) {
-            formDataSubmit.append("receivers", receivers[j])
-        }
+        formDataSubmit.append("receivers", receivers)
 
         formDataSubmit.append("title", formData.title)
 
@@ -416,6 +415,11 @@ const Broadcast = () => {
                             theme="snow"
                             value={formData.emailBody} onChange={value => handleChange({ target: { id: "emailBody", value } })}
                         /> */}
+
+                        <div className="tiptap-wrapper">
+                            <EditorTipTap content={formData.emailBody} setContent={value => handleChange({ target: { id: "emailBody", value } })} />
+                        </div>
+
                         <Editor value={formData.emailBody} handleChange={value => {
                             handleChange({ target: { id: "emailBody", value } })
                         }} />

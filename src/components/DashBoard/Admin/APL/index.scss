@@ -169,7 +169,6 @@
 
             &::before {
                 left: 0;
-                opacity: 0;
 
                 &.scrollLeft {
                     opacity: 1;
@@ -178,7 +177,6 @@
 
             &::after {
                 right: 0;
-                opacity: 0;
 
             }
 
@@ -204,9 +202,6 @@
                 border: none;
                 color: var(--header-account-card-selected);
 
-                &.hidden {
-                    opacity: 0;
-                }
 
                 &.right {
                     right: -20px;
