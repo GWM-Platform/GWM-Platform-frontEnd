@@ -436,7 +436,6 @@ export const EditorTipTap = ({ content, setContent }) => {
       autolink: true,
       defaultProtocol: 'https',
     }),
-    Color,
     Tag("username"),
     Tag("client", t("Client Name")),
     Tag("accountBalance"),
