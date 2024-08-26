@@ -52,6 +52,8 @@
     "Return": "Return",
     "Submit": "Submit",
     "username": "username",
+    "client": "Client",
+    "accountBalance": "Account Balance",
     "Change password": "Change password",
     "Change password for": "Change password for",
     "Confirm password": "Confirm password",

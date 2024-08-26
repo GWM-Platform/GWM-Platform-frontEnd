@@ -11,7 +11,6 @@ import Select from "react-select";
 // import 'react-quill/dist/quill.snow.css';
 import './index.scss'
 import { faTimesCircle } from '@fortawesome/free-regular-svg-icons';
-import Editor from './quill';
 import { ModalPreview } from './ModalPreview';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchusers, selectAllusers } from 'Slices/DashboardUtilities/usersSlice';
@@ -83,10 +82,20 @@ const Broadcast = () => {
                 img.style.width = '100%';
                 img.style.display = 'block';
             });
+            // get elements with data-text-interpolation-type atribute
+            let textInterpolationElements = doc.querySelectorAll('[data-text-interpolation-type]');
+            textInterpolationElements.forEach(element => {
+                // get the text interpolation type
+                let keyword = element.getAttribute('data-text-interpolation-type')
+                // replace the element with the tag keyword like <span data-text-interpolation-type="keyword">text</span> => {{keyword}}
+                let span = doc.createElement('span');
+                span.textContent = `{{${keyword}}}`
+                element.replaceWith(span)
+            });
             return new XMLSerializer().serializeToString(doc)
         }, [formData.emailBody])
 
-    const broadcast = async () => {
+        const broadcast = async () => {
 
         setButtonDisabled(true)
         const formDataSubmit = new FormData()
@@ -99,7 +108,8 @@ const Broadcast = () => {
 
         let receivers = selectedOptions.map(receiver => receiver.email)
         formDataSubmit.append("receivers", receivers)
-
+        formDataSubmit.append("sendToClients", true)
+        
         formDataSubmit.append("title", formData.title)
 
         formDataSubmit.append("emailBody", emailBodyWihtImagesStyles())
@@ -383,14 +393,14 @@ const Broadcast = () => {
                             <Form.Label>{t("Recipients")}</Form.Label>
                             <div>
                                 <Select
-
                                     value={selectedOptions} onChange={handleChangeMultiSelect}
                                     isMulti isClearable isLoading={clientStatus !== "succeeded"}
                                     closeMenuOnSelect={false} hideSelectedOptions={false}
                                     noOptionsMessage={() => t("No options")} placeholder={t("Select recipients")}
                                     filterOption={filterOption} options={values} components={{ Option, MultiValue, GroupHeading }}
-                                    className="w-100 mb-2"
+                                    className="w-100"
                                     classNames={{
+                                        container: () => (selectedOptions.length > 0 ? "has-value" : ""),
                                         groupHeading: () => ("groupHeading"),
                                         multiValue: () => ("multiValue"),
                                         multiValueLabel: () => ("multiValueLabel"),
@@ -398,7 +408,12 @@ const Broadcast = () => {
                                     }}
                                 />
                             </div>
-
+                            {
+                                selectedOptions.length === 0 &&
+                                <Form.Text className='text-red validation-text'>
+                                    {t("Select at least one recipient")}
+                                </Form.Text>
+                            }
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId='title'>
@@ -419,10 +434,6 @@ const Broadcast = () => {
                         <div className="tiptap-wrapper">
                             <EditorTipTap content={formData.emailBody} setContent={value => handleChange({ target: { id: "emailBody", value } })} />
                         </div>
-
-                        <Editor value={formData.emailBody} handleChange={value => {
-                            handleChange({ target: { id: "emailBody", value } })
-                        }} />
 
                         <Form.Group controlId="formFileMultiple" className="mb-3">
                             <Form.Label>{t("Attached files")}</Form.Label>

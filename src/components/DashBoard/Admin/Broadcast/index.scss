@@ -83,15 +83,35 @@
   --shadow: 0px 12px 33px 0px rgba(0, 0, 0, .06), 0px 3.618px 9.949px 0px rgba(0, 0, 0, .04)
 }
 
+.was-validated {
+  .validation-text{
+    display: block;
+  }
+  .css-13cymwt-control, .ProseMirror {
+    border-color: #dc3545 !important;
+  }
+
+  .has-value .css-13cymwt-control,
+  .ProseMirror.editor-has-value{
+    border-color: #198754 !important;
+  }
+}
+.validation-text{
+  display: none;
+}
 .tiptap-wrapper {
+  margin-bottom: 1em;
+
   .ProseMirror {
     border-radius: 0 0 0.375rem 0.375rem;
-    border: 1px solid #198754;
+    border: 1px solid hsl(0, 0%, 80%);
+    min-height: 15em;
+
   }
 
   .control-group {
     border-radius: 0.375rem 0.375rem 0 0;
-    border: 1px solid #198754;
+    border: 1px solid hsl(0, 0%, 80%);
     border-bottom-width: 0;
   }
 
@@ -513,7 +533,7 @@
     h6,
     p {
       text-wrap: pretty;
-      margin-bottom: 0;
+      margin-bottom: .25em;
     }
 
     h1 {
@@ -645,13 +665,43 @@
     font-size: 1.4rem
   }
 
-  .react-renderer.node-textInterpolation {
-    div{
+  img {
+    display: block;
+    width: 60%;
+  }
+
+  .menu-divider {
+    border-left: 1px solid #dadce0;
+    border-color: #c7c7c7;
+    margin-left: 4px;
+
+  }
+
+  .react-renderer {
+    div {
       display: inline-block;
     }
-    content: "username";
-    background-color: red;
-    border: 1px solid black;
+
+    background: var(--purple);
+    color: var(--white);
+    border-radius: .5rem;
+    border: none;
+    font-family: inherit;
+
+    & * {
+      font-size: .875em;
+    }
+
+    div {
+      padding: 0rem 0.425rem 0rem 0.425rem;
+    }
+
+    font-weight: 500;
+    line-height: 1.15;
+    padding-bottom: 0.275rem;
+    margin: none;
+    vertical-align: text-top;
+    transition: all .2s cubic-bezier(.65, .05, .36, 1)
   }
 
   .tiptap h2 {
