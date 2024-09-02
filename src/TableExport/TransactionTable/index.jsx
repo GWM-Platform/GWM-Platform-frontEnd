@@ -103,11 +103,26 @@ const TransactionTable = ({ transactions, headerInfo, sharesDecimalPlaces = 5, A
         },
         pageBackground: {
             position: 'absolute',
-            minWidth: '100%',
-            minHeight: '100%',
-            display: 'block',
-            height: '100%',
-            width: '100%'
+
+            // INITIAL
+            // minWidth: '100%',
+            // minHeight: '100%',
+            // display: 'block',
+            // height: '100%',
+            // width: '100%',
+
+            // W100
+            // minWidth: '100%',
+            // width: '100%'
+
+            // H100
+            // height: '100%',
+            // minHeight: '100%',
+            // width: "190%",
+            // maxWidth: "190%"
+
+            // WITHOUT IMAGE
+            display: 'none',
         },
         container: {
             display: 'block',
@@ -171,7 +186,7 @@ const TransactionTable = ({ transactions, headerInfo, sharesDecimalPlaces = 5, A
     return (
         <Document>
             {paginatedTransactions.map((pageTransactions, pageIndex) => (
-                <Page key={pageIndex} style={{ display: 'block', height: '100%', width: '100%' }}>
+                <Page key={pageIndex} style={{ display: 'block', height: '100%', width: '100%', backgroundColor: "#FFFFFF" }}>
                     <Image fixed src={`${process.env.PUBLIC_URL}/images/PDF/background.jpg`} style={styles.pageBackground} />
                     <View style={styles.container}>
                         <View style={styles.header}>
