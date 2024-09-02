@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useCallback, useContext, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Col, Nav, Button, Spinner } from 'react-bootstrap';
 
@@ -19,6 +19,12 @@ import { exportToExcel } from 'utils/exportToExcel';
 import MovementTable from 'TableExport/MovementTable';
 import ReactPDF from '@react-pdf/renderer';
 import { DashBoardContext } from 'context/DashBoardContext';
+import { yearsArraySince } from 'components/DashBoard/GeneralUse/PerformanceComponent';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchAnnualStatement, selectAnnualStatementById } from 'Slices/DashboardUtilities/annualStatementsSlice';
+import HoldingsReport from 'TableExport/HoldingsReport';
+import moment from 'moment';
+import "components/DashBoard/Admin/Broadcast/index.scss"
 
 const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
 
@@ -115,25 +121,62 @@ const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, reset
         link.parentNode.removeChild(link)
         setRendering(false)
     }
+    const dispatch = useDispatch()
+    const [renderingAnnual, setRenderingAnnual] = useState(false)
+
+    const [value, setValue] = useState("")
+    const annualStatement = useSelector(state => selectAnnualStatementById(state, value))
+    const status = annualStatement?.status || "idle"
+
+    const renderAndDownloadAnnualStatementPDF = useCallback(
+        async () => {
+            setRenderingAnnual(true)
+            const blob = await ReactPDF.pdf(
+                <HoldingsReport
+                    holdings={annualStatement?.annualStatement}
+                    headerInfo={{
+                        clientName:
+                            `${ClientSelected?.firstName === undefined ? "" : ClientSelected?.firstName === "-" ? "" : ClientSelected?.firstName
+                            }${ClientSelected?.lastName === undefined ? "" : ClientSelected?.lastName === "-" ? "" : ` ${ClientSelected?.lastName}`
+                            }`
+                    }}
+                    year={value}
+                />).toBlob()
+            const url = URL.createObjectURL(blob)
+            const link = document.createElement('a')
+            link.href = url
+            link.setAttribute('download', `Reporte de tenencias ${value}.pdf`)
+            // 3. Append to html page
+            document.body.appendChild(link)
+            // 4. Force download
+            link.click()
+            // 5. Clean up and remove the link
+            link.parentNode.removeChild(link)
+            setRenderingAnnual(false)
+        }, [ClientSelected?.firstName, ClientSelected?.lastName, annualStatement?.annualStatement, value]
+    )
+
+    useEffect(() => {
+        if (renderingAnnual) {
+            if (status === "succeeded") {
+                renderAndDownloadAnnualStatementPDF()
+            } else if (status === "error") {
+                setRenderingAnnual(false)
+            }
+        }
+    }, [renderAndDownloadAnnualStatementPDF, renderingAnnual, status])
+
 
     return (
         <PrintDefaultWrapper className="movementsMainCardAccount growAnimation pt-2" aditionalStyles={aditionalStyles} ref={componentRef} getPageMargins={getPageMargins} title={title} >
             <div className="main-card-header bg-white info ms-0 mb-2 px-0">
                 <div className="d-flex align-items-start pe-2">
-                    <Col className="d-flex justify-content-between pe-5 me-auto" sm="auto">
+                    <Col className="d-flex justify-content-between pe-5 me-auto mt-2" sm="auto">
                         <h1 className="m-0 title px-2">
                             {t("Cash")}
                         </h1>
                     </Col>
-                    <Col xs="auto">
-                        {
-                            rendering ?
-                                <Spinner animation="border" size="sm" />
-                                :
-                                <PrintButton className="w-100 h-100" variant="info" handlePrint={renderAndDownloadTablePDF} />
-                        }
-                    </Col>
-                    <Col xs="auto" className='ms-2'>
+                    <Col xs="auto" className='ms-2' style={{ marginTop: ".4rem" }}>
 
                         <Button className="me-2 print-button no-style" variant="info" onClick={() => exportToExcel(
                             {
@@ -147,6 +190,39 @@ const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, reset
                             <FontAwesomeIcon icon={faFileExcel} />
                         </Button>
                     </Col>
+                    <Col xs="auto" style={{ marginTop: ".4rem" }}>
+                        {
+                            rendering ?
+                                <Spinner animation="border" size="sm" />
+                                :
+                                <PrintButton className="w-100 h-100" variant="info" handlePrint={renderAndDownloadTablePDF} />
+                        }
+                    </Col>
+                    <div className='tiptap-wrapper d-inline-block mt-2 mb-0'>
+                        <select
+                            className='ms-2'
+                            style={{ width: "21.5ch" }}
+                            value={value}
+                            onChange={e => {
+                                setRenderingAnnual(true)
+                                dispatch(fetchAnnualStatement({
+                                    ...e.target.value !== "" ? { year: e.target.value } : {},
+                                    clientId: ClientSelected?.id
+                                }))
+                                setValue(e.target.value)
+                            }}
+                            disabled={renderingAnnual}
+                        >
+                            <option value="" disabled>
+                                {t("Reporte de tenencias")}
+                            </option>
+                            {
+                                yearsArraySince(2022, moment().subtract(1, "year").get("year")).map(year => (
+                                    <option value={year} key={year}>Periodo {year - 1} - {year}</option>
+                                ))
+                            }
+                        </select>
+                    </div>
                 </div>
                 <div className="d-flex justify-content-between align-items-end pe-2 pb-2 border-bottom-main">
                     <Col className="d-flex justify-content-between pe-5" sm="auto">
