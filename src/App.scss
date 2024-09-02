@@ -19,6 +19,7 @@
     }
 }
 a.badge{
+    background-color: var(--blue-main) !important;
     text-decoration: none;
     color: var(--bs-badge-color);
     &:hover{
