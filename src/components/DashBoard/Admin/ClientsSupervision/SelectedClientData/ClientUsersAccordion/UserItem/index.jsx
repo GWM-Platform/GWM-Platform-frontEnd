@@ -131,7 +131,7 @@ const UserItem = ({ ownersAmount, client, user, getUsers }) => {
     }
 
     const currentUserId = userId()
-
+    console.log(user.userToClientEnabled)
     return (
         <div className="d-flex Actions py-2 align-items-center user" style={{ borderBottom: " 1px solid lightgray" }}>
             <div className="mb-0 pe-1 pe-md-2" >
@@ -224,10 +224,10 @@ const UserItem = ({ ownersAmount, client, user, getUsers }) => {
                                     </Dropdown.Item>
                                 }
                                 <Dropdown.Item onClick={toggleUserToClientStatus}>
-                                    {t(user.enabled ? 'Enable access to this client' : 'Disable access to this client')}
+                                    {t(user.userToClientEnabled ? 'Disable access to this client' : 'Enable access to this client')}
                                 </Dropdown.Item>
                                 <Dropdown.Item disabled={currentUserId === user.id + ""} onClick={toggleUserStatus}>
-                                    {t(user.userToClientEnabled ? 'Enable general access' : 'Disable general access')}
+                                    {t(user.enabled ? 'Disable general access' : 'Enable general access')}
                                 </Dropdown.Item>
                                 <Dropdown.Divider />
                                 <Dropdown.Item disabled={user.isOwner && ownersAmount === 1} onClick={() => disconnectUserToClient()} >
