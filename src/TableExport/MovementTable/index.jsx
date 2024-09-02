@@ -98,11 +98,26 @@ const MovementTable = ({ movements, headerInfo }) => {
         },
         pageBackground: {
             position: 'absolute',
-            minWidth: '100%',
-            minHeight: '100%',
-            display: 'block',
-            height: '100%',
-            width: '100%'
+
+            // INITIAL
+            // minWidth: '100%',
+            // minHeight: '100%',
+            // display: 'block',
+            // height: '100%',
+            // width: '100%',
+
+            // W100
+            // minWidth: '100%',
+            // width: '100%'
+
+            // H100
+            // height: '100%',
+            // minHeight: '100%',
+            // width: "190%",
+            // maxWidth: "190%"
+
+            // WITHOUT IMAGE
+            display: 'none',
         },
         container: {
             display: 'block',
@@ -121,7 +136,7 @@ const MovementTable = ({ movements, headerInfo }) => {
             // backgroundColor: '#082044',
             borderBottomWidth: '1px',
             // borderBottomColor: 'rgb(8, 32, 68)',
-            borderBottomColor:"rgb(120, 120, 120)",
+            borderBottomColor: "rgb(120, 120, 120)",
             borderBottomStyle: 'solid',
             // padding: '20px',
             // marginBottom: '3px',
@@ -164,7 +179,7 @@ const MovementTable = ({ movements, headerInfo }) => {
     return (
         <Document>
             {paginatedMovements.map((pageMovements, pageIndex) => (
-                <Page key={pageIndex} style={{ display: 'block', height: '100%', width: '100%' }}>
+                <Page key={pageIndex} style={{ display: 'block', height: '100%', width: '100%', backgroundColor: "#FFFFFF" }}>
                     <Image fixed src={`${process.env.PUBLIC_URL}/images/PDF/background.jpg`} style={styles.pageBackground} />
                     <View style={styles.container}>
                         <View style={styles.header}>
