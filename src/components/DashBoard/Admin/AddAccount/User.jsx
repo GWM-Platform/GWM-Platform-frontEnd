@@ -75,7 +75,7 @@ export const User = ({ user }) => {
             <td className="Alias">
                 <MultipleItemsCell
                     className='d-flex' buttonClassName="badge bg-info" buttonStyle={{ border: "none" }} array={userClients}
-                    transformer={(client) => <Link style={{ color: "#66a4ff" }} to={`/DashBoard/clientsSupervision/${client.id}`}>{client.alias}</Link>}
+                    transformer={(client) => <Link className="badge bg-info" to={`/DashBoard/clientsSupervision/${client.id}`}>{client.alias}</Link>}
                 />
             </td>
             <td className="Alias">
@@ -132,8 +132,8 @@ export const User = ({ user }) => {
                                                     {t('Resend activation email')}
                                                 </Dropdown.Item>
                                             }
-                                            <Dropdown.Item onClick={toggleUserStatus}>
-                                                {t(user.enabled ? 'Disable access' : 'Enable access')}
+                                            <Dropdown.Item disabled={currentUserId === user.id + ""} onClick={toggleUserStatus}>
+                                                {t(user.enabled ? 'Disable general access' : 'Enable general access')}
                                             </Dropdown.Item>
                                         </Dropdown.Menu >
                                     </Dropdown>
