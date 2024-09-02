@@ -133,7 +133,7 @@ const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData })
     const userEmail = useSelector(selectUserEmail)
     const userId = useSelector(selectUserId)
     const fund = useSelector(state => selectFundById(state, Transaction.fundId))
-    console.log(userId !== Transaction.userId, Transaction.userEmail, (userId ? userId !== Transaction.userId : userEmail ? userEmail !== Transaction?.userEmail : false) ? "disabled" : "")
+
     return (
         <>
             <div className='mobileMovement'>

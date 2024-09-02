@@ -9,6 +9,7 @@ import transactionsReducer from 'Slices/DashboardUtilities/transactionsSlice'
 import usersReducer from 'Slices/DashboardUtilities/usersSlice'
 import operationsReducer from 'Slices/DashboardUtilities/operationsSlice'
 import fundsReducer from 'Slices/DashboardUtilities/fundsSlice'
+import fundsWithUsersReducer from 'Slices/DashboardUtilities/fundsWithUsersSlice'
 import PrintHtmlReducer from 'Slices/DashboardUtilities/PrintHtmlSlice'
 import movementsReduecer from 'Slices/DashboardUtilities/movementsSlice'
 
@@ -24,6 +25,7 @@ export default configureStore({
     clients: clientsReducer,
     operations: operationsReducer,
     funds: fundsReducer,
+    fundsWithUsers: fundsWithUsersReducer,
     PrintHtml: PrintHtmlReducer,
     movements: movementsReduecer
   },

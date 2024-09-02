@@ -10,7 +10,14 @@
     cursor: pointer;
     font-weight: 200;
 }
+.max-width-unset,.max-width-unset * {
+    max-width: unset!important;
 
+    .tooltip-inner{
+        max-height: 90vh;
+        overflow: auto;
+    }
+}
 .moreTooltip {
 
     li,
