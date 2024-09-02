@@ -82,10 +82,10 @@ const UserDashBoard = () => {
     const { t } = useTranslation();
 
     useEffect(() => {
-        if ((ClientSelected.enabled === false && (UserClients.content.find(client => client.enabled) || admin))) {
+        if (((ClientSelected.enabled === false || ClientSelected.userToClientEnabled === false) && (UserClients.content.find(client => client.enabled && client.userToClientEnabled) || admin))) {
             setIndexClientSelected(-1)
         }
-    }, [ClientSelected.enabled, UserClients, admin, setIndexClientSelected])
+    }, [ClientSelected.enabled, ClientSelected.userToClientEnabled, UserClients, admin, setIndexClientSelected])
 
 
     return (
@@ -96,7 +96,7 @@ const UserDashBoard = () => {
                         UserClients.content.length > 0 || admin ?
                             (ClientSelected.id || admin) && ClientPermissions.fetched && userStatus === "succeeded" ?
                                 (
-                                    ClientSelected.enabled === false ?
+                                    (ClientSelected.enabled === false || ClientSelected.userToClientEnabled === false) ?
                                         <ClientDisabled />
                                         :
                                         <>

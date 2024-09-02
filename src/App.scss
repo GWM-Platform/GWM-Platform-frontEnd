@@ -18,6 +18,13 @@
         overflow: auto;
     }
 }
+a.badge{
+    text-decoration: none;
+    color: var(--bs-badge-color);
+    &:hover{
+        color: var(--bs-badge-color);
+    }
+}
 .moreTooltip {
 
     li,
