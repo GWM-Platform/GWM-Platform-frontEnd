@@ -183,7 +183,7 @@ const Broadcast = () => {
         let selectedFundUsers = []
         let isFundSelected = selectedFund && allSelectedFund(selectedFund.value)
         if (selectedFund) {
-            selectedFundUsers = fundsWithUsers?.find(fund => fund.fundId === selectedFund.value)
+            selectedFundUsers = fundsWithUsers?.find(fund => (fund.fundId + "") === selectedFund.value)
                 ?.users?.map(user => transfromUser(users.find(userComplete => userComplete.email === user.email))) || []
         }
 
@@ -238,7 +238,7 @@ const Broadcast = () => {
                 ...fundsWithUsers?.map(
                     fundWithUsers => (
                         {
-                            value: fundWithUsers.fundId,
+                            value: fundWithUsers.fundId + "",
                             isFund: true,
                             isDisabled: fundWithUsers?.users?.length === 0,
                             label: `${t(`Users with holdings on "{{fundName}}"`, { fundName: fundWithUsers?.fundName })} (${fundWithUsers?.users?.length} ${t("Users")})`
@@ -258,6 +258,7 @@ const Broadcast = () => {
 
     const filterOption = ({ label, value }, string) => {
         // default search
+        console.log(value)
         if (label?.includes(string) || value?.includes(string)) return true;
 
         // check if a group as the filter string as label
@@ -277,7 +278,7 @@ const Broadcast = () => {
         return false;
     };
     const getUsersByFundId = (fundId) => {
-        return fundsWithUsers.find(fundWithUsers => fundWithUsers.fundId === fundId)?.users || []
+        return fundsWithUsers.find(fundWithUsers => (fundWithUsers.fundId + "") === fundId)?.users || []
     }
     const allSelectedFund = (fundId) => {
         const fundUsers = getUsersByFundId(fundId)
@@ -294,7 +295,7 @@ const Broadcast = () => {
                         <p className='text-start mb-0'>
                             {
 
-                                users.map((user, index) => <span className='text-start text-nowrap'>{index !== 0 && <br />}{user.email}</span>)
+                                users.map((user, index) => <span className='text-start text-nowrap' key={index}>{index !== 0 && <br />}{user.email}</span>)
                             }
                         </p>
 
@@ -404,7 +405,7 @@ const Broadcast = () => {
 
     useEffect(() => {
         const uniqueValues = [...new Set(values.flatMap(option => (option.options || []).map(option => option.value)))]
-        const sortedSelectedOptions = selectedOptions.sort((a, b) => uniqueValues.indexOf(a.value) - uniqueValues.indexOf(b.value)).filter(selectedOption => uniqueValues.includes(selectedOption.value));
+        const sortedSelectedOptions = selectedOptions.sort((a, b) => uniqueValues.indexOf(a.value) - uniqueValues.indexOf(b.value)).filter(selectedOption => uniqueValues?.includes(selectedOption.value));
         // const sortedOptions = selectedOptions.
         if (sortedSelectedOptions?.length > maxClients) {
             setSelectedOptions(sortedSelectedOptions.slice(0, maxClients))
