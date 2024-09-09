@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
-const TooltipInfo = ({ icon, children, fontSize = "12px", text = "Información adicional", trigger = ["click", "focus"], link = false, tooltipClassName = "", btnClassName = "btn no-style alt-focus mx-1 d-inline-block", placement = "bottom", buttonStyle = {}, buttonProps = {} }) => {
+const TooltipInfo = ({ icon, children, fontSize = "11px", text = "Información adicional", trigger = ["click", "focus"], link = false, tooltipClassName = "", btnClassName = "btn no-style alt-focus mx-1 d-inline-block", placement = "bottom", buttonStyle = {}, buttonProps = {} }) => {
 
     const LinkToSection = () => (
         link !== false &&
@@ -31,7 +31,13 @@ const TooltipInfo = ({ icon, children, fontSize = "12px", text = "Información a
                 </Tooltip>
             }
         >
-            <button type="button" className={`${btnClassName}`} style={{ color: "grey", fontSize, ...buttonStyle }} {...buttonProps} >
+            <button type="button" className={`${btnClassName}`} style={{
+                color: "grey",
+                verticalAlign: "middle",
+                lineHeight: "1em",
+                marginBottom: "2px",
+                fontSize, ...buttonStyle
+            }} {...buttonProps} >
                 {
                     children ?
                         children
