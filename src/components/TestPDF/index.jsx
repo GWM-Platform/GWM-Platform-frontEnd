@@ -114,6 +114,7 @@ const TestPDF = () => {
                 {
                   "accountAlias": "Marki 3",
                   "balance": 29975.94,
+                  "initialBalance": 53699.68,
                   "operations": [
                     {
                       "id": 540,
@@ -1543,7 +1544,9 @@ const TestPDF = () => {
                   ],
                   "shares": 8.83233,
                   "sharePrice": 1497.67,
-                  "balance": 13227.92
+                  "balance": 13227.92,
+                  "performance": 2076.22,
+                  "initialBalance": 757.42
                 },
                 {
                   "fundName": "Acciones",
@@ -1571,14 +1574,18 @@ const TestPDF = () => {
                   ],
                   "shares": 2.34792,
                   "sharePrice": 1135.42,
-                  "balance": 2665.88
+                  "balance": 2665.88,
+                  "performance": 665.87,
+                  "initialBalance": 0
                 },
                 {
                   "fundName": "Real Estate Fund",
                   "operations": [],
                   "shares": 88.99743,
                   "sharePrice": 420,
-                  "balance": 37378.92
+                  "balance": 37378.92,
+                  "performance": 4449.87,
+                  "initialBalance": 32929.05
                 }
               ],
               "fixedDepositsStatement": {
@@ -1595,8 +1602,8 @@ const TestPDF = () => {
                     "stateId": 2,
                     "createdAt": "2023-03-30T14:15:42.754Z",
                     "updatedAt": "2023-06-30T00:00:09.000Z",
-                    "profit": 10.04,
-                    "closeDuration": 91
+                    "accumulatedPendingProfit": 0,
+                    "profit": 0.04
                   },
                   {
                     "closed": true,
@@ -1610,8 +1617,8 @@ const TestPDF = () => {
                     "stateId": 2,
                     "createdAt": "2023-03-30T17:23:43.222Z",
                     "updatedAt": "2023-08-17T15:55:00.000Z",
-                    "profit": 102.3,
-                    "closeDuration": 140
+                    "accumulatedPendingProfit": 0,
+                    "profit": 2.3
                   },
                   {
                     "closed": true,
@@ -1625,8 +1632,8 @@ const TestPDF = () => {
                     "stateId": 2,
                     "createdAt": "2023-03-30T18:37:09.229Z",
                     "updatedAt": "2023-06-29T00:00:08.000Z",
-                    "profit": 101.97,
-                    "closeDuration": 90
+                    "accumulatedPendingProfit": 0,
+                    "profit": 1.97
                   },
                   {
                     "closed": false,
@@ -1640,12 +1647,15 @@ const TestPDF = () => {
                     "stateId": 2,
                     "createdAt": "2023-09-14T16:51:16.547Z",
                     "updatedAt": "2023-09-14T18:10:17.000Z",
-                    "profit": 102.39,
-                    "closeDuration": 109
+                    "accumulatedPendingProfit": 102.39,
+                    "profit": 2.39
                   }
-                ]
+                ],
+                "previousYearPendingBalance": 0
               },
-              "totalBalance": 87823.73
+              "totalBalance": 85905.62,
+              "totalPerformance": 7198.66,
+              "totalInitialBalance": 87386.15
             }
           }
           transactions={[

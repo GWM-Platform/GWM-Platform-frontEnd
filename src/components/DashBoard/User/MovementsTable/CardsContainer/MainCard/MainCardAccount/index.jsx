@@ -202,7 +202,7 @@ const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, reset
                         <select
                             className='ms-2'
                             style={{ width: "21.5ch" }}
-                            value={value}
+                            value={renderingAnnual ? value : ""}
                             onChange={e => {
                                 setRenderingAnnual(true)
                                 dispatch(fetchAnnualStatement({
