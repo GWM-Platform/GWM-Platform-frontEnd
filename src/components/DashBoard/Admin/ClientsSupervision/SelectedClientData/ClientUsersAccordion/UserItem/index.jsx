@@ -1,5 +1,6 @@
 import { faCheckCircle, faTimesCircle } from "@fortawesome/free-regular-svg-icons";
 import axios from "axios";
+import TooltipInfo from "components/DashBoard/Admin/Broadcast/TooltipInfo";
 import MoreButton from "components/DashBoard/GeneralUse/MoreButton";
 import { DashBoardContext } from "context/DashBoardContext";
 import React from "react";
@@ -155,21 +156,51 @@ const UserItem = ({ ownersAmount, client, user, getUsers }) => {
                         }
                     </Badge>
                     &nbsp;
-                    <Badge size="sm" bg={user.enabled ? "success" : "danger"}>
+                    {
+
+                    }
+                    <Badge size="sm" bg={(user.enabled && user.userToClientEnabled) ? "success" : "danger"}>
                         {
-                            user.enabled ?
-                                t("General access enabled")
+                            (user.enabled && user.userToClientEnabled) ?
+                                t("Enabled")
                                 :
-                                t("General access disabled")
+                                <>
+                                    {t("Disabled")}
+                                    <TooltipInfo trigger={["hover", "focus"]}
+                                        btnClassName="btn no-style alt-focus ms-1 d-inline-block"
+                                        text={
+                                            <p className='text-start mb-0'>
+                                                {
+                                                    user.enabled ?
+                                                        <>{t("General access enabled")} 🗸</>
+                                                        :
+                                                        <>{t("General access disabled")} ✗</>
+                                                }<br />
+                                                {
+                                                    user.userToClientEnabled ?
+                                                        <>{t("Access to this client enabled")} 🗸</>
+                                                        :
+                                                        <>{t("Access to this client disabled")} ✗</>
+                                                }
+                                            </p>
+                                        } />
+                                </>
                         }
-                    </Badge>
-                    &nbsp;
-                    <Badge size="sm" bg={user.userToClientEnabled ? "success" : "danger"}>
                         {
-                            user.userToClientEnabled ?
-                                t("Access to this client enabled")
-                                :
-                                t("Access to this client disabled")
+                            /* {
+                                user.enabled ?
+                                    t("General access enabled")
+                                    :
+                                    t("General access disabled")
+                            } */
+                        }
+                        {
+                            /* {
+                                user.userToClientEnabled ?
+                                    t("Access to this client enabled")
+                                    :
+                                    t("Access to this client disabled")
+                            } */
                         }
                     </Badge>
                 </h1>
