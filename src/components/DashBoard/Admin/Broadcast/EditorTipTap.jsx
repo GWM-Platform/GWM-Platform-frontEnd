@@ -310,20 +310,20 @@ const MenuBar = () => {
             value=""
             onChange={e =>
               e.target.value === "accountBalance" ?
-                editor.chain().focus().insertContent(`<span data-text-interpolation-type="${"accountBalance"}"></span>`).run()
+                editor.chain().focus().insertContent(`U$D <span data-text-interpolation-type="${"accountBalance"}"></span>`).run()
                 :
-                editor.chain().focus().insertContent(`<span data-text-interpolation-type="stake_fund_${e.target.value}"></span>`).run()
+                editor.chain().focus().insertContent(`<span data-text-interpolation-type="stake_fund_${e.target.value}"></span> ${t("shares")}`).run()
             }>
             <option value="" disabled>
               {t("Holdings")}
             </option>
             <option value="accountBalance">
-              {t("accountBalance")}
+              {t("accountBalance")} (U$D)
             </option>
             {
               funds.map(fund =>
                 <option value={fund.id} key={fund.id}>
-                  {t(`"{{fundName}}" stake`, { fundName: fund.name })}
+                  {t(`{{fundName}}`, { fundName: fund.name })} ({t("Shares")})
                 </option>
               )
             }
