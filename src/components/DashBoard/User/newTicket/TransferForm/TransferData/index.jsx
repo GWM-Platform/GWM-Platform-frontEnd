@@ -22,7 +22,7 @@ const TransferData = ({ data, Funds, handleChange, TargetAccount, toggleAccordio
     const share_transfer = useMemo(() => data.FundSelected !== "cash", [data.FundSelected])
     const fund_selected = useMemo(() => share_transfer ? Funds?.find(fund => fund.fundId === data.FundSelected) : null, [Funds, data.FundSelected, share_transfer])
     const sharePrice = useMemo(() => fund_selected?.fund?.sharePrice || 1, [fund_selected])
-    const max = useMemo(() => share_transfer ? Decimal(fund_selected?.shares || "0").toFixed(2) : Balance, [Balance, fund_selected?.shares, share_transfer])
+    const max = useMemo(() => share_transfer ? Decimal(fund_selected?.shares || "0").toFixed(5) : Balance, [Balance, fund_selected?.shares, share_transfer])
 
     const handleAmountChange = (value, updateAmountUsd = true) => {
         const decimalSeparator = process.env.REACT_APP_DECIMALSEPARATOR ?? '.'
@@ -81,6 +81,10 @@ const TransferData = ({ data, Funds, handleChange, TargetAccount, toggleAccordio
 
     const amountDeductedFromOverdraft = data.FundSelected === "cash" ? RealBalance > 0 ? Decimal(data?.amount || 0).minus(RealBalance || 0).toNumber() : data.amount : 0
 
+    const sellAll = () => {
+        const decimalSeparator = process.env.REACT_APP_DECIMALSEPARATOR ?? ','
+        handleAmountChange(((max || 0) + "").replaceAll('.', decimalSeparator))
+    }
     return (
         <Accordion.Item eventKey="0" disabled>
             <Accordion.Header onClick={() => { if (TargetAccount.fetched && !TargetAccount.fetching && TargetAccount.valid) toggleAccordion() }}>
@@ -120,6 +124,9 @@ const TransferData = ({ data, Funds, handleChange, TargetAccount, toggleAccordio
                         onValueChange={(value) => handleAmountChange(value)}
                         className={`form-control ${inputValid ? 'hardcoded-valid' : 'hardcoded-invalid'} `}
                     />
+                    <Button variant="outline-secondary" onClick={() => sellAll()} disabled={max === data.value}>
+                        {t("All")}
+                    </Button>
                 </InputGroup>
 
                 <InputGroup>
@@ -129,9 +136,9 @@ const TransferData = ({ data, Funds, handleChange, TargetAccount, toggleAccordio
                         onWheel={event => event.currentTarget.blur()}
                         disabled={false}
                         value={data.amount}
-                        step="0.01"
                         onChange={handleChange}
-                        min="0.01"
+                        step={share_transfer ? '0.00001' : '0.01'}
+                        min={share_transfer ? '0.00001' : '0.01'}
                         max={max}
                         id="amount"
                         type="number"
