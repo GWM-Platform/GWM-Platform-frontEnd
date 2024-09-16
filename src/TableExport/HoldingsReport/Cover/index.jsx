@@ -209,10 +209,10 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                             <View style={{ ...styles.tableColWidthLeftFirstThirds, borderColor: "rgb(120, 120, 120)" }}>
                                 <Text style={styles.tableHeader}></Text>
                             </View>
-                            <View style={{ ...styles.tableColWidthLeftElseThirds, borderColor: "rgb(120, 120, 120)" }}>
+                            <View style={{ ...styles.tableColWidthLeftElseThirds, width: "43.34%", borderColor: "rgb(120, 120, 120)" }}>
                                 <Text style={{ ...styles.tableHeader, textAlign: "right" }}>{t("Rendimiento")}</Text>
                             </View>
-                            <View style={{ ...styles.tableColWidthLeftElseThirds, borderColor: "rgb(120, 120, 120)" }}>
+                            <View style={{ ...styles.tableColWidthLeftElseThirds, width: "16.66%", borderColor: "rgb(120, 120, 120)" }}>
                                 <Text style={{ ...styles.tableHeader, textAlign: "right" }}>{t("Amount")}</Text>
                             </View>
                         </View>
@@ -687,7 +687,7 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                                     Balance total final ({moment().set("year", year).endOf("year").format("L")})
                                 </Text>
                             </View>
-                            <View style={{ ...styles.tableColWidthLeftElseThirds, /*borderColor: "rgb(120, 120, 120)"*/ }}>
+                            <View style={{ ...styles.tableColWidthLeftElseThirds, width: "43.34%" /*borderColor: "rgb(120, 120, 120)"*/ }}>
                                 <Text style={{ ...styles.tableHeader, textAlign: "right" }} >
                                     {
                                         formatValue({
@@ -700,7 +700,7 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                                     }
                                 </Text>
                             </View>
-                            <View style={{ ...styles.tableColWidthLeftElseThirds, /*borderColor: "rgb(120, 120, 120)"*/ }}>
+                            <View style={{ ...styles.tableColWidthLeftElseThirds, width: "16.66%"/*borderColor: "rgb(120, 120, 120)"*/ }}>
                                 <Text style={{ ...styles.tableHeader, textAlign: "right" }} >
                                     {
                                         formatValue({
