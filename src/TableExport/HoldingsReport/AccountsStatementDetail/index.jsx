@@ -11,10 +11,9 @@ import { paginate } from '..'
 
 export const AccountsStatementDetail = ({ accountsStatement, year, headerInfo }) => {
     const { t } = useTranslation();
-
     return accountsStatement.map(
         (accountStatement, accountStatementIndex) => {
-            const paginatedMovements = paginate(accountStatement.operations, 38);
+            const paginatedMovements = paginate(accountStatement.operations.filter(operation => operation.applied && !operation.motive.includes("SHARE_TRANSFER")).reverse(), 38);
 
             const greaterAmount = accountStatement.operations.reduce((acc, content) => {
                 const value = `${Math.sign(content.amount) === 1 ? '+' : '-'

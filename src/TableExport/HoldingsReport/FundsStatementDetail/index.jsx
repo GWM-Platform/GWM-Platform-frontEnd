@@ -14,10 +14,10 @@ import { paginate } from '..'
 
 export const FundsStatementDetail = ({ fundsStatement, year, headerInfo, AccountSelected, sharesDecimalPlaces }) => {
     const { t } = useTranslation();
-
+    
     return fundsStatement.map(
         fundStatement => {
-            const fundStatementPaginatedTransactions = paginate(fundStatement.operations, 38);
+            const fundStatementPaginatedTransactions = paginate(fundStatement.operations.filter(operation=> operation.stateId === 2), 38);
             const greaterAmount = fundStatement.operations.reduce((acc, content) => {
                 const decimalSharesAbs = new Decimal(content.shares).abs()
                 const decimalPrice = new Decimal(content.sharePrice)

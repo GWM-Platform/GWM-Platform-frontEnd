@@ -20,6 +20,12 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
         tableRow: {
             margin: "auto", flexDirection: "row"
         },
+        fundsTable: {
+            col: {
+                width: "16.66%",
+                borderStyle: "solid", borderColor: "rgb(222, 226, 230)", borderBottomWidth: 1, borderLeftWidth: 0, borderTopWidth: 0
+            }
+        },
         tableColDate: {
             // width: "12%",
             borderStyle: "solid", borderColor: "rgb(222, 226, 230)", borderBottomWidth: 1, borderLeftWidth: 0, borderTopWidth: 0
@@ -140,8 +146,10 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
         return (<View style={styles.tableRow}>
             <View style={{ ...styles.tableColWidthLeft, /*borderColor: "rgb(120, 120, 120)"*/ }}>
                 <Text style={{ ...styles.tableHeader, opacity: 0 }} />
+                <Text style={{ ...styles.tableHeader, opacity: 0 }} />
             </View>
             <View style={{ ...styles.tableColWidthLeft, /*borderColor: "rgb(120, 120, 120)"*/ }}>
+                <Text style={{ ...styles.tableHeader, opacity: 0 }} />
                 <Text style={{ ...styles.tableHeader, opacity: 0 }} />
             </View>
         </View>)
@@ -208,17 +216,6 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                                 <Text style={{ ...styles.tableHeader, textAlign: "right" }}>{t("Amount")}</Text>
                             </View>
                         </View>
-
-                        {/* 
-                        x Balance inicial anual (Si es un cliente que ingreso en s año va a ser el primeer depósito/0)
-                        x Total de depositos
-                        x Total de retiros
-                        x Total final de saldo en cta-cte
-                        - Una linea por cada plazo fijo → interes de ese año
-                        x Una linea por cada fondo → Tenencia y rendimiento
-                        - Suma de todos los rendimientos y tenencias 
-                        - Total de plazo fijo
-                        */}
                         <View style={styles.tableRow}>
                             <View style={{ ...styles.tableColWidthLeft, /*borderColor: "rgb(120, 120, 120)"*/ }}>
                                 <Text style={styles.tableHeader}>
@@ -240,6 +237,7 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                             </View>
                         </View>
                         <Divider />
+                        {/* CUENTA CORRIENTE */}
                         <View style={styles.tableRow}>
                             <View style={{ ...styles.tableColWidthLeft, /*borderColor: "rgb(120, 120, 120)"*/ }}>
                                 <Text style={styles.tableHeader}>
@@ -263,16 +261,16 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                         <View style={styles.tableRow}>
                             <View style={styles.tableColWidthLeft}>
                                 <Text style={styles.tableCell}>
-                                    Total de depositos
+                                    Total de movimientos entrantes
                                 </Text>
                             </View>
                             <View style={styles.tableColWidthLeft}>
                                 <Text style={{ ...styles.tableCell, textAlign: "right" }} >
-                                    {
+                                    +{
                                         formatValue({
                                             value: (
                                                 holdings?.accountsStatement?.[0]?.operations
-                                                    ?.filter(operation => operation.motive === "DEPOSIT")
+                                                    ?.filter(operation => (operation.motive === "DEPOSIT" || operation.motive === "TRANSFER_RECEIVE") && operation.applied)
                                                     ?.reduce((accum, item) => accum.add(item.amount || 0), Decimal(0)).toFixed(2) || 0
                                             ),
                                             decimalScale: "2",
@@ -287,7 +285,7 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                         <View style={styles.tableRow}>
                             <View style={styles.tableColWidthLeft}>
                                 <Text style={styles.tableCell}>
-                                    Total de retiros
+                                    Total de operaciones salientes
                                 </Text>
                             </View>
                             <View style={styles.tableColWidthLeft}>
@@ -296,8 +294,8 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                                         formatValue({
                                             value: (
                                                 holdings?.accountsStatement?.[0]?.operations
-                                                    ?.filter(operation => operation.motive === "WITHDRAWAL")
-                                                    ?.reduce((accum, item) => accum.add(item.amount || 0), Decimal(0)).abs().toFixed(2) || 0
+                                                    ?.filter(operation => (operation.motive === "WITHDRAWAL" || operation.motive === "TRANSFER_SEND") && operation.applied)
+                                                    ?.reduce((accum, item) => accum.add(item.amount || 0), Decimal(0)).toFixed(2) || 0
                                             ),
                                             decimalScale: "2",
                                             groupSeparator,
@@ -311,7 +309,7 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                         <View style={styles.tableRow}>
                             <View style={styles.tableColWidthLeft}>
                                 <Text style={styles.tableCell}>
-                                    Otros movimientos
+                                    Movimientos por inversiones
                                 </Text>
                             </View>
                             <View style={styles.tableColWidthLeft}>
@@ -320,8 +318,14 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                                         formatValue({
                                             value: (
                                                 holdings?.accountsStatement?.[0]?.operations
-                                                    ?.filter(operation => operation.motive !== "WITHDRAWAL" && operation.motive !== "DEPOSIT")
-                                                    ?.reduce((accum, item) => accum.add(item.amount || 0), Decimal(0)).abs().toFixed(2) || 0
+                                                    ?.filter(operation =>
+                                                        operation.motive !== "WITHDRAWAL"
+                                                        && operation.motive !== "DEPOSIT"
+                                                        && operation.motive !== "TRANSFER_RECEIVE"
+                                                        && operation.motive !== "TRANSFER_SEND"
+                                                        && operation.applied
+                                                    )
+                                                    ?.reduce((accum, item) => accum.add(item.amount || 0), Decimal(0)).toFixed(2) || 0
                                             ),
                                             decimalScale: "2",
                                             groupSeparator,
@@ -353,21 +357,214 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                             </View>
                         </View>
                         <Divider />
-
+                        {/* FONDOS */}
                         <View style={styles.tableRow}>
-                            <View style={{ ...styles.tableColWidthLeft, /*borderColor: "rgb(120, 120, 120)"*/ }}>
+                            <View style={{ ...styles.fundsTable.col, /*borderColor: "rgb(120, 120, 120)"*/ }}>
                                 <Text style={styles.tableHeader}>
-                                    Balance en fondos inicial ({moment().set("year", year).startOf("year").format("L")})
+                                    Fondo
                                 </Text>
                             </View>
-                            <View style={{ ...styles.tableColWidthLeft, /*borderColor: "rgb(120, 120, 120)"*/ }}>
-                                <Text style={{ ...styles.tableHeader, textAlign: "right" }} >
+                            <View style={{ ...styles.fundsTable.col, /*borderColor: "rgb(120, 120, 120)"*/ }}>
+                                <Text style={{ ...styles.tableHeader, textAlign: "right" }}>
+                                    Balance inicial
+                                </Text>
+                            </View>
+                            <View style={{ ...styles.fundsTable.col, /*borderColor: "rgb(120, 120, 120)"*/ }}>
+                                <Text style={{ ...styles.tableHeader, textAlign: "right" }}>
+                                    Compras
+                                </Text>
+                            </View>
+                            <View style={{ ...styles.fundsTable.col, /*borderColor: "rgb(120, 120, 120)"*/ }}>
+                                <Text style={{ ...styles.tableHeader, textAlign: "right" }}>
+                                    Ventas
+                                </Text>
+                            </View>
+                            <View style={{ ...styles.fundsTable.col, /*borderColor: "rgb(120, 120, 120)"*/ }}>
+                                <Text style={{ ...styles.tableHeader, textAlign: "right" }}>
+                                    Rendimiento
+                                </Text>
+                            </View>
+                            <View style={{ ...styles.fundsTable.col, /*borderColor: "rgb(120, 120, 120)"*/ }}>
+                                <Text style={{ ...styles.tableHeader, textAlign: "right" }}>
+                                    Saldo final
+                                </Text>
+                            </View>
+                        </View>
+                        {
+                            holdings?.fundsStatement?.map(fund =>
+                                <View style={styles.tableRow}>
+                                    <View style={{ ...styles.fundsTable.col, /*borderColor: "rgb(120, 120, 120)"*/ }}>
+                                        <Text style={styles.tableHeader}>
+                                            {fund.fundName}
+                                        </Text>
+                                    </View>
+                                    <View style={{ ...styles.fundsTable.col, /*borderColor: "rgb(120, 120, 120)"*/ }}>
+                                        <Text style={{ ...styles.tableCell, textAlign: "right" }}>
+                                            {
+                                                formatValue({
+                                                    value: (fund.initialBalance || 0) + "",
+                                                    decimalScale: "2",
+                                                    groupSeparator,
+                                                    decimalSeparator,
+                                                    prefix: "U$D "
+                                                })
+                                            }
+                                        </Text>
+                                    </View>
+                                    <View style={{ ...styles.fundsTable.col, /*borderColor: "rgb(120, 120, 120)"*/ }}>
+                                        <Text style={{ ...styles.tableCell, textAlign: "right" }}>
+                                            {
+                                                formatValue({
+                                                    value: fund.operations
+                                                        .filter(operation => operation.stateId === 2 && Decimal(operation.shares).gt(0))
+                                                        .reduce((
+                                                            (accum, item) => accum.add(Decimal(item.shares || 0).times(item.sharePrice || 0))
+                                                        ), Decimal(0))
+                                                        .toFixed(2),
+                                                    decimalScale: "2",
+                                                    groupSeparator,
+                                                    decimalSeparator,
+                                                    prefix: "U$D "
+                                                })
+                                            }
+
+                                        </Text>
+                                    </View>
+                                    <View style={{ ...styles.fundsTable.col, /*borderColor: "rgb(120, 120, 120)"*/ }}>
+                                        <Text style={{ ...styles.tableCell, textAlign: "right" }}>
+                                            {
+                                                formatValue({
+                                                    value: fund.operations
+                                                        .filter(operation => operation.stateId === 2 && Decimal(operation.shares).lt(0))
+                                                        .reduce((
+                                                            (accum, item) => accum.add(Decimal(item.shares || 0).times(item.sharePrice || 0))
+                                                        ), Decimal(0))
+                                                        .toFixed(2),
+                                                    decimalScale: "2",
+                                                    groupSeparator,
+                                                    decimalSeparator,
+                                                    prefix: "U$D "
+                                                })
+                                            }
+                                        </Text>
+                                    </View>
+                                    <View style={{ ...styles.fundsTable.col, /*borderColor: "rgb(120, 120, 120)"*/ }}>
+                                        <Text style={{ ...styles.tableCell, textAlign: "right" }}>
+                                            {formatValue({
+                                                value: (fund.performance || 0) + "",
+                                                decimalScale: "2",
+                                                groupSeparator,
+                                                decimalSeparator,
+                                                prefix: "U$D "
+                                            })}
+                                        </Text>
+                                    </View>
+                                    <View style={{ ...styles.fundsTable.col, /*borderColor: "rgb(120, 120, 120)"*/ }}>
+                                        <Text style={{ ...styles.tableCell, textAlign: "right" }}>
+                                            {formatValue({
+                                                value: (fund.balance || 0) + "",
+                                                decimalScale: "2",
+                                                groupSeparator,
+                                                decimalSeparator,
+                                                prefix: "U$D "
+                                            })}
+                                        </Text>
+                                    </View>
+                                </View>
+                            )
+                        }
+                        <View style={styles.tableRow}>
+                            <View style={{ ...styles.fundsTable.col, /*borderColor: "rgb(120, 120, 120)"*/ }}>
+                                <Text style={styles.tableHeader}>
+                                    Total
+                                </Text>
+                            </View>
+                            <View style={{ ...styles.fundsTable.col, /*borderColor: "rgb(120, 120, 120)"*/ }}>
+                                <Text style={{ ...styles.tableHeader, textAlign: "right" }}>
                                     {
                                         formatValue({
-                                            value: (
+                                            value:
                                                 holdings?.fundsStatement
-                                                    ?.reduce((accum, item) => accum.add(item.initialBalance || 0), Decimal(0)).toFixed(2) || 0
-                                            ),
+                                                    ?.reduce(((accum, fund) => accum.add(fund.initialBalance || 0)), Decimal(0))
+                                                    ?.toFixed(2),
+                                            decimalScale: "2",
+                                            groupSeparator,
+                                            decimalSeparator,
+                                            prefix: "U$D "
+                                        })
+                                    }
+                                </Text>
+                            </View>
+                            <View style={{ ...styles.fundsTable.col, /*borderColor: "rgb(120, 120, 120)"*/ }}>
+                                <Text style={{ ...styles.tableHeader, textAlign: "right" }}>
+                                    {
+                                        formatValue({
+                                            value:
+                                                holdings?.fundsStatement
+                                                    ?.reduce(((accum, fund) => accum.add(
+                                                        fund.operations
+                                                            .filter(operation => operation.stateId === 2 && Decimal(operation.shares).gt(0))
+                                                            .reduce((
+                                                                (accum, item) => accum.add(Decimal(item.shares || 0).times(item.sharePrice || 0))
+                                                            ), Decimal(0))
+                                                            .toFixed(2)
+                                                    )), Decimal(0))
+                                                    ?.toFixed(2),
+                                            decimalScale: "2",
+                                            groupSeparator,
+                                            decimalSeparator,
+                                            prefix: "U$D "
+                                        })
+                                    }
+                                </Text>
+                            </View>
+                            <View style={{ ...styles.fundsTable.col, /*borderColor: "rgb(120, 120, 120)"*/ }}>
+                                <Text style={{ ...styles.tableHeader, textAlign: "right" }}>
+                                    {
+                                        formatValue({
+                                            value:
+                                                holdings?.fundsStatement
+                                                    ?.reduce(((accum, fund) => accum.add(
+                                                        fund.operations
+                                                            .filter(operation => operation.stateId === 2 && Decimal(operation.shares).lt(0))
+                                                            .reduce((
+                                                                (accum, item) => accum.add(Decimal(item.shares || 0).times(item.sharePrice || 0))
+                                                            ), Decimal(0))
+                                                            .toFixed(2)
+                                                    )), Decimal(0))
+                                                    ?.toFixed(2),
+                                            decimalScale: "2",
+                                            groupSeparator,
+                                            decimalSeparator,
+                                            prefix: "U$D "
+                                        })
+                                    }
+                                </Text>
+                            </View>
+                            <View style={{ ...styles.fundsTable.col, /*borderColor: "rgb(120, 120, 120)"*/ }}>
+                                <Text style={{ ...styles.tableHeader, textAlign: "right" }}>
+                                    {
+                                        formatValue({
+                                            value:
+                                                holdings?.fundsStatement
+                                                    ?.reduce(((accum, fund) => accum.add(fund.performance || 0)), Decimal(0))
+                                                    ?.toFixed(2),
+                                            decimalScale: "2",
+                                            groupSeparator,
+                                            decimalSeparator,
+                                            prefix: "U$D "
+                                        })
+                                    }
+                                </Text>
+                            </View>
+                            <View style={{ ...styles.fundsTable.col, /*borderColor: "rgb(120, 120, 120)"*/ }}>
+                                <Text style={{ ...styles.tableHeader, textAlign: "right" }}>
+                                    {
+                                        formatValue({
+                                            value:
+                                                holdings?.fundsStatement
+                                                    ?.reduce(((accum, fund) => accum.add(fund.balance || 0)), Decimal(0))
+                                                    ?.toFixed(2),
                                             decimalScale: "2",
                                             groupSeparator,
                                             decimalSeparator,
@@ -377,122 +574,13 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                                 </Text>
                             </View>
                         </View>
-
-                        {
-                            holdings?.fundsStatement?.map(fund => (
-                                <>
-                                    <View style={styles.tableRow}>
-
-                                        <View style={{ ...styles.tableColWidthLeft, /*borderColor: "rgb(120, 120, 120)"*/ }}>
-                                            <Text style={styles.tableCell}>
-                                                {"    "}Balance inicial {fund.fundName}
-                                            </Text>
-                                        </View>
-                                        <View style={{ ...styles.tableColWidthLeft, /*borderColor: "rgb(120, 120, 120)"*/ }}>
-                                            <Text style={{ ...styles.tableCell, textAlign: "right" }} >
-                                                {
-                                                    formatValue({
-                                                        value: Decimal(fund?.initialBalance || 0).toFixed(2),
-                                                        decimalScale: "2",
-                                                        groupSeparator,
-                                                        decimalSeparator,
-                                                        prefix: "U$D "
-                                                    })
-                                                }
-                                            </Text>
-                                        </View>
-                                    </View>
-                                    {/* Total buy, sell, transfer ?? */}
-                                </>
-                            ))
-                        }
-
-                        <View style={styles.tableRow}>
-                            <View style={{ ...styles.tableColWidthLeftFirstThirds, /*borderColor: "rgb(120, 120, 120)"*/ }}>
-                                <Text style={styles.tableHeader}>
-                                    Balance de fondos final ({moment().set("year", year).endOf("year").format("L")})
-                                </Text>
-                            </View>
-                            <View style={{ ...styles.tableColWidthLeftElseThirds, /*borderColor: "rgb(120, 120, 120)"*/ }}>
-                                <Text style={{ ...styles.tableHeader, textAlign: "right" }} >
-                                    {
-                                        formatValue({
-                                            value: (
-                                                holdings?.fundsStatement
-                                                    ?.reduce((accum, item) => accum.add(item.performance || 0), Decimal(0)).toFixed(2) || 0
-                                            ),
-                                            decimalScale: "2",
-                                            groupSeparator,
-                                            decimalSeparator,
-                                            prefix: "U$D "
-                                        })
-                                    }
-                                </Text>
-                            </View>
-                            <View style={{ ...styles.tableColWidthLeftElseThirds, /*borderColor: "rgb(120, 120, 120)"*/ }}>
-                                <Text style={{ ...styles.tableHeader, textAlign: "right" }} >
-                                    {
-                                        formatValue({
-                                            value: (
-                                                holdings?.fundsStatement
-                                                    ?.reduce((accum, item) => accum.add(item.balance || 0), Decimal(0)).toFixed(2) || 0
-                                            ),
-                                            decimalScale: "2",
-                                            groupSeparator,
-                                            decimalSeparator,
-                                            prefix: "U$D "
-                                        })
-                                    }
-                                </Text>
-                            </View>
-                        </View>
-                        {
-                            holdings?.fundsStatement?.map(fund => (
-                                <>
-                                    <View style={styles.tableRow}>
-
-                                        <View style={{ ...styles.tableColWidthLeftFirstThirds, /*borderColor: "rgb(120, 120, 120)"*/ }}>
-                                            <Text style={styles.tableCell}>
-                                                {"    "}Balance final {fund.fundName}
-                                            </Text>
-                                        </View>
-                                        <View style={{ ...styles.tableColWidthLeftElseThirds, /*borderColor: "rgb(120, 120, 120)"*/ }}>
-                                            <Text style={{ ...styles.tableCell, textAlign: "right" }} >
-                                                {
-                                                    formatValue({
-                                                        value: Decimal(fund?.performance || 0).toFixed(2),
-                                                        decimalScale: "2",
-                                                        groupSeparator,
-                                                        decimalSeparator,
-                                                        prefix: "U$D "
-                                                    })
-                                                }
-                                            </Text>
-                                        </View>
-                                        <View style={{ ...styles.tableColWidthLeftElseThirds, /*borderColor: "rgb(120, 120, 120)"*/ }}>
-                                            <Text style={{ ...styles.tableCell, textAlign: "right" }} >
-                                                {
-                                                    formatValue({
-                                                        value: Decimal(fund?.balance || 0).toFixed(2),
-                                                        decimalScale: "2",
-                                                        groupSeparator,
-                                                        decimalSeparator,
-                                                        prefix: "U$D "
-                                                    })
-                                                }
-                                            </Text>
-                                        </View>
-                                    </View>
-                                    {/* Total buy, sell, transfer ?? */}
-                                </>
-                            ))
-                        }
                         <Divider />
 
+                        {/* PLAZOS FIJOS */}
                         <View style={styles.tableRow}>
                             <View style={{ ...styles.tableColWidthLeft, /*borderColor: "rgb(120, 120, 120)"*/ }}>
                                 <Text style={styles.tableHeader}>
-                                    Monto en plazos fijos de años anteriores
+                                    Tenencia en plazos fijos de años anteriores
                                 </Text>
                             </View>
                             <View style={{ ...styles.tableColWidthLeft, /*borderColor: "rgb(120, 120, 120)"*/ }}>
@@ -512,23 +600,11 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                         <View style={styles.tableRow}>
                             <View style={{ ...styles.tableColWidthLeftFirstThirds, /*borderColor: "rgb(120, 120, 120)"*/ }}>
                                 <Text style={styles.tableHeader}>
-                                    Plazos fijos iniciados en {year}
+                                    Inversiones en {year}
                                 </Text>
                             </View>
                             <View style={{ ...styles.tableColWidthLeftElseThirds, /*borderColor: "rgb(120, 120, 120)"*/ }}>
                                 <Text style={{ ...styles.tableHeader, textAlign: "right" }} >
-                                    {
-                                        formatValue({
-                                            value: (
-                                                holdings?.fixedDepositsStatement?.operations
-                                                    ?.reduce((accum, item) => accum.add(item.profit || 0), Decimal(0)).toFixed(2) || 0
-                                            ),
-                                            decimalScale: "2",
-                                            groupSeparator,
-                                            decimalSeparator,
-                                            prefix: "U$D "
-                                        })
-                                    }
                                 </Text>
                             </View>
                             <View style={{ ...styles.tableColWidthLeftElseThirds, /*borderColor: "rgb(120, 120, 120)"*/ }}>
@@ -548,44 +624,60 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                                 </Text>
                             </View>
                         </View>
-                        {
-                            holdings?.fixedDepositsStatement?.operations?.map(fixedDeposit => (
-                                <View style={styles.tableRow}>
-
-                                    <View style={{ ...styles.tableColWidthLeftFirstThirds, /*borderColor: "rgb(120, 120, 120)"*/ }}>
-                                        <Text style={styles.tableCell}>
-                                            {"    "}Plazo fijo #{fixedDeposit.id}
-                                        </Text>
-                                    </View>
-                                    <View style={{ ...styles.tableColWidthLeftElseThirds, /*borderColor: "rgb(120, 120, 120)"*/ }}>
-                                        <Text style={{ ...styles.tableCell, textAlign: "right" }} >
-                                            {
-                                                formatValue({
-                                                    value: Decimal(fixedDeposit?.profit || 0).toFixed(2),
-                                                    decimalScale: "2",
-                                                    groupSeparator,
-                                                    decimalSeparator,
-                                                    prefix: "U$D "
-                                                })
-                                            }
-                                        </Text>
-                                    </View>
-                                    <View style={{ ...styles.tableColWidthLeftElseThirds, /*borderColor: "rgb(120, 120, 120)"*/ }}>
-                                        <Text style={{ ...styles.tableCell, textAlign: "right" }} >
-                                            {
-                                                formatValue({
-                                                    value: Decimal(fixedDeposit?.initialAmount || 0).toFixed(2),
-                                                    decimalScale: "2",
-                                                    groupSeparator,
-                                                    decimalSeparator,
-                                                    prefix: "U$D "
-                                                })
-                                            }
-                                        </Text>
-                                    </View>
-                                </View>
-                            ))
-                        }
+                        <View style={styles.tableRow}>
+                            <View style={{ ...styles.tableColWidthLeftFirstThirds, /*borderColor: "rgb(120, 120, 120)"*/ }}>
+                                <Text style={styles.tableHeader}>
+                                    Interés devengado
+                                </Text>
+                            </View>
+                            <View style={{ ...styles.tableColWidthLeftElseThirds, /*borderColor: "rgb(120, 120, 120)"*/ }}>
+                                <Text style={{ ...styles.tableHeader, textAlign: "right" }} >
+                                </Text>
+                            </View>
+                            <View style={{ ...styles.tableColWidthLeftElseThirds, /*borderColor: "rgb(120, 120, 120)"*/ }}>
+                                <Text style={{ ...styles.tableHeader, textAlign: "right" }} >
+                                    {
+                                        formatValue({
+                                            value: (
+                                                holdings?.fixedDepositsStatement?.operations
+                                                    ?.reduce((accum, item) => accum.add(item.profit || 0), Decimal(0)).toFixed(2) || 0
+                                            ),
+                                            decimalScale: "2",
+                                            groupSeparator,
+                                            decimalSeparator,
+                                            prefix: "U$D "
+                                        })
+                                    }
+                                </Text>
+                            </View>
+                        </View>
+                        <View style={styles.tableRow}>
+                            <View style={{ ...styles.tableColWidthLeftFirstThirds, /*borderColor: "rgb(120, 120, 120)"*/ }}>
+                                <Text style={styles.tableHeader}>
+                                    Saldo final (En curso al final del {year})
+                                </Text>
+                            </View>
+                            <View style={{ ...styles.tableColWidthLeftElseThirds, /*borderColor: "rgb(120, 120, 120)"*/ }}>
+                                <Text style={{ ...styles.tableHeader, textAlign: "right" }} >
+                                </Text>
+                            </View>
+                            <View style={{ ...styles.tableColWidthLeftElseThirds, /*borderColor: "rgb(120, 120, 120)"*/ }}>
+                                <Text style={{ ...styles.tableHeader, textAlign: "right" }} >
+                                    {
+                                        formatValue({
+                                            value: (
+                                                holdings?.fixedDepositsStatement?.operations
+                                                    ?.reduce((accum, item) => accum.add(Decimal(item.initialAmount || 0).add(item.profit)), Decimal(0)).toFixed(2) || 0
+                                            ),
+                                            decimalScale: "2",
+                                            groupSeparator,
+                                            decimalSeparator,
+                                            prefix: "U$D "
+                                        })
+                                    }
+                                </Text>
+                            </View>
+                        </View>
 
                         <Divider />
 
