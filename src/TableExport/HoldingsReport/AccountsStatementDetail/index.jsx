@@ -104,46 +104,49 @@ export const AccountsStatementDetail = ({ accountsStatement, year, headerInfo })
                 header: {
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'space-between',
+                    backgroundColor: '#082044',
                     flexDirection: 'row',
                     height: '50px',
                     width: '100%',
-                    // backgroundColor: '#082044',
-                    borderBottomWidth: '1px',
-                    // borderBottomColor: 'rgb(8, 32, 68)',
-                    borderBottomColor: "rgb(120, 120, 120)",
-                    borderBottomStyle: 'solid',
+                    marginBottom: '5px',
                     // padding: '20px',
-                    // marginBottom: '3px',
                     image: {
                         height: '35px',
                         width: '35px',
                         backgroundColor: 'white',
                         borderRadius: '50%',
                         padding: '5px',
-                        marginRight: '5px'
+                        marginLeft: "auto",
+                        marginRight: '10px',
                     },
                     textContainer: {
+                        marginLeft: '10px',
                         text: {
+                            color: "rgba(255,255,255,.95)",
                             fontSize: "16px",
                             fontFamily: 'SF',
+                            textAlign: "end",
                         },
                         textBold: {
+                            color: "rgba(255,255,255,.95)",
                             fontSize: "16px",
                             fontFamily: 'SF',
                             fontWeight: 'bold',
+                            textAlign: "end",
                         },
                         smaller: {
+                            color: "rgba(255,255,255,.95)",
                             fontSize: "12px",
                             fontFamily: 'SF',
                             fontWeight: 'light',
+                            textAlign: "end",
                         }
                     }
                 },
                 body: {
                     display: 'flex',
                     flexDirection: 'row',
-                    height: 'calc( 100% - 50px )',
+                    height: 'calc( 100% - 55px )',
                     width: '100%',
                     padding: "20px",
                     paddingTop: "0",
@@ -157,11 +160,12 @@ export const AccountsStatementDetail = ({ accountsStatement, year, headerInfo })
                         <View style={styles.header}>
                             <View style={styles.header.textContainer}>
                                 {/* <Text style={styles.header.textContainer.text}>
-                                    <Text style={styles.header.textContainer.textBold}>{t("Reporte de tenencias al")} {moment().set("year", year).endOf("year").format("L")}</Text>, {t("Client")} {headerInfo?.clientName}
+                                    {t("Tenencias")} {year - 1}-{year}
                                 </Text> */}
-                                <Text style={styles.header.textContainer.text}>
-                                    <Text style={styles.header.textContainer.textBold}>{t("Cash")}</Text>
-                                </Text>
+                                {/* <Text style={styles.header.textContainer.text}>
+                                        {headerInfo?.clientName}
+                                    </Text> */}
+                                <Text style={styles.header.textContainer.textBold}>{t("Cash")}</Text>
                                 <Text style={styles.header.textContainer.smaller}>
                                     {t("Balance")}: {formatValue({
                                         value: (accountStatement?.balance || 0) + "",
@@ -173,7 +177,7 @@ export const AccountsStatementDetail = ({ accountsStatement, year, headerInfo })
                                     }
                                 </Text>
                             </View>
-                            {/* <Image src={`${process.env.PUBLIC_URL}/images/PDF/logo.png`} style={styles.header.image} /> */}
+                            <Image src={`${process.env.PUBLIC_URL}/images/PDF/logo.png`} style={styles.header.image} />
                         </View>
                         <View>
                             <View style={styles.table}>

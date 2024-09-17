@@ -95,46 +95,49 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
         header: {
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'space-between',
+            backgroundColor: '#082044',
             flexDirection: 'row',
-            height: '40px',
+            height: '50px',
             width: '100%',
-            // backgroundColor: '#082044',
-            borderBottomWidth: '1px',
-            // borderBottomColor: 'rgb(8, 32, 68)',
-            borderBottomColor: "rgb(120, 120, 120)",
-            borderBottomStyle: 'solid',
+            marginBottom: '5px',
             // padding: '20px',
-            // marginBottom: '3px',
             image: {
                 height: '35px',
                 width: '35px',
                 backgroundColor: 'white',
                 borderRadius: '50%',
                 padding: '5px',
-                marginRight: '5px'
+                marginLeft: "auto",
+                marginRight: '10px',
             },
             textContainer: {
+                marginLeft: '10px',
                 text: {
+                    color: "rgba(255,255,255,.95)",
                     fontSize: "16px",
                     fontFamily: 'SF',
+                    textAlign: "end",
                 },
                 textBold: {
+                    color: "rgba(255,255,255,.95)",
                     fontSize: "16px",
                     fontFamily: 'SF',
                     fontWeight: 'bold',
+                    textAlign: "end",
                 },
                 smaller: {
+                    color: "rgba(255,255,255,.95)",
                     fontSize: "12px",
                     fontFamily: 'SF',
                     fontWeight: 'light',
+                    textAlign: "end",
                 }
             }
         },
         body: {
             display: 'flex',
             flexDirection: 'row',
-            height: 'calc( 100% - 40px )',
+            height: 'calc( 100% - 55px )',
             width: '100%',
             padding: "20px",
             paddingTop: "0",
@@ -161,47 +164,14 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
             <View style={styles.container}>
                 <View style={styles.header}>
                     <View style={styles.header.textContainer}>
+                        <Text style={styles.header.textContainer.textBold}>
+                            {t("Tenencias")} {year - 1}-{year}
+                        </Text>
                         <Text style={styles.header.textContainer.text}>
-                            <Text style={styles.header.textContainer.textBold}>{t("Reporte de tenencias período")} {year - 1}-{year}
-                                {/* {moment().set("year", year).endOf("year").format("L")} */}
-                            </Text>, {t("Client")} {headerInfo?.clientName}
+                            {headerInfo?.clientName}
                         </Text>
-                        {/* <Text style={styles.header.textContainer.text}>
-                            <Text style={styles.header.textContainer.textBold}>{t("Fund")} {fundStatement.fundName}</Text>
-                        </Text> */}
                     </View>
-                    <View style={styles.header.textContainer.row}>
-                        {/* <Text style={styles.header.textContainer.smaller}>
-                            {t("Balance (shares)")}: {formatValue({
-                                value: (fundStatement?.shares || 0) + "",
-                                decimalScale: "2",
-                                groupSeparator,
-                                decimalSeparator,
-                            })
-                            }
-                        </Text>
-                        <Text style={styles.header.textContainer.smaller}>
-                            {t("Share price")}: {formatValue({
-                                value: (fundStatement?.sharePrice || 0) + "",
-                                decimalScale: "2",
-                                groupSeparator,
-                                decimalSeparator,
-                                prefix: "U$D "
-                            })
-                            }
-                        </Text> */}
-                    </View>
-                    {/* <View style={styles.header.textContainer.row}>
-                        <Text style={styles.header.textContainer.smaller}>
-                            {t("Balance (U$D)")}: {formatValue({
-                                value: fundStatement?.balance + "",
-                                decimalScale: "2",
-                                groupSeparator,
-                                decimalSeparator,
-                            })
-                            }
-                        </Text>
-                    </View> */}
+                    <Image src={`${process.env.PUBLIC_URL}/images/PDF/logo.png`} style={styles.header.image} />
                 </View>
                 <View>
                     <View style={styles.table}>
@@ -230,7 +200,7 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                                             decimalScale: "2",
                                             groupSeparator,
                                             decimalSeparator,
-                                            prefix: "U$D "
+                                            prefix: "U$D "/*""*/
                                         })
                                     }
                                 </Text>
@@ -252,7 +222,7 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                                             decimalScale: "2",
                                             groupSeparator,
                                             decimalSeparator,
-                                            prefix: "U$D "
+                                            prefix: "U$D "/*""*/
                                         })
                                     }
                                 </Text>
@@ -276,7 +246,7 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                                             decimalScale: "2",
                                             groupSeparator,
                                             decimalSeparator,
-                                            prefix: "U$D "
+                                            prefix: "U$D "/*""*/
                                         })
                                     }
                                 </Text>
@@ -300,7 +270,7 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                                             decimalScale: "2",
                                             groupSeparator,
                                             decimalSeparator,
-                                            prefix: "U$D "
+                                            prefix: "U$D "/*""*/
                                         })
                                     }
                                 </Text>
@@ -330,7 +300,7 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                                             decimalScale: "2",
                                             groupSeparator,
                                             decimalSeparator,
-                                            prefix: "U$D "
+                                            prefix: "U$D "/*""*/
                                         })
                                     }
                                 </Text>
@@ -350,7 +320,7 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                                             decimalScale: "2",
                                             groupSeparator,
                                             decimalSeparator,
-                                            prefix: "U$D "
+                                            prefix: "U$D "/*""*/
                                         })
                                     }
                                 </Text>
@@ -392,7 +362,7 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                         </View>
                         {
                             holdings?.fundsStatement?.map(fund =>
-                                <View style={styles.tableRow}>
+                                <View style={styles.tableRow} key={fund.fundName}>
                                     <View style={{ ...styles.fundsTable.col, /*borderColor: "rgb(120, 120, 120)"*/ }}>
                                         <Text style={styles.tableHeader}>
                                             {fund.fundName}
@@ -406,7 +376,7 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                                                     decimalScale: "2",
                                                     groupSeparator,
                                                     decimalSeparator,
-                                                    prefix: "U$D "
+                                                    prefix: "U$D "/*""*/
                                                 })
                                             }
                                         </Text>
@@ -424,7 +394,7 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                                                     decimalScale: "2",
                                                     groupSeparator,
                                                     decimalSeparator,
-                                                    prefix: "U$D "
+                                                    prefix: "U$D "/*""*/
                                                 })
                                             }
 
@@ -443,7 +413,7 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                                                     decimalScale: "2",
                                                     groupSeparator,
                                                     decimalSeparator,
-                                                    prefix: "U$D "
+                                                    prefix: "U$D "/*""*/
                                                 })
                                             }
                                         </Text>
@@ -455,7 +425,7 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                                                 decimalScale: "2",
                                                 groupSeparator,
                                                 decimalSeparator,
-                                                prefix: "U$D "
+                                                prefix: "U$D "/*""*/
                                             })}
                                         </Text>
                                     </View>
@@ -466,7 +436,7 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                                                 decimalScale: "2",
                                                 groupSeparator,
                                                 decimalSeparator,
-                                                prefix: "U$D "
+                                                prefix: "U$D "/*""*/
                                             })}
                                         </Text>
                                     </View>
@@ -490,7 +460,7 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                                             decimalScale: "2",
                                             groupSeparator,
                                             decimalSeparator,
-                                            prefix: "U$D "
+                                            prefix: "U$D "/*""*/
                                         })
                                     }
                                 </Text>
@@ -513,7 +483,7 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                                             decimalScale: "2",
                                             groupSeparator,
                                             decimalSeparator,
-                                            prefix: "U$D "
+                                            prefix: "U$D "/*""*/
                                         })
                                     }
                                 </Text>
@@ -536,7 +506,7 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                                             decimalScale: "2",
                                             groupSeparator,
                                             decimalSeparator,
-                                            prefix: "U$D "
+                                            prefix: "U$D "/*""*/
                                         })
                                     }
                                 </Text>
@@ -552,7 +522,7 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                                             decimalScale: "2",
                                             groupSeparator,
                                             decimalSeparator,
-                                            prefix: "U$D "
+                                            prefix: "U$D "/*""*/
                                         })
                                     }
                                 </Text>
@@ -568,7 +538,7 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                                             decimalScale: "2",
                                             groupSeparator,
                                             decimalSeparator,
-                                            prefix: "U$D "
+                                            prefix: "U$D "/*""*/
                                         })
                                     }
                                 </Text>
@@ -591,7 +561,7 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                                             decimalScale: "2",
                                             groupSeparator,
                                             decimalSeparator,
-                                            prefix: "U$D "
+                                            prefix: "U$D "/*""*/
                                         })
                                     }
                                 </Text>
@@ -618,7 +588,7 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                                             decimalScale: "2",
                                             groupSeparator,
                                             decimalSeparator,
-                                            prefix: "U$D "
+                                            prefix: "U$D "/*""*/
                                         })
                                     }
                                 </Text>
@@ -645,7 +615,7 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                                             decimalScale: "2",
                                             groupSeparator,
                                             decimalSeparator,
-                                            prefix: "U$D "
+                                            prefix: "U$D "/*""*/
                                         })
                                     }
                                 </Text>
@@ -672,7 +642,7 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                                             decimalScale: "2",
                                             groupSeparator,
                                             decimalSeparator,
-                                            prefix: "U$D "
+                                            prefix: "U$D "/*""*/
                                         })
                                     }
                                 </Text>
@@ -695,7 +665,7 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                                             decimalScale: "2",
                                             groupSeparator,
                                             decimalSeparator,
-                                            prefix: "U$D "
+                                            prefix: "U$D "/*""*/
                                         })
                                     }
                                 </Text>
@@ -708,7 +678,7 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                                             decimalScale: "2",
                                             groupSeparator,
                                             decimalSeparator,
-                                            prefix: "U$D "
+                                            prefix: "U$D "/*""*/
                                         })
                                     }
                                 </Text>

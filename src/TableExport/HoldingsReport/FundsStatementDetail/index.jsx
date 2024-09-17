@@ -14,10 +14,10 @@ import { paginate } from '..'
 
 export const FundsStatementDetail = ({ fundsStatement, year, headerInfo, AccountSelected, sharesDecimalPlaces }) => {
     const { t } = useTranslation();
-    
+
     return fundsStatement.map(
         fundStatement => {
-            const fundStatementPaginatedTransactions = paginate(fundStatement.operations.filter(operation=> operation.stateId === 2), 38);
+            const fundStatementPaginatedTransactions = paginate(fundStatement.operations.filter(operation => operation.stateId === 2), 38);
             const greaterAmount = fundStatement.operations.reduce((acc, content) => {
                 const decimalSharesAbs = new Decimal(content.shares).abs()
                 const decimalPrice = new Decimal(content.sharePrice)
@@ -108,50 +108,51 @@ export const FundsStatementDetail = ({ fundsStatement, year, headerInfo, Account
                     padding: '25px 25px 25px 25px'
                 },
                 header: {
+                    display: 'flex',
+                    alignItems: 'center',
+                    backgroundColor: '#082044',
+                    flexDirection: 'row',
                     height: '60px',
+                    marginBottom: '5px',
                     width: '100%',
-                    // backgroundColor: '#082044',
-                    borderBottomWidth: '1px',
-                    // borderBottomColor: 'rgb(8, 32, 68)',
-                    borderBottomColor: "rgb(120, 120, 120)",
-                    borderBottomStyle: 'solid',
                     // padding: '20px',
-                    // marginBottom: '3px',
                     image: {
                         height: '35px',
                         width: '35px',
                         backgroundColor: 'white',
                         borderRadius: '50%',
                         padding: '5px',
-                        marginRight: '5px'
+                        marginLeft: "auto",
+                        marginRight: '10px',
                     },
                     textContainer: {
+                        marginLeft: '10px',
                         text: {
+                            color: "rgba(255,255,255,.95)",
                             fontSize: "16px",
                             fontFamily: 'SF',
+                            textAlign: "end",
                         },
                         textBold: {
+                            color: "rgba(255,255,255,.95)",
                             fontSize: "16px",
                             fontFamily: 'SF',
                             fontWeight: 'bold',
+                            textAlign: "end",
                         },
                         smaller: {
+                            color: "rgba(255,255,255,.95)",
                             fontSize: "12px",
                             fontFamily: 'SF',
                             fontWeight: 'light',
-                        },
-                        row: {
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            flexDirection: 'row',
-                            width: '100%',
+                            textAlign: "end",
                         }
                     }
                 },
                 body: {
                     display: 'flex',
                     flexDirection: 'row',
-                    height: 'calc( 100% - 60px )',
+                    height: 'calc( 100% - 65px )',
                     width: '100%',
                     padding: "20px",
                     paddingTop: "0",
@@ -165,22 +166,16 @@ export const FundsStatementDetail = ({ fundsStatement, year, headerInfo, Account
                     <View style={styles.container}>
                         <View style={styles.header}>
                             <View style={styles.header.textContainer}>
-                                {/* <Text style={styles.header.textContainer.text}>
-                                    <Text style={styles.header.textContainer.textBold}>{t("Reporte de tenencias al")} {moment().set("year", year).endOf("year").format("L")}</Text>, {t("Client")} {headerInfo?.clientName}
-                                </Text> */}
-                                <Text style={styles.header.textContainer.text}>
-                                    <Text style={styles.header.textContainer.textBold}>{t("Fund")} {fundStatement.fundName}</Text>
+                                <Text style={styles.header.textContainer.textBold}>
+                                    {t("Fund")} {fundStatement.fundName}
                                 </Text>
-                            </View>
-                            <View style={styles.header.textContainer.row}>
                                 <Text style={styles.header.textContainer.smaller}>
                                     {t("Balance (shares)")}: {formatValue({
                                         value: (fundStatement?.shares || 0) + "",
                                         decimalScale: "2",
                                         groupSeparator,
                                         decimalSeparator,
-                                    })
-                                    }
+                                    })}
                                 </Text>
                                 <Text style={styles.header.textContainer.smaller}>
                                     {t("Share price")}: {formatValue({
@@ -193,19 +188,8 @@ export const FundsStatementDetail = ({ fundsStatement, year, headerInfo, Account
                                     }
                                 </Text>
                             </View>
-                            <View style={styles.header.textContainer.row}>
-                                <Text style={styles.header.textContainer.smaller}>
-                                    {t("Balance (U$D)")}: {formatValue({
-                                        value: fundStatement?.balance + "",
-                                        decimalScale: "2",
-                                        groupSeparator,
-                                        decimalSeparator,
-                                    })
-                                    }
-                                </Text>
-                            </View>
+                            <Image src={`${process.env.PUBLIC_URL}/images/PDF/logo.png`} style={styles.header.image} />
                         </View>
-
                         <View>
                             <View style={styles.table}>
                                 <View style={styles.tableRow}>
