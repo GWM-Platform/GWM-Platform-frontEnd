@@ -1,16 +1,16 @@
-import React, { useContext } from 'react'
+import React, { /* useContext */ } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, Container, Col, Row } from 'react-bootstrap';
 import TableLastMovements from './TableLastMovements';
 import { useTranslation } from "react-i18next";
 import TableLastTransfers from './TableLastTransfers';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
-import { YearlyStatement } from '../../MainCard/MainCardAccount';
-import { DashBoardContext } from 'context/DashBoardContext';
+// import { YearlyStatement } from '../../MainCard/MainCardAccount';
+// import { DashBoardContext } from 'context/DashBoardContext';
 
 const MobileCard = ({ account }) => {
     const { t } = useTranslation();
-    const { ClientSelected } = useContext(DashBoardContext)
+    // const { ClientSelected } = useContext(DashBoardContext)
 
     return (
         <>
@@ -37,11 +37,11 @@ const MobileCard = ({ account }) => {
                                     </span>
                                 </Card.Text>
                             </Col>
-                            <Col className='p-0' xs="auto">
+                            {/* <Col className='p-0' xs="auto">
                                 <YearlyStatement
                                     label={"Tenencias"} selectWidth='12ch' selectClassName="ms-0"
                                     wrapperClassName="d-inline-block mt-2 mb-0 p-0" ClientSelected={ClientSelected} />
-                            </Col>
+                            </Col> */}
                             <TableLastMovements account={account} />
                             <TableLastTransfers account={account} />
                         </Row>

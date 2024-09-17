@@ -154,7 +154,7 @@ const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, reset
                                 <PrintButton className="w-100 h-100" variant="info" handlePrint={renderAndDownloadTablePDF} />
                         }
                     </Col>
-                    <YearlyStatement ClientSelected={ClientSelected} />
+                    {/* <YearlyStatement ClientSelected={ClientSelected} /> */}
                 </div>
                 <div className="d-flex justify-content-between align-items-end pe-2 pb-2 border-bottom-main">
                     <Col className="d-flex justify-content-between pe-5" sm="auto">
