@@ -19,6 +19,7 @@ import axios from 'axios';
 import { DashBoardContext } from 'context/DashBoardContext';
 import DocumentForm from './DocumentForm';
 import DocumentsAccordion from './DocumentsAccordion';
+import { YearlyStatement } from 'components/DashBoard/User/MovementsTable/CardsContainer/MainCard/MainCardAccount';
 
 const SelectedAccountData = ({ Account, Client, users, setAccounts, toggleClient }) => {
 
@@ -102,7 +103,9 @@ const SelectedAccountData = ({ Account, Client, users, setAccounts, toggleClient
                             <h1 className="title fw-normal">
                                 {t("Data from client")}&nbsp;#{Client.id},&nbsp;{t("Alias")}:&nbsp;{Client.alias}
                             </h1>
-                            <h5 className='mb-0 ms-auto'>
+                            <div className='ms-auto' />
+                            <YearlyStatement wrapperClassName="d-flex align-items-center mt-0 mb-0" ClientSelected={Client} />
+                            <h5 className='mb-0 ms-2'>
                                 <Badge bg={Client.enabled ? "success" : "danger"}>{t(Client.enabled ? "Enabled" : "Disabled")}</Badge>
                             </h5>
                         </div>

@@ -121,50 +121,6 @@ const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, reset
         link.parentNode.removeChild(link)
         setRendering(false)
     }
-    const dispatch = useDispatch()
-    const [renderingAnnual, setRenderingAnnual] = useState(false)
-
-    const [value, setValue] = useState("")
-    const annualStatement = useSelector(state => selectAnnualStatementById(state, value))
-    const status = annualStatement?.status || "idle"
-
-    const renderAndDownloadAnnualStatementPDF = useCallback(
-        async () => {
-            setRenderingAnnual(true)
-            const blob = await ReactPDF.pdf(
-                <HoldingsReport
-                    holdings={annualStatement?.annualStatement}
-                    headerInfo={{
-                        clientName:
-                            `${ClientSelected?.firstName === undefined ? "" : ClientSelected?.firstName === "-" ? "" : ClientSelected?.firstName
-                            }${ClientSelected?.lastName === undefined ? "" : ClientSelected?.lastName === "-" ? "" : ` ${ClientSelected?.lastName}`
-                            }`
-                    }}
-                    year={value}
-                />).toBlob()
-            const url = URL.createObjectURL(blob)
-            const link = document.createElement('a')
-            link.href = url
-            link.setAttribute('download', `Reporte de tenencias ${value}.pdf`)
-            // 3. Append to html page
-            document.body.appendChild(link)
-            // 4. Force download
-            link.click()
-            // 5. Clean up and remove the link
-            link.parentNode.removeChild(link)
-            setRenderingAnnual(false)
-        }, [ClientSelected?.firstName, ClientSelected?.lastName, annualStatement?.annualStatement, value]
-    )
-
-    useEffect(() => {
-        if (renderingAnnual) {
-            if (status === "succeeded") {
-                renderAndDownloadAnnualStatementPDF()
-            } else if (status === "error") {
-                setRenderingAnnual(false)
-            }
-        }
-    }, [renderAndDownloadAnnualStatementPDF, renderingAnnual, status])
 
 
     return (
@@ -198,31 +154,7 @@ const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, reset
                                 <PrintButton className="w-100 h-100" variant="info" handlePrint={renderAndDownloadTablePDF} />
                         }
                     </Col>
-                    <div className='tiptap-wrapper d-inline-block mt-2 mb-0'>
-                        <select
-                            className='ms-2'
-                            style={{ width: "21.5ch" }}
-                            value={renderingAnnual ? value : ""}
-                            onChange={e => {
-                                setRenderingAnnual(true)
-                                dispatch(fetchAnnualStatement({
-                                    ...e.target.value !== "" ? { year: e.target.value } : {},
-                                    clientId: ClientSelected?.id
-                                }))
-                                setValue(e.target.value)
-                            }}
-                            disabled={renderingAnnual}
-                        >
-                            <option value="" disabled>
-                                {t("Reporte de tenencias")}
-                            </option>
-                            {
-                                yearsArraySince(2022, moment().subtract(1, "year").get("year")).map(year => (
-                                    <option value={year} key={year}>Periodo {year - 1} - {year}</option>
-                                ))
-                            }
-                        </select>
-                    </div>
+                    {/* <YearlyStatement ClientSelected={ClientSelected} /> */}
                 </div>
                 <div className="d-flex justify-content-between align-items-end pe-2 pb-2 border-bottom-main">
                     <Col className="d-flex justify-content-between pe-5" sm="auto">
@@ -291,3 +223,81 @@ const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, reset
     )
 }
 export default MainCardAccount
+
+export const YearlyStatement = ({ ClientSelected, wrapperClassName = "d-inline-block mt-2 mb-0", selectClassName = "ms-2", selectWidth = "21.5ch", label = "Reporte de tenencias" }) => {
+
+    const { t } = useTranslation()
+    const dispatch = useDispatch()
+
+    const [renderingAnnual, setRenderingAnnual] = useState(false)
+
+    const [value, setValue] = useState("")
+    const annualStatement = useSelector(state => selectAnnualStatementById(state, value))
+    const status = annualStatement?.status || "idle"
+
+    const renderAndDownloadAnnualStatementPDF = useCallback(
+        async () => {
+            setRenderingAnnual(true)
+            const blob = await ReactPDF.pdf(
+                <HoldingsReport
+                    holdings={annualStatement?.annualStatement}
+                    headerInfo={{
+                        clientName:
+                            `${ClientSelected?.firstName === undefined ? "" : ClientSelected?.firstName === "-" ? "" : ClientSelected?.firstName
+                            }${ClientSelected?.lastName === undefined ? "" : ClientSelected?.lastName === "-" ? "" : ` ${ClientSelected?.lastName}`
+                            }`
+                    }}
+                    year={value}
+                />).toBlob()
+            const url = URL.createObjectURL(blob)
+            const link = document.createElement('a')
+            link.href = url
+            link.setAttribute('download', `Reporte de tenencias ${value}.pdf`)
+            // 3. Append to html page
+            document.body.appendChild(link)
+            // 4. Force download
+            link.click()
+            // 5. Clean up and remove the link
+            link.parentNode.removeChild(link)
+            setRenderingAnnual(false)
+        }, [ClientSelected?.firstName, ClientSelected?.lastName, annualStatement?.annualStatement, value]
+    )
+
+    useEffect(() => {
+        if (renderingAnnual) {
+            if (status === "succeeded") {
+                renderAndDownloadAnnualStatementPDF()
+            } else if (status === "error") {
+                setRenderingAnnual(false)
+            }
+        }
+    }, [renderAndDownloadAnnualStatementPDF, renderingAnnual, status])
+
+    return (
+        <div className={`tiptap-wrapper ${wrapperClassName}`}>
+            <select
+                className={selectClassName}
+                style={{ width: selectWidth }}
+                value={renderingAnnual ? value : ""}
+                onChange={e => {
+                    setRenderingAnnual(true)
+                    dispatch(fetchAnnualStatement({
+                        ...e.target.value !== "" ? { year: e.target.value } : {},
+                        clientId: ClientSelected?.id
+                    }))
+                    setValue(e.target.value)
+                }}
+                disabled={renderingAnnual}
+            >
+                <option value="" disabled>
+                    {t(label)}
+                </option>
+                {
+                    yearsArraySince(2022, moment().subtract(1, "year").get("year")).map(year => (
+                        <option value={year} key={year}>Periodo {year - 1} - {year}</option>
+                    ))
+                }
+            </select>
+        </div>
+    )
+}
