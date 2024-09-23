@@ -132,7 +132,6 @@ const UserItem = ({ ownersAmount, client, user, getUsers }) => {
     }
 
     const currentUserId = userId()
-    console.log(user.userToClientEnabled)
     return (
         <div className="d-flex Actions py-2 align-items-center user" style={{ borderBottom: " 1px solid lightgray" }}>
             <div className="mb-0 pe-1 pe-md-2" >

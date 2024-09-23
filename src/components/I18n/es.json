@@ -679,6 +679,8 @@
   "Existing client": "Cliente existente",
   "Connect the new user to a": "Vincular el nuevo usuario a",
   "Connect user to client": "Vincular usuario al cliente",
+  "Already added" : "Ya agregado",
+  "User disabled": "Usuario deshabilitado",
   "Select the user you want to connect to the client": "Seleccione el usuario que quiere vincular al cliente",
   "Administration of users connected to clients": "Administración de usuarios vinculados a clientes",
   "Users connected to the client": "Usuarios vinculados al cliente",

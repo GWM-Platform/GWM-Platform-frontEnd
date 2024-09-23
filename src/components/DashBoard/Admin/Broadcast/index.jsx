@@ -46,15 +46,13 @@ const Broadcast = () => {
     const [message, setMessage] = useState()
     const dispatch = useDispatch()
 
-    const usersStatus = useSelector(state => state.users.status)
     const users = useSelector(selectAllusers)
     useEffect(() => {
-        if (usersStatus === 'idle') {
-            dispatch(fetchusers({ all: true }))
-        }
-    }, [dispatch, usersStatus])
+        dispatch(fetchusers({ all: true }))
+    }, [dispatch])
 
     const fundsWithUsersStatus = useSelector(state => state.fundsWithUsers.status)
+    // TODO: Not include users disabled or that has funds but with a userToClient disabled
     const fundsWithUsers = useSelector(selectAllFundsWithUsers)
     useEffect(() => {
         if (fundsWithUsersStatus === 'idle') {
@@ -66,7 +64,12 @@ const Broadcast = () => {
 
     const clientStatus = useSelector(state => state.clients.status)
     const Clients = useSelector(selectAllclients)
-    const clients = useMemo(() => Clients.filter(client => client.enabled).map(client => ({ ...client, users: client.users.filter(userToClient => getUserById(userToClient?.userId)?.enabled) })), [Clients, getUserById])
+
+    const clients = useMemo(() => Clients.filter(client => client.enabled).map(client => ({
+        ...client, users: client.users.filter(userToClient => {
+            return getUserById(userToClient?.userId)?.enabled && userToClient.enabled
+        })
+    })), [Clients, getUserById])
 
     const [validated, setValidated] = useState(false);
     const [buttonDisabled, setButtonDisabled] = useState(false)
@@ -258,7 +261,6 @@ const Broadcast = () => {
 
     const filterOption = ({ label, value }, string) => {
         // default search
-        console.log(value)
         if (label?.includes(string) || value?.includes(string)) return true;
 
         // check if a group as the filter string as label

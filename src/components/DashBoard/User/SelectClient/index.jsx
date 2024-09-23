@@ -26,7 +26,7 @@ const SelectClient = () => {
         }
         setIndexClientSelected(ClientToAccess)
     }
-
+    console.log(UserClients)
     return (
         <Container className="ClientSelector growAnimation">
             <Row className="min-100vh d-flex align-items-center justify-content-center" >
@@ -40,7 +40,7 @@ const SelectClient = () => {
 
                                 {UserClients.content.map(
                                     (client, key) =>
-                                        <Client disabled={client.enabled=== false} client={client} ownKey={key} key={key} ClientToAccess={ClientToAccess} setClientToAccess={setClientToAccess} />
+                                        <Client disabled={client.enabled === false || client.userToClientEnabled === false} client={client} ownKey={key} key={key} ClientToAccess={ClientToAccess} setClientToAccess={setClientToAccess} />
                                 )
                                 }
                             </div>

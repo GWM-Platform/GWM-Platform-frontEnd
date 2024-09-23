@@ -91,13 +91,17 @@ const ConnectForm = ({ client, users, ownersAmount, clientUsers, getUsers }) => 
                                     setData(prevState => ({ ...prevState, user: val }));
                                     setRequest(prevState => ({ ...prevState, ...{ fetching: false, fetched: false, valid: false } }))
                                 }}
-                                options={users.content.map((user, key) => (
-                                    {
-                                        label: `${t("Number")}: ${user.id} / ${t("Email")}: ${user.email}`,
-                                        value: user.id,
-                                        isDisabled: clientUsers?.content?.filter(clientUser => clientUser?.id === user?.id).length > 0
-                                    }
-                                ))}
+                                options={users.content.map((user, key) => {
+                                    const alreadyAdded = !!clientUsers?.content?.find(clientUser => clientUser?.id === user?.id)
+                                    const isDisabled = !user.enabled || alreadyAdded
+                                    return (
+                                        {
+                                            label: `${t("Number")}: ${user.id} / ${t("Email")}: ${user.email}${isDisabled ? ` (${t(alreadyAdded ? "Already added" : "User disabled")})` : ""}`,
+                                            value: user.id,
+                                            isDisabled
+                                        }
+                                    )
+                                })}
                             />
                             <Form.Check
                                 checked={data.isOwner}
