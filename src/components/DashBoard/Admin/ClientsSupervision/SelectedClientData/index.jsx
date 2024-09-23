@@ -118,8 +118,8 @@ const SelectedAccountData = ({ Account, Client, users, setAccounts, toggleClient
                         <AccountGeneralData setAccounts={setAccounts} Account={Account} Client={Client} toggleClient={toggleClient} />
                         <ClientUsersAccordion client={Client} users={clientUsers} getUsers={getUsers} ownersAmount={ownersAmount} />
                         <DocumentsAccordion client={Client} documents={documents} setDocuments={setDocuments} />
-                        <AccountMovements ClientId={Client.id} AccountId={Account.id} Account={Account} />
-                        <TransactionsByFund ClientId={Client.id} AccountId={Account.id} clientFunds={clientFunds} />
+                        <AccountMovements ClientId={Client.id} Client={Client} AccountId={Account.id} Account={Account} />
+                        <TransactionsByFund ClientId={Client.id} AccountId={Account.id} clientFunds={clientFunds} Account={Account} Client={Client} />
                         <TimeDeposits ClientId={Client.id} AccountId={Account.id} />
                     </Accordion>
                 </div>

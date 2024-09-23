@@ -21,7 +21,7 @@ const Movement = ({ Movement }) => {
 
   return (
     <tr>
-      <td className="tableId text-nowrap">
+      <td className="tableId text-nowrap" data-column-name="ticket">
         {Movement.id}
         <ApprovedByUsers
           approvedBy={Movement.approvedBy}

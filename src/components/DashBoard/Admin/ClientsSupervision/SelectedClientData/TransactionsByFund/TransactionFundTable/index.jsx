@@ -13,18 +13,17 @@ import Loading from 'components/DashBoard/GeneralUse/Loading';
 import PaginationController from 'components/DashBoard/GeneralUse/PaginationController';
 import FilterOptions from './FilterOptions';
 
-const TransactionFundTable = ({ AccountId, ClientId, FundId }) => {
+const TransactionFundTable = ({ AccountId, ClientId, FundId,Transactions,setTransactions }) => {
 
     const { toLogin } = useContext(DashBoardContext)
 
     const { t } = useTranslation();
 
     const initialState = useMemo(() => ({ fetching: true, fetched: false, valid: false, content: { transactions: 0, total: 0 } }), [])
-    const [Transactions, setTransactions] = useState(initialState)
 
     const [Pagination, setPagination] = useState({
         skip: 0,//Offset (in quantity of movements)
-        take: 5,//Movements per page
+        take: 100,//Movements per page
         state: null
     })
 
@@ -97,10 +96,10 @@ const TransactionFundTable = ({ AccountId, ClientId, FundId }) => {
                             Decimal(Transactions.content.transactions.length).gt(0) ?
                                 <>
                                     <div style={{ minHeight: `calc( ( 0.5rem * 2 + 25.5px ) * ${(Pagination.take < Transactions.content.total ? Pagination.take : Transactions.content.total) + 1} )` }} className={`tableMovements`}>
-                                        <Table className="ClientsTable mb-0" striped bordered hover>
+                                        <Table className="ClientsTable mb-0" striped bordered hover data-table-name="fund-movements">
                                             <thead className="verticalTop tableHeader solid-bg">
                                                 <tr>
-                                                    <th className="tableHeader text-nowrap">{t("Ticket")}</th>
+                                                    <th className="tableHeader text-nowrap" data-column-name="ticket">{t("Ticket")}</th>
                                                     <th className="tableHeader">{t("Date")}</th>
                                                     <th className="d-none d-sm-table-cell">{t("Status")}</th>
                                                     <th className="d-none d-sm-table-cell">{t("Description")}</th>

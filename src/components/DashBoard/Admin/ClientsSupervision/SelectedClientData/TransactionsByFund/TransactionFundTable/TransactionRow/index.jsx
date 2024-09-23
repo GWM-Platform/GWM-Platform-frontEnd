@@ -30,7 +30,7 @@ const TransactionRow = ({ transaction, AccountId }) => {
 
   return (
     <tr>
-      <td className="tableId text-nowrap">
+      <td className="tableId text-nowrap" data-column-name="ticket">
         {transaction.id}
         <ApprovedByUsers
           approvedBy={transaction?.approvedBy || []}

@@ -237,17 +237,20 @@ const TransactionTable = ({ transactions, headerInfo, sharesDecimalPlaces = 5, A
                                     }
                                 </Text>
                             </View>
-                            <View style={styles.header.textContainer.row}>
-                                <Text style={styles.header.textContainer.smaller}>
-                                    {t("Pending transactions (shares)")}: {formatValue({
-                                        value: (headerInfo?.pendingshares || 0) + "",
-                                        decimalScale: "2",
-                                        groupSeparator,
-                                        decimalSeparator,
-                                    })
-                                    }
-                                </Text>
-                            </View>
+                            {
+                                headerInfo?.showPending &&
+                                <View style={styles.header.textContainer.row}>
+                                    <Text style={styles.header.textContainer.smaller}>
+                                        {t("Pending transactions (shares)")}: {formatValue({
+                                            value: (headerInfo?.pendingshares || 0) + "",
+                                            decimalScale: "2",
+                                            groupSeparator,
+                                            decimalSeparator,
+                                        })
+                                        }
+                                    </Text>
+                                </View>
+                            }
                         </View>
                         <View>
                             <View style={styles.table}>
