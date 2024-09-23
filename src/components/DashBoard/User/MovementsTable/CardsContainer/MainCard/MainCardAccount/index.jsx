@@ -135,25 +135,37 @@ const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, reset
                     <Col xs="auto" className='ms-2' style={{ marginTop: ".4rem" }}>
 
                         <Button className="me-2 print-button no-style" variant="info" onClick={() => exportToExcel(
-                            {
-                                filename: t("Cash_movements"),
-                                sheetName: t("Cash_movements"),
-                                dataTableName: "cta-cte-movements",
-                                excludedColumns: ["ticket", "actions"],
-                                // plainNumberColumns: ["unit_floor", "unit_unitNumber", "unit_typology"]
-                            }
+                            SelectedTab === "Movements" ?
+                                {
+                                    filename: t("Cash_movements"),
+                                    sheetName: t("Cash_movements"),
+                                    dataTableName: "cta-cte-movements",
+                                    excludedColumns: ["ticket", "actions"],
+                                    // plainNumberColumns: ["unit_floor", "unit_unitNumber", "unit_typology"]
+                                }
+                                :
+                                {
+                                    filename: t("Cash_transfers"),
+                                    sheetName: t("Cash_transfers"),
+                                    dataTableName: "cta-cte-transfers",
+                                    excludedColumns: ["ticket", "actions"],
+                                    // plainNumberColumns: ["unit_floor", "unit_unitNumber", "unit_typology"]
+                                }
                         )} >
                             <FontAwesomeIcon icon={faFileExcel} />
                         </Button>
                     </Col>
-                    <Col xs="auto" style={{ marginTop: ".4rem" }}>
-                        {
-                            rendering ?
-                                <Spinner animation="border" size="sm" />
-                                :
-                                <PrintButton className="w-100 h-100" variant="info" handlePrint={renderAndDownloadTablePDF} />
-                        }
-                    </Col>
+                    {
+                        SelectedTab === "Movements" &&
+                        <Col xs="auto" style={{ marginTop: ".4rem" }}>
+                            {
+                                rendering ?
+                                    <Spinner animation="border" size="sm" />
+                                    :
+                                    <PrintButton className="w-100 h-100" variant="info" handlePrint={renderAndDownloadTablePDF} />
+                            }
+                        </Col>
+                    }
                     {/* <YearlyStatement ClientSelected={ClientSelected} /> */}
                 </div>
                 <div className="d-flex justify-content-between align-items-end pe-2 pb-2 border-bottom-main">

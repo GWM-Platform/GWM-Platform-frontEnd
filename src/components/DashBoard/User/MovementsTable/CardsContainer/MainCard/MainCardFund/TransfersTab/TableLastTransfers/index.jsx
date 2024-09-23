@@ -14,7 +14,7 @@ const TableLastMovements = ({ content, movements, getTransfers, fundName }) => {
     return (
         <div style={{ minHeight: `calc( ( 0.5rem * 2 + 25.5px ) * ${movements + 1} )` }}
             className={`tableMovements`}>
-            <Table striped bordered hover className="mb-auto m-0  mt-2" >
+            <Table striped bordered hover className="mb-auto m-0  mt-2" data-table-name="fund-transfers">
                 <thead >
                     <tr>
                         <th className="tableId text-nowrap">{t("Ticket")}</th>

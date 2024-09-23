@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Col, Nav, Spinner } from 'react-bootstrap';
+import { Container, Col, Nav, Spinner, Button } from 'react-bootstrap';
 
 import { DashBoardContext } from 'context/DashBoardContext';
 import { useTranslation } from "react-i18next";
@@ -22,6 +22,8 @@ import { PrintButton, PrintDefaultWrapper, usePrintDefaults } from 'utils/usePri
 import ReactPDF from '@react-pdf/renderer';
 import TransactionTable from 'TableExport/TransactionTable';
 import axios from 'axios'
+import { exportToExcel } from 'utils/exportToExcel';
+import { faFileExcel } from '@fortawesome/free-regular-svg-icons';
 
 const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
     const location = useLocation();
@@ -152,17 +154,44 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
         <PrintDefaultWrapper className="movementsMainCardFund growAnimation pt-2" aditionalStyles={aditionalStyles} ref={componentRef} getPageMargins={getPageMargins} title={title} >
             <div className="bg-white main-card-header info ms-0 mb-2 px-0">
                 <div className="d-flex justify-content-between align-items-end pe-2 mb-1">
-                    <h1 className="m-0 title px-2">
+                    <h1 className="m-0 title px-2 me-auto">
                         {t(Fund.fund.name)}
                     </h1>
-                    <Col xs="auto">
-                        {
-                            rendering ?
-                                <Spinner animation="border" size="sm" />
-                                :
-                                <PrintButton className="w-100 h-100" variant="info" handlePrint={renderAndDownloadTablePDF} />
-                        }
-                    </Col>
+                    {
+                        SelectedTab + "" !== "1" &&
+                        <Col xs="auto" className='ms-2' style={{ marginTop: ".4rem" }}>
+                            <Button className="me-2 print-button no-style" variant="info" onClick={() => exportToExcel(
+                                SelectedTab === "Movements" ?
+                                    {
+                                        filename: t("Fund_movements", { fundName: Fund.fund.name }),
+                                        sheetName: t("Fund_movements", { fundName: Fund.fund.name }),
+                                        dataTableName: "fund-movements",
+                                        excludedColumns: ["ticket", "actions"],
+                                        // plainNumberColumns: ["unit_floor", "unit_unitNumber", "unit_typology"]
+                                    }
+                                    :
+                                    {
+                                        filename: t("Fund_transfers", { fundName: Fund.fund.name }),
+                                        sheetName: t("Fund_transfers", { fundName: Fund.fund.name }),
+                                        dataTableName: "fund-transfers",
+                                        excludedColumns: ["ticket", "actions"],
+                                    }
+                            )} >
+                                <FontAwesomeIcon icon={faFileExcel} />
+                            </Button>
+                        </Col>
+                    }
+                    {
+                        SelectedTab + "" === "0" &&
+                        <Col xs="auto">
+                            {
+                                rendering ?
+                                    <Spinner animation="border" size="sm" />
+                                    :
+                                    <PrintButton className="w-100 h-100" variant="info" handlePrint={renderAndDownloadTablePDF} />
+                            }
+                        </Col>
+                    }
                 </div>
                 <div className="d-flex justify-content-between align-items-start pe-2">
                     <Col className="d-flex justify-content-between pe-5" sm="auto">

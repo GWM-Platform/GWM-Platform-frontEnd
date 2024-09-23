@@ -1129,5 +1129,8 @@
   "The client you are trying to use is disabled": "El cliente que esta intentando utilizar está deshabilitado",
   "Contact via email or WhatsApp to receive help": "Comunicate vía mail o WhatsApp para recibir ayuda",
   "Client disabled": "Cliente deshabilitado",
-  "Cash_movements": "Movimientos de cuenta corriente"
+  "Cash_movements": "Movimientos de cuenta corriente",
+  "Cash_transfers": "Transferencias de cuenta corriente",
+  "Fund_movements": "Movimientos de fondo ({{fundName}})",
+  "Fund_transfers": "Transferencias de fondo ({{fundName}})"
 }
