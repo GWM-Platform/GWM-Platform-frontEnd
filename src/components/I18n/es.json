@@ -981,6 +981,8 @@
   "Add client note": "Añadir nota para el cliente",
   "Client note": "Nota para el cliente",
   "Note from admin": "Nota desde la administración",
+  "penalty": "penalidad",
+  "bonification": "bonificación",
   "Transfer note": "Nota de la transferencia",
   "You have no notifications right now": "No tiene ninguna notificación",
   "cancel": "cancelar",

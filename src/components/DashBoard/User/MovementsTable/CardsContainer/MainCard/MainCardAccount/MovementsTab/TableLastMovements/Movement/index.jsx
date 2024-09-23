@@ -545,7 +545,7 @@ const Movement = ({ content, actions, reloadData }) => {
             fundLiquidate ?
               <>{t("Fund liquidation")} {content.fundName}</>
               :
-              isPerformanceMovement ? <>{t(content.motive)} ({noteFromAdmin ? noteFromAdmin?.text : (content.motive === "PENALTY_WITHDRAWAL" ? "penalty" : "bonification")})</>
+              isPerformanceMovement ? <>{t(content.motive)} ({noteFromAdmin ? noteFromAdmin?.text : t(content.motive === "PENALTY_WITHDRAWAL" ? "penalty" : "bonification")})</>
                 :
                 t(content.motive + (content.motive === "REPAYMENT" ? content.fundName ? "_" + content.fundName : "_" + content.fixedDepositId : ""), { fund: content.fundName, fixedDeposit: content.fixedDepositId })
           )

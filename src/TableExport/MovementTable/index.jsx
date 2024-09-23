@@ -222,6 +222,8 @@ const MovementTable = ({ movements, headerInfo }) => {
                                         const transferNote = content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")
                                         const partialLiquidate = content?.notes?.find(note => note.noteType === "PARTIAL_LIQUIDATE_MOTIVE")
                                         const fundLiquidate = content?.notes?.find(note => note.noteType === "FUND_LIQUIDATE")
+                                        const isPerformanceMovement = (content.motive === "PENALTY_WITHDRAWAL" || content.motive === "PROFIT_DEPOSIT")
+                                        const noteFromAdmin = isPerformanceMovement && content?.notes?.find(note => note.noteType === "CLIENT_NOTE")
 
                                         return (
                                             <View style={styles.tableRow} key={index}>
@@ -241,6 +243,7 @@ const MovementTable = ({ movements, headerInfo }) => {
                                                                     fundLiquidate ?
                                                                         `${t("Fund liquidation")} ${content.fundName}`
                                                                         :
+                                                                        isPerformanceMovement ? `${t(content.motive)} (${noteFromAdmin ? noteFromAdmin?.text : t(content.motive === "PENALTY_WITHDRAWAL" ? "penalty" : "bonification")})` :
                                                                         t(content.motive + (content.motive === "REPAYMENT" ? content.fundName ? "_" + content.fundName : "_" + content.fixedDepositId : ""), { fund: content.fundName, fixedDeposit: content.fixedDepositId })
                                                                 ) : ""
                                                             }${content?.transferReceiver ? `${t("Transfer to {{transferReceiver}}", { transferReceiver: content?.transferReceiver })}` : ""
