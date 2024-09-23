@@ -396,10 +396,12 @@ const Movement = ({ content, actions, reloadData }) => {
     setAction(action)
     setShowModal(true)
   }
+  const isPerformanceMovement = (content.motive === "PENALTY_WITHDRAWAL" || content.motive === "PROFIT_DEPOSIT")
 
   const transferNote = content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")
   const partialLiquidate = content?.notes?.find(note => note.noteType === "PARTIAL_LIQUIDATE_MOTIVE")
-  const clientNote = content?.notes?.find(note => note.noteType === "CLIENT_NOTE")
+  const clientNote = !isPerformanceMovement && content?.notes?.find(note => note.noteType === "CLIENT_NOTE")
+  const noteFromAdmin = isPerformanceMovement && content?.notes?.find(note => note.noteType === "CLIENT_NOTE")
   const denialMotive = content?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
   const fundLiquidate = content?.notes?.find(note => note.noteType === "FUND_LIQUIDATE")
 
@@ -430,7 +432,7 @@ const Movement = ({ content, actions, reloadData }) => {
                 {!!(content.userEmail || content?.userName) &&
                   <div>
                     {t('Operation performed by')}:<br />
-                    <span className="text-nowrap">{fundLiquidate ? t("Administration") : content?.userName || content?.userEmail}</span>
+                    <span className="text-nowrap">{(fundLiquidate || isPerformanceMovement) ? t("Administration") : content?.userName || content?.userEmail}</span>
                   </div>
                 }
                 {!!(transferNote) &&
@@ -543,7 +545,9 @@ const Movement = ({ content, actions, reloadData }) => {
             fundLiquidate ?
               <>{t("Fund liquidation")} {content.fundName}</>
               :
-              t(content.motive + (content.motive === "REPAYMENT" ? content.fundName ? "_" + content.fundName : "_" + content.fixedDepositId : ""), { fund: content.fundName, fixedDeposit: content.fixedDepositId })
+              isPerformanceMovement ? <>{t(content.motive)} ({noteFromAdmin ? noteFromAdmin?.text : (content.motive === "PENALTY_WITHDRAWAL" ? "penalty" : "bonification")})</>
+                :
+                t(content.motive + (content.motive === "REPAYMENT" ? content.fundName ? "_" + content.fundName : "_" + content.fixedDepositId : ""), { fund: content.fundName, fixedDeposit: content.fixedDepositId })
           )
         }
         {content?.transferReceiver && <>{t("Transfer to {{transferReceiver}}", { transferReceiver: content?.transferReceiver })}</>}
