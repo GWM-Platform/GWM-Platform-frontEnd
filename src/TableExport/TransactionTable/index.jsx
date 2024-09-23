@@ -132,37 +132,43 @@ const TransactionTable = ({ transactions, headerInfo, sharesDecimalPlaces = 5, A
             padding: '25px 25px 25px 25px'
         },
         header: {
+            display: 'flex',
+            alignItems: 'center',
+            backgroundColor: '#082044',
+            flexDirection: 'row',
             height: '70px',
             width: '100%',
-            // backgroundColor: '#082044',
-            borderBottomWidth: '1px',
-            // borderBottomColor: 'rgb(8, 32, 68)',
-            borderBottomColor: "rgb(120, 120, 120)",
-            borderBottomStyle: 'solid',
-            // padding: '20px',
-            // marginBottom: '3px',
+            marginBottom: '5px',
             image: {
                 height: '35px',
                 width: '35px',
                 backgroundColor: 'white',
                 borderRadius: '50%',
                 padding: '5px',
-                marginRight: '5px'
+                marginLeft: "auto",
+                marginRight: '10px',
             },
             textContainer: {
+                marginLeft: '10px',
                 text: {
+                    color: "rgba(255,255,255,.95)",
                     fontSize: "16px",
                     fontFamily: 'SF',
+                    textAlign: "end",
                 },
                 textBold: {
+                    color: "rgba(255,255,255,.95)",
                     fontSize: "16px",
                     fontFamily: 'SF',
                     fontWeight: 'bold',
+                    textAlign: "end",
                 },
                 smaller: {
+                    color: "rgba(255,255,255,.95)",
                     fontSize: "12px",
                     fontFamily: 'SF',
                     fontWeight: 'light',
+                    textAlign: "end",
                 },
                 row: {
                     display: 'flex',
@@ -175,7 +181,7 @@ const TransactionTable = ({ transactions, headerInfo, sharesDecimalPlaces = 5, A
         body: {
             display: 'flex',
             flexDirection: 'row',
-            height: 'calc( 100% - 70px )',
+            height: 'calc( 100% - 75px )',
             width: '100%',
             padding: "20px",
             paddingTop: "0",
@@ -194,36 +200,30 @@ const TransactionTable = ({ transactions, headerInfo, sharesDecimalPlaces = 5, A
                                 <Text style={styles.header.textContainer.text}>
                                     <Text style={styles.header.textContainer.textBold}>{t("Fund")} {headerInfo.fundName}</Text>, {t("Client")} {headerInfo?.clientName}
                                 </Text>
-                            </View>
-                            <View style={styles.header.textContainer.row}>
                                 <Text style={styles.header.textContainer.smaller}>
-                                    {t("Balance (shares)")}: {formatValue({
+                                    {t("Balance")}: {formatValue({
                                         value: (headerInfo?.balance || 0) + "",
                                         decimalScale: "2",
+                                        suffix: ` ${t("shares")}`,
                                         groupSeparator,
                                         decimalSeparator,
                                     })
-                                    }
-                                </Text>
-                                <Text style={styles.header.textContainer.smaller}>
-                                    {t("Share price")}: {formatValue({
-                                        value: (headerInfo?.sharePrice || 0) + "",
-                                        decimalScale: "2",
-                                        groupSeparator,
-                                        decimalSeparator,
-                                        prefix: "U$D "
-                                    })
-                                    }
-                                </Text>
-                            </View>
-                            <View style={styles.header.textContainer.row}>
-                                <Text style={styles.header.textContainer.smaller}>
-                                    {t("Balance (U$D)")}: {formatValue({
+                                    }, {formatValue({
                                         value: headerInfo?.balanceInCash,
                                         decimalScale: "2",
+                                        prefix: "U$D ",
                                         groupSeparator,
                                         decimalSeparator,
-                                    })
+                                    })}
+                                    {
+                                        headerInfo?.showPending &&
+                                        ` | ${t("Pending transactions (shares)")}: ${formatValue({
+                                            value: (headerInfo?.pendingshares || 0) + "",
+                                            decimalScale: "2",
+                                            groupSeparator,
+                                            decimalSeparator,
+                                        })
+                                        }`
                                     }
                                 </Text>
                                 <Text style={styles.header.textContainer.smaller}>
@@ -237,20 +237,7 @@ const TransactionTable = ({ transactions, headerInfo, sharesDecimalPlaces = 5, A
                                     }
                                 </Text>
                             </View>
-                            {
-                                headerInfo?.showPending &&
-                                <View style={styles.header.textContainer.row}>
-                                    <Text style={styles.header.textContainer.smaller}>
-                                        {t("Pending transactions (shares)")}: {formatValue({
-                                            value: (headerInfo?.pendingshares || 0) + "",
-                                            decimalScale: "2",
-                                            groupSeparator,
-                                            decimalSeparator,
-                                        })
-                                        }
-                                    </Text>
-                                </View>
-                            }
+                            <Image src={`${process.env.PUBLIC_URL}/images/PDF/logo.png`} style={styles.header.image} />
                         </View>
                         <View>
                             <View style={styles.table}>

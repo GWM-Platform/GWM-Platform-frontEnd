@@ -133,11 +133,10 @@ const MovementTable = ({ movements, headerInfo }) => {
             flexDirection: 'row',
             height: '50px',
             width: '100%',
-            // backgroundColor: '#082044',
+            backgroundColor: '#082044',
             borderBottomWidth: '1px',
             // borderBottomColor: 'rgb(8, 32, 68)',
-            borderBottomColor: "rgb(120, 120, 120)",
-            borderBottomStyle: 'solid',
+            marginBottom: '5px',
             // padding: '20px',
             // marginBottom: '3px',
             image: {
@@ -146,29 +145,37 @@ const MovementTable = ({ movements, headerInfo }) => {
                 backgroundColor: 'white',
                 borderRadius: '50%',
                 padding: '5px',
-                marginRight: '5px'
+                marginLeft: "auto",
+                marginRight: '10px',
             },
             textContainer: {
+                marginLeft: '10px',
                 text: {
+                    color: "rgba(255,255,255,.95)",
                     fontSize: "16px",
                     fontFamily: 'SF',
+                    textAlign: "end",
                 },
                 textBold: {
+                    color: "rgba(255,255,255,.95)",
                     fontSize: "16px",
                     fontFamily: 'SF',
                     fontWeight: 'bold',
+                    textAlign: "end",
                 },
                 smaller: {
+                    color: "rgba(255,255,255,.95)",
                     fontSize: "12px",
                     fontFamily: 'SF',
                     fontWeight: 'light',
+                    textAlign: "end",
                 }
             }
         },
         body: {
             display: 'flex',
             flexDirection: 'row',
-            height: 'calc( 100% - 50px )',
+            height: 'calc( 100% - 55px )',
             width: '100%',
             padding: "20px",
             paddingTop: "0",
@@ -199,7 +206,7 @@ const MovementTable = ({ movements, headerInfo }) => {
                                     }
                                 </Text>
                             </View>
-                            {/* <Image src={`${process.env.PUBLIC_URL}/images/PDF/logo.png`} style={styles.header.image} /> */}
+                            <Image src={`${process.env.PUBLIC_URL}/images/PDF/logo.png`} style={styles.header.image} />
                         </View>
                         <View>
                             <View style={styles.table}>
@@ -244,7 +251,7 @@ const MovementTable = ({ movements, headerInfo }) => {
                                                                         `${t("Fund liquidation")} ${content.fundName}`
                                                                         :
                                                                         isPerformanceMovement ? `${t(content.motive)} (${noteFromAdmin ? noteFromAdmin?.text : t(content.motive === "PENALTY_WITHDRAWAL" ? "penalty" : "bonification")})` :
-                                                                        t(content.motive + (content.motive === "REPAYMENT" ? content.fundName ? "_" + content.fundName : "_" + content.fixedDepositId : ""), { fund: content.fundName, fixedDeposit: content.fixedDepositId })
+                                                                            t(content.motive + (content.motive === "REPAYMENT" ? content.fundName ? "_" + content.fundName : "_" + content.fixedDepositId : ""), { fund: content.fundName, fixedDeposit: content.fixedDepositId })
                                                                 ) : ""
                                                             }${content?.transferReceiver ? `${t("Transfer to {{transferReceiver}}", { transferReceiver: content?.transferReceiver })}` : ""
                                                             }${content?.transferSender ? `${t("Transfer from {{transferSender}}", { transferSender: content?.transferSender })}` : ""
