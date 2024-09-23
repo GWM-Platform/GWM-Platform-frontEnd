@@ -77,7 +77,8 @@ const TableLastMovements = ({ account }) => {
     }, [account, Options])
     const [rendering, setRendering] = useState(false)
 
-    const renderAndDownloadTablePDF = async () => {
+    const renderAndDownloadTablePDF = async (e) => {
+        e.stopPropagation()
         setRendering(true)
         const blob = await ReactPDF.pdf(
             <MovementTable
@@ -112,26 +113,26 @@ const TableLastMovements = ({ account }) => {
                         aria-expanded={open}>
                         <Row className="d-flex justify-content-end">
                             <Col className={fetchingMovements ? "d-flex justify-content-between align-items-center" : ""}>
-                                <h2 className={`my-2 toggler-mobile ${!!(fetchingMovements) ? "loading" : ""} ${open ? "toggled" : ""}`}>{t("Last movements")}</h2>
-                                {!!(fetchingMovements) && <Spinner className="ms-2" animation="border" size="sm" />}
+                                <h2 className={`my-2 toggler-mobile ${!!(fetchingMovements) ? "loading" : ""} ${open ? "toggled" : ""} flex-grow-1`}>
+                                    {t("Last movements")}
+                                    <Button className="ms-auto me-2 buttonFilter no-style" variant="info" onClick={renderAndDownloadTablePDF} size='sm'>
+                                        {
+                                            rendering ?
+                                                <Spinner animation="border" size="sm" />
+                                                :
+                                                <FontAwesomeIcon icon={faPrint} />
+                                        }
+                                    </Button>
+                                    <Button className="buttonFilter no-style me-1" variant="info" onClick={(e) => { handleShow(); e.stopPropagation() }}>
+                                        <FontAwesomeIcon icon={faFilter} />
+                                    </Button>
+                                </h2>
+                                {!!(fetchingMovements) && <Spinner style={{ marginLeft: ".35em" }} animation="border" size="sm" />}
                             </Col>
                         </Row>
                     </Container>
                     <Collapse in={open}>
                         <div className="movementsTable mb-3">
-                            <div className='py-1 d-flex justify-content-end'>
-                                <Button className="ms-1 buttonFilter" variant="danger" onClick={renderAndDownloadTablePDF} size='sm'>
-                                    {
-                                        rendering ?
-                                            <Spinner animation="border" size="sm" />
-                                            :
-                                            <FontAwesomeIcon icon={faPrint} />
-                                    }
-                                </Button>
-                                <Button className="ms-1 buttonFilter" variant="danger" onClick={() => handleShow()} size='sm'>
-                                    <FontAwesomeIcon icon={faFilter} />
-                                </Button>
-                            </div>
                             {
                                 movements.movements.length === 0 || movements === null ?
                                     <h2 className="text-center">{t("There are no records in the selected state")}</h2>

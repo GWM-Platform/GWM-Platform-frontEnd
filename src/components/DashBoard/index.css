@@ -23,8 +23,8 @@
 	transition: all 0.5s;
 }
 
-.toggler-mobile.loading{
-	display: inline-block;
+.offcanvas{
+	--bs-offcanvas-height: 40vh!important;
 }
 
 .toggler-mobile.toggled:after {

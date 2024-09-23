@@ -78,18 +78,18 @@ const TableLastFixedDeposits = () => {
                         aria-expanded={open}>
                         <Row className="d-flex justify-content-end">
                             <Col className={FixedDeposits.fetching ? "d-flex justify-content-between align-items-center" : ""}>
-                                <h2 className={`my-2 toggler-mobile ${!!(FixedDeposits.fetching) ? "loading" : ""} ${open ? "toggled" : ""}`}>{t("Time deposits")}</h2>
-                                {!!(FixedDeposits.fetching) && <Spinner className="ms-2" animation="border" size="sm" />}
+                                <h2 className={`my-2 toggler-mobile ${!!(FixedDeposits.fetching) ? "loading" : ""} ${open ? "toggled" : ""} flex-grow-1`}>
+                                    {t("Time deposits")}
+                                    <Button className="buttonFilter no-style ms-auto me-1" variant="info" onClick={(e) => { handleShow(); e.stopPropagation() }}>
+                                        <FontAwesomeIcon icon={faFilter} />
+                                    </Button>
+                                </h2>
+                                {!!(FixedDeposits.fetching) && <Spinner style={{ marginLeft: ".35em" }} animation="border" size="sm" />}
                             </Col>
                         </Row>
                     </Container>
                     <Collapse in={open}>
                         <div className="movementsTable mb-3">
-                            <div className='py-1 d-flex justify-content-end'>
-                                <Button className="buttonFilter" variant="danger" onClick={() => handleShow()}>
-                                    <FontAwesomeIcon icon={faFilter} />
-                                </Button>
-                            </div>
                             {
                                 FixedDeposits.content.deposits.length === 0 || FixedDeposits.content.deposits === null ?
                                     <h2 className="text-center">{t("There are no records in the selected state")}</h2> :
