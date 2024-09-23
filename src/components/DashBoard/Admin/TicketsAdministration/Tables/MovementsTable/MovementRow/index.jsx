@@ -236,7 +236,7 @@ const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, coul
                         {momentDate.format('L')}
                     </span>
                 </div >
-                <Notes transferNote={transferNote} clientNote={clientNote} denialMotive={denialMotive} adminNote={adminNote} partialLiquidate={partialLiquidate} />
+                <Notes transferNote={transferNote} clientNote={clientNote} denialMotive={denialMotive} adminNote={adminNote} partialLiquidate={partialLiquidate} personalNote={!(Movement.motive === "PENALTY_WITHDRAWAL" || Movement.motive === "PROFIT_DEPOSIT")} />
             </div >
             {
                 !!(Movement.stateId === 1 || couldLiquidate(Movement)) &&

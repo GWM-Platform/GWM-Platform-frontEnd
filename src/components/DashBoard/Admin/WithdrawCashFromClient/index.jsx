@@ -32,6 +32,7 @@ const WithdrawCashFromClient = () => {
             date: moment().format(moment.HTML5_FMT.DATETIME_LOCAL),
             account: "",
             note: "",
+            clientNote: "",
             affectsProfit: false
         }
     )
@@ -39,6 +40,7 @@ const WithdrawCashFromClient = () => {
     const [validated, setValidated] = useState(true);
 
     const [NoteActive, setNoteActive] = useState(false)
+    const [clientNoteActive, setClientNoteActive] = useState(false)
 
     const token = sessionStorage.getItem('access_token')
     let history = useHistory();
@@ -53,6 +55,7 @@ const WithdrawCashFromClient = () => {
                 amount: parseFloat(data.amount),
                 date: moment(data.date).format(),
                 note: NoteActive ? data.note : undefined,
+                clientNote: (clientNoteActive && data.affectsProfit) ? data.clientNote : undefined,
                 affectsProfit: data.affectsProfit
             }),
             headers: {
@@ -317,7 +320,6 @@ const WithdrawCashFromClient = () => {
                                         onChange={(e) => { handleChange(e); }}
                                         required
                                     />
-
                                     <button
                                         type="button"
                                         onClick={
@@ -330,7 +332,6 @@ const WithdrawCashFromClient = () => {
                                         <FontAwesomeIcon icon={faMinusCircle} />
                                     </button>
                                 </div>
-
                                 :
                                 <div style={{ height: "38px" }} className="mb-3 w-100 d-flex align-items-start">
                                     <Button type="button" className="ms-auto" size="sm" variant="danger" onClick={() => setNoteActive(true)}>
@@ -338,6 +339,39 @@ const WithdrawCashFromClient = () => {
                                         {t("Add note")}
                                     </Button>
                                 </div>
+                        }
+                        {
+                            data.affectsProfit && <>
+                                {
+                                    clientNoteActive ?
+                                        <div className="d-flex align-items-center mb-3">
+                                            <Form.Control
+                                                placeholder={`${t("Withdrawal note")} (${t("client")})`}
+                                                value={data.clientNote} type="text" id="clientNote" maxLength="250"
+                                                onChange={(e) => { handleChange(e); }}
+                                                required
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={
+                                                    () => {
+                                                        handleChange({ target: { id: "clientNote", value: "" } })
+                                                        setClientNoteActive(false)
+                                                    }
+                                                }
+                                                className="noStyle ms-2" title={t("Remove note")}>
+                                                <FontAwesomeIcon icon={faMinusCircle} />
+                                            </button>
+                                        </div>
+                                        :
+                                        <div style={{ height: "38px" }} className="mb-3 w-100 d-flex align-items-start">
+                                            <Button type="button" className="ms-auto" size="sm" variant="danger" onClick={() => setClientNoteActive(true)}>
+                                                <FontAwesomeIcon className="me-1" icon={faPlusCircle} />
+                                                {t("Add client note")}
+                                            </Button>
+                                        </div>
+                                }
+                            </>
                         }
                         <div className='d-flex pb-3'>
                             <Button className="ms-auto" disabled={data.amount === "" || data.amount <= 0 || fetching} variant="danger" type="submit">

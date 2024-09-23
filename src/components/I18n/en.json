@@ -1,9 +1,9 @@
 {
     "DEPOSIT": "Deposit",
-    "PROFIT_DEPOSIT": "Deposit (Bonus)",
+    "PROFIT_DEPOSIT": "Deposit",
     "Bonus": "Bonus",
     "WITHDRAWAL": "Withdrawal",
-    "PENALTY_WITHDRAWAL": "Withdraw (Bonus)",
+    "PENALTY_WITHDRAWAL": "Withdraw",
     "Penalty": "Penalty",
     "STAKE_BUY": "Purchase of {{fund}} shares",
     "STAKE_SELL": "Sale of {{fund}} shares",

@@ -17,6 +17,7 @@ const Movement = ({ Movement }) => {
   const denialMotive = Movement?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
   const adminNote = Movement?.notes?.find(note => note.noteType === "ADMIN_NOTE")
   const partialLiquidate = Movement?.notes?.find(note => note.noteType === "PARTIAL_LIQUIDATE_MOTIVE")
+  const clientNoteType = (Movement.motive === "PENALTY_WITHDRAWAL" || Movement.motive === "PROFIT_DEPOSIT") ? 'Client note' : 'Personal note';
 
   return (
     <tr>
@@ -30,7 +31,7 @@ const Movement = ({ Movement }) => {
             ...!!(transferNote) ?
               [`${t('Transfer note')}${transferNote.userName ? ` (${transferNote.userName})` : ""}: "${transferNote.text}"`] : [],
             ...!!(clientNote) ?
-              [`${t('Personal note')}${clientNote.userName ? ` (${clientNote.userName})` : ""}: "${clientNote.text}"`] : [],
+              [`${t(clientNoteType)}${clientNote.userName ? ` (${clientNote.userName})` : ""}: "${clientNote.text}"`] : [],
             ...!!(denialMotive) ?
               [`${t('Denial motive')}${denialMotive.userName ? ` (${denialMotive.userName})` : ""}: "${denialMotive.text}"`] : [],
             ...!!(adminNote) ?
