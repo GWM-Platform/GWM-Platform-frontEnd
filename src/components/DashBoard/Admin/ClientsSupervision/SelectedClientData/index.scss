@@ -13,6 +13,7 @@
     }
 
     .fund-item {
+        cursor: pointer;
         height: 100%;
         width: 100%;
         background-color: white;
@@ -24,6 +25,10 @@
 
         &.selected {
             box-shadow: rgba(8, 32, 68, 0.3) 0px 4px 12px;
+
+            &.card {
+                border-color: #8d98a9;
+            }
         }
 
         .content-container {
@@ -53,6 +58,21 @@
     }
 
     .scrollController {
+        // Animate 0 to 1 opacity with a delay of 0.5s
+        opacity: 0;
+        transition: all 0.5s;
+        // define keyframes
+        @keyframes growOpacity {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+        animation: growOpacity .5s 1.25s forwards;
+
         position: absolute;
         height: calc(100% - 20px);
         width: 100%;

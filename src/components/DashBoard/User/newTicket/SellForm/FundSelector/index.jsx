@@ -1,56 +1,43 @@
-import React, { createRef, useState, useContext, useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { Row, Form, Accordion, Container } from 'react-bootstrap'
 import FundCard from './FundCard';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 import { useTranslation } from "react-i18next";
-import { DashBoardContext } from 'context/DashBoardContext';
+import "components/DashBoard/Admin/ClientsSupervision/SelectedClientData/index.scss"
+import { ScrollControl } from '../../BuyForm/FundSelector';
 
 const FundSelector = ({ data, setData, some, setSome, Funds, openAccordion }) => {
-    const { t } = useTranslation();
-    const [CardWidth, setCardWidth] = useState(false)
-    const [Offset, setOffset] = useState(0)
-    const [showRightChevron, setShowRightChevron] = useState(true)
-    const [showLeftChevron, setShowLeftChevron] = useState(false)
-    const { width } = useContext(DashBoardContext)
 
-    //For scrolling
-    const FundsContainer = createRef()
+    const accountsSlider = useRef(null)
+    const accountCard = useRef(null)
 
-    const isNull = () => !FundsContainer.current
+    const [ScrollBarSides, setScrollBarSides] = useState({
+        left: false,
+        right: true
+    })
+    const handleScroll = (e) => {
+        setScrollBarSides(prevState => (
+            {
+                ...prevState,
+                left: e.target.scrollLeft !== 0,
+                right: e.target.scrollLeft !== e.target.scrollWidth - e.target.clientWidth
+            }
+        ))
+    }
 
-    //Scrolling Function
-    const setScrollPositionByOffset = (offset) => {
-        if (!isNull()) {
-            let widthScroll =
-                isNull() ?
-                    "" :
-                    CardWidth ?
-                        FundsContainer.current.clientWidth / CardWidth :
-                        FundsContainer.current.clientWidth / 3
-            let scroll = widthScroll * offset
-            FundsContainer.current.scrollTo({
+    const scroll = (right = true) => {
+        const el = accountsSlider?.current
+        if (el) {
+            accountsSlider.current.scrollTo({
                 top: 0,
-                left: scroll,
+                left: el.scrollLeft + (accountCard?.current.clientWidth || 200) * (right ? 1 : -1),
                 behavior: 'smooth'
             })
-            let maxOffset = Funds.length - 1 - CardWidth
-            let toSetOffset = offset > maxOffset ? maxOffset : offset
-            setShowRightChevron(toSetOffset !== maxOffset)
-            setShowLeftChevron(toSetOffset !== 0)
-            setOffset(toSetOffset)
         }
     }
 
-    useEffect(() => {
-        if (width < 578) {
-            setCardWidth(10)
-        } else {
-            setCardWidth(3)
-        }
-    }, [width])
+    const { t } = useTranslation();
 
     return (
         <Accordion.Item eventKey="0">
@@ -75,25 +62,19 @@ const FundSelector = ({ data, setData, some, setSome, Funds, openAccordion }) =>
                     <Container fluid className="px-0">
                         <Row className="mx-0 d-flex justify-content-center">
                             <div className="p-relative px-0">
-                                <Container fluid className="px-0">
-                                    <Row className="mx-0 flex-row flex-nowrap overflow-auto overflow-sm-hidden FundCardsContainer" ref={FundsContainer}>
-                                        {Funds.map((Fund, key) => {
-                                            return (
-                                                <FundCard openAccordion={openAccordion} key={key} ownKey={key}
-                                                    Fund={Fund} data={data} setData={setData} some={some} setSome={setSome} />
-                                            )
-                                        })}
-                                    </Row>
-                                </Container>
-                                <div className={`arrow  right d-none d-sm-block
-                                ${Funds.length > 3 && showRightChevron ? "opacity-1" : ""}`}
-                                    onClick={() => { if (showRightChevron) setScrollPositionByOffset(Offset + 1) }}>
-                                    <FontAwesomeIcon icon={faChevronRight} />
-                                </div>
-                                <div className={` arrow left d-none d-sm-block
-                                ${Funds.length > 3 && showLeftChevron ? "opacity-1" : ""}`}
-                                    onClick={() => { if (showLeftChevron) setScrollPositionByOffset(Offset - 1) }}>
-                                    <FontAwesomeIcon icon={faChevronLeft} />
+                                <div ref={accountsSlider} className='fund-selector' onScroll={handleScroll} >
+                                    {Funds.map((Fund, key) => {
+                                        return (
+                                            <FundCard
+                                                accountCardRef={key === 0 ? accountCard : null}
+                                                openAccordion={openAccordion} key={key} ownKey={key}
+                                                Fund={Fund} data={data} setData={setData} some={some} setSome={setSome} />
+                                        )
+                                    })}
+                                    {
+                                        // !!(HasScrollBar) &&
+                                        <ScrollControl scroll={scroll} ScrollBarSides={ScrollBarSides} />
+                                    }
                                 </div>
                             </div>
                         </Row>

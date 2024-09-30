@@ -9,7 +9,6 @@ import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
 const FundSelector = ({ SelectedFund, setSelectedFund, Funds, clientFunds = [] }) => {
 
-    console.log(Funds)
     const { t } = useTranslation();
 
     useEffect(() => {
