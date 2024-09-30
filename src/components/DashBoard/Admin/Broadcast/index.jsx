@@ -89,6 +89,7 @@ const Broadcast = () => {
     }
     const emailBodyWihtImagesStyles = useCallback(
         () => {
+            let toClients = false
             let parser = new DOMParser();
             let doc = parser.parseFromString(formData.emailBody, "text/html");
             let images = doc.querySelectorAll('img');
@@ -100,13 +101,17 @@ const Broadcast = () => {
             let textInterpolationElements = doc.querySelectorAll('[data-text-interpolation-type]');
             textInterpolationElements.forEach(element => {
                 // get the text interpolation type
+
                 let keyword = element.getAttribute('data-text-interpolation-type')
                 // replace the element with the tag keyword like <span data-text-interpolation-type="keyword">text</span> => {{keyword}}
                 let span = doc.createElement('span');
                 span.textContent = `{{${keyword}}}`
                 element.replaceWith(span)
+                if (keyword !== "username") {
+                    toClients = true
+                }
             });
-            return new XMLSerializer().serializeToString(doc)
+            return [new XMLSerializer().serializeToString(doc), toClients]
         }, [formData.emailBody])
 
     const broadcast = async () => {
@@ -122,11 +127,11 @@ const Broadcast = () => {
 
         let receivers = selectedOptions.map(receiver => receiver.email)
         formDataSubmit.append("receivers", receivers)
-        formDataSubmit.append("sendToClients", true)
 
         formDataSubmit.append("title", formData.title)
-
-        formDataSubmit.append("emailBody", emailBodyWihtImagesStyles())
+        const [emailBody, toClients] = emailBodyWihtImagesStyles()
+        formDataSubmit.append("emailBody", emailBody)
+        formDataSubmit.append("sendToClients", toClients)
         axios.post(`/users/broadcast`, formDataSubmit)
             .then(function (response) {
                 setMessage("The broadcast was successfully sent")
