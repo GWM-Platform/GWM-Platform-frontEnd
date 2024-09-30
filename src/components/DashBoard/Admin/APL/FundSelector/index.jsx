@@ -16,23 +16,23 @@ const FundSelector = ({ SelectedFund, setSelectedFund, Funds }) => {
     const accountsSlider = useRef(null)
     const accountCard = useRef(null)
 
-    const [HasScrollBar, setHasScrollBar] = useState(false)
+    // const [HasScrollBar, setHasScrollBar] = useState(false)
     const [ScrollBarSides, setScrollBarSides] = useState({
         left: false,
         right: true
     })
 
-    useEffect(() => {
-        function updateState() {
-            const el = accountsSlider.current
-            el && setHasScrollBar(el.scrollWidth > el.clientWidth)
-        }
+    // useEffect(() => {
+    //     function updateState() {
+    //         const el = accountsSlider.current
+    //         el && setHasScrollBar(el.scrollWidth > el.clientWidth)
+    //     }
 
-        updateState()
+    //     updateState()
 
-        window.addEventListener('resize', updateState)
-        return () => window.removeEventListener('resize', updateState)
-    }, [Funds])
+    //     window.addEventListener('resize', updateState)
+    //     return () => window.removeEventListener('resize', updateState)
+    // }, [Funds])
 
     const handleScroll = (e) => {
         setScrollBarSides(prevState => (
@@ -95,7 +95,7 @@ const FundSelector = ({ SelectedFund, setSelectedFund, Funds }) => {
                     </button>
                 </Col>
                 {
-                    !!(HasScrollBar) &&
+                    // !!(HasScrollBar) &&
                     <ScrollControl scroll={scroll} ScrollBarSides={ScrollBarSides} />
                 }
             </div>
