@@ -32,7 +32,7 @@ const FundCard = ({ Fund, ownKey, data, setData, openAccordion, showPrice }) => 
                 onClick={() => { setFundSelected(setData, Fund.fundId, openAccordion) }}>
                 <Card.Header><strong className="title">{Fund.fund.name}</strong></Card.Header>
                 <Card.Body>
-                    <Card.Title> {t("Shares")}{": "} <strong>{<FormattedNumber value={(Fund.shares)} fixedDecimals={2} />}</strong></Card.Title>
+                    <Card.Title> {t("Shares")}{": "} <strong>{<FormattedNumber value={(Fund.shares)} rounding="ROUND_DOWN" fixedDecimals={2} />}</strong></Card.Title>
                     <Card.Title> {t("Holdings value")}{": "} <strong><FormattedNumber prefix="U$D " value={(Decimal(Decimal(Fund.shares) || 0).times(Fund.fund.sharePrice).toFixed(2))} fixedDecimals={2} /></strong></Card.Title>
                     {
                         showPrice &&

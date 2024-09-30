@@ -11,18 +11,19 @@ import Loading from '../Loading';
 import ActionConfirmationModal from './ActionConfirmationModal';
 import NoSellFunds from '../NoSellFunds';
 import ReactGA from "react-ga4";
+import Decimal from 'decimal.js';
 
 const SellForm = ({ balanceChanged }) => {
     const { token, ClientSelected, contentReady, AccountSelected } = useContext(DashBoardContext);
-    
+
     useEffect(() => {
         ReactGA.event({
             category: "Acceso a secciones para generar tickets",
             action: "Venta de cuotapartes",
             label: "Venta de cuotapartes",
-          })
+        })
     }, [])
-    
+
     function useQuery() {
         const { search } = useLocation();
         return React.useMemo(() => new URLSearchParams(search), [search]);
@@ -42,6 +43,11 @@ const SellForm = ({ balanceChanged }) => {
 
     let history = useHistory();
 
+    const balance = Decimal(Funds?.[data?.FundSelected]?.shares || 0)
+    const shares = Decimal(data.shares || 0)
+    const rest = Decimal(balance).minus(shares)
+    const restLowerThanMinStep = rest.lt(0.01)
+
     const sell = async () => {
         setFetching(true)
         var url = `${process.env.REACT_APP_APIURL}/funds/${Funds[data.FundSelected].fundId}/sell/?` + new URLSearchParams({
@@ -49,7 +55,7 @@ const SellForm = ({ balanceChanged }) => {
         });
         const response = await fetch(url, {
             method: 'POST',
-            body: JSON.stringify({ shares: parseFloat(data.shares) }),
+            body: JSON.stringify({ shares: restLowerThanMinStep ? balance.toNumber() : shares.toNumber() }),
             headers: {
                 Authorization: `Bearer ${token}`,
                 Accept: "*/*",
