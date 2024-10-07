@@ -60,7 +60,7 @@ const TransferForm = ({ balanceChanged }) => {
 
     const balance = Decimal((share_transfer ? fund_selected?.shares : AccountSelectedEnriched?.totalAvailable) || 0)
     const toTransfer = Decimal(data.amount || 0)
-    const rest = Decimal(balance).minus(toTransfer)
+    const rest = Decimal(balance).minus(toTransfer).abs()
     const restLowerThanMinStep = rest.lt(0.01)
     const transfer = async () => {
         setTransfer(prevState => ({ ...prevState, fetching: true }))
@@ -220,6 +220,7 @@ const TransferForm = ({ balanceChanged }) => {
                                     </Accordion>
                                     <Accordion flush activeKey={CollapsedFields || TargetAccount.fetching || !TargetAccount.fetched || !TargetAccount.valid ? "-1" : "0"}>
                                         <TransferData
+                                            restLowerThanMinStep={restLowerThanMinStep}
                                             Funds={Funds}
                                             TargetAccount={TargetAccount} handleChange={handleChange} data={data} toggleAccordion={toggleAccordion} Balance={AccountSelectedEnriched ? AccountSelectedEnriched.totalAvailable : 0} RealBalance={AccountSelectedEnriched ? AccountSelectedEnriched.balance : 0} />
                                     </Accordion>

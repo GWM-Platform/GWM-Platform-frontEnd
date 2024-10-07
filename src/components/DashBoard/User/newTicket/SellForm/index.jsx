@@ -45,8 +45,9 @@ const SellForm = ({ balanceChanged }) => {
 
     const balance = Decimal(Funds?.[data?.FundSelected]?.shares || 0)
     const shares = Decimal(data.shares || 0)
-    const rest = Decimal(balance).minus(shares)
+    const rest = Decimal(balance).minus(shares).abs()
     const restLowerThanMinStep = rest.lt(0.01)
+    const sharesFinalValue = restLowerThanMinStep ? balance.toNumber() : shares.toNumber()
 
     const sell = async () => {
         setFetching(true)
@@ -55,7 +56,7 @@ const SellForm = ({ balanceChanged }) => {
         });
         const response = await fetch(url, {
             method: 'POST',
-            body: JSON.stringify({ shares: restLowerThanMinStep ? balance.toNumber() : shares.toNumber() }),
+            body: JSON.stringify({ sharesFinalValue }),
             headers: {
                 Authorization: `Bearer ${token}`,
                 Accept: "*/*",
@@ -177,7 +178,7 @@ const SellForm = ({ balanceChanged }) => {
                 </Row>
                 {
                     !!(data.FundSelected !== -1 && contentReady) &&
-                    <ActionConfirmationModal fetching={fetching} setShowModal={setShowModal} show={ShowModal} action={sell} data={data} Funds={Funds} Balance={AccountSelected?.balance} />
+                    <ActionConfirmationModal fetching={fetching} setShowModal={setShowModal} show={ShowModal} action={sell} data={data} Funds={Funds} Balance={AccountSelected?.balance} sharesFinalValue={sharesFinalValue} />
 
                 }
             </Container>
