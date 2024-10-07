@@ -817,5 +817,6 @@
     "OVERDRAFT_UPDATE": "Overdraft update",
     "SHARE_TRANSFER_CREATE": "Share transfer creation",
     "LIQUIDATE_FUND": "Fund settlement",
+    "CREATE_ADMIN": "Admin creation",
     "share_price": "share price"
 }

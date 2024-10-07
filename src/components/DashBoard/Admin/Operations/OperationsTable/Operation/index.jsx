@@ -9,6 +9,7 @@ import { faCheckCircle, faTimesCircle } from "@fortawesome/free-regular-svg-icon
 import ActionConfirmationModal from "./ActionConfirmationModal";
 import { fetchOperations } from "Slices/DashboardUtilities/operationsSlice";
 import { userId } from "utils/userId";
+import { fetchusers } from "Slices/DashboardUtilities/usersSlice";
 
 
 const Operation = ({ Operation, User, fetchOperationsParams = {} }) => {
@@ -27,6 +28,7 @@ const Operation = ({ Operation, User, fetchOperationsParams = {} }) => {
     const dispatch = useDispatch()
     const refetch = () => {
         dispatch(fetchFunds())
+        dispatch(fetchusers({ all: true }))
         dispatch(fetchOperations(fetchOperationsParams))
     }
     const currentUserId = userId()
@@ -36,13 +38,22 @@ const Operation = ({ Operation, User, fetchOperationsParams = {} }) => {
             <td className="Alias">{moment(Operation.createdAt).format('l')} {moment(Operation.createdAt).format('LT')}</td>
             <td className="Alias">{User?.firstName || User?.lastName ? (User?.firstName + " " + User?.lastName) : "-"}</td>
             <td className="Alias">
-                {t(Operation?.operationType)}{
-                    Fund ?
-                        <>
-                            &nbsp;({Fund.name}, {t("share_price")}: <FormattedNumber prefix="U$D " value={Operation?.operationMetadata?.customSharePrice} fixedDecimals={2} />)
-                        </>
-                        :
-                        ""
+                {t(Operation?.operationType)}
+                {
+                    Operation.operationType === "LIQUIDATE_FUND" && (
+                        Fund ?
+                            <>
+                                &nbsp;({Fund.name}, {t("share_price")}: <FormattedNumber prefix="U$D " value={Operation?.operationMetadata?.customSharePrice} fixedDecimals={2} />)
+                            </>
+                            :
+                            ""
+                    )
+                }
+                {
+                    Operation.operationType === "CREATE_ADMIN" &&
+                    <>
+                        &nbsp;({Operation.operationMetadata.email})
+                    </>
                 }
             </td>
             <td className="Alias">
