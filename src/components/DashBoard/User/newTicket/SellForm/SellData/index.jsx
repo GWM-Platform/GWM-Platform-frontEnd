@@ -4,6 +4,7 @@ import { Form, InputGroup, Row, Button, Accordion, Container } from 'react-boots
 import { useTranslation } from "react-i18next";
 import { unMaskNumber } from 'utils/unmask';
 import CurrencyInput from '@osdiab/react-currency-input-field';
+import Decimal from 'decimal.js';
 
 
 const SellData = ({ data, setData, Funds, handleChange, validated, handleSubmit, toggleAccordion, fetching }) => {
@@ -40,8 +41,13 @@ const SellData = ({ data, setData, Funds, handleChange, validated, handleSubmit,
     }, [inputRef, data.shares])
 
     const sellAll = () => {
-        setData(prevState => ({ ...prevState, shares: Funds[data.FundSelected]?.shares || 0 }));
-        setInputValue(Funds[data.FundSelected]?.shares)
+        const shares = Decimal(Funds[data.FundSelected]?.shares || 0)
+            .toDecimalPlaces(2, Decimal.ROUND_DOWN).toFixed(2)
+        setData(prevState => ({
+            ...prevState, shares
+            // .rounding(Decimal.ROUND_DOWN)
+        }));
+        setInputValue(shares)
     }
 
     return (

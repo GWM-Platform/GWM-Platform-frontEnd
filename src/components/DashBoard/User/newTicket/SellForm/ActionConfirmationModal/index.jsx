@@ -8,7 +8,7 @@ import { useContext } from 'react';
 import { DashBoardContext } from 'context/DashBoardContext';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 
-const ActionConfirmationModal = ({ setShowModal, show, action, data, Funds, Balance, fetching }) => {
+const ActionConfirmationModal = ({ setShowModal, show, action, data, Funds, Balance, fetching, sharesFinalValue }) => {
     const { t } = useTranslation();
     const { ClientSelected } = useContext(DashBoardContext)
     const handleClose = () => {
@@ -25,7 +25,7 @@ const ActionConfirmationModal = ({ setShowModal, show, action, data, Funds, Bala
                             {t("Account")}:&nbsp;
                             <span className="emphasis">{ClientSelected.alias}</span>
                         </li>
-                        {!(Balance===undefined) &&
+                        {!(Balance === undefined) &&
                             <li className="listedInfo">
                                 {t("Account balance")}:&nbsp;
                                 <span className="emphasis"><FormattedNumber prefix="U$D " value={Balance} fixedDecimals={2} /></span>
@@ -37,7 +37,7 @@ const ActionConfirmationModal = ({ setShowModal, show, action, data, Funds, Bala
                         </li>
                         <li className="listedInfo">
                             {t("Cash amount")}:&nbsp;
-                            <span className="emphasis"><FormattedNumber prefix="U$D " value={(data.shares * Funds[data.FundSelected].fund.sharePrice)} fixedDecimals={2} /></span>
+                            <span className="emphasis"><FormattedNumber prefix="U$D " value={(sharesFinalValue * Funds[data.FundSelected].fund.sharePrice)} fixedDecimals={2} /></span>
                         </li>
                         <li className="listedInfo">
                             {t("Share amount")}:&nbsp;

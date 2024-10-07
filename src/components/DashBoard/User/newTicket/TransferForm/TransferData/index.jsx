@@ -8,7 +8,7 @@ import { faMinusCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Decimal from 'decimal.js';
 
-const TransferData = ({ data, Funds, handleChange, TargetAccount, toggleAccordion, Balance, RealBalance }) => {
+const TransferData = ({ data, Funds, handleChange, TargetAccount, toggleAccordion, Balance, RealBalance, restLowerThanMinStep }) => {
 
     const { t } = useTranslation();
 
@@ -22,7 +22,12 @@ const TransferData = ({ data, Funds, handleChange, TargetAccount, toggleAccordio
     const share_transfer = useMemo(() => data.FundSelected !== "cash", [data.FundSelected])
     const fund_selected = useMemo(() => share_transfer ? Funds?.find(fund => fund.fundId === data.FundSelected) : null, [Funds, data.FundSelected, share_transfer])
     const sharePrice = useMemo(() => fund_selected?.fund?.sharePrice || 1, [fund_selected])
-    const max = useMemo(() => share_transfer ? Decimal(fund_selected?.shares || "0").toFixed(5) : Balance, [Balance, fund_selected?.shares, share_transfer])
+    const max = useMemo(() =>
+        share_transfer ?
+            Decimal(fund_selected?.shares || "0").toDecimalPlaces(2, Decimal.ROUND_DOWN).toFixed(2)
+            :
+            Balance
+        , [Balance, fund_selected?.shares, share_transfer])
 
     const handleAmountChange = (value, updateAmountUsd = true) => {
         const decimalSeparator = process.env.REACT_APP_DECIMALSEPARATOR ?? '.'
@@ -73,7 +78,9 @@ const TransferData = ({ data, Funds, handleChange, TargetAccount, toggleAccordio
                 unMaskedValue === "" ?
                     ""
                     :
-                    formatValue({ value: Decimal(unMaskedValue).div(sharePrice).toFixed(2), groupSeparator: '.', decimalSeparator: ',' }).replaceAll(".", "")
+                    formatValue({ value: Decimal(unMaskedValue).div(sharePrice)
+                        .toDecimalPlaces(2, Decimal.ROUND_DOWN)
+                        .toFixed(2), groupSeparator: '.', decimalSeparator: ',' }).replaceAll(".", "")
                 ,
                 false)
         }
@@ -85,6 +92,7 @@ const TransferData = ({ data, Funds, handleChange, TargetAccount, toggleAccordio
         const decimalSeparator = process.env.REACT_APP_DECIMALSEPARATOR ?? ','
         handleAmountChange(((max || 0) + "").replaceAll('.', decimalSeparator))
     }
+    console.log(restLowerThanMinStep)
     return (
         <Accordion.Item eventKey="0" disabled>
             <Accordion.Header onClick={() => { if (TargetAccount.fetched && !TargetAccount.fetching && TargetAccount.valid) toggleAccordion() }}>
@@ -180,7 +188,7 @@ const TransferData = ({ data, Funds, handleChange, TargetAccount, toggleAccordio
                             {/*Shown input formatted*/}
                             <CurrencyInput
                                 allowNegativeValue={false}
-                                value={data.usd_value}
+                                value={restLowerThanMinStep ? Decimal(fund_selected?.shares).times(sharePrice).toFixed(2) : data.usd_value}
                                 decimalsLimit={2}
                                 decimalSeparator={decimalSeparator}
                                 groupSeparator={groupSeparator}
