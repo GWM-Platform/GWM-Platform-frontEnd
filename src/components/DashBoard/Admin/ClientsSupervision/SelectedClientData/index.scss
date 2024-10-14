@@ -6,13 +6,36 @@
     overflow: hidden;
     padding: 10px 0px;
 
+    scroll-snap-type: x mandatory;
+
+    @media (max-width: 576px) {
+        overflow: auto;
+
+        // .fund-item {
+        //     scroll-snap-align: center;
+        // }
+        // .FundCardContainer {
+        //     scroll-snap-align: center;
+
+        // }
+    }
+
+    .FundCardContainer {
+        &.FundDisabled{
+            opacity: 0.5;
+            pointer-events: none;
+        }
+    //     scroll-snap-align: start;
+    }
+
     >* {
         padding: 0 .25rem;
-
-
+        // scroll-margin: 10px;
+        // scroll-snap-align: start;
     }
 
     .fund-item {
+        // scroll-snap-align: start;
         cursor: pointer;
         height: 100%;
         width: 100%;
@@ -61,6 +84,7 @@
         // Animate 0 to 1 opacity with a delay of 0.5s
         opacity: 0;
         transition: all 0.5s;
+
         // define keyframes
         @keyframes growOpacity {
             0% {
@@ -71,6 +95,7 @@
                 opacity: 1;
             }
         }
+
         animation: growOpacity .5s 1.25s forwards;
 
         position: absolute;

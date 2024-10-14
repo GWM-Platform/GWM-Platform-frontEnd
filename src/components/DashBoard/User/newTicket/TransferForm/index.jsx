@@ -15,6 +15,7 @@ import FundSelector from './FundSelector';
 import { useLocation } from 'react-router-dom/cjs/react-router-dom.min';
 import enrichAccount from 'utils/enrichAccount';
 import Decimal from 'decimal.js';
+import { unMaskNumber } from 'utils/unmask';
 
 const TransferForm = ({ balanceChanged }) => {
 
@@ -198,6 +199,8 @@ const TransferForm = ({ balanceChanged }) => {
         // eslint-disable-next-line
     }, [ClientSelected])
 
+    const sharePrice = useMemo(() => fund_selected?.fund?.sharePrice || 1, [fund_selected])
+    const usdValue = restLowerThanMinStep ? Decimal(fund_selected?.shares || 1).times(sharePrice).toFixed(2) : unMaskNumber({ value: data.usd_value || "0" })
 
     return (
         <div className="tabContent">
@@ -230,7 +233,7 @@ const TransferForm = ({ balanceChanged }) => {
                 </Container>
                 {
                     !!(contentReady && Accounts.length) >= 1 &&
-                    <ActionConfirmationModal share_transfer={share_transfer} fund_selected={fund_selected} TargetAccount={TargetAccount} setShowModal={setShowModal} show={ShowModal} action={transfer} data={data} Balance={AccountSelectedEnriched.totalAvailable} Transfer={Transfer} />
+                    <ActionConfirmationModal share_transfer={share_transfer} fund_selected={fund_selected} usdValue={usdValue} TargetAccount={TargetAccount} setShowModal={setShowModal} show={ShowModal} action={transfer} data={data} Balance={AccountSelectedEnriched.totalAvailable} Transfer={Transfer} />
                 }
             </Form >
         </div >

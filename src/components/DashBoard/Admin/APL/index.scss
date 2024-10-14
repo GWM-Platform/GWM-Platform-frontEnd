@@ -24,6 +24,7 @@
             text-decoration: none;
             color: var(--bs-badge-color);
             cursor: pointer;
+
             &:hover {
                 color: var(--bs-badge-color);
             }
@@ -131,14 +132,28 @@
         flex-wrap: nowrap;
         overflow: hidden;
         padding: 10px 0px;
+        scroll-snap-type: x mandatory;
+
+        @media (max-width: 576px) {
+            overflow: auto;
+
+            // .fund-item {
+            //     scroll-snap-align: center;
+            // }
+        }
+
+        // .FundCardContainer {
+        //     scroll-snap-align: center;
+        // }
 
         >* {
             padding: 0 .25rem;
-
-
+            // scroll-snap-align: start;
+            // scroll-margin: 0 .25rem;
         }
 
         .fund-item {
+            // scroll-snap-align: start;
             height: 100%;
             width: 100%;
             background-color: white;

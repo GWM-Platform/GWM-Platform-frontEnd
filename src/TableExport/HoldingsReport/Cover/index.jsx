@@ -10,7 +10,6 @@ import { decimalSeparator, groupSeparator } from 'components/DashBoard/Admin/Tic
 import Decimal from 'decimal.js'
 
 export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
-    console.log(holdings)
     const { t } = useTranslation();
     const styles = {
         table: {

@@ -26,7 +26,7 @@ const SelectClient = () => {
         }
         setIndexClientSelected(ClientToAccess)
     }
-    console.log(UserClients)
+
     return (
         <Container className="ClientSelector growAnimation">
             <Row className="min-100vh d-flex align-items-center justify-content-center" >

@@ -26,18 +26,40 @@ const FundSelector = ({ data, setData, Funds, openAccordion, Account }) => {
             }
         ))
     }
-
     const scroll = (right = true) => {
-        const el = accountsSlider?.current
+        const el = accountsSlider?.current;
         if (el) {
-            accountsSlider.current.scrollTo({
-                top: 0,
-                left: el.scrollLeft + (accountCard?.current.clientWidth || 200) * (right ? 1 : -1),
-                behavior: 'smooth'
-            })
+            const children = Array.from(el.querySelectorAll('.FundCardContainer'));
+    
+            // Ordenar los hijos basándose en su posición visual
+            const orderedChildren = children.sort((a, b) => {
+                const rectA = a.getBoundingClientRect();
+                const rectB = b.getBoundingClientRect();
+                return rectA.left - rectB.left;
+            });
+    
+            const visibleChild = orderedChildren.find(child => {
+                const rect = child.getBoundingClientRect();
+                return rect.left >= 0 && rect.right <= window.innerWidth;
+            });
+    
+            if (visibleChild) {
+                const currentIndex = orderedChildren.indexOf(visibleChild);
+                const nextIndex = right ? currentIndex + 1 : currentIndex - 1;
+    
+                if (nextIndex >= 0 && nextIndex < orderedChildren.length) {
+                    const nextChild = orderedChildren[nextIndex];
+                    nextChild.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+                }
+            } else {
+                el.scrollTo({
+                    top: 0,
+                    left: 0,
+                    behavior: 'smooth'
+                });
+            }
         }
-    }
-
+    };
     return (
         <Accordion.Item eventKey="0">
             <Accordion.Header>

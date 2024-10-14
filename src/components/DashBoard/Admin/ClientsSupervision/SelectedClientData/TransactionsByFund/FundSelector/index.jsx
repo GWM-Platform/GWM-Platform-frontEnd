@@ -47,13 +47,33 @@ const FundSelector = ({ SelectedFund, setSelectedFund, Funds, clientFunds = [] }
     }
 
     const scroll = (right = true) => {
-        const el = accountsSlider?.current
+        const el = accountsSlider?.current;
         if (el) {
-            accountsSlider.current.scrollTo({
-                top: 0,
-                left: el.scrollLeft + (accountCard?.current.clientWidth || 200) * (right ? 1 : -1),
-                behavior: 'smooth'
-            })
+            const children = Array.from(el.querySelectorAll('.scrollable-item'));
+            const visibleChild = children.find(child => {
+                const rect = child.getBoundingClientRect();
+                return rect.left >= 0 && rect.right <= window.innerWidth;
+            });
+
+            if (visibleChild) {
+                const currentIndex = children.indexOf(visibleChild);
+                const nextIndex = right ? currentIndex + 1 : currentIndex - 1;
+
+                if (nextIndex >= 0 && nextIndex < children.length) {
+                    const nextChild = children[nextIndex];
+                    el.scrollTo({
+                        top: 0,
+                        left: nextChild.offsetLeft,
+                        behavior: 'smooth'
+                    });
+                }
+            } else {
+                el.scrollTo({
+                    top: 0,
+                    left: 0,
+                    behavior: 'smooth'
+                });
+            }
         }
     }
 
@@ -66,7 +86,7 @@ const FundSelector = ({ SelectedFund, setSelectedFund, Funds, clientFunds = [] }
                         Funds.map((Fund, key) => {
                             const stake = clientFunds?.find(clientFund => clientFund?.fundId === Fund?.id)
                             return (
-                                <Col key={Fund.id} sm="10" md="4" lg="3" xl="3" ref={key === 0 ? accountCard : undefined}>
+                                <Col className="scrollable-item" key={Fund.id} sm="10" md="4" lg="3" xl="3" ref={key === 0 ? accountCard : undefined}>
                                     <button onClick={() => setSelectedFund(Fund.id)} key={key} className={`noStyle fund-item ${SelectedFund === Fund.id ? "selected" : ""}`}>
                                         <div className='content-container'>
                                             <div className="d-flex">
