@@ -3,21 +3,24 @@ import React, { useContext, useState } from "react";
 import { Button, Form, Offcanvas } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 
-const FilterOptionsMobile = ({ show, handleClose, disabled, setOptions }) => {
+const FilterOptionsMobile = ({ show, handleClose, disabled, setOptions, dateFilters }) => {
     const { t } = useTranslation();
     const { TransactionStates } = useContext(DashBoardContext)
 
     const [filterOptions, setFilterOptions] = useState({
-        state: ""
+        state: "",
+        fromDate: "",
+        toDate: ""
     })
 
-    const handleChange = (event) => {
+    const handleChange = (event, number = true) => {
         setFilterOptions((prevState) => ({
             ...prevState, ...{
-                [event.target.id]: isNaN(parseInt(event.target.value)) ? event.target.value : parseInt(event.target.value)
+                [event.target.id]: !number || isNaN(parseInt(event.target.value)) ? event.target.value : parseInt(event.target.value)
             }
         }))
     }
+
 
     const updateFilters = (event) => {
         event.preventDefault();
@@ -26,7 +29,11 @@ const FilterOptionsMobile = ({ show, handleClose, disabled, setOptions }) => {
         if (form.checkValidity() === true) {
             setOptions((prevState) => ({
                 ...prevState, ...{
-                    state: filterOptions.state === "" ? null : filterOptions.state
+                    state: filterOptions.state === "" ? null : filterOptions.state,
+                    ...dateFilters ? {
+                        fromDate: filterOptions.fromDate,
+                        toDate: filterOptions.toDate
+                    } : {}
                 }
             }))
             handleClose()
@@ -52,8 +59,45 @@ const FilterOptionsMobile = ({ show, handleClose, disabled, setOptions }) => {
                             </Form.Select>
                         </Form.Group>
                     }
-                    <div className="d-flex justify-content-end">
-                        <Button className="mt-2" type="submit" disabled={disabled} variant="outline-secondary">
+                    {
+                        dateFilters &&
+                        <>
+                            <Form.Group className="mt-2">
+                                <Form.Label>{t("from_date")}</Form.Label>
+                                <Form.Control
+                                    placeholder={t('from_date')}
+                                    id="fromDate"
+                                    type="date"
+                                    value={filterOptions.fromDate}
+                                    onChange={e => handleChange(e, false)}
+                                />
+                            </Form.Group>
+                            <Form.Group className="mt-2">
+                                <Form.Label>{t("to_date")}</Form.Label>
+                                <Form.Control
+                                    placeholder={t('to_date')}
+                                    id="toDate"
+                                    type="date"
+                                    value={filterOptions.toDate}
+                                    onChange={e => handleChange(e, false)}
+                                />
+                            </Form.Group>
+                        </>
+                    }
+                    <div className="d-flex justify-content-end mt-4">
+                        <Button
+                            type="button" onClick={() => {
+                                setFilterOptions((prevState) => ({
+                                    ...prevState, ...{
+                                        state: "",
+                                        ...dateFilters ? { fromDate: "", toDate: "" } : {}
+                                    }
+                                }))
+                            }}
+                            disabled={disabled} variant="outline-secondary">
+                            {t("Cancel")}
+                        </Button>
+                        <Button className="ms-2" type="submit" disabled={disabled} variant="outline-secondary">
                             {t("Update")}
                         </Button>
                     </div>

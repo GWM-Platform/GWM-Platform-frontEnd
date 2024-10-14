@@ -37,7 +37,9 @@ const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
                     take: Pagination.take,
                     skip: Pagination.skip,
                     filterState: Pagination.state === 10 ? null : Pagination.state,
-                    showDenied: Pagination.state === 10 ? true : null
+                    showDenied: Pagination.state === 10 ? true : null,
+                    fromDate: Pagination.fromDate || null,
+                    toDate: Pagination.toDate ? new Date(new Date(Pagination.toDate).setDate(new Date(Pagination.toDate).getDate() + 1)).toISOString() : null
                 }
             ).filter(([_, v]) => v != null))
         );
@@ -130,7 +132,7 @@ const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
         <div className="p-0 h-100">
             <div className="d-flex align-items-start justify-content-center flex-column MovementsTableContainer">
                 <div className={`movementsTable growAnimation`}>
-                    <FilterOptions keyword={"transactions"} ticketSearch ticketSearchProps={ticketSearchProps} disabled={SearchById.search} movements Fund={Fund} setPagination={setPagination} movsPerPage={Pagination.take} total={Movements.total} defaultMoves={100} />
+                    <FilterOptions dateFilters keyword={"transactions"} ticketSearch ticketSearchProps={ticketSearchProps} disabled={SearchById.search} movements Fund={Fund} setPagination={setPagination} movsPerPage={Pagination.take} total={Movements.total} defaultMoves={100} />
                     {
                         FetchingMovements ?
                             <Loading movements={Pagination.take} />

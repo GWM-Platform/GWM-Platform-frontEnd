@@ -40,7 +40,9 @@ const TableLastMovements = ({ account }) => {
                     filterAccount: account.id,
                     take: Options.take,
                     skip: Options.skip,
-                    filterState: Options.state
+                    filterState: Options.state,
+                    fromDate: Options.fromDate || null,
+                    toDate: Options.toDate ? new Date(new Date(Options.toDate).setDate(new Date(Options.toDate).getDate() + 1)).toISOString() : null
                 }
             ).filter(([_, v]) => v != null))
         );
@@ -146,7 +148,7 @@ const TableLastMovements = ({ account }) => {
                             <MoreAndLess InScreen={Options.take} total={movements.total} setOptions={setOptions} />
                         </div>
                     </Collapse>
-                    <FilterOptionsMobile show={show} handleClose={handleClose} setOptions={setOptions} />
+                    <FilterOptionsMobile dateFilters show={show} handleClose={handleClose} setOptions={setOptions} />
                 </div>
             }
         </Col>

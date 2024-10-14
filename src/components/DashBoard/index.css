@@ -24,7 +24,9 @@
 }
 
 .offcanvas{
-	--bs-offcanvas-height: 40vh!important;
+	--bs-offcanvas-height: 70vh!important;
+	height: unset!important;
+	max-height: var(--bs-offcanvas-height);
 }
 
 .toggler-mobile.toggled:after {
