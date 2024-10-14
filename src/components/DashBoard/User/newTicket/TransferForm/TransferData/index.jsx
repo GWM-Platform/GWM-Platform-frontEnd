@@ -92,7 +92,7 @@ const TransferData = ({ data, Funds, handleChange, TargetAccount, toggleAccordio
         const decimalSeparator = process.env.REACT_APP_DECIMALSEPARATOR ?? ','
         handleAmountChange(((max || 0) + "").replaceAll('.', decimalSeparator))
     }
-    console.log(restLowerThanMinStep)
+
     return (
         <Accordion.Item eventKey="0" disabled>
             <Accordion.Header onClick={() => { if (TargetAccount.fetched && !TargetAccount.fetching && TargetAccount.valid) toggleAccordion() }}>

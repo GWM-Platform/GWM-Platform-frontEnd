@@ -43,6 +43,9 @@
   overscroll-behavior-x: none;
 }
 /* width */
+.text-align-start .tooltip-inner {
+  text-align: start;
+}
 .approvedByTooltip .tooltip-inner {
   text-align: start;
 }
