@@ -45,7 +45,7 @@ const Documents = () => {
           fetching: false,
           fetched: true,
           valid: true,
-          content: response.data,
+          content: response.data?.filter(document => !document.adminDocument),
         }))
     }).catch((err) => {
       if (err.message !== "canceled") {

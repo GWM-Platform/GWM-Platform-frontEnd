@@ -40,7 +40,7 @@ const SelectClient = () => {
 
                                 {UserClients.content.map(
                                     (client, key) =>
-                                        <Client client={client} ownKey={key} key={key} ClientToAccess={ClientToAccess} setClientToAccess={setClientToAccess} />
+                                        <Client disabled={client.enabled === false || client.userToClientEnabled === false} client={client} ownKey={key} key={key} ClientToAccess={ClientToAccess} setClientToAccess={setClientToAccess} />
                                 )
                                 }
                             </div>

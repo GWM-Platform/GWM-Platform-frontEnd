@@ -14,7 +14,7 @@ import Notes from '../../Notes';
 import { DashBoardContext } from 'context/DashBoardContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchusers, selectAllusers } from 'Slices/DashboardUtilities/usersSlice';
-import { selectUserEmail, selectUserId } from 'Slices/DashboardUtilities/userSlice';
+// import { selectUserEmail, selectUserId } from 'Slices/DashboardUtilities/userSlice';
 import { selectFundById } from 'Slices/DashboardUtilities/fundsSlice';
 
 const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData }) => {
@@ -130,10 +130,10 @@ const TransactionRow = ({ UsersInfo, FundInfo, Transaction, state, reloadData })
     const adminNote = Transaction?.notes?.find(note => note.noteType === "ADMIN_NOTE")
     const isTransfer = Transaction.receiverId || Transaction.senderId
 
-    const userEmail = useSelector(selectUserEmail)
-    const userId = useSelector(selectUserId)
+    // const userEmail = useSelector(selectUserEmail)
+    // const userId = useSelector(selectUserId)
     const fund = useSelector(state => selectFundById(state, Transaction.fundId))
-    console.log(userEmail,userId)
+
     return (
         <>
             <div className='mobileMovement'>

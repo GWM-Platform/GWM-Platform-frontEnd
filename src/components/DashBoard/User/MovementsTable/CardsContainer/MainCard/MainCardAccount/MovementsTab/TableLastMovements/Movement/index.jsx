@@ -36,7 +36,6 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
 ));
 
 const Movement = ({ content, actions, reloadData }) => {
-
   var momentDate = moment(content.createdAt);
   const { t } = useTranslation();
   const { getMoveStateById, AccountSelected, couldSign, hasPermission, toLogin, hasSellPermission, hasBuyPermission, ClientSelected } = useContext(DashBoardContext)
@@ -397,18 +396,20 @@ const Movement = ({ content, actions, reloadData }) => {
     setAction(action)
     setShowModal(true)
   }
+  const isPerformanceMovement = (content.motive === "PENALTY_WITHDRAWAL" || content.motive === "PROFIT_DEPOSIT")
 
   const transferNote = content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")
   const partialLiquidate = content?.notes?.find(note => note.noteType === "PARTIAL_LIQUIDATE_MOTIVE")
-  const clientNote = content?.notes?.find(note => note.noteType === "CLIENT_NOTE")
+  const clientNote = !isPerformanceMovement && content?.notes?.find(note => note.noteType === "CLIENT_NOTE")
+  const noteFromAdmin = isPerformanceMovement && content?.notes?.find(note => note.noteType === "CLIENT_NOTE")
   const denialMotive = content?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
   const fundLiquidate = content?.notes?.find(note => note.noteType === "FUND_LIQUIDATE")
 
   const fund = useSelector(state => selectFundById(state, content.fundId))
-  console.log(fund)
+
   return (
     <tr>
-      <td className="tableId text-nowrap">
+      <td className="tableId text-nowrap" data-column-name="ticket">
         {content.id}
         {
           !!(content?.userEmail || content?.userName || !!(transferNote) || !!(clientNote) || !!(denialMotive) || !!(fundLiquidate) || !!(partialLiquidate)) &&
@@ -431,7 +432,7 @@ const Movement = ({ content, actions, reloadData }) => {
                 {!!(content.userEmail || content?.userName) &&
                   <div>
                     {t('Operation performed by')}:<br />
-                    <span className="text-nowrap">{fundLiquidate ? t("Administration") : content?.userName || content?.userEmail}</span>
+                    <span className="text-nowrap">{(fundLiquidate || isPerformanceMovement) ? t("Administration") : content?.userName || content?.userEmail}</span>
                   </div>
                 }
                 {!!(transferNote) &&
@@ -544,7 +545,9 @@ const Movement = ({ content, actions, reloadData }) => {
             fundLiquidate ?
               <>{t("Fund liquidation")} {content.fundName}</>
               :
-              t(content.motive + (content.motive === "REPAYMENT" ? content.fundName ? "_" + content.fundName : "_" + content.fixedDepositId : ""), { fund: content.fundName, fixedDeposit: content.fixedDepositId })
+              isPerformanceMovement ? <>{t(content.motive)} ({noteFromAdmin ? noteFromAdmin?.text : t(content.motive === "PENALTY_WITHDRAWAL" ? "penalty" : "bonification")})</>
+                :
+                t(content.motive + (content.motive === "REPAYMENT" ? content.fundName ? "_" + content.fundName : "_" + content.fixedDepositId : ""), { fund: content.fundName, fixedDeposit: content.fixedDepositId })
           )
         }
         {content?.transferReceiver && <>{t("Transfer to {{transferReceiver}}", { transferReceiver: content?.transferReceiver })}</>}
@@ -568,7 +571,7 @@ const Movement = ({ content, actions, reloadData }) => {
       </td>
       {
         !!(actions) &&
-        <td className={`Actions verticalCenter ${fund?.disabled ? "disabled" : ""}`} >
+        <td className={`Actions verticalCenter ${fund?.disabled ? "disabled" : ""}`} data-column-name="actions" >
           {
             !!(content.stateId === 5) &&
             <div className="h-100 d-flex align-items-center justify-content-around">

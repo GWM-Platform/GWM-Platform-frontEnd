@@ -14,6 +14,8 @@ import ReactGA from "react-ga4";
 import FundSelector from './FundSelector';
 import { useLocation } from 'react-router-dom/cjs/react-router-dom.min';
 import enrichAccount from 'utils/enrichAccount';
+import Decimal from 'decimal.js';
+import { unMaskNumber } from 'utils/unmask';
 
 const TransferForm = ({ balanceChanged }) => {
 
@@ -31,6 +33,7 @@ const TransferForm = ({ balanceChanged }) => {
 
     const history = useHistory()
 
+    const [Funds, setFunds] = useState([])
     const [data, setData] = useState({
         alias: "",
         note: "",
@@ -54,7 +57,12 @@ const TransferForm = ({ balanceChanged }) => {
     })
 
     const [Transfer, setTransfer] = useState({ fetching: false, valid: false, fetched: false })
+    const fund_selected = useMemo(() => share_transfer ? Funds?.find(fund => fund.fundId === data.FundSelected) : null, [Funds, data.FundSelected, share_transfer])
 
+    const balance = Decimal((share_transfer ? fund_selected?.shares : AccountSelectedEnriched?.totalAvailable) || 0)
+    const toTransfer = Decimal(data.amount || 0)
+    const rest = Decimal(balance).minus(toTransfer).abs()
+    const restLowerThanMinStep = rest.lt(0.01)
     const transfer = async () => {
         setTransfer(prevState => ({ ...prevState, fetching: true }))
         var url = `${process.env.REACT_APP_APIURL}/${share_transfer ? "share-transfers" : "transfers"}`
@@ -64,14 +72,14 @@ const TransferForm = ({ balanceChanged }) => {
                 {
                     ...share_transfer ?
                         {
-                            shares: data.amount,
+                            shares: restLowerThanMinStep ? balance.toNumber() : data.amount,
                             fundId: data.FundSelected,
                             senderId: ClientSelected?.id,
                             receiverId: TargetAccount?.content?.clientId
                         }
                         :
                         {
-                            amount: data.amount,
+                            amount: restLowerThanMinStep ? balance.toNumber() : data.amount,
                             senderId: AccountSelected?.id,
                             receiverId: TargetAccount?.content?.id
                         },
@@ -139,8 +147,6 @@ const TransferForm = ({ balanceChanged }) => {
     //If the user came from an specific fund, we use the query to auto select that one
     let fundId = parseInt(useQuery().get("fund"))
 
-    const [Funds, setFunds] = useState([])
-    const fund_selected = useMemo(() => share_transfer ? Funds?.find(fund => fund.fundId === data.FundSelected) : null, [Funds, data.FundSelected, share_transfer])
     const [FetchingFunds, setFetchingFunds] = useState(true)
 
     useEffect(() => {
@@ -193,6 +199,8 @@ const TransferForm = ({ balanceChanged }) => {
         // eslint-disable-next-line
     }, [ClientSelected])
 
+    const sharePrice = useMemo(() => fund_selected?.fund?.sharePrice || 1, [fund_selected])
+    const usdValue = restLowerThanMinStep ? Decimal(fund_selected?.shares || 1).times(sharePrice).toFixed(2) : unMaskNumber({ value: data.usd_value || "0" })
 
     return (
         <div className="tabContent">
@@ -215,8 +223,9 @@ const TransferForm = ({ balanceChanged }) => {
                                     </Accordion>
                                     <Accordion flush activeKey={CollapsedFields || TargetAccount.fetching || !TargetAccount.fetched || !TargetAccount.valid ? "-1" : "0"}>
                                         <TransferData
+                                            restLowerThanMinStep={restLowerThanMinStep}
                                             Funds={Funds}
-                                            TargetAccount={TargetAccount} handleChange={handleChange} data={data} toggleAccordion={toggleAccordion} Balance={AccountSelectedEnriched ? AccountSelectedEnriched.totalAvailable : 0}  RealBalance={AccountSelectedEnriched ? AccountSelectedEnriched.balance : 0} />
+                                            TargetAccount={TargetAccount} handleChange={handleChange} data={data} toggleAccordion={toggleAccordion} Balance={AccountSelectedEnriched ? AccountSelectedEnriched.totalAvailable : 0} RealBalance={AccountSelectedEnriched ? AccountSelectedEnriched.balance : 0} />
                                     </Accordion>
                                 </Col>
                         }
@@ -224,7 +233,7 @@ const TransferForm = ({ balanceChanged }) => {
                 </Container>
                 {
                     !!(contentReady && Accounts.length) >= 1 &&
-                    <ActionConfirmationModal share_transfer={share_transfer} fund_selected={fund_selected} TargetAccount={TargetAccount} setShowModal={setShowModal} show={ShowModal} action={transfer} data={data} Balance={AccountSelectedEnriched.totalAvailable} Transfer={Transfer} />
+                    <ActionConfirmationModal share_transfer={share_transfer} fund_selected={fund_selected} usdValue={usdValue} TargetAccount={TargetAccount} setShowModal={setShowModal} show={ShowModal} action={transfer} data={data} Balance={AccountSelectedEnriched.totalAvailable} Transfer={Transfer} />
                 }
             </Form >
         </div >

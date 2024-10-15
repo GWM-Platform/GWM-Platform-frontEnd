@@ -83,7 +83,7 @@ const CreateRules = ({ ActionDispatch, FixedDeposit, getFixedDepositPlans }) => 
         const form = event.currentTarget;
         event.preventDefault();
         event.stopPropagation();
-        if (form.checkValidity()) {
+        if (form.checkValidity() && !CreateRequest.fetching) {
             createRule()
         }
         setValidated(true);

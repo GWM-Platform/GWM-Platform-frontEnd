@@ -401,6 +401,9 @@ const Movement = ({ content, reloadData }) => {
 
   const transferNote = content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")
   const fund = useSelector(state => selectFundById(state, Movement.fundId))
+  const isPerformanceMovement = (content.motive === "PENALTY_WITHDRAWAL" || content.motive === "PROFIT_DEPOSIT")
+  const fundLiquidate = content?.notes?.find(note => note.noteType === "FUND_LIQUIDATE")
+  const noteFromAdmin = isPerformanceMovement && content?.notes?.find(note => note.noteType === "CLIENT_NOTE")
 
   return (
     <div className='mobileMovement'>
@@ -408,7 +411,14 @@ const Movement = ({ content, reloadData }) => {
         <strong>
           {
             (!content?.transferReceiver && !content?.transferSender) &&
-            t(content.motive + (content.motive === "REPAYMENT" ? content.fundName ? "_" + content.fundName : "_" + content.fixedDepositId : ""), { fund: content.fundName, fixedDeposit: content.fixedDepositId })
+            (
+              fundLiquidate ?
+                <>{t("Fund liquidation")} {content.fundName}</>
+                :
+                isPerformanceMovement ? <>{t(content.motive)} ({noteFromAdmin ? noteFromAdmin?.text : t(content.motive === "PENALTY_WITHDRAWAL" ? "penalty" : "bonification")})</>
+                  :
+                  t(content.motive + (content.motive === "REPAYMENT" ? content.fundName ? "_" + content.fundName : "_" + content.fixedDepositId : ""), { fund: content.fundName, fixedDeposit: content.fixedDepositId })
+            )
           }
           {content?.transferReceiver && <>{t("Transfer to {{transferReceiver}}", { transferReceiver: content?.transferReceiver })}</>}
           {content?.transferSender && <>{t("Transfer from {{transferSender}}", { transferSender: content?.transferSender })}</>}
@@ -497,7 +507,7 @@ const Movement = ({ content, reloadData }) => {
                 {!!(content.userEmail || content?.userName) &&
                   <div>
                     {t('Operation performed by')}:<br />
-                    <span className="text-nowrap">{content?.userName || content?.userEmail}</span>
+                    <span className="text-nowrap">{(fundLiquidate || isPerformanceMovement) ? t("Administration") : content?.userName || content?.userEmail}</span>
                   </div>
                 }
                 {!!(transferNote) &&
@@ -545,11 +555,11 @@ const Movement = ({ content, reloadData }) => {
         !!(content.stateId === 5 && couldSign(content)) &&
         <div className="h-100 d-flex align-items-center justify-content-around">
 
-          <div className={`iconContainer green ${!couldSign(content) || fund.disabled ? "not-allowed" : ""}`}>
+          <div className={`iconContainer green ${!couldSign(content) || fund?.disabled ? "not-allowed" : ""}`}>
             <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => { if (couldSign(content)) { launchModalConfirmation("approve") } }} />
           </div>
 
-          <div className={`iconContainer red ${!couldSign(content) || fund.disabled ? "not-allowed" : ""}`}>
+          <div className={`iconContainer red ${!couldSign(content) || fund?.disabled ? "not-allowed" : ""}`}>
             <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => { if (couldSign(content)) { launchModalConfirmation("deny") } }} />
           </div>
 

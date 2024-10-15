@@ -171,52 +171,56 @@ const DocumentItem = ({ Document, getDocuments, client }) => {
                 <div>
                     <div className={`d-flex w-100 overflow-hidden align-items-end`}>
 
-                        {!!(hasTags) &&
-                            <div className={`d-flex overflow-hidden ${TagsCollapsed ? "" : "flex-wrap"} me-1`}
-                                style={{
-                                    rowGap: "4px",
-                                    columnGap: "4px"
-                                }}
-                            >
-                                {
-                                    TagsCollapsed ?
-                                        <>
+                        <div className={`d-flex overflow-hidden ${TagsCollapsed ? "" : "flex-wrap"} me-1`}
+                            style={{
+                                rowGap: "4px",
+                                columnGap: "4px"
+                            }}
+                        >
+                            {
+                                TagsCollapsed ?
+                                    <>
+                                        <Badge className="tag overview" bg="secondary">
+                                            {t(Document.adminDocument ? "Admin" : "Admin and client")}
+                                        </Badge>
+                                        {
+                                            !!(hasTags) &&
                                             <Badge className="tag overview" bg="secondary">
                                                 {Document?.tags[0]}
                                             </Badge>
-                                            {
-                                                hasMultipleTags &&
-                                                <>
-                                                    <Badge className="tag" bg="secondary">
-                                                        +{tagsAmount - 1}
-                                                    </Badge>
-                                                    <Button
-                                                        onClick={() => expandTags()}
-                                                        type="button" as={Badge}
-                                                        className="tag text-nowrap" bg="primary"
-                                                        title={t("Show more tags")}>
-                                                        <FontAwesomeIcon icon={faChevronDown} />
-                                                    </Button>
-                                                </>
-                                            }
-                                        </>
-                                        :
-                                        <>
-                                            {Document?.tags.map(tag =>
-                                                <Fragment key={`document-${Document.id}-tag-${tag}`}>
-                                                    <Badge className="tag" bg="secondary">
-                                                        {tag}
-                                                    </Badge>
-                                                </Fragment>
-                                            )}
+                                        }
+                                        {
+                                            hasMultipleTags &&
+                                            <>
+                                                <Badge className="tag" bg="secondary">
+                                                    +{tagsAmount - 1}
+                                                </Badge>
+                                                <Button
+                                                    onClick={() => expandTags()}
+                                                    type="button" as={Badge}
+                                                    className="tag text-nowrap" bg="primary"
+                                                    title={t("Show more tags")}>
+                                                    <FontAwesomeIcon icon={faChevronDown} />
+                                                </Button>
+                                            </>
+                                        }
+                                    </>
+                                    :
+                                    <>
+                                        {Document?.tags.map(tag =>
+                                            <Fragment key={`document-${Document.id}-tag-${tag}`}>
+                                                <Badge className="tag" bg="secondary">
+                                                    {tag}
+                                                </Badge>
+                                            </Fragment>
+                                        )}
 
-                                            <Button as={Badge} bg="primary" title={t("Collapse tags")} type="button" className="noStyle d-inline-block" onClick={() => collapseTags()}>
-                                                <FontAwesomeIcon icon={faChevronUp} />
-                                            </Button>
-                                        </>
-                                }
-                            </div>
-                        }
+                                        <Button as={Badge} bg="primary" title={t("Collapse tags")} type="button" className="noStyle d-inline-block" onClick={() => collapseTags()}>
+                                            <FontAwesomeIcon icon={faChevronUp} />
+                                        </Button>
+                                    </>
+                            }
+                        </div>
                         {
                             TagsCollapsed &&
                             <Button onClick={downloadFile} as={Badge} bg="primary" title={t("Download")} type="button" className={`noStyle d-inline-block ms-auto ${(!File.valid || File.fetching) ? "disabled" : ""}`}>

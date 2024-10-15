@@ -8,7 +8,7 @@ import { useContext } from 'react';
 import { DashBoardContext } from 'context/DashBoardContext';
 import Decimal from 'decimal.js'
 
-const FundCard = ({ Fund, ownKey, data, setData, setSome, some, openAccordion }) => {
+const FundCard = ({ Fund, ownKey, data, setData, setSome, some, openAccordion, accountCardRef }) => {
     const { t } = useTranslation();
     const ref = useRef(null)
     const [width, setWidth] = useState(0)
@@ -21,18 +21,28 @@ const FundCard = ({ Fund, ownKey, data, setData, setSome, some, openAccordion })
 
     return (
 
-        <Col xs="10" sm="6" md="4" lg="3"
+        <Col xs="10" sm="6" md="4" lg="3" ref={accountCardRef}
             className={`py-1 growAnimation  FundCardContainer 
-        ${Fund.freeShares === 0 || !hasSellPermission(Fund.fund.id) || Fund.fund.disabled ? " FundDisabled" : ""}
-        ${data.FundSelected === ownKey ? " FundSelected" : ""} 
-        `}>
+        ${Fund.freeShares === 0 || !hasSellPermission(Fund.fund.id) || Fund.fund?.disabled ? " FundDisabled" : ""}`}>
             <Card
                 ref={ref}
-                className={`FundCard h-100 `}
+                className={`fund-item p-0 ${data.FundSelected === ownKey ? "selected" : ""}`}
                 onClick={() => { setFundSelected(data, setData, ownKey, setSome, some, openAccordion) }}>
-                <Card.Header><strong className="title">{Fund.fund.name}</strong></Card.Header>
+                <Card.Header className='content-container d-flex'>
+                    <strong className="title d-inline">{Fund.fund.name}</strong>
+                    <div className="fund-icon ms-auto">
+                        {
+                            <img alt=""
+                                onError={({ currentTarget }) => {
+                                    currentTarget.onerror = null;
+                                    currentTarget.src = process.env.PUBLIC_URL + '/images/FundsLogos/default.svg';
+                                }}
+                                src={Fund.imageUrl ? Fund.imageUrl : process.env.PUBLIC_URL + '/images/FundsLogos/default.svg'} />
+                        }
+                    </div>
+                </Card.Header>
                 <Card.Body>
-                    <Card.Title> {t("Shares")}{": "} <strong>{<FormattedNumber value={(Fund.shares)} fixedDecimals={2} />}</strong></Card.Title>
+                    <Card.Title> {t("Shares")}{": "} <strong>{<FormattedNumber rounding="ROUND_DOWN" value={(Fund.shares)} fixedDecimals={2} />}</strong></Card.Title>
                     <Card.Title> {t("Holdings value")}{": "} <strong><FormattedNumber prefix="U$D " value={(Decimal(Fund.shares || 0).times(Fund.fund.sharePrice || 1))} fixedDecimals={2} /></strong></Card.Title>
                     <Container fluid className="px-0">
                         <Row className="d-flex justify-content-between">

@@ -1,0 +1,69 @@
+.ClientSelector .clientSelectorCard {
+	border-radius: 30px;
+	border: none;
+}
+.ClientSelector .clientSelectorCard .header {
+	font-size: 20px;
+}
+
+.ClientSelector .clientSelectorCard .client {
+	padding: 0.5em;
+	border: 1px solid gray;
+	border-bottom: none;
+	cursor: pointer;
+}
+.ClientSelector .clientSelectorCard .client:last-of-type {
+	border-bottom: 1px solid gray;
+}
+
+.ClientSelector .clientSelectorCard .client .alias,
+.ClientSelector .clientSelectorCard .client .names {
+	color: black;
+	font-weight: 400;
+	transition: 0.5s all;
+}
+
+.ClientSelector .clientSelectorCard .client .names {
+	margin: 0;
+	padding: 0;
+	font-size: 15px;
+}
+.ClientSelector .clientSelectorCard .client .alias {
+	margin: 0;
+	padding: 0;
+	font-size: 12px;
+	opacity: 0.7;
+}
+.ClientSelector .clientSelectorCard .client .userIcon {
+	position: absolute;
+	opacity: 0;
+	transition: 0.5s opacity;
+}
+.ClientSelector .clientSelectorCard .client .userIcon.selected {
+	opacity: 1;
+	transition: 0s opacity;
+	color: black;
+}
+.ClientSelector .clientSelectorCard .client .userIcon.placeholder {
+	position: relative;
+}
+
+.ClientSelector .clientSelectorCard .client.selected .alias,
+.ClientSelector .clientSelectorCard .client.selected .names,
+.ClientSelector .clientSelectorCard .client.selected .userIcon.selected {
+	color: var(--blue-main);
+}
+
+.ClientSelector .clientSelectorCard .toDashBoard {
+	float: left;
+}
+
+.ClientSelector .clientSelectorCard .toDashBoard .chevron{
+	max-width: 0;
+	overflow: hidden;
+	transition:1s ease
+}
+.ClientSelector .clientSelectorCard .toDashBoard .chevron.show{
+	max-width: 100px;
+}
+

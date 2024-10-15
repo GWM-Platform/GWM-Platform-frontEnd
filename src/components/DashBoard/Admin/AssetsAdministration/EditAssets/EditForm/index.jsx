@@ -40,7 +40,7 @@ const EditAssets = ({ data, EditRequest, handleChange, Assets, Action, setAction
     return (
         <div className="editForm">
             <div className="header">
-                <h1 className="title">
+                <h1 className="title fw-normal">
                     {t("Asset edit form for")}{" \""}{Assets[Action.Asset].name}{"\""}
                 </h1>
                 <FontAwesomeIcon className="button icon" onClick={() => { setAction({ ...Action, ...{ action: -1, Asset: -1 } }) }} icon={faChevronCircleLeft} />
@@ -98,7 +98,7 @@ const EditAssets = ({ data, EditRequest, handleChange, Assets, Action, setAction
                 </FloatingLabel>
 
                 <div className="d-flex justify-content-end">
-                    <Button variant="danger" type="submit" className="mb-3">
+                    <Button variant="danger" type="submit" className="mb-3" disabled={EditRequest.fetching}>
                         <Spinner animation="border" variant="light"
                             className={`${EditRequest.fetching ? "d-inline-block" : "d-none"} littleSpinner me-1`} />
                         {t("Submit")}

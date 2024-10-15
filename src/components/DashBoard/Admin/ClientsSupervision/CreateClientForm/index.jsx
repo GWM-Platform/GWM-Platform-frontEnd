@@ -51,7 +51,7 @@ const CreateClientForm = ({ getClients }) => {
         event.preventDefault();
         event.stopPropagation();
         const form = event.currentTarget;
-        if (form.checkValidity() === true) {
+        if (form.checkValidity() && !Request.fetching) {
             createClient()
         }
         setValidated(true);
@@ -67,7 +67,7 @@ const CreateClientForm = ({ getClients }) => {
                 <Col xs="12">
                     <div className="growOpacity section">
                         <div className="header">
-                            <h1 className="title">
+                            <h1 className="title fw-normal">
                                 {t("Create client")}
                             </h1>
                             <Link className="button icon" to={`/DashBoard/clientsSupervision`}>

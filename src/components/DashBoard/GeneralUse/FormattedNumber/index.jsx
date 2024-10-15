@@ -3,8 +3,9 @@ import { formatValue } from "@osdiab/react-currency-input-field";
 import Decimal from "decimal.js";
 
 
-const FormattedNumber = ({ style, className, value = 0, prefix = "", suffix = "", fixedDecimals = 0, hidden, styledSybol = false }) => {
+const FormattedNumber = ({ style, className, value = 0, prefix = "", suffix = "", fixedDecimals = 0, hidden, styledSybol = false, rounding = "ROUND_HALF_UP" }) => {
     Decimal.set({ precision: 100 })
+    Decimal.set({ rounding: Decimal?.[rounding] })
 
     const groupSeparator = process.env.REACT_APP_GROUPSEPARATOR ?? ','
     const decimalSeparator = process.env.REACT_APP_DECIMALSEPARATOR ?? '.'

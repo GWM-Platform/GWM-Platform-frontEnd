@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
-import { Accordion, Spinner, Container, Row, Col, Button } from 'react-bootstrap'
+import { Accordion, Spinner, Container, Row, Col, Button, Tooltip, OverlayTrigger } from 'react-bootstrap'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import axios from "axios";
 import { DashBoardContext } from 'context/DashBoardContext';
@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import OverdraftPopover from '../OverdraftPopover';
 import PerformanceComponent from 'components/DashBoard/GeneralUse/PerformanceComponent';
 
-const AccountGeneralData = ({ Account, Client, setAccounts }) => {
+const AccountGeneralData = ({ Account, Client, setAccounts, toggleClient }) => {
     const { t } = useTranslation();
     const { toLogin, DashboardToastDispatch } = useContext(DashBoardContext)
 
@@ -79,7 +79,7 @@ const AccountGeneralData = ({ Account, Client, setAccounts }) => {
         event.preventDefault();
         event.stopPropagation();
         const form = event.currentTarget;
-        if (form.checkValidity() === true) {
+        if (form.checkValidity() && !Request.fetching) {
             handleClosePopover()
             setOverdraftApi()
         }
@@ -88,6 +88,28 @@ const AccountGeneralData = ({ Account, Client, setAccounts }) => {
     const handleClosePopover = () => {
         document.body.click()
     };
+    const accountBalanceZero = useMemo(() => Account.balance === 0, [Account.balance])
+    const balanceTotalZero = useMemo(() => balanceTotal.value === 0, [balanceTotal.value])
+    const accountAndTotalBalanceZero = useMemo(() => accountBalanceZero && balanceTotalZero, [accountBalanceZero, balanceTotalZero])
+    const clientDisabled = useMemo(() => !Client.enabled, [Client.enabled])
+    const toggleClientStatus = () => {
+        setRequest((prevState) => ({ ...prevState, fetching: true, fetched: false }))
+        axios.patch(`/clients/${Client.id}/${Client.enabled ? "disable" : "enable"}`)
+            .then(function (response) {
+                setRequest(() => (
+                    {
+                        fetching: false,
+                        fetched: true,
+                        valid: true,
+                    }))
+                toggleClient(Client.id)
+            }).catch((err) => {
+                if (err.message !== "canceled") {
+                    if (err.response.status === "401") toLogin()
+                    setRequest((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
+                }
+            });
+    }
 
     return (
         <Accordion.Item eventKey="0">
@@ -135,11 +157,12 @@ const AccountGeneralData = ({ Account, Client, setAccounts }) => {
                                 </h1>
 
                             }
-                            {
-                                !(Account.overdraft) &&
-                                <div className='d-flex mt-3'>
+                            <div className='d-flex mt-3 justify-content-end'>
+
+                                {
+                                    !(Account.overdraft) &&
                                     <OverdraftPopover handleSubmit={handleSubmit} setOverdraft={setOverdraft} overdraft={overdraft}>
-                                        <Button size="sm" className='ms-auto'>
+                                        <Button size="sm" disabled={Request.fetching} >
                                             <Spinner
                                                 as="span"
                                                 animation="border"
@@ -152,8 +175,25 @@ const AccountGeneralData = ({ Account, Client, setAccounts }) => {
                                             {t("Add overdraft")}
                                         </Button>
                                     </OverdraftPopover>
-                                </div>
-                            }
+                                }
+                                <OverlayTrigger
+                                    {...accountAndTotalBalanceZero ? {show: false} : {}}
+                                    overlay={
+                                        <Tooltip id="tooltip-disabled" className="text-align-start">
+                                            {t("To disable this client")}<br />
+                                            <span className="emphasis">
+                                                {accountBalanceZero ? "✓ " : "✘ "}
+                                                {t("The cash balance must be zero")}{accountBalanceZero ? "" : <>, <span className='text-nowrap'>{t("current")} <FormattedNumber className="emphasis" value={Account?.balance || "0"} prefix="U$D " fixedDecimals={2} /></span></>}</span><br />
+                                            <span className="emphasis">
+                                                {balanceTotalZero ? "✓ " : "✘ "}
+                                                {t("Total balance, including holdings, must be zero")}{balanceTotalZero ? "" : <>, <span className='text-nowrap'>{t("current")} <FormattedNumber className="emphasis" value={balanceTotal.value || "0"} prefix="U$D " fixedDecimals={2} /></span></>} </span>
+                                        </Tooltip>
+                                    }>
+                                    <span className="d-inline-block">
+                                        <Button size="sm" className="ms-2" disabled={!(accountAndTotalBalanceZero || clientDisabled)} onClick={toggleClientStatus}>{Client.enabled ? t("Disable client") : t("Enable client")}</Button>
+                                    </span>
+                                </OverlayTrigger>
+                            </div>
                         </Col>
                     </Row>
                 </Container>

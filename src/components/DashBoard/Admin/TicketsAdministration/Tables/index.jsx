@@ -956,7 +956,7 @@ const Tables = ({ state, messageVariants, client }) => {
                 {/*-------------------------------Purchase sale-and transfers------------------------- */}
                 {
                     <>
-                        <h1 ref={PurchaseAndSale} className="title">{t("Purchases, sales and share transfers")}:</h1>
+                        <h1 ref={PurchaseAndSale} className="title fw-normal">{t("Purchases, sales and share transfers")}:</h1>
                         <TicketSearch
                             props={ticketSearchPropsTransfers}
                         />
@@ -989,7 +989,7 @@ const Tables = ({ state, messageVariants, client }) => {
                     !stateOnlyReverted &&
                     <>
                         <div className='mt-3 w-100 d-flex' style={{ borderBottom: "1px solid gray" }} />
-                        <h1 className="title" ref={AccountMovementsRef}>{t("Account movements")}:</h1>
+                        <h1 className="title fw-normal" ref={AccountMovementsRef}>{t("Account movements")}:</h1>
                         <TicketSearch
                             props={ticketSearchPropsMovements}
                         />
@@ -1022,7 +1022,7 @@ const Tables = ({ state, messageVariants, client }) => {
                     <>
                         {/*-------------------------------Approved tickets pending settlement-------------------------- */}
                         <div className='mt-3 w-100 d-flex' style={{ borderBottom: "1px solid gray" }} />
-                        <h1 className="title" ref={PendingSettlementRef}>{t("Approved pending settlement")}:</h1>
+                        <h1 className="title fw-normal" ref={PendingSettlementRef}>{t("Approved pending settlement")}:</h1>
                         <TicketSearch
                             props={ticketSearchPropsPendingSettlement}
                         />
@@ -1049,7 +1049,7 @@ const Tables = ({ state, messageVariants, client }) => {
                     !stateOnlyReverted &&
                     <div className='mt-3 w-100 d-flex' style={{ borderBottom: "1px solid gray" }} />
                 }
-                <h1 className="title" ref={TransferRef}>{t("Transfers")}:</h1>
+                <h1 className="title fw-normal" ref={TransferRef}>{t("Transfers")}:</h1>
                 <TicketSearch
                     props={ticketSearchPropsTransfer}
                 />
@@ -1080,7 +1080,7 @@ const Tables = ({ state, messageVariants, client }) => {
                     <>
                         {/*-------------------------------Fixed Deposits-------------------------- */}
                         <div className='mt-3 w-100 d-flex' style={{ borderBottom: "1px solid gray" }} />
-                        <h1 className="title" ref={FixedDepositsRef}>{t("Time deposits")}:</h1>
+                        <h1 className="title fw-normal" ref={FixedDepositsRef}>{t("Time deposits")}:</h1>
                         <TicketSearch
                             props={ticketSearchPropsFixedDeposits}
                         />

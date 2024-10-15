@@ -4,7 +4,7 @@ import { Table } from 'react-bootstrap';
 import Transfer from './Transfer';
 import { useTranslation } from "react-i18next";
 
-const TableLastMovements = ({ content, movements,getTransfers }) => {
+const TableLastMovements = ({ content, movements, getTransfers }) => {
     const { t } = useTranslation();
 
     const anyWithActions = () => Object.values(content).some((movement) => movement.stateId === 1)
@@ -12,7 +12,7 @@ const TableLastMovements = ({ content, movements,getTransfers }) => {
     return (
         <div style={{ minHeight: `calc( ( 0.5rem * 2 + 25.5px ) * ${movements + 1} )` }}
             className={`tableMovements`}>
-            <Table striped bordered hover className="mb-auto m-0  mt-2" >
+            <Table striped bordered hover className="mb-auto m-0  mt-2" data-table-name="cta-cte-transfers" >
                 <thead >
                     <tr>
                         <th className="tableId text-nowrap">{t("Ticket")}</th>
@@ -27,7 +27,7 @@ const TableLastMovements = ({ content, movements,getTransfers }) => {
                 </thead>
                 <tbody>
                     {content.map((transfer, key) =>
-                        <Transfer getTransfers={getTransfers} key={`transfer-${key}`} content={transfer} actions={anyWithActions()}  />
+                        <Transfer getTransfers={getTransfers} key={`transfer-${key}`} content={transfer} actions={anyWithActions()} />
                     )}
                 </tbody>
             </Table>

@@ -9,20 +9,16 @@ import Loading from 'components/DashBoard/GeneralUse/Loading';
 import PaginationController from 'components/DashBoard/GeneralUse/PaginationController'
 import FilterOptions from 'components/DashBoard/GeneralUse/FilterOptions'
 
-const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
+const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handleMovementSearchChange, Movements, setMovements }) => {
     const history = useHistory();
     const { token, ClientSelected } = useContext(DashBoardContext)
 
-    const [Movements, setMovements] = useState({
-        transactions: 0,
-        total: 0,//Total of movements with the filters applied
-    })
 
     const [FetchingMovements, setFetchingMovements] = useState(true);
 
     const [Pagination, setPagination] = useState({
         skip: 0,//Offset (in quantity of movements)
-        take: 5,//Movements per page
+        take: 100,//Movements per page
         state: null
     })
 
@@ -39,7 +35,9 @@ const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
                     filterFund: Fund.fund.id,
                     take: Pagination.take,
                     skip: Pagination.skip,
-                    filterState: Pagination.state
+                    filterState: Pagination.state,
+                    // fromDate: Pagination.fromDate || null,
+                    // toDate: Pagination.toDate ? new Date(new Date(Pagination.toDate).setDate(new Date(Pagination.toDate).getDate() + 1)).toISOString() : null
                 }
             ).filter(([_, v]) => v != null))
         );
@@ -110,7 +108,7 @@ const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
         setPagination((prevState) => ({
             ...prevState, ...{
                 skip: 0,
-                take: 5,
+                take: 100,
                 state: null
             }
         }))
@@ -134,7 +132,9 @@ const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
         <div className="p-0 h-100">
             <div className="d-flex align-items-start justify-content-center flex-column MovementsTableContainer">
                 <div className={`movementsTable growAnimation`}>
-                    <FilterOptions keyword={"transactions"} ticketSearch ticketSearchProps={ticketSearchProps} disabled={SearchById.search} Fund={Fund} setPagination={setPagination} movsPerPage={Pagination.take} total={Movements.total} />
+                    <FilterOptions
+                        //  dateFilters 
+                        keyword={"transactions"} ticketSearch ticketSearchProps={ticketSearchProps} disabled={SearchById.search} Fund={Fund} setPagination={setPagination} movsPerPage={Pagination.take} total={Movements.total} defaultMoves={100} />
                     {
                         FetchingMovements ?
                             <Loading movements={Pagination.take}

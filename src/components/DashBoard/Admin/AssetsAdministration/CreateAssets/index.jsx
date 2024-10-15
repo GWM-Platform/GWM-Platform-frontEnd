@@ -8,7 +8,7 @@ const CreateAssets = ({ Assets, AssetTypes, chargeAssets, Action, setAction }) =
     const [validated, setValidated] = useState(false);
     const [data, setData] = useState({
         name: "",
-        value: '',  
+        value: '',
         typeId: 1,
         symbol: ""
     })
@@ -72,7 +72,7 @@ const CreateAssets = ({ Assets, AssetTypes, chargeAssets, Action, setAction }) =
         const form = event.currentTarget;
         event.preventDefault();
         event.stopPropagation();
-        if (form.checkValidity()) {
+        if (form.checkValidity() && !CreateRequest.fetching) {
             createAsset()
         }
         setValidated(true);

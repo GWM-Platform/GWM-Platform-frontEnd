@@ -58,7 +58,8 @@ const ClientSelector = ({ client, setClient }) => {
             <Form.Label>{t("Client")}</Form.Label>
             <Select
                 classNamePrefix="react-select"
-                isClearable required value={client} placeholder={false} noOptionsMessage={() => t('No clients found')}
+                alwaysDisplayPlaceholder
+                isClearable required value={Object.keys(client || {}).length === 0 ? "" : client} placeholder={t("Client")} noOptionsMessage={() => t('No clients found')}
                 onChange={(val) => { setClient({ ...val }) }}
                 options={clients.content.map((client, key) => (
                     {

@@ -1,15 +1,46 @@
 .APL {
 
+    a,
     .clickable {
-        color: rgb(0, 108, 225);
-        text-decoration: underline;
+        &:not(.page-link) {
+            --bs-badge-padding-x: 0.65em;
+            --bs-badge-padding-y: 0.35em;
+            --bs-badge-font-size: 0.75em;
+            --bs-badge-font-weight: 700;
+            --bs-badge-color: #fff;
+            --bs-badge-border-radius: 0.375rem;
+            --bs-bg-opacity: 1;
+            margin-top: .25em;
+            background-color: var(--blue-main) !important;
+            display: inline-block;
+            padding: var(--bs-badge-padding-y) var(--bs-badge-padding-x);
+            // font-size: var(--bs-badge-font-size);
+            // font-weight: var(--bs-badge-font-weight);
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: var(--bs-badge-border-radius);
+            text-decoration: none;
+            color: var(--bs-badge-color);
+            cursor: pointer;
 
-        &:hover {
-            color: #0056b3
+            &:hover {
+                color: var(--bs-badge-color);
+            }
         }
-
-        cursor: pointer;
     }
+
+    // .clickable {
+    //     color: rgb(0, 108, 225);
+    //     text-decoration: underline;
+
+    //     &:hover {
+    //         color: #0056b3
+    //     }
+
+    //     cursor: pointer;
+    // }
 
     .title {
         color: black;
@@ -101,14 +132,28 @@
         flex-wrap: nowrap;
         overflow: hidden;
         padding: 10px 0px;
+        scroll-snap-type: x mandatory;
+
+        @media (max-width: 576px) {
+            overflow: auto;
+
+            // .fund-item {
+            //     scroll-snap-align: center;
+            // }
+        }
+
+        // .FundCardContainer {
+        //     scroll-snap-align: center;
+        // }
 
         >* {
             padding: 0 .25rem;
-
-
+            // scroll-snap-align: start;
+            // scroll-margin: 0 .25rem;
         }
 
         .fund-item {
+            // scroll-snap-align: start;
             height: 100%;
             width: 100%;
             background-color: white;
@@ -169,7 +214,6 @@
 
             &::before {
                 left: 0;
-                opacity: 0;
 
                 &.scrollLeft {
                     opacity: 1;
@@ -178,7 +222,6 @@
 
             &::after {
                 right: 0;
-                opacity: 0;
 
             }
 
@@ -204,9 +247,6 @@
                 border: none;
                 color: var(--header-account-card-selected);
 
-                &.hidden {
-                    opacity: 0;
-                }
 
                 &.right {
                     right: -20px;

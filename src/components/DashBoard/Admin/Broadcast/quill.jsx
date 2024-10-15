@@ -49,7 +49,7 @@ class Editor extends Component {
                     )
                         .then((response) => response.json())
                         .then((result) => {
-                            console.log(result);
+                            (result);
                             resolve(result.data.url);
                         })
                         .catch((error) => {

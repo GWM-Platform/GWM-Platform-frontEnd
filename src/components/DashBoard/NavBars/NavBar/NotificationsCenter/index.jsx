@@ -5,14 +5,16 @@ import './index.scss'
 import Notification from './Notification';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { selectAllNotifications } from 'Slices/DashboardUtilities/notificationsSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { markAllAsRead, selectAllNotifications } from 'Slices/DashboardUtilities/notificationsSlice';
 import { DashBoardContext } from 'context/DashBoardContext';
+import axios from 'axios'
 
 import { faBell, faBellSlash, faCog } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icons';
 const NotificationsCenter = ({ active }) => {
-    const { DashboardToastDispatch, getDashboardToastByKey } = useContext(DashBoardContext)
+    const { DashboardToastDispatch, getDashboardToastByKey, ClientSelected } = useContext(DashBoardContext)
 
     const notifications = useSelector(selectAllNotifications)
     const notificationsStatus = useSelector(state => state.notifications.status)
@@ -53,6 +55,31 @@ const NotificationsCenter = ({ active }) => {
         }
         //eslint-disable-next-line
     }, [hasUnreadNotifications, notificationsNoticeToastAlreadyCreated])
+
+    const dispatch = useDispatch()
+    const ApiMarkAllAsRead = (showToast = true) => {
+        axios.patch(`/notifications`,
+            {
+                notificationIds: unreadNotifications?.map(notification => notification.id)
+            },
+            {
+                params: {
+                    client: ClientSelected.id
+                }
+            }
+        ).then(function () {
+            if (showToast) {
+                DashboardToastDispatch({ type: "create", toastContent: { Icon: faCheckCircle, Title: "All notifications have been marked as read"} });
+            }
+            dispatch(markAllAsRead({ id: unreadNotifications?.map(notification => notification.id) }))
+        }).catch((err) => {
+            if (err.message !== "canceled") {
+                if (showToast) {
+                    DashboardToastDispatch({ type: "create", toastContent: { Icon: faTimesCircle, Title: "There was an error marking all the notifications as read" } });
+                }
+            }
+        });
+    }
 
 
     const popover = (
@@ -103,7 +130,10 @@ const NotificationsCenter = ({ active }) => {
                         </div>
                 }
                 <div className='actions'>
-
+                    <button type="button"
+                        onClick={() => ApiMarkAllAsRead()}>
+                        {t("Mark all as read")}
+                    </button>
                     <button type="button"
                         onClick={() => {
                             history.push('/Dashboard/notificationsCenter'); setShow(false);

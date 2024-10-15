@@ -10,7 +10,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, total = 20 }) => {
     const { t } = useTranslation();
     const { TransactionStates } = useContext(DashBoardContext)
-
     const [filterOptions, setFilterOptions] = useState({
         moves: movsPerPage,
         state: ""
@@ -28,7 +27,7 @@ const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, to
         event.preventDefault();
         event.stopPropagation();
         const form = event.currentTarget;
-        if (form.checkValidity() === true) {
+        if (form.checkValidity()) {
             setPagination((prevState) => ({
                 ...prevState, ...{
                     take: filterOptions.moves,
@@ -42,7 +41,7 @@ const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, to
     useEffect(() => {
         setFilterOptions((prevState) => ({
             ...prevState, ...{
-                moves: 5,
+                moves: 100,
                 state: ""
             }
         }))
@@ -54,7 +53,7 @@ const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, to
                 <Col>
                     <Form.Group>
                         <Form.Label className="capitalizeFirstLetter">{t(keyword + " per page")}</Form.Label>
-                        <Form.Select disabled={disabled} required id="moves" onChange={handleChange} value={filterOptions.moves} placeholder={t(keyword + " per page")} >
+                        <Form.Select disabled={disabled} required id="moves" onChange={handleChange} value={filterOptions.moves > total ? total : filterOptions.moves} placeholder={t(keyword + " per page")} >
                             {!!(total > 5) && <option>5</option>}
                             {!!(total > 10) && <option>10</option>}
                             {!!(total > 25) && <option>25</option>}

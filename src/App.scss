@@ -1,0 +1,71 @@
+.more {
+    border: none;
+    display: inline-block;
+    font-size: .8rem;
+    color: white;
+    background: #171714;
+    border-radius: .2em;
+    padding-left: .4em;
+    padding-right: .4em;
+    cursor: pointer;
+    font-weight: 200;
+}
+.max-width-unset,.max-width-unset * {
+    max-width: unset!important;
+
+    .tooltip-inner{
+        max-height: 90vh;
+        overflow: auto;
+    }
+}
+a.badge{
+    background-color: var(--blue-main) !important;
+    text-decoration: none;
+    color: var(--bs-badge-color);
+    &:hover{
+        color: var(--bs-badge-color);
+    }
+}
+.moreTooltip {
+
+    li,
+    ul {
+        font-weight: 200;
+        font-size: 14px;
+        margin: 0;
+        text-align: start;
+    }
+
+    ul {
+        padding-left: 1ch;
+        list-style-type: "•"
+    }
+
+    li {
+        padding-left: .5ch;
+    }
+
+    &:not(.show) {
+        transition: all 0.15s linear !important;
+    }
+
+    .tooltip-inner {
+        background-color: #171714;
+    }
+}
+
+.header-with-border {
+    position: relative;
+    font-size: 30px;
+    font-weight: 400;
+    padding: 0.5em 0;
+    margin: 0.5em 0;
+    border-bottom: 1px solid;
+
+    .title {
+        font-size: 30px;
+        padding: 0;
+        margin: 0;
+        font-weight: 400;
+    }
+}

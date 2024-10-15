@@ -6,7 +6,13 @@ import { Form, Placeholder } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import FormattedNumber from "../FormattedNumber";
-
+export const yearsArraySince = (initialYear = 2022, lastYear = moment().year()) => {
+    const años = [];
+    for (let year = lastYear; year >= initialYear; year--) {
+        años.push(year);
+    }
+    return años;
+}
 const PerformanceComponent = ({ text, fundId = "", fixedDepositId = "", withoutSelector = false, className = "", setValueExternal = false, valueExternal = false, clientId = false, textAlign = "text-start", numberFw = "", monthValueExternal = false, setMonthValueExternal = false }) => {
     const { t } = useTranslation();
 
@@ -47,14 +53,7 @@ const PerformanceComponent = ({ text, fundId = "", fixedDepositId = "", withoutS
         }))
     }, [fundId, fixedDepositId, ClientSelected, dispatch, value, clientId, monthValue])
 
-    const yearsArraySince = (initialYear = 2022) => {
-        const años = [];
-        const currentYear = moment().year();
-        for (let year = currentYear; year >= initialYear; year--) {
-            años.push(year);
-        }
-        return años;
-    }
+
 
     // null for not setted, moment for setted, false if not allowed
     const minMonthForFunds = moment().set("year", 2024).set("month", 0).startOf("month")

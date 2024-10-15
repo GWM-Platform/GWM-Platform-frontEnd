@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, useMemo } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
-import { Accordion, Col, Container, Row, Table } from 'react-bootstrap'
+import { Accordion, Button, Col, Container, Row, Spinner, Table } from 'react-bootstrap'
 import MovementRow from './MovementRow'
 import axios from 'axios';
 import { DashBoardContext } from 'context/DashBoardContext';
@@ -12,8 +12,14 @@ import { useCallback } from 'react';
 import PaginationController from 'components/DashBoard/GeneralUse/PaginationController';
 import FilterOptions from './FilterOptions';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
+import ReactPDF from '@react-pdf/renderer';
+import MovementTable from 'TableExport/MovementTable';
+import { PrintButton } from 'utils/usePrint';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFileExcel } from '@fortawesome/free-regular-svg-icons';
+import { exportToExcel } from 'utils/exportToExcel';
 
-const AccountMovements = ({ AccountId, ClientId, Account }) => {
+const AccountMovements = ({ AccountId, ClientId, Account, Client }) => {
 
     const { toLogin } = useContext(DashBoardContext)
 
@@ -23,7 +29,7 @@ const AccountMovements = ({ AccountId, ClientId, Account }) => {
 
     const [Pagination, setPagination] = useState({
         skip: 0,//Offset (in quantity of movements)
-        take: 5,//Movements per page
+        take: 100,//Movements per page
         state: null
     })
 
@@ -84,6 +90,34 @@ const AccountMovements = ({ AccountId, ClientId, Account }) => {
         // eslint-disable-next-line
     }, [AccountId, Pagination, getMovements, initialState])
 
+    const [rendering, setRendering] = useState(false)
+    const { getMoveStateById } = useContext(DashBoardContext)
+
+    const renderAndDownloadTablePDF = async () => {
+        setRendering(true)
+        const blob = await ReactPDF.pdf(
+            <MovementTable
+                movements={Movements.content.movements}
+                headerInfo={{
+                    clientName:
+                        `${Client?.firstName === undefined ? "" : Client?.firstName === "-" ? "" : Client?.firstName
+                        }${Client?.lastName === undefined ? "" : Client?.lastName === "-" ? "" : ` ${Client?.lastName}`
+                        }`,
+                    balance: (Account?.balance || 0) + ""
+                }} getMoveStateById={getMoveStateById} />).toBlob()
+        const url = URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = url
+        link.setAttribute('download', `${t("Cash_movements")}.pdf`)
+        // 3. Append to html page
+        document.body.appendChild(link)
+        // 4. Force download
+        link.click()
+        // 5. Clean up and remove the link
+        link.parentNode.removeChild(link)
+        setRendering(false)
+    }
+
     return (
 
         <Accordion.Item eventKey="2">
@@ -98,11 +132,38 @@ const AccountMovements = ({ AccountId, ClientId, Account }) => {
                                     <Col xs="auto">
                                         {t("Balance")}:&nbsp;
                                         <FormattedNumber style={{ fontWeight: "bolder" }} value={Account?.balance} prefix="U$D " suffix="" fixedDecimals={2} />
-                                    </Col>
-                                    <Col xs="auto" className='ms-auto'>
+                                        <br />
                                         {t("Overdraft")}:&nbsp;
                                         <FormattedNumber style={{ fontWeight: "bolder" }} value={Account?.overdraft} prefix="U$D " suffix="" fixedDecimals={2} />
                                     </Col>
+                                    {
+                                        Movements?.content?.movements?.length > 0 &&
+                                        <>
+                                            <Col xs="auto" className='ms-auto'>
+                                                {
+                                                    rendering ?
+                                                        <Spinner animation="border" size="sm" />
+                                                        :
+                                                        <PrintButton className="w-100" variant="info" handlePrint={renderAndDownloadTablePDF} />
+                                                }
+                                            </Col>
+                                            <Col xs="auto" className='ps-0'>
+                                                <Button className="me-2 print-button no-style" variant="info" onClick={() => exportToExcel(
+                                                    {
+                                                        filename: `${t("Cash_movements")} ${Client?.firstName === undefined ? "" : Client?.firstName === "-" ? "" : Client?.firstName}${Client?.lastName === undefined ? "" : Client?.lastName === "-" ? "" : ` ${Client?.lastName}`}`,
+                                                        sheetName: `${t("Cash_movements")} ${Client?.firstName === undefined ? "" : Client?.firstName === "-" ? "" : Client?.firstName}${Client?.lastName === undefined ? "" : Client?.lastName === "-" ? "" : ` ${Client?.lastName}`}`,
+                                                        dataTableName: "cta-cte-movements",
+                                                        excludedColumns: ["ticket", "actions"],
+                                                        // plainNumberColumns: ["unit_floor", "unit_unitNumber", "unit_typology"]
+                                                    }
+
+                                                )} >
+                                                    <FontAwesomeIcon icon={faFileExcel} />
+                                                </Button>
+                                            </Col>
+                                        </>
+                                    }
+
                                     <Col xs="12" className='my-3'>
                                         <div style={{ borderBottom: "1px solid lightgray" }}></div>
                                     </Col>
@@ -116,10 +177,10 @@ const AccountMovements = ({ AccountId, ClientId, Account }) => {
                                     Decimal(Movements.content.movements.length).gt(0) ?
                                         <>
                                             <div style={{ minHeight: `calc( ( 0.5rem * 2 + 25.5px ) * ${Pagination.take + 1} )` }} className={`tableMovements`}>
-                                                <Table className="ClientsTable mb-0" striped bordered hover>
+                                                <Table className="ClientsTable mb-0" striped bordered hover data-table-name="cta-cte-movements">
                                                     <thead className="verticalTop tableHeader solid-bg">
                                                         <tr>
-                                                            <th className="tableId text-nowrap">{t("Ticket")}</th>
+                                                            <th className="tableId text-nowrap" data-column-name="ticket">{t("Ticket")}</th>
                                                             <th className="tableHeader">{t("Date")}</th>
                                                             <th className="d-none d-sm-table-cell">{t("Status")}</th>
                                                             <th className="tableHeader">{t("Description")}</th>

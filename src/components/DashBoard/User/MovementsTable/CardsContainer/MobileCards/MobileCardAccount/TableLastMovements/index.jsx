@@ -6,12 +6,14 @@ import { useTranslation } from "react-i18next";
 import { DashBoardContext } from 'context/DashBoardContext';
 import FilterOptionsMobile from '../../FilterOptionsMobile';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilter } from '@fortawesome/free-solid-svg-icons';
+import { faFilter, faPrint } from '@fortawesome/free-solid-svg-icons';
 import MoreAndLess from '../../MoreAndLess';
+import MovementTable from 'TableExport/MovementTable';
+import ReactPDF from '@react-pdf/renderer';
 
 const TableLastMovements = ({ account }) => {
 
-    const { token, toLogin, ClientSelected } = useContext(DashBoardContext);
+    const { token, toLogin, ClientSelected, getMoveStateById } = useContext(DashBoardContext);
     const { t } = useTranslation();
 
     const [open, setOpen] = useState(false);
@@ -22,7 +24,7 @@ const TableLastMovements = ({ account }) => {
 
     const [Options, setOptions] = useState({
         skip: 0,//Offset (in quantity of movements)
-        take: 5,//Movements per page
+        take: 100,//Movements per page
         state: null
     })
 
@@ -38,7 +40,9 @@ const TableLastMovements = ({ account }) => {
                     filterAccount: account.id,
                     take: Options.take,
                     skip: Options.skip,
-                    filterState: Options.state
+                    filterState: Options.state,
+                    fromDate: Options.fromDate || null,
+                    toDate: Options.toDate ? new Date(new Date(Options.toDate).setDate(new Date(Options.toDate).getDate() + 1)).toISOString() : null
                 }
             ).filter(([_, v]) => v != null))
         );
@@ -73,6 +77,33 @@ const TableLastMovements = ({ account }) => {
         getMovements()
         // eslint-disable-next-line 
     }, [account, Options])
+    const [rendering, setRendering] = useState(false)
+
+    const renderAndDownloadTablePDF = async (e) => {
+        e.stopPropagation()
+        setRendering(true)
+        const blob = await ReactPDF.pdf(
+            <MovementTable
+                movements={movements.movements}
+                headerInfo={{
+                    clientName:
+                        `${ClientSelected?.firstName === undefined ? "" : ClientSelected?.firstName === "-" ? "" : ClientSelected?.firstName
+                        }${ClientSelected?.lastName === undefined ? "" : ClientSelected?.lastName === "-" ? "" : ` ${ClientSelected?.lastName}`
+                        }`,
+                    balance: account.balance
+                }} getMoveStateById={getMoveStateById} />).toBlob()
+        const url = URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = url
+        link.setAttribute('download', `${t("Cash_movements")}.pdf`)
+        // 3. Append to html page
+        document.body.appendChild(link)
+        // 4. Force download
+        link.click()
+        // 5. Clean up and remove the link
+        link.parentNode.removeChild(link)
+        setRendering(false)
+    }
 
     return (
         <Col md="12" className="p-0 mt-2">
@@ -84,18 +115,26 @@ const TableLastMovements = ({ account }) => {
                         aria-expanded={open}>
                         <Row className="d-flex justify-content-end">
                             <Col className={fetchingMovements ? "d-flex justify-content-between align-items-center" : ""}>
-                                <h2 className={`my-2 toggler-mobile ${!!(fetchingMovements) ? "loading" : ""} ${open ? "toggled" : ""}`}>{t("Last movements")}</h2>
-                                {!!(fetchingMovements) && <Spinner className="ms-2" animation="border" size="sm" />}
+                                <h2 className={`my-2 toggler-mobile ${!!(fetchingMovements) ? "loading" : ""} ${open ? "toggled" : ""} flex-grow-1`}>
+                                    {t("Last movements")}
+                                    <Button className="ms-auto me-2 buttonFilter no-style" variant="info" onClick={renderAndDownloadTablePDF} size='sm'>
+                                        {
+                                            rendering ?
+                                                <Spinner animation="border" size="sm" />
+                                                :
+                                                <FontAwesomeIcon icon={faPrint} />
+                                        }
+                                    </Button>
+                                    <Button className="buttonFilter no-style me-1" variant="info" onClick={(e) => { handleShow(); e.stopPropagation() }}>
+                                        <FontAwesomeIcon icon={faFilter} />
+                                    </Button>
+                                </h2>
+                                {!!(fetchingMovements) && <Spinner style={{ marginLeft: ".35em" }} animation="border" size="sm" />}
                             </Col>
                         </Row>
                     </Container>
                     <Collapse in={open}>
                         <div className="movementsTable mb-3">
-                            <div className='py-1 d-flex justify-content-end'>
-                                <Button className="ms-1 buttonFilter" variant="danger" onClick={() => handleShow()}>
-                                    <FontAwesomeIcon icon={faFilter} />
-                                </Button>
-                            </div>
                             {
                                 movements.movements.length === 0 || movements === null ?
                                     <h2 className="text-center">{t("There are no records in the selected state")}</h2>
@@ -109,7 +148,7 @@ const TableLastMovements = ({ account }) => {
                             <MoreAndLess InScreen={Options.take} total={movements.total} setOptions={setOptions} />
                         </div>
                     </Collapse>
-                    <FilterOptionsMobile show={show} handleClose={handleClose} setOptions={setOptions} />
+                    <FilterOptionsMobile dateFilters show={show} handleClose={handleClose} setOptions={setOptions} />
                 </div>
             }
         </Col>

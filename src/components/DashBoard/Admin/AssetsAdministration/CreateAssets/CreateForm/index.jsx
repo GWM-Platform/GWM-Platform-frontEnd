@@ -39,7 +39,7 @@ const CreateAssets = ({ data, CreateRequest, handleChange, Action, setAction, va
     return (
         <div className="editForm">
             <div className="header">
-                <h1 className="title">
+                <h1 className="title fw-normal">
                     {t("Asset Create form")}
                 </h1>
                 <FontAwesomeIcon className="button icon" onClick={() => { setAction({ ...Action, ...{ action: -1, Asset: -1 } }) }} icon={faChevronCircleLeft} />
@@ -99,7 +99,7 @@ const CreateAssets = ({ data, CreateRequest, handleChange, Action, setAction, va
                 
 
                 <div className="d-flex justify-content-end">
-                    <Button variant="danger" type="submit" className="mb-3">
+                    <Button variant="danger" type="submit" className="mb-3" disabled={CreateRequest.fetching}>
                         <Spinner animation="border" variant="light"
                             className={`${CreateRequest.fetching ? "d-inline-block" : "d-none"} littleSpinner ms-1`} />
                         {t("Submit")}

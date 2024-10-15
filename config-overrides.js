@@ -10,6 +10,12 @@ module.exports = function override(config, env) {
         path: require.resolve("path-browserify"),
         url: require.resolve("url/")
     }
+    
+    config.resolve.alias = {
+        ...config.resolve.alias,
+        'react/jsx-runtime': 'react/jsx-runtime.js'
+    };
+
     config.resolve.extensions = [...config.resolve.extensions, ".ts", ".js"]
     config.plugins = [
         ...config.plugins,

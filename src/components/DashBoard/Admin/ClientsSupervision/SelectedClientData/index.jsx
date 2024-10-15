@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from 're
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronCircleLeft } from '@fortawesome/free-solid-svg-icons'
-import { Accordion } from 'react-bootstrap'
+import { Accordion, Badge } from 'react-bootstrap'
 
 import AccountGeneralData from './AccountGeneralData'
 import AccountMovements from './AccountMovements'
@@ -19,8 +19,9 @@ import axios from 'axios';
 import { DashBoardContext } from 'context/DashBoardContext';
 import DocumentForm from './DocumentForm';
 import DocumentsAccordion from './DocumentsAccordion';
+import { YearlyStatement } from 'components/DashBoard/User/MovementsTable/CardsContainer/MainCard/MainCardAccount';
 
-const SelectedAccountData = ({ Account, Client, users, setAccounts }) => {
+const SelectedAccountData = ({ Account, Client, users, setAccounts, toggleClient }) => {
 
     const { t } = useTranslation();
 
@@ -98,20 +99,27 @@ const SelectedAccountData = ({ Account, Client, users, setAccounts }) => {
             <Route exact path={`/DashBoard/clientsSupervision/${Client.id}`}>
                 <div className="AccountData h-100 mb-5 growOpacity">
                     <div className="header">
-                        <h1 className="title">
-                            {t("Data from client")}&nbsp;#{Client.id},&nbsp;{t("Alias")}:&nbsp;{Client.alias}
-                        </h1>
+                        <div className='d-flex align-items-center'>
+                            <h1 className="title fw-normal">
+                                {t("Data from client")}&nbsp;#{Client.id},&nbsp;{t("Alias")}:&nbsp;{Client.alias}
+                            </h1>
+                            <div className='ms-auto' />
+                            <YearlyStatement wrapperClassName="d-flex align-items-center mt-0 mb-0" ClientSelected={Client} />
+                            <h5 className='mb-0 ms-2'>
+                                <Badge bg={Client.enabled ? "success" : "danger"}>{t(Client.enabled ? "Enabled" : "Disabled")}</Badge>
+                            </h5>
+                        </div>
                         <Link className="button icon" to={`/DashBoard/clientsSupervision/`}>
                             <FontAwesomeIcon className="button icon" icon={faChevronCircleLeft} />
                         </Link>
 
                     </div>
                     <Accordion flush alwaysOpen>
-                        <AccountGeneralData setAccounts={setAccounts} Account={Account} Client={Client} />
+                        <AccountGeneralData setAccounts={setAccounts} Account={Account} Client={Client} toggleClient={toggleClient} />
                         <ClientUsersAccordion client={Client} users={clientUsers} getUsers={getUsers} ownersAmount={ownersAmount} />
                         <DocumentsAccordion client={Client} documents={documents} setDocuments={setDocuments} />
-                        <AccountMovements ClientId={Client.id} AccountId={Account.id}  Account={Account} />
-                        <TransactionsByFund ClientId={Client.id} AccountId={Account.id} clientFunds={clientFunds} />
+                        <AccountMovements ClientId={Client.id} Client={Client} AccountId={Account.id} Account={Account} />
+                        <TransactionsByFund ClientId={Client.id} AccountId={Account.id} clientFunds={clientFunds} Account={Account} Client={Client} />
                         <TimeDeposits ClientId={Client.id} AccountId={Account.id} />
                     </Accordion>
                 </div>

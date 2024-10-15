@@ -11,8 +11,13 @@ import Select from "react-select";
 // import 'react-quill/dist/quill.snow.css';
 import './index.scss'
 import { faTimesCircle } from '@fortawesome/free-regular-svg-icons';
-import Editor from './quill';
 import { ModalPreview } from './ModalPreview';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchusers, selectAllusers } from 'Slices/DashboardUtilities/usersSlice';
+import { fetchclients, selectAllclients } from 'Slices/DashboardUtilities/clientsSlice';
+import { EditorTipTap } from './EditorTipTap';
+import { fetchFundsWithUsers, selectAllFundsWithUsers } from 'Slices/DashboardUtilities/fundsWithUsersSlice';
+import TooltipInfo from './TooltipInfo';
 
 const maxClients = 45
 const Broadcast = () => {
@@ -39,8 +44,32 @@ const Broadcast = () => {
     const [selectedOptions, setSelectedOptions] = useState([])
 
     const [message, setMessage] = useState()
+    const dispatch = useDispatch()
 
-    const [clients, setClients] = useState({ fetching: true, fetched: false, valid: false, content: [] })
+    const users = useSelector(selectAllusers)
+    useEffect(() => {
+        dispatch(fetchusers({ all: true }))
+    }, [dispatch])
+
+    const fundsWithUsersStatus = useSelector(state => state.fundsWithUsers.status)
+    // TODO: Not include users disabled or that has funds but with a userToClient disabled
+    const fundsWithUsers = useSelector(selectAllFundsWithUsers)
+    useEffect(() => {
+        if (fundsWithUsersStatus === 'idle') {
+            dispatch(fetchFundsWithUsers())
+        }
+    }, [dispatch, fundsWithUsersStatus])
+
+    const getUserById = useCallback((id) => users.find(user => user.id === id), [users])
+
+    const clientStatus = useSelector(state => state.clients.status)
+    const Clients = useSelector(selectAllclients)
+
+    const clients = useMemo(() => Clients.filter(client => client.enabled).map(client => ({
+        ...client, users: client.users.filter(userToClient => {
+            return getUserById(userToClient?.userId)?.enabled && userToClient.enabled
+        })
+    })), [Clients, getUserById])
 
     const [validated, setValidated] = useState(false);
     const [buttonDisabled, setButtonDisabled] = useState(false)
@@ -53,13 +82,14 @@ const Broadcast = () => {
         event.preventDefault();
         event.stopPropagation();
         const form = event.currentTarget;
-        if (form.checkValidity() && formData.emailBody !== emailBodyDefaultState) {
+        if (form.checkValidity() && !buttonDisabled && formData.emailBody !== emailBodyDefaultState) {
             broadcast()
         }
         setValidated(true);
     }
     const emailBodyWihtImagesStyles = useCallback(
         () => {
+            let toClients = false
             let parser = new DOMParser();
             let doc = parser.parseFromString(formData.emailBody, "text/html");
             let images = doc.querySelectorAll('img');
@@ -67,28 +97,41 @@ const Broadcast = () => {
                 img.style.width = '100%';
                 img.style.display = 'block';
             });
-            return new XMLSerializer().serializeToString(doc)
+            // get elements with data-text-interpolation-type atribute
+            let textInterpolationElements = doc.querySelectorAll('[data-text-interpolation-type]');
+            textInterpolationElements.forEach(element => {
+                // get the text interpolation type
+
+                let keyword = element.getAttribute('data-text-interpolation-type')
+                // replace the element with the tag keyword like <span data-text-interpolation-type="keyword">text</span> => {{keyword}}
+                let span = doc.createElement('span');
+                span.textContent = `{{${keyword}}}`
+                element.replaceWith(span)
+                if (keyword !== "username") {
+                    toClients = true
+                }
+            });
+            return [new XMLSerializer().serializeToString(doc), toClients]
         }, [formData.emailBody])
 
     const broadcast = async () => {
-
+        setMessage("")
         setButtonDisabled(true)
         const formDataSubmit = new FormData()
 
         const files = filesInput.current.files
 
-        for (var i = 0; i < files.length; i++) {
+        for (var i = 0; i < files?.length; i++) {
             formDataSubmit.append("files", files[i])
         }
 
         let receivers = selectedOptions.map(receiver => receiver.email)
-        for (var j = 0; j < receivers.length; j++) {
-            formDataSubmit.append("receivers", receivers[j])
-        }
+        formDataSubmit.append("receivers", receivers)
 
         formDataSubmit.append("title", formData.title)
-
-        formDataSubmit.append("emailBody", emailBodyWihtImagesStyles())
+        const [emailBody, toClients] = emailBodyWihtImagesStyles()
+        formDataSubmit.append("emailBody", emailBody)
+        formDataSubmit.append("sendToClients", toClients)
         axios.post(`/users/broadcast`, formDataSubmit)
             .then(function (response) {
                 setMessage("The broadcast was successfully sent")
@@ -108,57 +151,30 @@ const Broadcast = () => {
             });
     }
 
-    const getClients = useCallback((signal) => {
-        setClients((prevState) => ({ ...prevState, fetching: true, fetched: false }))
-        axios.get(`/clients`, {
-            params: { all: true, showUsers: true },
-            signal: signal,
-        }).then(function (response) {
-            setClients((prevState) => (
-                {
-                    ...prevState,
-                    fetching: false,
-                    fetched: true,
-                    valid: true,
-                    content: response.data,
-                }))
-        }).catch((err) => {
-            if (err.message !== "canceled") {
-                if (err.response.status === "401") toLogin()
-                setClients((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
-            }
-        });
-        //eslint-disable-next-line
-    }, [setClients]);
 
     useEffect(() => {
-        const controller = new AbortController();
-        const signal = controller.signal;
-        getClients(signal)
+        dispatch(fetchclients({ all: true, showUsers: true }))
+    }, [dispatch])
 
-        return () => {
-            controller.abort();
-        };
-    }, [getClients])
 
     const filesInput = useRef(null)
 
     var allSelectedArray = [{ label: "All clients", value: "*" }]
 
-    for (let client of clients.content) {
+    for (let client of clients) {
         let appendToArray = []
-        appendToArray = client.users.map(
+        appendToArray = (client.users || []).map(
             userToClient => ({ value: userToClient?.user?.email, label: userToClient?.user?.email, email: userToClient?.user?.email })
         ).filter(
             //eslint-disable-next-line 
             selectedOption => allSelectedArray.filter(
                 selectedOptionFilter => selectedOptionFilter.value === selectedOption.value
-            ).length === 0)
+            )?.length === 0)
         allSelectedArray = [...allSelectedArray, ...appendToArray]
     }
 
     var allOwnersArray = [{ label: "Owners", value: "*owners" }]
-    for (let client of clients.content) {
+    for (let client of clients) {
         let appendToArray = []
         appendToArray = client.users.filter(user => user?.isOwner).map(
             userToClient => ({ value: userToClient?.user?.email, label: userToClient?.user?.email, email: userToClient?.user?.email })
@@ -166,11 +182,24 @@ const Broadcast = () => {
             //eslint-disable-next-line 
             selectedOption => allOwnersArray.filter(
                 selectedOptionFilter => selectedOptionFilter.value === selectedOption.value
-            ).length === 0)
+            )?.length === 0)
         allOwnersArray = [...allOwnersArray, ...appendToArray]
     }
 
-    const handleChangeMultiSelect = (selectedOption) => {
+    const handleChangeMultiSelect = (selectedOptionInitial) => {
+        const selectedFund = selectedOptionInitial.find(option => option.isFund)
+        let selectedFundUsers = []
+        let isFundSelected = selectedFund && allSelectedFund(selectedFund.value)
+        if (selectedFund) {
+            selectedFundUsers = fundsWithUsers?.find(fund => (fund.fundId + "") === selectedFund.value)
+                ?.users?.map(user => transfromUser(users.find(userComplete => userComplete.email === user.email))) || []
+        }
+
+        const selectedOption = [
+            ...selectedOptionInitial.filter(option => !option.isFund && (!isFundSelected || !selectedFundUsers.find(user => user.email === option.email))),
+            ...selectedFund ? selectedFundUsers.filter(user => user && !selectedOptionInitial.find(selectedOption => selectedOption.email === user.email)) : []
+        ]
+
         setSelectedOptions(prevState => {
             const previouslyAllSelected = prevState?.filter(option => option?.value === "*")?.length > 0
             const actuallyAllSelected = selectedOption?.filter(option => option?.value === "*")?.length > 0
@@ -205,24 +234,35 @@ const Broadcast = () => {
             }
         });
     };
+    const transfromUser = (user) => {
+        return ({ ...user, label: user?.email, value: user?.email })
+    }
 
     const values = useMemo(() => {
-        return clients?.fetched
+        return clientStatus === "succeeded"
             ? [
                 { label: "All clients", value: "*" },
                 { label: "Owners", value: "*owners" },
-                ...clients?.content?.map(
+                ...fundsWithUsers?.map(
+                    fundWithUsers => (
+                        {
+                            value: fundWithUsers.fundId + "",
+                            isFund: true,
+                            isDisabled: fundWithUsers?.users?.length === 0,
+                            label: `${t(`Users with holdings on "{{fundName}}"`, { fundName: fundWithUsers?.fundName })} (${fundWithUsers?.users?.length} ${t("Users")})`
+                        }
+                    )
+                ),
+                ...clients?.map(
                     client => ({
                         label: client.alias,
                         value: client.alias,
                         id: client.id,
-                        options: client.users.map(
-                            userToClient => ({ ...userToClient?.user, label: userToClient?.user?.email, value: userToClient?.user?.email })
-                        )
+                        options: client.users.map(userToClient => transfromUser(userToClient?.user))
                     })
                 )]
             : []
-    }, [clients?.content, clients?.fetched])
+    }, [clientStatus, clients, fundsWithUsers, t])
 
     const filterOption = ({ label, value }, string) => {
         // default search
@@ -244,11 +284,34 @@ const Broadcast = () => {
         }
         return false;
     };
-
+    const getUsersByFundId = (fundId) => {
+        return fundsWithUsers.find(fundWithUsers => (fundWithUsers.fundId + "") === fundId)?.users || []
+    }
+    const allSelectedFund = (fundId) => {
+        const fundUsers = getUsersByFundId(fundId)
+        return (fundUsers.length > 0) && (selectedOptions?.filter(option => fundUsers?.find(user => user.email === option.email))?.length === fundUsers?.length)
+    }
     const Option = ({ children, ...props }) => {
+        const users = props.data.isFund ? getUsersByFundId(props.data.value) : []
         return (
             <components.Option className='ps-4' {...props}>
-                <Form.Check readOnly checked={props.isSelected} label={t(children)} />
+                <Form.Check className='d-inline-block' readOnly checked={props.data.isFund ? allSelectedFund(props?.data?.value) : props.isSelected} label={t(children)} />
+                {
+                    users.length > 0 &&
+                    <TooltipInfo placement="auto" text={
+                        <p className='text-start mb-0'>
+                            {
+
+                                users.map((user, index) => <span className='text-start text-nowrap' key={index}>{index !== 0 && <br />}{user.email}</span>)
+                            }
+                        </p>
+
+                    }
+                        tooltipClassName="max-width-unset"
+                        trigger={["hover", "focus"]}
+                    />
+
+                }
             </components.Option>
         );
     }
@@ -269,21 +332,21 @@ const Broadcast = () => {
         );
     }
 
-    const getClientById = (clientId) => clients?.content?.find(client => client.id === clientId)
+    const getClientById = (clientId) => clients?.find(client => client.id === clientId)
 
     useEffect(() => {
 
         const objectsEqual = (o1, o2) =>
-            typeof o1 === 'object' && Object.keys(o1).length > 0
-                ? Object.keys(o1).length === Object.keys(o2).length
+            typeof o1 === 'object' && Object.keys(o1)?.length > 0
+                ? Object.keys(o1)?.length === Object.keys(o2)?.length
                 && Object.keys(o1).every(p => objectsEqual(o1[p], o2[p]))
                 : o1 === o2;
 
         const arraysEqual = (a1, a2) =>
-            a1.length === a2.length && a1.every((o, idx) => objectsEqual(o, a2[idx]));
+            a1?.length === a2?.length && a1.every((o, idx) => objectsEqual(o, a2[idx]));
 
-        if (selectedOptions.length > 0) {
-            if (selectedOptions.filter(selectedOption => selectedOption.value === "*owners").length === 1) {
+        if (selectedOptions?.length > 0) {
+            if (selectedOptions.find(selectedOption => selectedOption.value === "*owners")) {
                 if (!arraysEqual(selectedOptions, allOwnersArray)) {
                     setSelectedOptions(prevState => ([...prevState.filter(selectedOption => selectedOption.value !== "*owners")]))
                 }
@@ -297,17 +360,34 @@ const Broadcast = () => {
         //eslint-disable-next-line
     }, [selectedOptions])
 
+    // const selectFund = (fundWithUsers) => {
+    //     const shortcutOptions = fundWithUsers.users.map(user =>
+    //         users.find(userFind => userFind.email === user.email)
+    //     )
+    //     setSelectedOptions(
+    //         prevState => {
+    //             const aux = [...shortcutOptions]
+    //             return [
+    //                 ...[...new Set(aux.map(({ email }) => email))].map(email => {
+    //                     const user = aux.find(option => option.email === email)
+    //                     return { ...user, label: user?.email, value: user?.email }
+    //                 })
+    //             ]
+    //         }
+    //     )
+    //     //eslint-disable-next-line
+    // }
 
     useEffect(() => {
 
         const objectsEqual = (o1, o2) =>
-            typeof o1 === 'object' && Object.keys(o1).length > 0
-                ? Object.keys(o1).length === Object.keys(o2).length
+            typeof o1 === 'object' && Object.keys(o1)?.length > 0
+                ? Object.keys(o1)?.length === Object.keys(o2)?.length
                 && Object.keys(o1).every(p => objectsEqual(o1[p], o2[p]))
                 : o1 === o2;
 
         const arraysEqual = (a1, a2) =>
-            a1.length === a2.length && a1.every((o, idx) => objectsEqual(o, a2[idx]));
+            a1?.length === a2?.length && a1.every((o, idx) => objectsEqual(o, a2[idx]));
 
         const alphSelectedOptions = selectedOptions.sort((a, b) =>
             a?.email?.localeCompare(b?.email))
@@ -315,13 +395,13 @@ const Broadcast = () => {
         const alphAllArray = allSelectedArray.sort((a, b) =>
             a?.email?.localeCompare(b?.email))
 
-        if (alphSelectedOptions.length > 0) {
-            if (alphSelectedOptions.filter(selectedOption => selectedOption.value === "*").length === 1) {
+        if (alphSelectedOptions?.length > 0) {
+            if (alphSelectedOptions.filter(selectedOption => selectedOption.value === "*")?.length === 1) {
                 if (!arraysEqual(alphSelectedOptions, alphAllArray)) {
                     setSelectedOptions(prevState => ([...prevState.filter(selectedOption => selectedOption.value !== "*")]))
                 }
             } else {
-                if (alphSelectedOptions.length === alphAllArray.filter(selectedOption => selectedOption.value !== "*").length) {
+                if (alphSelectedOptions?.length === alphAllArray.filter(selectedOption => selectedOption.value !== "*")?.length) {
                     setSelectedOptions([...alphAllArray])
                 }
             }
@@ -332,9 +412,9 @@ const Broadcast = () => {
 
     useEffect(() => {
         const uniqueValues = [...new Set(values.flatMap(option => (option.options || []).map(option => option.value)))]
-        const sortedSelectedOptions = selectedOptions.sort((a, b) => uniqueValues.indexOf(a.value) - uniqueValues.indexOf(b.value)).filter(selectedOption => uniqueValues.includes(selectedOption.value));
+        const sortedSelectedOptions = selectedOptions.sort((a, b) => uniqueValues.indexOf(a.value) - uniqueValues.indexOf(b.value)).filter(selectedOption => uniqueValues?.includes(selectedOption.value));
         // const sortedOptions = selectedOptions.
-        if (sortedSelectedOptions.length > maxClients) {
+        if (sortedSelectedOptions?.length > maxClients) {
             setSelectedOptions(sortedSelectedOptions.slice(0, maxClients))
             maximumReached()
         }
@@ -345,11 +425,11 @@ const Broadcast = () => {
             let aux = [...prevState]
             let client = getClientById(clientId)
             let appendToArray =
-                client?.users?.map(
+                (client?.users || [])?.map(
                     userToClient => ({ value: userToClient?.user?.email, label: userToClient?.user?.email, email: userToClient?.user?.email })
                 ).filter(
                     //eslint-disable-next-line 
-                    selectedOption => aux.filter(selectedOptionFilter => selectedOptionFilter.value === selectedOption.value).length === 0
+                    selectedOption => aux.filter(selectedOptionFilter => selectedOptionFilter.value === selectedOption.value)?.length === 0
                 )
             return [...aux, ...appendToArray]
         })
@@ -361,7 +441,7 @@ const Broadcast = () => {
             let client = getClientById(clientId)
             aux = [...aux.filter(
                 selectedOption => {
-                    return client.users.filter(clientUser => selectedOption.value === clientUser.user.email).length === 0
+                    return client.users.filter(clientUser => selectedOption.value === clientUser.user.email)?.length === 0
                 }
             )]
             return [...aux]
@@ -371,12 +451,13 @@ const Broadcast = () => {
 
     const GroupHeading = ({ children, ...props }) => {
 
-        const clientUsers = getClientById(props?.data?.id)?.users
-        const allUsersFromClientSelected = selectedOptions.filter(option => clientUsers.filter(clientUser => clientUser.user.email === option.email).length > 0).length === clientUsers.length;
+        const clientUsers = getClientById(props?.data?.id)?.users || []
+        const isAllFundsShortcut = props?.data?.value === "*funds"
+        const allUsersFromClientSelected = !isAllFundsShortcut && selectedOptions?.filter(option => clientUsers.filter(clientUser => clientUser.user.email === option.email)?.length > 0)?.length === clientUsers?.length;
 
         return (
             <components.GroupHeading {...props} className={`${props?.className ? props?.className : ""} ${allUsersFromClientSelected ? "selected" : ""}`}
-                onClick={() => allUsersFromClientSelected ? deSelectUsersByClientId(props?.data?.id) : selectUsersByClientId(props?.data?.id)}>
+                onClick={() => (!isAllFundsShortcut) && allUsersFromClientSelected ? deSelectUsersByClientId(props?.data?.id) : selectUsersByClientId(props?.data?.id)}>
                 <Form.Check checked={allUsersFromClientSelected} readOnly label={t("Client {{clientName}}", { clientName: children })} />
             </components.GroupHeading>
         );
@@ -389,21 +470,43 @@ const Broadcast = () => {
             <Row className="h-100 d-flex justify-content-center">
                 <Col className="growOpacity section">
                     <div className="header">
-                        <h1 className="title">{t("Broadcast to users")}</h1>
+                        <h1 className="title fw-normal">{t("Broadcast to users")}</h1>
                     </div>
                     <Form noValidate validated={validated} onSubmit={handleSubmit}>
                         <Form.Group className="mb-3">
-                            <Form.Label>{t("Recipients")}</Form.Label>
+                            <Form.Label>
+                                {t("Recipients")}
+                                {/* <div className='tiptap-wrapper d-inline-block'>
+                                    <select
+                                        className='ms-2'
+                                        style={{ width: "12ch" }}
+                                        value=""
+                                        onChange={e => selectFund(fundsWithUsers.find(fund => fund.fundId + "" === e.target.value))}>
+                                        <option value="" disabled>
+                                            {t("Holdings")}
+                                        </option>
+                                        {
+                                            fundsWithUsers?.map(
+                                                fundWithUsers => (
+                                                    <option value={fundWithUsers.fundId} key={fundWithUsers.fundId}>
+                                                        {`${t(`Users with holdings on "{{fundName}}"`, { fundName: fundWithUsers?.fundName })} (${fundWithUsers?.users?.length} ${t("Users")})`}
+                                                    </option>
+                                                )
+                                            )
+                                        }
+                                    </select>
+                                </div> */}
+                            </Form.Label>
                             <div>
                                 <Select
-
                                     value={selectedOptions} onChange={handleChangeMultiSelect}
-                                    isMulti isClearable isLoading={clients.fetching}
+                                    isMulti isClearable isLoading={clientStatus !== "succeeded"}
                                     closeMenuOnSelect={false} hideSelectedOptions={false}
-                                    noOptionsMessage={() => t("No options")} placeholder={t("Select recipients")}
+                                    noOptionsMessage={() => t("No options")} placeholder={t("Select recipients")} loadingMessage={() => t("Loading")}
                                     filterOption={filterOption} options={values} components={{ Option, MultiValue, GroupHeading }}
-                                    className="w-100 mb-2"
+                                    className="w-100"
                                     classNames={{
+                                        container: () => (selectedOptions?.length > 0 ? "has-value" : ""),
                                         groupHeading: () => ("groupHeading"),
                                         multiValue: () => ("multiValue"),
                                         multiValueLabel: () => ("multiValueLabel"),
@@ -411,7 +514,12 @@ const Broadcast = () => {
                                     }}
                                 />
                             </div>
-
+                            {
+                                selectedOptions?.length === 0 &&
+                                <Form.Text className='text-red validation-text'>
+                                    {t("Select at least one recipient")}
+                                </Form.Text>
+                            }
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId='title'>
@@ -428,9 +536,10 @@ const Broadcast = () => {
                             theme="snow"
                             value={formData.emailBody} onChange={value => handleChange({ target: { id: "emailBody", value } })}
                         /> */}
-                        <Editor value={formData.emailBody} handleChange={value => {
-                            handleChange({ target: { id: "emailBody", value } })
-                        }} />
+
+                        <div className="tiptap-wrapper">
+                            <EditorTipTap content={formData.emailBody} setContent={value => handleChange({ target: { id: "emailBody", value } })} />
+                        </div>
 
                         <Form.Group controlId="formFileMultiple" className="mb-3">
                             <Form.Label>{t("Attached files")}</Form.Label>
@@ -440,10 +549,10 @@ const Broadcast = () => {
                         <p>{t(message)}</p>
                         <ModalPreview show={show} setShow={setShow} formData={formData} emailBodyWihtImagesStyles={emailBodyWihtImagesStyles} />
                         <div className='d-flex justify-content-end'>
-                            <Button className="mb-3 me-2" disabled={buttonDisabled || selectedOptions.length === 0} variant="danger" type="button" onClick={() => setShow(true)}>
+                            <Button className="mb-3 me-2" disabled={buttonDisabled || selectedOptions?.length === 0} variant="danger" type="button" onClick={() => setShow(true)}>
                                 {t("Preview")}
                             </Button>
-                            <Button className="mb-3" disabled={buttonDisabled || selectedOptions.length === 0} variant="danger" type="submit" >
+                            <Button className="mb-3" disabled={buttonDisabled || selectedOptions?.length === 0} variant="danger" type="submit" >
                                 <Spinner
                                     as="span"
                                     animation="border"
@@ -458,7 +567,7 @@ const Broadcast = () => {
                     </Form>
                 </Col>
             </Row>
-        </Container>
+        </Container >
     )
 }
 export default Broadcast

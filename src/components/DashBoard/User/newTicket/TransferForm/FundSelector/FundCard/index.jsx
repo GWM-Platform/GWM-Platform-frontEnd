@@ -8,7 +8,7 @@ import { useContext } from 'react';
 import { DashBoardContext } from 'context/DashBoardContext';
 import Decimal from 'decimal.js';
 
-const FundCard = ({ Fund, ownKey, data, setData, openAccordion, showPrice }) => {
+const FundCard = ({ Fund, ownKey, data, setData, openAccordion, showPrice, accountCardRef }) => {
     const { t } = useTranslation();
     const ref = useRef(null)
     const [width, setWidth] = useState(0)
@@ -21,19 +21,28 @@ const FundCard = ({ Fund, ownKey, data, setData, openAccordion, showPrice }) => 
 
     return (
 
-        <Col xs="10" sm="6" md="4" lg="3"
-            className={`py-1 growAnimation  FundCardContainer 
-        ${Fund.freeShares === 0 || !hasFundTransferPermission(Fund.fund.id) ? " FundDisabled" : ""}
-        ${data.FundSelected === Fund.fundId ? " FundSelected" : ""} 
-        `}>
+        <Col xs="10" sm="6" md="4" lg="3" ref={accountCardRef}
+            className={`py-1 growAnimation  FundCardContainer ${Fund.freeShares === 0 || !hasFundTransferPermission(Fund.fund.id) ? " FundDisabled" : ""}`}>
             <Card
                 ref={ref}
-                className={`FundCard h-100 `}
+                className={`fund-item p-0 ${data.FundSelected === Fund.fundId ? "selected" : ""}`}
                 onClick={() => { setFundSelected(setData, Fund.fundId, openAccordion) }}>
-                <Card.Header><strong className="title">{Fund.fund.name}</strong></Card.Header>
+                <Card.Header className='content-container d-flex'>
+                    <strong className="title d-inline">{Fund.fund.name}</strong>
+                    <div className="fund-icon ms-auto">
+                        {
+                            <img alt=""
+                                onError={({ currentTarget }) => {
+                                    currentTarget.onerror = null;
+                                    currentTarget.src = process.env.PUBLIC_URL + '/images/FundsLogos/default.svg';
+                                }}
+                                src={Fund.imageUrl ? Fund.imageUrl : process.env.PUBLIC_URL + '/images/FundsLogos/default.svg'} />
+                        }
+                    </div>
+                </Card.Header>
                 <Card.Body>
-                    <Card.Title> {t("Shares")}{": "} <strong>{<FormattedNumber value={(Fund.shares)} fixedDecimals={2} />}</strong></Card.Title>
-                    <Card.Title> {t("Holdings value")}{": "} <strong><FormattedNumber prefix="U$D " value={(Decimal(Decimal(Fund.shares).toFixed(2)).times(Fund.fund.sharePrice).toFixed(2))} fixedDecimals={2} /></strong></Card.Title>
+                    <Card.Title> {t("Shares")}{": "} <strong>{<FormattedNumber value={(Fund.shares)} rounding="ROUND_DOWN" fixedDecimals={2} />}</strong></Card.Title>
+                    <Card.Title> {t("Holdings value")}{": "} <strong><FormattedNumber prefix="U$D " value={(Decimal(Decimal(Fund.shares) || 0).times(Fund.fund.sharePrice).toFixed(2))} fixedDecimals={2} /></strong></Card.Title>
                     {
                         showPrice &&
                         <Container fluid className="px-0">

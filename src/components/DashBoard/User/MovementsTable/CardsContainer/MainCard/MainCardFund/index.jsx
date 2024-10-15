@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Col, Nav } from 'react-bootstrap';
+import { Container, Col, Nav, Spinner, Button } from 'react-bootstrap';
 
 import { DashBoardContext } from 'context/DashBoardContext';
 import { useTranslation } from "react-i18next";
@@ -18,6 +18,12 @@ import { useHistory, useLocation } from 'react-router-dom/cjs/react-router-dom.m
 import PerformanceComponent from 'components/DashBoard/GeneralUse/PerformanceComponent';
 import { useDispatch } from 'react-redux';
 import { fetchTransactions } from 'Slices/DashboardUtilities/transactionsSlice';
+import { PrintButton, PrintDefaultWrapper, usePrintDefaults } from 'utils/usePrint';
+import ReactPDF from '@react-pdf/renderer';
+import TransactionTable from 'TableExport/TransactionTable';
+import axios from 'axios'
+import { exportToExcel } from 'utils/exportToExcel';
+import { faFileExcel } from '@fortawesome/free-regular-svg-icons';
 
 const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
     const location = useLocation();
@@ -32,7 +38,7 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
     const desiredType = useQuery().get("type")
 
     const [SelectedTab, setSelectedTab] = useState(desiredType === "share-transfer" ? "2" : "0")
-    const { PendingTransactions } = useContext(DashBoardContext)
+    const { PendingTransactions, AccountSelected, sharesDecimalPlaces } = useContext(DashBoardContext)
     const { t } = useTranslation();
 
     const balanceInCash = Fund.shares ? (Fund.shares * Fund.fund.sharePrice) : 0
@@ -69,17 +75,123 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
         // }
     }, [ClientSelected.id, Fund.fund.id, dispatch])
 
+    const { getPageMargins, componentRef, title, aditionalStyles } = usePrintDefaults(
+        {
+            aditionalStyles: `@media print { 
+                .historyContent{ padding: 0!important; page-break-before: avoid; }
+                .main-card-header{ page-break-inside: avoid; page-break-before: avoid; margin-top: 1rem; }
+                .movementsMainCardFund{ overflow: visible!important; }
+                .tabs-container,select,.hideInfoButton, .accordion, button, td[data-column-name="actions"], th[data-column-name="actions"],td[data-column-name="ticket"], th[data-column-name="ticket"]{ display: none!important; }
+                td, td * , th , th * {
+                    font-size: 14px;
+                    width: auto;
+                }
+                .tableDescription {
+                    text-wrap: normal
+                }
+                .tableConcept, .tableDate, .tableAmount, .tableDescription  {
+                    width: auto;
+                    max-width: unset
+                }
+            }`,
+            title: `Cuenta corriente`,
+            bodyClass: "ProveedoresObra"
+        }
+    )
+
+    const [performance, setPerformance] = useState(0)
+    const [Movements, setMovements] = useState({
+        transactions: 0,
+        total: 0,//Total of movements with the filters applied
+    })
+
+    useEffect(() => {
+        axios.get(`/clients/${ClientSelected.id}/fundPerformance?fund=${Fund.fund.id}`)
+            .then(response => {
+                setPerformance(response.data)
+            })
+            .catch(err => {
+                setPerformance(0)
+            })
+    }, [ClientSelected.id, Fund.fund.id])
+
+    const [rendering, setRendering] = useState(false)
+
+    const renderAndDownloadTablePDF = async () => {
+        setRendering(true)
+        const blob = await ReactPDF.pdf(
+            <TransactionTable
+                transactions={Movements.transactions}
+                headerInfo={{
+                    fundName: Fund.fund.name,
+                    balance: Fund.shares ? Fund.shares : 0,
+                    sharePrice: Fund.fund.sharePrice,
+                    balanceInCash: balanceInCash.toFixed(2),
+                    pendingshares: pendingshares ? pendingshares : 0,
+                    performance: performance,
+                    clientName:
+                        `${ClientSelected?.firstName === undefined ? "" : ClientSelected?.firstName === "-" ? "" : ClientSelected?.firstName
+                        }${ClientSelected?.lastName === undefined ? "" : ClientSelected?.lastName === "-" ? "" : ` ${ClientSelected?.lastName}`
+                        }`,
+                }}
+                sharesDecimalPlaces={sharesDecimalPlaces}
+                AccountSelected={AccountSelected}
+            />).toBlob()
+        const url = URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = url
+        link.setAttribute('download', `${t("Fund {{fund}} movements", { fund: Fund.fund.name })}.pdf`)
+        // 3. Append to html page
+        document.body.appendChild(link)
+        // 4. Force download
+        link.click()
+        // 5. Clean up and remove the link
+        link.parentNode.removeChild(link)
+        setRendering(false)
+    }
+
     return (
-        <div className="movementsMainCardFund growAnimation pt-2">
-            <div className="bg-white info ms-0 mb-2 px-0">
+        <PrintDefaultWrapper className="movementsMainCardFund growAnimation pt-2" aditionalStyles={aditionalStyles} ref={componentRef} getPageMargins={getPageMargins} title={title} >
+            <div className="bg-white main-card-header info ms-0 mb-2 px-0">
                 <div className="d-flex justify-content-between align-items-end pe-2 mb-1">
-                    <h1 className="m-0 title px-2">
+                    <h1 className="m-0 title px-2 me-auto">
                         {t(Fund.fund.name)}
                     </h1>
-                    <h2 className="m-0 left">
-                        {t("Share price")}:&nbsp;
-                        <FormattedNumber style={{ fontWeight: "bolder" }} value={Fund.fund.sharePrice} prefix="U$D " suffix="" fixedDecimals={2} />
-                    </h2>
+                    {
+                        SelectedTab + "" !== "1" &&
+                        <Col xs="auto" className='ms-2' style={{ marginTop: ".4rem" }}>
+                            <Button className="me-2 print-button no-style" variant="info" onClick={() => exportToExcel(
+                                SelectedTab === "Movements" ?
+                                    {
+                                        filename: t("Fund_movements", { fundName: Fund.fund.name }),
+                                        sheetName: t("Fund_movements", { fundName: Fund.fund.name }),
+                                        dataTableName: "fund-movements",
+                                        excludedColumns: ["ticket", "actions"],
+                                        // plainNumberColumns: ["unit_floor", "unit_unitNumber", "unit_typology"]
+                                    }
+                                    :
+                                    {
+                                        filename: t("Fund_transfers", { fundName: Fund.fund.name }),
+                                        sheetName: t("Fund_transfers", { fundName: Fund.fund.name }),
+                                        dataTableName: "fund-transfers",
+                                        excludedColumns: ["ticket", "actions"],
+                                    }
+                            )} >
+                                <FontAwesomeIcon icon={faFileExcel} />
+                            </Button>
+                        </Col>
+                    }
+                    {
+                        SelectedTab + "" === "0" &&
+                        <Col xs="auto">
+                            {
+                                rendering ?
+                                    <Spinner animation="border" size="sm" />
+                                    :
+                                    <PrintButton className="w-100 h-100" variant="info" handlePrint={renderAndDownloadTablePDF} />
+                            }
+                        </Col>
+                    }
                 </div>
                 <div className="d-flex justify-content-between align-items-start pe-2">
                     <Col className="d-flex justify-content-between pe-5" sm="auto">
@@ -88,9 +200,11 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
                             <FormattedNumber style={{ fontWeight: "bolder" }} value={Fund.shares ? Fund.shares : 0} fixedDecimals={2} />
                         </h2>
                     </Col>
-                    <Col className='ms-auto' xs="auto">
-                        <PerformanceComponent className='performance-component' text={"Accumulated performance"} fundId={Fund.fund.id} />
-                    </Col>
+                    <h2 className="m-0 left">
+                        {t("Share price")}:&nbsp;
+                        <FormattedNumber style={{ fontWeight: "bolder" }} value={Fund.fund.sharePrice} prefix="U$D " suffix="" fixedDecimals={2} />
+                    </h2>
+
                 </div>
 
                 <div className="d-flex justify-content-between align-items-end pe-2">
@@ -122,6 +236,9 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
                                 icon={faEyeSlash}
                             />
                         </Col>
+                    </Col>
+                    <Col className='ms-auto' xs="auto">
+                        <PerformanceComponent className='performance-component' text={"Accumulated performance"} fundId={Fund.fund.id} />
                     </Col>
                 </div>
                 <div className="d-flex justify-content-between align-items-start pe-2">
@@ -158,7 +275,7 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
                 </div>
             </div>
             {/*tabs controller*/}
-            <Container fluid className="px-0">
+            <Container fluid className="tabs-container px-0">
                 <Nav className="history-tabs" variant="tabs" activeKey={SelectedTab} onSelect={(e) => { setSelectedTab(e) }}>
                     <Nav.Item>
                         <Nav.Link eventKey={"0"}>{t("Transactions")}</Nav.Link>
@@ -179,6 +296,7 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
                     {
                         0:
                             <MovementsTab
+                                Movements={Movements} setMovements={setMovements}
                                 Fund={Fund} SearchById={SearchById} setSearchById={setSearchById}
                                 resetSearchById={resetSearchById} handleMovementSearchChange={handleMovementSearchChange} />,
                         1:
@@ -189,6 +307,6 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
                     }[SelectedTab]
                 }
             </Container>
-        </div>)
+        </PrintDefaultWrapper>)
 }
 export default MainCardFund

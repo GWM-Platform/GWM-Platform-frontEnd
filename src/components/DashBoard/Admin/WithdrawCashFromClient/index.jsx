@@ -11,10 +11,13 @@ import BaseSelect from "react-select";
 import FixRequiredSelect from 'components/DashBoard/GeneralUse/Forms/FixRequiredSelect';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinusCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchclients, selectAllclients } from 'Slices/DashboardUtilities/clientsSlice';
 
 const WithdrawCashFromClient = () => {
     const { toLogin } = useContext(DashBoardContext)
 
+    const [fetching, setFetching] = useState(false)
     const [Accounts, setAccounts] = useState(
         {
             fetching: true,
@@ -29,6 +32,7 @@ const WithdrawCashFromClient = () => {
             date: moment().format(moment.HTML5_FMT.DATETIME_LOCAL),
             account: "",
             note: "",
+            clientNote: "",
             affectsProfit: false
         }
     )
@@ -36,12 +40,14 @@ const WithdrawCashFromClient = () => {
     const [validated, setValidated] = useState(true);
 
     const [NoteActive, setNoteActive] = useState(false)
+    const [clientNoteActive, setClientNoteActive] = useState(false)
 
     const token = sessionStorage.getItem('access_token')
     let history = useHistory();
     const { t } = useTranslation();
 
     const withdraw = async () => {
+        setFetching(true)
         var url = `${process.env.REACT_APP_APIURL}/accounts/${data?.account?.value}/adminWithdraw`;
         const response = await fetch(url, {
             method: 'POST',
@@ -49,6 +55,7 @@ const WithdrawCashFromClient = () => {
                 amount: parseFloat(data.amount),
                 date: moment(data.date).format(),
                 note: NoteActive ? data.note : undefined,
+                clientNote: (clientNoteActive && data.affectsProfit) ? data.clientNote : undefined,
                 affectsProfit: data.affectsProfit
             }),
             headers: {
@@ -61,6 +68,7 @@ const WithdrawCashFromClient = () => {
         if (response.status === 201) {
             history.push(`/DashBoard/operationResult`);
         } else {
+            setFetching(false)
             switch (response.status) {
                 case 500:
                     console.error(response.status)
@@ -82,7 +90,7 @@ const WithdrawCashFromClient = () => {
         event.preventDefault();
         event.stopPropagation();
         const form = event.currentTarget;
-        if (form.checkValidity() === true) {
+        if (form.checkValidity() && !fetching) {
             if (token === null) {
                 toLogin()
             } else {
@@ -187,13 +195,19 @@ const WithdrawCashFromClient = () => {
     );
 
     const accountSelectedValid = () => data?.account?.value
+    const dispatch = useDispatch()
+    const clients = useSelector(selectAllclients)
+    const getClientById = (id) => clients.find(client => client.id === id)
+    useEffect(() => {
+        dispatch(fetchclients({ all: true, showUsers: true }))
+    }, [dispatch])
 
     return (
         <Container className="h-100 AssetsAdministration">
             <Row className="h-100 d-flex justify-content-center">
                 <Col className="newTicket h-100 growAnimation section" sm="12">
                     <div className="header">
-                        <h1 className="title">{t("Withdraw cash from an account")}</h1>
+                        <h1 className="title fw-normal">{t("Withdraw cash from an account")}</h1>
                     </div>
                     <Form noValidate validated={validated} onSubmit={handleSubmit}>
                         <Form.Group className="mb-3">
@@ -210,7 +224,8 @@ const WithdrawCashFromClient = () => {
                                 options={Accounts.value.map((Account) => (
                                     {
                                         label: `${t("Account Alias")}: ${Account.alias} / ${t("Account Id")}: ${Account.id} / ${t("Actual Balance")}: ${Account.balance}`,
-                                        value: Account.id
+                                        value: Account.id,
+                                        isDisabled: !getClientById(Account.clientId)?.enabled
                                     }
                                 ))}
                             />
@@ -305,7 +320,6 @@ const WithdrawCashFromClient = () => {
                                         onChange={(e) => { handleChange(e); }}
                                         required
                                     />
-
                                     <button
                                         type="button"
                                         onClick={
@@ -318,7 +332,6 @@ const WithdrawCashFromClient = () => {
                                         <FontAwesomeIcon icon={faMinusCircle} />
                                     </button>
                                 </div>
-
                                 :
                                 <div style={{ height: "38px" }} className="mb-3 w-100 d-flex align-items-start">
                                     <Button type="button" className="ms-auto" size="sm" variant="danger" onClick={() => setNoteActive(true)}>
@@ -327,8 +340,41 @@ const WithdrawCashFromClient = () => {
                                     </Button>
                                 </div>
                         }
+                        {
+                            data.affectsProfit && <>
+                                {
+                                    clientNoteActive ?
+                                        <div className="d-flex align-items-center mb-3">
+                                            <Form.Control
+                                                placeholder={`${t("Withdrawal note")} (${t("client")})`}
+                                                value={data.clientNote} type="text" id="clientNote" maxLength="250"
+                                                onChange={(e) => { handleChange(e); }}
+                                                required
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={
+                                                    () => {
+                                                        handleChange({ target: { id: "clientNote", value: "" } })
+                                                        setClientNoteActive(false)
+                                                    }
+                                                }
+                                                className="noStyle ms-2" title={t("Remove note")}>
+                                                <FontAwesomeIcon icon={faMinusCircle} />
+                                            </button>
+                                        </div>
+                                        :
+                                        <div style={{ height: "38px" }} className="mb-3 w-100 d-flex align-items-start">
+                                            <Button type="button" className="ms-auto" size="sm" variant="danger" onClick={() => setClientNoteActive(true)}>
+                                                <FontAwesomeIcon className="me-1" icon={faPlusCircle} />
+                                                {t("Add client note")}
+                                            </Button>
+                                        </div>
+                                }
+                            </>
+                        }
                         <div className='d-flex pb-3'>
-                            <Button className="ms-auto" disabled={data.amount === "" || data.amount <= 0} variant="danger" type="submit">
+                            <Button className="ms-auto" disabled={data.amount === "" || data.amount <= 0 || fetching} variant="danger" type="submit">
                                 {t("Submit")}
                             </Button>
                         </div>

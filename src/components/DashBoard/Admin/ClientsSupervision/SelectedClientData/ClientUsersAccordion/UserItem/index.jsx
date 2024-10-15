@@ -1,5 +1,6 @@
 import { faCheckCircle, faTimesCircle } from "@fortawesome/free-regular-svg-icons";
 import axios from "axios";
+import TooltipInfo from "components/DashBoard/Admin/Broadcast/TooltipInfo";
 import MoreButton from "components/DashBoard/GeneralUse/MoreButton";
 import { DashBoardContext } from "context/DashBoardContext";
 import React from "react";
@@ -7,6 +8,7 @@ import { useContext } from "react";
 import { useState } from "react";
 import { Badge, Dropdown, Spinner } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import { userId } from "utils/userId";
 
 const UserItem = ({ ownersAmount, client, user, getUsers }) => {
     const { t } = useTranslation()
@@ -92,7 +94,44 @@ const UserItem = ({ ownersAmount, client, user, getUsers }) => {
             }
         });
     }
+    const toggleUserToClientStatus = () => {
+        setRequest((prevState) => ({ ...prevState, fetching: true, fetched: false }))
+        axios.patch(`/users/${user.id}/${user.userToClientEnabled ? "disable" : "enable"}/client/${client.id}`)
+            .then(function (response) {
+                setRequest(() => (
+                    {
+                        fetching: false,
+                        fetched: true,
+                        valid: true,
+                    }))
+                getUsers()
+            }).catch((err) => {
+                if (err.message !== "canceled") {
+                    if (err.response.status === "401") toLogin()
+                    setRequest((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
+                }
+            });
+    }
+    const toggleUserStatus = () => {
+        setRequest((prevState) => ({ ...prevState, fetching: true, fetched: false }))
+        axios.patch(`/users/${user.id}/${user.enabled ? "disable" : "enable"}`)
+            .then(function (response) {
+                setRequest(() => (
+                    {
+                        fetching: false,
+                        fetched: true,
+                        valid: true,
+                    }))
+                getUsers()
+            }).catch((err) => {
+                if (err.message !== "canceled") {
+                    if (err.response.status === "401") toLogin()
+                    setRequest((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
+                }
+            });
+    }
 
+    const currentUserId = userId()
     return (
         <div className="d-flex Actions py-2 align-items-center user" style={{ borderBottom: " 1px solid lightgray" }}>
             <div className="mb-0 pe-1 pe-md-2" >
@@ -110,9 +149,57 @@ const UserItem = ({ ownersAmount, client, user, getUsers }) => {
                     <Badge size="sm" bg={user.verified ? "success" : "danger"}>
                         {
                             user.verified ?
-                                t("Active")
+                                t("Email verified")
                                 :
-                                t("Not active")
+                                t("Email not verified")
+                        }
+                    </Badge>
+                    &nbsp;
+                    {
+
+                    }
+                    <Badge size="sm" bg={(user.enabled && user.userToClientEnabled) ? "success" : "danger"}>
+                        {
+                            (user.enabled && user.userToClientEnabled) ?
+                                t("Enabled")
+                                :
+                                <>
+                                    {t("Disabled")}
+                                    <TooltipInfo trigger={["hover", "focus"]}
+                                        btnClassName="btn no-style alt-focus ms-1 d-inline-block"
+                                        text={
+                                            <p className='text-start mb-0'>
+                                                {
+                                                    user.enabled ?
+                                                        <>{t("General access enabled")} 🗸</>
+                                                        :
+                                                        <>{t("General access disabled")} ✗</>
+                                                }<br />
+                                                {
+                                                    user.userToClientEnabled ?
+                                                        <>{t("Access to this client enabled")} 🗸</>
+                                                        :
+                                                        <>{t("Access to this client disabled")} ✗</>
+                                                }
+                                            </p>
+                                        } />
+                                </>
+                        }
+                        {
+                            /* {
+                                user.enabled ?
+                                    t("General access enabled")
+                                    :
+                                    t("General access disabled")
+                            } */
+                        }
+                        {
+                            /* {
+                                user.userToClientEnabled ?
+                                    t("Access to this client enabled")
+                                    :
+                                    t("Access to this client disabled")
+                            } */
                         }
                     </Badge>
                 </h1>
@@ -166,6 +253,12 @@ const UserItem = ({ ownersAmount, client, user, getUsers }) => {
                                         {t('Resend activation email')}
                                     </Dropdown.Item>
                                 }
+                                <Dropdown.Item onClick={toggleUserToClientStatus}>
+                                    {t(user.userToClientEnabled ? 'Disable access to this client' : 'Enable access to this client')}
+                                </Dropdown.Item>
+                                <Dropdown.Item disabled={currentUserId === user.id + ""} onClick={toggleUserStatus}>
+                                    {t(user.enabled ? 'Disable general access' : 'Enable general access')}
+                                </Dropdown.Item>
                                 <Dropdown.Divider />
                                 <Dropdown.Item disabled={user.isOwner && ownersAmount === 1} onClick={() => disconnectUserToClient()} >
                                     {t('Disconnect user')}

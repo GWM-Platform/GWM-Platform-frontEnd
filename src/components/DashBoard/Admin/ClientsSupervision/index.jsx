@@ -19,6 +19,13 @@ const ClientsSupervision = () => {
 
     const [Accounts, setAccounts] = useState({ fetching: true, fetched: false, content: [] })
     const [Clients, setClients] = useState({ fetching: true, fetched: false, content: [] })
+    const toggleClient = (clientId) => {
+        setClients(prevState => {
+            const Client = prevState.content.find(client => client.id === clientId)
+            Client.enabled = !Client.enabled
+            return { ...prevState, content: [...prevState.content] }
+        })
+    }
     const [users, setUsers] = useState({ fetching: true, fetched: false, valid: false, content: [] })
 
     const getUsers = useCallback((signal) => {
@@ -139,7 +146,7 @@ const ClientsSupervision = () => {
                         {
                             Clients.content.map((client) =>
                                 <Route key={`client-data-${client.id}`} path={`/DashBoard/clientsSupervision/${client.id}`}>
-                                    <SelectedClientData setAccounts={setAccounts} users={users} Client={client} Account={getAccountByClientId(client.id)} />
+                                    <SelectedClientData setAccounts={setAccounts} users={users} Client={client} Account={getAccountByClientId(client.id)} toggleClient={toggleClient} />
                                 </Route>
                             )
                         }

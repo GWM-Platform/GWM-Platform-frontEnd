@@ -39,7 +39,7 @@ const CreateForm = ({ data, fetchingCreateRequest, handleChange, ActionDispatch,
     return (
         <div className="editForm">
             <div className="header">
-                <h1 className="title">
+                <h1 className="title fw-normal">
                     {t("Rule creation")}
                 </h1>
                 <FontAwesomeIcon className="button icon" onClick={() => ActionDispatch({ type: "view" })} icon={faChevronCircleLeft} />
@@ -84,7 +84,7 @@ const CreateForm = ({ data, fetchingCreateRequest, handleChange, ActionDispatch,
                 </FloatingLabel>
 
                 <div className="d-flex justify-content-end">
-                    <Button variant="danger" type="submit" className="mb-3">
+                    <Button variant="danger" type="submit" className="mb-3" disabled={fetchingCreateRequest}>
                         <Spinner animation="border" variant="light"
                             className={`${fetchingCreateRequest ? "d-inline-block" : "d-none"} littleSpinner me-2`} />
                         {t("Submit")}

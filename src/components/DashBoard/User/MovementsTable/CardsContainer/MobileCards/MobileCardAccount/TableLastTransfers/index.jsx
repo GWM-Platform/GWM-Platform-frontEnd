@@ -113,19 +113,21 @@ const TableLastTransfers = ({ account }) => {
                         onClick={() => setOpen(!open)}
                         aria-expanded={open}>
                         <Row className="d-flex justify-content-end">
+
                             <Col className={fetchingTransfers ? "d-flex justify-content-between align-items-center" : ""}>
-                                <h2 className={`my-2 toggler-mobile ${!!(fetchingTransfers) ? "loading" : ""} ${open ? "toggled" : ""}`}>{t("Last transfers")}</h2>
-                                {!!(fetchingTransfers) && <Spinner className="ms-2" animation="border" size="sm" />}
+                                <h2 className={`my-2 toggler-mobile ${!!(fetchingTransfers) ? "loading" : ""} ${open ? "toggled" : ""} flex-grow-1`}>
+                                    {t("Last transfers")}
+
+                                    <Button className="buttonFilter no-style me-1 ms-auto" variant="info" onClick={(e) => { handleShow(); e.stopPropagation() }}>
+                                        <FontAwesomeIcon icon={faFilter} />
+                                    </Button>
+                                </h2>
+                                {!!(fetchingTransfers) && <Spinner style={{ marginLeft: ".35em" }} animation="border" size="sm" />}
                             </Col>
                         </Row>
                     </Container>
                     <Collapse in={open}>
                         <div className="movementsTable mb-3">
-                            <div className='py-1 d-flex justify-content-end'>
-                                <Button className="buttonFilter" variant="danger" onClick={() => handleShow()}>
-                                    <FontAwesomeIcon icon={faFilter} />
-                                </Button>
-                            </div>
                             {
                                 transfers.transfers.length === 0 || transfers === null ?
                                     <h2 className="text-center">{t("There are no records in the selected state")}</h2>

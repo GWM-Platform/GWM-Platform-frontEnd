@@ -7,7 +7,7 @@ import { useContext } from 'react';
 import { DashBoardContext } from 'context/DashBoardContext';
 import enrichAccount from 'utils/enrichAccount';
 
-const AccountCard = ({ data, setData, openAccordion }) => {
+const AccountCard = ({ data, setData, openAccordion, accountCardRef }) => {
     const { t } = useTranslation();
     const ref = useRef(null)
 
@@ -18,16 +18,22 @@ const AccountCard = ({ data, setData, openAccordion }) => {
 
     return (
 
-        <Col xs="10" sm="6" md="4" lg="3"
+        <Col xs="10" sm="6" md="4" lg="3" ref={accountCardRef}
             className={`py-1 growAnimation  FundCardContainer 
         ${!hasPermission('TRANSFER_GENERATE') ? " FundDisabled" : ""}
         ${data.FundSelected === "cash" ? " FundSelected" : ""} 
         `}>
             <Card
                 ref={ref}
-                className={`FundCard h-100 `}
+                className={`fund-item p-0 ${data.FundSelected === "cash" ? "selected" : ""}`}
                 onClick={() => { setFundSelected(setData, "cash", openAccordion) }}>
-                <Card.Header><strong className="title">{t("Cash")}</strong></Card.Header>
+
+                <Card.Header className='content-container d-flex'>
+                    <strong className="title d-inline">{t("Cash")}</strong>
+                    <div className="fund-icon ms-auto">
+                        <img alt="" src={process.env.PUBLIC_URL + '/images/FundsLogos/cash.svg'} />
+                    </div>
+                </Card.Header>
                 <Card.Body>
                     <Card.Title> {t("Balance")}{": "} <strong><FormattedNumber className="text-nowrap" prefix="U$D " value={AccountSelectedEnriched?.balance || 0} fixedDecimals={2} /></strong></Card.Title>
                     {AccountSelectedEnriched?.totalAvailable !== AccountSelectedEnriched?.balance &&

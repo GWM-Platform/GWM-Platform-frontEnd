@@ -29,16 +29,17 @@ const DocumentForm = ({ client, documents }) => {
     const [Request, setRequest] = useState({ fetching: false, fetched: false, valid: false })
     const [data, setData] = useState(
         {
-            name: selectedDocument ? selectedDocument?.name || "": "",
-            link:selectedDocument ? selectedDocument?.link || "" : "",
+            name: selectedDocument ? selectedDocument?.name || "" : "",
+            link: selectedDocument ? selectedDocument?.link || "" : "",
+            adminDocument: selectedDocument ? selectedDocument?.adminDocument || false : false,
         }
     )
 
-    const handleChange = (e) => { setData(prevState => ({ ...prevState, [e.target.id]: e.target.value })) }
+    const handleChange = (e) => { setData(prevState => ({ ...prevState, [e.target.id]: e.target.type === "checkbox" ? e.target.checked : e.target.value })) }
 
     const addDocumentToClient = (clientId) => {
         setRequest((prevState) => ({ ...prevState, fetching: true, fetched: false }))
-        axios.post(`/documents/client/${clientId}`, { name: data.name, link: data.link },)
+        axios.post(`/documents/client/${clientId}`, { name: data.name, link: data.link, adminDocument: data.adminDocument },)
             .then(function (response) {
                 setRequest((prevState) => (
                     {
@@ -63,7 +64,7 @@ const DocumentForm = ({ client, documents }) => {
 
     const editDocument = (clientId) => {
         setRequest((prevState) => ({ ...prevState, fetching: true, fetched: false }))
-        axios.patch(`/documents/${id}`, { name: data.name, link: data.link },)
+        axios.patch(`/documents/${id}`, { name: data.name, link: data.link, adminDocument: data.adminDocument },)
             .then(function (response) {
                 setRequest((prevState) => (
                     {
@@ -90,7 +91,7 @@ const DocumentForm = ({ client, documents }) => {
         event.preventDefault();
         event.stopPropagation();
         const form = event.currentTarget;
-        if (form.checkValidity()) {
+        if (form.checkValidity() && !Request.fetching) {
             selectedDocument ?
                 editDocument(clientId)
                 :
@@ -165,6 +166,7 @@ const DocumentForm = ({ client, documents }) => {
 
                                 }
                             </Form.Group>
+                            <Form.Check className="mb-3" onChange={handleChange} readOnly id="adminDocument" checked={data.adminDocument} label={t("Document visible only by administrators")} />
                             {
                                 Request.fetched &&
                                 <div className="w-100 mb-2">
