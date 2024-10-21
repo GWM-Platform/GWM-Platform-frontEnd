@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 
 import { useTranslation } from "react-i18next";
 import { DashBoardContext } from 'context/DashBoardContext';
@@ -7,8 +7,10 @@ import { Accordion, Form, Row, Col, Button } from 'react-bootstrap';
 import TicketSearch from 'components/DashBoard/GeneralUse/TicketSearch'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { motives } from 'components/DashBoard/Admin/TicketsAdministration';
+import MultiSelectById from 'components/DashBoard/Admin/TicketsAdministration/MultiSelectById';
 
-const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, ticketSearch, ticketSearchProps, movements, defaultMoves = 5, dateFilters = false }) => {
+const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, ticketSearch, ticketSearchProps, movements, defaultMoves = 5, dateFilters = false, filterMotives = false }) => {
     const { t } = useTranslation();
     const { TransactionStates } = useContext(DashBoardContext)
 
@@ -16,7 +18,8 @@ const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, ti
         moves: movsPerPage,
         state: "",
         fromDate: "",
-        toDate: ""
+        toDate: "",
+        filterMotives: []
     })
 
     const handleChange = (event, number = true) => {
@@ -26,7 +29,6 @@ const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, ti
             }
         }))
     }
-
     const updateFilters = (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -40,6 +42,9 @@ const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, ti
                     ...dateFilters ? {
                         fromDate: filterOptions.fromDate,
                         toDate: filterOptions.toDate
+                    } : {},
+                    ...filterMotives ? {
+                        filterMotives: filterOptions.filterMotives
                     } : {}
                 }
             }))
@@ -84,8 +89,16 @@ const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, ti
                                 </Col>
                             }
                             {
+                                filterMotives &&
+                                <Col xs="6" className="mt-2">
+                                    <Form.Label className="capitalizeFirstLetter">{t("Concept")}</Form.Label>
+                                    <MotiveMultiSelect handleChange={handleChange} FormData={filterOptions} />
+                                </Col>
+                            }
+                            {
                                 dateFilters &&
                                 <>
+                                    <Col xs="12" />
                                     <Col xs="6">
                                         <Form.Group className="mt-2">
                                             <Form.Label>{t("from_date")}</Form.Label>
@@ -140,7 +153,13 @@ const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, ti
                     </Form>
                     <Row className="align-items-stretch">
                         {
-                            !!ticketSearch && <Col> <TicketSearch props={ticketSearchProps} /> </Col>
+                            !!ticketSearch &&
+                            <>
+                                <Col> <TicketSearch props={ticketSearchProps} /> </Col>
+                                <Col xs="12" className='mt-4'>
+                                    <div style={{ borderBottom: "1px solid #ced4da" }} />
+                                </Col>
+                            </>
                         }
                     </Row>
                 </Accordion.Body>
@@ -150,3 +169,23 @@ const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, ti
     )
 }
 export default FilterOptions
+
+export const MotiveMultiSelect = ({
+    handleChange,
+    FormData
+}) => {
+    const { t } = useTranslation()
+    const options = useMemo(() => motives.map(
+        motive => ({ label: t(motive.labelKey), value: motive.value })
+    ), [t])
+
+    return (
+        <MultiSelectById
+            options={options}
+            FormData={FormData}
+            isClearable
+            id="filterMotives"
+            handleChange={handleChange}
+        />
+    )
+}

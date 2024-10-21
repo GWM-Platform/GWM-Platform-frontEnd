@@ -1,0 +1,79 @@
+.basicSelector {
+	height: 100%;
+	.select__value-container {
+		padding-top: calc( 0.625rem - 4px );
+
+		.multi-value {
+			top: .6rem;
+		}
+	}
+
+	.select__option {
+		display: flex;
+		justify-content: flex-start;
+	}
+
+	.select__control {
+		height: 100%;
+	}
+
+	.select__placeholder {
+		text-align: left;
+	}
+	.buildingsId {
+		display: flex;
+		width: 100%;
+		align-items: center;
+	}
+}
+
+.formatedOption.withDelete {
+    &.focused {
+      .customFormatedOptionButton,
+      .customFormatedOptionLabel {
+        background-color: #e2dcd6 !important;
+      }
+    }
+    &.selected {
+      .customFormatedOptionButton,
+      .customFormatedOptionLabel {
+        background-color: #ccc8c6 !important;
+      }
+    }
+    &.disabled {
+      .customFormatedOptionButton,
+      .customFormatedOptionLabel {
+        opacity: 0.7;
+        cursor: not-allowed!important
+      }
+    }
+    display: flex;
+  
+    .customFormatedOptionLabel {
+      flex-grow: 1;
+      display: flex;
+      // justify-content: space-between;
+      background-color: #f6f1ee;
+      color: #420000;
+      padding: 8px 12px;
+      box-sizing: border-box;
+      font-weight: 400 !important;
+    }
+  
+    .customFormatedOptionLabel:hover {
+      cursor: pointer;
+    }
+  
+    .customFormatedOptionButton {
+      width: 10%;
+      overflow: hidden;
+      border: none;
+      background-color: #f6f1ee;
+      color: #4b4b4fff;
+    }
+  
+    .customFormatedOptionButton:hover {
+      color: red;
+    }
+  }
+  

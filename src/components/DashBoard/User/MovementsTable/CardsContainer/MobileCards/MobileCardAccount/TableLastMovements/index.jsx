@@ -25,7 +25,10 @@ const TableLastMovements = ({ account }) => {
     const [Options, setOptions] = useState({
         skip: 0,//Offset (in quantity of movements)
         take: 100,//Movements per page
-        state: null
+        state: null,
+        fromDate: "",
+        toDate: "",
+        filterMotives: []
     })
 
     const handleClose = () => setShow(false);
@@ -40,9 +43,13 @@ const TableLastMovements = ({ account }) => {
                     filterAccount: account.id,
                     take: Options.take,
                     skip: Options.skip,
-                    filterState: Options.state,
+                    // filterState: Options.state,
+                    filterState: Options.state === 10 ? null : Options.state,
+                    // showDenied: Pagination.state === 10 ? true : null,
+                    showDenied: Options.state === 10 ? true : null,
                     fromDate: Options.fromDate || null,
-                    toDate: Options.toDate ? new Date(new Date(Options.toDate).setDate(new Date(Options.toDate).getDate() + 1)).toISOString() : null
+                    toDate: Options.toDate ? new Date(new Date(Options.toDate).setDate(new Date(Options.toDate).getDate() + 1)).toISOString() : null,
+                    filterMotives: Options.filterMotives.length > 0 ? Options.filterMotives : null,
                 }
             ).filter(([_, v]) => v != null))
         );
@@ -148,7 +155,7 @@ const TableLastMovements = ({ account }) => {
                             <MoreAndLess InScreen={Options.take} total={movements.total} setOptions={setOptions} />
                         </div>
                     </Collapse>
-                    <FilterOptionsMobile dateFilters show={show} handleClose={handleClose} setOptions={setOptions} />
+                    <FilterOptionsMobile filterMotives dateFilters show={show} handleClose={handleClose} setOptions={setOptions} />
                 </div>
             }
         </Col>

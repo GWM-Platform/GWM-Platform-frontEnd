@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, ButtonGroup, Col, Form, Row, ToggleButton } from 'react-bootstrap'
 import StateSelector from './StateSelector'
@@ -17,6 +17,23 @@ import { faFileExcel } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { exportToExcel } from 'utils/exportToExcel';
 import { faCompress, faExpand } from '@fortawesome/free-solid-svg-icons';
+
+export const motives = [
+    { value: 'DEPOSIT', labelKey: 'DEPOSIT' },
+    { value: 'WITHDRAWAL', labelKey: 'WITHDRAWAL' },
+    { value: 'STAKE_BUY', labelKey: 'STAKE_BUY_' },
+    { value: 'STAKE_SELL', labelKey: 'STAKE_SELL_' },
+    { value: 'REPAYMENT', labelKey: 'REPAYMENT' },
+    { value: 'FIXED_DEPOSIT_CREATE', labelKey: 'FIXED_DEPOSIT_CREATE_' },
+    { value: 'FIXED_DEPOSIT_CLOSE', labelKey: 'FIXED_DEPOSIT_CLOSE_' },
+    { value: 'TRANSFER_SEND', labelKey: 'TRANSFER_SEND' },
+    { value: 'TRANSFER_RECEIVE', labelKey: 'TRANSFER_RECEIVE' },
+    { value: 'BID_OFFER', labelKey: 'BID_OFFER_' },
+    { value: 'SHARE_TRANSFER_SEND', labelKey: 'SHARE_TRANSFER_SEND' },
+    { value: 'SHARE_TRANSFER_RECEIVE', labelKey: 'SHARE_TRANSFER_RECEIVE' },
+    { value: 'PROFIT_DEPOSIT', labelKey: 'PROFIT_DEPOSIT' },
+    { value: 'PENALTY_WITHDRAWAL', labelKey: 'PENALTY_WITHDRAWAL' },
+]
 
 const TicketsAdministration = () => {
 
@@ -179,22 +196,6 @@ const TicketsAdministration = () => {
 
     const [FilterOptions, setFilterOptions] = useState(FilterOptionsDefaultState)
     const handleChangeFilterOptions = (e) => (setFilterOptions(prevState => ({ ...prevState, [e.target.id]: e.target.value })))
-    const options = useMemo(() => [
-        { value: 'DEPOSIT', label: t('DEPOSIT') },
-        { value: 'WITHDRAWAL', label: t('WITHDRAWAL') },
-        { value: 'STAKE_BUY', label: t('STAKE_BUY_') },
-        { value: 'STAKE_SELL', label: t('STAKE_SELL_') },
-        { value: 'REPAYMENT', label: t('REPAYMENT') },
-        { value: 'FIXED_DEPOSIT_CREATE', label: t('FIXED_DEPOSIT_CREATE_') },
-        { value: 'FIXED_DEPOSIT_CLOSE', label: t('FIXED_DEPOSIT_CLOSE_') },
-        { value: 'TRANSFER_SEND', label: t('TRANSFER_SEND') },
-        { value: 'TRANSFER_RECEIVE', label: t('TRANSFER_RECEIVE') },
-        { value: 'BID_OFFER', label: t('BID_OFFER_') },
-        { value: 'SHARE_TRANSFER_SEND', label: t('SHARE_TRANSFER_SEND') },
-        { value: 'SHARE_TRANSFER_RECEIVE', label: t('SHARE_TRANSFER_RECEIVE') },
-        { value: 'PROFIT_DEPOSIT', label: t('PROFIT_DEPOSIT') },
-        { value: 'PENALTY_WITHDRAWAL', label: t('PENALTY_WITHDRAWAL') }
-    ], [t])
 
     return (
         <PrintDefaultWrapper className={`TicketsAdministration ${collapse ? "container" : "container-fluid"}`} aditionalStyles={aditionalStyles} ref={componentRef} getPageMargins={getPageMargins} title={title} >
@@ -305,7 +306,9 @@ const TicketsAdministration = () => {
                                                 <Col md="4">
                                                     <Form.Group className="mt-2 mb-2">
                                                         <Form.Label>{t("Concept")}</Form.Label>
-                                                        <SingleSelectById isClearable placeholder={t('Concept')} handleChange={handleChangeFilterOptions} FormData={FilterOptions} id='filterMotive' options={options} />
+                                                        <SingleSelectById
+                                                            getOptionLabel={option => t(option.labelKey)}
+                                                            isClearable placeholder={t('Concept')} handleChange={handleChangeFilterOptions} FormData={FilterOptions} id='filterMotive' options={motives} />
                                                     </Form.Group>
                                                 </Col>
                                                 <Col md="3">

@@ -20,7 +20,10 @@ const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
     const [Pagination, setPagination] = useState({
         skip: 0,//Offset (in quantity of movements)
         take: 100,//Movements per page
-        state: null
+        state: null,
+        fromDate: "",
+        toDate: "",
+        filterMotives: []
     })
 
     const toLogin = () => {
@@ -39,7 +42,8 @@ const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
                     filterState: Pagination.state === 10 ? null : Pagination.state,
                     showDenied: Pagination.state === 10 ? true : null,
                     fromDate: Pagination.fromDate || null,
-                    toDate: Pagination.toDate ? new Date(new Date(Pagination.toDate).setDate(new Date(Pagination.toDate).getDate() + 1)).toISOString() : null
+                    toDate: Pagination.toDate ? new Date(new Date(Pagination.toDate).setDate(new Date(Pagination.toDate).getDate() + 1)).toISOString() : null,
+                    filterMotives: Pagination.filterMotives.length > 0 ? Pagination.filterMotives : null
                 }
             ).filter(([_, v]) => v != null))
         );
@@ -132,7 +136,7 @@ const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
         <div className="p-0 h-100">
             <div className="d-flex align-items-start justify-content-center flex-column MovementsTableContainer">
                 <div className={`movementsTable growAnimation`}>
-                    <FilterOptions dateFilters keyword={"transactions"} ticketSearch ticketSearchProps={ticketSearchProps} disabled={SearchById.search} movements Fund={Fund} setPagination={setPagination} movsPerPage={Pagination.take} total={Movements.total} defaultMoves={100} />
+                    <FilterOptions filterMotives dateFilters keyword={"transactions"} ticketSearch ticketSearchProps={ticketSearchProps} disabled={SearchById.search} movements Fund={Fund} setPagination={setPagination} movsPerPage={Pagination.take} total={Movements.total} defaultMoves={100} />
                     {
                         FetchingMovements ?
                             <Loading movements={Pagination.take} />

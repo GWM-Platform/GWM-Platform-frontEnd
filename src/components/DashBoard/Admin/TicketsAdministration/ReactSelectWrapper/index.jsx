@@ -2,12 +2,44 @@ import React from "react";
 import Select from 'react-select';
 import { components } from 'react-select';
 
-const SingleSelectById = ({ backspaceRemovesValue = false, popover = false, menuPosition = "fixed", className = "", id = "", options = [], validated = false, required = false, FormData = {}, handleChange, disabled, isLoading, isClearable = false, placeholder = "", getOptionLabel = false }) => {
-    const value = FormData[id]
-    const getOptionByValue = (optionValue) => options.find(option => optionValue === option?.value) || null
+const ReactSelectWrapper = ({
+    backspaceRemovesValue = false, popover = false, menuPosition = "fixed", className = "", id = "", isClearable = false, isMulti = false, placeholder = "",
+    options = [], FormData = {}, handleChange,
+    validated = false, required = false, disabled, isLoading,
+    getOptionLabel = false,
+    getOptionValue = false,
+    getOptionByValueProp = false, useDefaultGetOptionByValue = false,
+    getOptionsByValueProp = false, useDefaultGetOptionsByValue = false,
+}) => {
+    const value = FormData[id] || []
+    const getOptionByValueDefault = (optionValue) => options.find(option => optionValue === option?.value) || null
+
+    const getOptionByValue = (useDefaultGetOptionByValue ? getOptionByValueDefault : getOptionByValueProp) || (() => value)
+
+    const getOptionsByValueDefault = (optionValues) =>
+        getOptionByValue ?
+            optionValues?.length > 0 ?
+                optionValues.map(optionValue => getOptionByValue(optionValue))
+                :
+                null
+            :
+            value
+    const getOptionsByValue = (useDefaultGetOptionsByValue ? getOptionsByValueDefault : getOptionsByValueProp) || (() => value)
+
 
     const parsedChange = (selectedOption) => {
-        handleChange({ target: { value: selectedOption?.value || "", id } })
+        console.log(
+            selectedOption
+        )
+        handleChange({
+            target: {
+                value:
+                    isMulti
+                        ? selectedOption?.map(value => (getOptionValue ? getOptionValue(selectedOption) : selectedOption || "")) || []
+                        : (getOptionValue ? getOptionValue(selectedOption) : selectedOption || "")
+                , id
+            }
+        })
     }
 
     const Option = ({ children, ...props }) => (
@@ -17,11 +49,17 @@ const SingleSelectById = ({ backspaceRemovesValue = false, popover = false, menu
             </div>
         </components.Option>
     );
-
     return (
         <div className="h-100" title={getOptionByValue(value)?.label || placeholder || ""}>
             <Select
-                {...(getOptionLabel ? { getOptionLabel } : {})}
+                {
+                ...{
+                    ...(getOptionValue ? { getOptionValue } : {}),
+                    ...(getOptionLabel ? { getOptionLabel } : {})
+                }
+                }
+                isMulti={isMulti}
+                value={isMulti ? getOptionsByValue(value) : getOptionByValue(value)}
                 backspaceRemovesValue={backspaceRemovesValue}
                 isClearable={isClearable}
                 menuPosition={menuPosition}
@@ -38,7 +76,6 @@ const SingleSelectById = ({ backspaceRemovesValue = false, popover = false, menu
                 name={id}
                 options={options}
                 onChange={parsedChange}
-                value={getOptionByValue(value)}
                 components={{ Option }}
                 styles={{
                     control: (baseStyles, state) => ({
@@ -65,7 +102,7 @@ const SingleSelectById = ({ backspaceRemovesValue = false, popover = false, menu
                 }}
                 classNames={{
                     input: () => `react-select-input ${id}`,
-                    control: () => `${(getOptionByValue(value) !== null || !required) ? "hasValue " : ""}`,
+                    control: () => `${(((getOptionByValue ? getOptionByValue(value) : value) || []).length > 0 || !required) ? "hasValue " : ""}`,
                     menuPortal: () => `${popover ? "for-popover " : ""}`,
                     dropdownIndicator: () => "same-dropdown"
                 }}
@@ -75,4 +112,4 @@ const SingleSelectById = ({ backspaceRemovesValue = false, popover = false, menu
     );
 }
 
-export default SingleSelectById
+export default ReactSelectWrapper
