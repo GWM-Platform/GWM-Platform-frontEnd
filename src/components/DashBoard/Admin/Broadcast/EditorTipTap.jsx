@@ -305,29 +305,53 @@ const MenuBar = () => {
         } */}
         {
           funds.length > 0 &&
-          <select
-            style={{ width: "12ch" }}
-            value=""
-            onChange={e =>
-              e.target.value === "accountBalance" ?
-                editor.chain().focus().insertContent(`U$D <span data-text-interpolation-type="${"accountBalance"}"></span>`).run()
-                :
-                editor.chain().focus().insertContent(`<span data-text-interpolation-type="stake_fund_${e.target.value}"></span> ${t("shares")}`).run()
-            }>
-            <option value="" disabled>
-              {t("Holdings")}
-            </option>
-            <option value="accountBalance">
-              {t("accountBalance")} (U$D)
-            </option>
-            {
-              funds.map(fund =>
-                <option value={fund.id} key={fund.id}>
-                  {t(`{{fundName}}`, { fundName: fund.name })} ({t("Shares")})
-                </option>
-              )
-            }
-          </select>
+          <>
+            <select
+              style={{ width: "12ch" }}
+              value=""
+              onChange={e =>
+                e.target.value === "accountBalance" ?
+                  editor.chain().focus().insertContent(`U$D <span data-text-interpolation-type="${"accountBalance"}"></span>`).run()
+                  :
+                  editor.chain().focus().insertContent(`${e.target.value.includes("balance_fund") ? `${t("U$S")} ` : ""}<span data-text-interpolation-type="${e.target.value}"></span>${e.target.value.includes("stake_fund") ? ` ${t("shares")}` : ""}`).run()
+              }>
+              <option value="" disabled>
+                {t("Holdings")}
+              </option>
+              <option value="accountBalance">
+                {t("accountBalance")} (U$D)
+              </option>
+              {
+                funds.map(fund =>
+                  <React.Fragment key={fund.id}>
+                    <option value={`stake_fund_${fund.id}`}>
+                      {t(`{{fundName}}`, { fundName: fund.name })} ({t("Shares")})
+                    </option>
+                    <option value={`balance_fund_${fund.id}`}>
+                      {t(`{{fundName}}`, { fundName: fund.name })} ({t("U$S")})
+                    </option>
+                  </React.Fragment>
+                )
+              }
+            </select>
+            <select
+              style={{ width: "19ch" }}
+              value=""
+              onChange={e =>
+                editor.chain().focus().insertContent(`${t("US$")} <span data-text-interpolation-type="share_price_fund_${e.target.value}"></span>`).run()
+              }>
+              <option value="" disabled>
+                {t("Share price")}
+              </option>
+              {
+                funds.map(fund =>
+                  <option value={fund.id} key={fund.id}>
+                    {t(`{{fundName}}`, { fundName: fund.name })}, U$S {fund.sharePrice}
+                  </option>
+                )
+              }
+            </select>
+          </>
         }
 
         <button
@@ -371,25 +395,25 @@ const Tag = (tag = "username", customTranslate) => Node.create({
   inline: true,
   selectable: false,
   atom: true,
-  addAttributes() { 
-    return { 
-      text: { 
-        default: '', 
-      }, 
-    }; 
+  addAttributes() {
+    return {
+      text: {
+        default: '',
+      },
+    };
   },
-  parseHTML() { 
-    return [{ 
-      tag: `span[data-text-interpolation-type="${tag}"]`, 
-    }]; 
+  parseHTML() {
+    return [{
+      tag: `span[data-text-interpolation-type="${tag}"]`,
+    }];
   },
-  renderHTML({ HTMLAttributes }) { 
-    return ['span', mergeAttributes(HTMLAttributes, { 'data-text-interpolation-type': tag })]; 
+  renderHTML({ HTMLAttributes }) {
+    return ['span', mergeAttributes(HTMLAttributes, { 'data-text-interpolation-type': tag })];
   },
-  addNodeView() { 
-    return ReactNodeViewRenderer((props) => 
+  addNodeView() {
+    return ReactNodeViewRenderer((props) =>
       <GenericNodeViewComponent {...props} translationKey={tag} customTranslate={customTranslate} />
-    ); 
+    );
   },
 });
 
@@ -440,7 +464,9 @@ export const EditorTipTap = ({ content, setContent }) => {
     Tag("client", t("Client Name")),
     Tag("accountBalance"),
     Tag("stake_fund_id"),
-    ...funds.map(fund => Tag(`stake_fund_${fund.id}`, t(`"{{fundName}}" stake`, { fundName: fund.name })))
+    ...funds.map(fund => Tag(`stake_fund_${fund.id}`, t(`"{{fundName}}" stake (Shares)`, { fundName: fund.name }))),
+    ...funds.map(fund => Tag(`balance_fund_${fund.id}`, t(`"{{fundName}}" stake (U$S)`, { fundName: fund.name }))),
+    ...funds.map(fund => Tag(`share_price_fund_${fund.id}`, t(`"{{fundName}}" share price`, { fundName: fund.name, sharePrice: fund.sharePrice }))),
     // Link.configure({
     //   openOnClick: false,
     //   autolink: true,
@@ -463,7 +489,7 @@ export const EditorTipTap = ({ content, setContent }) => {
       {
         content === "<p></p>" &&
         <Form.Text className='validation-text text-red'>
-          {t("This field is required")}   
+          {t("This field is required")}
         </Form.Text>
       }
     </>

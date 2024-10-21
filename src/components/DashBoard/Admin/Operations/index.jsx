@@ -144,6 +144,9 @@ const Operations = () => {
 
     const eventOptions = useMemo(() => [
         "LIQUIDATE_FUND",
+        "CREATE_ADMIN"
+        // DELETE_ADMIN
+        // GIVE_ADMIN_PERMISSIONS
     ].map(eventOption => ({ label: t(eventOption), value: eventOption })), [t])
 
     return (

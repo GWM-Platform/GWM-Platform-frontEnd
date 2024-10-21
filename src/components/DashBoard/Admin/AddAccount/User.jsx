@@ -62,6 +62,26 @@ export const User = ({ user }) => {
                 }
             });
     }
+
+    const toggleAdmin = () => {
+        setRequest((prevState) => ({ ...prevState, fetching: true, fetched: false }))
+        axios.post(`/operations`, { operationType: "CREATE_ADMIN", operationMetadata: { email: user.email } })
+            .then(function (response) {
+                setRequest(() => (
+                    {
+                        fetching: false,
+                        fetched: true,
+                        valid: true,
+                    }))
+                dispatch(fetchusers({ all: true }))
+            }).catch((err) => {
+                if (err.message !== "canceled") {
+                    if (err.response.status === "401") toLogin()
+                    setRequest((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
+                }
+            });
+    }
+
     const currentUserId = userId()
     const userClients = useMemo(() => clients.filter(client => client.users.find(clientUser => clientUser.userId === user.id)), [clients, user.id])
 
@@ -134,6 +154,9 @@ export const User = ({ user }) => {
                                             }
                                             <Dropdown.Item disabled={currentUserId === user.id + ""} onClick={toggleUserStatus}>
                                                 {t(user.enabled ? 'Disable general access' : 'Enable general access')}
+                                            </Dropdown.Item>
+                                            <Dropdown.Item disabled={true || currentUserId === user.id + "" || user.isAdmin} onClick={toggleAdmin}>
+                                                {t(user.isAdmin ? 'Revoke admin access' : 'Give admin access')}
                                             </Dropdown.Item>
                                         </Dropdown.Menu >
                                     </Dropdown>

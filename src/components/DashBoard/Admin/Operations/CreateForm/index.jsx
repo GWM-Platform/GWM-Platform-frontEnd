@@ -12,6 +12,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchFunds, selectAllFunds } from 'Slices/DashboardUtilities/fundsSlice';
 import Decimal from 'decimal.js';
 import axios from 'axios';
+import { fetchusers, selectAllusers } from 'Slices/DashboardUtilities/usersSlice';
+import { selectAllOperations } from 'Slices/DashboardUtilities/operationsSlice';
 
 const CreateForm = ({ eventOptions }) => {
     const { t } = useTranslation();
@@ -28,6 +30,7 @@ const CreateForm = ({ eventOptions }) => {
             type: null,
             fund: null,
             customSharePrice: "",
+            email: null
         }
     )
     const unMaskedCustomSharePrice = useMemo(() => {
@@ -48,11 +51,16 @@ const CreateForm = ({ eventOptions }) => {
         setFetchingCreateRequest(true)
         setError(false)
         axios.post(`/operations`, {
-            operationType: data.type.value,
+            operationType: data?.type?.value,
             operationMetadata: {
-                fundId: data.fund.value,
-                customSharePrice: Decimal(unMaskedCustomSharePrice || 0).toNumber()
-            }
+                LIQUIDATE_FUND: {
+                    fundId: data?.fund?.value,
+                    customSharePrice: Decimal(unMaskedCustomSharePrice || 0).toNumber()
+                },
+                CREATE_ADMIN: {
+                    email: data?.email
+                }
+            }[data?.type?.value]
         }).then(function (response) {
             history.push("/DashBoard/operations")
             setFetchingCreateRequest(false)
@@ -88,6 +96,20 @@ const CreateForm = ({ eventOptions }) => {
             }
         }
     }, [data.fund, funds])
+
+    const users = useSelector(selectAllusers)
+    const usersStatus = useSelector(state => state.users.status)
+
+    useEffect(() => {
+        if (usersStatus === 'idle') {
+            dispatch(fetchusers({ all: true }))
+        }
+    }, [dispatch, usersStatus])
+
+    const operations = useSelector(selectAllOperations)
+
+    const userAlreadyExists = users.find(user => user.email === data.email)
+    const operationAlreadyExists = operations?.operations?.find(operation => operation.stateId === 1 && operation?.operationMetadata?.email === data?.email)
 
     return (
         <div className="editForm">
@@ -159,13 +181,32 @@ const CreateForm = ({ eventOptions }) => {
                     </>
                 }
                 {
+                    data?.type?.value === "CREATE_ADMIN" &&
+                    <>
+                        <Form.Label>{t("Email")}</Form.Label>
+                        <Form.Control pattern={(userAlreadyExists || operationAlreadyExists) ? "()" : null} required onChange={handleChange} value={data.email} type="email" id="email" />
+                        {
+                            userAlreadyExists &&
+                            <Form.Text className='text-red'>
+                                {t("An user with this email already exists")}
+                            </Form.Text>
+                        }
+                        {
+                            operationAlreadyExists &&
+                            <Form.Text className='text-red'>
+                                {t("A pending admin creation operation for this email already exists")}
+                            </Form.Text>
+                        }
+                    </>
+                }
+                {
                     error &&
                     <div className="alert alert-danger" role="alert">
                         {t("An error occurred, please try again")}
                     </div>
                 }
 
-                <div className="d-flex justify-content-end">
+                <div className="d-flex justify-content-end mt-3">
                     <Button variant="danger" type="submit" className="mb-3" disabled={fetchingCreateRequest}>
                         <Spinner animation="border" variant="light"
                             className={`${fetchingCreateRequest ? "d-inline-block" : "d-none"} littleSpinner me-2`} />

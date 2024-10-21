@@ -107,7 +107,7 @@ const Broadcast = () => {
                 let span = doc.createElement('span');
                 span.textContent = `{{${keyword}}}`
                 element.replaceWith(span)
-                if (keyword !== "username") {
+                if (keyword !== "username" && !keyword.includes("share_price_fund")) {
                     toClients = true
                 }
             });
