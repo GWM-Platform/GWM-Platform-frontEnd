@@ -9,14 +9,11 @@ import { fetchusers } from 'Slices/DashboardUtilities/usersSlice';
 import MoreButton from 'components/DashBoard/GeneralUse/MoreButton';
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icons';
 import { userId } from 'utils/userId';
-import { selectAllclients } from 'Slices/DashboardUtilities/clientsSlice';
-import { useMemo } from 'react';
 import MultipleItemsCell from 'components/DashBoard/GeneralUse/MultipleItemsCell';
 import { Link } from 'react-router-dom/cjs/react-router-dom';
 import { fetchOperations, selectAllOperations } from 'Slices/DashboardUtilities/operationsSlice';
 
 export const User = ({ user }) => {
-    const clients = useSelector(selectAllclients)
 
     const { t } = useTranslation();
     const dispatch = useDispatch()
@@ -87,18 +84,17 @@ export const User = ({ user }) => {
     }
 
     const currentUserId = userId()
-    const userClients = useMemo(() => clients.filter(client => client.users.find(clientUser => clientUser.userId === user.id)), [clients, user.id])
     const onCourseOperation = operations.operations.find(operation => operation.operationMetadata.userId === user.id && (operation.operationType === "ASSIGN_ADMIN" || operation.operationType === "REMOVE_ADMIN") && operation.stateId === 1)
     return (
         <tr>
             <td className="Alias">{user?.email}</td>
-            <td className="Alias">{user?.firstName || user?.lastName ? (user?.firstName + " " + user?.lastName) : "-"}</td>
+            <td className="Alias">{user?.completeName}</td>
             <td className="Alias">{user?.dni || "-"}</td>
             <td className="Alias">{user?.phone || "-"}</td>
             <td className="Alias">{user?.address || "-"}</td>
             <td className="Alias">
                 <MultipleItemsCell
-                    className='d-flex' buttonClassName="badge bg-info" buttonStyle={{ border: "none" }} array={userClients}
+                    className='d-flex' buttonClassName="badge bg-info" buttonStyle={{ border: "none" }} array={user.userClients}
                     transformer={(client) => <Link className="badge bg-info" to={`/DashBoard/clientsSupervision/${client.id}`}>{client.alias}</Link>}
                 />
             </td>
