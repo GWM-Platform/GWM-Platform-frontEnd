@@ -218,7 +218,7 @@ const User = ({ user, permissions, funds, getUsers, users }) => {
         <Accordion.Item className="user" eventKey={user.id}>
             <Accordion.Header>
                 <div className="mb-0 pe-1 pe-md-2" >
-                    <h1 className="title d-flex align-items-center">{t("User")}&nbsp;#{user.id}
+                    <h1 className="title d-flex align-items-center">{t("User")}&nbsp;{user.userName}
                         {
                             notifyNewUser() &&
                             <>
@@ -268,7 +268,7 @@ const User = ({ user, permissions, funds, getUsers, users }) => {
                     </h1>
                     <h2 className="email">
                         {t("Email")}:&nbsp;
-                        {user.userName}
+                        {user.email}
                     </h2>
                 </div>
                 <div className="ms-auto">

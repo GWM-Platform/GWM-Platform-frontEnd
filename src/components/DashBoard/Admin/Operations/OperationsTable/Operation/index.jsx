@@ -9,8 +9,7 @@ import { faCheckCircle, faTimesCircle } from "@fortawesome/free-regular-svg-icon
 import ActionConfirmationModal from "./ActionConfirmationModal";
 import { fetchOperations } from "Slices/DashboardUtilities/operationsSlice";
 import { userId } from "utils/userId";
-import { fetchusers } from "Slices/DashboardUtilities/usersSlice";
-
+import { fetchusers, selectuserById } from "Slices/DashboardUtilities/usersSlice";
 
 const Operation = ({ Operation, User, fetchOperationsParams = {} }) => {
     const { t } = useTranslation();
@@ -32,6 +31,7 @@ const Operation = ({ Operation, User, fetchOperationsParams = {} }) => {
         dispatch(fetchOperations(fetchOperationsParams))
     }
     const currentUserId = userId()
+    const user = useSelector(state => selectuserById(state, Operation?.operationMetadata?.userId))
 
     return (
         <tr>
@@ -50,9 +50,9 @@ const Operation = ({ Operation, User, fetchOperationsParams = {} }) => {
                     )
                 }
                 {
-                    Operation.operationType === "CREATE_ADMIN" &&
+                    (Operation.operationType === "CREATE_ADMIN" || Operation.operationType === "ASSIGN_ADMIN" || Operation.operationType === "REMOVE_ADMIN") &&
                     <>
-                        &nbsp;({Operation.operationMetadata.email})
+                        &nbsp;({Operation.operationMetadata.email || user?.email || "Mail no encontrado"})
                     </>
                 }
             </td>

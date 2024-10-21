@@ -818,5 +818,7 @@
     "SHARE_TRANSFER_CREATE": "Share transfer creation",
     "LIQUIDATE_FUND": "Fund settlement",
     "CREATE_ADMIN": "Admin creation",
+    "ASSIGN_ADMIN": "Admin assignment",
+    "REMOVE_ADMIN": "Admin removal",
     "share_price": "share price"
 }
