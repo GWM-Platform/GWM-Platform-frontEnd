@@ -65,6 +65,7 @@ export const DashBoardProvider = ({ children }) => {
     const [UserClients, setUserClients] = useState({ fetching: true, content: [], fetched: false, valid: false })
 
     const [IndexClientSelected, setIndexClientSelected] = useState(-1)
+    const [favouriteIndexClient, setFavouriteIndexClient] = useState(-1)
     const ClientSelected = useMemo(() => UserClients.content[IndexClientSelected] || {}, [IndexClientSelected, UserClients.content])
 
     const [contentReady, setContentReady] = useState(false);
@@ -425,10 +426,12 @@ export const DashBoardProvider = ({ children }) => {
                         setIndexClientSelected(getClientIndexById(desiredClient))
                     } else {
                         setIndexClientSelected(parseInt(localStorage.getItem(data[0].alias)))
+                        setFavouriteIndexClient(parseInt(localStorage.getItem(data[0].alias)))
                     }
                 }
                 else if (localStorage.getItem(data[0]?.alias)) {
                     setIndexClientSelected(parseInt(localStorage.getItem(data[0].alias)))
+                    setFavouriteIndexClient(parseInt(localStorage.getItem(data[0].alias)))
                 }
                 setUserClients(prevState => ({ ...prevState, fetching: false, fetched: true, valid: true, content: data }))
             } else {
@@ -677,7 +680,7 @@ export const DashBoardProvider = ({ children }) => {
 
     return <DashBoardContext.Provider
         value={{
-            token, admin, UserClients, ClientSelected, IndexClientSelected, setIndexClientSelected, balanceChanged, setBalanceChanged, TransactionStates, getMoveStateById,
+            token, admin, UserClients, ClientSelected, IndexClientSelected, setIndexClientSelected, favouriteIndexClient, setFavouriteIndexClient, balanceChanged, setBalanceChanged, TransactionStates, getMoveStateById,
             FetchingFunds, contentReady, PendingWithoutpossession, PendingTransactions, Accounts, Funds, itemSelected, setItemSelected, isMobile, width, toLogin, setContentReady,
             DashboardToast, DashboardToastDispatch, AccountSelected, setAccountSelected, Balance, allowedSymbols,
             couldSign, ClientPermissions, hasPermission, hasSellPermission, hasBuyPermission, hasViewPermission, setClientPermissions, hasAnySellPermission, hasAnyBuyPermission,

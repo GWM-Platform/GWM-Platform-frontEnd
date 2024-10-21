@@ -10,7 +10,7 @@ import Client from './Client';
 import './index.css'
 
 const SelectClient = () => {
-    const { UserClients, setIndexClientSelected } = useContext(DashBoardContext);
+    const { UserClients, setIndexClientSelected, setFavouriteIndexClient } = useContext(DashBoardContext);
     const { t } = useTranslation()
     const [ClientToAccess, setClientToAccess] = useState(-1)
 
@@ -23,6 +23,7 @@ const SelectClient = () => {
     const toDashBoard = () => {
         if (remember) {
             localStorage.setItem(UserClients.content[0].alias, ClientToAccess)
+            setFavouriteIndexClient(ClientToAccess)
         }
         setIndexClientSelected(ClientToAccess)
     }
