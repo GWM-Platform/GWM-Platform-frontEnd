@@ -56,7 +56,7 @@ const SellForm = ({ balanceChanged }) => {
         });
         const response = await fetch(url, {
             method: 'POST',
-            body: JSON.stringify({ sharesFinalValue }),
+            body: JSON.stringify({ shares: sharesFinalValue }),
             headers: {
                 Authorization: `Bearer ${token}`,
                 Accept: "*/*",
