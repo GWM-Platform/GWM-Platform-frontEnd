@@ -387,6 +387,8 @@
   "Bonus": "Bonificacíon",
   "WITHDRAWAL": "Retiro",
   "PENALTY_WITHDRAWAL": "Retiro",
+  "PROFIT_DEPOSIT_": "Deposito (bonificación)",
+  "PENALTY_WITHDRAWAL_": "Retiro (penalidad)",
   "Penalty": "Penalidad",
   "STAKE_BUY": "Compra de cuotapartes de {{fund}}",
   "STAKE_SELL": "Venta de cuotapartes de {{fund}}",

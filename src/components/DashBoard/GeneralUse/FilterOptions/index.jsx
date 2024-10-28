@@ -181,6 +181,7 @@ export const MotiveMultiSelect = ({
 
     return (
         <MultiSelectById
+            placeholder={t('All')}
             options={options}
             FormData={FormData}
             isClearable

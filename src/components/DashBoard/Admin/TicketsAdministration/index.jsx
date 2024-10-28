@@ -11,12 +11,12 @@ import TableIcon from '../APL/icons/TableIcon';
 import GridIcon from '../APL/icons/GridIcon';
 import { TableView } from './TableView';
 import { PrintDefaultWrapper, usePrintDefaults } from 'utils/usePrint';
-import SingleSelectById from './SingleSelectById';
 import CurrencyInput from '@osdiab/react-currency-input-field';
 import { faFileExcel } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { exportToExcel } from 'utils/exportToExcel';
 import { faCompress, faExpand } from '@fortawesome/free-solid-svg-icons';
+import { MotiveMultiSelect } from 'components/DashBoard/GeneralUse/FilterOptions';
 
 export const motives = [
     { value: 'DEPOSIT', labelKey: 'DEPOSIT' },
@@ -31,8 +31,8 @@ export const motives = [
     { value: 'BID_OFFER', labelKey: 'BID_OFFER_' },
     { value: 'SHARE_TRANSFER_SEND', labelKey: 'SHARE_TRANSFER_SEND' },
     { value: 'SHARE_TRANSFER_RECEIVE', labelKey: 'SHARE_TRANSFER_RECEIVE' },
-    { value: 'PROFIT_DEPOSIT', labelKey: 'PROFIT_DEPOSIT' },
-    { value: 'PENALTY_WITHDRAWAL', labelKey: 'PENALTY_WITHDRAWAL' },
+    { value: 'PROFIT_DEPOSIT', labelKey: 'PROFIT_DEPOSIT_' },
+    { value: 'PENALTY_WITHDRAWAL', labelKey: 'PENALTY_WITHDRAWAL_' },
 ]
 
 const TicketsAdministration = () => {
@@ -189,9 +189,11 @@ const TicketsAdministration = () => {
     const FilterOptionsDefaultState = {
         fromDate: "",
         toDate: "",
-        filterMotive: "",
+        // filterMotive: "",
         fromAmount: "",
-        toAmount: ""
+        toAmount: "",
+        filterMotives: []
+
     }
 
     const [FilterOptions, setFilterOptions] = useState(FilterOptionsDefaultState)
@@ -306,11 +308,14 @@ const TicketsAdministration = () => {
                                                 <Col md="4">
                                                     <Form.Group className="mt-2 mb-2">
                                                         <Form.Label>{t("Concept")}</Form.Label>
-                                                        <SingleSelectById
+                                                        <MotiveMultiSelect handleChange={handleChangeFilterOptions} FormData={FilterOptions} />
+
+                                                        {/* <SingleSelectById
                                                             getOptionLabel={option => t(option.labelKey)}
-                                                            isClearable placeholder={t('Concept')} handleChange={handleChangeFilterOptions} FormData={FilterOptions} id='filterMotive' options={motives} />
+                                                            isClearable placeholder={t('Concept')} handleChange={handleChangeFilterOptions} FormData={FilterOptions} id='filterMotive' options={motives} /> */}
                                                     </Form.Group>
                                                 </Col>
+
                                                 <Col md="3">
                                                     <Form.Group className="mb-2">
                                                         <Form.Label>{t("from_amount")}</Form.Label>

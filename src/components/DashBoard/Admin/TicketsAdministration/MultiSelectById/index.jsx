@@ -46,35 +46,37 @@ const MultiSelectById = ({
         handleChange({ target: { value: selectedOptions.map(selectedOption => selectedOption.value), id } })
     }
     const MultiValue = ({ children, getValue, ...props }) => {
-        let maxToShow = 0;
+        let maxToShow = 2;
         var length = getValue().length;
         let shouldBadgeShow = length > maxToShow;
         let displayLength = length - maxToShow;
         return (
-            (getValue().length === 1 && searchInputValue === "") ?
-                <div className="one-item-value" style={{
-                    // paddingTop: valuePaddingTop
-                }}>
-                    {getValue()?.[0].label}
-                </div>
+            searchInputValue === "" &&
+            ((props.index < maxToShow) ?
+                <components.MultiValue {...props}>
+                    {props.data.label}
+                </components.MultiValue>
                 :
-                (props.index === 0 &&
+                (props.index === maxToShow &&
                     <components.MultiValue {...props}>
                         <OverlayTrigger
                             placement="bottom"
                             overlay={
                                 <Tooltip id="tooltip" className="text-align-start">
-                                    {getValue().map(option => <React.Fragment key={`${option.label}-${option.value}`}>{option.label}<br /></React.Fragment>)}
+                                    {
+                                        getValue()
+                                            .slice(maxToShow, length)
+                                            .map(option => <React.Fragment key={`${option.label}-${option.value}`}>{option.label}<br /></React.Fragment>)}
                                 </Tooltip>
                             }
                         >
                             <div>
                                 {shouldBadgeShow &&
-                                    `+ ${displayLength} item${length !== 1 ? "s" : ""}`}
+                                    `+ ${displayLength} item${getValue().slice(maxToShow, length)?.length !== 1 ? "s" : ""}`}
                             </div>
                         </OverlayTrigger>
 
-                    </components.MultiValue >)
+                    </components.MultiValue >))
         );
     };
 
@@ -204,7 +206,7 @@ const MultiSelectById = ({
         <>
             <style>
                 {
-                    (value?.length === 0 || searchInputValue === "") &&
+                    (value?.length === 0 && searchInputValue === "") &&
                     // show label but +right MultiValue width
                     `
                         .react-select-input-floating.${id}${value?.length > 1 ? ":not(:focus-within)" : ""}::after{

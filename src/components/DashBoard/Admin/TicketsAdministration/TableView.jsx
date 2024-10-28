@@ -24,6 +24,7 @@ export const TableView = ({ state, client, FilterOptions }) => {
             ...FilterOptions,
             state,
             client,
+            filterMotives: FilterOptions.filterMotives.length > 0 ? FilterOptions.filterMotives : null,
             ...FilterOptions.fromAmount ? { fromAmount: unMaskNumber({ value: FilterOptions.fromAmount }) } : {},
             ...FilterOptions.toAmount ? { toAmount: unMaskNumber({ value: FilterOptions.toAmount }) } : {},
         }))
