@@ -101,11 +101,11 @@ body,
 .btn-check + .btn.active {
   color: var(--bs-btn-active-color);
   background-color: var(--blue-main);
-  border-color: var(--blue-main)!important;
+  border-color: var(--blue-main) !important;
 }
 
 .btn-check + .btn {
-  border-color: var(--blue-main)!important;
+  border-color: var(--blue-main) !important;
 }
 .tabContent {
   overflow-y: overlay;
@@ -402,20 +402,6 @@ table .Actions {
   color: #adb5bd;
   pointer-events: none;
   background-color: transparent;
-}
-
-@media (min-width: 600px) and (max-width: 800px) and (min-aspect-ratio: 13/9) {
-  .appContainer {
-    display: none;
-  }
-  .RotateDevice {
-    display: flex;
-    width: 100%;
-    height: 100vh;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.295);
-  }
 }
 
 .react-select__indicator > * {

@@ -70,6 +70,7 @@
 		"react-select": "^5.7.0",
 		"react-to-print": "^2.15.1",
 		"recharts": "^2.1.6",
+		"redux-persist": "^6.0.0",
 		"sass": "^1.52.1",
 		"source-map-explorer": "^2.5.3",
 		"stream-browserify": "^3.0.0",

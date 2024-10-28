@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
 
 import notificationsReducer from 'Slices/DashboardUtilities/notificationsSlice'
 import performancesReducer from 'Slices/DashboardUtilities/performancesSlice'
@@ -13,22 +13,44 @@ import fundsWithUsersReducer from 'Slices/DashboardUtilities/fundsWithUsersSlice
 import PrintHtmlReducer from 'Slices/DashboardUtilities/PrintHtmlSlice'
 import movementsreducer from 'Slices/DashboardUtilities/movementsSlice'
 import annualStatementsReducer from 'Slices/DashboardUtilities/annualStatementsSlice'
+import zoomReducer from 'Slices/DashboardUtilities/zoomSlice'
 
+import storage from "redux-persist/lib/storage";
+import { persistReducer, persistStore } from "redux-persist";
 
-export default configureStore({
-  reducer: {
-    notifications: notificationsReducer,
-    performances: performancesReducer,
-    user: userReducer,
-    fundHistory: fundHistoryReducer,
-    transactions: transactionsReducer,
-    users: usersReducer,
-    clients: clientsReducer,
-    operations: operationsReducer,
-    funds: fundsReducer,
-    fundsWithUsers: fundsWithUsersReducer,
-    annualStatements: annualStatementsReducer,
-    PrintHtml: PrintHtmlReducer,
-    movements: movementsreducer
-  },
-}) 
+const persistConfig = {
+  key: "root",
+  storage,
+  whitelist: ["zoom"]
+};
+
+const rootReducer = combineReducers({
+  notifications: notificationsReducer,
+  performances: performancesReducer,
+  user: userReducer,
+  fundHistory: fundHistoryReducer,
+  transactions: transactionsReducer,
+  users: usersReducer,
+  clients: clientsReducer,
+  operations: operationsReducer,
+  funds: fundsReducer,
+  fundsWithUsers: fundsWithUsersReducer,
+  annualStatements: annualStatementsReducer,
+  PrintHtml: PrintHtmlReducer,
+  movements: movementsreducer,
+  zoom: zoomReducer,
+})
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export default function configureAppStore() {
+  let store = configureStore({
+    reducer: persistedReducer,
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: false,
+      }),
+  });
+  let persistor = persistStore(store);
+  return { store, persistor };
+}

@@ -42,6 +42,7 @@ import { useTranslation } from 'react-i18next';
 import ExchangeTool from './ExchangeTool';
 import PrintLoading from 'components/PrintLoading';
 import ClientDisabled from './ClientDisabled';
+import { selectZoomDesktop, selectZoomMobile } from 'Slices/DashboardUtilities/zoomSlice';
 
 //User
 const FundsContainer = lazy(() => import('./User/FundsContainer'))
@@ -87,9 +88,42 @@ const UserDashBoard = () => {
         }
     }, [ClientSelected.enabled, ClientSelected.userToClientEnabled, UserClients, admin, setIndexClientSelected])
 
+    const zoomMobile = useSelector(selectZoomMobile)
+    const zoomDesktop = useSelector(selectZoomDesktop)
 
     return (
         <div className="DashBoard growOpacity" style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/backGround/background.jpg)` }}>
+            <style>
+                {`
+                    * {
+                        zoom: ${zoomDesktop}%;
+                    }
+                    .zoom-mobile{
+                        display: none!important
+                    }
+                    .zoom-desktop{
+                        display: block!important
+                    }
+                    @media (max-width: 1000px) and (min-aspect-ratio: 13/9) {
+                        * {
+                            zoom: ${zoomMobile}%!important;
+                            overscroll-behavior-x: none;
+                            overscroll-behavior-y: none;
+                        }
+                        .container,
+                        .container-sm {
+                            zoom: 100%;
+                            max-width: 100vw;
+                        }
+                        .zoom-mobile{
+                            display: block!important
+                        }
+                        .zoom-desktop{
+                            display: none!important
+                        }
+                    }
+                `}
+            </style>
             <Suspense fallback={<Loading />}>
                 {
                     IndexClientSelected >= 0 || admin || UserClients.content.length === 1 ?

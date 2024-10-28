@@ -4,7 +4,7 @@ import { Nav, Navbar, Container, Row, Col, NavDropdown, OverlayTrigger, Popover 
 import { useRouteMatch, useHistory, NavLink } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSignOutAlt, faChevronCircleUp, faCog } from '@fortawesome/free-solid-svg-icons'
+import { faSignOutAlt, faChevronCircleUp, faCog, faCirclePlus, faCircleMinus } from '@fortawesome/free-solid-svg-icons'
 
 import { useTranslation } from "react-i18next";
 import { DashBoardContext } from 'context/DashBoardContext';
@@ -15,6 +15,8 @@ import ClientSelector from './ClientSelector';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.scss'
 import NotificationsCenter from './NotificationsCenter';
+import { useDispatch, useSelector } from 'react-redux';
+import { addDesktop, addMobile, selectZoomDesktop, selectZoomMobile, subtractDesktop, subtractMobile } from 'Slices/DashboardUtilities/zoomSlice';
 
 const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
     const { admin, IndexClientSelected, UserClients, itemSelected, hasPermission, hasAnySellPermission, hasAnyBuyPermission, hasAnyTransferFundPermission, isMobile } = useContext(DashBoardContext)
@@ -36,6 +38,10 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
     const toggleNavInfo = () => {
         setNavInfoToggled(!NavInfoToggled)
     }
+    
+    const dispatch = useDispatch()
+    const zoomMobile = useSelector(selectZoomMobile)
+    const zoomDesktop = useSelector(selectZoomDesktop)
 
     return (
         <Navbar sticky="top" className={`py-0 mb-0 navBarDesktop`} collapseOnSelect expand="sm" variant="dark" >
@@ -190,6 +196,30 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
 
                             <div className="d-block d-sm-none d-md-block" style={{ paddingBottom: "5px" }}>
                                 <ClientSelector />
+                            </div>
+
+                            <div className="zoom-mobile" style={{ paddingBottom: "5px" }}>
+                                <button className="btn no-style my-1 mx-2" onClick={() => { dispatch(subtractMobile()) }} type="button">
+                                    <FontAwesomeIcon icon={faCircleMinus} />
+                                </button>
+                                <button className="btn no-style my-1" type="button">
+                                    {zoomMobile}%
+                                </button>
+                                <button className="btn no-style my-1 mx-2" onClick={() => { dispatch(addMobile()) }} type="button">
+                                    <FontAwesomeIcon icon={faCirclePlus} />
+                                </button>
+                            </div>
+
+                            <div className="zoom-desktop" style={{ paddingBottom: "5px" }}>
+                                <button className="btn no-style my-1 mx-2" onClick={() => { dispatch(subtractDesktop()) }} type="button">
+                                    <FontAwesomeIcon icon={faCircleMinus} />
+                                </button>
+                                <button className="btn no-style my-1" type="button">
+                                    {zoomDesktop}%
+                                </button>
+                                <button className="btn no-style my-1 mx-2" onClick={() => { dispatch(addDesktop()) }} type="button">
+                                    <FontAwesomeIcon icon={faCirclePlus} />
+                                </button>
                             </div>
 
                             <div className="d-block d-sm-none d-md-block" style={{ paddingBottom: "5px" }}>

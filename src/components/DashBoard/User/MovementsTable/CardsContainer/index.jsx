@@ -140,8 +140,8 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
                 :
                 numberOfFunds > 1 ?
                     <>
-                        <Col className="px-2 p-relative mainCardCol growAnimation  overflow-auto" md="12"
-                            lg={collapseSecondary ? "12" : "8"} xl={collapseSecondary ? "12" : "9"} >
+                        <Col className="px-2 p-relative mainCardCol growAnimation  overflow-auto"
+                            xs={collapseSecondary ? "12" : "8"} lg={collapseSecondary ? "12" : "8"} xl={collapseSecondary ? "12" : "9"} >
                             {(() => {
                                 switch (categorySelected) {
                                     case 0:
@@ -178,7 +178,6 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
                         </Col>
                         <Col sm="4" md="4" lg="4" xl="3"
                             className={`secondaryCardContainer growAnimation overflow-auto ${collapseSecondary ? "collapsed" : "expanded"} px-0 pe-2 pt-0 h-100`}>
-
                             {
                                 !!(Accounts.length > 0 && hasPermission('VIEW_ACCOUNT')) &&
                                 <div className="CategoryLabel">

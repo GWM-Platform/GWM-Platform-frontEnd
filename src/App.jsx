@@ -14,7 +14,6 @@ import ActivateAccount from 'components/ActivateAccount'
 import DashBoard from 'components/DashBoard';
 import NotFound from 'components/NotFound';
 import SetPassword from 'components/SetPassword';
-import RotateDevice from 'components/RotateDevice';
 import ErrorNotice from 'components/ErrorNotice';
 
 import './App.css';
@@ -23,9 +22,12 @@ import './widtHeightBP.css'
 import moment from 'moment';
 import axios from 'axios';
 import { Provider } from 'react-redux';
-import store from 'ReduxStores/store';
 import SetUserData from 'components/SetUserData';
 import TestPDF from 'components/TestPDF';
+import { PersistGate } from 'redux-persist/integration/react';
+import configureAppStore from 'ReduxStores/store';
+
+const { store, persistor } = configureAppStore()
 
 function App() {
 
@@ -48,51 +50,54 @@ function App() {
         <>
           <div className="appContainer">
             <Provider store={store}>
-              <BrowserRouter>
-                <Switch>
-                  <Route exact path="/">
-                    <Landing />
-                  </Route>
-                  <Route exact path="/test-pdf">
-                    <TestPDF />
-                  </Route>
-                  <Route exact path="/login">
-                    <Containerlogin />
-                  </Route>
+              <PersistGate loading={<>loading</>} persistor={persistor}>
 
-                  <Route exact path="/forgotPassword">
-                    <ContainerForgotPassword />
-                  </Route>
-                  <Route exact path="/changePassword/:user/:token">
-                    <ContainerChangePassword />
-                  </Route>
-                  <Route exact path="/changePassword">
-                    <ContainerChangePassword />
-                  </Route>
-
-                  <Route exact path="/activate">
-                    <ActivateAccount />
-                  </Route>
-                  <Route exact path="/setPassword">
-                    <SetPassword />
-                  </Route>
-                  <Route exact path="/setUserData">
-                    <SetUserData />
-                  </Route>
-                  <DashBoardProvider>
-                    <Route path="/DashBoard">
-                      <DashBoard />
+                <BrowserRouter>
+                  <Switch>
+                    <Route exact path="/">
+                      <Landing />
                     </Route>
-                  </DashBoardProvider>
+                    <Route exact path="/test-pdf">
+                      <TestPDF />
+                    </Route>
+                    <Route exact path="/login">
+                      <Containerlogin />
+                    </Route>
 
-                  <Route>
-                    <NotFound />
-                  </Route>
-                </Switch>
-              </BrowserRouter>
+                    <Route exact path="/forgotPassword">
+                      <ContainerForgotPassword />
+                    </Route>
+                    <Route exact path="/changePassword/:user/:token">
+                      <ContainerChangePassword />
+                    </Route>
+                    <Route exact path="/changePassword">
+                      <ContainerChangePassword />
+                    </Route>
+
+                    <Route exact path="/activate">
+                      <ActivateAccount />
+                    </Route>
+                    <Route exact path="/setPassword">
+                      <SetPassword />
+                    </Route>
+                    <Route exact path="/setUserData">
+                      <SetUserData />
+                    </Route>
+                    <DashBoardProvider>
+                      <Route path="/DashBoard">
+                        <DashBoard />
+                      </Route>
+                    </DashBoardProvider>
+
+                    <Route>
+                      <NotFound />
+                    </Route>
+                  </Switch>
+                </BrowserRouter>
+              </PersistGate>
             </Provider>
           </div>
-          <RotateDevice />
+          {/* <RotateDevice /> */}
         </>
       </Sentry.ErrorBoundary>
     </div >
