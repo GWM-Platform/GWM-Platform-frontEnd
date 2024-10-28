@@ -27,7 +27,9 @@ const TableLastMovements = ({ Fund }) => {
     const [Options, setOptions] = useState({
         skip: 0,//Offset (in quantity of movements)
         take: 100,//Movements per page
-        state: null
+        state: null,
+        fromDate: "",
+        toDate: "",
     })
 
     const handleClose = () => setShow(false);
@@ -36,13 +38,19 @@ const TableLastMovements = ({ Fund }) => {
     useEffect(() => {
         const getMovements = async () => {
             setFetchingMovements(true)
-            var url = `${process.env.REACT_APP_APIURL}/transactions/?` + new URLSearchParams({
-                client: ClientSelected.id,
-                filterFund: Fund.fundId,
-                take: Options.take,
-                skip: Options.skip,
-                filterState: Options.state
-            });
+            var url = `${process.env.REACT_APP_APIURL}/transactions/?` + new URLSearchParams(
+                Object.fromEntries(Object.entries(
+                    {
+                        client: ClientSelected.id,
+                        filterFund: Fund.fundId,
+                        take: Options.take,
+                        skip: Options.skip,
+                        filterState: Options.state,
+                        fromDate: Options.fromDate || null,
+                        toDate: Options.toDate ? new Date(new Date(Options.toDate).setDate(new Date(Options.toDate).getDate() + 1)).toISOString() : null,
+                    }
+                ).filter(([_, v]) => v != null))
+            );
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -144,7 +152,7 @@ const TableLastMovements = ({ Fund }) => {
                                         <FontAwesomeIcon icon={faFilter} />
                                     </Button>
                                 </h2>
-                                {!!(fetchingMovements) && <Spinner style={{marginLeft: ".35em"}}animation="border" size="sm" />}
+                                {!!(fetchingMovements) && <Spinner style={{ marginLeft: ".35em" }} animation="border" size="sm" />}
                             </Col>
                         </Row>
                     </Container>
@@ -162,7 +170,7 @@ const TableLastMovements = ({ Fund }) => {
                             <MoreAndLess InScreen={Options.take} total={movements.total} setOptions={setOptions} />
                         </div>
                     </Collapse>
-                    <FilterOptionsMobile show={show} handleClose={handleClose} setOptions={setOptions} />
+                    <FilterOptionsMobile dateFilters show={show} handleClose={handleClose} setOptions={setOptions} />
                 </div>
             }
         </Col>
