@@ -67,15 +67,13 @@ const RateData = ({ data, handleChange, calculateProfit, fetching, minRate, maxR
                             }
                         </Form.Control.Feedback>
                     </InputGroup>
-                    <Container className='px-sm-0'>
-                        <div className='d-flex justify-content-end'>
-                            {
-                                !!(data.preferential) &&
-                                <Button disabled={fetching || ((data.amount > Balance) && data.amount > 0)}
-                                    variant="danger" type="submit" className="submitBtn">{t("Submit")}</Button>
-                            }
-                        </div>
-                    </Container>
+                    <div className='d-flex justify-content-end'>
+                        {
+                            !!(data.preferential) &&
+                            <Button disabled={fetching || ((data.amount > Balance) && data.amount > 0)}
+                                variant="danger" type="submit" className="submitBtn">{t("Submit")}</Button>
+                        }
+                    </div>
                 </div>
             </Accordion.Body>
         </Accordion.Item>

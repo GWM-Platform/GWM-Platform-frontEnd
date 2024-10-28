@@ -124,14 +124,12 @@ const SellData = ({ data, setData, Funds, handleChange, validated, handleSubmit,
                         </InputGroup>
                     </Form.Group>
 
-                    <Container className='px-sm-0'>
-                        <div className='d-flex justify-content-end'>
-                            <Button
-                                disabled={fetching ||
-                                    (data.FundSelected === -1 ? true : data.shares > Funds[data.FundSelected].shares || data.shares <= 0)}
-                                variant="danger" type="submit" className="submitBtn">{t("Submit")}</Button>
-                        </div>
-                    </Container>
+                    <div className='d-flex justify-content-end'>
+                        <Button
+                            disabled={fetching ||
+                                (data.FundSelected === -1 ? true : data.shares > Funds[data.FundSelected].shares || data.shares <= 0)}
+                            variant="danger" type="submit" className="submitBtn">{t("Submit")}</Button>
+                    </div>
                 </Form>
             </Accordion.Body>
         </Accordion.Item>
