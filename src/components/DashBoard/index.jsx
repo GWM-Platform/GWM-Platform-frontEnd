@@ -95,8 +95,11 @@ const UserDashBoard = () => {
         <div className="DashBoard growOpacity" style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/backGround/background.jpg)` }}>
             <style>
                 {`
-                    * {
-                        zoom: ${zoomDesktop}%;
+                    // h1, h2, h3, h4, h5, h6 {
+                    //     zoom: ${zoomDesktop}%;
+                    // }
+                    :root{
+                       font-size: calc(16px * ${zoomDesktop} / 100 );
                     }
                     .zoom-mobile{
                         display: none!important
@@ -106,10 +109,13 @@ const UserDashBoard = () => {
                     }
                     @media (max-width: 1000px) and (min-aspect-ratio: 13/9) {
                         * {
-                            zoom: ${zoomMobile}%!important;
+                            // zoom: ${zoomMobile}%!important;
                             overscroll-behavior-x: none;
                             overscroll-behavior-y: none;
                         }
+                        :root{
+                            font-size: calc(16px * ${zoomMobile} / 100 );
+                        }       
                         .container,
                         .container-sm {
                             zoom: 100%;
