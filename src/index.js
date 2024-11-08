@@ -12,6 +12,7 @@ import * as Sentry from "@sentry/react";
 ReactGA.initialize(process.env.REACT_APP_GATAGID);
 Sentry.init({
   dsn: process.env.REACT_APP_SENTRYDSN,
+  environment: process.env.REACT_APP_SENTRYENVIROMENT || "uknown enviroment",
   tracesSampleRate: 1.0,
   // This sets the sample rate to be 10%. You may want this to be 100% while
   // in development and sample at a lower rate in production

@@ -17,6 +17,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { exportToExcel } from 'utils/exportToExcel';
 import { faCompress, faExpand } from '@fortawesome/free-solid-svg-icons';
 import { MotiveMultiSelect } from 'components/DashBoard/GeneralUse/FilterOptions';
+import { customFetch } from 'utils/customFetch';
 
 export const motives = [
     { value: 'DEPOSIT', labelKey: 'DEPOSIT', group: "cta_cte" },
@@ -85,7 +86,7 @@ const TicketsAdministration = () => {
                     values: []
                 }
             })
-            const response = await fetch(url, {
+            const response = await customFetch(url, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`,

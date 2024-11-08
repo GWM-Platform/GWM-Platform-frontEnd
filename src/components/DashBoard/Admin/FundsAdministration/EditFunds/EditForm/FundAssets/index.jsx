@@ -6,6 +6,7 @@ import ModalAddAsset from './ModalAddAsset'
 import AssetCard from './Asset'
 import { useContext } from 'react';
 import { DashBoardContext } from 'context/DashBoardContext';
+import { customFetch } from 'utils/customFetch';
 
 const FundAssets = ({ Fund }) => {
     const { token } = useContext(DashBoardContext)
@@ -21,7 +22,7 @@ const FundAssets = ({ Fund }) => {
         const getAssets = async () => {
             var url = `${process.env.REACT_APP_APIURL}/funds/${Fund.id}}/sources`;
 
-            const response = await fetch(url, {
+            const response = await customFetch(url, {
                 method: 'GET',
                 headers: {
                     Accept: "*/*",
@@ -41,7 +42,7 @@ const FundAssets = ({ Fund }) => {
             }
         }
         getAssets()
-    }, [Fund])
+    }, [Fund, token])
 
     return (
         <>

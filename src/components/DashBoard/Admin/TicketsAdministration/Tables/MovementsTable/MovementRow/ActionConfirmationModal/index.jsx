@@ -9,6 +9,7 @@ import CurrencyInput from '@osdiab/react-currency-input-field';
 import { unMaskNumber } from 'utils/unmask';
 import Decimal from 'decimal.js';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
+import { customFetch } from 'utils/customFetch';
 
 const ActionConfirmationModal = ({ movement, setShowModal, action, show, reloadData }) => {
     const { t } = useTranslation();
@@ -51,7 +52,7 @@ const ActionConfirmationModal = ({ movement, setShowModal, action, show, reloadD
         const url = `${process.env.REACT_APP_APIURL}/movements/${movement.id}/${shouldPartialLiquidate ? "partialLiquidate" : action}`;
         const token = sessionStorage.getItem("access_token")
 
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'POST',
             body: JSON.stringify({
                 ...data.note !== "" ? { denialMotive: data.note !== "" ? data.note : null } : {},

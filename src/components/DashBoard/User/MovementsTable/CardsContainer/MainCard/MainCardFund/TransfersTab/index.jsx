@@ -10,6 +10,7 @@ import FilterOptions from 'components/DashBoard/GeneralUse/FilterOptions'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 // import '../MovementsTab/index.css'
+import { customFetch } from 'utils/customFetch';
 
 const TransfersTab = ({ Fund, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
     const { token, ClientSelected } = useContext(DashBoardContext);
@@ -42,7 +43,7 @@ const TransfersTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
             ).filter(([_, v]) => v != null))
         );
         setFetchingTransfers(true)
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -75,7 +76,7 @@ const TransfersTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
 
         setFetchingTransfers(true)
         setTransfers([])
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,

@@ -9,6 +9,7 @@ import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import PerformanceComponent from 'components/DashBoard/GeneralUse/PerformanceComponent';
 import FundDetail from '../../MainCard/MainCardFund/FundDetail';
+import { customFetch } from 'utils/customFetch';
 
 const MobileCard = ({ Fund, Hide, setHide }) => {
     // eslint-disable-next-line
@@ -20,7 +21,7 @@ const MobileCard = ({ Fund, Hide, setHide }) => {
     const pendingshares = PendingTransactions.value.filter((transaction) => transaction.fundId === Fund.fund.id && Math.sign(transaction.shares) === +1).map((transaction) => transaction.shares).reduce((a, b) => a + b, 0).toFixed(2)
 
     const checkImage = async (url) => {
-        const res = await fetch(url);
+        const res = await customFetch(url);
         const buff = await res.blob();
         return buff.type.startsWith('image/')
     }

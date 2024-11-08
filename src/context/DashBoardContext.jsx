@@ -6,6 +6,7 @@ import React, { useCallback, useMemo, useReducer, useRef } from 'react'
 import { createContext, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
+import { customFetch } from 'utils/customFetch';
 
 const DashboardToastInitialState = []
 
@@ -156,7 +157,7 @@ export const DashBoardProvider = ({ children }) => {
             var url = `${process.env.REACT_APP_APIURL}/stakes/?` + new URLSearchParams({
                 client: ClientSelected.id,
             });
-            const response = await fetch(url, {
+            const response = await customFetch(url, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -180,7 +181,7 @@ export const DashBoardProvider = ({ children }) => {
             var url = `${process.env.REACT_APP_APIURL}/accounts/?` + new URLSearchParams({
                 client: ClientSelected.id,
             });
-            const response = await fetch(url, {
+            const response = await customFetch(url, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -213,7 +214,7 @@ export const DashBoardProvider = ({ children }) => {
                 take: 50,
                 skip: 0,
             });
-            const response = await fetch(url, {
+            const response = await customFetch(url, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -293,7 +294,7 @@ export const DashBoardProvider = ({ children }) => {
 
             const getFund = async (id) => {
                 var url = `${process.env.REACT_APP_APIURL}/funds/${id}`;
-                const response = await fetch(url, {
+                const response = await customFetch(url, {
                     method: 'GET',
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -358,7 +359,7 @@ export const DashBoardProvider = ({ children }) => {
                     }
                 }))
             }
-            const response = await fetch(url, {
+            const response = await customFetch(url, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -402,7 +403,7 @@ export const DashBoardProvider = ({ children }) => {
         const getUserData = async () => {
             setUserClients(prevState => ({ ...prevState, fetching: true, fetched: false }))
             var url = `${process.env.REACT_APP_APIURL}/clients`;
-            const response = await fetch(url, {
+            const response = await customFetch(url, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`,

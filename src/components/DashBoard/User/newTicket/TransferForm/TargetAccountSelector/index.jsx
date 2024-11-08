@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import axios from 'axios';
 import { escapeRegex } from 'utils/escapeRegex';
 import './index.scss'
+import { customFetch } from 'utils/customFetch';
 
 const TargetAccountSelector = ({ data, setData, TargetAccount, setTargetAccount, handleChange, validated, openAccordion, closeAccordion }) => {
     const { token, AccountSelected, toLogin } = useContext(DashBoardContext)
@@ -21,7 +22,7 @@ const TargetAccountSelector = ({ data, setData, TargetAccount, setTargetAccount,
         var url = `${process.env.REACT_APP_APIURL}/accounts/byAlias?` + new URLSearchParams({
             alias: data.alias
         })
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,

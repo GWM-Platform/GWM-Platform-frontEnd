@@ -12,6 +12,7 @@ import ActionConfirmationModal from './ActionConfirmationModal';
 import NoSellFunds from '../NoSellFunds';
 import ReactGA from "react-ga4";
 import Decimal from 'decimal.js';
+import { customFetch } from 'utils/customFetch';
 
 const SellForm = ({ balanceChanged }) => {
     const { token, ClientSelected, contentReady, AccountSelected } = useContext(DashBoardContext);
@@ -54,7 +55,7 @@ const SellForm = ({ balanceChanged }) => {
         var url = `${process.env.REACT_APP_APIURL}/funds/${Funds[data.FundSelected].fundId}/sell/?` + new URLSearchParams({
             client: ClientSelected.id,
         });
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'POST',
             body: JSON.stringify({ shares: sharesFinalValue }),
             headers: {
@@ -87,7 +88,7 @@ const SellForm = ({ balanceChanged }) => {
             var url = `${process.env.REACT_APP_APIURL}/stakes/?` + new URLSearchParams({
                 client: ClientSelected.id,
             });
-            const response = await fetch(url, {
+            const response = await customFetch(url, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`,

@@ -12,6 +12,7 @@ import ActionConfirmationModal from './ActionConfirmationModal';
 import ReactGA from "react-ga4";
 import { useEffect } from 'react';
 import enrichAccount from 'utils/enrichAccount';
+import { customFetch } from 'utils/customFetch';
 
 const WithdrawForm = ({ balanceChanged }) => {
 
@@ -36,7 +37,7 @@ const WithdrawForm = ({ balanceChanged }) => {
     const withdraw = async () => {
         setFetching(true)
         var url = `${process.env.REACT_APP_APIURL}/accounts/${AccountSelected.id}/withdraw`;
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'POST',
             body: JSON.stringify({ amount: parseFloat(data.amount), note: data.note }),
             headers: {

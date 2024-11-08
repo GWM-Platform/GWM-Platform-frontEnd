@@ -26,6 +26,7 @@ import SetUserData from 'components/SetUserData';
 import TestPDF from 'components/TestPDF';
 import { PersistGate } from 'redux-persist/integration/react';
 import configureAppStore from 'ReduxStores/store';
+import { eliminarNoSerializable } from 'utils/eliminarNoSerializable';
 
 const { store, persistor } = configureAppStore()
 
@@ -43,6 +44,21 @@ function App() {
 
   axios.defaults.baseURL = process.env.REACT_APP_APIURL;
   axios.defaults.headers.post['Content-Type'] = '*/*';
+  useEffect(() => {
+    const captureException = axios.interceptors.response.use(function (response) {
+      return response;
+    }, function (error) {
+      if (process.env.REACT_APP_SENTRYDSN) {
+        const errorObj = eliminarNoSerializable(error)
+        Sentry.captureException(new Error(`Network error${error?.response?.status ? `: ${error?.response?.status}` : ""}`, { extra: { ...errorObj, responseData: errorObj?.response?.data } }))
+      }
+      return Promise.reject(error);
+    });
+
+    return () => {
+      axios.interceptors.request.eject(captureException);
+    }
+  }, [])
 
   return (
     <div className="App" style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/backGround/background.jpg)` }}>

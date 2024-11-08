@@ -28,6 +28,7 @@ import GridIcon from '../icons/GridIcon';
 import TableIcon from '../icons/TableIcon';
 import Chart from 'components/DashBoard/User/MovementsTable/CardsContainer/MainCard/MainCardFund/FundDetail/Chart';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
+import { customFetch } from 'utils/customFetch';
 
 const FundInfo = ({ Fund, clients }) => {
     const { token } = useContext(DashBoardContext)
@@ -49,7 +50,7 @@ const FundInfo = ({ Fund, clients }) => {
             setPerformance(prevState => ({ ...prevState, ...{ fetching: true, value: 0 } }))
             var url = `${process.env.REACT_APP_APIURL}/funds/${Fund.id}/performance`
 
-            const response = await fetch(url, {
+            const response = await customFetch(url, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -77,7 +78,7 @@ const FundInfo = ({ Fund, clients }) => {
         const getTypes = async () => {
             var url = `${process.env.REACT_APP_APIURL}/assets/types`;
 
-            const response = await fetch(url, {
+            const response = await customFetch(url, {
                 method: 'GET',
                 headers: {
                     Accept: "*/*",

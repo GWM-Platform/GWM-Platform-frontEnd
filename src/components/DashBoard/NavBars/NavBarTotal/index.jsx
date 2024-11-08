@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import enrichAccount from 'utils/enrichAccount';
 import PopoverAvailableFunds from 'components/DashBoard/GeneralUse/PopoverAvailableFunds';
+import { customFetch } from 'utils/customFetch';
 
 const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
     const { t } = useTranslation();
@@ -31,7 +32,7 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
         const getBalance = async () => {
             var url = `${process.env.REACT_APP_APIURL}/clients/${ClientSelected.id}/balance`;
             setBalance(prevState => ({ ...prevState, ...{ fetching: true } }))
-            const response = await fetch(url, {
+            const response = await customFetch(url, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -62,7 +63,7 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
         const getBalance = async () => {
             var url = `${process.env.REACT_APP_APIURL}/clients/${ClientSelected.id}/balance`;
             setBalance(prevState => ({ ...prevState, ...{ fetching: true } }))
-            const response = await fetch(url, {
+            const response = await customFetch(url, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`,

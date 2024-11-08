@@ -9,6 +9,7 @@ import LanguageSelector from 'components/LanguageSelector';
 import './index.scss'
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser, setDataFromLogin } from 'Slices/DashboardUtilities/userSlice';
+import { customFetch } from 'utils/customFetch';
 
 const SetUserData = () => {
 
@@ -47,7 +48,7 @@ const SetUserData = () => {
     const patchUser = async () => {
         var url = `${process.env.REACT_APP_APIURL}/users/me`;
 
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'PATCH',
             body: JSON.stringify({
                 firstName: Data.firstName,

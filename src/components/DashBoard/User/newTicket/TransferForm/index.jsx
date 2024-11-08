@@ -16,6 +16,7 @@ import { useLocation } from 'react-router-dom/cjs/react-router-dom.min';
 import enrichAccount from 'utils/enrichAccount';
 import Decimal from 'decimal.js';
 import { unMaskNumber } from 'utils/unmask';
+import { customFetch } from 'utils/customFetch';
 
 const TransferForm = ({ balanceChanged }) => {
 
@@ -66,7 +67,7 @@ const TransferForm = ({ balanceChanged }) => {
     const transfer = async () => {
         setTransfer(prevState => ({ ...prevState, fetching: true }))
         var url = `${process.env.REACT_APP_APIURL}/${share_transfer ? "share-transfers" : "transfers"}`
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'POST',
             body: JSON.stringify(
                 {
@@ -154,7 +155,7 @@ const TransferForm = ({ balanceChanged }) => {
             var url = `${process.env.REACT_APP_APIURL}/stakes/?` + new URLSearchParams({
                 client: ClientSelected.id,
             });
-            const response = await fetch(url, {
+            const response = await customFetch(url, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`,

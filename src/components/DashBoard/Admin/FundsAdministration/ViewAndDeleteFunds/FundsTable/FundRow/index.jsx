@@ -6,6 +6,7 @@ import { faTrashAlt, faEdit, faEye } from '@fortawesome/free-regular-svg-icons'
 import DeleteConfirmationModal from './DeleteConfirmationModal'
 import { Badge, OverlayTrigger, Popover } from 'react-bootstrap';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
+import { customFetch } from 'utils/customFetch';
 
 const FundRow = ({ Fund, AssetTypes, chargeFunds, setAction, Action, ownKey }) => {
 
@@ -17,7 +18,7 @@ const FundRow = ({ Fund, AssetTypes, chargeFunds, setAction, Action, ownKey }) =
     }
 
     const checkImage = async (url) => {
-        const res = await fetch(url);
+        const res = await customFetch(url);
         const buff = await res.blob();
         return buff.type.startsWith('image/')
     }

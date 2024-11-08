@@ -8,6 +8,7 @@ import MoreAndLess from '../../MoreAndLess';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import FilterOptionsMobile from '../../FilterOptionsMobile';
+import { customFetch } from 'utils/customFetch';
 
 const TableLastTransfers = ({ account }) => {
 
@@ -42,7 +43,7 @@ const TableLastTransfers = ({ account }) => {
             ).filter(([_, v]) => v != null))
         );
         setFetchingTransfers(true)
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -78,7 +79,7 @@ const TableLastTransfers = ({ account }) => {
                 ).filter(([_, v]) => v != null))
             );
             setFetchingTransfers(true)
-            const response = await fetch(url, {
+            const response = await customFetch(url, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`,

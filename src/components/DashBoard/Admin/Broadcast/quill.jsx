@@ -3,6 +3,7 @@ import ReactQuill, { Quill } from "react-quill";
 // #1 import quill-image-uploader
 import ImageUploader from "quill-image-uploader";
 import 'react-quill/dist/quill.snow.css';
+import { customFetch } from 'utils/customFetch';
 
 // #2 register module
 
@@ -40,7 +41,7 @@ class Editor extends Component {
                     const formData = new FormData();
                     formData.append("image", file);
 
-                    fetch(
+                    customFetch(
                         "https://api.imgbb.com/1/upload?key=7d3bd8f0aa247cf062f5cacc0a0983f8",
                         {
                             method: "POST",

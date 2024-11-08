@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Col } from 'react-bootstrap'
+import { customFetch } from 'utils/customFetch';
 
 import EditForm from './EditForm'
 import EditResult from './EditResult'
@@ -59,7 +60,7 @@ const EditFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction, withoutH
 
         const url = `${process.env.REACT_APP_APIURL}/funds/${Funds[Action.fund].id}`;
         const token = sessionStorage.getItem("access_token")
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'PUT',
             body: JSON.stringify(data),
             headers: {
@@ -98,7 +99,7 @@ const EditFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction, withoutH
 
     const checkImage = async (url) => {
         setImageUrl(prevState => ({ ...prevState, ...{ fetching: true, fetched: false } }))
-        const res = await fetch(url);
+        const res = await customFetch(url);
         const buff = await res.blob();
         setImageUrl(prevState => ({ ...prevState, ...{ fetching: false, fetched: true, valid: buff.type.startsWith('image/') } }))
     }

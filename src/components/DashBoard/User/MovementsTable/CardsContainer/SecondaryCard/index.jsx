@@ -9,6 +9,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import Decimal from 'decimal.js';
 import PerformanceComponent from 'components/DashBoard/GeneralUse/PerformanceComponent';
+import { customFetch } from 'utils/customFetch';
+
 //Parent key 0-> Fund;Parent key 1->Cash
 const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownKey, selected, Hide, categorySelected, resetSearchById }) => {
     const select = () => {
@@ -35,7 +37,7 @@ const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownK
     }
 
     const checkImage = async (url) => {
-        const res = await fetch(url);
+        const res = await customFetch(url);
         const buff = await res.blob();
         return buff.type.startsWith('image/')
     }

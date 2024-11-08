@@ -10,6 +10,7 @@ import LanguageSelector from 'components/LanguageSelector'
 import axios from 'axios';
 import { setDataFromLogin } from 'Slices/DashboardUtilities/userSlice';
 import { useDispatch } from 'react-redux';
+import { customFetch } from 'utils/customFetch';
 
 const ContainerLogin = () => {
 
@@ -75,7 +76,7 @@ const ContainerLogin = () => {
 
   const Login = async () => {
     var url = `${process.env.REACT_APP_APIURL}/auth/login`;
-    const response = await fetch(url, {
+    const response = await customFetch(url, {
       method: 'POST',
       body: JSON.stringify({ email: FormData.email, password: FormData.password }),
       headers: {

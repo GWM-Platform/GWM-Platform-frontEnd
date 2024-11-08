@@ -9,6 +9,7 @@ import { faCheckCircle, faEdit, faTimesCircle } from '@fortawesome/free-regular-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import OverdraftPopover from '../OverdraftPopover';
 import PerformanceComponent from 'components/DashBoard/GeneralUse/PerformanceComponent';
+import { customFetch } from 'utils/customFetch';
 
 const AccountGeneralData = ({ Account, Client, setAccounts, toggleClient }) => {
     const { t } = useTranslation();
@@ -24,7 +25,7 @@ const AccountGeneralData = ({ Account, Client, setAccounts, toggleClient }) => {
         const getBalance = async () => {
             setBalanceTotal((prevState) => ({ fetching: true, fetched: true, value: 0 }))
             var url = `${process.env.REACT_APP_APIURL}/clients/${Client.id}/balance`
-            const response = await fetch(url, {
+            const response = await customFetch(url, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`,

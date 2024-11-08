@@ -5,6 +5,7 @@ import '../operationsForm.scss'
 import { Container, Row, Col } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom';
 import DepositData from './DepositData'
+import { customFetch } from 'utils/customFetch';
 
 const DepositForm = ({ balanceChanged }) => {
     const [data, setData] = useState({ amount: "" })
@@ -17,7 +18,7 @@ const DepositForm = ({ balanceChanged }) => {
 
     const deposit = async () => {
         var url = `${process.env.REACT_APP_APIURL}/accounts/deposit`;
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'POST',
             body: JSON.stringify({ amount: parseFloat(data.amount) }),
             headers: {

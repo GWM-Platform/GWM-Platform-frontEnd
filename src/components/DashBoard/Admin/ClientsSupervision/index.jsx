@@ -11,6 +11,7 @@ import axios from 'axios';
 import { DashBoardContext } from 'context/DashBoardContext';
 import { useContext } from 'react';
 import CreateClientForm from './CreateClientForm';
+import { customFetch } from 'utils/customFetch';
 
 const ClientsSupervision = () => {
     const { toLogin } = useContext(DashBoardContext)
@@ -68,7 +69,7 @@ const ClientsSupervision = () => {
             all: true,
         });
 
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -97,7 +98,7 @@ const ClientsSupervision = () => {
         const getAccounts = async () => {
             setAccounts((prevState) => ({ fetching: true, fetched: true, content: [] }))
             var url = `${process.env.REACT_APP_APIURL}/Accounts`
-            const response = await fetch(url, {
+            const response = await customFetch(url, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`,

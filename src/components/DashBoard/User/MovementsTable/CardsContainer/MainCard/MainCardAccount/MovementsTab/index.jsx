@@ -10,6 +10,7 @@ import { useHistory } from 'react-router-dom';
 import { DashBoardContext } from 'context/DashBoardContext';
 import PaginationController from 'components/DashBoard/GeneralUse/PaginationController'
 import FilterOptions from 'components/DashBoard/GeneralUse/FilterOptions'
+import { customFetch } from 'utils/customFetch';
 
 const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handleMovementSearchChange, Movements, setMovements }) => {
     const { token, ClientSelected, AccountSelected } = useContext(DashBoardContext);
@@ -48,7 +49,7 @@ const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
             ).filter(([_, v]) => v != null))
         );
         setFetchingMovements(true)
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -80,7 +81,7 @@ const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
 
         setFetchingMovements(true)
         setMovements([])
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,

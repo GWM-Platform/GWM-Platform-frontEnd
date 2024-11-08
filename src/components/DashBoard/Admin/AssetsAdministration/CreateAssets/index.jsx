@@ -4,6 +4,8 @@ import { Col } from 'react-bootstrap'
 
 import CreateForm from './CreateForm'
 import CreateResult from './CreateResult'
+import { customFetch } from 'utils/customFetch';
+
 const CreateAssets = ({ Assets, AssetTypes, chargeAssets, Action, setAction }) => {
     const [validated, setValidated] = useState(false);
     const [data, setData] = useState({
@@ -25,7 +27,7 @@ const CreateAssets = ({ Assets, AssetTypes, chargeAssets, Action, setAction }) =
         )
         const url = `${process.env.REACT_APP_APIURL}/assets`;
         const token = sessionStorage.getItem("access_token")
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {

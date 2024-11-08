@@ -10,6 +10,7 @@ import { faFilter, faPrint } from '@fortawesome/free-solid-svg-icons';
 import MoreAndLess from '../../MoreAndLess';
 import MovementTable from 'TableExport/MovementTable';
 import ReactPDF from '@react-pdf/renderer';
+import { customFetch } from 'utils/customFetch';
 
 const TableLastMovements = ({ account }) => {
 
@@ -55,7 +56,7 @@ const TableLastMovements = ({ account }) => {
         );
 
         setFetchingMovements(true)
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
