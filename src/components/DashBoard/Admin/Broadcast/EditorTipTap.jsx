@@ -18,6 +18,7 @@ import { selectAllFunds } from 'Slices/DashboardUtilities/fundsSlice';
 import { useSelector } from 'react-redux';
 import { Form } from 'react-bootstrap';
 // import Link from '@tiptap/extension-link'
+import { customFetch } from 'utils/customFetch';
 
 const MenuBar = () => {
   const { editor } = useCurrentEditor();
@@ -34,7 +35,7 @@ const MenuBar = () => {
         const formData = new FormData();
         formData.append("image", file);
 
-        fetch(
+        customFetch(
           "https://api.imgbb.com/1/upload?key=7d3bd8f0aa247cf062f5cacc0a0983f8",
           {
             method: "POST",

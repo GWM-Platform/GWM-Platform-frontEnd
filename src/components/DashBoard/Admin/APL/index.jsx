@@ -12,6 +12,7 @@ import FixedDepositInfo from './FixedDepositInfo';
 import FixedDepositsGraphic from './FixedDepositsGraphic';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchFunds, selectAllFunds } from 'Slices/DashboardUtilities/fundsSlice';
+import { customFetch } from 'utils/customFetch';
 
 const APL = () => {
   const { token } = useContext(DashBoardContext)
@@ -34,7 +35,7 @@ const APL = () => {
         all: true,
       });
 
-      const response = await fetch(url, {
+      const response = await customFetch(url, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,

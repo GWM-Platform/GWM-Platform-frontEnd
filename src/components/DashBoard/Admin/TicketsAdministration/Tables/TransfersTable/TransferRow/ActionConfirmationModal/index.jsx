@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExclamation, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { Modal, Button } from 'react-bootstrap'
 import { faCircle } from '@fortawesome/free-regular-svg-icons';
+import { customFetch } from 'utils/customFetch';
 
 
 const ActionConfirmationModal = ({ movement, setShowModal, action, show, reloadData }) => {
@@ -33,7 +34,7 @@ const ActionConfirmationModal = ({ movement, setShowModal, action, show, reloadD
         const url = `${process.env.REACT_APP_APIURL}/transfers/${movement.id}/${action}`;
         const token = sessionStorage.getItem("access_token")
 
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${token}`,

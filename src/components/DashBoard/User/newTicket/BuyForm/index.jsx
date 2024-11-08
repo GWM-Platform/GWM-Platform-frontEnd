@@ -12,6 +12,7 @@ import { DashBoardContext } from 'context/DashBoardContext';
 import ActionConfirmationModal from './ActionConfirmationModal';
 import NoBuyFunds from '../NoBuyFunds';
 import ReactGA from "react-ga4";
+import { customFetch } from 'utils/customFetch';
 
 const BuyForm = ({ balanceChanged }) => {
     
@@ -56,7 +57,7 @@ const BuyForm = ({ balanceChanged }) => {
                 client: ClientSelected.id,
             });
 
-            const response = await fetch(url, {
+            const response = await customFetch(url, {
                 method: 'POST',
                 body: JSON.stringify({ amount: parseFloat(data.amount) }),
                 headers: {
@@ -87,7 +88,7 @@ const BuyForm = ({ balanceChanged }) => {
     useEffect(() => {
         const getFunds = async () => {
             var url = `${process.env.REACT_APP_APIURL}/funds`;
-            const response = await fetch(url, {
+            const response = await customFetch(url, {
                 method: 'GET',
                 headers: {
                     Accept: "*/*",

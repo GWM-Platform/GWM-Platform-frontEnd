@@ -6,8 +6,9 @@ import AvailableAssets from './AvailableAssets';
 import './index.css'
 import { useContext } from 'react';
 import { DashBoardContext } from 'context/DashBoardContext';
+import { customFetch } from 'utils/customFetch';
 
-const FundAssets = ({ Show, setShow,Fund }) => {
+const FundAssets = ({ Show, setShow, Fund }) => {
     const { token } = useContext(DashBoardContext)
 
     const { t } = useTranslation();
@@ -20,38 +21,17 @@ const FundAssets = ({ Show, setShow,Fund }) => {
         setAmount(parseInt(event.target.value))
     }
 
-    const getAssets = async () => {
-        var url = `${process.env.REACT_APP_APIURL}/assets`;
 
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                Authorization: `Bearer ${token}`,
-                Accept: "*/*",
-                'Content-Type': 'application/json'
-            }
-        })
-
-        if (response.status === 200) {
-            const data = await response.json()
-            setAssets(data)
-        } else {
-            switch (response.status) {
-                default:
-                    console.error(response.status)
-            }
-        }
-    }
 
     const addAssets = async () => {
         const token = sessionStorage.getItem("access_token")
         var url = `${process.env.REACT_APP_APIURL}/funds/${Fund.id}/sources`;
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'POST',
             body: JSON.stringify(
                 {
                     assetId: Assets[AssetSelected].id,
-                    amount:Amount
+                    amount: Amount
                 }
             ),
             headers: {
@@ -73,8 +53,30 @@ const FundAssets = ({ Show, setShow,Fund }) => {
     }
 
     useEffect(() => {
+        const getAssets = async () => {
+            var url = `${process.env.REACT_APP_APIURL}/assets`;
+
+            const response = await customFetch(url, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    Accept: "*/*",
+                    'Content-Type': 'application/json'
+                }
+            })
+
+            if (response.status === 200) {
+                const data = await response.json()
+                setAssets(data)
+            } else {
+                switch (response.status) {
+                    default:
+                        console.error(response.status)
+                }
+            }
+        }
         getAssets()
-    }, [])
+    }, [token])
 
     return (
         <Modal centered className="editModal" size="lg" show={Show} onHide={() => setShow(false)} >
@@ -92,7 +94,7 @@ const FundAssets = ({ Show, setShow,Fund }) => {
                 <Button variant="outline-danger" onClick={() => setShow(false)}>
                     Close
                 </Button>
-                <Button variant="outline-secondary" onClick={()=>addAssets()}>
+                <Button variant="outline-secondary" onClick={() => addAssets()}>
                     {t("Add Asset")}
                 </Button>
             </Modal.Footer>

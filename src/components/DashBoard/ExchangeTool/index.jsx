@@ -9,6 +9,8 @@ import moment from "moment";
 import { unMaskNumber } from "utils/unmask";
 import Decimal from "decimal.js";
 import { faClipboard } from "@fortawesome/free-regular-svg-icons";
+import { customFetch } from 'utils/customFetch';
+
 const ExchangeTool = () => {
     const { t } = useTranslation()
     const decimalSeparator = process.env.REACT_APP_DECIMALSEPARATOR ?? '.'
@@ -117,7 +119,7 @@ const ExchangeTool = () => {
         const fetchData = async () => {
             setParaleloExchangeRate({ ...{ exchangeRates: [], fetching: true } })
             try {
-                const response = await fetch(
+                const response = await customFetch(
                     `https://mercados.ambito.com/dolar/informal/historico-general/${moment().subtract(1, "month").format("YYYY-MM-DD")}/${moment().add(2, "day").format("YYYY-MM-DD")}`,
                     {
                         headers: {
@@ -177,7 +179,7 @@ const ExchangeTool = () => {
         const fetchData = async () => {
             setOficialExchangeRate({ ...{ exchangeRates: [], fetching: true } })
             try {
-                const response = await fetch(
+                const response = await customFetch(
                     `https://mercados.ambito.com/dolar/oficial/historico-general/${moment().subtract(1, "month").format("YYYY-MM-DD")}/${moment().add(1, "day").format("YYYY-MM-DD")}`,
                     {
                         headers: {

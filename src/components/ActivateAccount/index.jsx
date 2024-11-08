@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { Col, Container, Row, Spinner } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useHistory, useLocation } from "react-router-dom";
+import { customFetch } from 'utils/customFetch';
 
 const ActivateAccount = () => {
     const { t } = useTranslation()
@@ -20,7 +21,7 @@ const ActivateAccount = () => {
                 token: token,
             });
 
-            const response = await fetch(url, {
+            const response = await customFetch(url, {
                 method: 'GET',
                 headers: {
                     Accept: "*/*",

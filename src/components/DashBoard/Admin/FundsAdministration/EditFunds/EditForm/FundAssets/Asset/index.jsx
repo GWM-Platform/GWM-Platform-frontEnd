@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, Col } from 'react-bootstrap'
 import { useContext } from 'react';
 import { DashBoardContext } from 'context/DashBoardContext';
+import { customFetch } from 'utils/customFetch';
 
 const AssetCard = ({ Asset }) => {
     const { token } = useContext(DashBoardContext)
@@ -18,7 +19,7 @@ const AssetCard = ({ Asset }) => {
     useEffect(() => {
         const getAssets = async () => {
             var url = `${process.env.REACT_APP_APIURL}/assets/${Asset.assetId}`;
-            const response = await fetch(url, {
+            const response = await customFetch(url, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -38,7 +39,7 @@ const AssetCard = ({ Asset }) => {
             }
         }
         getAssets()
-    }, [Asset])
+    }, [Asset, token])
 
 
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Col } from 'react-bootstrap'
-
+import { customFetch } from 'utils/customFetch';
 import EditForm from './EditForm'
 import EditResult from './EditResult'
 const EditAssets = ({ Assets, AssetTypes, chargeAssets, Action, setAction }) => {
@@ -48,7 +48,7 @@ const EditAssets = ({ Assets, AssetTypes, chargeAssets, Action, setAction }) => 
 
         const url = `${process.env.REACT_APP_APIURL}/assets/${Assets[Action.Asset].id}`;
         const token = sessionStorage.getItem("access_token")
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'PUT',
             body: JSON.stringify(data),
             headers: {

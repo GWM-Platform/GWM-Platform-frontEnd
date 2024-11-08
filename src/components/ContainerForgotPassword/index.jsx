@@ -6,6 +6,7 @@ import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
 import { useTranslation } from "react-i18next";
 import { useHistory } from 'react-router-dom'
 import { Container, Row, Col, Card, Form, InputGroup, Button, CardGroup } from 'react-bootstrap'
+import { customFetch } from 'utils/customFetch';
 
 const ContainerForgotPassword = () => {
   // eslint-disable-next-line
@@ -46,7 +47,7 @@ const ContainerForgotPassword = () => {
   const requestPasswordReset = async () => {
     setButtonDisabled(true)
     var url = `${process.env.REACT_APP_APIURL}/users/requestPasswordReset`;
-    const response = await fetch(url, {
+    const response = await customFetch(url, {
       method: 'POST',
       body: JSON.stringify(formData),
       headers: {

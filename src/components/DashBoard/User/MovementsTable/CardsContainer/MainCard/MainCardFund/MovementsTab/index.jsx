@@ -8,6 +8,7 @@ import NoMovements from 'components/DashBoard/GeneralUse/NoMovements';
 import Loading from 'components/DashBoard/GeneralUse/Loading';
 import PaginationController from 'components/DashBoard/GeneralUse/PaginationController'
 import FilterOptions from 'components/DashBoard/GeneralUse/FilterOptions'
+import { customFetch } from 'utils/customFetch';
 
 const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handleMovementSearchChange, Movements, setMovements }) => {
     const history = useHistory();
@@ -41,7 +42,7 @@ const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
                 }
             ).filter(([_, v]) => v != null))
         );
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -75,7 +76,7 @@ const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
 
         setFetchingMovements(true)
         setMovements([])
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,

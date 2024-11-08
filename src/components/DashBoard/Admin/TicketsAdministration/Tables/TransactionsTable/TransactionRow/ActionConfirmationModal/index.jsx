@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExclamation, faCheck, faTimes, faMinusCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import { Modal, Button, Form } from 'react-bootstrap'
 import { faCircle } from '@fortawesome/free-regular-svg-icons';
+import { customFetch } from 'utils/customFetch';
 
 
 const ActionConfirmationModal = ({ transaction, setShowModal, action, show, reloadData }) => {
@@ -44,7 +45,7 @@ const ActionConfirmationModal = ({ transaction, setShowModal, action, show, relo
         const url = `${process.env.REACT_APP_APIURL}/${action === "revert" ? "share-transfers" : "transactions"}/${transaction.id}/${action}`;
         const token = sessionStorage.getItem("access_token")
 
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'POST',
             body: JSON.stringify({ ...data.note !== "" ? { denialMotive: data.note !== "" ? data.note : null } : {} }),
             headers: {

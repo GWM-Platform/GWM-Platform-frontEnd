@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import { Col, Row, Container, Card, Form, Button, InputGroup } from 'react-bootstrap'
 import { passwordStrength } from 'check-password-strength'
 import { ToggleReveal } from 'components/Containerlogin/FormDesktop/ToggleReveal';
+import { customFetch } from 'utils/customFetch';
 
 const ContainerForgotPassword = () => {
   const isMountedRef = useRef(null);
@@ -90,7 +91,7 @@ const ContainerForgotPassword = () => {
   const changePassword = async () => {
     setButtonDisabled(true)
     var url = `${process.env.REACT_APP_APIURL}/users/resetPassword`;
-    const response = await fetch(url, {
+    const response = await customFetch(url, {
       method: 'POST',
       body: JSON.stringify(ToAPI),
       headers: {

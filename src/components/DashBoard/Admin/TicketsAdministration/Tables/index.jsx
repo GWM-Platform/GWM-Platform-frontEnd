@@ -13,6 +13,7 @@ import TicketSearch from 'components/DashBoard/GeneralUse/TicketSearch'
 import { useTranslation } from 'react-i18next';
 import FixedDepositTable from './FixedDepositsTable';
 import { Button, Col } from 'react-bootstrap';
+import { customFetch } from 'utils/customFetch';
 
 const Tables = ({ state, messageVariants, client }) => {
 
@@ -71,7 +72,7 @@ const Tables = ({ state, messageVariants, client }) => {
                 valid: false,
             }
         })
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -153,7 +154,7 @@ const Tables = ({ state, messageVariants, client }) => {
                 valid: false,
             }
         })
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -235,7 +236,7 @@ const Tables = ({ state, messageVariants, client }) => {
                 valid: false,
             }
         })
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -317,7 +318,7 @@ const Tables = ({ state, messageVariants, client }) => {
                 valid: false,
             }
         })
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -399,7 +400,7 @@ const Tables = ({ state, messageVariants, client }) => {
                 valid: false,
             }
         })
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -449,7 +450,7 @@ const Tables = ({ state, messageVariants, client }) => {
     const getAccounts = async () => {
         var url = `${process.env.REACT_APP_APIURL}/accounts/?all=true`
 
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -474,7 +475,7 @@ const Tables = ({ state, messageVariants, client }) => {
             all: true,
         });
 
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -496,7 +497,7 @@ const Tables = ({ state, messageVariants, client }) => {
 
     const getFundsInfo = async () => {
         var url = `${process.env.REACT_APP_APIURL}/funds`;
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -532,7 +533,7 @@ const Tables = ({ state, messageVariants, client }) => {
                 valid: false,
             }
         })
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -586,7 +587,7 @@ const Tables = ({ state, messageVariants, client }) => {
                 valid: false
             }
         })
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -639,7 +640,7 @@ const Tables = ({ state, messageVariants, client }) => {
                 valid: false
             }
         })
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -704,7 +705,7 @@ const Tables = ({ state, messageVariants, client }) => {
                 valid: false,
             }
         }))
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -757,7 +758,7 @@ const Tables = ({ state, messageVariants, client }) => {
                 valid: false,
             }
         }))
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,

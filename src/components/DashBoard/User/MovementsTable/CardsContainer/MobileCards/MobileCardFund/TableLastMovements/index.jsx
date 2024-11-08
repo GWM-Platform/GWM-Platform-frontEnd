@@ -11,6 +11,7 @@ import { faFilter, faPrint } from '@fortawesome/free-solid-svg-icons';
 import TransactionTable from 'TableExport/TransactionTable';
 import ReactPDF from '@react-pdf/renderer';
 import axios from 'axios'
+import { customFetch } from 'utils/customFetch';
 
 const TableLastMovements = ({ Fund }) => {
     const { t } = useTranslation();
@@ -36,14 +37,20 @@ const TableLastMovements = ({ Fund }) => {
     useEffect(() => {
         const getMovements = async () => {
             setFetchingMovements(true)
-            var url = `${process.env.REACT_APP_APIURL}/transactions/?` + new URLSearchParams({
-                client: ClientSelected.id,
-                filterFund: Fund.fundId,
-                take: Options.take,
-                skip: Options.skip,
-                filterState: Options.state
-            });
-            const response = await fetch(url, {
+            var url = `${process.env.REACT_APP_APIURL}/transactions/?` + new URLSearchParams(
+                Object.fromEntries(Object.entries(
+                    {
+                        client: ClientSelected.id,
+                        filterFund: Fund.fundId,
+                        take: Options.take,
+                        skip: Options.skip,
+                        filterState: Options.state,
+                        fromDate: Options.fromDate || null,
+                        toDate: Options.toDate ? new Date(new Date(Options.toDate).setDate(new Date(Options.toDate).getDate() + 1)).toISOString() : null,
+                    }
+                ).filter(([_, v]) => v != null))
+            );
+            const response = await customFetch(url, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`,

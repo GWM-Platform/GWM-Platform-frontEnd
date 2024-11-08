@@ -4,6 +4,8 @@ import { Col } from 'react-bootstrap'
 
 import CreateForm from './CreateForm'
 import CreateResult from './CreateResult'
+import { customFetch } from 'utils/customFetch';
+
 const CreateFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
 
     const [validated, setValidated] = useState(false);
@@ -36,7 +38,7 @@ const CreateFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
         )
         const url = `${process.env.REACT_APP_APIURL}/funds`;
         const token = sessionStorage.getItem("access_token")
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'POST',
             body: JSON.stringify({ ...data, spreadsheetId: extractGoogleStyleSpreadSheetID(data.spreadsheetId) }),
             headers: {
@@ -106,7 +108,7 @@ const CreateFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
 
     const checkImage = async (url) => {
         setImageUrl(prevState => ({ ...prevState, ...{ fetching: true, fetched: false } }))
-        const res = await fetch(url);
+        const res = await customFetch(url);
         const buff = await res.blob();
         setImageUrl(prevState => ({ ...prevState, ...{ fetching: false, fetched: true, valid: buff.type.startsWith('image/') } }))
     }

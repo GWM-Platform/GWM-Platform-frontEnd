@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt } from '@fortawesome/free-regular-svg-icons'
 import { faExclamation, faCheck,faTimes } from '@fortawesome/free-solid-svg-icons'
 import { Modal, Button } from 'react-bootstrap'
+import { customFetch } from 'utils/customFetch';
 
 
 const DeleteConfirmationModal = ({ show, setShowModal, Asset, chargeAssets }) => {
@@ -44,7 +45,7 @@ const DeleteConfirmationModal = ({ show, setShowModal, Asset, chargeAssets }) =>
         const url = `${process.env.REACT_APP_APIURL}/Assets/${Asset.id}`;
         const token = sessionStorage.getItem("access_token")
 
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'delete',
             headers: {
                 Authorization: `Bearer ${token}`,

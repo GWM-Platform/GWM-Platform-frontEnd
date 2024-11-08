@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinusCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchclients, selectAllclients } from 'Slices/DashboardUtilities/clientsSlice';
+import { customFetch } from 'utils/customFetch';
 
 const DepositCashToClient = () => {
     const { toLogin } = useContext(DashBoardContext)
@@ -47,7 +48,7 @@ const DepositCashToClient = () => {
     const deposit = async () => {
         setFetching(true)
         var url = `${process.env.REACT_APP_APIURL}/accounts/${data?.account?.value}/deposit`;
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'POST',
             body: JSON.stringify({
                 amount: parseFloat(data.amount),
@@ -111,7 +112,7 @@ const DepositCashToClient = () => {
                     }
                 }
             )
-            const response = await fetch(url, {
+            const response = await customFetch(url, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`,

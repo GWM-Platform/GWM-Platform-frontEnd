@@ -9,6 +9,7 @@ import { useHistory } from 'react-router-dom';
 import LanguageSelector from 'components/LanguageSelector';
 import './index.scss'
 import { ToggleReveal } from 'components/Containerlogin/FormDesktop/ToggleReveal';
+import { customFetch } from 'utils/customFetch';
 
 const SetPassword = () => {
     const toLogin = () => {
@@ -38,7 +39,7 @@ const SetPassword = () => {
     const changePassword = async () => {
         var url = `${process.env.REACT_APP_APIURL}/users/setInitialPassword`;
 
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'POST',
             body: JSON.stringify({ password: Data.password }),
             headers: {

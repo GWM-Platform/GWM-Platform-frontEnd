@@ -8,6 +8,7 @@ import Loading from 'components/DashBoard/Admin/Loading'
 import './index.css'
 import { useContext } from 'react';
 import { DashBoardContext } from 'context/DashBoardContext';
+import { customFetch } from 'utils/customFetch';
 
 
 const FundsAdministration = () => {
@@ -26,7 +27,7 @@ const FundsAdministration = () => {
     const getFunds = async () => {
         var url = `${process.env.REACT_APP_APIURL}/funds`;
 
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'GET',
             headers: {
                 Accept: "*/*",
@@ -55,7 +56,7 @@ const FundsAdministration = () => {
         const getTypes = async () => {
             var url = `${process.env.REACT_APP_APIURL}/assets/types`;
 
-            const response = await fetch(url, {
+            const response = await customFetch(url, {
                 method: 'GET',
                 headers: {
                     Accept: "*/*",

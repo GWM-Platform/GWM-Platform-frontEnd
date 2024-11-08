@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import { DashBoardContext } from 'context/DashBoardContext';
 import { useContext } from 'react';
+import { customFetch } from 'utils/customFetch';
 
 const TransferConfirmation = ({ isMovement = false, movement, setShowModal, action, show, reloadData }) => {
 
@@ -61,7 +62,7 @@ const TransferConfirmation = ({ isMovement = false, movement, setShowModal, acti
         const url = `${process.env.REACT_APP_APIURL}/transfers/${Transfer?.id}/${action}`;
         const token = sessionStorage.getItem("access_token")
 
-        const response = await fetch(url, {
+        const response = await customFetch(url, {
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${token}`,
