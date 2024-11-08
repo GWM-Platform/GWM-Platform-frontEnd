@@ -10,6 +10,25 @@
     cursor: pointer;
     font-weight: 200;
 }
+.select__group-heading{
+    text-transform: unset!important;
+}
+.css-3w2yfm-ValueContainer{
+    flex-wrap: nowrap!important;
+}
+.minWidth-unset{
+    min-width: unset!important;
+}
+span.link-style {
+	color: rgb(0, 108, 225);
+	text-decoration: underline;
+
+	&:hover {
+		color: #0056b3
+	}
+
+	cursor: pointer;
+}
 .max-width-unset,.max-width-unset * {
     max-width: unset!important;
 

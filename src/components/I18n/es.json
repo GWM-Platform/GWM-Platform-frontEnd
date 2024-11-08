@@ -1151,5 +1151,8 @@
   "Cash_movements": "Movimientos de cuenta corriente",
   "Cash_transfers": "Transferencias de cuenta corriente",
   "Fund_movements": "Movimientos de fondo ({{fundName}})",
-  "Fund_transfers": "Transferencias de fondo ({{fundName}})"
+  "Fund_transfers": "Transferencias de fondo ({{fundName}})",
+  "cta_cte": "Cuenta corriente",
+  "fund": "Fondo",
+  "fixed_deposit": "Plazo fijo"
 }

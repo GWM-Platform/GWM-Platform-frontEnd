@@ -19,20 +19,20 @@ import { faCompress, faExpand } from '@fortawesome/free-solid-svg-icons';
 import { MotiveMultiSelect } from 'components/DashBoard/GeneralUse/FilterOptions';
 
 export const motives = [
-    { value: 'DEPOSIT', labelKey: 'DEPOSIT' },
-    { value: 'WITHDRAWAL', labelKey: 'WITHDRAWAL' },
-    { value: 'STAKE_BUY', labelKey: 'STAKE_BUY_' },
-    { value: 'STAKE_SELL', labelKey: 'STAKE_SELL_' },
-    { value: 'REPAYMENT', labelKey: 'REPAYMENT' },
-    { value: 'FIXED_DEPOSIT_CREATE', labelKey: 'FIXED_DEPOSIT_CREATE_' },
-    { value: 'FIXED_DEPOSIT_CLOSE', labelKey: 'FIXED_DEPOSIT_CLOSE_' },
-    { value: 'TRANSFER_SEND', labelKey: 'TRANSFER_SEND' },
-    { value: 'TRANSFER_RECEIVE', labelKey: 'TRANSFER_RECEIVE' },
-    { value: 'BID_OFFER', labelKey: 'BID_OFFER_' },
-    { value: 'SHARE_TRANSFER_SEND', labelKey: 'SHARE_TRANSFER_SEND' },
-    { value: 'SHARE_TRANSFER_RECEIVE', labelKey: 'SHARE_TRANSFER_RECEIVE' },
-    { value: 'PROFIT_DEPOSIT', labelKey: 'PROFIT_DEPOSIT_' },
-    { value: 'PENALTY_WITHDRAWAL', labelKey: 'PENALTY_WITHDRAWAL_' },
+    { value: 'DEPOSIT', labelKey: 'DEPOSIT', group: "cta_cte" },
+    { value: 'WITHDRAWAL', labelKey: 'WITHDRAWAL', group: "cta_cte" },
+    { value: 'STAKE_BUY', labelKey: 'STAKE_BUY_', group: "fund" },
+    { value: 'STAKE_SELL', labelKey: 'STAKE_SELL_', group: "fund" },
+    { value: 'REPAYMENT', labelKey: 'REPAYMENT', group: "fund" },
+    { value: 'FIXED_DEPOSIT_CREATE', labelKey: 'FIXED_DEPOSIT_CREATE_', group: "fixed_deposit" },
+    { value: 'FIXED_DEPOSIT_CLOSE', labelKey: 'FIXED_DEPOSIT_CLOSE_', group: "fixed_deposit"},
+    { value: 'TRANSFER_SEND', labelKey: 'TRANSFER_SEND', group: "cta_cte"  },
+    { value: 'TRANSFER_RECEIVE', labelKey: 'TRANSFER_RECEIVE', group: "cta_cte"  },
+    { value: 'BID_OFFER', labelKey: 'BID_OFFER_', group: "fixed_deposit"  },
+    { value: 'SHARE_TRANSFER_SEND', labelKey: 'SHARE_TRANSFER_SEND', group: "fund"},
+    { value: 'SHARE_TRANSFER_RECEIVE', labelKey: 'SHARE_TRANSFER_RECEIVE', group: "fund" },
+    { value: 'PROFIT_DEPOSIT', labelKey: 'PROFIT_DEPOSIT_', group: "cta_cte" },
+    { value: 'PENALTY_WITHDRAWAL', labelKey: 'PENALTY_WITHDRAWAL_', group: "cta_cte" },
 ]
 
 const TicketsAdministration = () => {
@@ -307,7 +307,6 @@ const TicketsAdministration = () => {
                                             <>
                                                 <Col md="4">
                                                     <Form.Group className="mt-2 mb-2">
-                                                        <Form.Label>{t("Concept")}</Form.Label>
                                                         <MotiveMultiSelect handleChange={handleChangeFilterOptions} FormData={FilterOptions} />
 
                                                         {/* <SingleSelectById

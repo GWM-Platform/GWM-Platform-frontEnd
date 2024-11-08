@@ -822,5 +822,8 @@
     "CREATE_ADMIN": "Admin creation",
     "ASSIGN_ADMIN": "Admin assignment",
     "REMOVE_ADMIN": "Admin removal",
-    "share_price": "share price"
+    "share_price": "share price",
+    "cta_cte": "Cash",
+    "fund": "Fund",
+    "fixed_deposit": "Time deposit"
 }

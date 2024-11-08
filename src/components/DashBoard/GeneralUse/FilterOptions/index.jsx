@@ -91,7 +91,6 @@ const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, ti
                             {
                                 filterMotives &&
                                 <Col xs="6" className="mt-2">
-                                    <Form.Label className="capitalizeFirstLetter">{t("Concept")}</Form.Label>
                                     <MotiveMultiSelect handleChange={handleChange} FormData={filterOptions} />
                                 </Col>
                             }
@@ -175,18 +174,89 @@ export const MotiveMultiSelect = ({
     FormData
 }) => {
     const { t } = useTranslation()
-    const options = useMemo(() => motives.map(
-        motive => ({ label: t(motive.labelKey), value: motive.value })
-    ), [t])
+    const options = useMemo(() => {
+        const groupedMotives = motives.reduce((acc, motive) => {
+            if (motive.group) {
+                if (!acc[motive.group]) {
+                    acc[motive.group] = {
+                        label: t(motive.group),
+                        options: []
+                    }
+                }
+                acc[motive.group].options.push({
+                    label: t(motive.labelKey),
+                    group: t(motive.group),
+                    value: motive.value
+                })
+            } else {
+                if (!acc['others']) {
+                    acc['others'] = {
+                        label: t('Others'),
+                        options: []
+                    }
+                }
+                acc['others'].options.push({
+                    label: t(motive.labelKey),
+                    value: motive.value
+                })
+            }
+            return acc
+        }, {});
 
+        return Object.values(groupedMotives).map(group => ({
+            label: group.label,
+            options: group.options.sort((a, b) => {
+                const aSelected = FormData.filterMotives.includes(a.value);
+                const bSelected = FormData.filterMotives.includes(b.value);
+                // selected options should be sorted first, then the rest
+                // both selected or both not selected, sort by label
+                if (aSelected === bSelected) {
+                    return a.label.localeCompare(b.label);
+                } else {
+                    return aSelected ? -1 : 1;
+                }
+            })
+        }))
+    }, [FormData.filterMotives, t]);
+
+    const optionsAlternative = useMemo(() => {
+        return motives.map(motive => ({
+            label: `${t(motive.labelKey)} - ${t(motive.group)}`,
+            groupLabel: t(motive.group),
+            value: motive.value
+        })).sort((a, b) => {
+            const aSelected = FormData.filterMotives.includes(a.value);
+            const bSelected = FormData.filterMotives.includes(b.value);
+            if (aSelected === bSelected) {
+                if (a.groupLabel === b.groupLabel) {
+                    return a.label.localeCompare(b.label);
+                } else {
+                    return a.groupLabel.localeCompare(b.groupLabel);
+                }
+            } else {
+                return aSelected ? -1 : 1;
+            }
+        })
+    }, [FormData.filterMotives, t])
+
+    const [mode, setMode] = useState(false);
     return (
-        <MultiSelectById
-            placeholder={t('All')}
-            options={options}
-            FormData={FormData}
-            isClearable
-            id="filterMotives"
-            handleChange={handleChange}
-        />
+        <>
+            <Form.Label>
+                {t("Concept")}&nbsp;-&nbsp;
+                <span className="link-style" onClick={() => setMode(prevState => !prevState)}>
+                    Modo {mode ? "normal" : "alternativo"}
+                </span>
+            </Form.Label>
+            <MultiSelectById
+                placeholder={t('All')}
+                options={mode ? options : optionsAlternative}
+                FormData={FormData}
+                isClearable
+                id="filterMotives"
+                handleChange={handleChange}
+            />
+
+        </>
     )
 }

@@ -68,7 +68,6 @@ const FilterOptionsMobile = ({ show, handleClose, disabled, setOptions, dateFilt
                     {
                         filterMotives &&
                         <Form.Group className="mt-2">
-                            <Form.Label className="capitalizeFirstLetter">{t("Concept")}</Form.Label>
                             <MotiveMultiSelect handleChange={handleChange} FormData={filterOptions} />
                         </Form.Group>}
                     {

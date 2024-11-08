@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useCallback } from "react";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import Select, { components } from 'react-select';
+import capitalize from "utils/capitalize";
 
 const MultiSelectById = ({
     // valuePaddingTop = "calc(1.625rem - 4px)",
@@ -38,7 +39,7 @@ const MultiSelectById = ({
     }
     const getOptionsByValue = (optionValues) =>
         optionValues?.length > 0 ?
-            optionValues.map(optionValue => getOptionByValue(optionValue))
+            optionValues.map(optionValue => getOptionByValue(optionValue)).sort((a, b) => a?.label?.localeCompare(b?.label))
             :
             null
 
@@ -50,15 +51,21 @@ const MultiSelectById = ({
         var length = getValue().length;
         let shouldBadgeShow = length > maxToShow;
         let displayLength = length - maxToShow;
+        console.log(props)
+        // sumar group al title
+        // botones shortcuts seleccion
         return (
             searchInputValue === "" &&
             ((props.index < maxToShow) ?
-                <components.MultiValue {...props}>
-                    {props.data.label}
+                <components.MultiValue {...props} >
+
+                    <span title={`${props.data.label}${props.data.group ? ` - ${props.data.group}` : ""}`}>
+                        {props.data.label}{props.data.group ? ` - ${props.data.group}` : ""}
+                    </span>
                 </components.MultiValue>
                 :
                 (props.index === maxToShow &&
-                    <components.MultiValue {...props}>
+                    <components.MultiValue {...props} className="minWidth-unset">
                         <OverlayTrigger
                             placement="bottom"
                             overlay={
@@ -66,14 +73,18 @@ const MultiSelectById = ({
                                     {
                                         getValue()
                                             .slice(maxToShow, length)
-                                            .map(option => <React.Fragment key={`${option.label}-${option.value}`}>{option.label}<br /></React.Fragment>)}
+                                            .map(option =>
+                                                <React.Fragment key={`${option.label}-${option.value}`}>
+                                                    {option.label}{option.group ? ` - ${option.group}` : ""}<br />
+                                                </React.Fragment>
+                                            )}
                                 </Tooltip>
                             }
                         >
-                            <div>
+                            <span>
                                 {shouldBadgeShow &&
                                     `+ ${displayLength} item${getValue().slice(maxToShow, length)?.length !== 1 ? "s" : ""}`}
-                            </div>
+                            </span>
                         </OverlayTrigger>
 
                     </components.MultiValue >))
@@ -178,12 +189,12 @@ const MultiSelectById = ({
                     {
                         groupOptions.length > 0 ?
                             <>
-                                <span className="clickable fw-normal" onClick={handleClick} title={allChildSelected ? "Deseleccionar todas" : "Seleccionar todas"}>
-                                    {children}
+                                <span className="link-style fw-normal" onClick={handleClick} title={allChildSelected ? "Deseleccionar todas" : "Seleccionar todas"}>
+                                    {capitalize(children)}
                                 </span>,&nbsp;
                                 {groupOptions.length} opcion{groupOptions.length > 1 ? "es" : ""} ({
                                     selectedChilds.length === 0 ?
-                                        "Ninguna seleccionada"
+                                        "ninguna seleccionada"
                                         :
                                         allChildSelected ?
                                             " todas seleccionadas"
