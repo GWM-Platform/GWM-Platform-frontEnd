@@ -825,5 +825,9 @@
     "share_price": "share price",
     "cta_cte": "Cash",
     "fund": "Fund",
-    "fixed_deposit": "Time deposit"
+    "fixed_deposit": "Time deposit",
+    "CONNECT_USER_TO_CLIENT": "User to client link",
+    "DISCONNECT_USER_TO_CLIENT": "User to client unlink",
+    "ENABLE_USER_TO_CLIENT": "User to client link activation",
+    "DISABLE_USER_TO_CLIENT": "User to client link deactivation"
 }

@@ -1154,5 +1154,9 @@
   "Fund_transfers": "Transferencias de fondo ({{fundName}})",
   "cta_cte": "Cuenta corriente",
   "fund": "Fondo",
-  "fixed_deposit": "Plazo fijo"
+  "fixed_deposit": "Plazo fijo",
+  "CONNECT_USER_TO_CLIENT": "Vinculación de usuario a cliente",
+  "DISCONNECT_USER_TO_CLIENT": "Desvinculación de usuario a cliente",
+  "ENABLE_USER_TO_CLIENT": "Habilitación de vinculación de usuario a cliente",
+  "DISABLE_USER_TO_CLIENT": "Deshabilitación de vinculación usuario a cliente"
 }
