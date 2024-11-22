@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   desktop: 100,
-  mobile: 96
+  mobile: 75
 };
 
 const ZoomSlice = createSlice({

@@ -16,6 +16,9 @@ import { useLocation } from 'react-router-dom';
 import './index.css'
 import MainCardFixedDeposit from './MainCard/MainCardFixedDeposit';
 import MobileCardFixedDeposits from './MobileCards/MobileCardFixedDeposits';
+import { useHorizontalMobileAction } from 'components/DashBoard';
+import { formatValue } from '@osdiab/react-currency-input-field';
+import Decimal from 'decimal.js';
 
 const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDepositsStats }) => {
     const { t } = useTranslation();
@@ -108,6 +111,67 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
         setSearchById((prevState) => ({ ...prevState, value: event.target.value }))
     }
 
+    useHorizontalMobileAction({
+        matched: () => {
+            setCollapseSecondary(true)
+        },
+        notMatched: () => {
+            setCollapseSecondary(false)
+        }
+    })
+
+    const sections = [
+        ...!!(Accounts.length > 0 && hasPermission('VIEW_ACCOUNT')) ? [{
+            title: `${t("Cash")
+                } ${formatValue({
+                    value: Decimal(Accounts[0]?.balance || 0).abs().toFixed(2),
+                    groupSeparator: '.',
+                    decimalSeparator: ',',
+                    prefix: "U$D "
+                })}`,
+            active: categorySelected === 0,
+            onSelect: () => {
+                setCategorySelected(0)
+                setSelected(0)
+                resetSearchById()
+            }
+        }] : [],
+        ...!!(FundsWithPending.length > 0) ? [{
+            title: t("Funds"),
+            children: FundsWithPending.map(
+                (Fund, key) => ({
+                    title: `${Fund?.fund?.name} ${formatValue({
+                        value: Decimal(Fund.shares ? new Decimal(Fund?.shares || 0).times(Fund?.fund?.sharePrice || 0).toFixed(2).toString() : 0).abs().toFixed(2),
+                        groupSeparator: '.',
+                        decimalSeparator: ',',
+                        prefix: "U$D "
+                    })
+                        } `,
+                    active: categorySelected === 1 && selected === key,
+                    onSelect: () => {
+                        setCategorySelected(1)
+                        setSelected(key)
+                        resetSearchById()
+                    }
+                })
+            ),
+        }] : [],
+        ...!!(FixedDepositsStats?.content?.hasDeposits > 0) ? [{
+            title: t(`${t("Time deposits")} ${formatValue({
+                value: (FixedDepositsStats.content.balance || 0) + "",
+                groupSeparator: '.',
+                decimalSeparator: ',',
+                prefix: "U$D "
+            })}`),
+            active: categorySelected === 2,
+            onSelect: () => {
+                setCategorySelected(2)
+                setSelected(0)
+                resetSearchById()
+            }
+        }] : [],
+    ]
+
     return (
         <Row className="HistoryCardsContainer d-flex align-items-stretch flex-md-nowrap h-100">
             {
@@ -147,6 +211,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
                                     case 0:
                                         return (hasPermission('VIEW_ACCOUNT') &&
                                             <MainCardAccount
+                                                sections={sections}
                                                 Fund={Accounts[selected]}
                                                 Hide={Hide} setHide={setHide}
 
@@ -159,6 +224,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
                                         return <MainCardFund
                                             Fund={FundsWithPending[selected]}
                                             Hide={Hide} setHide={setHide}
+                                            sections={sections}
 
                                             SearchById={SearchById}
                                             setSearchById={setSearchById}
@@ -166,7 +232,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
                                             handleMovementSearchChange={handleMovementSearchChange}
                                         />
                                     case 2:
-                                        return <MainCardFixedDeposit FixedDepositsStats={FixedDepositsStats.content} Hide={Hide} setHide={setHide} />
+                                        return <MainCardFixedDeposit sections={sections} FixedDepositsStats={FixedDepositsStats.content} Hide={Hide} setHide={setHide} />
                                     default:
                                         return <h1>{t("Not found")}</h1>
                                 }
@@ -201,7 +267,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
                                 </>
                             }
                             {
-                                !!(Funds.length > 0) &&
+                                !!(FundsWithPending.length > 0) &&
                                 <div className="CategoryLabel">
                                     <h1 className="title">{t("Funds")}</h1>
                                 </div>

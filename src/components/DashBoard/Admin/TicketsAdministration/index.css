@@ -4,13 +4,13 @@
 
 .TicketsAdministration .header {
   position: relative;
-  font-size: 30px;
+  font-size: 1.8rem;
   padding: 0.25em 0 0.25em;
   margin: 0.25em 0 0.25em 0;
   border-bottom: 1px solid lightgray;
 }
 .TicketsAdministration .header .title {
-  font-size: 30px;
+  font-size: 1.8rem;
 }
 #unified-table {
   th,
@@ -42,7 +42,7 @@
 .TicketsAdministration .TicketsTable .FreeShares,
 .TicketsAdministration .TicketsTable .SharePrice,
 .TicketsAdministration .TicketsTable .Actions {
-  font-size: 15px;
+  font-size: 1rem;
 }
 
 .TicketsAdministration .TicketsTable td.id {
@@ -114,7 +114,7 @@
 }
 
 .TicketsAdministration .title {
-  font-size: 25px;
+  font-size: 1.8rem;
   margin: 0.5em 0;
 }
 

@@ -10,13 +10,13 @@
 }	
 .login .card {
 	background-color: transparent;
-	border-radius: 30px;
+	border-radius: 2rem;
 	border: none;
 }
 .login .card .card-body {
 	background-color: white;
-	border-radius: 30px 30px 0 0;
-	border-bottom: white 20px solid;
+	border-radius: 2rem 2rem 0 0;
+	border-bottom: white 1.25rem solid;
 }
 .login .forgotPass {
 	text-align: center;
@@ -37,7 +37,7 @@
 .login .button {
 	border-top: gray 3px solid;
 	text-transform: uppercase;
-	border-radius: 0 0 30px 30px;
+	border-radius: 0 0 2rem 2rem;
 	transition: border-radius 0.5s;
 	background-color:var(--blue-main)!important;
 	border-color:#1379e7!important
@@ -48,7 +48,7 @@
 
 .login .card-footer {
 	padding: 0;
-	border-radius: 0 0 30px 30px;
+	border-radius: 0 0 2rem 2rem;
 }
 .login .image {
 	display: block;
@@ -65,11 +65,11 @@
 	background-color: white;
 	border-right: none;
 	padding-left: 1rem;
-	border-radius: 30px;
+	border-radius: 2rem;
 }
 .login .form-control {
 	border-left: none;
-	border-radius: 0 30PX 30PX 0px;
+	border-radius: 0 2rem 2rem 0px;
 }
 .login .mobile {
 	margin-top: 4em;
@@ -82,7 +82,7 @@
 		background-position: 10% center;
 	}
 	.login .button {
-		border-radius: 30px 30px 30px 30px;
+		border-radius: 2rem 2rem 2rem 2rem;
 		border-top: none;
 	}
 	.login .card-img {
@@ -91,7 +91,7 @@
 }
 @media (min-width: 576px) {
 	.login .button {
-		border-radius: 0 0 30px 30px;
+		border-radius: 0 0 2rem 2rem;
 	}
 	.login .card-img {
 		width: 30%;

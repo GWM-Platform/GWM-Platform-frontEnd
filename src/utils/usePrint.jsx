@@ -76,12 +76,12 @@ export const PrintDefaultWrapper = React.forwardRef(({ children, getPageMargins,
                     table { page-break-inside:avoid; page-break-after:auto }
                     .print-title {
                         color: white;
-                        font-size: 20px;
+                        font-size: 1.25rem;
                         text-align: start;
                     }
                     .print-date {
                         color: black;
-                        font-size: 16px;
+                        font-size: 1rem;
                         text-align: end;
                     }
                     .logo{

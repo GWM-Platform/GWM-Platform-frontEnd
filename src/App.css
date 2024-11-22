@@ -223,7 +223,7 @@ body {
   position: relative;
 }
 .hideInfoButton .icon {
-  width: 25px;
+  width: 1.8rem;
 }
 .hideInfoButton .icon.placeholder,
 .containerHideInfo .info.placeholder {
@@ -303,7 +303,7 @@ body {
   border-top-left-radius: 0;
 }
 #optionsContainer {
-  max-height: calc((1rem + 23px) * 3.1);
+  max-height: calc((1rem + 1.3rem) * 3.1);
   overflow: overlay;
 }
 #fundLogos .popover-arrow {

@@ -7,7 +7,7 @@
 }
 
 .total {
-	font-size: 23px;
+	font-size: 1.5rem;
 	font-weight: bold;
 	text-align: center;
 	color: white;
@@ -18,6 +18,6 @@
 		background: white;
 	}
 	.total {
-		font-size: 16px;
+		font-size: 1rem;
 	}
 }

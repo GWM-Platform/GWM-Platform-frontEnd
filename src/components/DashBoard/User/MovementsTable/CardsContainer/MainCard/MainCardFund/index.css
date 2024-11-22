@@ -26,12 +26,12 @@
 }
 
 .movementsMainCardFund .filter .form-control {
-  border-radius: 20px;
+  border-radius: 1.25rem;
 }
 
 .movementsMainCardFund .details .title {
   text-transform: capitalize;
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: 400;
   color: var(--main-color);
 }
@@ -72,19 +72,23 @@
   text-transform: uppercase;
   color: black;
   font-weight: 600;
-  font-size: 23px;
+  font-size: 1.3rem;
+}
+.movementsMainCardFund .info .title a,
+.movementsMainCardFund .info .title div {
+  text-transform: none;
 }
 
 .movementsMainCardFund .info .edit {
   color: black;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 .movementsMainCardFund .info .content {
   color: var(--main-color);
   font-weight: 400;
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 .movementsMainCardFund .loadingMovements {

@@ -24,8 +24,9 @@ import TransactionTable from 'TableExport/TransactionTable';
 import axios from 'axios'
 import { exportToExcel } from 'utils/exportToExcel';
 import { faFileExcel } from '@fortawesome/free-regular-svg-icons';
+import { SectionSelector } from '../MainCardAccount';
 
-const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
+const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchById, resetSearchById, handleMovementSearchChange, sections }) => {
     const location = useLocation();
     const history = useHistory()
 
@@ -155,7 +156,7 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
             <div className="bg-white main-card-header info ms-0 mb-2 px-0">
                 <div className="d-flex justify-content-between align-items-end pe-2 mb-1">
                     <h1 className="m-0 title px-2 me-auto">
-                        {t(Fund.fund.name)}
+                        <SectionSelector sections={sections} title={t(Fund.fund.name)} titleClassName="m-0 title"/>
                     </h1>
                     {
                         SelectedTab + "" !== "1" &&

@@ -9,7 +9,7 @@
 		top: .75rem;
 	}
 	.form-control {
-		border-radius: 30px;
+		border-radius: 2rem;
 	}
 	.validation .textRed {
 		color: red;
@@ -19,32 +19,32 @@
 	}
 	.Card {
 		margin-top: max(10%, 4rem);
-		border-radius: 30px;
+		border-radius: 2rem;
 	}
 	.card-body {
 		padding: 1rem 1.25rem;
 	}
 	h1 {
 		margin-top: 0;
-		font-size: 27px;
+		font-size: 1.75rem;
 	}
 	h2 {
-		font-size: 22px;
+		font-size: 1.25rem;
 	}
 	h3 {
 		margin-top: 0;
-		font-size: 17px;
+		font-size: 1rem;
 	}
 	.btn {
-		border-radius: 30px;
+		border-radius: 2rem;
 	}
 	.result .icon {
-		font-size: 100px;
+		font-size: 4rem;
 		text-align: center;
 		color: green;
 	}
 	.result .label {
-		font-size: 20px;
+		font-size: 1.25rem;
 		text-align: center;
 	}
 	.collapsed {
@@ -53,7 +53,7 @@
 		transition: all 1s ease-in-out;
 	}
 	.expanded {
-		max-height: 1000px;
+		max-height: 70vh;
 		overflow-y: hidden;
 		transition: all 1s ease-in-out;
 	}

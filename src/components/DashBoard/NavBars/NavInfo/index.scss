@@ -15,7 +15,7 @@ $color_1: black;
 		margin: 0;
 		color: $color_1;
 		font-weight: 400;
-		font-size: 25px;
+		font-size: 1.25rem;
 	}
 
 	.image {
@@ -24,14 +24,14 @@ $color_1: black;
 
 	.navbar-brand {
 		img {
-			height: 50px;
+			height: 3rem;
 		}
 
 		@media (max-width: 576px) {
 			margin-right: 0;
 
 			img {
-				height: 40px;
+				height: 2.5rem;
 			}
 		}
 
@@ -39,7 +39,7 @@ $color_1: black;
 			margin-right: 0;
 
 			img {
-				height: 25px;
+				height: 1.5rem;
 			}
 		}
 	}
@@ -57,7 +57,7 @@ $color_1: black;
 @media (max-width: 576px) {
 	.navBarInfo {
 		.greeting {
-			font-size: 19px;
+			font-size: 1.1rem;
 		}
 
 		z-index: 1500;

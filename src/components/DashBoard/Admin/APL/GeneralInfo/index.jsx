@@ -361,11 +361,11 @@ const GeneralInfo = ({ fullSettlement, setFullSettlement, clients }) => {
                                                 <Col key={account.id} sm="10" md="4" lg="4" xl="3">
                                                     <div className="fixed-deposit-item">
                                                         <h2 className="mt-0 pe-2 topic text-nowrap">
-                                                            <Link style={{ fontWeight: 300, fontSize: "17px" }} to={`/DashBoard/clientsSupervision/${account.clientId}`}>
+                                                            <Link style={{ fontWeight: 300, fontSize: "1rem" }} to={`/DashBoard/clientsSupervision/${account.clientId}`}>
                                                                 {account?.clientCompleteName}
                                                             </Link>
                                                             <br />
-                                                            <span style={{ fontWeight: 600,fontSize: "20px" }}>
+                                                            <span style={{ fontWeight: 600,fontSize: "1.25rem" }}>
                                                                 <FormattedNumber value={account.balance} prefix="U$D " fixedDecimals={2} styledSybol />
                                                             </span>
                                                         </h2>

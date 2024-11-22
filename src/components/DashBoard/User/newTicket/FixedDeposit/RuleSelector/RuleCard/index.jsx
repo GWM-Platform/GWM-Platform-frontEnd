@@ -21,7 +21,7 @@ const RuleCard = ({ Rule, data, setData, index, Rules, RulesObject, handleChange
                     handleChange({ target: { id: "days", value: maxDuration ? (maxDuration + "") : (minDuration + "") } })
                 }}>
                 <Card.Header>
-                    <strong className="title" style={{ fontSize: 16 }}>
+                    <strong className="title" style={{ fontSize: "1rem" }}>
                         {
                             maxDuration ?
                                 <>{t("From")} {t("{{days}} days", { days: minDuration })} {t("to")} {t("{{days}} days", { days: maxDuration })}</>

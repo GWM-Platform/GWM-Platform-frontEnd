@@ -385,7 +385,7 @@ const FundInfo = ({ Fund, clients }) => {
                                                 <Col key={stake.clientId} sm="10" md="4" lg="4" xl="3">
                                                     <div className="fixed-deposit-item">
                                                         <h2 className="mt-0 pe-2 topic text-nowrap">
-                                                            <Link style={{ fontWeight: 300, fontSize: "17px" }} to={`/DashBoard/clientsSupervision/${stake.clientId}`}>
+                                                            <Link style={{ fontWeight: 300, fontSize: "1rem" }} to={`/DashBoard/clientsSupervision/${stake.clientId}`}>
                                                                 {stake?.clientCompleteName}
                                                             </Link>
                                                             <br />
