@@ -10,7 +10,7 @@
 	min-height: 4.3rem;
 	border-bottom: 1px solid;
 	display: flex;
-	align-items: center;
+	align-items: bottom;
 }
 .HistoryCardsContainer .CategoryLabel .title {
 	font-size: 1.5rem;

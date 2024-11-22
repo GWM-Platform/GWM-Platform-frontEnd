@@ -12,8 +12,9 @@ import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import PerformanceComponent from 'components/DashBoard/GeneralUse/PerformanceComponent';
 import { useHistory, useLocation } from 'react-router-dom/cjs/react-router-dom.min';
 import { PrintButton, PrintDefaultWrapper, usePrintDefaults } from 'utils/usePrint';
+import { SectionSelector } from '../MainCardAccount';
 
-const MainCardFixedDeposit = ({ FixedDepositsStats, Hide, setHide }) => {
+const MainCardFixedDeposit = ({ FixedDepositsStats, Hide, setHide, sections }) => {
     const [SelectedTab, setSelectedTab] = useState("0")
     const { t } = useTranslation();
 
@@ -72,7 +73,7 @@ const MainCardFixedDeposit = ({ FixedDepositsStats, Hide, setHide }) => {
                 <div className="d-flex justify-content-between align-items-start pe-2">
                     <Col className="d-flex justify-content-between pe-5" sm="auto">
                         <h1 className="m-0 title px-2">
-                            {t("Time deposits")}
+                            <SectionSelector sections={sections} title={t("Time deposits")} titleClassName="m-0 title" />
                         </h1>
                     </Col>
                     <Col className='ms-auto' xs="auto">
