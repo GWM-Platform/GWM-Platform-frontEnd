@@ -48,7 +48,7 @@
 }
 
 .mainBody {
-	height: calc(100vh - 130px);
+	height: calc(100vh - 12rem);
 }
 
 .disabled {
@@ -95,19 +95,19 @@
 	display: block;
 }
 .loadingText {
-	font-size: 30px;
+	font-size: 1.8rem;
 }
 h1 {
-	font-size: 30px;
+	font-size: 1.8rem;
 	margin-top: 1rem;
 }
 h2 {
-	font-size: 20px;
+	font-size: 1.25rem;
 	text-align: start;
 	margin: 0;
 }
 h3 {
-	font-size: 30px;
+	font-size: 1.8rem;
 	text-align: start;
 	margin-top: 1rem;
 }
@@ -129,10 +129,10 @@ h5 {
 	opacity: 0.8;
 }
 .transactionInfo .title {
-	font-size: 30px;
+	font-size: 1.8rem;
 }
 .transactionInfo .date {
-	font-size: 20px;
+	font-size: 1.25rem;
 	opacity: 0.7;
 }
 .transactionInfo .listedInfo {
@@ -174,7 +174,7 @@ No hace falta media-query porque será nuestro diseño por defecto*/
 /*Pantallas extra grandes (desktops de mas de 1200px) xl X≥1200px*/
 @media (min-width: 1201px) {
 	h1 {
-		font-size: 2rem;
+		font-size: 1.8rem;
 	}
 	h2 {
 		font-size: 1.5rem;
@@ -183,7 +183,7 @@ No hace falta media-query porque será nuestro diseño por defecto*/
 		font-size: 1.25rem;
 	}
 	.cardTextMain {
-		height: calc(100vh - 130px);
+		height: calc(100vh - 12rem);
 	}
 	.accountsContainerWidth {
 		width: 75%;
@@ -192,7 +192,7 @@ No hace falta media-query porque será nuestro diseño por defecto*/
 /*Pantallas grandes (desktops de menos de 1200px) lg 1200px>X≥992px*/
 @media (max-width: 1200px) {
 	h1 {
-		font-size: 2rem;
+		font-size: 1.8rem;
 	}
 	h2 {
 		font-size: 1.5rem;
@@ -201,7 +201,7 @@ No hace falta media-query porque será nuestro diseño por defecto*/
 		font-size: 1.25rem;
 	}
 	.cardTextMain {
-		height: calc(100vh - 130px);
+		height: calc(100vh - 12rem);
 	}
 }
 
@@ -209,10 +209,10 @@ No hace falta media-query porque será nuestro diseño por defecto*/
 
 @media (max-width: 992px) {
 	h1 {
-		font-size: 25px;
+		font-size: 1.8rem;
 	}
 	.cardTextMain {
-		height: calc(100vh - 130px);
+		height: calc(100vh - 12rem);
 	}
 	.sideToSidebar {
 		margin-left: 64px;
@@ -223,10 +223,10 @@ No hace falta media-query porque será nuestro diseño por defecto*/
 
 @media (max-width: 768px) {
 	h1 {
-		font-size: 25px;
+		font-size: 1.8rem;
 	}
 	.cardTextMain {
-		height: calc(100vh - 130px);
+		height: calc(100vh - 12rem);
 	}
 }
 
@@ -234,12 +234,12 @@ No hace falta media-query porque será nuestro diseño por defecto*/
 
 @media (max-width: 576px) {
 	h1 {
-		font-size: 25px;
+		font-size: 1.8rem;
 	}
 	.cardTextMain {
 		height: auto;
 	}
 	.cardTextMain {
-		height: calc(100vh - 130px);
+		height: calc(100vh - 12rem);
 	}
 }

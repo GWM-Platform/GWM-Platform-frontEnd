@@ -13,22 +13,22 @@ $border-color_2: green;
 
 .newTicket {
 	.label {
-		font-size: 20px;
+		font-size: 1.25rem;
 		font-weight: 400;
 
 		.numberContainer {
 			border: var(--ticket-main-color) 1px solid;
 			border-radius: 50px;
-			height: 30px;
-			width: 30px;
-			font-size: 15px;
+			height: 2rem;
+			width: 2rem;
+			font-size: 1rem;
 			margin-right: 0.5em;
 		}
 
 		.number {
 			width: 100%;
 			text-align: center;
-			font-size: 20px;
+			font-size: 1.25rem;
 			color: $color_1;
 		}
 	}
@@ -108,7 +108,7 @@ $border-color_2: green;
 	}
 
 	.card-title {
-		font-size: 15px;
+		font-size: 1rem;
 	}
 
 	.card-text {
@@ -148,7 +148,7 @@ $border-color_2: green;
 
 	.body {
 		background-color: $background-color_5 !important;
-		border-radius: 30px 30px 0 0;
+		border-radius: 2rem 2rem 0 0;
 	}
 
 	.footer {
@@ -163,7 +163,7 @@ $border-color_2: green;
 	}
 
 	.descriptionIconContainer {
-		font-size: 60px;
+		font-size: 3rem;
 		width: 1.5em;
 		height: 1.5em;
 		border: 3px solid;
@@ -183,7 +183,7 @@ $border-color_2: green;
 
 	.icon {
 		text-align: center;
-		font-size: 60px;
+		font-size: 3rem;
 	}
 
 	.icon.red {
@@ -198,7 +198,7 @@ $border-color_2: green;
 		color: $color_3 !important;
 		font-weight: 300;
 		text-align: start;
-		font-size: 16px;
+		font-size: 1rem;
 	}
 
 	.emphasis {
@@ -209,7 +209,7 @@ $border-color_2: green;
 		color: $color_3 !important;
 		text-align: center;
 		font-weight: 300;
-		font-size: 15px;
+		font-size: 1rem;
 	}
 }
 
@@ -264,18 +264,18 @@ $border-color_2: green;
 		}
 
 		.label {
-			font-size: 14px;
+			font-size: .9rem;
 			font-weight: 400;
 			padding-bottom: 0;
 
 			.number {
-				font-size: 14px;
+				font-size: .9rem;
 			}
 
 			.numberContainer {
-				height: 20px;
-				width: 20px;
-				font-size: 16px;
+				height: 1.25rem;
+				width: 1.25rem;
+				font-size: 1rem;
 			}
 		}
 
@@ -290,7 +290,7 @@ $border-color_2: green;
 			}
 
 			.title {
-				font-size: 16px;
+				font-size: 1rem;
 			}
 		}
 	}

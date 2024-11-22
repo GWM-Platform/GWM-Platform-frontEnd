@@ -7,7 +7,7 @@
 .OperationStatus .description{
     color:green;
     text-align: center;
-    font-size: 20px;
+    font-size: 1.25rem;
 
 }
 .OperationStatus .statusIcon{

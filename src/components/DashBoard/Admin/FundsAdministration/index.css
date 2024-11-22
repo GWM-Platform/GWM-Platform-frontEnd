@@ -1,10 +1,10 @@
 .FundsAdministration .searchBar {
-	border-radius: 30px;
+	border-radius: 2rem;
 	box-shadow: 0 0 0 0 rgb(255 255 25 / 0%);
 	transition: all 0.2s;
 }
 .FundsAdministration .searchBar .input-group-text {
-	border-radius: 30px 0 0 30px;
+	border-radius: 2rem 0 0 2rem;
 	background: rgba(255, 255, 255, 0.7);
 	border-right: none;
 }
@@ -14,7 +14,7 @@
 }
 
 .FundsAdministration .searchBar .input-group-text.left {
-	border-radius: 30px 0 0 30px;
+	border-radius: 2rem 0 0 2rem;
 	border-right: none;
 	margin-right: 0px !important;
 }
@@ -22,7 +22,7 @@
 	margin-left: 0.7em;
 }
 .FundsAdministration .searchBar .input-group-text.right {
-	border-radius: 0 30px 30px 0;
+	border-radius: 0 2rem 2rem 0;
 	border-left: none;
 	margin-left: 0px !important;
 	cursor: pointer;
@@ -36,7 +36,7 @@
 }
 
 .FundsAdministration .searchBar .form-control {
-	border-radius: 0 30px 30px 0;
+	border-radius: 0 2rem 2rem 0;
 	padding: 0.7em;
 	border-right: none;
 	border-left: none;
@@ -72,7 +72,7 @@
 .FundsAdministration .FundsTable .Shares,
 .FundsAdministration .FundsTable .FreeShares,
 .FundsAdministration .FundsTable .SharePrice {
-	font-size: 15px;
+	font-size: 1rem;
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
@@ -150,7 +150,7 @@
 	background-color: white !important;
 }
 .deleteModal .body {
-	border-radius: 30px 30px 0 0;
+	border-radius: 2rem 2rem 0 0;
 }
 
 .deleteModal .title {
@@ -204,33 +204,33 @@
 	color: black !important;
 	font-weight: 500;
 	text-align: center;
-	font-size: 20px;
+	font-size: 1.25rem;
 }
 .deleteModal .heading,
 .editResult .heading {
 	color: black !important;
 	text-align: center;
 	font-weight: 300;
-	font-size: 15px;
+	font-size: 1rem;
 }
 .FundsAdministration .editForm .header,
 .FundsAdministration .editResult .header {
 	position: relative;
-	font-size: 30px;
+	font-size: 1.8rem;
 	padding: 0.5em 0;
 	margin: 0.5em 0;
 	border-bottom: 1px solid;
 }
 .FundsAdministration .editForm .header .title,
 .FundsAdministration .editResult .header .title {
-	font-size: 30px;
+	font-size: 1.8rem;
 	font-weight: 300;
 	padding: 0;
 	margin: 0;
 }
 .FundsAdministration .editForm .header .button,
 .FundsAdministration .editResult .header .button {
-	font-size: 20px;
+	font-size: 1.25rem;
 	position: absolute;
 	bottom: 0;
 	left: 1ch;
@@ -240,7 +240,7 @@
 }
 .FundsAdministration .editForm .header .button.icon,
 .FundsAdministration .editResult .header .button.icon {
-	font-size: 20px;
+	font-size: 1.25rem;
 	color: var(--blue-main);
 	background-color: lightgrey;
 	border-radius: 50%;
@@ -267,7 +267,7 @@
 	padding-left: 0;
 }
 .fundLogo {
-	font-size: 30px;
+	font-size: 1.8rem;
 	height: 4em;
 	width: 4em;
 
@@ -277,7 +277,7 @@
 	justify-content: center;
 }
 .fundLogo .border {
-	font-size: 30px;
+	font-size: 1.8rem;
 	border: white 1px solid;
 	border-radius: 50%;
 	height: 2.7em;
@@ -289,7 +289,7 @@
 }
 
 .fundLogo .logo {
-	width: 30px;
+	width: 2rem;
 	display: block;
 }
 

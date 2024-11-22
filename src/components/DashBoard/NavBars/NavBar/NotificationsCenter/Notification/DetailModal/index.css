@@ -4,7 +4,7 @@
 	background-color: white !important;
 }
 .detailModal .body {
-	border-radius: 30px;
+	border-radius: 2rem;
 }
 
 .detailModal .title {
@@ -45,7 +45,7 @@
 	color: black !important;
 	font-weight: 300;
 	text-align: start;
-	font-size: 16px;
+	font-size: 1rem;
 }
 .detailModal .emphasis {
 	font-weight: 500;
@@ -54,5 +54,5 @@
 	color: black !important;
 	text-align: center;
 	font-weight: 300;
-	font-size: 15px;
+	font-size: 1rem;
 }

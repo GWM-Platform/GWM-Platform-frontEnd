@@ -149,7 +149,7 @@ const CashCard = (props) => {
                                                 <OverlayTrigger rootClose trigger="click" placement="auto-start" overlay={
                                                     <PopoverAvailableFunds account={Fund} highlightOverdraft={highlightOverdraft} />
                                                 }>
-                                                    <button onClick={e => e.stopPropagation()} id="overdraft" className="noStyle px-0 hideInfoButton d-inline-flex align-items-center" style={{ fontSize: "16px" }}>
+                                                    <button onClick={e => e.stopPropagation()} id="overdraft" className="noStyle px-0 hideInfoButton d-inline-flex align-items-center" style={{ fontSize: "1rem" }}>
                                                         <FontAwesomeIcon className="icon pin" icon={faInfoCircle} />
                                                         <FontAwesomeIcon className="icon placeholder" icon={faEyeSlash} />
                                                     </button>

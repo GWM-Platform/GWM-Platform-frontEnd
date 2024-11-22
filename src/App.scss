@@ -18,6 +18,9 @@
         overflow: auto;
     }
 }
+.form-select{
+    background-size: 1rem .8rem;
+}
 a.badge{
     background-color: var(--blue-main) !important;
     text-decoration: none;
@@ -26,12 +29,20 @@ a.badge{
         color: var(--bs-badge-color);
     }
 }
+.basic-single,.react-select__control,.select__control {
+    min-height: calc(.375rem + 1.5rem + .375rem)!important;
+}
+.css-tj5bde-Svg{
+        width: 1.2rem;
+        height: 1.2rem;
+    
+}
 .moreTooltip {
 
     li,
     ul {
         font-weight: 200;
-        font-size: 14px;
+        font-size: .9rem;
         margin: 0;
         text-align: start;
     }
@@ -56,14 +67,14 @@ a.badge{
 
 .header-with-border {
     position: relative;
-    font-size: 30px;
+    font-size: 1.8rem;
     font-weight: 400;
     padding: 0.5em 0;
     margin: 0.5em 0;
     border-bottom: 1px solid;
 
     .title {
-        font-size: 30px;
+        font-size: 1.8rem;
         padding: 0;
         margin: 0;
         font-weight: 400;

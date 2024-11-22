@@ -91,6 +91,15 @@ const UserDashBoard = () => {
     const zoomMobile = useSelector(selectZoomMobile)
     const zoomDesktop = useSelector(selectZoomDesktop)
 
+    useHorizontalMobileAction({
+        matched: () => {
+            setNavInfoToggled(true)
+        },
+        notMatched: () => {
+            setNavInfoToggled(false)
+        }
+    })
+
     return (
         <div className="DashBoard growOpacity" style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/backGround/background.jpg)` }}>
             <style>
@@ -99,7 +108,7 @@ const UserDashBoard = () => {
                     //     zoom: ${zoomDesktop}%;
                     // }
                     :root{
-                       font-size: calc(16px * ${zoomDesktop} / 100 );
+                       font-size: calc(1rem * ${zoomDesktop} / 100 );
                     }
                     .zoom-mobile{
                         display: none!important
@@ -110,17 +119,17 @@ const UserDashBoard = () => {
                     @media (max-width: 1000px) and (min-aspect-ratio: 13/9) {
                         * {
                             // zoom: ${zoomMobile}%!important;
-                            overscroll-behavior-x: none;
-                            overscroll-behavior-y: none;
+                            // overscroll-behavior-x: none;
+                            // overscroll-behavior-y: none;
                         }
                         :root{
-                            font-size: calc(16px * ${zoomMobile} / 100 );
+                            font-size: calc(1rem * ${zoomMobile} / 100 );
                         }       
-                        .container,
-                        .container-sm {
-                            zoom: 100%;
-                            max-width: 100vw;
-                        }
+                        // .container,
+                        // .container-sm {
+                        //     zoom: 100%;
+                        //     max-width: 100vw;
+                        // }
                         .zoom-mobile{
                             display: block!important
                         }
@@ -141,76 +150,85 @@ const UserDashBoard = () => {
                                         :
                                         <>
                                             <NavInfo NavInfoToggled={NavInfoToggled} />
-                                            <NavBar NavInfoToggled={NavInfoToggled} setNavInfoToggled={setNavInfoToggled}
-                                                setItemSelected={setItemSelected}
-                                            />
                                             {
                                                 admin && IndexClientSelected === -1 ?
                                                     /*----------------------------------------------------------Admin----------------------------------------------------------*/
-                                                    <div className={`adminContainer tabContent`}>
-                                                        <Suspense fallback={
-                                                            <Container className="h-100" fluid>
-                                                                <Row className="d-flex justify-content-center align-items-center h-100">
-                                                                    <Col className="d-flex justify-content-center align-items-center">
-                                                                        <Spinner className="me-2" animation="border" variant="primary" />
-                                                                        <span className="loadingText">{t("Loading")}</span>
-                                                                    </Col>
-                                                                </Row>
-                                                            </Container>
-                                                        }>
-                                                            <Route path={`${path}/users`}>
-                                                                <AddAccount />
-                                                            </Route>
-                                                            <Route path={`${path}/broadcast`}>
-                                                                <Broadcast />
-                                                            </Route>
-                                                            <Route path={`${path}/APL`}>
-                                                                <APL />
-                                                            </Route>
-                                                            <Route path={`${path}/clientsSupervision`}>
-                                                                <ClientsSupervision />
-                                                            </Route>
-                                                            <Route path={`${path}/userActionLogs`}>
-                                                                <UserActionLogs />
-                                                            </Route>
-                                                            <Route path={`${path}/operations`}>
-                                                                <Operations />
-                                                            </Route>
-                                                            <Route path={`${path}/fundsAdministration`}>
-                                                                <FundsAdministration />
-                                                            </Route>
-                                                            <Route path={`${path}/assetsAdministration`}>
-                                                                <AssetsAdministration />
-                                                            </Route>
-                                                            <Route path={`${path}/TimeDeposit`}>
-                                                                <FixedDeposit />
-                                                            </Route>
-                                                            <Route path={`${path}/ticketsAdministration`}>
-                                                                <TicketsAdministration />
-                                                            </Route>
-                                                            <Route path={`${path}/depositCash`}>
-                                                                <DepositCashToClient />
-                                                            </Route>
-                                                            <Route path={`${path}/withdrawCash`}>
-                                                                <WithdrawCashFromClient />
-                                                            </Route>
-                                                            <Route path={`${path}/operationResult`}>
-                                                                <OperationStatusAdmin />
-                                                            </Route>
+                                                    <>
+                                                        <div className="w-100">
+                                                            <NavBar NavInfoToggled={NavInfoToggled} setNavInfoToggled={setNavInfoToggled}
+                                                                setItemSelected={setItemSelected}
+                                                            />
+                                                        </div>
+                                                        <div className={`adminContainer tabContent`}>
+                                                            <Suspense fallback={
+                                                                <Container className="h-100" fluid>
+                                                                    <Row className="d-flex justify-content-center align-items-center h-100">
+                                                                        <Col className="d-flex justify-content-center align-items-center">
+                                                                            <Spinner className="me-2" animation="border" variant="primary" />
+                                                                            <span className="loadingText">{t("Loading")}</span>
+                                                                        </Col>
+                                                                    </Row>
+                                                                </Container>
+                                                            }>
+                                                                <Route path={`${path}/users`}>
+                                                                    <AddAccount />
+                                                                </Route>
+                                                                <Route path={`${path}/broadcast`}>
+                                                                    <Broadcast />
+                                                                </Route>
+                                                                <Route path={`${path}/APL`}>
+                                                                    <APL />
+                                                                </Route>
+                                                                <Route path={`${path}/clientsSupervision`}>
+                                                                    <ClientsSupervision />
+                                                                </Route>
+                                                                <Route path={`${path}/userActionLogs`}>
+                                                                    <UserActionLogs />
+                                                                </Route>
+                                                                <Route path={`${path}/operations`}>
+                                                                    <Operations />
+                                                                </Route>
+                                                                <Route path={`${path}/fundsAdministration`}>
+                                                                    <FundsAdministration />
+                                                                </Route>
+                                                                <Route path={`${path}/assetsAdministration`}>
+                                                                    <AssetsAdministration />
+                                                                </Route>
+                                                                <Route path={`${path}/TimeDeposit`}>
+                                                                    <FixedDeposit />
+                                                                </Route>
+                                                                <Route path={`${path}/ticketsAdministration`}>
+                                                                    <TicketsAdministration />
+                                                                </Route>
+                                                                <Route path={`${path}/depositCash`}>
+                                                                    <DepositCashToClient />
+                                                                </Route>
+                                                                <Route path={`${path}/withdrawCash`}>
+                                                                    <WithdrawCashFromClient />
+                                                                </Route>
+                                                                <Route path={`${path}/operationResult`}>
+                                                                    <OperationStatusAdmin />
+                                                                </Route>
 
-                                                            <Route exact path={`${path}/configuration`}>
-                                                                <Configuration admin />
-                                                            </Route>
-                                                            <Route exact path={`${path}/notificationsCenter`}>
-                                                                <NotificationsCenter />
-                                                            </Route>
-                                                            <ExchangeTool />
-                                                        </Suspense>
-                                                    </div>
+                                                                <Route exact path={`${path}/configuration`}>
+                                                                    <Configuration admin />
+                                                                </Route>
+                                                                <Route exact path={`${path}/notificationsCenter`}>
+                                                                    <NotificationsCenter />
+                                                                </Route>
+                                                                <ExchangeTool />
+                                                            </Suspense>
+                                                        </div>
+                                                    </>
                                                     :
                                                     /*----------------------------------------------------------Client----------------------------------------------------------*/
                                                     <>
-                                                        <NavBarTotal balanceChanged={balanceChanged} setBalanceChanged={setBalanceChanged} />
+                                                        <div className="w-100">
+                                                            <NavBar NavInfoToggled={NavInfoToggled} setNavInfoToggled={setNavInfoToggled}
+                                                                setItemSelected={setItemSelected}
+                                                            />
+                                                            <NavBarTotal balanceChanged={balanceChanged} setBalanceChanged={setBalanceChanged} />
+                                                        </div>
                                                         <Suspense fallback={
                                                             <Container className="h-100" fluid>
                                                                 <Row className="d-flex justify-content-center align-items-center h-100">
@@ -314,3 +332,25 @@ const UserDashBoard = () => {
     )
 }
 export default UserDashBoard
+
+export const useHorizontalMobileAction = ({ matched = () => { }, notMatched = () => { } }) => {
+
+    // useEffect to fire an action when this mediaquery is matched
+    //  @media (max-width: 1000px) and (min-aspect-ratio: 13/9) {
+    useEffect(() => {
+        const mediaQuery = window.matchMedia('(max-width: 1000px) and (min-aspect-ratio: 13/9)');
+        const handleMediaQueryChange = (e) => {
+            if (e.matches) {
+                matched()
+            } else {
+                notMatched()
+            }
+        }
+        // add a manual execution of the function to check if the mediaquery is matched at start
+        handleMediaQueryChange(mediaQuery)
+        mediaQuery.addEventListener('change', handleMediaQueryChange);
+        return () => mediaQuery.removeEventListener('change', handleMediaQueryChange);
+        // eslint-disable-next-line
+    }, [])
+
+}

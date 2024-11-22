@@ -107,7 +107,7 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
                                                         <OverlayTrigger rootClose trigger="click" placement="bottom" overlay={
                                                             <PopoverAvailableFunds account={AccountSelectedEnriched}/>
                                                         }>
-                                                            <button className="noStyle" style={{ fontSize: "16px", color: "white" }}>
+                                                            <button className="noStyle" style={{ fontSize: "1rem", color: "white" }}>
                                                                 <FontAwesomeIcon icon={faInfoCircle} />
                                                             </button>
                                                         </OverlayTrigger>

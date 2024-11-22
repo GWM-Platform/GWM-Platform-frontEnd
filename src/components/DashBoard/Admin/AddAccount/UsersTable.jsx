@@ -128,7 +128,7 @@ export const UsersTable = () => {
 
     return (
         <Col className="section growOpacity h-100 d-flex flex-column">
-            <Accordion style={{ borderBottom: "1px solid #b3b3b3", marginTop: "0.5em", fontSize: "30px" }} >
+            <Accordion style={{ borderBottom: "1px solid #b3b3b3", marginTop: "0.5em", fontSize: "2rem" }} >
                 <ContextAwareToggle buttonText="Add user" eventKey="0" create={() => history.push("/DashBoard/users/creation")}>
                     {t("Users")}
                 </ContextAwareToggle>

@@ -1,17 +1,17 @@
 .section  .header {
 	position: relative;
-	font-size: 30px;
+	font-size: 1.8rem;
 	padding: 0.5em 0;
 	margin: 0.5em 0;
 	border-bottom: 1px solid;
 }
 .section .header .title {
-	font-size: 30px;
+	font-size: 1.8rem;
 	padding: 0;
 	margin: 0;
 }
 .section .header .button {
-	font-size: 20px;
+	font-size: 1.25rem;
 	position: absolute;
 	bottom: 0;
 	left: 1ch;
@@ -20,7 +20,7 @@
 	transition: 0.5s all;
 }
 .section .header .button.icon {
-	font-size: 20px;
+	font-size: 1.25rem;
 	color: var(--main-blue);
 	background-color: lightgrey;
 	border-radius: 50%;

@@ -121,7 +121,7 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, cardsAmount, inScreenFu
                                             <h1 className="title m-0">
                                                 {t("Time deposit")}&nbsp;{FixedDeposit.id}
                                                 &nbsp;{!!(isPending(FixedDeposit)) ?
-                                                    <span style={{ textTransform: "none", fontSize: "12px" }}>({t("Pending approval")})</span>
+                                                    <span style={{ textTransform: "none", fontSize: ".8rem" }}>({t("Pending approval")})</span>
                                                     :
                                                     wasEdited(FixedDeposit) &&
                                                     <span style={{ textTransform: "none" }}>({t("Personalized  *")})</span>}

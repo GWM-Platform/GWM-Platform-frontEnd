@@ -99,7 +99,7 @@
         animation: growOpacity .5s 1.25s forwards;
 
         position: absolute;
-        height: calc(100% - 20px);
+        height: calc(100% - 1.25rem);
         width: 100%;
         pointer-events: none;
 
@@ -109,7 +109,7 @@
             position: absolute;
             top: 0;
             bottom: 0;
-            width: 25px;
+            width: 1.8rem;
             transition: all 0.5s;
             background: none;
             border: none;
@@ -153,11 +153,11 @@
 
 
             &.right {
-                right: -20px;
+                right: -1.25rem;
             }
 
             &.left {
-                left: -20px
+                left: -1.25rem
             }
         }
     }

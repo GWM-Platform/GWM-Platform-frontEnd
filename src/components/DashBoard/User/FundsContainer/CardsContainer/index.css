@@ -1,6 +1,6 @@
 .cardsContainer .arrow {
   top: 50%;
-  font-size: 30px;
+  font-size: 1.8rem;
   position: absolute;
   z-index: 10;
   width: auto;
@@ -24,7 +24,7 @@
 }
 
 .cardsContainer .arrow .chevron {
-  font-size: 30px;
+  font-size: 1.8rem;
   height: 1em;
   display: block;
 }
@@ -84,7 +84,7 @@
 
 @media (min-width: 900px) {
   .general-performance-wrapper *:not(.collapser-button) {
-    font-size: 16px;
+    font-size: 1rem;
   }
 }
 

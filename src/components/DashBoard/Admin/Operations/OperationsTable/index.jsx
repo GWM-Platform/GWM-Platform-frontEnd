@@ -110,7 +110,7 @@ export const OperationsTable = ({ Users, Accounts, Clients, eventOptions }) => {
             <Loading />
             :
             <Col className="section growOpacity h-100 d-flex flex-column">
-                <Accordion style={{ borderBottom: "1px solid #b3b3b3", marginTop: "0.5em", fontSize: "30px" }} >
+                <Accordion style={{ borderBottom: "1px solid #b3b3b3", marginTop: "0.5em", fontSize: "2rem" }} >
                     <ContextAwareToggle eventKey="0" create={() => history.push("/DashBoard/operations/creation")}>
                         {t("Operations")}
                     </ContextAwareToggle>
@@ -259,7 +259,7 @@ export const ContextAwareToggle = ({ children, eventKey, callback, create = fals
     return (
         <div
             className="header d-flex " style={{ borderBottom: "unset", padding: "0.5em 0", margin: 0 }}>
-            <h1 className="title my-0 fw-normal" style={{ fontSize: "30px", fontWeight: "300", borderBottom: "unset" }}>{children}</h1>
+            <h1 className="title my-0 fw-normal" style={{ fontSize: "2rem", fontWeight: "300", borderBottom: "unset" }}>{children}</h1>
             {
                 create &&
                 <Button

@@ -8,13 +8,13 @@ $unread-notification: #9881ea;
 .NotificationsCenter {
     .header {
         position: relative;
-        font-size: 30px;
+        font-size: 1.8rem;
         padding: 0.5em 0;
         margin: 0.5em 0;
         border-bottom: 1px solid;
 
         .title {
-            font-size: 30px;
+            font-size: 1.8rem;
             padding: 0;
             margin: 0;
         }
@@ -55,7 +55,7 @@ $unread-notification: #9881ea;
 
                 h2 {
                     font-weight: 400;
-                    font-size: 16px;
+                    font-size: 1rem;
                     margin-bottom: .25em;
                     max-height: 3em;
                     white-space: nowrap;
@@ -100,7 +100,7 @@ $unread-notification: #9881ea;
                 padding: 0.25em 0;
                 margin: 0.25em 0;        
                 .title {
-                    font-size: 20px;
+                    font-size: 1.25rem;
                 }
             }
         }

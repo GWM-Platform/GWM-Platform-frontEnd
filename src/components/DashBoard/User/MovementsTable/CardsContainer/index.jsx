@@ -16,6 +16,7 @@ import { useLocation } from 'react-router-dom';
 import './index.css'
 import MainCardFixedDeposit from './MainCard/MainCardFixedDeposit';
 import MobileCardFixedDeposits from './MobileCards/MobileCardFixedDeposits';
+import { useHorizontalMobileAction } from 'components/DashBoard';
 
 const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDepositsStats }) => {
     const { t } = useTranslation();
@@ -107,6 +108,15 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
     const handleMovementSearchChange = (event) => {
         setSearchById((prevState) => ({ ...prevState, value: event.target.value }))
     }
+
+    useHorizontalMobileAction({
+        matched: () => {
+            setCollapseSecondary(true)
+        },
+        notMatched: () => {
+            setCollapseSecondary(false)
+        }
+    })
 
     return (
         <Row className="HistoryCardsContainer d-flex align-items-stretch flex-md-nowrap h-100">
