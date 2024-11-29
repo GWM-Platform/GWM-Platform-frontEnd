@@ -46,6 +46,9 @@
 .text-align-start .tooltip-inner {
   text-align: start;
 }
+.p-2 .tooltip-inner {
+  padding: 1em;
+}
 .approvedByTooltip .tooltip-inner {
   text-align: start;
 }
