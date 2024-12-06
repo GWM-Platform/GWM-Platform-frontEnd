@@ -1178,5 +1178,16 @@
   "Rest of interest": "Resto de intereses",
   "As there are less than {{frequency}} days between the last date of interest crediting and the closing date ({{rest}} days), the accumulated interest will be refunded in the final payment along with the initial investment.": "Como hay menos de {{frequency}} días entre la última fecha de acreditación de intereses y la fecha de cierre ({{rest}} días), los intereses acumulados se reembolsarán en el pago final junto con la inversión inicial.",
   "Investment final amount after": "Monto final de la inversión después de",
-  "Interest crediting in advance (when the ticket is approved)": "Acreditación de intereses anticipada (cuando el ticket sea aprobado)"
+  "Interest crediting in advance (when the ticket is approved)": "Acreditación de intereses anticipada (cuando el ticket sea aprobado)",
+  "FIXED_DEPOSIT_INITIAL_INTERESTS": "Intereses iniciales de plazo fijo #{{fixedDeposit}}",
+  "Interest credited in advance": "Interés acreditado en forma anticipada",
+  "Advance interest accreditation (if the ticket had been approved)": "Acreditación de intereses por adelantado (si el ticket hubiera sido aprobado)",
+  "Interest based on the annual rate and the initial amount, discounting interest credited in advance": "Intereses en función de la tasa anual y del importe inicial, descontando los intereses acreditados anticipadamente",
+  "None yet": "Ninguno aún",
+  "{{times}} times": "{{times}} veces",
+  "Interest credited": "Interés acreditado",
+  "in the fixed deposit": "en el plazo fijo",
+  "including interest credited in advance": "incluyendo el interés acreditado en forma anticipada",
+  "including utilities withdrawal": "incluyendo los retiros de utilidades",
+  "every {{daysInterval}} days": "cada {{daysInterval}} días"
 }

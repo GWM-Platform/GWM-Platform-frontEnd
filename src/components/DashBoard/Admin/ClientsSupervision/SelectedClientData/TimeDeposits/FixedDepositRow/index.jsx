@@ -11,6 +11,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimesCircle } from '@fortawesome/free-regular-svg-icons';
 import ActionConfirmationModal from 'components/DashBoard/Admin/TicketsAdministration/Tables/FixedDepositsTable/FixedDepositRow/ActionConfirmationModal'
 import { ApprovedByUsers } from 'components/DashBoard/Admin/TicketsAdministration/Tables/TransactionsTable/TransactionRow';
+import { getFixedDepositType } from 'components/DashBoard/User/newTicket/FixedDeposit/RuleSelector';
+import TooltipInfo from 'components/DashBoard/Admin/Broadcast/TooltipInfo';
 
 const FixedDepositRow = ({ Movement, reloadData }) => {
     const { t } = useTranslation();
@@ -207,6 +209,7 @@ const FixedDepositRow = ({ Movement, reloadData }) => {
     const clientNote = Movement?.notes?.find(note => note.noteType === "CLIENT_NOTE")
     const denialMotive = Movement?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
     const adminNote = Movement?.notes?.find(note => note.noteType === "ADMIN_NOTE")
+    const fixedDepositType = getFixedDepositType(Movement.type)
 
     return (
         <>
@@ -214,8 +217,26 @@ const FixedDepositRow = ({ Movement, reloadData }) => {
                 <div className='d-flex py-1 align-items-center flex-wrap flex-wrap' >
                     <span className="h5 mb-0 me-1">{t("Time deposit")}&nbsp;#{Movement.id}</span>
                     {
-                        wasEdited(Movement) &&
-                        <span className="h5 mb-0 me-1 me-md-2">({t("Personalized  *")})</span>}
+                        (fixedDepositType || wasEdited(Movement)) &&
+                        <span className="h5 mb-0 me-1 me-md-2">
+                            |&nbsp;
+                            {
+                                fixedDepositType &&
+                                <>
+                                    {t(fixedDepositType.label)}
+                                    <TooltipInfo text={t(fixedDepositType.desc)} />
+                                </>
+                            }
+                            {
+                                wasEdited(Movement) &&
+                                <>
+                                    {fixedDepositType && ", "}
+                                    {t("Personalized  *")}
+                                </>
+
+                            }
+                        </span>
+                    }
                     <Badge className='ms-auto' bg={status()?.bg}>{t(status().text)}</Badge>
                     {
                         !!(Movement.stateId === 2 && !Movement.closed) &&

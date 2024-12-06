@@ -14,6 +14,8 @@ import { wasEdited } from 'utils/fixedDeposit';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import Notes from '../../Notes';
 import { ApprovedByUsers } from '../../TransactionsTable/TransactionRow';
+import { fixedDepositTypes } from 'components/DashBoard/User/newTicket/FixedDeposit/RuleSelector';
+import TooltipInfo from 'components/DashBoard/Admin/Broadcast/TooltipInfo';
 
 const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
     const { t } = useTranslation();
@@ -238,11 +240,39 @@ const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
     const denialMotive = Movement?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
     const adminNote = Movement?.notes?.find(note => note.noteType === "ADMIN_NOTE")
 
+    const fixedDepositType = fixedDepositTypes.find(type => type.value === Movement.type)
     return (
         <>
             <div className='mobileMovement'>
                 <div className='d-flex py-1 align-items-center flex-wrap' >
-                    <span className="h5 mb-0 me-1 me-md-2">{t("Time deposit")}&nbsp;#{Movement.id} {!!(WasEdited) && <>({t("Personalized  *")})</>}</span>
+                    <span className="h5 mb-0 me-1 me-md-2">
+                        {t("Time deposit")}&nbsp;#{Movement.id}
+                        {
+                            (fixedDepositType || WasEdited) &&
+                            <span className="h5 mb-0 me-1 me-md-2">
+                                |&nbsp;
+                                {
+                                    fixedDepositType &&
+                                    <>
+                                        {t(fixedDepositType.label)}
+                                        {
+                                            Movement.daysInterval && ` ${t("every {{daysInterval}} days", { daysInterval: Movement.daysInterval })}`
+                                        }
+                                        <TooltipInfo text={t(fixedDepositType.desc)} />
+                                    </>
+                                }
+                                {
+                                    WasEdited &&
+                                    <>
+                                        {fixedDepositType && ", "}
+                                        {t("Personalized  *")}
+                                    </>
+
+                                }
+                            </span>
+                        }
+
+                    </span>
                     <div className='px-1 px-md-2' style={{ borderLeft: "1px solid lightgray", borderRight: "1px solid lightgray" }}>
                         <span className="d-none d-md-inline">{t("Client")}:&nbsp;</span>
                         {

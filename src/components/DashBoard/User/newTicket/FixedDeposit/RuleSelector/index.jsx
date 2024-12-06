@@ -243,7 +243,64 @@ export const withdrawalResume = ({ data, t, anualRate }) => {
         return ""
     }
 }
+export const getWithdrawalResumeItems = ({ data, anualRate }) => {
+    // based on daysInterval, get the array of expected interest crediting dates and amoun
+    try {
+        const dailyRate = Decimal(anualRate).div(100).div(365).toNumber(10)
+        const crediting = Decimal(data?.days).div(data?.daysInterval || 0).floor().toNumber()
+        const rest = Decimal(data?.days).mod(data?.daysInterval).toFixed(0)
+        const hasRest = Decimal(rest).gt(0)
+        const creditingInterest = Decimal(data?.amount).mul(dailyRate).mul(data?.daysInterval).toFixed(10)
+        const creditingRest = Decimal(data?.amount).mul(dailyRate).mul(rest).toFixed(10)
+        const finalPayment = Decimal(data?.amount).add(creditingRest).toFixed(2)
 
+        return (
+            {
+                daysInterval: data?.daysInterval,
+                crediting,
+                creditingDetail: Array.apply(null, { length: crediting }).map((_, index) => {
+                    const date = moment(
+                        data.startDate
+                    ).add((index + 1) * data?.daysInterval, 'days')
+                    return {
+                        date: date,
+                        credited: data.lastAccreditationDate && date.isSameOrBefore(moment(data.lastAccreditationDate)),
+                        nextToBeCredited: date.isAfter(moment()) && date.diff(moment(), 'days') <= data?.daysInterval
+                    }
+                }
+                ),
+                creditingInterest,
+                creditingInterestTotal: Decimal(creditingInterest).times(crediting).toFixed(2),
+                finalPayment,
+                initialInvestment: data?.amount,
+                hasRest,
+                creditingRest,
+                frecuency: data?.daysInterval,
+                rest
+            }
+        )
+    } catch (err) {
+        console.log(err)
+        return {}
+    }
+}
+
+export const getAdvanceResumeItems = ({ data, anualRate }) => {
+    try {
+        const dailyRate = Decimal(anualRate).div(100).div(365).toNumber(10)
+        const totalProfit = Decimal(data.amount).mul(Decimal(data.days).mul(dailyRate)).toFixed(2)
+
+        return {
+            inAdvance: totalProfit,
+            finalPayment: data.amount
+        }
+    } catch (err) {
+        return {
+            totalProfit: null,
+            finalPayment: null
+        }
+    }
+}
 export const inAdvanceResume = ({ data, t, anualRate }) => {
     try {
         const dailyRate = Decimal(anualRate).div(100).div(365).toNumber(10)
@@ -265,12 +322,13 @@ export const inAdvanceResume = ({ data, t, anualRate }) => {
                 </li>
             </>
         )
-    }catch (err) {
+    } catch (err) {
         console.log(err)
         return ""
     }
 }
 
+export const getFixedDepositType = (type) => fixedDepositTypes.find(t => t.value === type)
 export const fixedDepositTypes = [
     {
         value: "standard",
@@ -283,12 +341,14 @@ export const fixedDepositTypes = [
         desc: "Periodic interest paid, initial investment paid at dueDate",
         additionalFields: WithdrawalAdditionalFields,
         additionalFieldsProps: ["daysInterval"],
-        resume: withdrawalResume
+        resume: withdrawalResume,
+        getResumeItems: getWithdrawalResumeItems
     },
     {
         value: "inAdvance",
         label: "With advance interest credit",
         desc: "Interest paid at the beginning of the period, initial investment paid at dueDate",
-        resume: inAdvanceResume
+        resume: inAdvanceResume,
+        getResumeItems: getAdvanceResumeItems
     }
 ]

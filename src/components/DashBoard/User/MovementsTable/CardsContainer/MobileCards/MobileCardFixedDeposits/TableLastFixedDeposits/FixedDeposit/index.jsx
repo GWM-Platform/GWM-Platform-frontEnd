@@ -12,6 +12,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf } from '@fortawesome/free-regular-svg-icons';
 import { getAnualRate, wasEdited, getDuration } from 'utils/fixedDeposit';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import TooltipInfo from 'components/DashBoard/Admin/Broadcast/TooltipInfo';
+import { getFixedDepositType } from 'components/DashBoard/User/newTicket/FixedDeposit/RuleSelector';
 
 const FixedDeposit = ({ content }) => {
   const { t } = useTranslation();
@@ -226,16 +228,13 @@ const FixedDeposit = ({ content }) => {
   const [showHover, setShowHover] = useState(false)
 
   const denialMotive = content?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
+  const fixedDepositType = getFixedDepositType(content.type)
 
   return (
     <div className='mobileMovement'>
       <div className='d-flex justify-content-between py-1 align-items-center' >
         <span className="h5 mb-0 me-1">{t("Time deposit")}&nbsp;#{content.id}
-          {
-            wasEdited(content) &&
-            <span className="h5 mb-0 mx-1"><br />({t("Personalized  *")})</span>}
         </span>
-
         <div className='ms-auto me-2'>
           {
             GeneratingPDF ?
@@ -285,6 +284,26 @@ const FixedDeposit = ({ content }) => {
           </OverlayTrigger>
         }
       </div >
+      {
+        (fixedDepositType || wasEdited(content)) &&
+        <span className="h5 mb-0 me-1 me-md-2" style={{ fontSize: "1rem" }}>
+          {
+            fixedDepositType &&
+            <>
+              {t(fixedDepositType.label)}
+              <TooltipInfo text={t(fixedDepositType.desc)} />
+            </>
+          }
+          {
+            wasEdited(content) &&
+            <>
+              {fixedDepositType && ", "}
+              {t("Personalized  *")}
+            </>
+
+          }
+        </span>
+      }
       <div className='w-100 d-flex' style={{ borderBottom: "1px solid lightgray" }} />
 
       <div className='d-flex justify-content-between'>

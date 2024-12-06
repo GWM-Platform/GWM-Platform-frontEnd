@@ -192,10 +192,10 @@ No hace falta media-query porque será nuestro diseño por defecto*/
 /*Pantallas grandes (desktops de menos de 1200px) lg 1200px>X≥992px*/
 @media (max-width: 1200px) {
 	h1 {
-		font-size: 1.8rem;
+		font-size: 1.5rem;
 	}
 	h2 {
-		font-size: 1.5rem;
+		font-size: 1.25rem;
 	}
 	.h5 {
 		font-size: 1.25rem;
