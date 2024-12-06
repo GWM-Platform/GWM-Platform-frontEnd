@@ -1163,7 +1163,7 @@
   "Select a type": "Seleccione un tipo",
   "Fixed deposit types": "Tipos de plazos fijos",
   "Interest crediting frequency": "Frecuencia de acreditación de intereses",
-  "Enter frequency in days (minimum 30)": "Ingrese la frecuencia en días (mínimo 30)",
+  "Enter frequency in days (minimum {{minimum}})": "Ingrese la frecuencia en días (mínimo {{minimum}})",
   "Interest and initial investment paid at dueDate": "Interés e inversión inicial pagados al vencimiento",
   "Standard": "Estándar",
   "With profit withdrawal": "Con retiro de utilidades",
@@ -1189,5 +1189,6 @@
   "in the fixed deposit": "en el plazo fijo",
   "including interest credited in advance": "incluyendo el interés acreditado en forma anticipada",
   "including utilities withdrawal": "incluyendo los retiros de utilidades",
-  "every {{daysInterval}} days": "cada {{daysInterval}} días"
+  "every {{daysInterval}} days": "cada {{daysInterval}} días",
+  "Next interest to be credited": "Próximo interés a acreditarse"
 }

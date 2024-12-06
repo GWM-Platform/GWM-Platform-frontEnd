@@ -351,7 +351,7 @@ const FixedDeposit = ({ content }) => {
           <span >
             {t("Interest credited")}:&nbsp;
             {
-              (creditedInterests.length === 0 && false) ? t("None yet") : <>
+              (creditedInterests.length === 0) ? t("None yet") : <>
                 {t("{{times}} times", { times: creditedInterests.length })},&nbsp;
                 <FormattedNumber value={resumeItems.creditingInterest || 0} prefix="U$D " fixedDecimals={2} /> {t("each")}, <FormattedNumber value={Decimal(resumeItems.creditingInterest).times(creditedInterests.length).toFixed(2)} prefix="U$D " fixedDecimals={2} /> {t("in total")}
               </>
@@ -382,21 +382,27 @@ const FixedDeposit = ({ content }) => {
             {t("Final payment")}:
             &nbsp;<span className="emphasis">
               {moment(content.startDate).add(content.days, 'days').format("L")}, <FormattedNumber value={resumeItems.finalPayment} prefix="U$D " fixedDecimals={2} />
-            </span>:
-            &nbsp;<span className="emphasis"><FormattedNumber value={content.initialAmount} prefix="U$D " fixedDecimals={2} /></span>
-            &nbsp;({t("Initial investment")})
+            </span>
             {
-              resumeItems.hasRest &&
+              content.type === "withdrawal" &&
               <>
-                &nbsp;+&nbsp;<span className="emphasis"><FormattedNumber value={resumeItems.creditingRest} prefix="U$D " fixedDecimals={2} /></span>
-                &nbsp;({t("Rest of interest")}&nbsp;
-                <TooltipInfo
-                  tooltipClassName="text-align-start"
-                  btnClassName="btn no-style alt-focus m-0 d-inline-block"
-                  text={t("As there are less than {{frequency}} days between the last date of interest crediting and the closing date ({{rest}} days), the accumulated interest will be refunded in the final payment along with the initial investment.", {
-                    frequency: content.daysInterval,
-                    rest: resumeItems.rest
-                  })} />)
+                :
+                &nbsp;<span className="emphasis"><FormattedNumber value={content.initialAmount} prefix="U$D " fixedDecimals={2} /></span>
+                &nbsp;({t("Initial investment")})
+                {
+                  resumeItems.hasRest &&
+                  <>
+                    &nbsp;+&nbsp;<span className="emphasis"><FormattedNumber value={resumeItems.creditingRest} prefix="U$D " fixedDecimals={2} /></span>
+                    &nbsp;({t("Rest of interest")}&nbsp;
+                    <TooltipInfo
+                      tooltipClassName="text-align-start"
+                      btnClassName="btn no-style alt-focus m-0 d-inline-block"
+                      text={t("As there are less than {{frequency}} days between the last date of interest crediting and the closing date ({{rest}} days), the accumulated interest will be refunded in the final payment along with the initial investment.", {
+                        frequency: content.daysInterval,
+                        rest: resumeItems.rest
+                      })} />)
+                  </>
+                }
               </>
             }
           </span>
