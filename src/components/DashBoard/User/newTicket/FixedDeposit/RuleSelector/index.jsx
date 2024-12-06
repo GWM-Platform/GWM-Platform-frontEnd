@@ -165,7 +165,7 @@ const WithdrawalAdditionalFields = ({ data, handleChange, t }) => {
             <Col xs="12" className='w-100 p-0 m-0' />
             <Col className="ps-0">
                 <Form.Control
-                    value={data.daysInterval} onChange={handleChange} id="daysInterval" type='number' min="30" step="1"
+                    value={data.daysInterval} onChange={handleChange} id="daysInterval" type='number' min="1" step="1"
                     placeholder={t("Enter frequency in days (minimum 30)")}
                 />
             </Col>
