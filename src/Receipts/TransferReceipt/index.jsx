@@ -180,15 +180,19 @@ const styles = {
       label: {
         fontSize: "14px",
         textAlign: "right",
-        marginBottom: "5px"
+        marginBottom: "5px",
+        marginLeft: "15px"
       },
       data: {
         fontSize: "14px",
         textAlign: "right"
       },
       section: {
-
-        marginBottom: "15px"
+        width: "100%",
+        display: "flex",
+        justifyContent: "space-between",
+        flexDirection: "row",
+        marginBottom: "5px"
       }
     },
     label: {
