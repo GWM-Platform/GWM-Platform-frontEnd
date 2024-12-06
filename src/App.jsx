@@ -60,6 +60,37 @@ function App() {
     }
   }, [])
 
+  useEffect(() => {
+    const decimalSeparator = process.env.REACT_APP_DECIMALSEPARATOR ?? '.'
+    const thousandsSeparator = process.env.REACT_APP_GROUPSEPARATOR ?? ','
+
+    const handleInput = (e) => {
+      const activeElement = document.activeElement;
+      if (activeElement && activeElement.getAttribute('inputmode') === 'decimal') {
+        if (e.key === thousandsSeparator) {
+          const cursorPosition = activeElement.selectionStart;
+          const value = activeElement.value;
+
+          if (value.length > 0 && !value.includes(decimalSeparator)) {
+            const beforeCursor = value.slice(0, cursorPosition);
+            const afterCursor = value.slice(cursorPosition);
+
+            activeElement.value = beforeCursor + decimalSeparator + afterCursor.replace(thousandsSeparator, "");
+            e.stopPropagation();
+            e.preventDefault();
+          }
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleInput);
+
+    // Cleanup function to remove event listener
+    return () => {
+      document.removeEventListener('keydown', handleInput);
+    };
+  }, []);
+
   return (
     <div className="App" style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/backGround/background.jpg)` }}>
       <Sentry.ErrorBoundary fallback={<ErrorNotice dialogOptions={{ lang: localStorage.getItem("language") || "En" }} />} >
