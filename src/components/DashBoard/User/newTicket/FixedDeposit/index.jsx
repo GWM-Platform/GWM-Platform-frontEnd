@@ -15,7 +15,7 @@ import axios from 'axios';
 import Decimal from 'decimal.js';
 import ReactGA from "react-ga4";
 import NoFixedDeposit from '../NoFixedDeposit';
-import RuleSelector, { fixedDepositTypes, getFixedDepositType } from './RuleSelector';
+import RuleSelector, { getFixedDepositType } from './RuleSelector';
 import RateData from './RateData';
 
 const FixedDepositTicket = ({ balanceChanged }) => {
