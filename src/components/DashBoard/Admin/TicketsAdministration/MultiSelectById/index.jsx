@@ -1,7 +1,7 @@
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { useIsInsideElement } from "hooks/useIsInsideElement";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useCallback } from "react";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import Select, { components } from 'react-select';
