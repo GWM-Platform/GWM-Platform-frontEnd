@@ -15,7 +15,7 @@ import axios from 'axios';
 import Decimal from 'decimal.js';
 import ReactGA from "react-ga4";
 import NoFixedDeposit from '../NoFixedDeposit';
-import RuleSelector, { fixedDepositTypes } from './RuleSelector';
+import RuleSelector, { fixedDepositTypes, getFixedDepositType } from './RuleSelector';
 import RateData from './RateData';
 
 const FixedDepositTicket = ({ balanceChanged }) => {
@@ -41,7 +41,7 @@ const FixedDepositTicket = ({ balanceChanged }) => {
         preferential: false,
         rate: "",
         daysInterval: "",
-        type: fixedDepositTypes[0]
+        type: "standard"
     })
 
     const [ShowModal, setShowModal] = useState(false)
@@ -51,7 +51,7 @@ const FixedDepositTicket = ({ balanceChanged }) => {
     const [profit, setProfit] = useState({ fetching: false, fetched: false, valid: false, value: 0 })
 
     let history = useHistory();
-    const SelectedType = fixedDepositTypes.find(type => type.value === data.type)
+    const SelectedType = getFixedDepositType(data.type)
 
     const invest = () => {
         if (!fetching) {
@@ -100,8 +100,8 @@ const FixedDepositTicket = ({ balanceChanged }) => {
                 clientId: ClientSelected.id,
                 duration: data.days,
                 type: data.type,
-                ...SelectedType.additionalFieldsProps ?
-                    SelectedType.additionalFieldsProps.reduce((acc, field) => {
+                ...SelectedType?.additionalFieldsProps ?
+                    SelectedType?.additionalFieldsProps.reduce((acc, field) => {
                         acc[field] = data[field]
                         return acc
                     }, {})
