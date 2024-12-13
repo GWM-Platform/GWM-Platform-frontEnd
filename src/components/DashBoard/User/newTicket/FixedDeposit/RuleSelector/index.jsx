@@ -248,9 +248,9 @@ export const getWithdrawalResumeItems = ({ data, anualRate }) => {
     try {
         const dailyRate = Decimal(anualRate).div(100).div(365).toNumber(10)
         const crediting = Decimal(data?.days).div(data?.daysInterval || 0).floor().toNumber()
-        const rest = Decimal(data?.days).mod(data?.daysInterval).toFixed(0)
+        const rest = Decimal(data?.days).mod(data?.daysInterval || 0).toFixed(0)
         const hasRest = Decimal(rest).gt(0)
-        const creditingInterest = Decimal(data?.amount).mul(dailyRate).mul(data?.daysInterval).toFixed(10)
+        const creditingInterest = Decimal(data?.amount).mul(dailyRate).mul(data?.daysInterval || 0).toFixed(10)
         const creditingRest = Decimal(data?.amount).mul(dailyRate).mul(rest).toFixed(10)
         const finalPayment = Decimal(data?.amount).add(creditingRest).toFixed(2)
 
@@ -258,7 +258,7 @@ export const getWithdrawalResumeItems = ({ data, anualRate }) => {
             {
                 daysInterval: data?.daysInterval,
                 crediting,
-                creditingDetail: Array.apply(null, { length: crediting }).map((_, index) => {
+                creditingDetail: ((crediting || 0) > 0) ? Array.apply(null, { length: crediting || 1 }).map((_, index) => {
                     const date = moment(
                         data.startDate
                     ).add((index + 1) * data?.daysInterval, 'days')
@@ -268,7 +268,7 @@ export const getWithdrawalResumeItems = ({ data, anualRate }) => {
                         nextToBeCredited: date.isAfter(moment()) && date.diff(moment(), 'days') <= data?.daysInterval
                     }
                 }
-                ),
+                ) : [],
                 creditingInterest,
                 creditingInterestTotal: Decimal(creditingInterest).times(crediting).toFixed(2),
                 finalPayment,
@@ -332,12 +332,12 @@ export const getFixedDepositType = (type) => fixedDepositTypes.find(t => t.value
 export const fixedDepositTypes = [
     {
         value: "standard",
-        label: "Standard",
+        label: "Traditional",
         desc: "Interest and initial investment paid at dueDate"
     },
     {
         value: "withdrawal",
-        label: "With profit withdrawal",
+        label: "Periodic crediting of interests",
         desc: "Periodic interest paid, initial investment paid at dueDate",
         additionalFields: WithdrawalAdditionalFields,
         additionalFieldsProps: ["daysInterval"],

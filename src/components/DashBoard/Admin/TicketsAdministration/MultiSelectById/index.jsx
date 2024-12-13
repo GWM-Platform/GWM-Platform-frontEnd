@@ -19,9 +19,6 @@ const MultiSelectById = ({
         return newValue;
     };
     const value = FormData[id]
-    useEffect(() => {
-        console.log(options)
-    }, [options])
 
     const getOptionByValue = (optionValue = "", optionsArray = options) => {
         for (const option of optionsArray) {

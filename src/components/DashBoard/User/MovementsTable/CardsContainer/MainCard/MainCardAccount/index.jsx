@@ -26,8 +26,7 @@ import HoldingsReport from 'TableExport/HoldingsReport';
 import moment from 'moment';
 import "components/DashBoard/Admin/Broadcast/index.scss"
 
-const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, resetSearchById, handleMovementSearchChange, sections }) => {
-
+const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, resetSearchById, handleMovementSearchChange, sections, linkToFixedDeposit }) => {
     function useQuery() {
         const { search } = useLocation();
 
@@ -218,6 +217,7 @@ const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, reset
                     {
                         Movements:
                             <MovementsTab
+                                linkToFixedDeposit={linkToFixedDeposit}
                                 Movements={Movements} setMovements={setMovements}
                                 SearchById={SearchById} setSearchById={setSearchById} Fund={Fund}
                                 resetSearchById={resetSearchById} handleMovementSearchChange={handleMovementSearchChange} />,

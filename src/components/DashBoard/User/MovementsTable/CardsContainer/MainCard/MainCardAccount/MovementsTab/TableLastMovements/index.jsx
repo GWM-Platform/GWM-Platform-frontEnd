@@ -6,8 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useContext } from 'react';
 import { DashBoardContext } from 'context/DashBoardContext';
 
-const TableLastMovements = ({ content, movements, reloadData }) => {
-
+const TableLastMovements = ({ content, movements, reloadData, linkToFixedDeposit }) => {
 
     const { t } = useTranslation();
     const { hasPermission } = useContext(DashBoardContext)
@@ -46,7 +45,7 @@ const TableLastMovements = ({ content, movements, reloadData }) => {
                 <tbody>
                     {
                         content.map((u, i) =>
-                            <Movement key={i} content={u} actions={anyWithActions()} reloadData={reloadData} />
+                            <Movement linkToFixedDeposit={linkToFixedDeposit} key={i} content={u} actions={anyWithActions()} reloadData={reloadData} />
                         )
                     }
                 </tbody>

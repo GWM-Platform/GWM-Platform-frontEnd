@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { useTranslation } from "react-i18next";
 import { Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -171,6 +171,17 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
             }
         }] : [],
     ]
+    const [selectedFixedDepositId, setSelectedFixedDepositId] = useState(null)
+    const linkToFixedDeposit = (id) => {
+        setSelectedFixedDepositId(id)
+        setCategorySelected(2)
+    }
+
+    useEffect(() => {
+        if (categorySelected !== 2) {
+            setSelectedFixedDepositId(null)
+        }
+    }, [categorySelected])
 
     return (
         <Row className="HistoryCardsContainer d-flex align-items-stretch flex-md-nowrap h-100">
@@ -211,6 +222,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
                                     case 0:
                                         return (hasPermission('VIEW_ACCOUNT') &&
                                             <MainCardAccount
+                                                linkToFixedDeposit={linkToFixedDeposit}
                                                 sections={sections}
                                                 Fund={Accounts[selected]}
                                                 Hide={Hide} setHide={setHide}
@@ -232,7 +244,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
                                             handleMovementSearchChange={handleMovementSearchChange}
                                         />
                                     case 2:
-                                        return <MainCardFixedDeposit sections={sections} FixedDepositsStats={FixedDepositsStats.content} Hide={Hide} setHide={setHide} />
+                                        return <MainCardFixedDeposit selectedFixedDepositId={selectedFixedDepositId} sections={sections} FixedDepositsStats={FixedDepositsStats.content} Hide={Hide} setHide={setHide} />
                                     default:
                                         return <h1>{t("Not found")}</h1>
                                 }
@@ -306,6 +318,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
                     <Col className="px-2 pb-2 growAnimation" xs="12" xl="12" >
                         {Accounts.length === 1 ?
                             <MainCardAccount
+                                linkToFixedDeposit={linkToFixedDeposit}
                                 Fund={AccountSelected}
                                 Hide={Hide} setHide={setHide}
 

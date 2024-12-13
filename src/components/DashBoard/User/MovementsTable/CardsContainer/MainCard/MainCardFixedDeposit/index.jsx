@@ -14,7 +14,7 @@ import { useHistory, useLocation } from 'react-router-dom/cjs/react-router-dom.m
 import { PrintButton, PrintDefaultWrapper, usePrintDefaults } from 'utils/usePrint';
 import { SectionSelector } from '../MainCardAccount';
 
-const MainCardFixedDeposit = ({ FixedDepositsStats, Hide, setHide, sections }) => {
+const MainCardFixedDeposit = ({ FixedDepositsStats, Hide, setHide, sections, selectedFixedDepositId }) => {
     const [SelectedTab, setSelectedTab] = useState("0")
     const { t } = useTranslation();
 
@@ -134,7 +134,7 @@ const MainCardFixedDeposit = ({ FixedDepositsStats, Hide, setHide, sections }) =
                 {
                     {
                         0:
-                            <MovementsTab />,
+                            <MovementsTab selectedFixedDepositId={selectedFixedDepositId} />,
                     }[SelectedTab]
                 }
             </Container>

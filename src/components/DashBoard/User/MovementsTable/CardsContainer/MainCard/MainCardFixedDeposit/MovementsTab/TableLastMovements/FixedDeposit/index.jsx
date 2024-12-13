@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
@@ -18,7 +18,7 @@ import Decimal from 'decimal.js';
 import { ApprovedByUsers } from 'components/DashBoard/Admin/TicketsAdministration/Tables/TransactionsTable/TransactionRow';
 import ActionConfirmationModal from 'components/DashBoard/Admin/TicketsAdministration/Tables/FixedDepositsTable/FixedDepositRow/ActionConfirmationModal'
 
-const FixedDepositListItem = ({ content, reloadData, forAdmin = false }) => {
+const FixedDepositListItem = ({ content, reloadData, forAdmin = false, selectedFixedDepositId = false }) => {
     const { t } = useTranslation();
     const { toLogin, AccountSelected } = useContext(DashBoardContext)
 
@@ -261,9 +261,30 @@ const FixedDepositListItem = ({ content, reloadData, forAdmin = false }) => {
     const nextToBeCredited = (resumeItems?.creditingDetail || []).find(creditingDetail => !creditingDetail.credited)
     const totalUtilitiesWithdrawalCredited = Decimal(resumeItems?.creditingInterest || 0).times(creditedInterests?.length || 0)
 
+    const selected = useMemo(() => selectedFixedDepositId + "" === content.id + "", [content.id, selectedFixedDepositId])
+    useEffect(() => {
+        if (selected) {
+
+            const timeout = setTimeout(() => {
+                const element = document.getElementById(`fixed-deposit-${selectedFixedDepositId}`)
+
+                if (element) {
+                    element.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center",
+                        inline: "center"
+                    });
+                }
+            }, 500);
+            return () => clearTimeout(timeout)
+        }
+    }, [selected, selectedFixedDepositId])
+
+
+
     return (
         <>
-            <div className='mobileMovement'>
+            <div className='mobileMovement' id={`fixed-deposit-${content.id}`} style={selected ? { backgroundColor: "rgba(0,0,0,0.05)" } : {}}>
                 <div className='d-flex  py-1 align-items-center' >
                     <span className="h5 mb-0  me-1 me-md-2">
                         {t("Time deposit")}&nbsp;#{content.id}

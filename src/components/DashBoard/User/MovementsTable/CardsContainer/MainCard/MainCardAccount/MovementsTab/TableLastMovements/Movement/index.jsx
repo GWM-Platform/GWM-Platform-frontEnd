@@ -35,7 +35,7 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
   </button>
 ));
 
-const Movement = ({ content, actions, reloadData }) => {
+const Movement = ({ content, actions, reloadData, linkToFixedDeposit }) => {
   var momentDate = moment(content.createdAt);
   const { t } = useTranslation();
   const { getMoveStateById, AccountSelected, couldSign, hasPermission, toLogin, hasSellPermission, hasBuyPermission, ClientSelected } = useContext(DashBoardContext)
@@ -547,8 +547,18 @@ const Movement = ({ content, actions, reloadData }) => {
               :
               isPerformanceMovement ? <>{t(content.motive)} ({noteFromAdmin ? noteFromAdmin?.text : t(content.motive === "PENALTY_WITHDRAWAL" ? "penalty" : "bonification")})</>
                 :
-                t(content.motive + (content.motive === "REPAYMENT" ? content.fundName ? "_" + content.fundName : "_" + content.fixedDepositId : ""), { fund: content.fundName, fixedDeposit: content.fixedDepositId })
+                t(
+                  (content.fixedDepositId ? "withoutFixedDepositId_" : "") +
+                  content.motive + (content.motive === "REPAYMENT" ? content.fundName ? "_" + content.fundName : "_" + content.fixedDepositId : ""), { fund: content.fundName, fixedDeposit: content.fixedDepositId })
           )
+        }
+        {
+          content.fixedDepositId &&
+          <>
+            &nbsp;<button className="smallButtonStyle" type="button"  onClick={() => linkToFixedDeposit(content.fixedDepositId)} >
+              #{content.fixedDepositId}
+            </button>
+          </>
         }
         {content?.transferReceiver && <>{t("Transfer to {{transferReceiver}}", { transferReceiver: content?.transferReceiver })}</>}
         {content?.transferSender && <>{t("Transfer from {{transferSender}}", { transferSender: content?.transferSender })}</>}
