@@ -14,7 +14,7 @@ import { wasEdited } from 'utils/fixedDeposit';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import Notes from '../../Notes';
 import { ApprovedByUsers } from '../../TransactionsTable/TransactionRow';
-import { fixedDepositTypes } from 'components/DashBoard/User/newTicket/FixedDeposit/RuleSelector';
+import { getFixedDepositType } from 'components/DashBoard/User/newTicket/FixedDeposit/RuleSelector';
 import TooltipInfo from 'components/DashBoard/Admin/Broadcast/TooltipInfo';
 
 const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
@@ -240,7 +240,7 @@ const FixedDepositRow = ({ UsersInfo, Movement, reloadData, users }) => {
     const denialMotive = Movement?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
     const adminNote = Movement?.notes?.find(note => note.noteType === "ADMIN_NOTE")
 
-    const fixedDepositType = fixedDepositTypes.find(type => type.value === Movement.type)
+    const fixedDepositType = getFixedDepositType(Movement.type)
     return (
         <>
             <div className='mobileMovement'>

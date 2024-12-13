@@ -9,9 +9,9 @@ import Loading from 'components/DashBoard/Loading';
 import Decimal from 'decimal.js';
 import NoMovements from 'components/DashBoard/GeneralUse/NoMovements';
 import PaginationController from 'components/DashBoard/GeneralUse/PaginationController';
-import FixedDepositRow from './FixedDepositRow';
 import FilterOptions from './FilterOptions';
 import PerformanceComponent from 'components/DashBoard/GeneralUse/PerformanceComponent';
+import FixedDepositListItem from 'components/DashBoard/User/MovementsTable/CardsContainer/MainCard/MainCardFixedDeposit/MovementsTab/TableLastMovements/FixedDeposit';
 
 const TimeDeposits = ({ AccountId, ClientId }) => {
 
@@ -173,7 +173,7 @@ const TimeDeposits = ({ AccountId, ClientId }) => {
                             Decimal(TimeDeposits.content.deposits.length).gt(0) ?
                                 <div style={{ minHeight: `calc( ( 0.5rem * 2 + 25.5px ) * ${Pagination.take + 1} )` }}
                                     className={`tableMovements w-1 overflow-auto `}>
-                                    {TimeDeposits.content.deposits.map((deposit, key) => <FixedDepositRow reloadData={getTimeDeposits} Movement={deposit} key={`fixed-deposit-${key}`} />)}
+                                    {TimeDeposits.content.deposits.map((deposit, key) => <FixedDepositListItem forAdmin reloadData={getTimeDeposits} content={deposit} key={`fixed-deposit-${key}`} />)}
                                 </div>
                                 :
                                 <NoMovements movements={Decimal(Pagination.take).toNumber()} />
