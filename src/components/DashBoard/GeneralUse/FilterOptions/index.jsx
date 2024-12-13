@@ -219,38 +219,44 @@ export const MotiveMultiSelect = ({
         }))
     }, [FormData.filterMotives, t]);
 
-    const optionsAlternative = useMemo(() => {
-        return motives.map(motive => ({
-            label: `${t(motive.labelKey)} - ${t(motive.group)}`,
-            groupLabel: t(motive.group),
-            value: motive.value
-        })).sort((a, b) => {
-            const aSelected = FormData.filterMotives.includes(a.value);
-            const bSelected = FormData.filterMotives.includes(b.value);
-            if (aSelected === bSelected) {
-                if (a.groupLabel === b.groupLabel) {
-                    return a.label.localeCompare(b.label);
-                } else {
-                    return a.groupLabel.localeCompare(b.groupLabel);
-                }
-            } else {
-                return aSelected ? -1 : 1;
-            }
-        })
-    }, [FormData.filterMotives, t])
+    // const optionsAlternative = useMemo(() => {
+    //     return motives.map(motive => ({
+    //         label: `${t(motive.labelKey)} - ${t(motive.group)}`,
+    //         groupLabel: t(motive.group),
+    //         value: motive.value
+    //     })).sort((a, b) => {
+    //         const aSelected = FormData.filterMotives.includes(a.value);
+    //         const bSelected = FormData.filterMotives.includes(b.value);
+    //         if (aSelected === bSelected) {
+    //             if (a.groupLabel === b.groupLabel) {
+    //                 return a.label.localeCompare(b.label);
+    //             } else {
+    //                 return a.groupLabel.localeCompare(b.groupLabel);
+    //             }
+    //         } else {
+    //             return aSelected ? -1 : 1;
+    //         }
+    //     })
+    // }, [FormData.filterMotives, t])
 
-    const [mode, setMode] = useState(false);
+    // const [mode, setMode] = useState(true);
     return (
         <>
             <Form.Label>
-                {t("Concept")}&nbsp;-&nbsp;
+                {t("Concept")}
+                {/* 
+                &nbsp;-&nbsp;
                 <span className="link-style" onClick={() => setMode(prevState => !prevState)}>
                     Modo {mode ? "normal" : "alternativo"}
-                </span>
+                </span> */}
             </Form.Label>
             <MultiSelectById
                 placeholder={t('All')}
-                options={mode ? options : optionsAlternative}
+                options={
+                    // mode ?
+                    options
+                    //  : optionsAlternative
+                }
                 FormData={FormData}
                 isClearable
                 id="filterMotives"
