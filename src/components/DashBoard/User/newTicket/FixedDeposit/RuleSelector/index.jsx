@@ -103,42 +103,46 @@ const RuleSelector = ({ data, setData, RulesObject, handleChange }) => {
                                     <FontAwesomeIcon icon={faChevronLeft} />
                                 </div>
                             </div>
-
-                            <Col className="me-auto mt-3">
-                                <Form.Label>
-                                    {t("Fixed deposit type")}
-                                </Form.Label>
-                            </Col>
-                            <Col xs="12" className='w-100 p-0 m-0' />
-                            <Col className="ps-0">
-                                <Form.Select value={data.type} onChange={handleChange} id="type">
-                                    <option value="" disabled>
-                                        {t("Select a type")}
-                                    </option>
-                                    {fixedDepositTypes.map((type, index) =>
-                                        <option key={`type-${index}`} value={type.value}>
-                                            {t(type.label)}
-                                        </option>
-                                    )}
-                                </Form.Select>
-                            </Col>
-                            <Col xs="auto" className='ps-0'>
-                                <TooltipInfo
-                                    tooltipClassName="text-align-start p-2"
-                                    text={
-                                        <>
-                                            <h4 style={{ fontSize: "1rem" }} className="font-medium mb-1">{t("Fixed deposit types")}</h4>
-                                            {
-                                                fixedDepositTypes.map(
-                                                    (type, index) => <p className='mb-0' key={`type-${index}`}><strong>{t(type.label)}:</strong> {t(type.desc)}</p>
-                                                )
+                            {
+                                !data.preferential &&
+                                <>
+                                    <Col className="me-auto mt-3">
+                                        <Form.Label>
+                                            {t("Fixed deposit type")}
+                                        </Form.Label>
+                                    </Col>
+                                    <Col xs="12" className='w-100 p-0 m-0' />
+                                    <Col className="ps-0">
+                                        <Form.Select value={data.type} onChange={handleChange} id="type">
+                                            <option value="" disabled>
+                                                {t("Select a type")}
+                                            </option>
+                                            {fixedDepositTypes.map((type, index) =>
+                                                <option key={`type-${index}`} value={type.value}>
+                                                    {t(type.label)}
+                                                </option>
+                                            )}
+                                        </Form.Select>
+                                    </Col>
+                                    <Col xs="auto" className='ps-0'>
+                                        <TooltipInfo
+                                            tooltipClassName="text-align-start p-2"
+                                            text={
+                                                <>
+                                                    <h4 style={{ fontSize: "1rem" }} className="font-medium mb-1">{t("Fixed deposit types")}</h4>
+                                                    {
+                                                        fixedDepositTypes.map(
+                                                            (type, index) => <p className='mb-0' key={`type-${index}`}><strong>{t(type.label)}:</strong> {t(type.desc)}</p>
+                                                        )
+                                                    }
+                                                </>
                                             }
-                                        </>
-                                    }
-                                >
-                                    <FontAwesomeIcon icon={faInfoCircle} size="lg" className='mt-2' />
-                                </TooltipInfo>
-                            </Col>
+                                        >
+                                            <FontAwesomeIcon icon={faInfoCircle} size="lg" className='mt-2' />
+                                        </TooltipInfo>
+                                    </Col>
+                                </>
+                            }
                             {
                                 SelectedType?.additionalFields &&
                                 SelectedType.additionalFields({ data, handleChange, t })
