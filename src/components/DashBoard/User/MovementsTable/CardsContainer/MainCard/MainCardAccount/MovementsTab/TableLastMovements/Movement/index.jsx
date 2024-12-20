@@ -404,6 +404,8 @@ const Movement = ({ content, actions, reloadData, linkToFixedDeposit }) => {
   const noteFromAdmin = isPerformanceMovement && content?.notes?.find(note => note.noteType === "CLIENT_NOTE")
   const denialMotive = content?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
   const fundLiquidate = content?.notes?.find(note => note.noteType === "FUND_LIQUIDATE")
+  const liquidateMotive = content?.notes?.find(note => note.noteType === "MOVEMENT_LIQUIDATE_MOTIVE")
+
 
   const fund = useSelector(state => selectFundById(state, content.fundId))
 
@@ -412,7 +414,7 @@ const Movement = ({ content, actions, reloadData, linkToFixedDeposit }) => {
       <td className="tableId text-nowrap" data-column-name="ticket">
         {content.id}
         {
-          !!(content?.userEmail || content?.userName || !!(transferNote) || !!(clientNote) || !!(denialMotive) || !!(fundLiquidate) || !!(partialLiquidate)) &&
+          !!(content?.userEmail || content?.userName || !!(transferNote) || !!(clientNote) || !!(denialMotive) || !!(fundLiquidate) || !!(partialLiquidate) || !!(liquidateMotive)) &&
           <OverlayTrigger
             show={showClick || showHover}
             placement="right"
@@ -463,6 +465,12 @@ const Movement = ({ content, actions, reloadData, linkToFixedDeposit }) => {
                   !!(fundLiquidate) &&
                   <div>
                     <span className="text-nowrap">"{fundLiquidate.text}"</span>
+                  </div>
+                }
+                {
+                  !!(liquidateMotive) &&
+                  <div>
+                    <span className="text-nowrap">"{liquidateMotive.text}"</span>
                   </div>
                 }
               </Tooltip>
@@ -555,7 +563,7 @@ const Movement = ({ content, actions, reloadData, linkToFixedDeposit }) => {
         {
           content.fixedDepositId &&
           <>
-            &nbsp;<button className="smallButtonStyle" type="button"  onClick={() => linkToFixedDeposit(content.fixedDepositId)} >
+            &nbsp;<button className="smallButtonStyle" type="button" onClick={() => linkToFixedDeposit(content.fixedDepositId)} >
               #{content.fixedDepositId}
             </button>
           </>

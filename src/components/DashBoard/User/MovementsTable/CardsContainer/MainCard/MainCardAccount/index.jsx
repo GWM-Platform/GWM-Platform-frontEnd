@@ -241,7 +241,7 @@ export const SectionSelector = ({ sections, title, titleClassName }) => {
         </Dropdown.Toggle>
         <Dropdown.Menu>
             {
-                sections.map((section, index) =>
+                sections?.map((section, index) =>
                     section.children ?
                         <React.Fragment key={index}>
                             <Dropdown.Header className="py-1">{section.title}</Dropdown.Header>

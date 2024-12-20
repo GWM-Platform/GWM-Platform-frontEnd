@@ -404,6 +404,7 @@ const Movement = ({ content, reloadData }) => {
   const isPerformanceMovement = (content.motive === "PENALTY_WITHDRAWAL" || content.motive === "PROFIT_DEPOSIT")
   const fundLiquidate = content?.notes?.find(note => note.noteType === "FUND_LIQUIDATE")
   const noteFromAdmin = isPerformanceMovement && content?.notes?.find(note => note.noteType === "CLIENT_NOTE")
+  const liquidateMotive = content?.notes?.find(note => note.noteType === "MOVEMENT_LIQUIDATE_MOTIVE")
 
   return (
     <div className='mobileMovement'>
@@ -423,6 +424,7 @@ const Movement = ({ content, reloadData }) => {
           {content?.transferReceiver && <>{t("Transfer to {{transferReceiver}}", { transferReceiver: content?.transferReceiver })}</>}
           {content?.transferSender && <>{t("Transfer from {{transferSender}}", { transferSender: content?.transferSender })}</>}
           {(content?.transfer?.reverted && transferNote?.text === "Transferencia revertida") ? <>, {t("reversion")}</> : ""}
+          {liquidateMotive ? ` (${t("Liquidation")}: ${liquidateMotive?.text})` : ""}
         </strong>
         <span className="text-nowrap" >{momentDate.format('L')}</span>
 

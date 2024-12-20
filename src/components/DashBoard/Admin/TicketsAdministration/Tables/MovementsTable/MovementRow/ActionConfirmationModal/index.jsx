@@ -55,7 +55,9 @@ const ActionConfirmationModal = ({ movement, setShowModal, action, show, reloadD
         const response = await customFetch(url, {
             method: 'POST',
             body: JSON.stringify({
-                ...data.note !== "" ? { denialMotive: data.note !== "" ? data.note : null } : {},
+                ...data.note !== "" ? {
+                    [action === "deny" ? "denialMotive" : "comment"]: (data.note !== "" ? data.note : null)
+                } : {},
                 ...shouldPartialLiquidate ? { amount: data.amount } : {}
             }),
             headers: {
@@ -234,13 +236,13 @@ const ActionConfirmationModal = ({ movement, setShowModal, action, show, reloadD
                         </div>
                     }
                     {
-                        action === "deny" &&
+                        // action === "deny" &&
                         <div className={`px-3 mt-3 `}>
                             {
                                 NoteActive ?
                                     <div className="d-flex align-items-center">
                                         <Form.Control
-                                            placeholder={t("Denial motive")} required
+                                            placeholder={t(action === "deny" ? "Denial motive" : "Note")} required
                                             value={data.note} type="text" id="note" maxLength="250"
                                             onChange={(e) => { handleChange(e); }}
                                         />
