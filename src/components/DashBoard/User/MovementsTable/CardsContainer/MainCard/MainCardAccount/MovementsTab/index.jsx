@@ -12,7 +12,7 @@ import PaginationController from 'components/DashBoard/GeneralUse/PaginationCont
 import FilterOptions from 'components/DashBoard/GeneralUse/FilterOptions'
 import { customFetch } from 'utils/customFetch';
 
-const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handleMovementSearchChange, Movements, setMovements, linkToFixedDeposit }) => {
+const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handleMovementSearchChange, Movements, setMovements, linkToOtherHistory }) => {
     const { token, ClientSelected, AccountSelected } = useContext(DashBoardContext);
     const history = useHistory();
 
@@ -144,7 +144,7 @@ const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
                             :
                             Movements.total > 0 ?
                                 <TableLastMovements
-                                    linkToFixedDeposit={linkToFixedDeposit}
+                                    linkToOtherHistory={linkToOtherHistory}
                                     movements={Pagination.take < Movements.total ? Pagination.take : Movements.total}
                                     content={Movements.movements}
                                     reloadData={getMovements}

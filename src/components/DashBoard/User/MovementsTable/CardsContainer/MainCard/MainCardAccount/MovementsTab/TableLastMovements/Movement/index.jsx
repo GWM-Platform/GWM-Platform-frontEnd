@@ -34,7 +34,7 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
   </button>
 ));
 
-const Movement = ({ content, actions, reloadData, linkToFixedDeposit }) => {
+const Movement = ({ content, actions, reloadData, linkToOtherHistory }) => {
   var momentDate = moment(content.createdAt);
   const { t } = useTranslation();
   const { getMoveStateById, AccountSelected, couldSign, hasPermission, toLogin, hasSellPermission, hasBuyPermission, ClientSelected } = useContext(DashBoardContext)
@@ -568,8 +568,17 @@ const Movement = ({ content, actions, reloadData, linkToFixedDeposit }) => {
               content.fixedDepositId &&
               <>
                 <Dropdown.Divider />
-                <Dropdown.Item disabled={fund?.disabled} onClick={() => linkToFixedDeposit(content.fixedDepositId)}>
+                <Dropdown.Item disabled={fund?.disabled} onClick={() => linkToOtherHistory(content.fixedDepositId, "FIXED_DEPOSIT")}>
                   {t("Go to fixed deposit detail")} (#{content.fixedDepositId})
+                </Dropdown.Item>
+              </>
+            }
+            {
+              content.fundId &&
+              <>
+                <Dropdown.Divider />
+                <Dropdown.Item disabled={fund?.disabled} onClick={() => linkToOtherHistory(content?.fundId, "FUND")}>
+                  {t("Go to fund detail")} ({content?.fundName})
                 </Dropdown.Item>
               </>
             }

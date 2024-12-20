@@ -172,9 +172,18 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
         }] : [],
     ]
     const [selectedFixedDepositId, setSelectedFixedDepositId] = useState(null)
-    const linkToFixedDeposit = (id) => {
-        setSelectedFixedDepositId(id)
-        setCategorySelected(2)
+    const linkToOtherHistory = (id, type = "FIXED_DEPOSIT") => {
+        if (type === "FIXED_DEPOSIT") {
+            setSelectedFixedDepositId(id)
+            setCategorySelected(2)
+        } else if(type === "FUND"){
+            const index = FundsWithPending.findIndex(fund => fund.fund.id === id)
+            if (index >= 0) {
+                setCategorySelected(1)
+                setSelected(index)
+            }
+        }
+
     }
 
     useEffect(() => {
@@ -222,7 +231,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
                                     case 0:
                                         return (hasPermission('VIEW_ACCOUNT') &&
                                             <MainCardAccount
-                                                linkToFixedDeposit={linkToFixedDeposit}
+                                                linkToOtherHistory={linkToOtherHistory}
                                                 sections={sections}
                                                 Fund={Accounts[selected]}
                                                 Hide={Hide} setHide={setHide}
@@ -318,7 +327,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
                     <Col className="px-2 pb-2 growAnimation" xs="12" xl="12" >
                         {Accounts.length === 1 ?
                             <MainCardAccount
-                                linkToFixedDeposit={linkToFixedDeposit}
+                                linkToOtherHistory={linkToOtherHistory}
                                 Fund={AccountSelected}
                                 Hide={Hide} setHide={setHide}
 
