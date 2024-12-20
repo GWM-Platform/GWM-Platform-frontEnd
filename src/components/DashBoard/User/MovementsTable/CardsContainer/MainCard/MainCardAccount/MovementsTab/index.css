@@ -16,6 +16,9 @@
     max-width: 70px;
 
 }
+[data-column-name="actions"] .dropdown-menu.show{
+    transform: translate(-2.5px, 1.5rem)!important;
+}
 .tableDate {
     width: fit-content;
     overflow: hidden;

@@ -1198,5 +1198,8 @@
   "Next interest to be credited": "Próximo interés a acreditarse",
   "Note": "Nota",
   "States": "Estados",
-  "Clients": "Clientes"
+  "Clients": "Clientes",
+  "Go to fixed deposit detail": "Ir al detalle del plazo fijo",
+  "Approve transfer": "Aprobar transferencia",
+  "Deny transfer": "Rechazar transferencia"
 }
