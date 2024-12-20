@@ -110,6 +110,16 @@ class FixRequiredSelect extends React.Component {
 
       return Object.assign(base, changes);
     };
+    const options = props.options || [];
+    const sortedOptions = options.sort((a, b) => {
+      if (props.value && props.value.value === a.value) {
+        return -1;
+      } else if (props.value && props.value.value === b.value) {
+        return 1;
+      } else {
+        return a.label.localeCompare(b.label);
+      }
+    })
 
     return (
       <>
@@ -122,8 +132,9 @@ class FixRequiredSelect extends React.Component {
           }}
           components={{
             IndicatorSeparator: () => null,
-            ClearIndicator:  ({ innerRef, innerProps })  => <div ref={innerRef} {...innerProps} className="d-flex p-2"><FontAwesomeIcon fontSize={12} color="#343a40" icon={faTimes} /></div>
+            ClearIndicator: ({ innerRef, innerProps }) => <div ref={innerRef} {...innerProps} className="d-flex p-2"><FontAwesomeIcon fontSize={12} color="#343a40" icon={faTimes} /></div>
           }}
+          options={sortedOptions}
           {...props}
           ref={this.setSelectRef}
           onChange={this.onChange}

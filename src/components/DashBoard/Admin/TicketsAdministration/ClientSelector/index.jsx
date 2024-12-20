@@ -18,12 +18,12 @@ const ClientSelector = ({ client, setClient }) => {
             dispatch(fetchclients())
         }
     }, [clientsState, dispatch])
-
+    const selectedOption = useMemo(() => Object.keys(client || {}).length === 0 ? "" : client, [client])
     const options = useMemo(() => clients.map((client) => ({
         value: client.id,
-        label: `${client.id} - ${(client.firstName || client.lastName)
+        label: `${(client.firstName || client.lastName)
             ? `${client.firstName || ""}${client.firstName && client.lastName ? " " : ""}${client.lastName || ""}`
-            : client.alias}`
+            : client.alias} - ${client.id}`
     })), [clients]);
 
     const Select = props => (
@@ -40,7 +40,7 @@ const ClientSelector = ({ client, setClient }) => {
             <Select
                 classNamePrefix="react-select"
                 alwaysDisplayPlaceholder
-                isClearable required value={Object.keys(client || {}).length === 0 ? "" : client} placeholder={t("Client")} noOptionsMessage={() => t('No clients found')}
+                isClearable required value={selectedOption} placeholder={t("Client")} noOptionsMessage={() => t('No clients found')}
                 onChange={(val) => { setClient({ ...val }) }}
                 options={options}
             />
@@ -68,16 +68,15 @@ export const ClientsSelector = ({
     const { t } = useTranslation()
     const options = useMemo(() => clients.map((client) => ({
         value: client.id,
-        label: `${client.id} - ${(client.firstName || client.lastName)
+        label: `${(client.firstName || client.lastName)
             ? `${client.firstName || ""}${client.firstName && client.lastName ? " " : ""}${client.lastName || ""}`
-            : client.alias}`
-    })), [clients]);
+            : client.alias || ""} - ${client.id}`
+    })).sort((a, b) => a.label.localeCompare(b.label)), [clients]);
 
     return (
         <Form.Group className="mb-3 mt-2">
             <Form.Label>
                 {t("Clients")}
-
             </Form.Label>
             <MultiSelectById
                 placeholder={t('All')}

@@ -1,7 +1,7 @@
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { useIsInsideElement } from "hooks/useIsInsideElement";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useCallback } from "react";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import Select, { components } from 'react-select';
@@ -10,7 +10,7 @@ import capitalize from "utils/capitalize";
 const MultiSelectById = ({
     // valuePaddingTop = "calc(1.625rem - 4px)",
     popover = false, placeholder = "", menuPosition = "fixed", className = "basicSelector",
-    label = "", id = "", options = [], FormData = {}, handleChange,
+    label = "", id = "", options: optionsDefault, FormData = {}, handleChange,
     validated = false, required = false, disabled, isLoading, isClearable = false,
     useDeletableProp = false, onDelete = false }) => {
     const [searchInputValue, setSearchInputValue] = useState("");
@@ -19,7 +19,18 @@ const MultiSelectById = ({
         return newValue;
     };
     const value = FormData[id]
-
+    const options = useMemo(() => optionsDefault.sort(
+        (a, b) => {
+            // selected first 
+            if (value.includes(a.value) && !value.includes(b.value)) {
+                return -1;
+            } else if (!value.includes(a.value) && value.includes(b.value)) {
+                return 1;
+            } else {
+                return a.label.localeCompare(b.label);
+            }
+        }
+    ), [optionsDefault, value])
     const getOptionByValue = (optionValue = "", optionsArray = options) => {
         for (const option of optionsArray) {
             if (JSON.stringify(optionValue) === JSON.stringify(option?.value)) {
