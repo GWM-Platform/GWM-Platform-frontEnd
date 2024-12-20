@@ -22,9 +22,9 @@ export const TableView = ({ state, client, FilterOptions }) => {
     useEffect(() => {
         dispatch(fetchMovements({
             ...FilterOptions,
-            state,
-            client,
             filterMotives: FilterOptions.filterMotives.length > 0 ? FilterOptions.filterMotives : null,
+            filterStates: FilterOptions.filterStates.length > 0 ? FilterOptions.filterStates : null,
+            clients: FilterOptions.clients.length > 0 ? FilterOptions.clients : null,
             ...FilterOptions.fromAmount ? { fromAmount: unMaskNumber({ value: FilterOptions.fromAmount }) } : {},
             ...FilterOptions.toAmount ? { toAmount: unMaskNumber({ value: FilterOptions.toAmount }) } : {},
         }))
@@ -195,7 +195,6 @@ export const TableView = ({ state, client, FilterOptions }) => {
 }
 
 const Movement = ({ movement }) => {
-    console.log(movement)
     const { getMoveStateById } = useContext(DashBoardContext)
     const { t } = useTranslation()
 

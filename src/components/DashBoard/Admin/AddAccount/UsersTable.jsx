@@ -103,9 +103,9 @@ export const UsersTable = () => {
             const matchesAllWords = values => {
                 return regexes.every(regex => values.some(value => regex.test(value)));
             };
-            if (matchesAllWords(values)) {
-                console.log(user, values, search)
-            }
+            // if (matchesAllWords(values)) {
+            //     console.log(user, values, search)
+            // }
             return matchesAllWords(values);
         }).sort((a, b) => {
             if (sortField) {

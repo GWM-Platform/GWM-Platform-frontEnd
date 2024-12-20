@@ -12,7 +12,6 @@ const UserActionLog = ({ Log, User, Users, Accounts, Clients, Funds }) => {
     const Fund = useMemo(() => Funds.find(fund => fund.id === Log.fundId), [Funds, Log.fundId])
     const user = useMemo(() => Users.find(fund => fund.id === Log.eventMetadata?.userId), [Log.eventMetadata?.userId, Users])
     const client = useMemo(() => Clients.find(fund => fund.id === Log.eventMetadata?.clientId), [Clients, Log.eventMetadata?.clientId])
-    console.log(client)
     const extraData = useMemo(() => {
         let result = []
         if (Fund) result.push(Fund.name)

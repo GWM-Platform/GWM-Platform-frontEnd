@@ -64,6 +64,8 @@ export const fetchMovements = createAsyncThunk(
                 sort: params.sort,
                 filterMotive: params.filterMotive,
                 filterMotives: params.filterMotives,
+                filterStates: params.filterStates,
+                clients: params.clients,
                 fromAmount: params.fromAmount,
                 toAmount: params.toAmount,
                 fromDate: params?.fromDate ? moment(params.fromDate).format(moment.HTML5_FMT.DATE) : null,

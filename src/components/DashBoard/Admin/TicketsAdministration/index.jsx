@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, ButtonGroup, Col, Form, Row, ToggleButton } from 'react-bootstrap'
-import StateSelector from './StateSelector'
+import StateSelector, { StatesSelector } from './StateSelector'
 import Message from './Message'
 import Tables from './Tables'
 import './index.css'
-import ClientSelector from './ClientSelector';
+import ClientSelector, { ClientsSelector } from './ClientSelector';
 import { useTranslation } from 'react-i18next';
 import TableIcon from '../APL/icons/TableIcon';
 import GridIcon from '../APL/icons/GridIcon';
@@ -26,11 +26,11 @@ export const motives = [
     { value: 'STAKE_SELL', labelKey: 'STAKE_SELL_', group: "fund" },
     { value: 'REPAYMENT', labelKey: 'REPAYMENT', group: "fund" },
     { value: 'FIXED_DEPOSIT_CREATE', labelKey: 'FIXED_DEPOSIT_CREATE_', group: "fixed_deposit" },
-    { value: 'FIXED_DEPOSIT_CLOSE', labelKey: 'FIXED_DEPOSIT_CLOSE_', group: "fixed_deposit"},
-    { value: 'TRANSFER_SEND', labelKey: 'TRANSFER_SEND', group: "cta_cte"  },
-    { value: 'TRANSFER_RECEIVE', labelKey: 'TRANSFER_RECEIVE', group: "cta_cte"  },
-    { value: 'BID_OFFER', labelKey: 'BID_OFFER_', group: "fixed_deposit"  },
-    { value: 'SHARE_TRANSFER_SEND', labelKey: 'SHARE_TRANSFER_SEND', group: "fund"},
+    { value: 'FIXED_DEPOSIT_CLOSE', labelKey: 'FIXED_DEPOSIT_CLOSE_', group: "fixed_deposit" },
+    { value: 'TRANSFER_SEND', labelKey: 'TRANSFER_SEND', group: "cta_cte" },
+    { value: 'TRANSFER_RECEIVE', labelKey: 'TRANSFER_RECEIVE', group: "cta_cte" },
+    { value: 'BID_OFFER', labelKey: 'BID_OFFER_', group: "fixed_deposit" },
+    { value: 'SHARE_TRANSFER_SEND', labelKey: 'SHARE_TRANSFER_SEND', group: "fund" },
     { value: 'SHARE_TRANSFER_RECEIVE', labelKey: 'SHARE_TRANSFER_RECEIVE', group: "fund" },
     { value: 'PROFIT_DEPOSIT', labelKey: 'PROFIT_DEPOSIT_', group: "cta_cte" },
     { value: 'PENALTY_WITHDRAWAL', labelKey: 'PENALTY_WITHDRAWAL_', group: "cta_cte" },
@@ -193,7 +193,9 @@ const TicketsAdministration = () => {
         // filterMotive: "",
         fromAmount: "",
         toAmount: "",
-        filterMotives: []
+        filterMotives: [],
+        clients: [],
+        filterStates: []
 
     }
 
@@ -298,10 +300,20 @@ const TicketsAdministration = () => {
                                     </Row>
                                     <Row className="pb-2 px-0 mx-0" id="filters">
                                         <Col md={tableView ? "4" : "6"}>
-                                            <StateSelector handleChange={handleChange} TransactionStates={TransactionStates} />
+                                            {
+                                                tableView ?
+                                                    <StatesSelector FormData={FilterOptions} handleChange={handleChangeFilterOptions} TransactionStates={TransactionStates} />
+                                                    :
+                                                    <StateSelector handleChange={handleChange} TransactionStates={TransactionStates} />
+                                            }
                                         </Col>
                                         <Col md={tableView ? "4" : "6"}>
-                                            <ClientSelector client={client} setClient={setClient} />
+                                            {
+                                                tableView ?
+                                                <ClientsSelector FormData={FilterOptions} handleChange={handleChangeFilterOptions} />
+                                                :
+                                                <ClientSelector client={client} setClient={setClient} />
+                                            }
                                         </Col>
                                         {
                                             tableView &&

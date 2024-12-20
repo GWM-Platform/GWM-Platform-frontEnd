@@ -1195,5 +1195,8 @@
   "including interest credited in advance": "incluyendo el interés acreditado en forma anticipada",
   "including utilities withdrawal": "incluyendo los retiros de utilidades",
   "every {{daysInterval}} days": "cada {{daysInterval}} días",
-  "Next interest to be credited": "Próximo interés a acreditarse"
+  "Next interest to be credited": "Próximo interés a acreditarse",
+  "Note": "Nota",
+  "States": "Estados",
+  "Clients": "Clientes"
 }

@@ -48,7 +48,6 @@ const MultiSelectById = ({
         var length = getValue().length;
         let shouldBadgeShow = length > maxToShow;
         let displayLength = length - maxToShow;
-        console.log(props)
         // sumar group al title
         // botones shortcuts seleccion
         return (
