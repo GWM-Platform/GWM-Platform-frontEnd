@@ -98,7 +98,7 @@ const Operations = () => {
 
         // eslint-disable-next-line
     }, [])
-
+    // TODO: Replace with redux
     const [Clients, setClients] = useState({ status: "idle", content: [] })
     useEffect(() => {
         const controller = new AbortController();

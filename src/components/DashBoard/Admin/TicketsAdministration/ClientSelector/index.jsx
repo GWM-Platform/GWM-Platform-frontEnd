@@ -9,15 +9,12 @@ import { fetchclients, selectAllclients } from "Slices/DashboardUtilities/client
 
 const ClientSelector = ({ client, setClient }) => {
     const { t } = useTranslation();
-    const clientsState = useSelector(state => state.clients.status)
     const clients = useSelector(selectAllclients)
 
     const dispatch = useDispatch()
     useEffect(() => {
-        if (clientsState === 'idle') {
-            dispatch(fetchclients())
-        }
-    }, [clientsState, dispatch])
+        dispatch(fetchclients({ all: true }))
+    }, [dispatch])
     const selectedOption = useMemo(() => Object.keys(client || {}).length === 0 ? "" : client, [client])
     const options = useMemo(() => clients.map((client) => ({
         value: client.id,
@@ -55,15 +52,12 @@ export const ClientsSelector = ({
     FormData
 }) => {
 
-    const clientsState = useSelector(state => state.clients.status)
     const clients = useSelector(selectAllclients)
 
     const dispatch = useDispatch()
     useEffect(() => {
-        if (clientsState === 'idle') {
-            dispatch(fetchclients())
-        }
-    }, [clientsState, dispatch])
+        dispatch(fetchclients({ all: true }))
+    }, [dispatch])
 
     const { t } = useTranslation()
     const options = useMemo(() => clients.map((client) => ({

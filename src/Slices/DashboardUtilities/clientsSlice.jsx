@@ -15,9 +15,16 @@ const clientsSlice = createSlice({
         reset: (state, action) => ({ ...initialState }),
         markAsRead: (state, action) => {
             const { id } = action.payload
-            const client = state.clients.clients.find(client => client.id === id)
+            const client = state.clients.find(client => client.id === id)
             if (client) {
                 client.read = true
+            }
+        },
+        toggleEnabled: (state, action) => {
+            const { id } = action.payload
+            const client = state.clients.find(client => client.id === id)
+            if (client) {
+                client.enabled = !client.enabled
             }
         }
     },
@@ -36,7 +43,7 @@ const clientsSlice = createSlice({
             })
     }
 })
-export const { reset, markAsRead } = clientsSlice.actions
+export const { reset, markAsRead, toggleEnabled } = clientsSlice.actions
 
 export default clientsSlice.reducer
 

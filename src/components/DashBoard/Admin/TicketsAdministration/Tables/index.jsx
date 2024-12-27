@@ -440,6 +440,7 @@ const Tables = ({ state, messageVariants, client }) => {
     }
 
     /*---------------------------------------------------------------------------------------- */
+    // TODO: Replace with redux
     const [UsersInfo, SetUsersInfo] = useState({ fetching: true, value: [] })
     const [FundInfo, SetFundInfo] = useState({ fetching: true, value: [] })
     const [AccountInfo, SetAccountInfo] = useState({ fetching: true, value: [] })
