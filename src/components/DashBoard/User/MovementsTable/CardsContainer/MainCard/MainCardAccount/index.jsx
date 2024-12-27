@@ -248,7 +248,6 @@ export const SectionSelector = ({ sections, title, titleClassName }) => {
                             {section.children.map(
                                 (child, childIndex) =>
                                     <Dropdown.Item key={`${index}-${childIndex}`} eventKey={`${index}-${childIndex}`} active={child.active} onClick={child.onSelect}>{child.title}</Dropdown.Item>
-
                             )}
                             <Dropdown.Divider className='my-1' />
                         </React.Fragment>

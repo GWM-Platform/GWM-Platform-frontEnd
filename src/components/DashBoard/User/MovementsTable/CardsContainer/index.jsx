@@ -19,6 +19,9 @@ import MobileCardFixedDeposits from './MobileCards/MobileCardFixedDeposits';
 import { useHorizontalMobileAction } from 'components/DashBoard';
 import { formatValue } from '@osdiab/react-currency-input-field';
 import Decimal from 'decimal.js';
+import { selectAllHistoricFunds } from 'Slices/DashboardUtilities/historicFundsSlice';
+import { useSelector } from 'react-redux';
+import { useMemo } from 'react';
 
 const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDepositsStats }) => {
     const { t } = useTranslation();
@@ -29,9 +32,29 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
         return React.useMemo(() => new URLSearchParams(search), [search]);
     }
 
-    const { PendingWithoutpossession, hasPermission, AccountSelected } = useContext(DashBoardContext)
+    const { PendingWithoutpossession, hasPermission, AccountSelected, ClientSelected } = useContext(DashBoardContext)
+    const historicFunds = useSelector(selectAllHistoricFunds)
 
-    const FundsWithPending = [...Funds, ...PendingWithoutpossession]
+    const FundsWithPending = useMemo(() => {
+        const holdings = [...Funds, ...PendingWithoutpossession]
+        return [
+            ...holdings,
+            ...historicFunds.filter(historicFund =>
+                !holdings.some(holding => holding.fundId === historicFund.id)
+            ).map(fund => (
+                {
+                    id: fund.id,
+                    clientId: ClientSelected.id,
+                    fundId: fund.id,
+                    shares: 0,
+                    createdAt: "2022-05-20T13:30:28.116Z",
+                    updatedAt: "2024-10-21T12:53:43.000Z",
+                    fund,
+                    historic: true
+                }
+            ))
+        ]
+    }, [ClientSelected.id, Funds, PendingWithoutpossession, historicFunds])
 
     const getFundIndexById = (id) => {
         let index = FundsWithPending.findIndex(Fund => Fund.fund.id.toString() === id)
@@ -176,7 +199,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
         if (type === "FIXED_DEPOSIT") {
             setSelectedFixedDepositId(id)
             setCategorySelected(2)
-        } else if(type === "FUND"){
+        } else if (type === "FUND") {
             const index = FundsWithPending.findIndex(fund => fund.fund.id === id)
             if (index >= 0) {
                 setCategorySelected(1)

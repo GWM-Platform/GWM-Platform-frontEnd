@@ -104,7 +104,7 @@ const RuleSelector = ({ data, setData, RulesObject, handleChange }) => {
                                 </div>
                             </div>
                             {
-                                !data.preferential &&
+                                // !data.preferential &&
                                 <>
                                     <Col className="me-auto mt-3">
                                         <Form.Label>

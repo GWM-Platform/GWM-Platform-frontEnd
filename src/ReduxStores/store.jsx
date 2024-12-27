@@ -14,7 +14,7 @@ import PrintHtmlReducer from 'Slices/DashboardUtilities/PrintHtmlSlice'
 import movementsreducer from 'Slices/DashboardUtilities/movementsSlice'
 import annualStatementsReducer from 'Slices/DashboardUtilities/annualStatementsSlice'
 import zoomReducer from 'Slices/DashboardUtilities/zoomSlice'
-
+import historicFundsReducer from 'Slices/DashboardUtilities/historicFundsSlice'
 import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 
@@ -39,6 +39,7 @@ const rootReducer = combineReducers({
   PrintHtml: PrintHtmlReducer,
   movements: movementsreducer,
   zoom: zoomReducer,
+  historicFunds:historicFundsReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

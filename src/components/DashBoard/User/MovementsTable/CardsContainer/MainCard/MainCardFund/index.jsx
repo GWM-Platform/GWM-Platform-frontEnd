@@ -156,7 +156,7 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
             <div className="bg-white main-card-header info ms-0 mb-2 px-0">
                 <div className="d-flex justify-content-between align-items-end pe-2 mb-1">
                     <h1 className="m-0 title px-2 me-auto">
-                        <SectionSelector sections={sections} title={t(Fund.fund.name)} titleClassName="m-0 title"/>
+                        <SectionSelector sections={sections} title={`${Fund.fund.name}${Fund.historic ? ` (${t("Historic investment")})` : ""}`} titleClassName="m-0 title" />
                     </h1>
                     {
                         SelectedTab + "" !== "1" &&

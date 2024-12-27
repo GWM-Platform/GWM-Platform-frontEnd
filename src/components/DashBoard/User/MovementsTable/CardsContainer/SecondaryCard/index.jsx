@@ -80,6 +80,7 @@ const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownK
                                     }[parentKey]
                                 )
                             }
+                            {Fund.historic && <span style={{textTransform: "none", fontSize: "1rem"}}>&nbsp;({t("Historic investment")})</span>}
                         </h1>
                     </div>
                     <div className="mb-2">
@@ -90,7 +91,7 @@ const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownK
                                 <FormattedNumber className={`info placeholder`} value={balanceInCash().toString()} prefix="U$D " fixedDecimals={2} />
                             </div>
                         </h2>
-                        <span className={parentKey=== 0 ? "invisible" : ""}>
+                        <span className={parentKey === 0 ? "invisible" : ""}>
                             <PerformanceComponent className='performance-component' withoutSelector text={"Accumulated performance"} fundId={parentKey === 1 ? Fund?.fundId : ""} fixedDepositId={parentKey === 2 ? "1" : ""} />
                         </span>
                     </div>

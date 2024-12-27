@@ -36,13 +36,15 @@ import DashboardToast from './DashboardToast'
 import axios from 'axios';
 import NoClients from './GeneralUse/NoClients';
 import NoPermissionOperation from './User/NoPermissionFeedback/NoPermissionOperation';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Col, Container, Row, Spinner } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import ExchangeTool from './ExchangeTool';
 import PrintLoading from 'components/PrintLoading';
 import ClientDisabled from './ClientDisabled';
 import { selectZoomDesktop, selectZoomMobile } from 'Slices/DashboardUtilities/zoomSlice';
+import { fetchHistoricFunds } from 'Slices/DashboardUtilities/historicFundsSlice';
+import { fetchFunds } from 'Slices/DashboardUtilities/fundsSlice';
 
 //User
 const FundsContainer = lazy(() => import('./User/FundsContainer'))
@@ -74,11 +76,11 @@ const UserDashBoard = () => {
     axios.defaults.headers.common['Authorization'] = `Bearer ${sessionStorage.getItem("access_token")}`
     const userStatus = useSelector(state => state.user.status)
 
-    const { isMobile, admin, ClientSelected, balanceChanged, setBalanceChanged, setItemSelected, IndexClientSelected, UserClients, ClientPermissions, hasPermission, hasAnyTransferFundPermission, setIndexClientSelected } = useContext(DashBoardContext);
+    const { admin, ClientSelected, setItemSelected, IndexClientSelected, UserClients, ClientPermissions, setIndexClientSelected } = useContext(DashBoardContext);
+
 
     const { path } = useRouteMatch()
     const [NavInfoToggled, setNavInfoToggled] = useState(false)
-    const [numberOfFunds, setNumberOfFunds] = useState(0);
 
     const { t } = useTranslation();
 
@@ -222,91 +224,7 @@ const UserDashBoard = () => {
                                                     </>
                                                     :
                                                     /*----------------------------------------------------------Client----------------------------------------------------------*/
-                                                    <>
-                                                        <div className="w-100">
-                                                            <NavBar NavInfoToggled={NavInfoToggled} setNavInfoToggled={setNavInfoToggled}
-                                                                setItemSelected={setItemSelected}
-                                                            />
-                                                            <NavBarTotal balanceChanged={balanceChanged} setBalanceChanged={setBalanceChanged} />
-                                                        </div>
-                                                        <Suspense fallback={
-                                                            <Container className="h-100" fluid>
-                                                                <Row className="d-flex justify-content-center align-items-center h-100">
-                                                                    <Col className="d-flex justify-content-center align-items-center">
-                                                                        <Spinner className="me-2" animation="border" variant="primary" />
-                                                                        <span className="loadingText">{t("Loading")}</span>
-                                                                    </Col>
-                                                                </Row>
-                                                            </Container>
-                                                        }>
-                                                            <Route path={`${path}/accounts`}>
-                                                                <FundsContainer
-                                                                    NavInfoToggled={NavInfoToggled}
-                                                                    isMobile={isMobile}
-                                                                    setItemSelected={setItemSelected}
-                                                                    setNumberOfFunds={setNumberOfFunds}
-                                                                />
-                                                            </Route>
-                                                            <Route path={`${path}/history`}>
-                                                                <MovementsTable
-                                                                    isMobile={isMobile}
-                                                                    numberOfFunds={numberOfFunds}
-                                                                    setNumberOfFunds={setNumberOfFunds}
-                                                                    NavInfoToggled={NavInfoToggled}
-                                                                />
-                                                            </Route>
-                                                            <Route path={`${path}/buy`}>
-                                                                {
-                                                                    hasPermission('VIEW_ACCOUNT') ?
-                                                                        <BuyForm balanceChanged={() => setBalanceChanged(true)} />
-                                                                        :
-                                                                        <NoPermissionOperation />
-                                                                }
-                                                            </Route>
-                                                            <Route path={`${path}/sell`}>
-                                                                <SellForm balanceChanged={() => setBalanceChanged(true)} />
-
-                                                            </Route>
-                                                            <Route path={`${path}/deposit`}>
-                                                                {
-                                                                    hasPermission('VIEW_ACCOUNT') ?
-                                                                        <DepositForm balanceChanged={() => setBalanceChanged(true)} /> :
-                                                                        <NoPermissionOperation />
-                                                                }
-                                                            </Route>
-                                                            <Route path={`${path}/withdraw`}>
-                                                                {
-                                                                    hasPermission('VIEW_ACCOUNT') && hasPermission('WITHDRAW') ?
-                                                                        <WithdrawForm balanceChanged={() => setBalanceChanged(true)} /> :
-                                                                        <NoPermissionOperation />
-                                                                }
-                                                            </Route>
-                                                            <Route path={`${path}/transfer`}>
-                                                                {
-                                                                    hasAnyTransferFundPermission() || (hasPermission('VIEW_ACCOUNT') && hasPermission('TRANSFER_GENERATE')) ?
-                                                                        <TransferForm balanceChanged={() => setBalanceChanged(true)} /> :
-                                                                        <NoPermissionOperation />
-                                                                }
-                                                            </Route>
-                                                            <Route path={`${path}/TimeDeposit`}>
-                                                                {
-                                                                    hasPermission('VIEW_ACCOUNT') && hasPermission('FIXED_DEPOSIT_CREATE') ?
-                                                                        <FixedDepositClient balanceChanged={() => setBalanceChanged(true)} /> :
-                                                                        <NoPermissionOperation />
-                                                                }
-                                                            </Route>
-                                                            <Route path={`${path}/operationResult`}>
-                                                                <OperationStatus setItemSelected={setItemSelected} />
-                                                            </Route>
-                                                            <Route exact path={`${path}/configuration`}>
-                                                                <Configuration />
-                                                            </Route>
-                                                            <Route exact path={`${path}/notificationsCenter`}>
-                                                                <NotificationsCenter />
-                                                            </Route>
-                                                        </Suspense>
-                                                        <ExchangeTool />
-                                                    </>
+                                                    <Client />
                                             }
                                             <DashboardToast />
                                             <Footer />
@@ -353,4 +271,105 @@ export const useHorizontalMobileAction = ({ matched = () => { }, notMatched = ()
         // eslint-disable-next-line
     }, [])
 
+}
+
+const Client = ({ NavInfoToggled, setNavInfoToggled, setItemSelected }) => {
+    const { path } = useRouteMatch()
+    const { ClientSelected, isMobile, balanceChanged, setBalanceChanged, hasPermission, hasAnyTransferFundPermission } = useContext(DashBoardContext);
+    const [numberOfFunds, setNumberOfFunds] = useState(0);
+    const { t } = useTranslation();
+
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(fetchHistoricFunds({ client: ClientSelected.id }))
+        dispatch(fetchFunds())
+    }, [ClientSelected.id, dispatch])
+
+    return (
+        <>
+            <div className="w-100">
+                <NavBar NavInfoToggled={NavInfoToggled} setNavInfoToggled={setNavInfoToggled}
+                    setItemSelected={setItemSelected}
+                />
+                <NavBarTotal balanceChanged={balanceChanged} setBalanceChanged={setBalanceChanged} />
+            </div>
+            <Suspense fallback={
+                <Container className="h-100" fluid>
+                    <Row className="d-flex justify-content-center align-items-center h-100">
+                        <Col className="d-flex justify-content-center align-items-center">
+                            <Spinner className="me-2" animation="border" variant="primary" />
+                            <span className="loadingText">{t("Loading")}</span>
+                        </Col>
+                    </Row>
+                </Container>
+            }>
+                <Route path={`${path}/accounts`}>
+                    <FundsContainer
+                        NavInfoToggled={NavInfoToggled}
+                        isMobile={isMobile}
+                        setItemSelected={setItemSelected}
+                        setNumberOfFunds={setNumberOfFunds}
+                    />
+                </Route>
+                <Route path={`${path}/history`}>
+                    <MovementsTable
+                        isMobile={isMobile}
+                        numberOfFunds={numberOfFunds}
+                        setNumberOfFunds={setNumberOfFunds}
+                        NavInfoToggled={NavInfoToggled}
+                    />
+                </Route>
+                <Route path={`${path}/buy`}>
+                    {
+                        hasPermission('VIEW_ACCOUNT') ?
+                            <BuyForm balanceChanged={() => setBalanceChanged(true)} />
+                            :
+                            <NoPermissionOperation />
+                    }
+                </Route>
+                <Route path={`${path}/sell`}>
+                    <SellForm balanceChanged={() => setBalanceChanged(true)} />
+
+                </Route>
+                <Route path={`${path}/deposit`}>
+                    {
+                        hasPermission('VIEW_ACCOUNT') ?
+                            <DepositForm balanceChanged={() => setBalanceChanged(true)} /> :
+                            <NoPermissionOperation />
+                    }
+                </Route>
+                <Route path={`${path}/withdraw`}>
+                    {
+                        hasPermission('VIEW_ACCOUNT') && hasPermission('WITHDRAW') ?
+                            <WithdrawForm balanceChanged={() => setBalanceChanged(true)} /> :
+                            <NoPermissionOperation />
+                    }
+                </Route>
+                <Route path={`${path}/transfer`}>
+                    {
+                        hasAnyTransferFundPermission() || (hasPermission('VIEW_ACCOUNT') && hasPermission('TRANSFER_GENERATE')) ?
+                            <TransferForm balanceChanged={() => setBalanceChanged(true)} /> :
+                            <NoPermissionOperation />
+                    }
+                </Route>
+                <Route path={`${path}/TimeDeposit`}>
+                    {
+                        hasPermission('VIEW_ACCOUNT') && hasPermission('FIXED_DEPOSIT_CREATE') ?
+                            <FixedDepositClient balanceChanged={() => setBalanceChanged(true)} /> :
+                            <NoPermissionOperation />
+                    }
+                </Route>
+                <Route path={`${path}/operationResult`}>
+                    <OperationStatus setItemSelected={setItemSelected} />
+                </Route>
+                <Route exact path={`${path}/configuration`}>
+                    <Configuration />
+                </Route>
+                <Route exact path={`${path}/notificationsCenter`}>
+                    <NotificationsCenter />
+                </Route>
+            </Suspense>
+            <ExchangeTool />
+        </>
+    )
 }
