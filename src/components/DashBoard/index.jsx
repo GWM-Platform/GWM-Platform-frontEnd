@@ -273,9 +273,9 @@ export const useHorizontalMobileAction = ({ matched = () => { }, notMatched = ()
 
 }
 
-const Client = ({ NavInfoToggled, setNavInfoToggled, setItemSelected }) => {
+const Client = ({ NavInfoToggled, setNavInfoToggled }) => {
     const { path } = useRouteMatch()
-    const { ClientSelected, isMobile, balanceChanged, setBalanceChanged, hasPermission, hasAnyTransferFundPermission } = useContext(DashBoardContext);
+    const { ClientSelected, isMobile, balanceChanged, setBalanceChanged, hasPermission, hasAnyTransferFundPermission, setItemSelected } = useContext(DashBoardContext);
     const [numberOfFunds, setNumberOfFunds] = useState(0);
     const { t } = useTranslation();
 

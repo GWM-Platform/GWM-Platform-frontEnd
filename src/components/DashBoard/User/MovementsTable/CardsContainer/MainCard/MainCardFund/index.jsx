@@ -162,7 +162,7 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
                         SelectedTab + "" !== "1" &&
                         <Col xs="auto" className='ms-2' style={{ marginTop: ".4rem" }}>
                             <Button className="me-2 print-button no-style" variant="info" onClick={() => exportToExcel(
-                                SelectedTab === "Movements" ?
+                                (SelectedTab + "" === "0") ?
                                     {
                                         filename: t("Fund_movements", { fundName: Fund.fund.name }),
                                         sheetName: t("Fund_movements", { fundName: Fund.fund.name }),
