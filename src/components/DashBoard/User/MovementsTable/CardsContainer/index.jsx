@@ -64,12 +64,12 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
     const desiredId = useQuery().get("id")
     const desiredType = useQuery().get("type")
     const desiredFundId = useQuery().get("fundId")
-    const validTypes = ["m", "t", "t-d", "transfers", "share-transfers"]
+    const validTypes = ["m", "t", "t-d", "fd", "transfers", "share-transfers"]
 
     const [categorySelected, setCategorySelected] = useState(
         desiredType ?
             validTypes.includes(desiredType) ?
-                desiredType === "share-transfers" ?
+                (desiredType === "share-transfers" ?
                     Funds.length > 0 ? 1 : 0
                     :
                     desiredType === "t" ?
@@ -78,7 +78,10 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
                         desiredType === "t-d" ?
                             2
                             :
-                            desiredType === "m" || desiredType === "transfers" ? 0 : 0
+                            desiredType === "fd" ?
+                                2
+                                :
+                                desiredType === "m" || desiredType === "transfers" ? 0 : 0)
                 :
                 Accounts.length > 0 && hasPermission('VIEW_ACCOUNT') ? 0 : Funds.length > 0 ? 1 : 0
             :
@@ -120,6 +123,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
         }
 
     }
+
 
     const [SearchById, setSearchById] = useState({
         value: performSearch() ? desiredId : "",
@@ -208,6 +212,13 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
         }
 
     }
+
+    useEffect(() => {
+        if (desiredType === "fd" && desiredId) {
+            linkToOtherHistory(desiredId)
+        }
+        // eslint-disable-next-line
+    }, [desiredId, desiredType])
 
     useEffect(() => {
         if (categorySelected !== 2) {
