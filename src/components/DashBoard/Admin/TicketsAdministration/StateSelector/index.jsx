@@ -25,15 +25,16 @@ export default StateSelector
 export const StatesSelector = ({
     handleChange,
     TransactionStates,
-    FormData
+    FormData,
+    className = "mb-3 mt-2"
 }) => {
     const { t } = useTranslation()
     const options = useMemo(() => TransactionStates.values.map((state) => ({ value: state.id, label: t(state.name) })), [TransactionStates.values, t]);
     return (
-        <Form.Group className="mb-3 mt-2">
+        <Form.Group className={className}>
             <Form.Label>
                 {t("States")}
-             
+
             </Form.Label>
             <MultiSelectById
                 placeholder={t('All')}

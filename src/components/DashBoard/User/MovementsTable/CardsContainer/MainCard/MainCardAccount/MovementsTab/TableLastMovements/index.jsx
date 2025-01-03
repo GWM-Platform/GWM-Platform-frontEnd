@@ -5,6 +5,8 @@ import Movement from './Movement';
 import { useTranslation } from "react-i18next";
 import { useContext } from 'react';
 import { DashBoardContext } from 'context/DashBoardContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDownload } from '@fortawesome/free-solid-svg-icons';
 
 const TableLastMovements = ({ content, movements, reloadData, linkToOtherHistory }) => {
 
@@ -37,7 +39,11 @@ const TableLastMovements = ({ content, movements, reloadData, linkToOtherHistory
                         <th className="tableHeader">{t("Description")}</th>
                         <th className="tableDescription d-none d-sm-table-cell">{t("Amount")}</th>
                         <th className="tableDescription d-none d-sm-table-cell">{t("Balance")}</th>
-                        <th className='Actions' data-column-name="actions" ></th>
+                        <th className='Actions' data-column-name="actions" >
+                            <button className="noStyle" style={{ pointerEvents: "none" }}>
+                                <FontAwesomeIcon icon={faDownload} style={{fontSize: ".85rem"}} />
+                            </button>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>

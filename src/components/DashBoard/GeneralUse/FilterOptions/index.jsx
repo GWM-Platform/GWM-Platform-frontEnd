@@ -9,8 +9,9 @@ import TicketSearch from 'components/DashBoard/GeneralUse/TicketSearch'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { motives } from 'components/DashBoard/Admin/TicketsAdministration';
 import MultiSelectById from 'components/DashBoard/Admin/TicketsAdministration/MultiSelectById';
+import { StatesSelector } from 'components/DashBoard/Admin/TicketsAdministration/StateSelector';
 
-const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, ticketSearch, ticketSearchProps, movements, defaultMoves = 5, dateFilters = false, filterMotives = false }) => {
+const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, ticketSearch, ticketSearchProps, movements, defaultMoves = 5, dateFilters = false, filterMotives = false, multiSelectState = false }) => {
     const { t } = useTranslation();
     const { TransactionStates } = useContext(DashBoardContext)
 
@@ -19,7 +20,8 @@ const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, ti
         state: "",
         fromDate: "",
         toDate: "",
-        filterMotives: []
+        filterMotives: [],
+        filterStates: (TransactionStates?.values || [])?.map(state => state.id).filter(v => v !== 3)
     })
 
     const handleChange = (event, number = true) => {
@@ -38,7 +40,9 @@ const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, ti
                 ...prevState, ...{
                     take: filterOptions.moves,
                     skip: 0,
-                    state: filterOptions.state === "" ? null : filterOptions.state,
+                    ...multiSelectState ?
+                        { filterStates: filterOptions.filterStates } :
+                        { state: filterOptions.state === "" ? null : filterOptions.state },
                     ...dateFilters ? {
                         fromDate: filterOptions.fromDate,
                         toDate: filterOptions.toDate
@@ -46,19 +50,21 @@ const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, ti
                     ...filterMotives ? {
                         filterMotives: filterOptions.filterMotives
                     } : {}
+
                 }
             }))
         }
     }
-
+    console.log(TransactionStates)
     useEffect(() => {
         setFilterOptions((prevState) => ({
             ...prevState, ...{
                 moves: defaultMoves,
-                state: ""
+                state: "",
+                filterStates: (TransactionStates?.values || [])?.map(state => state.id).filter(v => v !== 3),
             }
         }))
-    }, [Fund, defaultMoves])
+    }, [Fund, TransactionStates.values, defaultMoves])
 
     return (
         <Accordion flush>
@@ -76,17 +82,23 @@ const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, ti
                                 </Form.Group>
                             </Col>
                             {
-                                !!(TransactionStates.fetched && TransactionStates.valid && !TransactionStates.fetching) &&
-                                <Col xs="6">
-                                    <Form.Group controlId="movesPerPage">
-                                        <Form.Label className="capitalizeFirstLetter">{t(`status`)}</Form.Label>
-                                        <Form.Select disabled={disabled} value={filterOptions.state} onChange={e => handleChange(e)} id="state">
-                                            <option value="">{movements ? t("All except denied") : t("All")}</option>
-                                            {!!(movements) && <option value="10">{t("All (including denied)")}</option>}
-                                            {TransactionStates.values.map((state, key) => <option key={key} value={state.id}>{t(state.name)}</option>)}
-                                        </Form.Select>
-                                    </Form.Group>
-                                </Col>
+                                !!(TransactionStates.fetched && TransactionStates.valid && !TransactionStates.fetching) && (
+                                    <Col xs="6">
+                                        {
+                                            multiSelectState ?
+                                                <StatesSelector className="" FormData={filterOptions} handleChange={e => handleChange(e, false)} TransactionStates={TransactionStates} />
+                                                :
+                                                <Form.Group controlId="movesPerPage">
+                                                    <Form.Label className="capitalizeFirstLetter">{t(`status`)}</Form.Label>
+                                                    <Form.Select disabled={disabled} value={filterOptions.state} onChange={e => handleChange(e)} id="state">
+                                                        <option value="">{movements ? t("All except denied") : t("All")}</option>
+                                                        {!!(movements) && <option value="10">{t("All (including denied)")}</option>}
+                                                        {TransactionStates.values.map((state, key) => <option key={key} value={state.id}>{t(state.name)}</option>)}
+                                                    </Form.Select>
+                                                </Form.Group>
+                                        }
+                                    </Col>
+                                )
                             }
                             {
                                 filterMotives &&

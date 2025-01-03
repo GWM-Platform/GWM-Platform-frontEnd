@@ -236,7 +236,7 @@ const ActionConfirmationModal = ({ movement, setShowModal, action, show, reloadD
                         </div>
                     }
                     {
-                        // action === "deny" &&
+                        (action === "deny" || action === "liquidate") &&
                         <div className={`px-3 mt-3 `}>
                             {
                                 NoteActive ?

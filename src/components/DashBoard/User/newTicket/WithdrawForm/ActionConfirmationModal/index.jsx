@@ -33,7 +33,7 @@ const ActionConfirmationModal = ({ setShowModal, show, action, data, Balance, fe
                         {
                             data.note !== "" &&
                             <li className="listedInfo">
-                                {t("Transfer note")}:&nbsp;
+                                {t("Note")}:&nbsp;
                                 <span className="emphasis">{data?.note}</span>
                             </li>
                         }
