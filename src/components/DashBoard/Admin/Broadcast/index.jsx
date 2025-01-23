@@ -66,7 +66,7 @@ const Broadcast = () => {
     const Clients = useSelector(selectAllclients)
 
     const clients = useMemo(() => Clients.filter(client => client.enabled).map(client => ({
-        ...client, users: client.users.filter(userToClient => {
+        ...client, users: client?.users?.filter(userToClient => {
             return getUserById(userToClient?.userId)?.enabled && userToClient.enabled
         })
     })), [Clients, getUserById])

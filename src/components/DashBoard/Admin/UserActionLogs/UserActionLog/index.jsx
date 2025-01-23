@@ -34,8 +34,9 @@ const UserActionLog = ({ Log, User, Users, Accounts, Clients, Funds }) => {
                     {
                         Log.movementId ?
                             <>
-                                <button type="button" className="noStyle" onClick={() => setShowModal(true)}  >
-                                    <FontAwesomeIcon icon={faInfoCircle} />
+                                #{Log.movementId}
+                                <button type="button" className="noStyle" onClick={() => setShowModal(true)} >
+                                    <FontAwesomeIcon icon={faInfoCircle} size="sm" className="mt-2"/>
                                 </button>
                                 <DetailModal Users={Users} Accounts={Accounts} Clients={Clients} ShowModal={ShowModal} setShowModal={setShowModal} Log={Log} />
                             </>
