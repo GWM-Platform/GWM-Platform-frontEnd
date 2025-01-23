@@ -26,11 +26,11 @@ import { Provider } from 'react-redux';
 import store from 'ReduxStores/store';
 import SetUserData from 'components/SetUserData';
 import TestPDF from 'components/TestPDF';
-import { PersistGate } from 'redux-persist/integration/react';
-import configureAppStore from 'ReduxStores/store';
+// import { PersistGate } from 'redux-persist/integration/react';
+// import configureAppStore from 'ReduxStores/store';
 import { eliminarNoSerializable } from 'utils/eliminarNoSerializable';
 
-const { store, persistor } = configureAppStore()
+// const { store, persistor } = configureAppStore()
 
 function App() {
 
