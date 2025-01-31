@@ -293,7 +293,7 @@ const CreateFunds = ({ data, setData, CreateRequest, handleChange, Action, setAc
                     className="mb-3"
                 >
                     <Form.Control
-                        pattern="https:\/\/docs\.google\.com\/spreadsheets\/d\/[a-zA-Z0-9_-]{1,}\/edit#gid=[0-9]{1,}"
+                        pattern="https:\/\/docs\.google\.com\/spreadsheets\/d\/[a-zA-Z0-9_-]{1,}\/.*"
                         required onChange={handleChange} id="spreadsheetId"
                         value={data.spreadsheetId} type="text"
                         placeholder={t("Google SpreadSheet Id")}
@@ -305,7 +305,7 @@ const CreateFunds = ({ data, setData, CreateRequest, handleChange, Action, setAc
                         {t("It seems that the url entered is not valid, please check if I copied it correctly")}
                     </Form.Control.Feedback>
                 </FloatingLabel>
-                
+
                 <Form.Check
                     checked={data.disabled}
                     label={t("Fund disabled for operations")}

@@ -5,7 +5,14 @@ import { Col } from 'react-bootstrap'
 import CreateForm from './CreateForm'
 import CreateResult from './CreateResult'
 import { customFetch } from 'utils/customFetch';
+export const extractGoogleStyleSpreadSheetID = (url) => {
+    const urlRegExp = new RegExp((`^https://docs.google.com/spreadsheets/d/[a-zA-Z0-9_-]{1,}/.*`), 'i')
+    if (urlRegExp.test(url)) {
+        let id = url.slice(39).split('/')[0]
+        return id ? id : false
+    } else return url
 
+}
 const CreateFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
 
     const [validated, setValidated] = useState(false);
@@ -81,15 +88,6 @@ const CreateFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
         valid: false
     })
 
-    const extractGoogleStyleSpreadSheetID = (url) => {
-        const urlRegExp = new RegExp((`^https://docs.google.com/spreadsheets/d/[a-zA-Z0-9_-]{1,}/edit#gid=[0-9]{1,}`), 'i')
-        if (urlRegExp.test(url)) {
-            let id = url.slice(39).split('/')[0]
-            return id ? id : false
-        } else return false
-
-    }
-
     const handleSubmit = (event) => {
         const form = event.currentTarget;
         event.preventDefault();
@@ -102,7 +100,7 @@ const CreateFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
 
     const handleChange = (event) => {
         let aux = data
-        aux[event.target.id] = event.target.type === "checkbox" ? event.target.checked : parseInt(event.target.value) || event.target.value
+        aux[event.target.id] = event.target.type === "checkbox" ? event.target.checked : event.target.value
         setData({ ...data, ...aux })
     }
 

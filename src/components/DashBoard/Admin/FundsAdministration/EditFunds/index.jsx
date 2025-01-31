@@ -5,11 +5,12 @@ import { customFetch } from 'utils/customFetch';
 
 import EditForm from './EditForm'
 import EditResult from './EditResult'
+import { extractGoogleStyleSpreadSheetID } from '../CreateFunds';
 const EditFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction, withoutHeader = false }) => {
     const [validated, setValidated] = useState(false);
     const [data, setData] = useState({
         name: Funds[Action.fund].name,
-        spreadsheetId: Funds[Action.fund].spreadsheetId,
+        spreadsheetId: `https://docs.google.com/spreadsheets/d/${Funds[Action.fund].spreadsheetId}/edit?usp=sharing`,
         imageUrl: Funds[Action.fund].imageUrl ? Funds[Action.fund].imageUrl : "",
         disabled: Funds[Action.fund].disabled
     })
@@ -43,7 +44,7 @@ const EditFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction, withoutH
 
     const handleChange = (event) => {
         let aux = data
-        aux[event.target.id] = event.target.type === "checkbox" ? event.target.checked : parseInt(event.target.value) || event.target.value
+        aux[event.target.id] = event.target.type === "checkbox" ? event.target.checked : event.target.value
         setData({ ...data, ...aux })
     }
 
@@ -62,7 +63,7 @@ const EditFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction, withoutH
         const token = sessionStorage.getItem("access_token")
         const response = await customFetch(url, {
             method: 'PUT',
-            body: JSON.stringify(data),
+            body: JSON.stringify({ ...data, spreadsheetId: extractGoogleStyleSpreadSheetID(data.spreadsheetId) }),
             headers: {
                 Authorization: `Bearer ${token}`,
                 Accept: "*/*",
