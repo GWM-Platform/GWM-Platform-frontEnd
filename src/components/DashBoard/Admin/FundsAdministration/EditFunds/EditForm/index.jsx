@@ -139,7 +139,12 @@ const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, se
                     label={t("Google SpreadSheet Id")}
                     className="mb-3"
                 >
-                    <Form.Control required onChange={handleChange} id="spreadsheetId" value={data.spreadsheetId} type="text" placeholder={t("Google SpreadSheet Id")} />
+                    <Form.Control
+                        pattern="https:\/\/docs\.google\.com\/spreadsheets\/d\/[a-zA-Z0-9_-]{1,}\/.*"
+                        required onChange={handleChange} id="spreadsheetId"
+                        value={data.spreadsheetId} type="text"
+                        placeholder={t("Google SpreadSheet Id")}
+                    />
                     <Form.Control.Feedback type="valid">
                         {t("Looks good")}!
                     </Form.Control.Feedback>

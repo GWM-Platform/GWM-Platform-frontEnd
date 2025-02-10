@@ -51,7 +51,7 @@ export const UsersTable = () => {
     const [search, setSearch] = useState("")
     const usersSorted = useMemo(() => [...users]
         .map(user => {
-            const userClients = clients.filter(client => client.users.find(clientUser => clientUser.userId === user.id)).sort(
+            const userClients = clients?.filter(client => client.users?.find(clientUser => clientUser.userId === user.id)).sort(
                 (a, b) => {
                     if (a.alias === b.alias) return 0
                     return a.alias < b.alias ? -1 : 1
