@@ -141,9 +141,14 @@ const Operations = () => {
 
         // eslint-disable-next-line
     }, [])
-
+    const includeNotCreatables = false
     const eventOptions = useMemo(() => [
         "LIQUIDATE_FUND",
+        ...includeNotCreatables ? [
+            "CREATE_ADMIN",
+            "ASSIGN_ADMIN",
+            "REMOVE_ADMIN"
+        ] : []
     ].map(eventOption => ({ label: t(eventOption), value: eventOption })), [t])
 
     return (
