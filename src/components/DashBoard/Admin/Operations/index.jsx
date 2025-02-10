@@ -144,8 +144,8 @@ const Operations = () => {
 
     const eventOptions = useCallback((includeNotCreatables = false) => [
         "LIQUIDATE_FUND",
-        "CREATE_ADMIN",
         ...includeNotCreatables ? [
+            "CREATE_ADMIN",
             "ASSIGN_ADMIN",
             "REMOVE_ADMIN"
         ] : []

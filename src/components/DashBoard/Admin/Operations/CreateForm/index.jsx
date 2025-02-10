@@ -4,7 +4,7 @@ import { Form, Button, Spinner } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronCircleLeft } from '@fortawesome/free-solid-svg-icons'
-import { unMaskNumber } from 'utils/unmask';
+import { maskNumber, unMaskNumber } from 'utils/unmask';
 import CurrencyInput from '@osdiab/react-currency-input-field';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import Select from 'react-select';
@@ -87,12 +87,13 @@ const CreateForm = ({ eventOptions }) => {
     }, [dispatch])
 
     const fundOptions = useMemo(() => funds.map(fund => ({ label: fund.name, value: fund.id, isDisabled: fund?.disabled })), [funds])
-
+    console.log(data?.fund)
     useEffect(() => {
         if (data?.fund?.value) {
             const fundSelected = funds.find(fund => fund.id === data.fund.value)
             if (fundSelected) {
-                handleChange({ target: { id: "customSharePrice", value: fundSelected.sharePrice } })
+                handleChange({ target: { id: "customSharePrice", value: maskNumber({value: fundSelected.sharePrice}) } })
+                console.log(fundSelected.sharePrice, maskNumber({value:fundSelected.sharePrice}))
             }
         }
     }, [data.fund, funds])
