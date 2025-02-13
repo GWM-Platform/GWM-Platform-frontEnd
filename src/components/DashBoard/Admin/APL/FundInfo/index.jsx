@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useCallback } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 //eslint-disable-next-line
 import { Badge, ButtonGroup, Col, Collapse, Modal, Row, Spinner, Table, ToggleButton } from 'react-bootstrap'
@@ -29,20 +29,14 @@ import TableIcon from '../icons/TableIcon';
 import Chart from 'components/DashBoard/User/MovementsTable/CardsContainer/MainCard/MainCardFund/FundDetail/Chart';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import { customFetch } from 'utils/customFetch';
+import TooltipInfo from '../../Broadcast/TooltipInfo';
 
 const FundInfo = ({ Fund, clients }) => {
     const { token } = useContext(DashBoardContext)
     // const [Hide, setHide] = useState(false)
     //eslint-disable-next-line
     const [Performance, setPerformance] = useState({ value: 0, fetching: true })
-    const balanceInCash = (Fund.freeShares * Fund.sharePrice)
-    const clientDebt = Fund.shares - Fund.freeShares
-    const clientDebtInCash = (clientDebt * Fund.sharePrice)
-    const total = (Fund.shares)
-    const totalInCash = (total * Fund.sharePrice)
 
-    // const pending = (Fund.pendingShares || 0)
-    // const pendingInCash = (pending * Fund.sharePrice)
     const { t } = useTranslation()
     useEffect(() => {
         //eslint-disable-next-line
@@ -138,8 +132,69 @@ const FundInfo = ({ Fund, clients }) => {
         }
     };
 
+    const [pendingTransactions, setPendingTransactions] = useState([])
+    const getPendingTransactionsSumByClient = useCallback(
+        (clientId = false, symbol = "positive", includeTransfers = true) =>
+            pendingTransactions
+                .filter(transaction => {
+                    const isTransfer = transaction.receiverId || transaction.senderId
+                    return (
+                        (!clientId || transaction.clientId === clientId)
+                        &&
+                        (
+                            isTransfer ?
+                                (includeTransfers && transaction.shares > 0)
+                                :
+                                (symbol === "positive" ? transaction.shares > 0 : symbol === "negative" ? transaction.shares < 0 : true)
+                        )
+                    )
+                }).reduce(
+                    (accum, transaction) => {
+                        const shares = transaction.shares
+                        const sharePrice = Fund.sharePrice || 1
+                        const usd = shares * sharePrice
+                        return { shares: accum.shares + shares, usd: accum.usd + usd }
+                    }, { shares: 0, usd: 0 }
+                ),
+        [Fund.sharePrice, pendingTransactions],
+    )
+
+    useEffect(() => {
+        axios.get("/transactions", {
+            params: {
+                filterFund: Fund.id,
+                take: 10000,
+                skip: 0,
+            }
+        }).then(
+            response => {
+                setPendingTransactions(response.data.transactions.filter(transaction => transaction.stateId === 1 || transaction.stateId === 5))
+            }
+        ).catch(
+            error => {
+                console.log(error)
+            }
+        )
+    }, [Fund.id])
+
+    const stakesFormatted = useMemo(() => stakes.content.map(
+        stake => {
+            const pendingAcreditation = getPendingTransactionsSumByClient(stake.clientId)
+            const actualUsd = stake.shares * (stake.fund.sharePrice || 1)
+
+            return ({
+                ...stake,
+                actualUsd,
+                pendingAcreditation: pendingAcreditation.shares,
+                pendingAcreditationUsd: pendingAcreditation.usd,
+                totalShares: stake.shares + pendingAcreditation.shares,
+                totalUsd: actualUsd + pendingAcreditation.usd
+            })
+        }
+    ), [getPendingTransactionsSumByClient, stakes.content])
+
     const sortedStakes = useMemo(() => (
-        [...stakes.content].map(stake => {
+        [...stakesFormatted].map(stake => {
             const client = clients.find(client => client.id === stake.clientId)
             return ({ ...stake, client, clientCompleteName: `${client?.firstName} ${client?.lastName}` })
         }).sort((a, b) => {
@@ -152,12 +207,19 @@ const FundInfo = ({ Fund, clients }) => {
             }
             return 0;
         })
-    ), [clients, sortDirection, sortField, stakes.content])
-
+    ), [clients, sortDirection, sortField, stakesFormatted])
     const totalStakes = useMemo(() => (
-        [...stakes.content || []]
-            .reduce((accum, stake) => ({ shares: accum.shares.add(stake.shares), usd: accum.usd.add(stake?.shares * (stake.fund.sharePrice || 1)) }), { shares: Decimal(0), usd: Decimal(0) })
-    ), [stakes.content])
+        [...stakesFormatted || []]
+            .reduce((accum, stake) => ({
+                shares: accum.shares.add(stake.shares || 0),
+                actualUsd: accum.actualUsd.add(stake?.actualUsd || 0),
+                pendingAcreditation: accum.pendingAcreditation.add(stake.pendingAcreditation || 0),
+                pendingAcreditationUsd: accum.pendingAcreditationUsd.add(stake.pendingAcreditationUsd || 0),
+                totalShares: accum.totalShares.add(stake.totalShares || 0),
+                totalUsd: accum.totalUsd.add(stake.totalUsd || 0)
+            }), { shares: Decimal(0), actualUsd: Decimal(0), pendingAcreditation: Decimal(0), pendingAcreditationUsd: Decimal(0), totalShares: Decimal(0), totalUsd: Decimal(0) })
+    ), [stakesFormatted])
+    console.log(stakesFormatted, totalStakes.shares.toFixed())
 
     useEffect(() => {
         if (open) {
@@ -173,6 +235,17 @@ const FundInfo = ({ Fund, clients }) => {
     const dispatch = useDispatch()
     const funds = useSelector(selectAllFunds)
     const ownKey = funds.findIndex(fund => fund.id === Fund.id)
+
+    const balanceInCash = (Fund.freeShares * Fund.sharePrice)
+    const pendingShares = getPendingTransactionsSumByClient(false, "negative", false).shares
+    const pendingUsd = getPendingTransactionsSumByClient(false, "negative", false).usd
+
+    const clientDebt = Fund.shares - Fund.freeShares + pendingShares
+    const clientDebtInCash = (clientDebt * Fund.sharePrice)
+    const total = (Fund.shares)
+    const totalInCash = (total * Fund.sharePrice)
+    // const pending = (Fund.pendingShares || 0)
+    // const pendingInCash = (pending * Fund.sharePrice)
 
     return (
         <>
@@ -218,6 +291,7 @@ const FundInfo = ({ Fund, clients }) => {
                     <div className='me-4'>
                         <h2 className="mt-2 pe-2 topic">
                             {t("Total")}
+                            <span style={{ fontWeight: 200, fontSize: "inherit", opacity: 0 }} className='clickable'>a</span>
                             <br />
                             <span style={{ fontWeight: "bolder" }}>
                                 <FormattedNumber value={total} fixedDecimals={2} />
@@ -248,6 +322,7 @@ const FundInfo = ({ Fund, clients }) => {
                     <div className='me-4'>
                         <h2 className="mt-2 pe-2 topic">
                             {t("Balance")}
+                            <span style={{ fontWeight: 200, fontSize: "inherit", opacity: 0 }} className='clickable'>a</span>
                             <br />
                             <span style={{ fontWeight: "bolder" }}>
                                 <FormattedNumber value={Fund.freeShares} fixedDecimals={2} />
@@ -256,6 +331,21 @@ const FundInfo = ({ Fund, clients }) => {
                         </h2>
                         <h6 className="mt-0">
                             <FormattedNumber value={balanceInCash} prefix="U$D " fixedDecimals={2} />
+                        </h6>
+                    </div>
+
+                    <div className='me-4'>
+                        <h2 className="mt-2 pe-2 topic">
+                            {t("Pending accreditation")}
+                            <span style={{ fontWeight: 200, fontSize: "inherit", opacity: 0 }} className='clickable'>a</span>
+                            <br />
+                            <span style={{ fontWeight: "bolder" }}>
+                                <FormattedNumber value={pendingShares * -1} fixedDecimals={2} />
+                                &nbsp;{t("shares")}
+                            </span>
+                        </h2>
+                        <h6 className="mt-0">
+                            <FormattedNumber value={pendingUsd * -1} prefix="U$D " fixedDecimals={2} />
                         </h6>
                     </div>
 
@@ -338,17 +428,33 @@ const FundInfo = ({ Fund, clients }) => {
                                             <th className="tableHeader" onClick={() => sortData('shares')} style={{ cursor: "pointer" }}>
                                                 <span className='d-flex'>
                                                     <span>
-                                                        {t("Shares holding")}
+                                                        {t("Actual shares holding")}
                                                     </span>
                                                     <FontAwesomeIcon className="ms-auto" icon={sortField === "shares" ? (sortDirection === "asc" ? faSortUp : faSortDown) : faSort} />
                                                 </span>
                                             </th>
-                                            <th className="tableHeader" onClick={() => sortData('shares')} style={{ cursor: "pointer" }}>
+                                            <th className="tableHeader" onClick={() => sortData('pendingAcreditation')} style={{ cursor: "pointer" }}>
                                                 <span className='d-flex'>
                                                     <span>
-                                                        {t("Dolarized")}
+                                                        {t("Pending accreditation")}
                                                     </span>
-                                                    <FontAwesomeIcon className="ms-auto" icon={sortField === "shares" ? (sortDirection === "asc" ? faSortUp : faSortDown) : faSort} />
+                                                    <FontAwesomeIcon className="ms-auto" icon={sortField === "pendingAcreditation" ? (sortDirection === "asc" ? faSortUp : faSortDown) : faSort} />
+                                                </span>
+                                            </th>
+                                            <th className="tableHeader" onClick={() => sortData('totalShares')} style={{ cursor: "pointer" }}>
+                                                <span className='d-flex'>
+                                                    <span>
+                                                        {t("Total shares")}
+                                                    </span>
+                                                    <FontAwesomeIcon className="ms-auto" icon={sortField === "totalShares" ? (sortDirection === "asc" ? faSortUp : faSortDown) : faSort} />
+                                                </span>
+                                            </th>
+                                            <th className="tableHeader" onClick={() => sortData('totalUsd')} style={{ cursor: "pointer" }}>
+                                                <span className='d-flex'>
+                                                    <span>
+                                                        {t("Total dolarized")}
+                                                    </span>
+                                                    <FontAwesomeIcon className="ms-auto" icon={sortField === "totalUsd" ? (sortDirection === "asc" ? faSortUp : faSortDown) : faSort} />
                                                 </span>
                                             </th>
                                         </tr>
@@ -364,16 +470,36 @@ const FundInfo = ({ Fund, clients }) => {
                                                                 {stake?.clientCompleteName}
                                                             </Link>
                                                         </td>
-                                                        <td className="tableDate"><FormattedNumber value={stake?.shares} fixedDecimals={2} />&nbsp;{t("shares")}</td>
-                                                        <td className="tableDate"><FormattedNumber value={stake?.shares * (stake.fund.sharePrice || 1)} prefix="U$D " fixedDecimals={2} /></td>
+                                                        <td className="tableDate">
+                                                            <FormattedNumber value={stake?.shares} fixedDecimals={2} />&nbsp;{t("shares")}
+                                                            <TooltipInfo text={<>{t("Dolarized")}: <FormattedNumber value={stake?.actualUsd} prefix="U$D " fixedDecimals={2} /></>} />
+                                                        </td>
+                                                        <td className="tableDate">
+                                                            <FormattedNumber value={stake?.pendingAcreditation} fixedDecimals={2} />&nbsp;{t("shares")}
+                                                            <TooltipInfo text={<>{t("Dolarized")}: <FormattedNumber value={stake?.pendingAcreditationUsd} prefix="U$D " fixedDecimals={2} /></>} />
+                                                        </td>
+                                                        <td className="tableDate"><FormattedNumber value={stake?.totalShares} fixedDecimals={2} />&nbsp;{t("shares")}</td>
+                                                        <td className="tableDate"><FormattedNumber value={stake?.totalUsd} prefix="U$D " fixedDecimals={2} /></td>
                                                     </tr>
                                                 )
                                             })
                                         }
                                         <tr >
                                             <td className="tableDate"><strong>Total</strong></td>
-                                            <td className="tableDate"><strong><FormattedNumber value={totalStakes?.shares} fixedDecimals={2} />&nbsp;{t("shares")}</strong></td>
-                                            <td className="tableDate"><strong><FormattedNumber value={totalStakes.usd} prefix="U$D " fixedDecimals={2} /></strong></td>
+                                            <td className="tableDate">
+                                                <strong>
+                                                    <FormattedNumber value={totalStakes?.shares} fixedDecimals={2} />&nbsp;{t("shares")}
+                                                    <TooltipInfo text={<>{t("Dolarized")}: <FormattedNumber value={totalStakes?.pendingAcreditationUsd} prefix="U$D " fixedDecimals={2} /></>} />
+                                                </strong>
+                                            </td>
+                                            <td className="tableDate">
+                                                <strong>
+                                                    <FormattedNumber value={totalStakes?.pendingAcreditation} fixedDecimals={2} />&nbsp;{t("shares")}
+                                                    <TooltipInfo text={<>{t("Dolarized")}: <FormattedNumber value={totalStakes?.pendingAcreditationUsd} prefix="U$D " fixedDecimals={2} /></>} />
+                                                </strong>
+                                            </td>
+                                            <td className="tableDate"><strong><FormattedNumber value={totalStakes?.totalShares} fixedDecimals={2} />&nbsp;{t("shares")}</strong></td>
+                                            <td className="tableDate"><strong><FormattedNumber value={totalStakes.totalUsd} prefix="U$D " fixedDecimals={2} /></strong></td>
                                         </tr>
                                     </tbody>
                                 </Table>
@@ -390,12 +516,25 @@ const FundInfo = ({ Fund, clients }) => {
                                                             </Link>
                                                             <br />
                                                             <span style={{ fontWeight: "bolder" }}>
-                                                                <FormattedNumber value={stake?.shares} fixedDecimals={2} />
+                                                                <FormattedNumber value={stake?.totalShares} fixedDecimals={2} />
                                                                 &nbsp;{t("shares")}
+                                                                <TooltipInfo tooltipClassName="text-align-start" text={
+                                                                    <>
+                                                                        {t("Actual shares holding")}: <FormattedNumber value={stake?.shares} fixedDecimals={2} /><br />
+                                                                        {t("Pending accreditation")}: <FormattedNumber value={stake?.pendingAcreditation} fixedDecimals={2} />
+
+                                                                    </>
+                                                                } />
                                                             </span>
                                                         </h2>
                                                         <h6 className="mt-0">
-                                                            <FormattedNumber value={stake?.shares * (stake.fund.sharePrice || 1)} prefix="U$D " fixedDecimals={2} />
+                                                            <FormattedNumber value={stake?.totalUsd} prefix="U$D " fixedDecimals={2} />
+                                                            <TooltipInfo tooltipClassName="text-align-start" text={
+                                                                <>
+                                                                    {t("Actual shares holding")}: <FormattedNumber value={stake?.actualUsd} prefix="U$D " fixedDecimals={2} /><br />
+                                                                    {t("Pending accreditation")}: <FormattedNumber value={stake?.pendingAcreditationUsd} prefix="U$D " fixedDecimals={2} />
+                                                                </>
+                                                            } />
                                                         </h6>
                                                     </div>
                                                 </Col>
