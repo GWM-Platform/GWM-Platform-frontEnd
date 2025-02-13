@@ -8,7 +8,7 @@ const unMaskNumber = ({
     prefix = '$',
     suffix = '%'
 }) => value
-    .replaceAll(groupSeparator, '')//Remove the digit group separator */
+    // .replaceAll(groupSeparator, '')//Remove the digit group separator */
     .replaceAll(decimalSeparator, '.')//Replace the decimal separator with dot
     .replaceAll(' ', '') //Remove spaces
     .replaceAll(prefix, '') //Remove prefix
