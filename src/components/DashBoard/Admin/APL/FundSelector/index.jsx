@@ -48,9 +48,10 @@ const FundSelector = ({ SelectedFund, setSelectedFund, Funds }) => {
         const el = accountsSlider?.current;
         if (el) {
             const children = Array.from(el.querySelectorAll('.scrollable-item'));
+            const containerRect = el.getBoundingClientRect();
             const visibleChild = children.find(child => {
                 const rect = child.getBoundingClientRect();
-                return rect.left >= 0 && rect.right <= window.innerWidth;
+                return rect.left >= containerRect.left && rect.right <= containerRect.right;
             });
 
             if (visibleChild) {
@@ -77,49 +78,49 @@ const FundSelector = ({ SelectedFund, setSelectedFund, Funds }) => {
 
     return (
         <>
-        <div className='p-relative'>
+            <div className='p-relative'>
 
-            <div ref={accountsSlider} className='fund-selector' onScroll={handleScroll} >
+                <div ref={accountsSlider} className='fund-selector' onScroll={handleScroll} >
 
-                {Funds.map((Fund, key) =>
-                    <Col className="scrollable-item" key={Fund.id} sm="10" md="4" lg="3" xl="3" ref={key === 0 ? accountCard : undefined}>
-                        <button onClick={() => setSelectedFund(Fund.id)} key={key} className={`noStyle fund-item ${SelectedFund === Fund.id ? "selected" : ""}`}>
+                    {Funds.map((Fund, key) =>
+                        <Col className="scrollable-item" key={Fund.id} sm="10" md="4" lg="3" xl="3" ref={key === 0 ? accountCard : undefined}>
+                            <button onClick={() => setSelectedFund(Fund.id)} key={key} className={`noStyle fund-item ${SelectedFund === Fund.id ? "selected" : ""}`}>
+                                <div className='content-container'>
+                                    <div className="d-flex">
+                                        {Fund.name}
+                                        <div className="fund-icon ms-auto">
+                                            {
+                                                <img alt=""
+                                                    onError={({ currentTarget }) => {
+                                                        currentTarget.onerror = null;
+                                                        currentTarget.src = process.env.PUBLIC_URL + '/images/FundsLogos/default.svg';
+                                                    }}
+                                                    src={Fund.imageUrl ? Fund.imageUrl : process.env.PUBLIC_URL + '/images/FundsLogos/default.svg'} />
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </button>
+                        </Col>
+                    )}
+                    <Col sm="10" md="4" lg="3" xl="3">
+                        <button onClick={() => setSelectedFund("fixed-deposit")} className={`noStyle fund-item ${SelectedFund === "fixed-deposit" ? "selected" : ""}`}>
                             <div className='content-container'>
                                 <div className="d-flex">
-                                    {Fund.name}
+                                    {t("Fixed deposits")}
                                     <div className="fund-icon ms-auto">
-                                        {
-                                            <img alt=""
-                                                onError={({ currentTarget }) => {
-                                                    currentTarget.onerror = null;
-                                                    currentTarget.src = process.env.PUBLIC_URL + '/images/FundsLogos/default.svg';
-                                                }}
-                                                src={Fund.imageUrl ? Fund.imageUrl : process.env.PUBLIC_URL + '/images/FundsLogos/default.svg'} />
-                                        }
+                                        <FontAwesomeIcon color='white' icon={faPiggyBank} />
                                     </div>
                                 </div>
                             </div>
                         </button>
                     </Col>
-                )}
-                <Col sm="10" md="4" lg="3" xl="3">
-                    <button onClick={() => setSelectedFund("fixed-deposit")} className={`noStyle fund-item ${SelectedFund === "fixed-deposit" ? "selected" : ""}`}>
-                        <div className='content-container'>
-                            <div className="d-flex">
-                                {t("Fixed deposits")}
-                                <div className="fund-icon ms-auto">
-                                    <FontAwesomeIcon color='white' icon={faPiggyBank} />
-                                </div>
-                            </div>
-                        </div>
-                    </button>
-                </Col>
-                {
-                    // !!(HasScrollBar) &&
-                    <ScrollControl scroll={scroll} ScrollBarSides={ScrollBarSides} />
-                }
+                    {
+                        // !!(HasScrollBar) &&
+                        <ScrollControl scroll={scroll} ScrollBarSides={ScrollBarSides} />
+                    }
+                </div>
             </div>
-        </div>
 
         </>
     )
