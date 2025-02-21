@@ -1190,6 +1190,7 @@
   "FIXED_DEPOSIT_PARTIAL_INTERESTS": "Acreditación periódica de intereses de plazo fijo",
   "Historic investment": "Inversión histórica",
   "Actual shares holding": "Tenencia actual de cuotapartes",
-  "Pending accreditation": "Acreditación pendiente",
+  "Purchases pending accreditation" :"Compras pendientes de acreditación",
+  "Sales pending accreditation": "Ventas pendientes de acreditación",
   "Total dolarized": "Total dolarizado"
 }
