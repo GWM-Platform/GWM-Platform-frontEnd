@@ -1,6 +1,6 @@
 
 import axios from "axios";
-import React, { useContext, useEffect, useMemo } from "react";
+import React, { useCallback, useContext, useEffect } from "react";
 import { useState } from "react";
 import { Container, Row } from "react-bootstrap";
 import { DashBoardContext } from "context/DashBoardContext";
@@ -141,8 +141,7 @@ const Operations = () => {
 
         // eslint-disable-next-line
     }, [])
-    const includeNotCreatables = false
-    const eventOptions = useMemo(() => [
+    const eventOptions = useCallback((includeNotCreatables) => [
         "LIQUIDATE_FUND",
         ...includeNotCreatables ? [
             "CREATE_ADMIN",
