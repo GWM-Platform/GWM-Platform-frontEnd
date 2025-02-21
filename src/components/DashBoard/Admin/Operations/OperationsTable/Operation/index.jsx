@@ -9,6 +9,7 @@ import { faCheckCircle, faTimesCircle } from "@fortawesome/free-regular-svg-icon
 import ActionConfirmationModal from "./ActionConfirmationModal";
 import { fetchOperations } from "Slices/DashboardUtilities/operationsSlice";
 import { userId } from "utils/userId";
+import axios from "axios";
 
 
 const Operation = ({ Operation, User, fetchOperationsParams = {} }) => {
@@ -28,6 +29,15 @@ const Operation = ({ Operation, User, fetchOperationsParams = {} }) => {
     const refetch = () => {
         dispatch(fetchFunds())
         dispatch(fetchOperations(fetchOperationsParams))
+        if (Operation?.operationType === "LIQUIDATE_FUND" && Action === "approve") {
+            axios.put(`/funds/${Fund.id}`, ({
+                name: Fund.name,
+                spreadsheetId: Fund.spreadsheetId,
+                imageUrl: Fund.imageUrl,
+                disabled: true
+            })
+            )
+        }
     }
     const currentUserId = userId()
 
