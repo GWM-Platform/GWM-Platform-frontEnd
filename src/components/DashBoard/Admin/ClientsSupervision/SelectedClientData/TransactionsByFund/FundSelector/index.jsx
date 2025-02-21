@@ -50,9 +50,10 @@ const FundSelector = ({ SelectedFund, setSelectedFund, Funds, clientFunds = [] }
         const el = accountsSlider?.current;
         if (el) {
             const children = Array.from(el.querySelectorAll('.scrollable-item'));
+            const containerRect = el.getBoundingClientRect();
             const visibleChild = children.find(child => {
                 const rect = child.getBoundingClientRect();
-                return rect.left >= 0 && rect.right <= window.innerWidth;
+                return rect.left >= containerRect.left && rect.right <= containerRect.right;
             });
 
             if (visibleChild) {

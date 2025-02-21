@@ -31,23 +31,23 @@ const FundSelector = ({ data, setData, Funds, openAccordion, showAccount = false
         const el = accountsSlider?.current;
         if (el) {
             const children = Array.from(el.querySelectorAll('.FundCardContainer'));
-    
+            const containerRect = el.getBoundingClientRect();
             // Ordenar los hijos basándose en su posición visual
             const orderedChildren = children.sort((a, b) => {
                 const rectA = a.getBoundingClientRect();
                 const rectB = b.getBoundingClientRect();
                 return rectA.left - rectB.left;
             });
-    
+
             const visibleChild = orderedChildren.find(child => {
                 const rect = child.getBoundingClientRect();
-                return rect.left >= 0 && rect.right <= window.innerWidth;
+                return rect.left >= containerRect.left && rect.right <= containerRect.right;
             });
-    
+
             if (visibleChild) {
                 const currentIndex = orderedChildren.indexOf(visibleChild);
                 const nextIndex = right ? currentIndex + 1 : currentIndex - 1;
-    
+
                 if (nextIndex >= 0 && nextIndex < orderedChildren.length) {
                     const nextChild = orderedChildren[nextIndex];
                     nextChild.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
