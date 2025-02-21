@@ -87,9 +87,10 @@ const CreateForm = ({ eventOptions }) => {
     }, [dispatch])
 
     const fundOptions = useMemo(() => funds
-        .map(fund => ({ label: `${fund.name}${
-            fund?.disabled ?  ` - (${t("Disabled")})` : fund.freeShares === fund.shares ? ` - (${t("Sin tenencia de clientes")})` : ""
-            }`, value: fund.id, isDisabled: fund?.disabled || fund.freeShares === fund.shares }))
+        .map(fund => ({
+            label: `${fund.name}${fund?.disabled ? ` - (${t("Disabled")})` : fund.freeShares === fund.shares ? ` - (${t("Sin tenencia de clientes")})` : ""
+                }`, value: fund.id, isDisabled: fund?.disabled || fund.freeShares === fund.shares
+        }))
         .sort((a, b) => a.isDisabled - b.isDisabled), [funds, t])
 
         useEffect(() => {
@@ -135,7 +136,7 @@ const CreateForm = ({ eventOptions }) => {
                     placeholder=""
                     name="Type"
                     onChange={(selectedOption) => handleChange({ target: { id: "type", value: selectedOption } })}
-                    options={eventOptions}
+                    options={eventOptions(false)}
                     value={data.type}
                     classNames={{
                         input: () => "react-select-input",

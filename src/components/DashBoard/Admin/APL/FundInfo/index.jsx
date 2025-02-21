@@ -336,7 +336,7 @@ const FundInfo = ({ Fund, clients }) => {
 
                     <div className='me-4'>
                         <h2 className="mt-2 pe-2 topic">
-                            {t("Pending accreditation")}
+                            {t("Purchases pending accreditation")}
                             <span style={{ fontWeight: 200, fontSize: "inherit", opacity: 0 }} className='clickable'>a</span>
                             <br />
                             <span style={{ fontWeight: "bolder" }}>
@@ -436,7 +436,7 @@ const FundInfo = ({ Fund, clients }) => {
                                             <th className="tableHeader" onClick={() => sortData('pendingAcreditation')} style={{ cursor: "pointer" }}>
                                                 <span className='d-flex'>
                                                     <span>
-                                                        {t("Pending accreditation")}
+                                                        {t("Sales pending accreditation")}
                                                     </span>
                                                     <FontAwesomeIcon className="ms-auto" icon={sortField === "pendingAcreditation" ? (sortDirection === "asc" ? faSortUp : faSortDown) : faSort} />
                                                 </span>
@@ -521,7 +521,7 @@ const FundInfo = ({ Fund, clients }) => {
                                                                 <TooltipInfo tooltipClassName="text-align-start" text={
                                                                     <>
                                                                         {t("Actual shares holding")}: <FormattedNumber value={stake?.shares} fixedDecimals={2} /><br />
-                                                                        {t("Pending accreditation")}: <FormattedNumber value={stake?.pendingAcreditation} fixedDecimals={2} />
+                                                                        {t("Sales pending accreditation")}: <FormattedNumber value={stake?.pendingAcreditation} fixedDecimals={2} />
 
                                                                     </>
                                                                 } />
@@ -532,7 +532,7 @@ const FundInfo = ({ Fund, clients }) => {
                                                             <TooltipInfo tooltipClassName="text-align-start" text={
                                                                 <>
                                                                     {t("Actual shares holding")}: <FormattedNumber value={stake?.actualUsd} prefix="U$D " fixedDecimals={2} /><br />
-                                                                    {t("Pending accreditation")}: <FormattedNumber value={stake?.pendingAcreditationUsd} prefix="U$D " fixedDecimals={2} />
+                                                                    {t("Sales pending accreditation")}: <FormattedNumber value={stake?.pendingAcreditationUsd} prefix="U$D " fixedDecimals={2} />
                                                                 </>
                                                             } />
                                                         </h6>

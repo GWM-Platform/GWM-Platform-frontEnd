@@ -12,6 +12,8 @@ import { userId } from "utils/userId";
 import { fetchusers, selectuserById } from "Slices/DashboardUtilities/usersSlice";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
+
 
 const Operation = ({ Operation, User, fetchOperationsParams = {} }) => {
     const { t } = useTranslation();
@@ -31,6 +33,15 @@ const Operation = ({ Operation, User, fetchOperationsParams = {} }) => {
         dispatch(fetchFunds())
         dispatch(fetchusers({ all: true }))
         dispatch(fetchOperations(fetchOperationsParams))
+        if (Operation?.operationType === "LIQUIDATE_FUND" && Action === "approve") {
+            axios.put(`/funds/${Fund.id}`, ({
+                name: Fund.name,
+                spreadsheetId: Fund.spreadsheetId,
+                imageUrl: Fund.imageUrl,
+                disabled: true
+            })
+            )
+        }
     }
     const currentUserId = userId()
     const user = useSelector(state => selectuserById(state, Operation?.operationMetadata?.userId))
