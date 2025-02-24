@@ -4,7 +4,7 @@ import { Form, Button, Spinner } from 'react-bootstrap'
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronCircleLeft } from '@fortawesome/free-solid-svg-icons'
-import { maskNumber, unMaskNumber } from 'utils/unmask';
+import { unMaskNumber } from 'utils/unmask';
 import CurrencyInput from '@osdiab/react-currency-input-field';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import Select from 'react-select';
@@ -97,10 +97,13 @@ const CreateForm = ({ eventOptions }) => {
         if (data?.fund?.value) {
             const fundSelected = funds.find(fund => fund.id === data.fund.value)
             if (fundSelected) {
-                handleChange({ target: { id: "customSharePrice", value: maskNumber({ value: fundSelected.sharePrice }) } })
+                console.log(((fundSelected.sharePrice || 0) + "").replaceAll('.', decimalSeparator))
+                handleChange({
+                    target: { id: "customSharePrice", value: ((fundSelected.sharePrice || 0) + "").replaceAll('.', decimalSeparator) }
+                })
             }
         }
-    }, [data.fund, funds])
+    }, [data.fund, decimalSeparator, funds])
 
     const users = useSelector(selectAllusers)
     const usersStatus = useSelector(state => state.users.status)
