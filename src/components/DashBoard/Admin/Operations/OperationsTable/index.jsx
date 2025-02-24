@@ -184,7 +184,7 @@ export const OperationsTable = ({ Users, Accounts, Clients, eventOptions }) => {
                                         placeholder=""
                                         name="Type"
                                         onChange={(selectedOption) => handleChangeType(selectedOption)}
-                                        options={eventOptions(true)}
+                                        options={eventOptions}
                                         value={FilterOptions.type}
                                         classNames={{
                                             input: () => "react-select-input",

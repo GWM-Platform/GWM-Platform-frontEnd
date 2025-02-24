@@ -141,7 +141,6 @@ const Operations = () => {
 
         // eslint-disable-next-line
     }, [])
-
     const eventOptions = useCallback((includeNotCreatables = false) => [
         "LIQUIDATE_FUND",
         ...includeNotCreatables ? [
