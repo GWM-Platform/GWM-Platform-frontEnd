@@ -114,7 +114,7 @@ const CreateForm = ({ eventOptions }) => {
                     placeholder=""
                     name="Type"
                     onChange={(selectedOption) => handleChange({ target: { id: "type", value: selectedOption } })}
-                    options={eventOptions(false)}
+                    options={eventOptions}
                     value={data.type}
                     classNames={{
                         input: () => "react-select-input",

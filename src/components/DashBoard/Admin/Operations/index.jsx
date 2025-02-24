@@ -141,7 +141,7 @@ const Operations = () => {
 
         // eslint-disable-next-line
     }, [])
-    const eventOptions = useCallback((includeNotCreatables) => [
+    const eventOptions = useCallback((includeNotCreatables = false) => [
         "LIQUIDATE_FUND",
         ...includeNotCreatables ? [
             "CREATE_ADMIN",
@@ -155,10 +155,10 @@ const Operations = () => {
             <Row className="h-100">
                 <Switch>
                     <Route exact path="/DashBoard/operations/creation">
-                        <CreateForm eventOptions={eventOptions} />
+                        <CreateForm eventOptions={eventOptions()} />
                     </Route>
                     <Route path="*">
-                        <OperationsTable eventOptions={eventOptions} Users={Users} Accounts={Accounts} Clients={Clients} />
+                        <OperationsTable eventOptions={eventOptions(true)} Users={Users} Accounts={Accounts} Clients={Clients} />
                     </Route>
                 </Switch>
             </Row>
