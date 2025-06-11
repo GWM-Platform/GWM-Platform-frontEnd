@@ -13,6 +13,8 @@ import Decimal from 'decimal.js';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import moment from 'moment';
 
+const fixedDepositTypesEnabled = false
+
 const RuleSelector = ({ data, setData, RulesObject, handleChange }) => {
     const { t } = useTranslation();
     const [CardWidth, setCardWidth] = useState(false)
@@ -104,7 +106,7 @@ const RuleSelector = ({ data, setData, RulesObject, handleChange }) => {
                                 </div>
                             </div>
                             {
-                                // !data.preferential &&
+                                fixedDepositTypesEnabled &&
                                 <>
                                     <Col className="me-auto mt-3">
                                         <Form.Label>
