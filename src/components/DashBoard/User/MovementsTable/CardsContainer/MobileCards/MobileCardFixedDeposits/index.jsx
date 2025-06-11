@@ -39,9 +39,7 @@ const MobileCardFixedDeposits = ({ FixedDepositsStats, Hide, setHide }) => {
                                     <div className="containerHideInfo px-0 description">
                                         <span>{t("Balance")}:&nbsp;</span>
                                         <span style={{ fontWeight: "bolder" }}>
-                                            <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={balanceInCash} prefix="U$D " fixedDecimals={2} />
-                                            <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={balanceInCash} prefix="U$D " fixedDecimals={2} />
-                                            <FormattedNumber className={`info placeholder`} value={balanceInCash} prefix="U$D " fixedDecimals={2} />
+                                            <FormattedNumber  value={balanceInCash} prefix="U$D " fixedDecimals={2} />
                                         </span>
                                     </div>
                                 </Col>

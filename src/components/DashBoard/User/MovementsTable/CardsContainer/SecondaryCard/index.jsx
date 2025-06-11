@@ -86,9 +86,7 @@ const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownK
                     <div className="mb-2">
                         <h2 className="funds">
                             <div className="containerHideInfo">
-                                <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={balanceInCash().toString()} prefix="U$D " fixedDecimals={2} />
-                                <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={balanceInCash().toString()} prefix="U$D " fixedDecimals={2} />
-                                <FormattedNumber className={`info placeholder`} value={balanceInCash().toString()} prefix="U$D " fixedDecimals={2} />
+                                <FormattedNumber  value={balanceInCash().toString()} prefix="U$D " fixedDecimals={2} />
                             </div>
                         </h2>
                         <span className={parentKey === 0 ? "invisible" : ""}>

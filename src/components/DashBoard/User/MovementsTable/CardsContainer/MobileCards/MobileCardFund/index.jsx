@@ -63,9 +63,7 @@ const MobileCard = ({ Fund, Hide, setHide }) => {
                                         <span>{t("Balance (U$D)")}</span>
                                         <span style={{ fontWeight: "bolder" }}>
                                             :&nbsp;
-                                            <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={balanceInCash} prefix="U$D " fixedDecimals={2} />
-                                            <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={balanceInCash} prefix="U$D " fixedDecimals={2} />
-                                            <FormattedNumber className={`info placeholder`} value={balanceInCash} prefix="U$D " fixedDecimals={2} />
+                                            <FormattedNumber  value={balanceInCash} prefix="U$D " fixedDecimals={2} />
                                         </span>
 
                                     </div>

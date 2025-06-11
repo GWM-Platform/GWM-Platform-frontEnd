@@ -142,9 +142,7 @@ const CashCard = (props) => {
                                         <Container fluid className="px-0 mb-2">
                                             <Row className="w-100 mx-0 d-flex gx-0 align-items-center">
                                                 <span className="containerHideInfo">
-                                                    <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={parseFloat(Fund.balance).toString()} prefix="U$D " fixedDecimals={2} />
-                                                    <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={parseFloat(Fund.balance).toString()} prefix="U$D " fixedDecimals={2} />
-                                                    <FormattedNumber className={`info placeholder`} value={parseFloat(Fund.balance).toString()} prefix="U$D " fixedDecimals={2} />
+                                                    <FormattedNumber  value={parseFloat(Fund.balance).toString()} prefix="U$D " fixedDecimals={2} />
                                                 </span>
                                                 <OverlayTrigger rootClose trigger="click" placement="auto-start" overlay={
                                                     <PopoverAvailableFunds account={Fund} highlightOverdraft={highlightOverdraft} />
@@ -165,9 +163,7 @@ const CashCard = (props) => {
                                         <Container fluid className="px-0">
                                             <Row className="w-100 mx-0 d-flex justify-content-between gx-0">
                                                 <span className="pe-2 containerHideInfo">
-                                                    <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={parseFloat(Fund.balance).toString()} prefix="U$D " fixedDecimals={2} />
-                                                    <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={parseFloat(Fund.balance).toString()} prefix="U$D " fixedDecimals={2} />
-                                                    <FormattedNumber className={`info placeholder`} value={parseFloat(Fund.balance).toString()} prefix="U$D " fixedDecimals={2} />
+                                                    <FormattedNumber  value={parseFloat(Fund.balance).toString()} prefix="U$D " fixedDecimals={2} />
                                                 </span>
                                        
                                             </Row>

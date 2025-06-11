@@ -540,8 +540,7 @@ const Movement = ({ content, reloadData }) => {
           {(content?.transfer?.reverted && transferNote?.text !== "Transferencia revertida") ? <>, {t("reverted")}</> : ""}
         </span>
         <span className={`${Math.sign(content.amount) === 1 ? 'text-green' : 'text-red'}`}>
-          {Math.sign(content.amount) === 1 ? '+' : '-'}
-          <FormattedNumber value={Math.abs(content.amount)} prefix="U$D " fixedDecimals={2} />
+          <FormattedNumber value={Math.abs(content.amount)} prefix={`${Math.sign(content.amount) === 1 ? '+' : '-'}U$D `} fixedDecimals={2} />
         </span>
       </div>
       {
@@ -549,8 +548,7 @@ const Movement = ({ content, reloadData }) => {
         <div className='d-flex justify-content-between' style={{ borderTop: "1px solid rgb(200,200,200)" }}>
           <span className={`${content.stateId === 3 ? 'text-red' : 'text-green'}`}>{t("Balance")}</span>
           <span className={`${Math.sign(content.partialBalance) === 1 ? 'text-green' : 'text-red'}`}>
-            <span>{Math.sign(content.partialBalance) === 1 ? '+' : '-'}</span>
-            <FormattedNumber value={Math.abs(content.partialBalance)} prefix="U$D " fixedDecimals={2} />
+            <FormattedNumber value={Math.abs(content.partialBalance)} prefix={`${Math.sign(content.partialBalance) === 1 ? '+' : '-'}U$D `} fixedDecimals={2} />
           </span>
         </div>
       }

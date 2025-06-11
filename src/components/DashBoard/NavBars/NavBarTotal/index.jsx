@@ -6,7 +6,7 @@ import { Navbar, Container, Col, Row, Spinner, OverlayTrigger } from 'react-boot
 
 import './index.css'
 import { DashBoardContext } from 'context/DashBoardContext';
-import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
+import FormattedNumber, { FormattedNumberFinal } from 'components/DashBoard/GeneralUse/FormattedNumber';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import enrichAccount from 'utils/enrichAccount';
@@ -141,7 +141,10 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
 }
 export default NavBarTotal
 
-export const FormattedNumberWithHidden = ({ value, prefix, fixedDecimals, className, style, showButton = false }) => {
+export const FormattedNumberWithHidden = ({ value, prefix, fixedDecimals, className, style, showButton = false,
+    suffix = "", hidden, styledSybol = false, rounding = "ROUND_HALF_UP"
+
+}) => {
 
     const { Hide, setHide } = useContext(DashBoardContext)
 
@@ -149,9 +152,15 @@ export const FormattedNumberWithHidden = ({ value, prefix, fixedDecimals, classN
         <div className="d-inline-flex align-items-center justify-content-between">
             <div style={{ marginRight: "0.25em" }} >
                 <div className="containerHideInfo">
-                    <FormattedNumber hidden style={style} className={`info ${Hide ? "shown" : "hidden"} ${className}`} value={value} prefix={prefix} fixedDecimals={fixedDecimals} />
-                    <FormattedNumber style={style} className={`info ${Hide ? "hidden" : "shown"} ${className}`} value={value} prefix={prefix} fixedDecimals={fixedDecimals} />
-                    <FormattedNumber style={style} className={`info placeholder`} value={value} prefix={prefix} fixedDecimals={fixedDecimals} />
+                    <FormattedNumberFinal
+                        suffix={suffix} styledSybol={styledSybol} rounding={rounding}
+                        hidden style={style} className={`info ${Hide ? "shown" : "hidden"} ${className}`} value={value} prefix={prefix} fixedDecimals={fixedDecimals} />
+                    <FormattedNumberFinal
+                        suffix={suffix} hidden={hidden} styledSybol={styledSybol} rounding={rounding}
+                        style={style} className={`info ${Hide ? "hidden" : "shown"} ${className}`} value={value} prefix={prefix} fixedDecimals={fixedDecimals} />
+                    <FormattedNumberFinal
+                        suffix={suffix} hidden={hidden} styledSybol={styledSybol} rounding={rounding}
+                        style={style} className={`info placeholder`} value={value} prefix={prefix} fixedDecimals={fixedDecimals} />
                 </div>
             </div>
             {showButton &&

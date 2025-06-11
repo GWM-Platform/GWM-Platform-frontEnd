@@ -170,9 +170,7 @@ const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, reset
                         <Col className="pe-2">
                             <div className="containerHideInfo px-2">
                                 <span>{t("Balance")}:&nbsp;</span>
-                                <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={balanceInCash.toString()} prefix="U$D " fixedDecimals={2} />
-                                <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={balanceInCash.toString()} prefix="U$D " fixedDecimals={2} />
-                                <FormattedNumber className={`info placeholder`} value={balanceInCash.toString()} prefix="U$D " fixedDecimals={2} />
+                                <FormattedNumber  value={balanceInCash.toString()} prefix="U$D " fixedDecimals={2} />
                             </div>
                         </Col>
                       

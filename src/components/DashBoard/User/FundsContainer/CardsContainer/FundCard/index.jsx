@@ -103,9 +103,7 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions, cardsAmount, inScr
                                     <Container fluid className="px-0">
                                         <Row className="mx-0 w-100 gx-0 d-flex justify-content-between">
                                             <div className="pe-2 containerHideInfo">
-                                                <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={Fund.shares ? HoldingInCash() : 0} prefix="U$D " fixedDecimals={2} />
-                                                <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={Fund.shares ? HoldingInCash() : 0} prefix="U$D " fixedDecimals={2} />
-                                                <FormattedNumber className={`info placeholder`} value={Fund.shares ? HoldingInCash() : 0} prefix="U$D " fixedDecimals={2} />
+                                                <FormattedNumber  value={Fund.shares ? HoldingInCash() : 0} prefix="U$D " fixedDecimals={2} />
                                             </div>
                                         </Row>
                                     </Container>

@@ -191,9 +191,7 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, cardsAmount, inScreenFu
                                         <Container fluid className="px-0">
                                             <Row className="mx-0 w-100 gx-0 d-flex justify-content-between">
                                                 <div className="pe-2 containerHideInfo">
-                                                    <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={actualProfit.fetched ? actualProfit.value.toString() : FixedDeposit?.initialAmount.toString()} prefix="U$D " fixedDecimals={2} />
-                                                    <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={actualProfit.fetched ? actualProfit.value.toString() : FixedDeposit?.initialAmount.toString()} prefix="U$D " fixedDecimals={2} />
-                                                    <FormattedNumber className={`info placeholder`} value={actualProfit.fetched ? actualProfit.value.toString() : FixedDeposit?.initialAmount.toString()} prefix="U$D " fixedDecimals={2} />
+                                                    <FormattedNumber  value={actualProfit.fetched ? actualProfit.value.toString() : FixedDeposit?.initialAmount.toString()} prefix="U$D " fixedDecimals={2} />
                                                 </div>
                                                
                                             </Row>

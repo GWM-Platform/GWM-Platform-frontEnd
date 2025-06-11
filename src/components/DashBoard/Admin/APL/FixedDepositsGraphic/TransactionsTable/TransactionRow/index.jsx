@@ -30,8 +30,7 @@ const TransactionRow = ({ transaction, user }) => {
         <FormattedNumber value={Math.abs(transaction.sharePrice)} prefix="U$D " fixedDecimals={2} />&nbsp;
       </td>
       <td className={`tableAmount ${Math.sign(transaction.shares) === 1 ? 'text-red' : 'text-green'}`}>
-        <span>{Math.sign(transaction.shares) === 1 ? '-' : '+'}</span>
-        <FormattedNumber value={new Decimal(transaction.shares).times(transaction.sharePrice).abs()} prefix="U$D " fixedDecimals={2} />&nbsp;
+        <FormattedNumber value={new Decimal(transaction.shares).times(transaction.sharePrice).abs()} prefix={`${Math.sign(transaction.shares) === 1 ? '-' : '+'}U$D `} fixedDecimals={2} />&nbsp;
       </td>
     </tr>
   )

@@ -113,14 +113,13 @@ const ShareTransferRow = ({ content }) => {
 
       <div>
         {t("Amount")}:&nbsp;
-        {isTransfer ? (incomingTransfer() ? '+' : '-') : (Math.sign(content.shares) === 1 ? '+' : '-')}
-        <FormattedNumber className="text-nowrap" value={Math.abs(content.shares)} fixedDecimals={sharesDecimalPlaces } />&nbsp;
+
+        <FormattedNumber className="text-nowrap" suffix={isTransfer ? (incomingTransfer() ? '+' : '-') : (Math.sign(content.shares) === 1 ? '+' : '-')} value={Math.abs(content.shares)} fixedDecimals={sharesDecimalPlaces} />&nbsp;
         {t(Math.abs(content.shares) === 1 ? "share" : "shares")}, <FormattedNumber className="text-nowrap" value={content.sharePrice} prefix="U$D " fixedDecimals={2} />
         {t(" each")}
         <span>
           &nbsp;(
-          {isTransfer ? (incomingTransfer() ? '+' : '-') : (Math.sign(content.shares) === 1 ? '+' : '-')}
-          <FormattedNumber value={(Math.abs(content.shares) * content.sharePrice)} prefix="U$D " fixedDecimals={2} />
+          <FormattedNumber value={(Math.abs(content.shares) * content.sharePrice)} prefix={`${isTransfer ? (incomingTransfer() ? '+' : '-') : (Math.sign(content.shares) === 1 ? '+' : '-')}U$D `} fixedDecimals={2} />
           )
         </span>
       </div >

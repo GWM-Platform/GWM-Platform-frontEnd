@@ -162,8 +162,8 @@ const Movement = ({ content, fundName = "" }) => {
 
         <span className={`${content.stateId === 3 ? 'text-red' : 'text-green'}`}>{t(getMoveStateById(content.stateId).name)}</span>
         <span className={isTransfer ? (incomingTransfer() ? 'text-green' : 'text-red') : (Math.sign(content.shares) === 1 ? 'text-green' : 'text-red')}>
-          {isTransfer ? (incomingTransfer() ? '+' : '-') : (Math.sign(content.shares) === 1 ? '+' : '-')}
-          <FormattedNumber style={{ fontWeight: "bolder" }} value={(Math.abs(content.shares) * content.sharePrice)} prefix="U$D " fixedDecimals={2} />
+
+          <FormattedNumber style={{ fontWeight: "bolder" }} value={(Math.abs(content.shares) * content.sharePrice)} prefix={`${isTransfer ? (incomingTransfer() ? '+' : '-') : (Math.sign(content.shares) === 1 ? '+' : '-')}U$D `} fixedDecimals={2} />
         </span>
       </div >
     </div >

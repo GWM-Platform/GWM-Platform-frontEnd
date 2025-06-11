@@ -118,8 +118,7 @@ const Transfer = ({ content, actions, getTransfers }) => {
         {(content.reverted && transferNote?.text === "Transferencia revertida") ? <>, {t("reversion")}</> : ""}
       </td>
       <td className={`tableAmount ${content.receiverId === AccountSelected?.id ? 'text-green' : 'text-red'}`}>
-        <span>{content.receiverId === AccountSelected?.id ? '+' : '-'}</span>
-        <FormattedNumber value={Math.abs(content.amount)} prefix="U$D " fixedDecimals={2} />
+        <FormattedNumber value={Math.abs(content.amount)} prefix={`${content.receiverId === AccountSelected?.id ? '+' : '-'}U$D `} fixedDecimals={2} />
       </td>
       {
         !!(actions) &&
