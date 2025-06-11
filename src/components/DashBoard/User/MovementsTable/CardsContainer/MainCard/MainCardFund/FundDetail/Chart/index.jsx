@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ReferenceLine, ResponsiveContainer, Label, Brush } from 'recharts';
 import './index.css'
 import moment from 'moment';
@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { selectAllTransactions } from 'Slices/DashboardUtilities/transactionsSlice';
 import EmptyTable from 'components/DashBoard/GeneralUse/EmptyTable';
 import Loading from 'components/DashBoard/GeneralUse/Loading';
+import { debounce } from 'lodash';
 
 const Chart = ({ fund, margin = { top: 5, right: 90, bottom: 5, left: 20 } }) => {
     const { t } = useTranslation()
@@ -16,7 +17,12 @@ const Chart = ({ fund, margin = { top: 5, right: 90, bottom: 5, left: 20 } }) =>
     const transactionStatus = useSelector(state => state.transactions.status)
     const firstTransaction = useSelector(selectAllTransactions)?.transactions?.[0]
     const fundHistoryRedux = useSelector(state => selectFundHistoryByFundId(state, fund?.id)).sort((a, b) => moment(a?.priceDate).diff(moment(b?.priceDate)))
-    // Filter to only show history after the first transaction
+
+    const [brushIndices, setBrushIndices] = useState({
+        startIndex: 0,
+        endIndex: 0
+    });
+
     const fundHistory = useMemo(() => {
 
         const filtered = fundHistoryRedux.filter(fundHistoryEntry => {
@@ -48,8 +54,23 @@ const Chart = ({ fund, margin = { top: 5, right: 90, bottom: 5, left: 20 } }) =>
         }
     }, [dispatch, fundHistoryStatus])
 
-    const max = useMemo(() => fundHistory.reduce((prev, current) => (prev.sharePrice > current.sharePrice) ? prev : current, { sharePrice: -Infinity, priceDate: moment().format() }), [fundHistory])
-    const min = useMemo(() => fundHistory.reduce((prev, current) => (prev.sharePrice < current.sharePrice) ? prev : current, { sharePrice: +Infinity, priceDate: moment().format() }), [fundHistory])
+    const max = useMemo(() => (
+        fundHistory
+            .slice(brushIndices.startIndex, brushIndices.endIndex)
+            .reduce(
+                (prev, current) =>
+                    (prev.sharePrice > current.sharePrice) ? prev : current, { sharePrice: -Infinity, priceDate: moment().format() }
+            )
+    ), [brushIndices.endIndex, brushIndices.startIndex, fundHistory])
+
+    const min = useMemo(() => (
+        fundHistory
+            .slice(brushIndices.startIndex, brushIndices.endIndex)
+            .reduce(
+                (prev, current) =>
+                    (prev.sharePrice < current.sharePrice) ? prev : current, { sharePrice: +Infinity, priceDate: moment().format() }
+            )
+    ), [brushIndices.endIndex, brushIndices.startIndex, fundHistory])
 
     const adjustDataRange = useMemo(() => {
         // Calcular la diferencia y el orden de magnitud de la diferencia
@@ -78,6 +99,30 @@ const Chart = ({ fund, margin = { top: 5, right: 90, bottom: 5, left: 20 } }) =>
 
         return { finalDataMin, finalDataMax };
     }, [max.sharePrice, min.sharePrice])
+
+
+    useEffect(() => {
+        if (fundHistory.length > 0) {
+            const currentYearIndex = fundHistory.findIndex(history =>
+                moment(history.datePriceParsed).year() === moment().year());
+
+            setBrushIndices({
+                startIndex: currentYearIndex >= 0 ? currentYearIndex : 0,
+                endIndex: fundHistory.length - 1
+            });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [fundHistoryStatus, transactionStatus]);
+
+    const debouncedSetBrushIndices = useMemo(() => {
+        return debounce((indices) => {
+            setBrushIndices({
+                startIndex: indices.startIndex,
+                endIndex: Math.max(indices.startIndex + 1, indices.endIndex)
+            });
+        }, 500);
+    }, []);
+
     return (
         <>
 
@@ -117,8 +162,10 @@ const Chart = ({ fund, margin = { top: 5, right: 90, bottom: 5, left: 20 } }) =>
                         </ReferenceLine>
                     }
                     <Brush
+                        startIndex={brushIndices.startIndex}
+                        endIndex={brushIndices.endIndex}
+                        onChange={debouncedSetBrushIndices}
                         dataKey="datePriceParsed" height={30} stroke="#082044" tickFormatter={dateFormatter}
-                        startIndex={fundHistory.findIndex(history => moment(history.datePriceParsed).year() === moment().year())} endIndex={fundHistory.length - 1}
                     />
                 </LineChart>
             </ResponsiveContainer>
