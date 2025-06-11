@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
 import ReactApexChart from 'react-apexcharts';
 import './index.css'
 import moment from 'moment';
@@ -9,10 +9,13 @@ import { useTranslation } from 'react-i18next';
 import { selectAllTransactions } from 'Slices/DashboardUtilities/transactionsSlice';
 import EmptyTable from 'components/DashBoard/GeneralUse/EmptyTable';
 import Loading from 'components/DashBoard/GeneralUse/Loading';
+import ApexCharts from 'apexcharts'
 
 const Chart = ({ fund, margin = { top: 5, right: 90, bottom: 5, left: 20 } }) => {
     const { t } = useTranslation()
     const dispatch = useDispatch()
+    const chartRef = useRef(null)
+    const chartId = "fund-chart"
     const transactionStatus = useSelector(state => state.transactions.status)
     const firstTransaction = useSelector(selectAllTransactions)?.transactions?.[0]
     const fundHistoryRedux = useSelector(state => selectFundHistoryByFundId(state, fund?.id)).sort((a, b) => moment(a?.priceDate).diff(moment(b?.priceDate)))
@@ -88,35 +91,166 @@ const Chart = ({ fund, margin = { top: 5, right: 90, bottom: 5, left: 20 } }) =>
         const finalDataMax = adjustedDataMax;
 
         return { finalDataMin, finalDataMax };
-    }, [max.sharePrice, min.sharePrice])
+    }, [max.sharePrice, min.sharePrice])    // Define the default view - display only the last few entries (like the Vue example)
+    const defaultViewCount = 5
 
-    // ApexCharts options
+    // Calculate the min/max index for default zoom view (last 5 items or all if less than 5)
+    const defaultMinIndex = Math.max(0, fundHistory.length - defaultViewCount)
+    const defaultMaxIndex = fundHistory.length
+
+    // ApexCharts options    // Function to calculate Y-axis min/max based on visible data points
+    const calculateYAxisRange = (minX, maxX) => {
+        // Filter data points based on visible X range
+        const visiblePoints = fundHistory.filter(point =>
+            point.datePriceParsed >= minX && point.datePriceParsed <= maxX
+        );
+
+        // If no points in range, return default range
+        if (visiblePoints.length === 0) {
+            return {
+                min: adjustDataRange.finalDataMin,
+                max: adjustDataRange.finalDataMax
+            };
+        }
+
+        // Find min/max share prices in the visible range
+        const visibleMax = visiblePoints.reduce(
+            (prev, current) => (prev.sharePrice > current.sharePrice) ? prev : current,
+            { sharePrice: -Infinity }
+        ).sharePrice;
+
+        const visibleMin = visiblePoints.reduce(
+            (prev, current) => (prev.sharePrice < current.sharePrice) ? prev : current,
+            { sharePrice: +Infinity }
+        ).sharePrice;
+
+        // Apply the same adjustment logic as in adjustDataRange
+        const difference = visibleMax - visibleMin;
+        const orderOfMagnitude = Math.floor(Math.log10(difference));
+
+        let adjustmentFactor;
+        if (orderOfMagnitude >= 3) {
+            adjustmentFactor = Math.pow(10, orderOfMagnitude - 2);
+        } else if (orderOfMagnitude === 2) {
+            adjustmentFactor = 10;
+        } else if (orderOfMagnitude === 1) {
+            adjustmentFactor = 1;
+        } else {
+            adjustmentFactor = 0.1;
+        }
+
+        const adjustedDataMin = Math.floor((visibleMin - difference * 0.05) / adjustmentFactor) * adjustmentFactor;
+        const adjustedDataMax = Math.ceil((visibleMax + difference * 0.05) / adjustmentFactor) * adjustmentFactor;
+
+        const finalDataMin = Math.max(1, adjustedDataMin);
+        const finalDataMax = adjustedDataMax;
+
+        return {
+            min: finalDataMin,
+            max: finalDataMax
+        };
+    };
+
     const chartOptions = {
         chart: {
+            id: chartId,
             height: '100%',
             type: 'line',
             zoom: {
                 enabled: true,
                 type: 'x',
-                autoScaleYaxis: true
+                autoScaleYaxis: false // We'll handle Y-axis scaling manually
             },
             toolbar: {
                 show: true,
                 tools: {
                     download: true,
                     selection: true,
-                    zoom: true,
+                    zoom: false,
                     zoomin: true,
                     zoomout: true,
                     pan: true,
                     reset: true
+                },
+                autoSelected: 'pan'
+            },
+            events: {
+                beforeResetZoom: function (chartContext, opts) {
+                    // When reset zoom is clicked, show only the last few entries
+                    // Similar to Vue example's beforeResetZoom handler
+                    if (fundHistory.length <= defaultViewCount) {
+                        return {
+                            xaxis: {
+                                min: fundHistory[0]?.datePriceParsed,
+                                max: fundHistory[fundHistory.length - 1]?.datePriceParsed
+                            },
+                            yaxis: {
+                                min: adjustDataRange.finalDataMin,
+                                max: adjustDataRange.finalDataMax
+                            }
+                        }
+                    }
+
+                    return {
+                        xaxis: {
+                            min: fundHistory[defaultMinIndex]?.datePriceParsed,
+                            max: fundHistory[defaultMaxIndex - 1]?.datePriceParsed
+                        },
+                        yaxis: {
+                            min: adjustDataRange.finalDataMin,
+                            max: adjustDataRange.finalDataMax
+                        }
+                    }
+                },
+                beforeZoom: function (chartContext, { xaxis }) {
+                    // Limit zoom to available data points
+                    // Similar to Vue example's beforeZoom handler
+                    const minDate = fundHistory[0]?.datePriceParsed
+                    const maxDate = fundHistory[fundHistory.length - 1]?.datePriceParsed
+
+                    const newMinX = xaxis.min < minDate ? minDate : xaxis.min;
+                    const newMaxX = xaxis.max > maxDate ? maxDate : xaxis.max;
+
+                    // Calculate Y-axis range based on visible points
+                    const yAxisRange = calculateYAxisRange(newMinX, newMaxX);
+
+                    return {
+                        xaxis: {
+                            min: newMinX,
+                            max: newMaxX
+                        },
+                        yaxis: {
+                            min: yAxisRange.min,
+                            max: yAxisRange.max
+                        }
+                    }
+                },
+                zoomed: function (chartContext, { xaxis }) {
+                    // After zoom is applied, re-calculate and update Y-axis
+                    if (xaxis && xaxis.min && xaxis.max) {
+                        const yAxisRange = calculateYAxisRange(xaxis.min, xaxis.max);
+
+                        chartContext.updateOptions({
+                            yaxis: {
+                                min: yAxisRange.min,
+                                max: yAxisRange.max
+                            }
+                        }, false, false);
+                    }
+                },
+                scrolled: function (chartContext, { xaxis }) {
+                    // After pan is applied, re-calculate and update Y-axis
+                    if (xaxis && xaxis.min && xaxis.max) {
+                        const yAxisRange = calculateYAxisRange(xaxis.min, xaxis.max);
+                        chartContext.updateOptions({
+                            yaxis: {
+                                min: yAxisRange.min,
+                                max: yAxisRange.max
+                            }
+                        }, false, false);
+                    }
                 }
             },
-            // events: {
-            //     zoomed: function(chartContext, { xaxis }) {
-            //         handleZoomChange({ xaxis });
-            //     }
-            // },
             animations: {
                 enabled: false
             }
@@ -144,8 +278,7 @@ const Chart = ({ fund, margin = { top: 5, right: 90, bottom: 5, left: 20 } }) =>
             hover: {
                 size: 8
             }
-        },
-        xaxis: {
+        }, xaxis: {
             type: 'datetime',
             labels: {
                 formatter: function (val) {
@@ -157,7 +290,14 @@ const Chart = ({ fund, margin = { top: 5, right: 90, bottom: 5, left: 20 } }) =>
             },
             tooltip: {
                 enabled: false,
-            }
+            },
+            // Set initial view to show only the last few entries (if there are enough entries)
+            min: fundHistory.length > defaultViewCount ?
+                fundHistory[defaultMinIndex]?.datePriceParsed :
+                fundHistory[0]?.datePriceParsed,
+            max: fundHistory.length ?
+                fundHistory[fundHistory.length - 1]?.datePriceParsed :
+                undefined
         },
         yaxis: {
             min: adjustDataRange.finalDataMin,
@@ -196,9 +336,7 @@ const Chart = ({ fund, margin = { top: 5, right: 90, bottom: 5, left: 20 } }) =>
                 }
             ] : []
         }
-    };
-
-    // Prepare series data for ApexCharts
+    };    // Prepare series data for ApexCharts
     const series = [{
         name: t("Share price"),
         data: fundHistory.map(item => ({
@@ -208,42 +346,70 @@ const Chart = ({ fund, margin = { top: 5, right: 90, bottom: 5, left: 20 } }) =>
             firstTransaction: item.firstTransaction
         }))
     }];
+    // Function to reset chart values (similar to resetValues in the Vue example)
+    const resetChartValues = () => {
+        console.log("Resetting chart values", adjustDataRange.finalDataMax, adjustDataRange.finalDataMin);
+        ApexCharts.exec(
+            chartId,
+            'updateOptions',
+            {
+                xaxis: {
+                    min: fundHistory[defaultMinIndex]?.datePriceParsed,
+                    max: fundHistory[defaultMaxIndex - 1]?.datePriceParsed
+                },
+                // Reset Y-axis to original scale for the entire dataset
+                yaxis:
+                    calculateYAxisRange(fundHistory[defaultMinIndex]?.datePriceParsed, fundHistory[defaultMaxIndex - 1]?.datePriceParsed)
+                //     min: adjustDataRange.finalDataMin,
+                //     max: adjustDataRange.finalDataMax
+                // }
+            },
+            false,
+            true
+        );
+    };
+
+    useEffect(() => {
+        if (!(fundHistoryStatus === 'loading' || transactionStatus === "loading")) {
+            resetChartValues();
+        }
+    }, [fundHistoryStatus, transactionStatus])
 
     return (
-        <>
-            <div style={{ height: '97%', width: '100%', position: 'relative' }}>
-                <ReactApexChart
-                    options={chartOptions}
-                    series={series}
-                    type="line"
-                    height="100%"
-                    width="100%"
-                />
-                {
-                    fundHistoryStatus === 'loading' || transactionStatus === "loading" ?
-                        <Loading
-                            style={{
-                                position: "absolute",
-                                top: 0,
-                                bottom: 0,
-                                backdropFilter: "blur(2px)",
-                                height: "100%",
-                                minHeight: "unset",
-                                width: "100%"
-                            }}
-                        />
-                        :
-                        fundHistory.length === 0 &&
-                        <EmptyTable style={{
+        <>            <div style={{ height: '90%', width: '100%', position: 'relative' }}>
+            <ReactApexChart
+                ref={chartRef}
+                options={chartOptions}
+                series={series}
+                type="line"
+                height="100%"
+                width="100%"
+            />
+            {
+                fundHistoryStatus === 'loading' || transactionStatus === "loading" ?
+                    <Loading
+                        style={{
                             position: "absolute",
                             top: 0,
                             bottom: 0,
                             backdropFilter: "blur(2px)",
                             height: "100%",
+                            minHeight: "unset",
                             width: "100%"
-                        }} />
-                }
-            </div>
+                        }}
+                    />
+                    :
+                    fundHistory.length === 0 &&
+                    <EmptyTable style={{
+                        position: "absolute",
+                        top: 0,
+                        bottom: 0,
+                        backdropFilter: "blur(2px)",
+                        height: "100%",
+                        width: "100%"
+                    }} />
+            }
+        </div>
         </>
     )
 }
