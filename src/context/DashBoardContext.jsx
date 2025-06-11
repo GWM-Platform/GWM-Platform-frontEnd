@@ -58,6 +58,7 @@ export const DashBoardProvider = ({ children }) => {
     const desiredClient = useQuery().get("client")
     const desiredFundId = useQuery().get("fundId")
 
+    const [Hide, setHide] = useState(false);
     const [token] = useState(sessionStorage.getItem("access_token"));
     const [admin] = useState(JSON.parse(sessionStorage.getItem("admin")));
     const [balanceChanged, setBalanceChanged] = useState(true)
@@ -501,8 +502,8 @@ export const DashBoardProvider = ({ children }) => {
                             destination = `/DashBoard/${desiredLocation}?loc=${desiredLocation}&id=${desiredId}&client=${desiredClient}&type=${desiredType}`
                             break;
                         case "fd":
-                                destination = `/DashBoard/${desiredLocation}?loc=${desiredLocation}&id=${desiredId}&client=${desiredClient}&type=${desiredType}`
-                                break;
+                            destination = `/DashBoard/${desiredLocation}?loc=${desiredLocation}&id=${desiredId}&client=${desiredClient}&type=${desiredType}`
+                            break;
                         case "t":
                             if (desiredFundId) {
                                 destination = `/DashBoard/${desiredLocation}?loc=${desiredLocation}&id=${desiredId}&client=${desiredClient}&fundId=${desiredFundId}&type=${desiredType}`
@@ -688,7 +689,8 @@ export const DashBoardProvider = ({ children }) => {
             FetchingFunds, contentReady, PendingWithoutpossession, PendingTransactions, Accounts, Funds, itemSelected, setItemSelected, isMobile, width, toLogin, setContentReady,
             DashboardToast, DashboardToastDispatch, AccountSelected, setAccountSelected, Balance, allowedSymbols,
             couldSign, ClientPermissions, hasPermission, hasSellPermission, hasBuyPermission, hasViewPermission, setClientPermissions, hasAnySellPermission, hasAnyBuyPermission,
-            hasAnyTransferFundPermission, hasFundTransferPermission, getDashboardToastByKey, sharesDecimalPlaces
+            hasAnyTransferFundPermission, hasFundTransferPermission, getDashboardToastByKey, sharesDecimalPlaces,
+            Hide, setHide
         }}>
         {children}
     </DashBoardContext.Provider>

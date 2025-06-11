@@ -32,7 +32,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
         return React.useMemo(() => new URLSearchParams(search), [search]);
     }
 
-    const { PendingWithoutpossession, hasPermission, AccountSelected, ClientSelected } = useContext(DashBoardContext)
+    const { PendingWithoutpossession, hasPermission, AccountSelected, ClientSelected, Hide, setHide } = useContext(DashBoardContext)
     const historicFunds = useSelector(selectAllHistoricFunds)
 
     const FundsWithPending = useMemo(() => {
@@ -89,7 +89,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
     )
 
     const [selected, setSelected] = useState(desiredType === "t-d" ? undefined : desiredType === "t" && desiredFundId ? getFundIndexById(desiredFundId).found ? getFundIndexById(desiredFundId).index : 0 : 0)
-    const [Hide, setHide] = useState(false)
+
     const [collapseSecondary, setCollapseSecondary] = useState(false)
 
     const performSearch = () => {

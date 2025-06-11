@@ -12,6 +12,7 @@ import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import enrichAccount from 'utils/enrichAccount';
 import PopoverAvailableFunds from 'components/DashBoard/GeneralUse/PopoverAvailableFunds';
 import { customFetch } from 'utils/customFetch';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
     const { t } = useTranslation();
@@ -106,7 +107,7 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
                                                     {
                                                         (AccountSelectedEnriched.hasOverdraft && usesOverdraft) &&
                                                         <OverlayTrigger rootClose trigger="click" placement="bottom" overlay={
-                                                            <PopoverAvailableFunds account={AccountSelectedEnriched}/>
+                                                            <PopoverAvailableFunds account={AccountSelectedEnriched} />
                                                         }>
                                                             <button className="noStyle" style={{ fontSize: "1rem", color: "white" }}>
                                                                 <FontAwesomeIcon icon={faInfoCircle} />
@@ -126,7 +127,8 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
                                                 <Spinner className="ms-2" animation="border" size="sm" />
 
                                                 :
-                                                <FormattedNumber className="growOpacity" value={Balance.value} prefix="U$D " fixedDecimals={2} />
+                                                <FormattedNumberWithHidden showButton className="growOpacity" value={Balance.value} prefix="U$D " fixedDecimals={2} />
+                                            // <FormattedNumber className="growOpacity" value={Balance.value} prefix="U$D " fixedDecimals={2} />
                                         }
                                     </>
                             }
@@ -139,4 +141,39 @@ const NavBarTotal = ({ balanceChanged, setBalanceChanged }) => {
 }
 export default NavBarTotal
 
+export const FormattedNumberWithHidden = ({ value, prefix, fixedDecimals, className, style, showButton = false }) => {
 
+    const { Hide, setHide } = useContext(DashBoardContext)
+
+    return (
+        <div className="d-inline-flex align-items-center justify-content-between">
+            <div style={{ marginRight: "0.25em" }} >
+                <div className="containerHideInfo">
+                    <FormattedNumber hidden style={style} className={`info ${Hide ? "shown" : "hidden"} ${className}`} value={value} prefix={prefix} fixedDecimals={fixedDecimals} />
+                    <FormattedNumber style={style} className={`info ${Hide ? "hidden" : "shown"} ${className}`} value={value} prefix={prefix} fixedDecimals={fixedDecimals} />
+                    <FormattedNumber style={style} className={`info placeholder`} value={value} prefix={prefix} fixedDecimals={fixedDecimals} />
+                </div>
+            </div>
+            {showButton &&
+                <div className="hideInfoButton d-flex align-items-center">
+                    <FontAwesomeIcon
+                        size='xs'
+                        className={`icon ${Hide ? "hidden" : "shown"}`}
+                        onClick={() => { setHide(!Hide) }}
+                        icon={faEye}
+                    />
+                    <FontAwesomeIcon
+                        size='xs'
+                        className={`icon ${!Hide ? "hidden" : "shown"}`}
+                        onClick={() => { setHide(!Hide) }}
+                        icon={faEyeSlash}
+                    />
+                    <FontAwesomeIcon
+                        size='xs'
+                        className="icon placeholder"
+                        icon={faEyeSlash}
+                    />
+                </div>}
+        </div>
+    )
+}

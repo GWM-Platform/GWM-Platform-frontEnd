@@ -11,13 +11,12 @@ import Decimal from 'decimal.js';
 import axios from 'axios';
 
 const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions, PendingWithoutpossession, FixedDeposits, value }) => {
-    const { width, token, ClientSelected, hasPermission } = useContext(DashBoardContext)
+    const { width, token, ClientSelected, hasPermission, Hide, setHide } = useContext(DashBoardContext)
 
     const [CardWidth, setCardWidth] = useState(false)
     const [Offset, setOffset] = useState(0)
     const [showRightChevron, setShowRightChevron] = useState(true)
     const [showLeftChevron, setShowLeftChevron] = useState(false)
-    const [Hide, setHide] = useState(false)
 
     //Only shows approved, pending fixedDeposits or check pending
     const shownFixedDeposits = () => {
