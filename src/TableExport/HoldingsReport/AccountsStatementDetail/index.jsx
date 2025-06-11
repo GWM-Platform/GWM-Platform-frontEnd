@@ -248,9 +248,10 @@ export const AccountsStatementDetail = ({ accountsStatement, year, headerInfo })
                                                     </Text>
                                                 </View>
                                                 <View style={styles.tableColBalance}>
-                                                    <Text style={{ ...styles.tableCell, textAlign: "right" }} >
+                                                    <Text style={{ ...styles.tableCell, ...Math.sign(content.partialBalance) === 1 ? styles.textGreen : styles.textRed, textAlign: "right" }} >
                                                         {
-                                                            `${content.partialBalance ?
+                                                            `${Math.sign(content.partialBalance) === 1 ? '+' : '-'
+                                                            }s${content.partialBalance ?
                                                                 formatValue({
                                                                     value: (Math.abs(content.partialBalance) || 0) + "",
                                                                     decimalScale: "2",

@@ -518,10 +518,13 @@ const Movement = ({ content, actions, reloadData, linkToOtherHistory }) => {
         <span>{Math.sign(content.amount) === 1 ? '+' : '-'}</span>
         <FormattedNumber value={Math.abs(content.amount)} prefix="U$D " fixedDecimals={2} />
       </td>
-      <td className={`tableAmount `}>
+      <td className={`tableAmount ${Math.sign(content.partialBalance) === 1 ? 'text-green' : 'text-red'}`}>
         {
           content.partialBalance ?
-            <FormattedNumber value={Math.abs(content.partialBalance)} prefix="U$D " fixedDecimals={2} />
+            <>
+              <span>{Math.sign(content.partialBalance) === 1 ? '+' : '-'}</span>
+              <FormattedNumber value={Math.abs(content.partialBalance)} prefix="U$D " fixedDecimals={2} />
+            </>
             :
             <>-</>
         }
