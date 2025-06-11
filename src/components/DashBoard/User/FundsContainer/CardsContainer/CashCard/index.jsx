@@ -17,7 +17,7 @@ import { useLocation } from 'react-router-dom/cjs/react-router-dom';
 
 const CashCard = (props) => {
 
-    const { Hide, cardsAmount, inScreenFunds, pendingCash } = props
+    const { cardsAmount, inScreenFunds, pendingCash } = props
     const Fund = useMemo(() => enrichAccount(props.Fund), [props.Fund])
 
     const { DashboardToastDispatch, isMobile, hasPermission } = useContext(DashBoardContext)
