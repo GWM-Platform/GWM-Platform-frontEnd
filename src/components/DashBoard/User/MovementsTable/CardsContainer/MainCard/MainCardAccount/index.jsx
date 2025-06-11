@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEyeSlash, faEye, faChevronDown } from '@fortawesome/free-solid-svg-icons'
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 
 import MovementsTab from './MovementsTab';
 import TransfersTab from './TransfersTab';
@@ -175,22 +175,7 @@ const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, reset
                                 <FormattedNumber className={`info placeholder`} value={balanceInCash.toString()} prefix="U$D " fixedDecimals={2} />
                             </div>
                         </Col>
-                        <Col sm="auto" className="hideInfoButton d-flex align-items-center">
-                            <FontAwesomeIcon
-                                className={`icon ${Hide ? "hidden" : "shown"}`}
-                                onClick={() => { setHide(!Hide) }}
-                                icon={faEye}
-                            />
-                            <FontAwesomeIcon
-                                className={`icon ${!Hide ? "hidden" : "shown"}`}
-                                onClick={() => { setHide(!Hide) }}
-                                icon={faEyeSlash}
-                            />
-                            <FontAwesomeIcon
-                                className="icon placeholder"
-                                icon={faEyeSlash}
-                            />
-                        </Col>
+                      
                     </Col>
                 </div>
             </div>

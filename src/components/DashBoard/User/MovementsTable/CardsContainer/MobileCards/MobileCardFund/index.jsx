@@ -4,8 +4,6 @@ import { Card, Container, Col, Row, Collapse } from 'react-bootstrap';
 import TableLastMovements from './TableLastMovements';
 import { useTranslation } from "react-i18next";
 import { DashBoardContext } from 'context/DashBoardContext';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import PerformanceComponent from 'components/DashBoard/GeneralUse/PerformanceComponent';
 import FundDetail from '../../MainCard/MainCardFund/FundDetail';
@@ -71,23 +69,7 @@ const MobileCard = ({ Fund, Hide, setHide }) => {
                                         </span>
 
                                     </div>
-                                </Col>
-                                <Col sm="auto" className="hideInfoButton d-flex align-items-center">
-                                    <FontAwesomeIcon
-                                        className={`icon ${Hide ? "hidden" : "shown"}`}
-                                        onClick={() => { setHide(!Hide) }}
-                                        icon={faEye}
-                                    />
-                                    <FontAwesomeIcon
-                                        className={`icon ${!Hide ? "hidden" : "shown"}`}
-                                        onClick={() => { setHide(!Hide) }}
-                                        icon={faEyeSlash}
-                                    />
-                                    <FontAwesomeIcon
-                                        className="icon placeholder"
-                                        icon={faEyeSlash}
-                                    />
-                                </Col>
+                                </Col>s
                             </div>
                             <PerformanceComponent text={"Performance"} fundId={Fund.fund.id} />
                             <span className="left">

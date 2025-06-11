@@ -3,7 +3,7 @@ import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEyeSlash, faEye, faThumbtack } from '@fortawesome/free-solid-svg-icons'
+import { faEyeSlash, faThumbtack } from '@fortawesome/free-solid-svg-icons'
 import './index.scss'
 import { useHistory } from 'react-router-dom';
 import Decimal from 'decimal.js'
@@ -106,22 +106,6 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions, cardsAmount, inScr
                                                 <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={Fund.shares ? HoldingInCash() : 0} prefix="U$D " fixedDecimals={2} />
                                                 <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={Fund.shares ? HoldingInCash() : 0} prefix="U$D " fixedDecimals={2} />
                                                 <FormattedNumber className={`info placeholder`} value={Fund.shares ? HoldingInCash() : 0} prefix="U$D " fixedDecimals={2} />
-                                            </div>
-                                            <div className="ps-0 hideInfoButton d-flex align-items-center">
-                                                <FontAwesomeIcon
-                                                    className={`icon ${Hide ? "hidden" : "shown"}`}
-                                                    onClick={(e) => { e.stopPropagation(); setHide(!Hide) }}
-                                                    icon={faEye}
-                                                />
-                                                <FontAwesomeIcon
-                                                    className={`icon ${!Hide ? "hidden" : "shown"}`}
-                                                    onClick={(e) => { e.stopPropagation(); setHide(!Hide) }}
-                                                    icon={faEyeSlash}
-                                                />
-                                                <FontAwesomeIcon
-                                                    className="icon placeholder"
-                                                    icon={faEyeSlash}
-                                                />
                                             </div>
                                         </Row>
                                     </Container>

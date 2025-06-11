@@ -4,8 +4,6 @@ import { Container, Col, Nav } from 'react-bootstrap';
 
 import { useTranslation } from "react-i18next";
 import { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 
 import MovementsTab from './MovementsTab';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
@@ -91,22 +89,6 @@ const MainCardFixedDeposit = ({ FixedDepositsStats, Hide, setHide, sections, sel
                                     <FormattedNumber className={`info placeholder`} value={FixedDepositsStats?.balance} prefix="U$D " fixedDecimals={2} />
                                 </span>
                             </div>
-                        </Col>
-                        <Col sm="auto" className="hideInfoButton d-flex align-items-center">
-                            <FontAwesomeIcon
-                                className={`icon ${Hide ? "hidden" : "shown"}`}
-                                onClick={() => { setHide(!Hide) }}
-                                icon={faEye}
-                            />
-                            <FontAwesomeIcon
-                                className={`icon ${!Hide ? "hidden" : "shown"}`}
-                                onClick={() => { setHide(!Hide) }}
-                                icon={faEyeSlash}
-                            />
-                            <FontAwesomeIcon
-                                className="icon placeholder"
-                                icon={faEyeSlash}
-                            />
                         </Col>
                         <Col className='ms-auto' xs="auto">
                             <PerformanceComponent className='performance-component' text="Performance" fixedDepositId='1' />

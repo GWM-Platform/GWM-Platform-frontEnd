@@ -3,7 +3,7 @@ import { Container, Row, Col, Card, Button, Spinner, OverlayTrigger, Popover } f
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEyeSlash, faEye, faThumbtack, faInfoCircle, faSlash } from '@fortawesome/free-solid-svg-icons'
+import { faEyeSlash, faThumbtack, faInfoCircle, faSlash } from '@fortawesome/free-solid-svg-icons'
 import { faCheckCircle, faClipboard } from '@fortawesome/free-regular-svg-icons'
 import { useHistory } from 'react-router-dom';
 import './index.scss'
@@ -17,7 +17,7 @@ import { useLocation } from 'react-router-dom/cjs/react-router-dom';
 
 const CashCard = (props) => {
 
-    const { Hide, setHide, cardsAmount, inScreenFunds, pendingCash } = props
+    const { Hide, cardsAmount, inScreenFunds, pendingCash } = props
     const Fund = useMemo(() => enrichAccount(props.Fund), [props.Fund])
 
     const { DashboardToastDispatch, isMobile, hasPermission } = useContext(DashBoardContext)
@@ -169,20 +169,7 @@ const CashCard = (props) => {
                                                     <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={parseFloat(Fund.balance).toString()} prefix="U$D " fixedDecimals={2} />
                                                     <FormattedNumber className={`info placeholder`} value={parseFloat(Fund.balance).toString()} prefix="U$D " fixedDecimals={2} />
                                                 </span>
-                                                <button onClick={(e) => { e.stopPropagation(); setHide(prevState => !prevState) }} className="noStyle ps-0 hideInfoButton d-flex align-items-center">
-                                                    <FontAwesomeIcon
-                                                        className={`icon ${Hide ? "hidden" : "shown"}`}
-                                                        icon={faEye}
-                                                    />
-                                                    <FontAwesomeIcon
-                                                        className={`icon ${!Hide ? "hidden" : "shown"}`}
-                                                        icon={faEyeSlash}
-                                                    />
-                                                    <FontAwesomeIcon
-                                                        className="icon placeholder"
-                                                        icon={faEyeSlash}
-                                                    />
-                                                </button>
+                                       
                                             </Row>
                                         </Container>
                                     </>
