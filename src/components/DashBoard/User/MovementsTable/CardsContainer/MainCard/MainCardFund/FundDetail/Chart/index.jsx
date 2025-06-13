@@ -348,7 +348,6 @@ const Chart = ({ fund, margin = { top: 5, right: 90, bottom: 5, left: 20 } }) =>
     }];
     // Function to reset chart values (similar to resetValues in the Vue example)
     const resetChartValues = () => {
-        console.log("Resetting chart values", adjustDataRange.finalDataMax, adjustDataRange.finalDataMin);
         ApexCharts.exec(
             chartId,
             'updateOptions',
@@ -373,6 +372,7 @@ const Chart = ({ fund, margin = { top: 5, right: 90, bottom: 5, left: 20 } }) =>
         if (!(fundHistoryStatus === 'loading' || transactionStatus === "loading")) {
             resetChartValues();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fundHistoryStatus, transactionStatus])
 
     return (
