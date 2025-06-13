@@ -233,6 +233,9 @@ body {
   pointer-events: none;
   opacity: 0;
 }
+.containerHideInfo .info {
+  text-wrap: nowrap;
+}
 .containerHideInfo .info.hidden {
   position: absolute;
   transform: rotate3d(1, 0, 0, 90deg);
