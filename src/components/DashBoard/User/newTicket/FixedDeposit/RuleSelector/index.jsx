@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faChevronRight, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import { useTranslation } from "react-i18next";
 import { DashBoardContext } from 'context/DashBoardContext';
-import PreferentialCard from './PreferentialCard';
+// import PreferentialCard from './PreferentialCard';
 import TooltipInfo from 'components/DashBoard/Admin/Broadcast/TooltipInfo';
 import Decimal from 'decimal.js';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
@@ -91,7 +91,7 @@ const RuleSelector = ({ data, setData, RulesObject, handleChange }) => {
                                             <RuleCard handleChange={handleChange} key={`Rule-${index}`} Rule={Rule} data={data} setData={setData} index={index} Rules={Rules} RulesObject={RulesObject} />
 
                                         )}
-                                        <PreferentialCard data={data} setData={setData} handleChange={handleChange} />
+                                        {/* <PreferentialCard data={data} setData={setData} handleChange={handleChange} /> */}
                                     </Row>
                                 </Container>
                                 <div className={`arrow  right d-none d-sm-block
