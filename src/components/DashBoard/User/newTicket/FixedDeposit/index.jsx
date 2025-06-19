@@ -171,7 +171,7 @@ const FixedDepositTicket = ({ balanceChanged }) => {
 
     const minDuration = selectedRuleIndex === -1 ?
         data.preferential ?
-            3
+            90
             :
             Decimal.min(...[...FixedDepositRules.map(string => parseInt(string)), 365]).toNumber()
         :
