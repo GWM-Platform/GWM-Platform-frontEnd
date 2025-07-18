@@ -10,6 +10,7 @@ import { unMaskNumber } from 'utils/unmask';
 import Decimal from 'decimal.js';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import { customFetch } from 'utils/customFetch';
+import { Autocomplete, TextField } from '@mui/material';
 
 const ActionConfirmationModal = ({ movement, setShowModal, action, show, reloadData }) => {
     const { t } = useTranslation();
@@ -19,6 +20,18 @@ const ActionConfirmationModal = ({ movement, setShowModal, action, show, reloadD
 
     const [data, setData] = useState({ note: "", amount: "" })
     const defaultValue = useMemo(() => Decimal(movement?.amount || 0).abs().toFixed(2), [movement?.amount])
+
+    // Liquidation method options in English
+    const liquidationOptions = [
+        "Cash dollars center",
+        "Cash pesos center",
+        "Cash pesos vicente lopez",
+        "Cash dollars vicente lopez",
+        "Transfer pesos argentina",
+        "Transfer dollars argentina",
+        "Transfer USA chase",
+        "Transfer USA BAC"
+    ];
 
     useEffect(() => {
         setData(prevState => ({ ...prevState, amount: defaultValue }))
@@ -40,7 +53,7 @@ const ActionConfirmationModal = ({ movement, setShowModal, action, show, reloadD
         })
         setShowModal(false)
     }
-    
+
     const changeTransactionState = async () => {
         setActionFetch({
             ...ActionFetch,
@@ -241,12 +254,60 @@ const ActionConfirmationModal = ({ movement, setShowModal, action, show, reloadD
                             {
                                 NoteActive ?
                                     <div className="d-flex align-items-center">
-                                        <Form.Control
-                                            placeholder={t(action === "deny" ? "Denial motive" : "Note")} required
-                                            value={data.note} type="text" id="note" maxLength="250"
-                                            onChange={(e) => { handleChange(e); }}
-                                        />
-
+                                        {action === "liquidate" ? (
+                                            <Autocomplete
+                                                freeSolo
+                                                options={liquidationOptions}
+                                                getOptionLabel={(option) => t(option)}
+                                                value={data.note}
+                                                onChange={(event, newValue) => {
+                                                    handleChange({ target: { id: "note", value: newValue || "" } });
+                                                }}
+                                                onInputChange={(event, newInputValue) => {
+                                                    handleChange({ target: { id: "note", value: newInputValue || "" } });
+                                                }}
+                                                sx={{
+                                                    "&": {
+                                                        flexGrow: 1,
+                                                    }
+                                                }}
+                                                renderInput={(params) => (
+                                                    <TextField
+                                                        {...params}
+                                                        placeholder={t("Note")}
+                                                        variant="outlined"
+                                                        size="small"
+                                                        sx={{
+                                                            flexGrow: 1,
+                                                            '& .MuiOutlinedInput-root': {
+                                                                borderRadius: '0.375rem',
+                                                                '& fieldset': {
+                                                                    borderColor: '#ced4da',
+                                                                },
+                                                                '&:hover fieldset': {
+                                                                    borderColor: '#86b7fe',
+                                                                },
+                                                                '&.Mui-focused fieldset': {
+                                                                    borderColor: '#86b7fe',
+                                                                    borderWidth: '1px'
+                                                                },
+                                                            },
+                                                            '& .MuiInputBase-input': {
+                                                                padding: '8.5px 14px',
+                                                                fontSize: '1rem',
+                                                                fontFamily: 'inherit'
+                                                            }
+                                                        }}
+                                                    />
+                                                )}
+                                            />
+                                        ) : (
+                                            <Form.Control
+                                                placeholder={t(action === "deny" ? "Denial motive" : "Note")} required
+                                                value={data.note} type="text" id="note" maxLength="250"
+                                                onChange={(e) => { handleChange(e); }}
+                                            />
+                                        )}
                                         <button
                                             type="button"
                                             onClick={

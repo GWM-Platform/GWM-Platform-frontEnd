@@ -1210,5 +1210,15 @@
   "Pending accreditation": "Acreditación pendiente",
   "Purchases pending accreditation" :"Compras pendientes de acreditación",
   "Sales pending accreditation": "Ventas pendientes de acreditación",
-  "Total dolarized": "Total dolarizado"
+  "Total dolarized": "Total dolarizado",
+  "Cash dollars center": "Efectivo dolares centro",
+  "Cash pesos center": "Efectivo pesos centro",
+  "Cash pesos vicente lopez": "Efectivo pesos vte lopez",
+  "Cash dollars vicente lopez": "Efectivo dolares vte lopez",
+  "Transfer pesos argentina": "Transferencia pesos en arg",
+  "Transfer dollars argentina": "Transferencia dolares en arg",
+  "Transfer USA chase": "Transferencia EEUU chase",
+  "Transfer USA BAC": "Transferencia EEUU BAC",
+  "Liquidation method": "Método de liquidación",
+  "Select liquidation method": "Seleccione método de liquidación"
 }
