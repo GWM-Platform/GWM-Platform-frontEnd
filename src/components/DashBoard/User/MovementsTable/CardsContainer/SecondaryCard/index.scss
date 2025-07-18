@@ -18,6 +18,9 @@ $background-color_3: transparent;
 		background-color: $background-color_1;
 		border-radius: 2rem 0px 0px 2rem;
 	}
+	>.currencyCol.historic {
+		background-color: #3b4e6f
+	}
 	>.secondary {
 		border-left: rgb(180, 200, 180) 3px solid;
 		background-color: $background-color_2;

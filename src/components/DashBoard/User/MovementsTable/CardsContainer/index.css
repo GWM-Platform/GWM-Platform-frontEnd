@@ -7,15 +7,31 @@
 	padding-right: 1rem;
 	padding-left: 1rem;
 	margin-bottom: 1rem;
-	min-height: 4.3rem;
 	border-bottom: 1px solid;
 	display: flex;
 	align-items: bottom;
 }
+
+.HistoryCardsContainer .CategoryLabel.historic {
+	border-bottom-color: #484747;
+
+}
+.HistoryCardsContainer .CategoryLabel.historic .title{
+	color: #484747;
+	font-size: 1.25rem;
+}
+
 .HistoryCardsContainer .CategoryLabel .title {
 	font-size: 1.5rem;
 	margin-top: 0;
 }
+
+.HistoryCardsContainer .CategoryLabel .collapse-expand {
+	font-size: 1.2rem;
+	margin-bottom: .5rem;
+	color: #484747;
+}
+
 .mainCardCol {
 	transition: width .5s;
 }

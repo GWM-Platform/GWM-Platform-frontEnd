@@ -13,7 +13,7 @@ export const yearsArraySince = (initialYear = 2022, lastYear = moment().year()) 
     }
     return años;
 }
-const PerformanceComponent = ({ text, fundId = "", fixedDepositId = "", withoutSelector = false, className = "", setValueExternal = false, valueExternal = false, clientId = false, textAlign = "text-start", numberFw = "", monthValueExternal = false, setMonthValueExternal = false }) => {
+const PerformanceComponent = ({ text, fundId = "", fixedDepositId = "", withoutSelector = false, className = "", setValueExternal = false, valueExternal = false, clientId = false, textAlign = "text-start", numberFw = "", monthValueExternal = false, setMonthValueExternal = false, withBreakLine = false}) => {
     const { t } = useTranslation();
 
     const dispatch = useDispatch()
@@ -125,6 +125,10 @@ const PerformanceComponent = ({ text, fundId = "", fixedDepositId = "", withoutS
                 }
                 :&nbsp;
             </span>
+            {
+                withBreakLine &&
+                <br className="d-block d-xl-none" />
+            }
             {
                 status === "loading" && (performance === null || performance === undefined) ?
                     <Placeholder style={{ width: "8ch" }} animation="wave" className="placeholder" />

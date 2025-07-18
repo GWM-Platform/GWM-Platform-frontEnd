@@ -22,6 +22,8 @@ import Decimal from 'decimal.js';
 import { selectAllHistoricFunds } from 'Slices/DashboardUtilities/historicFundsSlice';
 import { useSelector } from 'react-redux';
 import { useMemo } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 
 const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDepositsStats }) => {
     const { t } = useTranslation();
@@ -39,21 +41,25 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
         const holdings = [...Funds, ...PendingWithoutpossession]
         return [
             ...holdings,
-            ...historicFunds.filter(historicFund =>
-                !holdings.some(holding => holding.fundId === historicFund.id)
-            ).map(fund => (
-                {
-                    id: fund.id,
-                    clientId: ClientSelected.id,
-                    fundId: fund.id,
-                    shares: 0,
-                    createdAt: "2022-05-20T13:30:28.116Z",
-                    updatedAt: "2024-10-21T12:53:43.000Z",
-                    fund,
-                    historic: true
-                }
-            ))
         ]
+    }, [Funds, PendingWithoutpossession])
+
+    const HistoricFundsToMap = useMemo(() => {
+        const holdings = [...Funds, ...PendingWithoutpossession]
+        return [...historicFunds].filter(historicFund =>
+            !holdings.some(holding => holding.fundId === historicFund.id)
+        ).map(fund => (
+            {
+                id: fund.id,
+                clientId: ClientSelected.id,
+                fundId: fund.id,
+                shares: 0,
+                createdAt: "2022-05-20T13:30:28.116Z",
+                updatedAt: "2024-10-21T12:53:43.000Z",
+                fund,
+                historic: true
+            }
+        ))
     }, [ClientSelected.id, Funds, PendingWithoutpossession, historicFunds])
 
     const getFundIndexById = (id) => {
@@ -225,7 +231,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
             setSelectedFixedDepositId(null)
         }
     }, [categorySelected])
-
+    const [collapsed, setCollapsed] = useState(true)
     return (
         <Row className="HistoryCardsContainer d-flex align-items-stretch flex-md-nowrap h-100">
             {
@@ -277,7 +283,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
                                             />)
                                     case 1:
                                         return <MainCardFund
-                                            Fund={FundsWithPending[selected]}
+                                            Fund={[...FundsWithPending, ...HistoricFundsToMap][selected]}
                                             Hide={Hide} setHide={setHide}
                                             sections={sections}
 
@@ -323,25 +329,27 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
                             }
                             {
                                 !!(FundsWithPending.length > 0) &&
-                                <div className="CategoryLabel">
-                                    <h1 className="title">{t("Funds")}</h1>
-                                </div>
-                            }
-                            {
-                                FundsWithPending.map(
-                                    (Fund, key) => {
-                                        ;
-                                        return (
-                                            <SecondaryCard
-                                                Hide={Hide} Fund={Fund} parentKey={1} ownKey={key} key={key}
-                                                categorySelected={categorySelected} setCategorySelected={setCategorySelected}
-                                                selected={selected} setSelected={setSelected} resetSearchById={resetSearchById}
-                                            />
+                                <>
+
+                                    <div className="CategoryLabel">
+                                        <h1 className="title">{t("Funds")}</h1>
+                                    </div>
+                                    {
+                                        FundsWithPending.map(
+                                            (Fund, key) => {
+                                                ;
+                                                return (
+                                                    <SecondaryCard
+                                                        Hide={Hide} Fund={Fund} parentKey={1} ownKey={key} key={key}
+                                                        categorySelected={categorySelected} setCategorySelected={setCategorySelected}
+                                                        selected={selected} setSelected={setSelected} resetSearchById={resetSearchById}
+                                                    />
+                                                )
+                                            }
                                         )
                                     }
-                                )
+                                </>
                             }
-
                             {
                                 !!(FixedDepositsStats?.content?.hasDeposits > 0) &&
                                 <>
@@ -353,6 +361,34 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
                                         categorySelected={categorySelected} setCategorySelected={setCategorySelected}
                                         selected={selected} setSelected={setSelected} resetSearchById={resetSearchById}
                                     />
+                                </>
+                            }
+                            {
+                                HistoricFundsToMap.length > 0 &&
+                                <>
+                                    <div
+                                        className="CategoryLabel d-flex justify-content-between align-items-center historic"
+                                        onClick={() => setCollapsed(!collapsed)} style={{ cursor: "pointer" }}
+                                    >
+                                        <h1 className="title">{t("Historic investments")} ({HistoricFundsToMap.length})</h1>
+                                        <FontAwesomeIcon icon={collapsed ? faChevronDown : faChevronUp} size='sm' className='collapse-expand' />
+                                    </div>
+                                    {
+                                        !collapsed &&
+                                        HistoricFundsToMap.map(
+                                            (Fund, key) => {
+                                                ;
+                                                return (
+                                                    <SecondaryCard
+                                                        historic
+                                                        Hide={Hide} Fund={Fund} parentKey={1} ownKey={FundsWithPending.length + key} key={key}
+                                                        categorySelected={categorySelected} setCategorySelected={setCategorySelected}
+                                                        selected={selected} setSelected={setSelected} resetSearchById={resetSearchById}
+                                                    />
+                                                )
+                                            }
+                                        )
+                                    }
                                 </>
                             }
                         </Col>
