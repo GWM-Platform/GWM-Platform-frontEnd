@@ -11,33 +11,60 @@ $background-color_3: transparent;
 	border-radius: 2rem;
 	transition: all 0.5s;
 	box-shadow: 0px 0px 2px var(--blue-main);
+
+	&.historic {
+		.funds {
+			display: none;
+		}
+
+		.performance-component {
+			br.d-block.d-xl-none {
+				display: block !important;
+			}
+
+			strong {
+				font-size: 1.5rem;
+			}
+			.containerHideInfo span{
+				line-height: 1em;
+			}
+		}
+	}
+
 	&:hover {
 		box-shadow: 0px 0px 5px var(--blue-main);
 	}
+
 	>.currencyCol {
 		background-color: $background-color_1;
 		border-radius: 2rem 0px 0px 2rem;
 	}
+
 	>.currencyCol.historic {
 		background-color: #3b4e6f
 	}
+
 	>.secondary {
 		border-left: rgb(180, 200, 180) 3px solid;
 		background-color: $background-color_2;
 		border-radius: 0px 2rem 2rem 0px;
+
 		.description {
 			text-transform: uppercase;
 			font-weight: 400;
 			font-size: 1.25rem;
 			color: $color_2;
 		}
+
 		.funds {
 			color: $color_3;
 		}
+
 		.funds-description {
 			color: $color_4;
 		}
 	}
+
 	.currencyContainer {
 		font-size: 1.8rem;
 		border: white 1px solid;
@@ -45,6 +72,7 @@ $background-color_3: transparent;
 		height: 2em;
 		width: 2em;
 		margin: 0.3em 0em;
+
 		>.currency {
 			font-size: 1.8rem;
 			border: transparent;
@@ -55,6 +83,7 @@ $background-color_3: transparent;
 			width: 2rem;
 		}
 	}
+
 	.performance-component {
 		strong {
 			span {
@@ -63,9 +92,11 @@ $background-color_3: transparent;
 		}
 	}
 }
+
 .secondaryCard.selected {
 	box-shadow: 0px 0px 5px var(--blue-main);
 }
+
 @media (max-width: 1440px) {
 	.secondaryCard {
 		.performance-component {
@@ -73,9 +104,11 @@ $background-color_3: transparent;
 		}
 	}
 }
+
 @media (max-width: 992px) {
 	.secondaryCard {
 		border-radius: 0;
+
 		>.secondary {
 			border-left: rgb(180, 200, 180) 0px solid;
 			border-top: rgb(180, 200, 180) 1px solid;

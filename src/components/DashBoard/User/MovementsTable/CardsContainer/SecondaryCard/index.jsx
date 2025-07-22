@@ -46,7 +46,7 @@ const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownK
 
     return (
         <Container fluid className="pt-0 pb-2 px-1 growAnimation" ref={ref} >
-            <Row className={`secondaryCard ${parentKey === categorySelected && selected === ownKey ? "selected" : null} flex-nowrap mx-0 px-0`} onClick={select}>
+            <Row className={`secondaryCard ${parentKey === categorySelected && selected === ownKey ? "selected" : null} ${historic ? "historic" : ""} flex-nowrap mx-0 px-0`} onClick={select}>
                 <Col lg="auto" className={`d-none d-sm-none d-md-none d-lg-flex currencyCol d-flex align-items-center ${historic ? "historic" : ""}`}>
                     <div className="currencyContainer d-flex align-items-center justify-content-center" >
                         {(() => {

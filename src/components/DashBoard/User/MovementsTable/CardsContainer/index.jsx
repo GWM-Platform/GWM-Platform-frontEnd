@@ -24,6 +24,7 @@ import { useSelector } from 'react-redux';
 import { useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
+import TooltipInfo from 'components/DashBoard/Admin/Broadcast/TooltipInfo';
 
 const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDepositsStats }) => {
     const { t } = useTranslation();
@@ -203,6 +204,20 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
                 resetSearchById()
             }
         }] : [],
+        ...!!(HistoricFundsToMap.length > 0) ? [{
+            title: t("Previous investments"),
+            children: HistoricFundsToMap.map(
+                (Fund, key) => ({
+                    title: `${Fund?.fund?.name}`,
+                    active: categorySelected === 1 && selected === key,
+                    onSelect: () => {
+                        setCategorySelected(1)
+                        setSelected(key)
+                        resetSearchById()
+                    }
+                })
+            ),
+        }] : [],
     ]
     const [selectedFixedDepositId, setSelectedFixedDepositId] = useState(null)
     const linkToOtherHistory = (id, type = "FIXED_DEPOSIT") => {
@@ -370,7 +385,9 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
                                         className="CategoryLabel d-flex justify-content-between align-items-center historic"
                                         onClick={() => setCollapsed(!collapsed)} style={{ cursor: "pointer" }}
                                     >
-                                        <h1 className="title">{t("Previous investments")} ({HistoricFundsToMap.length})</h1>
+                                        <h1 className="title">{t("Previous investments")} ({HistoricFundsToMap.length})
+                                            <TooltipInfo trigger={["hover", "focus"]} text="Inversiones previas sin tenencia actual." tooltipClassName='text-align-start max-width-unset' />
+                                        </h1>
                                         <FontAwesomeIcon icon={collapsed ? faChevronDown : faChevronUp} size='sm' className='collapse-expand' />
                                     </div>
                                     {

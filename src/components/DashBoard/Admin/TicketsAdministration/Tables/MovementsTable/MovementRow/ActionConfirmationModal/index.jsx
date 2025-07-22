@@ -256,15 +256,12 @@ const ActionConfirmationModal = ({ movement, setShowModal, action, show, reloadD
                                     <div className="d-flex align-items-center">
                                         {action === "liquidate" ? (
                                             <Autocomplete
-                                                freeSolo
                                                 options={liquidationOptions}
+                                                noOptionsText={t("No options")}
                                                 getOptionLabel={(option) => t(option)}
                                                 value={data.note}
                                                 onChange={(event, newValue) => {
                                                     handleChange({ target: { id: "note", value: newValue || "" } });
-                                                }}
-                                                onInputChange={(event, newInputValue) => {
-                                                    handleChange({ target: { id: "note", value: newInputValue || "" } });
                                                 }}
                                                 sx={{
                                                     "&": {
