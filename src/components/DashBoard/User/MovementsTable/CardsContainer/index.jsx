@@ -370,7 +370,7 @@ const CardsContainer = ({ isMobile, Funds, numberOfFunds, Accounts, FixedDeposit
                                         className="CategoryLabel d-flex justify-content-between align-items-center historic"
                                         onClick={() => setCollapsed(!collapsed)} style={{ cursor: "pointer" }}
                                     >
-                                        <h1 className="title">{t("Historic investments")} ({HistoricFundsToMap.length})</h1>
+                                        <h1 className="title">{t("Previous investments")} ({HistoricFundsToMap.length})</h1>
                                         <FontAwesomeIcon icon={collapsed ? faChevronDown : faChevronUp} size='sm' className='collapse-expand' />
                                     </div>
                                     {
