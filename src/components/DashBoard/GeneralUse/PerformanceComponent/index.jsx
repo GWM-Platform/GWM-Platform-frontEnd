@@ -5,7 +5,7 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from "re
 import { Form, Placeholder } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import FormattedNumber from "../FormattedNumber";
+import { FormattedNumberWithHidden } from "components/DashBoard/NavBars/NavBarTotal";
 export const yearsArraySince = (initialYear = 2022, lastYear = moment().year()) => {
     const años = [];
     for (let year = lastYear; year >= initialYear; year--) {
@@ -13,7 +13,7 @@ export const yearsArraySince = (initialYear = 2022, lastYear = moment().year()) 
     }
     return años;
 }
-const PerformanceComponent = ({ text, fundId = "", fixedDepositId = "", withoutSelector = false, className = "", setValueExternal = false, valueExternal = false, clientId = false, textAlign = "text-start", numberFw = "", monthValueExternal = false, setMonthValueExternal = false }) => {
+const PerformanceComponent = ({ text, fundId = "", fixedDepositId = "", withoutSelector = false, className = "", setValueExternal = false, valueExternal = false, clientId = false, textAlign = "text-start", numberFw = "", monthValueExternal = false, setMonthValueExternal = false, withBreakLine = false}) => {
     const { t } = useTranslation();
 
     const dispatch = useDispatch()
@@ -126,11 +126,15 @@ const PerformanceComponent = ({ text, fundId = "", fixedDepositId = "", withoutS
                 :&nbsp;
             </span>
             {
+                withBreakLine &&
+                <br className="d-block d-xl-none" />
+            }
+            {
                 status === "loading" && (performance === null || performance === undefined) ?
                     <Placeholder style={{ width: "8ch" }} animation="wave" className="placeholder" />
                     :
                     <strong className={`text-nowrap ${numberFw}`}>
-                        <FormattedNumber className={{
+                        <FormattedNumberWithHidden className={{
                             '1': 'text-green',
                             '-1': 'text-red'
                         }[Math.sign(performance)]}

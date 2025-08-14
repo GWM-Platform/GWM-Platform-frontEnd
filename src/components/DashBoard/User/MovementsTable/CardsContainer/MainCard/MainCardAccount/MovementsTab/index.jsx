@@ -12,8 +12,8 @@ import PaginationController from 'components/DashBoard/GeneralUse/PaginationCont
 import FilterOptions from 'components/DashBoard/GeneralUse/FilterOptions'
 import { customFetch } from 'utils/customFetch';
 
-const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handleMovementSearchChange, Movements, setMovements }) => {
-    const { token, ClientSelected, AccountSelected } = useContext(DashBoardContext);
+const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handleMovementSearchChange, Movements, setMovements, linkToOtherHistory }) => {
+    const { token, ClientSelected, AccountSelected, TransactionStates } = useContext(DashBoardContext);
     const history = useHistory();
 
     const [FetchingMovements, setFetchingMovements] = useState(true);
@@ -21,7 +21,10 @@ const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
     const [Pagination, setPagination] = useState({
         skip: 0,//Offset (in quantity of movements)
         take: 100,//Movements per page
-        state: null
+        fromDate: "",
+        toDate: "",
+        filterMotives: [],
+        filterStates: (TransactionStates?.values || [])?.map(state => state.id).filter(v => v !== 3)
     })
 
     const toLogin = () => {
@@ -37,10 +40,12 @@ const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
                     filterAccount: Fund.id,
                     take: Pagination.take,
                     skip: Pagination.skip,
-                    filterState: Pagination.state === 10 ? null : Pagination.state,
-                    showDenied: Pagination.state === 10 ? true : null,
+                    filterStates: Pagination.filterStates.length > 0 ? Pagination.filterStates : null,
+                    // filterState: Pagination.state === 10 ? null : Pagination.state,
+                    // showDenied: Pagination.state === 10 ? true : null,
                     fromDate: Pagination.fromDate || null,
-                    toDate: Pagination.toDate ? new Date(new Date(Pagination.toDate).setDate(new Date(Pagination.toDate).getDate() + 1)).toISOString() : null
+                    toDate: Pagination.toDate ? new Date(new Date(Pagination.toDate).setDate(new Date(Pagination.toDate).getDate() + 1)).toISOString() : null,
+                    filterMotives: Pagination.filterMotives.length > 0 ? Pagination.filterMotives : null
                 }
             ).filter(([_, v]) => v != null))
         );
@@ -107,7 +112,7 @@ const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
             ...prevState, ...{
                 skip: 0,
                 take: 100,
-                state: null
+                filterStates: []
             }
         }))
     }, [Fund])
@@ -133,13 +138,14 @@ const MovementsTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
         <div className="p-0 h-100">
             <div className="d-flex align-items-start justify-content-center flex-column MovementsTableContainer">
                 <div className={`movementsTable growAnimation`}>
-                    <FilterOptions dateFilters keyword={"transactions"} ticketSearch ticketSearchProps={ticketSearchProps} disabled={SearchById.search} movements Fund={Fund} setPagination={setPagination} movsPerPage={Pagination.take} total={Movements.total} defaultMoves={100} />
+                    <FilterOptions multiSelectState filterMotives dateFilters keyword={"transactions"} ticketSearch ticketSearchProps={ticketSearchProps} disabled={SearchById.search} movements Fund={Fund} setPagination={setPagination} movsPerPage={Pagination.take} total={Movements.total} defaultMoves={100} />
                     {
                         FetchingMovements ?
                             <Loading movements={Pagination.take} />
                             :
                             Movements.total > 0 ?
                                 <TableLastMovements
+                                    linkToOtherHistory={linkToOtherHistory}
                                     movements={Pagination.take < Movements.total ? Pagination.take : Movements.total}
                                     content={Movements.movements}
                                     reloadData={getMovements}

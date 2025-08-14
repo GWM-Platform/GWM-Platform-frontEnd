@@ -3,7 +3,7 @@ import { Container, Row, Col, Card, Spinner } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEyeSlash, faEye, faPiggyBank, faThumbtack } from '@fortawesome/free-solid-svg-icons'
+import { faEyeSlash, faPiggyBank, faThumbtack } from '@fortawesome/free-solid-svg-icons'
 import moment from 'moment';
 import Decimal from 'decimal.js';
 import axios from 'axios';
@@ -11,6 +11,8 @@ import { DashBoardContext } from 'context/DashBoardContext';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import { getAnualRate, getDuration, isPending, wasEdited } from 'utils/fixedDeposit';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import TooltipInfo from 'components/DashBoard/Admin/Broadcast/TooltipInfo';
+import { getFixedDepositType } from 'components/DashBoard/User/newTicket/FixedDeposit/RuleSelector';
 
 const FixedDepositCard = ({ Hide, setHide, FixedDeposit, cardsAmount, inScreenFunds }) => {
     Decimal.set({ precision: 100 })
@@ -99,10 +101,11 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, cardsAmount, inScreenFu
     const goToHistory = () => {
         history.push(`/DashBoard/history?type=t-d`);
     }
-    
+    const fixedDepositType = getFixedDepositType(FixedDeposit.type)
+
     return (
         <Col className="fund-col growAnimation" sm="6" md="6" lg="4" style={{ maxHeight: "100%" }}  >
-            <Card onClick={goToHistory} className="FundCard FixedDeposit h-100" style={{ maxHeight: "100%", display: "flex", cursor: "pointer"  }}>
+            <Card onClick={goToHistory} className="FundCard FixedDeposit h-100" style={{ maxHeight: "100%", display: "flex", cursor: "pointer" }}>
                 <Card.Header
                     className="header d-flex align-items-center justify-content-center"
                     style={{ flex: "none" }}
@@ -120,11 +123,9 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, cardsAmount, inScreenFu
                                         <Col className="ps-0">
                                             <h1 className="title m-0">
                                                 {t("Time deposit")}&nbsp;{FixedDeposit.id}
-                                                &nbsp;{!!(isPending(FixedDeposit)) ?
-                                                    <span style={{ textTransform: "none", fontSize: "12px" }}>({t("Pending approval")})</span>
-                                                    :
-                                                    wasEdited(FixedDeposit) &&
-                                                    <span style={{ textTransform: "none" }}>({t("Personalized  *")})</span>}
+                                                &nbsp;{!!(isPending(FixedDeposit)) &&
+                                                    <span style={{ textTransform: "none", fontSize: ".8rem" }}>({t("Pending approval")})</span>
+                                                }
                                             </h1>
                                         </Col>
                                         {
@@ -157,6 +158,28 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, cardsAmount, inScreenFu
                                         {getDuration(FixedDeposit)}&nbsp;{t("days")}
                                         {wasEdited(FixedDeposit) && " *"}
                                     </span>
+                                    {
+                                        (fixedDepositType || wasEdited(FixedDeposit)) &&
+                                        <>
+                                            <br />
+                                            
+                                            {
+                                                fixedDepositType &&
+                                                <>
+                                                    {t(fixedDepositType.label)}
+                                                    <TooltipInfo text={t(fixedDepositType.desc)} />
+                                                </>
+                                            }
+                                            {
+                                                wasEdited(FixedDeposit) &&
+                                                <>
+                                                    {fixedDepositType && ", "}
+                                                    {t("Personalized  *")}
+                                                </>
+
+                                            }
+                                        </>
+                                    }
                                 </Card.Text>
                             </Card.Title>
                             <Container fluid className="px-0">
@@ -168,26 +191,9 @@ const FixedDepositCard = ({ Hide, setHide, FixedDeposit, cardsAmount, inScreenFu
                                         <Container fluid className="px-0">
                                             <Row className="mx-0 w-100 gx-0 d-flex justify-content-between">
                                                 <div className="pe-2 containerHideInfo">
-                                                    <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={actualProfit.fetched ? actualProfit.value.toString() : FixedDeposit?.initialAmount.toString()} prefix="U$D " fixedDecimals={2} />
-                                                    <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={actualProfit.fetched ? actualProfit.value.toString() : FixedDeposit?.initialAmount.toString()} prefix="U$D " fixedDecimals={2} />
-                                                    <FormattedNumber className={`info placeholder`} value={actualProfit.fetched ? actualProfit.value.toString() : FixedDeposit?.initialAmount.toString()} prefix="U$D " fixedDecimals={2} />
+                                                    <FormattedNumber  value={actualProfit.fetched ? actualProfit.value.toString() : FixedDeposit?.initialAmount.toString()} prefix="U$D " fixedDecimals={2} />
                                                 </div>
-                                                <div className="ps-0 hideInfoButton d-flex align-items-center">
-                                                    <FontAwesomeIcon
-                                                        className={`icon ${Hide ? "hidden" : "shown"}`}
-                                                        onClick={(e) => {e.stopPropagation();setHide(!Hide) }}
-                                                        icon={faEye}
-                                                    />
-                                                    <FontAwesomeIcon
-                                                        className={`icon ${!Hide ? "hidden" : "shown"}`}
-                                                        onClick={(e) => { e.stopPropagation();setHide(!Hide) }}
-                                                        icon={faEyeSlash}
-                                                    />
-                                                    <FontAwesomeIcon
-                                                        className="icon placeholder"
-                                                        icon={faEyeSlash}
-                                                    />
-                                                </div>
+                                               
                                             </Row>
                                         </Container>
                                     </h1>

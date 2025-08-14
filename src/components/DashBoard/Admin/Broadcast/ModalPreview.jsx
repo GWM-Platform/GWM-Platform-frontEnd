@@ -32,7 +32,7 @@ export const ModalPreview = ({ show, setShow, formData, emailBodyWihtImagesStyle
                                                                     <tbody>
                                                                         <tr>
                                                                             <td valign="top" style="color:#f2f2f2;font-family:Helvetica;font-size:14px;font-weight:normal;line-height:150%;padding:18px;text-align:center;word-break:break-word">
-                                                                                <div style="text-align:left"><strong><span style="font-size:20px">GWM</span></strong><br>
+                                                                                <div style="text-align:left"><strong><span style="font-size:1.25rem">GWM</span></strong><br>
                                                                                     <span style="font-size:19px">Global Wealth Management</span></div>
                                                                             </td>
                                                                         </tr>
@@ -57,7 +57,7 @@ export const ModalPreview = ({ show, setShow, formData, emailBodyWihtImagesStyle
                                                 <table align="left" border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse;max-width:100%;min-width:100%" width="100%">
                                                     <tbody>
                                                         <tr>
-                                                            <td valign="top" style="color:#202020;font-family:Helvetica;font-size:16px;line-height:150%;padding-bottom:9px;padding-left:18px;padding-right:18px;padding-top:0;text-align:left;word-break:break-word">
+                                                            <td valign="top" style="color:#202020;font-family:Helvetica;font-size:1rem;line-height:150%;padding-bottom:9px;padding-left:18px;padding-right:18px;padding-top:0;text-align:left;word-break:break-word">
                                                                 <strong>${formData.title}</strong>
                                                             </td>
                                                         </tr>
@@ -80,10 +80,10 @@ export const ModalPreview = ({ show, setShow, formData, emailBodyWihtImagesStyle
                 <table align="left" border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse;max-width:100%;min-width:100%" width="100%">
                     <tbody>
                         <tr>
-                        <td valign="top" style="color:#202020;font-family:Helvetica;font-size:16px;line-height:150%;padding-bottom:9px;padding-left:18px;padding-right:18px;padding-top:0;text-align:left;word-break:break-word">
-                        <p style="color:#202020;font-family:Helvetica;font-size:16px;line-height:150%;margin:10px 0">
+                        <td valign="top" style="color:#202020;font-family:Helvetica;font-size:1rem;line-height:150%;padding-bottom:9px;padding-left:18px;padding-right:18px;padding-top:0;text-align:left;word-break:break-word">
+                        <p style="color:#202020;font-family:Helvetica;font-size:1rem;line-height:150%;margin:10px 0">
                         <div style="background-color:#ffffff;background-image:none;background-position:center;background-repeat:no-repeat;background-size:cover;height:100%;margin:0;padding:0;width:100%">
-                        <p style="color:#202020;font-family:Helvetica;font-size:16px;line-height:150%;margin:10px 0;padding:0;text-align:left">
+                        <p style="color:#202020;font-family:Helvetica;font-size:1rem;line-height:150%;margin:10px 0;padding:0;text-align:left">
                         ${emailBodyWihtImagesStyles()}
                         </p>
                         </div>

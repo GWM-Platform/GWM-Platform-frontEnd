@@ -130,8 +130,7 @@ const Transfer = ({ content, getTransfers }) => {
           {(content.reverted && transferNote?.text !== "Transferencia revertida") ? <>, {t("reverted")}</> : ""}
         </span>
         <span className={`${incomingTransfer() ? 'text-green' : 'text-red'}`}>
-          {incomingTransfer() ? '+' : '-'}
-          <FormattedNumber value={Math.abs(content.amount)} prefix="U$D " fixedDecimals={2} />
+          <FormattedNumber value={Math.abs(content.amount)} prefix={`${incomingTransfer() ? '+' : '-'}U$D `} fixedDecimals={2} />
         </span>
       </div>
       {

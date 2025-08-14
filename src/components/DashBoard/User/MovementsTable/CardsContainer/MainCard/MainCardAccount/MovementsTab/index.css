@@ -1,10 +1,10 @@
 .filter .form-control{
-    border-radius: 20px;
+    border-radius: 1.25rem;
     border-color:var(--main-color)
 }
 
 .filter .button{
-    border-radius: 20px;
+    border-radius: 1.25rem;
 }
 
 .filter .right{
@@ -15,6 +15,9 @@
     text-align: end;
     max-width: 70px;
 
+}
+[data-column-name="actions"] .dropdown-menu.show{
+    transform: translate(-2.5px, 1.5rem)!important;
 }
 .tableDate {
     width: fit-content;
@@ -134,7 +137,7 @@
         width: 30%;
     }
     .cardTextMain {
-        height: calc(100vh - 130px);
+        height: calc(100vh - 12rem);
     }
     .movementsTableAccounts {
         max-height: none;

@@ -143,8 +143,8 @@ const Transfer = ({ content, actions, getTransfers, fundName }) => {
         <FormattedNumber prefix="U$D " value={content.sharePrice} fixedDecimals={2} />
       </td>
       <td className={`tableAmount ${incomingTransfer() ? 'text-green' : 'text-red'}`}>
-        {incomingTransfer() ? '+' : '-'}
-        <FormattedNumber prefix="U$D " value={amount.toString()} fixedDecimals={2} />
+        
+        <FormattedNumber prefix={`${incomingTransfer() ? '+' : '-'}U$D `} value={amount.toString()} fixedDecimals={2} />
       </td>
       {
         !!(actions) &&

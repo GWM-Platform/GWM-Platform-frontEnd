@@ -11,7 +11,7 @@ import FilterOptions from 'components/DashBoard/GeneralUse/FilterOptions';
 import PaginationController from 'components/DashBoard/GeneralUse/PaginationController';
 
 
-const MovementsTab = () => {
+const MovementsTab = ({ selectedFixedDepositId }) => {
     const history = useHistory();
 
     const { ClientSelected } = useContext(DashBoardContext)
@@ -130,6 +130,7 @@ const MovementsTab = () => {
                             :
                             FixedDeposits.content.total > 0 ?
                                 <TableLastMovements
+                                    selectedFixedDepositId={selectedFixedDepositId}
                                     content={FixedDeposits.content.deposits}
                                     movements=""
                                 />

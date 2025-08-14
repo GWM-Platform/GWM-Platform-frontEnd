@@ -143,12 +143,10 @@ const WithdrawData = ({ data, handleChange, validated, handleSubmit, account, fe
                             </Button>
                         </div>
                 }
-                <Container className='px-sm-0'>
-                    <div className='d-flex justify-content-end'>
-                        <Button disabled={fetching || data.amount === "" || data.amount <= 0}
-                            variant="danger" type="submit" className="submitBtn">{t("Submit")}</Button>
-                    </div>
-                </Container>
+                <div className='d-flex justify-content-end'>
+                    <Button disabled={fetching || data.amount === "" || data.amount <= 0}
+                        variant="danger" type="submit" className="submitBtn">{t("Submit")}</Button>
+                </div>
             </Form>
         </>
     )

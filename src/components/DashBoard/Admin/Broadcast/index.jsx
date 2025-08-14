@@ -107,7 +107,7 @@ const Broadcast = () => {
                 let span = doc.createElement('span');
                 span.textContent = `{{${keyword}}}`
                 element.replaceWith(span)
-                if (keyword !== "username") {
+                if (keyword !== "username" && !keyword.includes("share_price_fund")) {
                     toClients = true
                 }
             });
@@ -176,7 +176,7 @@ const Broadcast = () => {
     var allOwnersArray = [{ label: "Owners", value: "*owners" }]
     for (let client of clients) {
         let appendToArray = []
-        appendToArray = client.users.filter(user => user?.isOwner).map(
+        appendToArray = ([...client?.users || []]).filter(user => user?.isOwner).map(
             userToClient => ({ value: userToClient?.user?.email, label: userToClient?.user?.email, email: userToClient?.user?.email })
         ).filter(
             //eslint-disable-next-line 
@@ -258,7 +258,7 @@ const Broadcast = () => {
                         label: client.alias,
                         value: client.alias,
                         id: client.id,
-                        options: client.users.map(userToClient => transfromUser(userToClient?.user))
+                        options: client?.users?.map(userToClient => transfromUser(userToClient?.user))
                     })
                 )]
             : []
@@ -441,14 +441,14 @@ const Broadcast = () => {
             let client = getClientById(clientId)
             aux = [...aux.filter(
                 selectedOption => {
-                    return client.users.filter(clientUser => selectedOption.value === clientUser.user.email)?.length === 0
+                    return client.users?.filter(clientUser => selectedOption.value === clientUser.user.email)?.length === 0
                 }
             )]
             return [...aux]
         })
     }
 
-
+    console.log(clients)
     const GroupHeading = ({ children, ...props }) => {
 
         const clientUsers = getClientById(props?.data?.id)?.users || []

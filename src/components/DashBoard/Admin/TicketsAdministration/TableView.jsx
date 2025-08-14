@@ -22,8 +22,9 @@ export const TableView = ({ state, client, FilterOptions }) => {
     useEffect(() => {
         dispatch(fetchMovements({
             ...FilterOptions,
-            state,
-            client,
+            filterMotives: FilterOptions.filterMotives.length > 0 ? FilterOptions.filterMotives : null,
+            filterStates: FilterOptions.filterStates.length > 0 ? FilterOptions.filterStates : null,
+            clients: FilterOptions.clients.length > 0 ? FilterOptions.clients : null,
             ...FilterOptions.fromAmount ? { fromAmount: unMaskNumber({ value: FilterOptions.fromAmount }) } : {},
             ...FilterOptions.toAmount ? { toAmount: unMaskNumber({ value: FilterOptions.toAmount }) } : {},
         }))
@@ -194,7 +195,6 @@ export const TableView = ({ state, client, FilterOptions }) => {
 }
 
 const Movement = ({ movement }) => {
-    console.log(movement)
     const { getMoveStateById } = useContext(DashBoardContext)
     const { t } = useTranslation()
 
@@ -207,6 +207,7 @@ const Movement = ({ movement }) => {
     const adminNote = movement?.notes?.find(note => note.noteType === "ADMIN_NOTE")
     const partialLiquidate = movement?.notes?.find(note => note.noteType === "PARTIAL_LIQUIDATE_MOTIVE")
     const fundLiquidate = movement?.notes?.find(note => note.noteType === "FUND_LIQUIDATE")
+    const liquidateMotive = movement?.notes?.find(note => note.noteType === "MOVEMENT_LIQUIDATE_MOTIVE")
 
     return (
         <tr>
@@ -232,7 +233,7 @@ const Movement = ({ movement }) => {
             <td data-column-name="concept" className="tableDate">
                 {movement.concept}
                 {
-                    !!(!!(transferNote) || !!(clientNote) || !!(denialMotive) || !!(fundLiquidate) || !!(partialLiquidate)) &&
+                    !!(!!(transferNote) || !!(clientNote) || !!(denialMotive) || !!(fundLiquidate) || !!(partialLiquidate) || !!(liquidateMotive)) &&
                     <OverlayTrigger
                         show={showClick || showHover}
                         placement="right"
@@ -283,6 +284,12 @@ const Movement = ({ movement }) => {
                                     !!(fundLiquidate) &&
                                     <div>
                                         <span className="text-nowrap">"{fundLiquidate.text}"</span>
+                                    </div>
+                                }
+                                {
+                                    !!(liquidateMotive) &&
+                                    <div>
+                                        <span className="text-nowrap">"{liquidateMotive.text}"</span>
                                     </div>
                                 }
                             </Tooltip>

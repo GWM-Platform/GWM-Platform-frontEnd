@@ -1,12 +1,12 @@
 import React, { useCallback, useContext, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Col, Nav, Button, Spinner } from 'react-bootstrap';
+import { Container, Col, Nav, Button, Spinner, Dropdown } from 'react-bootstrap';
 
 import { useTranslation } from "react-i18next";
 import { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 
 import MovementsTab from './MovementsTab';
 import TransfersTab from './TransfersTab';
@@ -26,8 +26,7 @@ import HoldingsReport from 'TableExport/HoldingsReport';
 import moment from 'moment';
 import "components/DashBoard/Admin/Broadcast/index.scss"
 
-const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
-
+const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, resetSearchById, handleMovementSearchChange, sections, linkToOtherHistory }) => {
     function useQuery() {
         const { search } = useLocation();
 
@@ -128,9 +127,7 @@ const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, reset
             <div className="main-card-header bg-white info ms-0 mb-2 px-0">
                 <div className="d-flex align-items-start pe-2">
                     <Col className="d-flex justify-content-between pe-5 me-auto mt-2" sm="auto">
-                        <h1 className="m-0 title px-2">
-                            {t("Cash")}
-                        </h1>
+                        <SectionSelector sections={sections} title={t("Cash")} />
                     </Col>
                     <Col xs="auto" className='ms-2' style={{ marginTop: ".4rem" }}>
 
@@ -173,27 +170,10 @@ const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, reset
                         <Col className="pe-2">
                             <div className="containerHideInfo px-2">
                                 <span>{t("Balance")}:&nbsp;</span>
-                                <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={balanceInCash.toString()} prefix="U$D " fixedDecimals={2} />
-                                <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={balanceInCash.toString()} prefix="U$D " fixedDecimals={2} />
-                                <FormattedNumber className={`info placeholder`} value={balanceInCash.toString()} prefix="U$D " fixedDecimals={2} />
+                                <FormattedNumber  value={balanceInCash.toString()} prefix="U$D " fixedDecimals={2} />
                             </div>
                         </Col>
-                        <Col sm="auto" className="hideInfoButton d-flex align-items-center">
-                            <FontAwesomeIcon
-                                className={`icon ${Hide ? "hidden" : "shown"}`}
-                                onClick={() => { setHide(!Hide) }}
-                                icon={faEye}
-                            />
-                            <FontAwesomeIcon
-                                className={`icon ${!Hide ? "hidden" : "shown"}`}
-                                onClick={() => { setHide(!Hide) }}
-                                icon={faEyeSlash}
-                            />
-                            <FontAwesomeIcon
-                                className="icon placeholder"
-                                icon={faEyeSlash}
-                            />
-                        </Col>
+                      
                     </Col>
                 </div>
             </div>
@@ -220,6 +200,7 @@ const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, reset
                     {
                         Movements:
                             <MovementsTab
+                                linkToOtherHistory={linkToOtherHistory}
                                 Movements={Movements} setMovements={setMovements}
                                 SearchById={SearchById} setSearchById={setSearchById} Fund={Fund}
                                 resetSearchById={resetSearchById} handleMovementSearchChange={handleMovementSearchChange} />,
@@ -235,6 +216,51 @@ const MainCardAccount = ({ Fund, Hide, setHide, SearchById, setSearchById, reset
     )
 }
 export default MainCardAccount
+
+export const SectionSelector = ({ sections, title, titleClassName }) => {
+    return (<Dropdown>
+        <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components" titleClassName={titleClassName}>
+            {title}
+        </Dropdown.Toggle>
+        <Dropdown.Menu>
+            {
+                sections?.map((section, index) =>
+                    section.children ?
+                        <React.Fragment key={index}>
+                            <Dropdown.Header className="py-1">{section.title}</Dropdown.Header>
+                            {section.children.map(
+                                (child, childIndex) =>
+                                    <Dropdown.Item key={`${index}-${childIndex}`} eventKey={`${index}-${childIndex}`} active={child.active} onClick={child.onSelect}>{child.title}</Dropdown.Item>
+                            )}
+                            <Dropdown.Divider className='my-1' />
+                        </React.Fragment>
+                        :
+                        <React.Fragment key={index}>
+                            <Dropdown.Item eventKey={index} active={section.active} onClick={section.onSelect}>{section.title}</Dropdown.Item>
+                            {
+                                sections.length - 1 !== index &&
+                                <Dropdown.Divider className='my-1' />
+                            }
+                        </React.Fragment>
+                )
+            }
+        </Dropdown.Menu>
+    </Dropdown>)
+}
+
+const CustomToggle = React.forwardRef(({ children, onClick, titleClassName = `m-0 title px-2` }, ref) => (
+    <h1
+        className={titleClassName}
+        style={{ cursor: "pointer" }}
+        ref={ref}
+        onClick={(e) => {
+            onClick(e);
+        }}
+    >
+        {children}
+        <FontAwesomeIcon icon={faChevronDown} className="ms-2" size='2xs' />
+    </h1>
+));
 
 export const YearlyStatement = ({ ClientSelected, wrapperClassName = "d-inline-block mt-2 mb-0", selectClassName = "ms-2", selectWidth = "21.5ch", label = "Reporte de tenencias" }) => {
 

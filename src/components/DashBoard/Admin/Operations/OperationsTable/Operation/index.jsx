@@ -9,6 +9,9 @@ import { faCheckCircle, faTimesCircle } from "@fortawesome/free-regular-svg-icon
 import ActionConfirmationModal from "./ActionConfirmationModal";
 import { fetchOperations } from "Slices/DashboardUtilities/operationsSlice";
 import { userId } from "utils/userId";
+import { fetchusers, selectuserById } from "Slices/DashboardUtilities/usersSlice";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
 
@@ -28,6 +31,7 @@ const Operation = ({ Operation, User, fetchOperationsParams = {} }) => {
     const dispatch = useDispatch()
     const refetch = () => {
         dispatch(fetchFunds())
+        dispatch(fetchusers({ all: true }))
         dispatch(fetchOperations(fetchOperationsParams))
         if (Operation?.operationType === "LIQUIDATE_FUND" && Action === "approve") {
             axios.put(`/funds/${Fund.id}`, ({
@@ -40,30 +44,57 @@ const Operation = ({ Operation, User, fetchOperationsParams = {} }) => {
         }
     }
     const currentUserId = userId()
-
+    const user = useSelector(state => selectuserById(state, Operation?.operationMetadata?.userId))
+    const approvedOrDeniedByUser = useSelector(state => selectuserById(state, Operation?.approvedOrDeniedById))
+    const state = {
+        1: "Pending",
+        2: "Approved",
+        3: "Denied",
+        4: "Liquidated",
+        5: "Client pending",
+        6: "Admin sign pending"
+    }[Operation.stateId]
     return (
         <tr>
             <td className="Alias">{moment(Operation.createdAt).format('l')} {moment(Operation.createdAt).format('LT')}</td>
             <td className="Alias">{User?.firstName || User?.lastName ? (User?.firstName + " " + User?.lastName) : "-"}</td>
             <td className="Alias">
-                {t(Operation?.operationType)}{
-                    Fund ?
-                        <>
-                            &nbsp;({Fund.name}, {t("share_price")}: <FormattedNumber prefix="U$D " value={Operation?.operationMetadata?.customSharePrice} fixedDecimals={2} />)
-                        </>
-                        :
-                        ""
+                {t(Operation?.operationType)}
+                {
+                    Operation.operationType === "LIQUIDATE_FUND" && (
+                        Fund ?
+                            <>
+                                &nbsp;({Fund.name}, {t("share_price")}: <FormattedNumber prefix="U$D " value={Operation?.operationMetadata?.customSharePrice} fixedDecimals={2} />)
+                            </>
+                            :
+                            ""
+                    )
+                }
+                {
+                    (Operation.operationType === "CREATE_ADMIN" || Operation.operationType === "ASSIGN_ADMIN" || Operation.operationType === "REMOVE_ADMIN") &&
+                    <>
+                        &nbsp;({Operation.operationMetadata.email || user?.email || "Mail no encontrado"})
+                    </>
                 }
             </td>
             <td className="Alias">
-                {t({
-                    1: "Pending",
-                    2: "Approved",
-                    3: "Denied",
-                    4: "Liquidated",
-                    5: "Client pending",
-                    6: "Admin sign pending"
-                }[Operation.stateId])}
+                {t(state)}
+
+                {approvedOrDeniedByUser &&
+                    <OverlayTrigger
+                        trigger={["hover", "focus"]}
+                        placement="right"
+                        delay={{ show: 250, hide: 400 }}
+
+                        overlay={
+                            <Tooltip className="mailTooltip" id="more-units-tooltip">
+                                {t(state)} {t("by")} {approvedOrDeniedByUser.email}
+                            </Tooltip>
+                        }
+                    >
+                        <button type="button" className="noStyle pe-0 ps-1"  ><FontAwesomeIcon icon={faInfoCircle} /></button>
+                    </OverlayTrigger>
+                }
             </td>
             <td className="Alias" >
                 {

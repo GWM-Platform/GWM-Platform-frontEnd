@@ -1,16 +1,18 @@
+import { MotiveMultiSelect } from "components/DashBoard/GeneralUse/FilterOptions";
 import { DashBoardContext } from "context/DashBoardContext";
 import React, { useContext, useState } from "react";
 import { Button, Form, Offcanvas } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 
-const FilterOptionsMobile = ({ show, handleClose, disabled, setOptions, dateFilters }) => {
+const FilterOptionsMobile = ({ show, handleClose, disabled, setOptions, dateFilters, filterMotives }) => {
     const { t } = useTranslation();
     const { TransactionStates } = useContext(DashBoardContext)
 
     const [filterOptions, setFilterOptions] = useState({
         state: "",
         fromDate: "",
-        toDate: ""
+        toDate: "",
+        filterMotives: []
     })
 
     const handleChange = (event, number = true) => {
@@ -33,13 +35,16 @@ const FilterOptionsMobile = ({ show, handleClose, disabled, setOptions, dateFilt
                     ...dateFilters ? {
                         fromDate: filterOptions.fromDate,
                         toDate: filterOptions.toDate
+                    } : {},
+                    ...filterMotives ? {
+                        filterMotives: filterOptions.filterMotives
                     } : {}
                 }
             }))
             handleClose()
         }
     }
-
+    const movements = true
     return (
         <Offcanvas show={show} onHide={handleClose} placement="bottom" name="filters mobile">
             <Offcanvas.Header closeButton>
@@ -53,12 +58,18 @@ const FilterOptionsMobile = ({ show, handleClose, disabled, setOptions, dateFilt
                         !!(TransactionStates.fetched && TransactionStates.valid && !TransactionStates.fetching) &&
                         <Form.Group controlId="movesPerPage">
                             <Form.Label className="capitalizeFirstLetter">{t(`status`)}</Form.Label>
-                            <Form.Select value={filterOptions.state} onChange={handleChange} id="state">
-                                <option value="">{t("All")}</option>
+                            <Form.Select disabled={disabled} value={filterOptions.state} onChange={e => handleChange(e)} id="state">
+                                <option value="">{movements ? t("All except denied") : t("All")}</option>
+                                {!!(movements) && <option value="10">{t("All (including denied)")}</option>}
                                 {TransactionStates.values.map((state, key) => <option key={key} value={state.id}>{t(state.name)}</option>)}
                             </Form.Select>
                         </Form.Group>
                     }
+                    {
+                        filterMotives &&
+                        <Form.Group className="mt-2">
+                            <MotiveMultiSelect handleChange={handleChange} FormData={filterOptions} />
+                        </Form.Group>}
                     {
                         dateFilters &&
                         <>

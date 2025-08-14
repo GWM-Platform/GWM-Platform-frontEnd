@@ -12,6 +12,9 @@ import { DashBoardContext } from 'context/DashBoardContext';
 import { useContext } from 'react';
 import CreateClientForm from './CreateClientForm';
 import { customFetch } from 'utils/customFetch';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchclients, selectAllclients, toggleEnabled } from 'Slices/DashboardUtilities/clientsSlice';
+import { useMemo } from 'react';
 
 const ClientsSupervision = () => {
     const { toLogin } = useContext(DashBoardContext)
@@ -19,13 +22,8 @@ const ClientsSupervision = () => {
     const { t } = useTranslation();
 
     const [Accounts, setAccounts] = useState({ fetching: true, fetched: false, content: [] })
-    const [Clients, setClients] = useState({ fetching: true, fetched: false, content: [] })
     const toggleClient = (clientId) => {
-        setClients(prevState => {
-            const Client = prevState.content.find(client => client.id === clientId)
-            Client.enabled = !Client.enabled
-            return { ...prevState, content: [...prevState.content] }
-        })
+        dispatch(toggleEnabled({ id: clientId }))
     }
     const [users, setUsers] = useState({ fetching: true, fetched: false, valid: false, content: [] })
 
@@ -62,35 +60,14 @@ const ClientsSupervision = () => {
         };
     }, [getUsers])
 
-    const getClients = async () => {
-        const token = sessionStorage.getItem('access_token')
-        setClients((prevState) => ({ fetching: true, fetched: true, content: [] }))
-        var url = `${process.env.REACT_APP_APIURL}/Clients/?` + new URLSearchParams({
-            all: true,
-        });
+    const clientsState = useSelector(state => state.clients.status)
+    const clients = useSelector(selectAllclients)
+    const Clients = useMemo(() => ({ fetching: clientsState === "loading", fetched: clientsState === "succeeded", content: [...clients] }), [clients, clientsState])
+    const dispatch = useDispatch()
+    const getClients = useCallback(() => {
+        dispatch(fetchclients({ all: true }))
+    }, [dispatch])
 
-        const response = await customFetch(url, {
-            method: 'GET',
-            headers: {
-                Authorization: `Bearer ${token}`,
-                Accept: "*/*",
-            }
-        })
-
-        if (response.status === 200) {
-            const dataFetched = await response.json()
-            setClients((prevState) => ({ ...prevState, ...{ fetching: false, fetched: true, content: dataFetched } }))
-        } else {
-            switch (response.status) {
-                case 500:
-                    setClients((prevState) => ({ ...prevState, ...{ fetching: false, fetched: false } }))
-                    break;
-                default:
-                    setClients((prevState) => ({ ...prevState, ...{ fetching: false, fetched: false } }))
-                    console.error(response.status)
-            }
-        }
-    }
 
     useEffect(() => {
         const token = sessionStorage.getItem('access_token')
@@ -124,7 +101,7 @@ const ClientsSupervision = () => {
         getAccounts()
         getClients()
 
-    }, [])
+    }, [getClients])
 
     const getAccountByClientId = (searchedClientId) => {
         let index = Accounts.content.findIndex((account) => account.clientId === searchedClientId)

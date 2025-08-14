@@ -253,7 +253,7 @@ const ActionConfirmationModal = ({ transaction, setShowModal, action, show, relo
                             <Button variant="outline-secondary" onClick={() => handleClose()}>
                                 {t("Cancel")}
                             </Button>
-                            <Button variant="outline-success" onClick={() => { if (!ActionFetch.fetching) changeTransactionState() }}>
+                            <Button variant="outline-success" onClick={() => { if (!ActionFetch.fetching) { changeTransactionState();/* changeTransactionState() */ } }}>
                                 <div className="iconContainer green">
                                     {t("Confirm")}
                                 </div>

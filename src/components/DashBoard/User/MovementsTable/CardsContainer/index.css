@@ -2,20 +2,36 @@
 	overflow-x: clip;
 }
 .HistoryCardsContainer .CategoryLabel {
-	font-size: 30px;
+	font-size: 1.8rem;
 	margin-top: 0.5rem;
 	padding-right: 1rem;
 	padding-left: 1rem;
 	margin-bottom: 1rem;
-	min-height: calc(27.59px + 34.84px);
 	border-bottom: 1px solid;
 	display: flex;
-	align-items: center;
+	align-items: bottom;
 }
+
+.HistoryCardsContainer .CategoryLabel.historic {
+	border-bottom-color: #484747;
+
+}
+.HistoryCardsContainer .CategoryLabel.historic .title{
+	color: #484747;
+	font-size: 1.25rem;
+}
+
 .HistoryCardsContainer .CategoryLabel .title {
-	font-size: 30px;
+	font-size: 1.5rem;
 	margin-top: 0;
 }
+
+.HistoryCardsContainer .CategoryLabel .collapse-expand {
+	font-size: 1.2rem;
+	margin-bottom: .5rem;
+	color: #484747;
+}
+
 .mainCardCol {
 	transition: width .5s;
 }
@@ -24,12 +40,12 @@
 	top: calc( (100vh - 206px) / 2);
 	right: 0px;
 	transform: translateY(-50%);
-	font-size: 30px;
+	font-size: 1.8rem;
 	cursor: pointer;
 	transition: ease all .5s;
 }
 .collapser .chevron{
-	font-size: 30px;
+	font-size: 1.8rem;
     height: 1em;
     display: block;
 }
@@ -55,14 +71,14 @@
 	margin-left: 2%;
 	margin-right: 2%;
 	margin-bottom: 10%;
-	border-radius: 30px;
+	border-radius: 2rem;
 	font-weight: 300;
 
 	max-height: 80%;
     overflow: hidden;
 }
 .movementsCardMobile .card-header {
-	border-radius: 30px 30px 0 0;
+	border-radius: 2rem 2rem 0 0;
 	background-color: var(--blue-main);
 	color: white;
 	border: 1px solid var(--blue-main);
@@ -76,7 +92,7 @@
 }
 .movementsCardMobile .card-body {
 	border: 1px solid var(--blue-main);
-	border-radius: 0 0 30px 30px;
+	border-radius: 0 0 2rem 2rem;
 
     overflow: auto;
 }
@@ -113,44 +129,6 @@
 	}
 }
 
-@media (max-width: 992px) {
-	.secondaryCardContainer {
-		position: absolute;
-		right: 0px;
-		overflow-y: auto;
-		background-color: aliceblue;
-		transition: all 1.5s;
-		transform-origin: right;
-		max-height: calc(100vh - (45px + 45px + 76px + 40px));
-	}
-	.secondaryCardContainer.collapsed {
-		overflow-x: hidden;
-		transform-origin: right;
-		transform: rotateY(90deg);
-		transition: all 1.5s;
-	}
-	.collapser {
-		top: 50%;
-		position: fixed;
-		transition: all 1s;
-	}
-	.collapser.expanded {
-		top: 50%;
-		right: 0px;
-		transform: translateY(-50%)rotate(180deg);
-		transition: all 1.8s;
-	}
-	.collapser.collapsed {
-		transform: translateY(-50%);
-		right: 34%;
-	}
-	.collapser:hover {
-		animation: none;
-	}
-	.collapser.expanded:hover {
-		animation: none;
-	}
-}
 
 @media (max-width: 576px) {
 	.movementsCardMobile:first-of-type {

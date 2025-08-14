@@ -9,13 +9,11 @@ import { fetchusers } from 'Slices/DashboardUtilities/usersSlice';
 import MoreButton from 'components/DashBoard/GeneralUse/MoreButton';
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icons';
 import { userId } from 'utils/userId';
-import { selectAllclients } from 'Slices/DashboardUtilities/clientsSlice';
-import { useMemo } from 'react';
 import MultipleItemsCell from 'components/DashBoard/GeneralUse/MultipleItemsCell';
 import { Link } from 'react-router-dom/cjs/react-router-dom';
+import { fetchOperations, selectAllOperations } from 'Slices/DashboardUtilities/operationsSlice';
 
 export const User = ({ user }) => {
-    const clients = useSelector(selectAllclients)
 
     const { t } = useTranslation();
     const dispatch = useDispatch()
@@ -42,6 +40,7 @@ export const User = ({ user }) => {
             }
         });
     }
+    const operations = useSelector(selectAllOperations)
 
     const toggleUserStatus = () => {
         setRequest((prevState) => ({ ...prevState, fetching: true, fetched: false }))
@@ -62,19 +61,40 @@ export const User = ({ user }) => {
                 }
             });
     }
-    const currentUserId = userId()
-    const userClients = useMemo(() => clients.filter(client => client.users.find(clientUser => clientUser.userId === user.id)), [clients, user.id])
 
+
+
+    const toggleAdmin = ({ assign }) => {
+        setRequest((prevState) => ({ ...prevState, fetching: true, fetched: false }))
+        axios.post(`/operations`, { operationType: user.isAdmin ? "REMOVE_ADMIN" : "ASSIGN_ADMIN", operationMetadata: { userId: user.id } })
+            .then(function (response) {
+                setRequest(() => (
+                    {
+                        fetching: false,
+                        fetched: true,
+                        valid: true,
+                    }))
+                dispatch(fetchOperations())
+            }).catch((err) => {
+                if (err.message !== "canceled") {
+                    if (err.response.status === "401") toLogin()
+                    setRequest((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
+                }
+            });
+    }
+
+    const currentUserId = userId()
+    const onCourseOperation = operations.operations.find(operation => operation.operationMetadata.userId === user.id && (operation.operationType === "ASSIGN_ADMIN" || operation.operationType === "REMOVE_ADMIN") && operation.stateId === 1)
     return (
         <tr>
             <td className="Alias">{user?.email}</td>
-            <td className="Alias">{user?.firstName || user?.lastName ? (user?.firstName + " " + user?.lastName) : "-"}</td>
+            <td className="Alias">{user?.completeName}</td>
             <td className="Alias">{user?.dni || "-"}</td>
             <td className="Alias">{user?.phone || "-"}</td>
             <td className="Alias">{user?.address || "-"}</td>
             <td className="Alias">
                 <MultipleItemsCell
-                    className='d-flex' buttonClassName="badge bg-info" buttonStyle={{ border: "none" }} array={userClients}
+                    className='d-flex' buttonClassName="badge bg-info" buttonStyle={{ border: "none" }} array={user.userClients}
                     transformer={(client) => <Link className="badge bg-info" to={`/DashBoard/clientsSupervision/${client.id}`}>{client.alias}</Link>}
                 />
             </td>
@@ -85,6 +105,7 @@ export const User = ({ user }) => {
                             <Badge size="sm" bg={user.enabled ? "success" : "danger"}>
                                 {user.enabled ? t("Access enabled") : t("Access disabled")}
                             </Badge>,
+                            ...onCourseOperation ? [<Badge bg="warning">{t(onCourseOperation.operationType)} {t("on course")}</Badge>] : [],
                             <Badge size="sm" bg={user.verified ? "success" : "danger"}>
                                 {user.verified ? t("Email verified") : t("Email not verified")}
                             </Badge>,
@@ -134,6 +155,9 @@ export const User = ({ user }) => {
                                             }
                                             <Dropdown.Item disabled={currentUserId === user.id + ""} onClick={toggleUserStatus}>
                                                 {t(user.enabled ? 'Disable general access' : 'Enable general access')}
+                                            </Dropdown.Item>
+                                            <Dropdown.Item disabled={currentUserId === user.id + "" || onCourseOperation} onClick={toggleAdmin}>
+                                                {t(user.isAdmin ? 'Revoke admin access' : 'Give admin access')}
                                             </Dropdown.Item>
                                         </Dropdown.Menu >
                                     </Dropdown>

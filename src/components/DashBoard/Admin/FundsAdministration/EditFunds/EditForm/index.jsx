@@ -9,7 +9,6 @@ import { unMaskNumber } from 'utils/unmask';
 //import FundAssets from './FundAssets'
 
 const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, setAction, validated, handleSubmit, AssetTypes, ImageUrl, setImageUrl, checkImage, withoutHeader = false }) => {
-    console.log(withoutHeader)
     const { t } = useTranslation();
 
     const [show, setShow] = useState(false);

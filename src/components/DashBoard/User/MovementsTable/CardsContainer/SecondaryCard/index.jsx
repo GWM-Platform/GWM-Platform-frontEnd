@@ -12,7 +12,7 @@ import PerformanceComponent from 'components/DashBoard/GeneralUse/PerformanceCom
 import { customFetch } from 'utils/customFetch';
 
 //Parent key 0-> Fund;Parent key 1->Cash
-const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownKey, selected, Hide, categorySelected, resetSearchById }) => {
+const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownKey, selected, Hide, categorySelected, resetSearchById, historic }) => {
     const select = () => {
         setCategorySelected(parentKey)
         setSelected(ownKey)
@@ -46,9 +46,9 @@ const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownK
 
     return (
         <Container fluid className="pt-0 pb-2 px-1 growAnimation" ref={ref} >
-            <Row className={`secondaryCard ${parentKey === categorySelected && selected === ownKey ? "selected" : null} flex-nowrap mx-0 px-0`} onClick={select}>
-                <Col lg="auto" className="d-none d-sm-none d-md-none d-lg-flex currencyCol d-flex align-items-center">
-                    <div className="currencyContainer d-flex align-items-center justify-content-center">
+            <Row className={`secondaryCard ${parentKey === categorySelected && selected === ownKey ? "selected" : null} ${historic ? "historic" : ""} flex-nowrap mx-0 px-0`} onClick={select}>
+                <Col lg="auto" className={`d-none d-sm-none d-md-none d-lg-flex currencyCol d-flex align-items-center ${historic ? "historic" : ""}`}>
+                    <div className="currencyContainer d-flex align-items-center justify-content-center" >
                         {(() => {
                             switch (parentKey) {
                                 case 0:
@@ -85,13 +85,11 @@ const SecondaryCard = ({ Fund, setCategorySelected, setSelected, parentKey, ownK
                     <div className="mb-2">
                         <h2 className="funds">
                             <div className="containerHideInfo">
-                                <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={balanceInCash().toString()} prefix="U$D " fixedDecimals={2} />
-                                <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={balanceInCash().toString()} prefix="U$D " fixedDecimals={2} />
-                                <FormattedNumber className={`info placeholder`} value={balanceInCash().toString()} prefix="U$D " fixedDecimals={2} />
+                                <FormattedNumber value={balanceInCash().toString()} prefix="U$D " fixedDecimals={2} />
                             </div>
                         </h2>
-                        <span className={parentKey=== 0 ? "invisible" : ""}>
-                            <PerformanceComponent className='performance-component' withoutSelector text={"Accumulated performance"} fundId={parentKey === 1 ? Fund?.fundId : ""} fixedDepositId={parentKey === 2 ? "1" : ""} />
+                        <span className={parentKey === 0 ? "invisible" : ""}>
+                            <PerformanceComponent withBreakLine className='performance-component' withoutSelector text={"Accumulated performance"} fundId={parentKey === 1 ? Fund?.fundId : ""} fixedDepositId={parentKey === 2 ? "1" : ""} />
                         </span>
                     </div>
                 </Col>

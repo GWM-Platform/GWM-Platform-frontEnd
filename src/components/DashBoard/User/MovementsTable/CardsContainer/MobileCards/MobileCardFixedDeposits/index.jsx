@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, Container, Col, Row } from 'react-bootstrap';
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEyeSlash, faEye, faPiggyBank } from '@fortawesome/free-solid-svg-icons'
+import { faPiggyBank } from '@fortawesome/free-solid-svg-icons'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import TableLastFixedDeposits from './TableLastFixedDeposits';
 import PerformanceComponent from 'components/DashBoard/GeneralUse/PerformanceComponent';
@@ -39,28 +39,11 @@ const MobileCardFixedDeposits = ({ FixedDepositsStats, Hide, setHide }) => {
                                     <div className="containerHideInfo px-0 description">
                                         <span>{t("Balance")}:&nbsp;</span>
                                         <span style={{ fontWeight: "bolder" }}>
-                                            <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={balanceInCash} prefix="U$D " fixedDecimals={2} />
-                                            <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={balanceInCash} prefix="U$D " fixedDecimals={2} />
-                                            <FormattedNumber className={`info placeholder`} value={balanceInCash} prefix="U$D " fixedDecimals={2} />
+                                            <FormattedNumber  value={balanceInCash} prefix="U$D " fixedDecimals={2} />
                                         </span>
                                     </div>
                                 </Col>
-                                <Col sm="auto" className="hideInfoButton d-flex align-items-center">
-                                    <FontAwesomeIcon
-                                        className={`icon ${Hide ? "hidden" : "shown"}`}
-                                        onClick={() => { setHide(!Hide) }}
-                                        icon={faEye}
-                                    />
-                                    <FontAwesomeIcon
-                                        className={`icon ${!Hide ? "hidden" : "shown"}`}
-                                        onClick={() => { setHide(!Hide) }}
-                                        icon={faEyeSlash}
-                                    />
-                                    <FontAwesomeIcon
-                                        className="icon placeholder"
-                                        icon={faEyeSlash}
-                                    />
-                                </Col>
+                              
                             </div>
                             <PerformanceComponent text="Performance" fixedDepositId='1'/>
                             <span className="left">

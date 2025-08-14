@@ -4,16 +4,15 @@ import { Container, Col, Nav } from 'react-bootstrap';
 
 import { useTranslation } from "react-i18next";
 import { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 
 import MovementsTab from './MovementsTab';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import PerformanceComponent from 'components/DashBoard/GeneralUse/PerformanceComponent';
 import { useHistory, useLocation } from 'react-router-dom/cjs/react-router-dom.min';
 import { PrintButton, PrintDefaultWrapper, usePrintDefaults } from 'utils/usePrint';
+import { SectionSelector } from '../MainCardAccount';
 
-const MainCardFixedDeposit = ({ FixedDepositsStats, Hide, setHide }) => {
+const MainCardFixedDeposit = ({ FixedDepositsStats, Hide, setHide, sections, selectedFixedDepositId }) => {
     const [SelectedTab, setSelectedTab] = useState("0")
     const { t } = useTranslation();
 
@@ -72,7 +71,7 @@ const MainCardFixedDeposit = ({ FixedDepositsStats, Hide, setHide }) => {
                 <div className="d-flex justify-content-between align-items-start pe-2">
                     <Col className="d-flex justify-content-between pe-5" sm="auto">
                         <h1 className="m-0 title px-2">
-                            {t("Time deposits")}
+                            <SectionSelector sections={sections} title={t("Time deposits")} titleClassName="m-0 title" />
                         </h1>
                     </Col>
                     <Col className='ms-auto' xs="auto">
@@ -85,27 +84,9 @@ const MainCardFixedDeposit = ({ FixedDepositsStats, Hide, setHide }) => {
                             <div className="containerHideInfo px-2 description">
                                 <span>{t("Balance")}:&nbsp;</span>
                                 <span style={{ fontWeight: "bolder" }}>
-                                    <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={FixedDepositsStats?.balance} prefix="U$D " fixedDecimals={2} />
-                                    <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={FixedDepositsStats?.balance} prefix="U$D " fixedDecimals={2} />
-                                    <FormattedNumber className={`info placeholder`} value={FixedDepositsStats?.balance} prefix="U$D " fixedDecimals={2} />
+                                    <FormattedNumber  value={FixedDepositsStats?.balance} prefix="U$D " fixedDecimals={2} />
                                 </span>
                             </div>
-                        </Col>
-                        <Col sm="auto" className="hideInfoButton d-flex align-items-center">
-                            <FontAwesomeIcon
-                                className={`icon ${Hide ? "hidden" : "shown"}`}
-                                onClick={() => { setHide(!Hide) }}
-                                icon={faEye}
-                            />
-                            <FontAwesomeIcon
-                                className={`icon ${!Hide ? "hidden" : "shown"}`}
-                                onClick={() => { setHide(!Hide) }}
-                                icon={faEyeSlash}
-                            />
-                            <FontAwesomeIcon
-                                className="icon placeholder"
-                                icon={faEyeSlash}
-                            />
                         </Col>
                         <Col className='ms-auto' xs="auto">
                             <PerformanceComponent className='performance-component' text="Performance" fixedDepositId='1' />
@@ -133,7 +114,7 @@ const MainCardFixedDeposit = ({ FixedDepositsStats, Hide, setHide }) => {
                 {
                     {
                         0:
-                            <MovementsTab />,
+                            <MovementsTab selectedFixedDepositId={selectedFixedDepositId} />,
                     }[SelectedTab]
                 }
             </Container>

@@ -80,8 +80,7 @@ const TransactionRow = ({ transaction, AccountId }) => {
         <FormattedNumber prefix="U$D " value={transaction.sharePrice} fixedDecimals={2} />
       </td>
       <td className={`tableAmount ${Math.sign(transaction.shares) === 1 ? 'text-green' : 'text-red'}`}>
-        {Math.sign(transaction.shares) === 1 ? '+' : '-'}
-        <FormattedNumber prefix="U$D " value={amount.toString()} fixedDecimals={2} />
+        <FormattedNumber prefix={`${Math.sign(transaction.shares) === 1 ? '+' : '-'}U$D `} value={amount.toString()} fixedDecimals={2} />
       </td>
     </tr>
   )

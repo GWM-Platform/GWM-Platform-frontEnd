@@ -6,7 +6,6 @@ import { DashBoardContext } from 'context/DashBoardContext';
 import { useTranslation } from "react-i18next";
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 
 import MovementsTab from './MovementsTab';
 import FundDetail from './FundDetail';
@@ -24,8 +23,10 @@ import TransactionTable from 'TableExport/TransactionTable';
 import axios from 'axios'
 import { exportToExcel } from 'utils/exportToExcel';
 import { faFileExcel } from '@fortawesome/free-regular-svg-icons';
+import { SectionSelector } from '../MainCardAccount';
+import { FormattedNumberWithHidden } from 'components/DashBoard/NavBars/NavBarTotal';
 
-const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
+const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSearchById, resetSearchById, handleMovementSearchChange, sections }) => {
     const location = useLocation();
     const history = useHistory()
 
@@ -155,13 +156,13 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
             <div className="bg-white main-card-header info ms-0 mb-2 px-0">
                 <div className="d-flex justify-content-between align-items-end pe-2 mb-1">
                     <h1 className="m-0 title px-2 me-auto">
-                        {t(Fund.fund.name)}
+                        <SectionSelector sections={sections} title={`${Fund.fund.name}${Fund.historic ? ` (${t("Previous investment")})` : ""}`} titleClassName="m-0 title" />
                     </h1>
                     {
                         SelectedTab + "" !== "1" &&
                         <Col xs="auto" className='ms-2' style={{ marginTop: ".4rem" }}>
                             <Button className="me-2 print-button no-style" variant="info" onClick={() => exportToExcel(
-                                SelectedTab === "Movements" ?
+                                (SelectedTab + "" === "0") ?
                                     {
                                         filename: t("Fund_movements", { fundName: Fund.fund.name }),
                                         sheetName: t("Fund_movements", { fundName: Fund.fund.name }),
@@ -197,12 +198,12 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
                     <Col className="d-flex justify-content-between pe-5" sm="auto">
                         <h2 className="px-2 left mb-1">
                             {t("Balance (shares)")}:&nbsp;
-                            <FormattedNumber style={{ fontWeight: "bolder" }} value={Fund.shares ? Fund.shares : 0} fixedDecimals={2} />
+                            <FormattedNumberWithHidden style={{ fontWeight: "bolder" }} value={Fund.shares ? Fund.shares : 0} fixedDecimals={2} />
                         </h2>
                     </Col>
                     <h2 className="m-0 left">
                         {t("Share price")}:&nbsp;
-                        <FormattedNumber style={{ fontWeight: "bolder" }} value={Fund.fund.sharePrice} prefix="U$D " suffix="" fixedDecimals={2} />
+                        <FormattedNumberWithHidden style={{ fontWeight: "bolder" }} value={Fund.fund.sharePrice} prefix="U$D " suffix="" fixedDecimals={2} />
                     </h2>
 
                 </div>
@@ -213,29 +214,12 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
                             <div className="containerHideInfo px-2 description" style={{ lineHeight: "1em" }}>
                                 <span>{t("Balance (U$D)")}:&nbsp;</span>
                                 <span style={{ fontWeight: "bolder" }}>
-                                    <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={balanceInCash.toFixed(2)} prefix="" fixedDecimals={2} />
-                                    <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={balanceInCash.toFixed(2)} prefix="" fixedDecimals={2} />
-                                    <FormattedNumber className={`info placeholder`} value={balanceInCash.toFixed(2)} prefix="" fixedDecimals={2} />
+                                    <FormattedNumber  value={balanceInCash.toFixed(2)} prefix="" fixedDecimals={2} />
                                 </span>
 
                             </div>
                         </Col>
-                        <Col sm="auto" className="hideInfoButton d-flex align-items-center">
-                            <FontAwesomeIcon
-                                className={`icon ${Hide ? "hidden" : "shown"}`}
-                                onClick={() => { setHide(!Hide) }}
-                                icon={faEye}
-                            />
-                            <FontAwesomeIcon
-                                className={`icon ${!Hide ? "hidden" : "shown"}`}
-                                onClick={() => { setHide(!Hide) }}
-                                icon={faEyeSlash}
-                            />
-                            <FontAwesomeIcon
-                                className="icon placeholder"
-                                icon={faEyeSlash}
-                            />
-                        </Col>
+                      
                     </Col>
                     <Col className='ms-auto' xs="auto">
                         <PerformanceComponent className='performance-component' text={"Accumulated performance"} fundId={Fund.fund.id} />
@@ -246,25 +230,10 @@ const MainCardFund = ({ Fund, Hide, setHide, NavInfoToggled, SearchById, setSear
                         <Col className="pe-2">
                             <div className="containerHideInfo px-2 description">
                                 {t("Pending transactions (shares)")}&nbsp;
-                                <FormattedNumber style={{ fontWeight: "bolder" }} value={pendingshares ? pendingshares : 0} fixedDecimals={2} />
+                                <FormattedNumberWithHidden style={{ fontWeight: "bolder" }} value={pendingshares ? pendingshares : 0} fixedDecimals={2} />
                             </div>
                         </Col>
-                        <Col sm="auto" className="hideInfoButton d-flex align-items-center">
-                            <FontAwesomeIcon
-                                className={`icon ${Hide ? "hidden" : "shown"}`}
-                                onClick={() => { setHide(!Hide) }}
-                                icon={faEye}
-                            />
-                            <FontAwesomeIcon
-                                className={`icon ${!Hide ? "hidden" : "shown"}`}
-                                onClick={() => { setHide(!Hide) }}
-                                icon={faEyeSlash}
-                            />
-                            <FontAwesomeIcon
-                                className="icon placeholder"
-                                icon={faEyeSlash}
-                            />
-                        </Col>
+                    
                     </Col>
                 </div>
                 <div className="border-bottom-main pb-2">

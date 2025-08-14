@@ -13,10 +13,12 @@ const PreferentialCard = ({ data, setData, handleChange }) => {
             className={`py-1 pe-1 growAnimation RuleCardContainer${false ? " RuleDisabled" : ""}${data.preferential ? " RuleSelected" : ""}`}>
             <Card
                 className="RuleCard h-100" onClick={() => {
-                    setData(prevState => ({ ...prevState, preferential: true, ruleSelected: "" }))
+                    setData(prevState => ({ ...prevState, preferential: true, ruleSelected: ""
+                        // , type: "standard" 
+                    }))
                     handleChange({ target: { id: "days", value: "" } })
                 }}>
-                <Card.Header><strong className="title" style={{ fontSize: 16 }}>{t("Personalized")}</strong></Card.Header>
+                <Card.Header><strong className="title" style={{ fontSize: "1rem" }}>{t("Personalized")}</strong></Card.Header>
                 <Card.Body>
                     <Card.Title>
                         <strong>

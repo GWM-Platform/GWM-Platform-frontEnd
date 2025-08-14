@@ -2,7 +2,7 @@ import React from "react";
 
 function Icon() {
   return (
-    <svg style={{height:"16px"}} xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 640 480">
+    <svg style={{height:"1rem"}} xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 640 480">
       <path fill="#AA151B" d="M0 0h640v480H0z"></path>
       <path fill="#F1BF00" d="M0 120h640v240H0z"></path>
       <path

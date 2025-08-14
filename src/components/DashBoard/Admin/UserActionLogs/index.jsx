@@ -24,7 +24,7 @@ const UserActionLogs = () => {
 
     const [validated, setValidated] = useState(false)
 
-    const defaultMinDate = moment().subtract(1, "month").isSameOrAfter(moment("2023-02-01")) ? moment().subtract(1, "month").format(moment.HTML5_FMT.DATE) : "2023-02-01"
+    const defaultMinDate = "2023-02-01"
     const defaultMaxDate = moment().format(moment.HTML5_FMT.DATE)
 
     const FilterOptionsDefaultState = {
@@ -99,8 +99,9 @@ const UserActionLogs = () => {
                     filterType: FilterOptions?.type === ""
                         ? null
                         : FilterOptions?.type?.value,
-                    startDate: FilterOptions.from,
-                    endDate: moment(FilterOptions.to).add(1, "day").format(moment.HTML5_FMT.DATE)
+                        // if the user is in gmt-3, it shoud 
+                    startDate: moment(FilterOptions.from).format(),
+                    endDate: moment(FilterOptions.to).endOf("day").format()
                 }, signal: signal
             })
             .then(function (response) {
@@ -143,7 +144,7 @@ const UserActionLogs = () => {
         const form = event.currentTarget;
         event.preventDefault();
         event.stopPropagation();
-        if (form.checkValidity() && !Events.status === "loading") {
+        if (form.checkValidity() && Events.status !== "loading") {
             setPagination(prevState => ({ ...prevState, skip: 0 }))
             getEvents()
         } else {
@@ -240,7 +241,7 @@ const UserActionLogs = () => {
 
         // eslint-disable-next-line
     }, [])
-
+    // TODO: Replace with redux
     const [Clients, setClients] = useState({ status: "idle", content: [] })
 
     useEffect(() => {
@@ -421,6 +422,7 @@ const UserActionLogs = () => {
                                                 classNames={{
                                                     input: () => "react-select-input",
                                                 }}
+                                                required={false}
                                                 isClearable
                                             />
                                         </Col>
@@ -438,6 +440,7 @@ const UserActionLogs = () => {
                                                 onChange={(selectedOption) => handleChangeType(selectedOption)}
                                                 options={eventOptions}
                                                 value={FilterOptions.type}
+                                                required={false}
                                                 classNames={{
                                                     input: () => "react-select-input",
                                                 }}

@@ -5,7 +5,7 @@ import { InputGroup, Form } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass, faSearch, faTimes } from '@fortawesome/free-solid-svg-icons'
 import './index.css'
-const ClientsSearch = ({ handleSearch, SearchText, cancelSearch, FilteredClients, Clients, search }) => {
+const ClientsSearch = ({ handleSearch, SearchText, cancelSearch, FilteredClients, Clients, search, label = "Search client" }) => {
 
     const { t } = useTranslation();
 
@@ -17,7 +17,7 @@ const ClientsSearch = ({ handleSearch, SearchText, cancelSearch, FilteredClients
             <Form.Control
                 onChange={handleSearch}
                 value={SearchText}
-                placeholder={t("Search client")}
+                placeholder={t(label)}
                 aria-label="Search"
                 onKeyDown={e => { if (e.key === 'Enter') search() }}
             />

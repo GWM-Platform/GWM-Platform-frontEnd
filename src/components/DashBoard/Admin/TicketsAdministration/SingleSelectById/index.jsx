@@ -1,10 +1,21 @@
-import React from "react";
+import React, { useMemo } from "react";
 import Select from 'react-select';
 import { components } from 'react-select';
 
-const SingleSelectById = ({ backspaceRemovesValue = false, popover = false, menuPosition = "fixed", className = "", id = "", options = [], validated = false, required = false, FormData = {}, handleChange, disabled, isLoading, isClearable = false, placeholder = "" }) => {
+const SingleSelectById = ({ backspaceRemovesValue = false, popover = false, menuPosition = "fixed", className = "", id = "", options: optionsDefault = [], validated = false, required = false, FormData = {}, handleChange, disabled, isLoading, isClearable = false, placeholder = "", getOptionLabel = false }) => {
     const value = FormData[id]
     const getOptionByValue = (optionValue) => options.find(option => optionValue === option?.value) || null
+
+
+    const options = useMemo(() => optionsDefault.sort((a, b) => {
+        if (value === a.value) {
+            return -1;
+        } else if (value === b.value) {
+            return 1;
+        } else {
+            return a.label.localeCompare(b.label);
+        }
+    }), [optionsDefault, value])
 
     const parsedChange = (selectedOption) => {
         handleChange({ target: { value: selectedOption?.value || "", id } })
@@ -19,9 +30,9 @@ const SingleSelectById = ({ backspaceRemovesValue = false, popover = false, menu
     );
 
     return (
-        <>
-        <div className="h-100" title={getOptionByValue(value)?.label ||placeholder ||""  }>
+        <div className="h-100" title={getOptionByValue(value)?.label || placeholder || ""}>
             <Select
+                {...(getOptionLabel ? { getOptionLabel } : {})}
                 backspaceRemovesValue={backspaceRemovesValue}
                 isClearable={isClearable}
                 menuPosition={menuPosition}
@@ -70,8 +81,7 @@ const SingleSelectById = ({ backspaceRemovesValue = false, popover = false, menu
                     dropdownIndicator: () => "same-dropdown"
                 }}
             />
-                        </div>
-        </>
+        </div>
 
     );
 }

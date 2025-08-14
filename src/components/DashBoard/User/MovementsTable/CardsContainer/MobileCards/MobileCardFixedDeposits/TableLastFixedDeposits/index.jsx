@@ -8,7 +8,7 @@ import FilterOptionsMobile from '../../FilterOptionsMobile';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
-import FixedDeposit from './FixedDeposit';
+import FixedDepositListItem from '../../../MainCard/MainCardFixedDeposit/MovementsTab/TableLastMovements/FixedDeposit';
 
 const TableLastFixedDeposits = () => {
     const { t } = useTranslation();
@@ -95,7 +95,7 @@ const TableLastFixedDeposits = () => {
                                     <h2 className="text-center">{t("There are no records in the selected state")}</h2> :
                                     <>
                                         {
-                                            FixedDeposits.content.deposits.map((FixedTermInfo, key) => <FixedDeposit key={key} content={FixedTermInfo} />)
+                                            FixedDeposits.content.deposits.map((FixedTermInfo, key) => <FixedDepositListItem key={key} content={FixedTermInfo} />)
                                         }
                                     </>
                             }

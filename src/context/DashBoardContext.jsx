@@ -58,6 +58,7 @@ export const DashBoardProvider = ({ children }) => {
     const desiredClient = useQuery().get("client")
     const desiredFundId = useQuery().get("fundId")
 
+    const [Hide, setHide] = useState(false);
     const [token] = useState(sessionStorage.getItem("access_token"));
     const [admin] = useState(JSON.parse(sessionStorage.getItem("admin")));
     const [balanceChanged, setBalanceChanged] = useState(true)
@@ -66,6 +67,7 @@ export const DashBoardProvider = ({ children }) => {
     const [UserClients, setUserClients] = useState({ fetching: true, content: [], fetched: false, valid: false })
 
     const [IndexClientSelected, setIndexClientSelected] = useState(-1)
+    const [favouriteIndexClient, setFavouriteIndexClient] = useState(-1)
     const ClientSelected = useMemo(() => UserClients.content[IndexClientSelected] || {}, [IndexClientSelected, UserClients.content])
 
     const [contentReady, setContentReady] = useState(false);
@@ -426,10 +428,12 @@ export const DashBoardProvider = ({ children }) => {
                         setIndexClientSelected(getClientIndexById(desiredClient))
                     } else {
                         setIndexClientSelected(parseInt(localStorage.getItem(data[0].alias)))
+                        setFavouriteIndexClient(parseInt(localStorage.getItem(data[0].alias)))
                     }
                 }
                 else if (localStorage.getItem(data[0]?.alias)) {
                     setIndexClientSelected(parseInt(localStorage.getItem(data[0].alias)))
+                    setFavouriteIndexClient(parseInt(localStorage.getItem(data[0].alias)))
                 }
                 setUserClients(prevState => ({ ...prevState, fetching: false, fetched: true, valid: true, content: data }))
             } else {
@@ -486,7 +490,7 @@ export const DashBoardProvider = ({ children }) => {
 
         const manageUrlUser = () => {
             const validRedirectedSections = ["history"]
-            const validTypes = ["m", "t", "transfers", "share-transfers"]
+            const validTypes = ["m", "t", "transfers", "share-transfers", "fd"]
             if (desiredLocation && desiredId && desiredType && desiredClient) {
                 if (validRedirectedSections.includes(desiredLocation) && validTypes.includes(desiredType)) {
                     let destination = ""
@@ -495,6 +499,9 @@ export const DashBoardProvider = ({ children }) => {
                             destination = `/DashBoard/${desiredLocation}?loc=${desiredLocation}&id=${desiredId}&client=${desiredClient}&type=${desiredType}&SelectedTab=Transfers`
                             break;
                         case "m":
+                            destination = `/DashBoard/${desiredLocation}?loc=${desiredLocation}&id=${desiredId}&client=${desiredClient}&type=${desiredType}`
+                            break;
+                        case "fd":
                             destination = `/DashBoard/${desiredLocation}?loc=${desiredLocation}&id=${desiredId}&client=${desiredClient}&type=${desiredType}`
                             break;
                         case "t":
@@ -678,11 +685,12 @@ export const DashBoardProvider = ({ children }) => {
 
     return <DashBoardContext.Provider
         value={{
-            token, admin, UserClients, ClientSelected, IndexClientSelected, setIndexClientSelected, balanceChanged, setBalanceChanged, TransactionStates, getMoveStateById,
+            token, admin, UserClients, ClientSelected, IndexClientSelected, setIndexClientSelected, favouriteIndexClient, setFavouriteIndexClient, balanceChanged, setBalanceChanged, TransactionStates, getMoveStateById,
             FetchingFunds, contentReady, PendingWithoutpossession, PendingTransactions, Accounts, Funds, itemSelected, setItemSelected, isMobile, width, toLogin, setContentReady,
             DashboardToast, DashboardToastDispatch, AccountSelected, setAccountSelected, Balance, allowedSymbols,
             couldSign, ClientPermissions, hasPermission, hasSellPermission, hasBuyPermission, hasViewPermission, setClientPermissions, hasAnySellPermission, hasAnyBuyPermission,
-            hasAnyTransferFundPermission, hasFundTransferPermission, getDashboardToastByKey, sharesDecimalPlaces
+            hasAnyTransferFundPermission, hasFundTransferPermission, getDashboardToastByKey, sharesDecimalPlaces,
+            Hide, setHide
         }}>
         {children}
     </DashBoardContext.Provider>

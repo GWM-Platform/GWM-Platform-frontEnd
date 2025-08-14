@@ -27,7 +27,7 @@ const NavBarInfo = ({ NavInfoToggled }) => {
     }
 
     return (
-        <Navbar className={`${NavInfoToggled ? "toggled" : ""} py-0 navBarInfo d-flex justify-content-center`} collapseOnSelect expand="lg" variant="dark">
+        <Navbar style={{ zIndex: 3 }} className={`${NavInfoToggled ? "toggled" : ""} py-0 navBarInfo d-flex justify-content-center`} collapseOnSelect expand="lg" variant="dark">
             <Container fluid>
                 <Row className=" w-100 d-flex justify-content-between align-items-center flex-nowrap flex-grow-1">
                     <Col className="d-flex justify-content-center justify-content-md-end imageContainer" xs="auto" sm="3" md="2" lg="2">

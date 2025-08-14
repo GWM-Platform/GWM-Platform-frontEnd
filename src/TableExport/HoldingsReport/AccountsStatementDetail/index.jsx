@@ -202,6 +202,7 @@ export const AccountsStatementDetail = ({ accountsStatement, year, headerInfo })
                                         const fundLiquidate = content?.notes?.find(note => note.noteType === "FUND_LIQUIDATE")
                                         const isPerformanceMovement = (content.motive === "PENALTY_WITHDRAWAL" || content.motive === "PROFIT_DEPOSIT")
                                         const noteFromAdmin = isPerformanceMovement && content?.notes?.find(note => note.noteType === "CLIENT_NOTE")
+                                        const liquidateMotive = content?.notes?.find(note => note.noteType === "MOVEMENT_LIQUIDATE_MOTIVE")
 
                                         return (
                                             <View style={styles.tableRow} key={index}>
@@ -222,12 +223,12 @@ export const AccountsStatementDetail = ({ accountsStatement, year, headerInfo })
                                                                         `${t("Fund liquidation")} ${content.fundName}`
                                                                         :
                                                                         isPerformanceMovement ? `${t(content.motive)} (${noteFromAdmin ? noteFromAdmin?.text : t(content.motive === "PENALTY_WITHDRAWAL" ? "penalty" : "bonification")})` :
-                                                                        t(content.motive + (content.motive === "REPAYMENT" ? content.fundName ? "_" + content.fundName : "_" + content.fixedDepositId : ""), { fund: content.fundName, fixedDeposit: content.fixedDepositId })
+                                                                            t(content.motive + (content.motive === "REPAYMENT" ? content.fundName ? "_" + content.fundName : "_" + content.fixedDepositId : ""), { fund: content.fundName, fixedDeposit: content.fixedDepositId })
                                                                 ) : ""
                                                             }${content?.transferReceiver ? `${t("Transfer to {{transferReceiver}}", { transferReceiver: content?.transferReceiver })}` : ""
                                                             }${content?.transferSender ? `${t("Transfer from {{transferSender}}", { transferSender: content?.transferSender })}` : ""
                                                             }${(content?.transfer?.reverted && transferNote?.text === "Transferencia revertida") ? `, ${t("reversion")}` : ""
-                                                            }${!!(partialLiquidate) ? ` (${t("Partial liquidation")})` : ""}`
+                                                            }${!!(partialLiquidate) ? ` (${t("Partial liquidation")})` : ""}${liquidateMotive ? ` (${t("Liquidation")}: ${liquidateMotive?.text})` : ""}`
                                                         }
                                                     </Text>
                                                 </View>
@@ -247,9 +248,10 @@ export const AccountsStatementDetail = ({ accountsStatement, year, headerInfo })
                                                     </Text>
                                                 </View>
                                                 <View style={styles.tableColBalance}>
-                                                    <Text style={{ ...styles.tableCell, textAlign: "right" }} >
+                                                    <Text style={{ ...styles.tableCell, ...Math.sign(content.partialBalance) === 1 ? styles.textGreen : styles.textRed, textAlign: "right" }} >
                                                         {
-                                                            `${content.partialBalance ?
+                                                            `${Math.sign(content.partialBalance) === 1 ? '+' : '-'
+                                                            }s${content.partialBalance ?
                                                                 formatValue({
                                                                     value: (Math.abs(content.partialBalance) || 0) + "",
                                                                     decimalScale: "2",

@@ -1,9 +1,9 @@
 .ClientSelector .clientSelectorCard {
-	border-radius: 30px;
+	border-radius: 2rem;
 	border: none;
 }
 .ClientSelector .clientSelectorCard .header {
-	font-size: 20px;
+	font-size: 1.25rem;
 }
 
 .ClientSelector .clientSelectorCard .client {
@@ -26,7 +26,7 @@
 .ClientSelector .clientSelectorCard .client .names {
 	margin: 0;
 	padding: 0;
-	font-size: 15px;
+	font-size: 1rem;
 }
 .ClientSelector .clientSelectorCard .client .alias {
 	margin: 0;

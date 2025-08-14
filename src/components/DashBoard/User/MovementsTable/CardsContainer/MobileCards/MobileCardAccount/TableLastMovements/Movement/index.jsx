@@ -404,6 +404,7 @@ const Movement = ({ content, reloadData }) => {
   const isPerformanceMovement = (content.motive === "PENALTY_WITHDRAWAL" || content.motive === "PROFIT_DEPOSIT")
   const fundLiquidate = content?.notes?.find(note => note.noteType === "FUND_LIQUIDATE")
   const noteFromAdmin = isPerformanceMovement && content?.notes?.find(note => note.noteType === "CLIENT_NOTE")
+  const liquidateMotive = content?.notes?.find(note => note.noteType === "MOVEMENT_LIQUIDATE_MOTIVE")
 
   return (
     <div className='mobileMovement'>
@@ -423,6 +424,7 @@ const Movement = ({ content, reloadData }) => {
           {content?.transferReceiver && <>{t("Transfer to {{transferReceiver}}", { transferReceiver: content?.transferReceiver })}</>}
           {content?.transferSender && <>{t("Transfer from {{transferSender}}", { transferSender: content?.transferSender })}</>}
           {(content?.transfer?.reverted && transferNote?.text === "Transferencia revertida") ? <>, {t("reversion")}</> : ""}
+          {liquidateMotive ? ` (${t("Liquidation")}: ${liquidateMotive?.text})` : ""}
         </strong>
         <span className="text-nowrap" >{momentDate.format('L')}</span>
 
@@ -538,16 +540,15 @@ const Movement = ({ content, reloadData }) => {
           {(content?.transfer?.reverted && transferNote?.text !== "Transferencia revertida") ? <>, {t("reverted")}</> : ""}
         </span>
         <span className={`${Math.sign(content.amount) === 1 ? 'text-green' : 'text-red'}`}>
-          {Math.sign(content.amount) === 1 ? '+' : '-'}
-          <FormattedNumber value={Math.abs(content.amount)} prefix="U$D " fixedDecimals={2} />
+          <FormattedNumber value={Math.abs(content.amount)} prefix={`${Math.sign(content.amount) === 1 ? '+' : '-'}U$D `} fixedDecimals={2} />
         </span>
       </div>
       {
         !!(content.partialBalance) &&
         <div className='d-flex justify-content-between' style={{ borderTop: "1px solid rgb(200,200,200)" }}>
           <span className={`${content.stateId === 3 ? 'text-red' : 'text-green'}`}>{t("Balance")}</span>
-          <span className={`${Math.sign(content.amount) === 1 ? 'text-green' : 'text-red'}`}>
-            <FormattedNumber value={Math.abs(content.partialBalance)} prefix="U$D " fixedDecimals={2} />
+          <span className={`${Math.sign(content.partialBalance) === 1 ? 'text-green' : 'text-red'}`}>
+            <FormattedNumber value={Math.abs(content.partialBalance)} prefix={`${Math.sign(content.partialBalance) === 1 ? '+' : '-'}U$D `} fixedDecimals={2} />
           </span>
         </div>
       }

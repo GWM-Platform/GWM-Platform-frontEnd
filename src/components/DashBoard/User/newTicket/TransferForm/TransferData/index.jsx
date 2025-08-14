@@ -78,9 +78,11 @@ const TransferData = ({ data, Funds, handleChange, TargetAccount, toggleAccordio
                 unMaskedValue === "" ?
                     ""
                     :
-                    formatValue({ value: Decimal(unMaskedValue).div(sharePrice)
-                        .toDecimalPlaces(2, Decimal.ROUND_DOWN)
-                        .toFixed(2), groupSeparator: '.', decimalSeparator: ',' }).replaceAll(".", "")
+                    formatValue({
+                        value: Decimal(unMaskedValue).div(sharePrice)
+                            .toDecimalPlaces(2, Decimal.ROUND_DOWN)
+                            .toFixed(2), groupSeparator: '.', decimalSeparator: ','
+                    }).replaceAll(".", "")
                 ,
                 false)
         }
@@ -228,12 +230,10 @@ const TransferData = ({ data, Funds, handleChange, TargetAccount, toggleAccordio
                             </Button>
                         </div>
                 }
-                <Container className='px-sm-0'>
-                    <div className='d-flex justify-content-end'>
-                        <Button disabled={false}
-                            variant="danger" type="submit" className="submitBtn">{t("Submit")}</Button>
-                    </div>
-                </Container>
+                <div className='d-flex justify-content-end'>
+                    <Button disabled={false}
+                        variant="danger" type="submit" className="submitBtn">{t("Submit")}</Button>
+                </div>
             </Accordion.Body>
         </Accordion.Item>
     )

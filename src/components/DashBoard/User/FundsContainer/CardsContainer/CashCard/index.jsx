@@ -3,7 +3,7 @@ import { Container, Row, Col, Card, Button, Spinner, OverlayTrigger, Popover } f
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEyeSlash, faEye, faThumbtack, faInfoCircle, faSlash } from '@fortawesome/free-solid-svg-icons'
+import { faEyeSlash, faThumbtack, faInfoCircle, faSlash } from '@fortawesome/free-solid-svg-icons'
 import { faCheckCircle, faClipboard } from '@fortawesome/free-regular-svg-icons'
 import { useHistory } from 'react-router-dom';
 import './index.scss'
@@ -17,7 +17,7 @@ import { useLocation } from 'react-router-dom/cjs/react-router-dom';
 
 const CashCard = (props) => {
 
-    const { Hide, setHide, cardsAmount, inScreenFunds, pendingCash } = props
+    const { cardsAmount, inScreenFunds, pendingCash } = props
     const Fund = useMemo(() => enrichAccount(props.Fund), [props.Fund])
 
     const { DashboardToastDispatch, isMobile, hasPermission } = useContext(DashBoardContext)
@@ -142,14 +142,12 @@ const CashCard = (props) => {
                                         <Container fluid className="px-0 mb-2">
                                             <Row className="w-100 mx-0 d-flex gx-0 align-items-center">
                                                 <span className="containerHideInfo">
-                                                    <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={parseFloat(Fund.balance).toString()} prefix="U$D " fixedDecimals={2} />
-                                                    <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={parseFloat(Fund.balance).toString()} prefix="U$D " fixedDecimals={2} />
-                                                    <FormattedNumber className={`info placeholder`} value={parseFloat(Fund.balance).toString()} prefix="U$D " fixedDecimals={2} />
+                                                    <FormattedNumber  value={parseFloat(Fund.balance).toString()} prefix="U$D " fixedDecimals={2} />
                                                 </span>
                                                 <OverlayTrigger rootClose trigger="click" placement="auto-start" overlay={
                                                     <PopoverAvailableFunds account={Fund} highlightOverdraft={highlightOverdraft} />
                                                 }>
-                                                    <button onClick={e => e.stopPropagation()} id="overdraft" className="noStyle px-0 hideInfoButton d-inline-flex align-items-center" style={{ fontSize: "16px" }}>
+                                                    <button onClick={e => e.stopPropagation()} id="overdraft" className="noStyle px-0 hideInfoButton d-inline-flex align-items-center" style={{ fontSize: "1rem" }}>
                                                         <FontAwesomeIcon className="icon pin" icon={faInfoCircle} />
                                                         <FontAwesomeIcon className="icon placeholder" icon={faEyeSlash} />
                                                     </button>
@@ -165,24 +163,9 @@ const CashCard = (props) => {
                                         <Container fluid className="px-0">
                                             <Row className="w-100 mx-0 d-flex justify-content-between gx-0">
                                                 <span className="pe-2 containerHideInfo">
-                                                    <FormattedNumber hidden className={`info ${Hide ? "shown" : "hidden"}`} value={parseFloat(Fund.balance).toString()} prefix="U$D " fixedDecimals={2} />
-                                                    <FormattedNumber className={`info ${Hide ? "hidden" : "shown"}`} value={parseFloat(Fund.balance).toString()} prefix="U$D " fixedDecimals={2} />
-                                                    <FormattedNumber className={`info placeholder`} value={parseFloat(Fund.balance).toString()} prefix="U$D " fixedDecimals={2} />
+                                                    <FormattedNumber  value={parseFloat(Fund.balance).toString()} prefix="U$D " fixedDecimals={2} />
                                                 </span>
-                                                <button onClick={(e) => { e.stopPropagation(); setHide(prevState => !prevState) }} className="noStyle ps-0 hideInfoButton d-flex align-items-center">
-                                                    <FontAwesomeIcon
-                                                        className={`icon ${Hide ? "hidden" : "shown"}`}
-                                                        icon={faEye}
-                                                    />
-                                                    <FontAwesomeIcon
-                                                        className={`icon ${!Hide ? "hidden" : "shown"}`}
-                                                        icon={faEyeSlash}
-                                                    />
-                                                    <FontAwesomeIcon
-                                                        className="icon placeholder"
-                                                        icon={faEyeSlash}
-                                                    />
-                                                </button>
+                                       
                                             </Row>
                                         </Container>
                                     </>

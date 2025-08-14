@@ -7,6 +7,8 @@ import { Modal, Button, Spinner } from 'react-bootstrap'
 import { useContext } from 'react';
 import { DashBoardContext } from 'context/DashBoardContext';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
+import { fixedDepositTypes } from '../RuleSelector';
+import TooltipInfo from 'components/DashBoard/Admin/Broadcast/TooltipInfo';
 
 const ActionConfirmationModal = ({ setShowModal, show, action, data, Balance, fetching, anualRate, profit }) => {
 
@@ -17,6 +19,7 @@ const ActionConfirmationModal = ({ setShowModal, show, action, data, Balance, fe
     const handleClose = () => {
         setShowModal(false)
     }
+    const SelectedType = fixedDepositTypes.find(type => type.value === data.type)
 
     return (
         <Modal className="confirmationModal" size="auto" show={show} onHide={handleClose}>
@@ -44,8 +47,17 @@ const ActionConfirmationModal = ({ setShowModal, show, action, data, Balance, fe
                             {t("Anual rate")}:&nbsp;
                             <FormattedNumber className="emphasis" value={anualRate} suffix="%" fixedDecimals={2} />
                         </li>
+                        {
+                            SelectedType &&
+                            <li>{t("Fixed deposit type")}: {t(SelectedType.label)}<TooltipInfo text={t(SelectedType.desc)} />
+                            </li>
+                        }
+                        {
+                            SelectedType?.resume &&
+                            SelectedType?.resume({ data, t, anualRate })
+                        }
                         <li className="listedInfo">
-                            {t("Investment after")}&nbsp;{data.days}&nbsp;{t("days")}:<span className="emphasis">&nbsp;
+                            {t("Investment final amount after")}&nbsp;{data.days}&nbsp;{t("days")}:<span className="emphasis">&nbsp;
                                 {
                                     profit.fetching ?
                                         <Spinner className="ms-2" animation="border" size="sm" />

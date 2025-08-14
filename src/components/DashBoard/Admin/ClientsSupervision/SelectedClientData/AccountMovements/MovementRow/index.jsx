@@ -59,13 +59,12 @@ const Movement = ({ Movement }) => {
         {!!(partialLiquidate) && <> ({t("Partial liquidation")})</>}
       </td>
       <td className={`tableAmount ${Math.sign(Movement.amount) === 1 ? 'text-green' : 'text-red'}`}>
-        <span>{Math.sign(Movement.amount) === 1 ? '+' : '-'}</span>
-        <FormattedNumber value={Math.abs(Movement.amount)} prefix="U$D " fixedDecimals={2} />
+        <FormattedNumber value={Math.abs(Movement.amount)} prefix={`${Math.sign(Movement.amount) === 1 ? '+' : '-'}U$D `} fixedDecimals={2} />
       </td>
-      <td className={`tableAmount `}>
+      <td className={`tableAmount ${Math.sign(Movement.partialBalance) === 1 ? 'text-green' : 'text-red'}`}>
         {
           Movement.partialBalance ?
-            <FormattedNumber value={Math.abs(Movement.partialBalance)} prefix="U$D " fixedDecimals={2} />
+            <FormattedNumber value={Math.abs(Movement.partialBalance)} prefix={`${Math.sign(Movement.partialBalance) === 1 ? '+' : '-'}U$D `} fixedDecimals={2} />
             :
             <>-</>
         }

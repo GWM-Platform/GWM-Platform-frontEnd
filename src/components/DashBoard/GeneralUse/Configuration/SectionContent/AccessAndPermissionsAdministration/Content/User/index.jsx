@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useContext, Fragment } from 'react'
+import React, { useCallback, useMemo, useContext, Fragment, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import { useTranslation } from 'react-i18next'
@@ -10,6 +10,8 @@ import axios from 'axios'
 import { DashBoardContext } from 'context/DashBoardContext'
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icons'
 import FundsPermissions from './FundsPermissions'
+import { fetchusers, selectAllusers } from 'Slices/DashboardUtilities/usersSlice'
+import { useDispatch, useSelector } from 'react-redux'
 
 const User = ({ user, permissions, funds, getUsers, users }) => {
     const { ClientSelected, toLogin, DashboardToastDispatch, hasPermission } = useContext(DashBoardContext);
@@ -214,11 +216,20 @@ const User = ({ user, permissions, funds, getUsers, users }) => {
         });
     }
 
+    const usersStatus = useSelector(state => state.users.status)
+    const usersComplete = useSelector(selectAllusers)
+
+    const dispatch = useDispatch()
+    useEffect(() => {
+        if (usersStatus === 'idle') {
+            dispatch(fetchusers({ all: true }))
+        }
+    }, [dispatch, usersStatus])
     return (
         <Accordion.Item className="user" eventKey={user.id}>
             <Accordion.Header>
                 <div className="mb-0 pe-1 pe-md-2" >
-                    <h1 className="title d-flex align-items-center">{t("User")}&nbsp;#{user.id}
+                    <h1 className="title d-flex align-items-center">{t("User")}&nbsp;{user.userName}
                         {
                             notifyNewUser() &&
                             <>
@@ -268,7 +279,7 @@ const User = ({ user, permissions, funds, getUsers, users }) => {
                     </h1>
                     <h2 className="email">
                         {t("Email")}:&nbsp;
-                        {user.userName}
+                        {usersComplete.find(userComplete=> userComplete.id === user.userId)?.email || user.email}
                     </h2>
                 </div>
                 <div className="ms-auto">

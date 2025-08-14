@@ -15,7 +15,7 @@ import axios from 'axios';
 import Decimal from 'decimal.js';
 import ReactGA from "react-ga4";
 import NoFixedDeposit from '../NoFixedDeposit';
-import RuleSelector from './RuleSelector';
+import RuleSelector, { getFixedDepositType } from './RuleSelector';
 import RateData from './RateData';
 
 const FixedDepositTicket = ({ balanceChanged }) => {
@@ -39,7 +39,9 @@ const FixedDepositTicket = ({ balanceChanged }) => {
         days: "",
         until: "",
         preferential: false,
-        rate: ""
+        rate: "",
+        daysInterval: "",
+        type: "standard"
     })
 
     const [ShowModal, setShowModal] = useState(false)
@@ -49,6 +51,7 @@ const FixedDepositTicket = ({ balanceChanged }) => {
     const [profit, setProfit] = useState({ fetching: false, fetched: false, valid: false, value: 0 })
 
     let history = useHistory();
+    const SelectedType = getFixedDepositType(data.type)
 
     const invest = () => {
         if (!fetching) {
@@ -57,7 +60,14 @@ const FixedDepositTicket = ({ balanceChanged }) => {
                 initialAmount: data.amount,
                 depositPlanId: FixedDeposit?.content?.id,
                 clientId: ClientSelected.id,
-                duration: data.days
+                duration: data.days,
+                type: data.type,
+                ...SelectedType.additionalFieldsProps ?
+                    SelectedType.additionalFieldsProps.reduce((acc, field) => {
+                        acc[field] = data[field]
+                        return acc
+                    }, {})
+                    : {}
             }).then(function (response) {
                 if (response.status < 300 && response.status >= 200) {
                     setFetching(false)
@@ -88,7 +98,14 @@ const FixedDepositTicket = ({ balanceChanged }) => {
                 initialAmount: data.amount,
                 interestRate: data?.rate,
                 clientId: ClientSelected.id,
-                duration: data.days
+                duration: data.days,
+                type: data.type,
+                ...SelectedType?.additionalFieldsProps ?
+                    SelectedType?.additionalFieldsProps.reduce((acc, field) => {
+                        acc[field] = data[field]
+                        return acc
+                    }, {})
+                    : {}
             }).then(function (response) {
                 if (response.status < 300 && response.status >= 200) {
                     setFetching(false)
@@ -229,6 +246,7 @@ const FixedDepositTicket = ({ balanceChanged }) => {
 
     const calculateProfit = () => {
         if (isFetched && isAmountValid && isDaysValid && (!isPreferential || (isPreferential && isRateValid))) {
+            setProfit((prevState) => ({ ...prevState, ...{ fetching: true } }))
             axios.post(`/fixed-deposits/profit`,
                 {
                     duration: data?.days,
@@ -320,7 +338,7 @@ const FixedDepositTicket = ({ balanceChanged }) => {
                     !!(FixedDeposit.fetched && contentReady) &&
                     <ActionConfirmationModal
                         setShowModal={setShowModal} show={ShowModal}
-                        fetching={fetching} action={data.preferential ?   investOnPreferential : invest}
+                        fetching={fetching} action={data.preferential ? investOnPreferential : invest}
                         anualRate={getAnualRate()} profit={profit}
                         data={data} Balance={AccountSelected?.balance}
                     />

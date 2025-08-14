@@ -106,7 +106,8 @@ const AccountGeneralData = ({ Account, Client, setAccounts, toggleClient }) => {
                 toggleClient(Client.id)
             }).catch((err) => {
                 if (err.message !== "canceled") {
-                    if (err.response.status === "401") toLogin()
+                    if (err?.response?.status === "401") toLogin()
+                        console.error(err)
                     setRequest((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
                 }
             });

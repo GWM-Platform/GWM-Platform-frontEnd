@@ -14,6 +14,7 @@ $border-color_3: var(--selected-underline-section-color);
 $border-color_4: none;
 
 .navBarDesktop {
+	z-index: 2;
 	background-color: $background-color_1;
 	transition: all 0.5s;
 	filter: drop-shadow(0px 0px 3px grey);

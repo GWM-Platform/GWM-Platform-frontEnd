@@ -1,23 +1,22 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, ButtonGroup, Col, Form, Row, ToggleButton } from 'react-bootstrap'
-import StateSelector from './StateSelector'
+import StateSelector, { StatesSelector } from './StateSelector'
 import Message from './Message'
 import Tables from './Tables'
 import './index.css'
-import ClientSelector from './ClientSelector';
+import ClientSelector, { ClientsSelector } from './ClientSelector';
 import { useTranslation } from 'react-i18next';
 import TableIcon from '../APL/icons/TableIcon';
 import GridIcon from '../APL/icons/GridIcon';
 import { TableView } from './TableView';
 import { PrintDefaultWrapper, usePrintDefaults } from 'utils/usePrint';
-import SingleSelectById from './SingleSelectById';
 import CurrencyInput from '@osdiab/react-currency-input-field';
 import { faFileExcel } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { exportToExcel } from 'utils/exportToExcel';
 import { faCompress, faExpand } from '@fortawesome/free-solid-svg-icons';
-// import { MotiveMultiSelect } from 'components/DashBoard/GeneralUse/FilterOptions';
+import { MotiveMultiSelect } from 'components/DashBoard/GeneralUse/FilterOptions';
 import { customFetch } from 'utils/customFetch';
 
 export const motives = [
@@ -27,11 +26,11 @@ export const motives = [
     { value: 'STAKE_SELL', labelKey: 'STAKE_SELL_', group: "fund" },
     { value: 'REPAYMENT', labelKey: 'REPAYMENT', group: "fund" },
     { value: 'FIXED_DEPOSIT_CREATE', labelKey: 'FIXED_DEPOSIT_CREATE_', group: "fixed_deposit" },
-    { value: 'FIXED_DEPOSIT_CLOSE', labelKey: 'FIXED_DEPOSIT_CLOSE_', group: "fixed_deposit"},
-    { value: 'TRANSFER_SEND', labelKey: 'TRANSFER_SEND', group: "cta_cte"  },
-    { value: 'TRANSFER_RECEIVE', labelKey: 'TRANSFER_RECEIVE', group: "cta_cte"  },
-    { value: 'BID_OFFER', labelKey: 'BID_OFFER_', group: "fixed_deposit"  },
-    { value: 'SHARE_TRANSFER_SEND', labelKey: 'SHARE_TRANSFER_SEND', group: "fund"},
+    { value: 'FIXED_DEPOSIT_CLOSE', labelKey: 'FIXED_DEPOSIT_CLOSE_', group: "fixed_deposit" },
+    { value: 'TRANSFER_SEND', labelKey: 'TRANSFER_SEND', group: "cta_cte" },
+    { value: 'TRANSFER_RECEIVE', labelKey: 'TRANSFER_RECEIVE', group: "cta_cte" },
+    { value: 'BID_OFFER', labelKey: 'BID_OFFER_', group: "fixed_deposit" },
+    { value: 'SHARE_TRANSFER_SEND', labelKey: 'SHARE_TRANSFER_SEND', group: "fund" },
     { value: 'SHARE_TRANSFER_RECEIVE', labelKey: 'SHARE_TRANSFER_RECEIVE', group: "fund" },
     { value: 'PROFIT_DEPOSIT', labelKey: 'PROFIT_DEPOSIT_', group: "cta_cte" },
     { value: 'PENALTY_WITHDRAWAL', labelKey: 'PENALTY_WITHDRAWAL_', group: "cta_cte" },
@@ -191,29 +190,17 @@ const TicketsAdministration = () => {
     const FilterOptionsDefaultState = {
         fromDate: "",
         toDate: "",
-        filterMotive: "",
+        // filterMotive: "",
         fromAmount: "",
-        toAmount: ""
+        toAmount: "",
+        filterMotives: [],
+        clients: [],
+        filterStates: []
+
     }
 
     const [FilterOptions, setFilterOptions] = useState(FilterOptionsDefaultState)
     const handleChangeFilterOptions = (e) => (setFilterOptions(prevState => ({ ...prevState, [e.target.id]: e.target.value })))
-    const options = useMemo(() => [
-        { value: 'DEPOSIT', label: t('DEPOSIT') },
-        { value: 'WITHDRAWAL', label: t('WITHDRAWAL') },
-        { value: 'STAKE_BUY', label: t('STAKE_BUY_') },
-        { value: 'STAKE_SELL', label: t('STAKE_SELL_') },
-        { value: 'REPAYMENT', label: t('REPAYMENT') },
-        { value: 'FIXED_DEPOSIT_CREATE', label: t('FIXED_DEPOSIT_CREATE_') },
-        { value: 'FIXED_DEPOSIT_CLOSE', label: t('FIXED_DEPOSIT_CLOSE_') },
-        { value: 'TRANSFER_SEND', label: t('TRANSFER_SEND') },
-        { value: 'TRANSFER_RECEIVE', label: t('TRANSFER_RECEIVE') },
-        { value: 'BID_OFFER', label: t('BID_OFFER_') },
-        { value: 'SHARE_TRANSFER_SEND', label: t('SHARE_TRANSFER_SEND') },
-        { value: 'SHARE_TRANSFER_RECEIVE', label: t('SHARE_TRANSFER_RECEIVE') },
-        { value: 'PROFIT_DEPOSIT', label: t('PROFIT_DEPOSIT') },
-        { value: 'PENALTY_WITHDRAWAL', label: t('PENALTY_WITHDRAWAL') }
-    ], [t])
 
     return (
         <PrintDefaultWrapper className={`TicketsAdministration ${collapse ? "container" : "container-fluid"}`} aditionalStyles={aditionalStyles} ref={componentRef} getPageMargins={getPageMargins} title={title} >
@@ -313,20 +300,34 @@ const TicketsAdministration = () => {
                                     </Row>
                                     <Row className="pb-2 px-0 mx-0" id="filters">
                                         <Col md={tableView ? "4" : "6"}>
-                                            <StateSelector handleChange={handleChange} TransactionStates={TransactionStates} />
+                                            {
+                                                tableView ?
+                                                    <StatesSelector FormData={FilterOptions} handleChange={handleChangeFilterOptions} TransactionStates={TransactionStates} />
+                                                    :
+                                                    <StateSelector handleChange={handleChange} TransactionStates={TransactionStates} />
+                                            }
                                         </Col>
                                         <Col md={tableView ? "4" : "6"}>
-                                            <ClientSelector client={client} setClient={setClient} />
+                                            {
+                                                tableView ?
+                                                <ClientsSelector FormData={FilterOptions} handleChange={handleChangeFilterOptions} />
+                                                :
+                                                <ClientSelector client={client} setClient={setClient} />
+                                            }
                                         </Col>
                                         {
                                             tableView &&
                                             <>
                                                 <Col md="4">
                                                     <Form.Group className="mt-2 mb-2">
-                                                        <Form.Label>{t("Concept")}</Form.Label>
-                                                        <SingleSelectById isClearable placeholder={t('Concept')} handleChange={handleChangeFilterOptions} FormData={FilterOptions} id='filterMotive' options={options} />
+                                                        <MotiveMultiSelect handleChange={handleChangeFilterOptions} FormData={FilterOptions} />
+
+                                                        {/* <SingleSelectById
+                                                            getOptionLabel={option => t(option.labelKey)}
+                                                            isClearable placeholder={t('Concept')} handleChange={handleChangeFilterOptions} FormData={FilterOptions} id='filterMotive' options={motives} /> */}
                                                     </Form.Group>
                                                 </Col>
+
                                                 <Col md="3">
                                                     <Form.Group className="mb-2">
                                                         <Form.Label>{t("from_amount")}</Form.Label>

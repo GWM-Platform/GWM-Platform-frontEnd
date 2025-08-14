@@ -2,7 +2,7 @@ import React from "react";
 
 function Icon() {
   return (
-    <svg style={{height:"16px"}} xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 640 480">
+    <svg style={{height:"1rem"}} xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 640 480">
       <defs>
         <clipPath id="clipPath243" clipPathUnits="userSpaceOnUse">
           <path

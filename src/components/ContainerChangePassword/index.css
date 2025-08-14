@@ -18,7 +18,7 @@
 }
 .error {
 	color: var(--error);
-	font-size: 16px;
+	font-size: 1rem;
 	padding-bottom: 0rem;
 	font-weight: bolder;
 }
@@ -27,7 +27,7 @@
 	background-color: transparent;
 }
 .changePassword .card {
-	border-radius: 30px;
+	border-radius: 2rem;
 	border: none;
 }
 .changePassword .form-check-input:checked {
@@ -42,7 +42,7 @@
 }
 
 .changePassword .button {
-	border-radius: 20px;
+	border-radius: 1.25rem;
 	transition: border-radius 0.5s;
 }
 
@@ -67,10 +67,10 @@
 .changePassword .input-group-text {
 	background-color: white;
 	padding-left: 1rem;
-	border-radius: 30px;
+	border-radius: 2rem;
 }
 .changePassword .form-control {
-	border-radius: 30px;
+	border-radius: 2rem;
 }
 .changePassword .mobile {
 	margin-top: 30%;

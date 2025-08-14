@@ -5,11 +5,10 @@ import { useTranslation } from "react-i18next";
 import { DashBoardContext } from 'context/DashBoardContext';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckCircle, faFilePdf, faTimesCircle } from '@fortawesome/free-regular-svg-icons';
 import ReactPDF from '@react-pdf/renderer';
 import MovementReceipt from 'Receipts/MovementReceipt';
 import { Dropdown, OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap';
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsis, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import MovementConfirmation from 'components/DashBoard/User/MovementsTable/GeneralUse/MovementConfirmation';
 import axios from 'axios';
 import FixedDepositReceipt from 'Receipts/FixedDepositReceipt';
@@ -23,7 +22,7 @@ import { selectFundById } from 'Slices/DashboardUtilities/fundsSlice';
 
 const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
   <button
-    className="noStyle px-0 ps-1"
+    className="noStyle"
     href=""
     ref={ref}
     onClick={(e) => {
@@ -35,7 +34,7 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
   </button>
 ));
 
-const Movement = ({ content, actions, reloadData }) => {
+const Movement = ({ content, actions, reloadData, linkToOtherHistory }) => {
   var momentDate = moment(content.createdAt);
   const { t } = useTranslation();
   const { getMoveStateById, AccountSelected, couldSign, hasPermission, toLogin, hasSellPermission, hasBuyPermission, ClientSelected } = useContext(DashBoardContext)
@@ -404,6 +403,8 @@ const Movement = ({ content, actions, reloadData }) => {
   const noteFromAdmin = isPerformanceMovement && content?.notes?.find(note => note.noteType === "CLIENT_NOTE")
   const denialMotive = content?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
   const fundLiquidate = content?.notes?.find(note => note.noteType === "FUND_LIQUIDATE")
+  const liquidateMotive = content?.notes?.find(note => note.noteType === "MOVEMENT_LIQUIDATE_MOTIVE")
+
 
   const fund = useSelector(state => selectFundById(state, content.fundId))
 
@@ -412,7 +413,7 @@ const Movement = ({ content, actions, reloadData }) => {
       <td className="tableId text-nowrap" data-column-name="ticket">
         {content.id}
         {
-          !!(content?.userEmail || content?.userName || !!(transferNote) || !!(clientNote) || !!(denialMotive) || !!(fundLiquidate) || !!(partialLiquidate)) &&
+          !!(content?.userEmail || content?.userName || !!(transferNote) || !!(clientNote) || !!(denialMotive) || !!(fundLiquidate) || !!(partialLiquidate) || !!(liquidateMotive)) &&
           <OverlayTrigger
             show={showClick || showHover}
             placement="right"
@@ -465,6 +466,12 @@ const Movement = ({ content, actions, reloadData }) => {
                     <span className="text-nowrap">"{fundLiquidate.text}"</span>
                   </div>
                 }
+                {
+                  !!(liquidateMotive) &&
+                  <div>
+                    <span className="text-nowrap">"{liquidateMotive.text}"</span>
+                  </div>
+                }
               </Tooltip>
             }
           >
@@ -477,58 +484,6 @@ const Movement = ({ content, actions, reloadData }) => {
                 type="button" className="noStyle pe-0 ps-1"  ><FontAwesomeIcon icon={faInfoCircle} /></button>
             </span>
           </OverlayTrigger>
-        }
-        {
-          (
-            ((content.fixedDepositId) && hasPermission("FIXED_DEPOSIT_VIEW")) ||
-            ((content.transferId) && (hasPermission("TRANSFER_APPROVE") || hasPermission("TRANSFER_DENY") || hasPermission("TRANSFER_GENERATE"))) ||
-            ((content.fundId) && (hasSellPermission(content.fundId) || hasBuyPermission(content.fundId)))
-          ) ?
-            <Dropdown className='d-inline' >
-              <Dropdown.Toggle disabled={GeneratingPDF || altGeneratingPDF}
-                as={CustomToggle} id="dropdown-custom-components">
-                {
-                  GeneratingPDF || altGeneratingPDF ?
-                    <Spinner animation="border" size="sm" />
-                    :
-                    <>
-                      <FontAwesomeIcon icon={faFilePdf} />
-                    </>
-                }
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item onClick={() => renderAndDownloadPDF()}>
-                  {t("Movement receipt")}
-                </Dropdown.Item>
-                {
-                  ((content.fixedDepositId) && hasPermission("FIXED_DEPOSIT_VIEW")) &&
-                  <Dropdown.Item onClick={() => getFixedDepositPDF()}>
-                    {t("Fixed deposit receipt")}
-                  </Dropdown.Item>
-                }
-                {
-                  ((content.transferId) && (hasPermission("TRANSFER_APPROVE") || hasPermission("TRANSFER_DENY") || hasPermission("TRANSFER_GENERATE"))) &&
-                  <Dropdown.Item onClick={() => getTransferPDF()}>
-                    {t("Transfer receipt")}
-                  </Dropdown.Item>
-                }
-                {
-                  ((content.fundId) && (hasSellPermission(content.fundId) || hasBuyPermission(content.fundId))) &&
-                  <Dropdown.Item onClick={() => getTransactionPDF()}>
-                    {t("Transaction receipt")}
-                  </Dropdown.Item>
-                }
-              </Dropdown.Menu>
-            </Dropdown>
-            :
-            <button disabled={GeneratingPDF} className="noStyle ps-1 pe-0" style={{ cursor: "pointer" }} onClick={() => renderAndDownloadPDF()}>
-              {
-                GeneratingPDF ?
-                  <Spinner animation="border" size="sm" />
-                  :
-                  <FontAwesomeIcon icon={faFilePdf} />
-              }
-            </button>
         }
       </td>
       <td className="tableDate">
@@ -547,7 +502,9 @@ const Movement = ({ content, actions, reloadData }) => {
               :
               isPerformanceMovement ? <>{t(content.motive)} ({noteFromAdmin ? noteFromAdmin?.text : t(content.motive === "PENALTY_WITHDRAWAL" ? "penalty" : "bonification")})</>
                 :
-                t(content.motive + (content.motive === "REPAYMENT" ? content.fundName ? "_" + content.fundName : "_" + content.fixedDepositId : ""), { fund: content.fundName, fixedDeposit: content.fixedDepositId })
+                t(
+                  // (content.fixedDepositId ? "withoutFixedDepositId_" : "") +
+                  content.motive + (content.motive === "REPAYMENT" ? content.fundName ? "_" + content.fundName : "_" + content.fixedDepositId : ""), { fund: content.fundName, fixedDeposit: content.fixedDepositId })
           )
         }
         {content?.transferReceiver && <>{t("Transfer to {{transferReceiver}}", { transferReceiver: content?.transferReceiver })}</>}
@@ -558,67 +515,125 @@ const Movement = ({ content, actions, reloadData }) => {
         }
       </td>
       <td className={`tableAmount ${Math.sign(content.amount) === 1 ? 'text-green' : 'text-red'}`}>
-        <span>{Math.sign(content.amount) === 1 ? '+' : '-'}</span>
-        <FormattedNumber value={Math.abs(content.amount)} prefix="U$D " fixedDecimals={2} />
+        <FormattedNumber value={Math.abs(content.amount)} prefix={`${Math.sign(content.amount) === 1 ? '+' : '-'}U$D `} fixedDecimals={2} />
       </td>
-      <td className={`tableAmount `}>
+      <td className={`tableAmount ${Math.sign(content.partialBalance) === 1 ? 'text-green' : 'text-red'}`}>
         {
           content.partialBalance ?
-            <FormattedNumber value={Math.abs(content.partialBalance)} prefix="U$D " fixedDecimals={2} />
+            <FormattedNumber value={Math.abs(content.partialBalance)} prefix={`${Math.sign(content.partialBalance) === 1 ? '+' : '-'}U$D `} fixedDecimals={2} />
             :
             <>-</>
         }
       </td>
-      {
-        !!(actions) &&
-        <td className={`Actions verticalCenter ${fund?.disabled ? "disabled" : ""}`} data-column-name="actions" >
-          {
-            !!(content.stateId === 5) &&
-            <div className="h-100 d-flex align-items-center justify-content-around">
-
-              <div className={`iconContainer green ${!couldSign(content) ? "not-allowed" : ""}`}>
-                <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => { if (couldSign(content)) { launchModalConfirmation("approve") } }} />
-              </div>
-
-              <div className={`iconContainer red ${!couldSign(content) ? "not-allowed" : ""}`}>
-                <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => { if (couldSign(content)) { launchModalConfirmation("deny") } }} />
-              </div>
-
-            </div>
-          }
-          {
-            !!((content.stateId === 1
-              &&
-              (
-                ((hasPermission("TRANSFER_DENY") || hasPermission("TRANSFER_APPROVE")) && content.motive === "TRANSFER_RECEIVE")
-                ||
-                (hasPermission("TRANSFER_DENY") && content.motive === "TRANSFER_SEND")
-              )
-            )) &&
-            <div className="h-100 d-flex align-items-center justify-content-around">
-              {
-                !!(content.motive === "TRANSFER_RECEIVE") &&
+      <td
+        // className={`Actions verticalCenter ${fund?.disabled ? "disabled" : ""}`} 
+        data-column-name="actions"
+      >
+        <Dropdown className='d-inline' drop='start'>
+          <Dropdown.Toggle disabled={GeneratingPDF || altGeneratingPDF}
+            as={CustomToggle} id="dropdown-custom-components">
+            {
+              GeneratingPDF || altGeneratingPDF ?
+                <Spinner animation="border" size="sm" />
+                :
                 <>
-                  {
-                    hasPermission("TRANSFER_APPROVE") &&
-                    <div className="iconContainer green">
-                      <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => launchModalConfirmation("approve")} />
-                    </div>
-                  }
+                  <FontAwesomeIcon icon={faEllipsis} />
                 </>
-              }
+            }
+          </Dropdown.Toggle>
+          <Dropdown.Menu >
+            <Dropdown.Item onClick={() => renderAndDownloadPDF()}>
+              {t("Movement receipt")}
+            </Dropdown.Item>
+            {
+              ((content.fixedDepositId) && hasPermission("FIXED_DEPOSIT_VIEW")) &&
+              <Dropdown.Item onClick={() => getFixedDepositPDF()}>
+                {t("Fixed deposit receipt")}
+              </Dropdown.Item>
+            }
+            {
+              ((content.transferId) && (hasPermission("TRANSFER_APPROVE") || hasPermission("TRANSFER_DENY") || hasPermission("TRANSFER_GENERATE"))) &&
+              <Dropdown.Item onClick={() => getTransferPDF()}>
+                {t("Transfer receipt")}
+              </Dropdown.Item>
+            }
+            {
+              ((content.fundId) && (hasSellPermission(content.fundId) || hasBuyPermission(content.fundId))) &&
+              <Dropdown.Item onClick={() => getTransactionPDF()}>
+                {t("Transaction receipt")}
+              </Dropdown.Item>
+            }
+            {
+              content.fixedDepositId &&
+              <>
+                <Dropdown.Divider />
+                <Dropdown.Item disabled={fund?.disabled} onClick={() => linkToOtherHistory(content.fixedDepositId, "FIXED_DEPOSIT")}>
+                  {t("Go to fixed deposit detail")} (#{content.fixedDepositId})
+                </Dropdown.Item>
+              </>
+            }
+            {
+              content.fundId &&
+              <>
+                <Dropdown.Divider />
+                <Dropdown.Item disabled={fund?.disabled} onClick={() => linkToOtherHistory(content?.fundId, "FUND")}>
+                  {t("Go to fund detail")} ({content?.fundName})
+                </Dropdown.Item>
+              </>
+            }
+            {
+              !!(actions) &&
+              <>
+                {
+                  !!(content.stateId === 5) &&
+                  <>
+                    <Dropdown.Divider />
+                    <Dropdown.Item disabled={!couldSign(content) || fund?.disabled} onClick={() => { if (couldSign(content)) { launchModalConfirmation("approve") } }}>
+                      {t("Approve")}
+                    </Dropdown.Item>
+                    <Dropdown.Item disabled={!couldSign(content) || fund?.disabled} onClick={() => { if (couldSign(content)) { launchModalConfirmation("deny") } }}>
+                      {t("Deny")}
+                    </Dropdown.Item>
+                  </>
+                }
 
-              {
-                hasPermission("TRANSFER_DENY") &&
-                <div className="iconContainer red">
-                  <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => launchModalConfirmation("deny")} />
-                </div>
-              }
-            </div>
-          }
-        </td>
-
-      }
+                {
+                  !!((content.stateId === 1
+                    &&
+                    (
+                      ((hasPermission("TRANSFER_DENY") || hasPermission("TRANSFER_APPROVE")) && content.motive === "TRANSFER_RECEIVE")
+                      ||
+                      (hasPermission("TRANSFER_DENY") && content.motive === "TRANSFER_SEND")
+                    )
+                  )) &&
+                  <>
+                    {
+                      (!!(content.motive === "TRANSFER_RECEIVE") || hasPermission("TRANSFER_DENY")) && <Dropdown.Divider />
+                    }
+                    {
+                      !!(content.motive === "TRANSFER_RECEIVE") &&
+                      <>
+                        {
+                          hasPermission("TRANSFER_APPROVE") &&
+                          <Dropdown.Item disabled={fund?.disabled} onClick={() => launchModalConfirmation("approve")}>
+                            {t("Approve transfer")}
+                          </Dropdown.Item>
+                        }
+                      </>
+                    }
+                    {
+                      hasPermission("TRANSFER_DENY") &&
+                      <Dropdown.Item disabled={fund?.disabled} onClick={() => launchModalConfirmation("deny")}>
+                        {t("Deny transfer")}
+                      </Dropdown.Item>
+                    }
+                  </>
+                }
+              </>
+            }
+          </Dropdown.Menu>
+        </Dropdown>
+      </td>
       {
         !!(content.stateId === 5 && couldSign(content)) &&
         <MovementConfirmation reloadData={reloadData} movement={content} setShowModal={setShowModal} action={Action} show={ShowModal} />
