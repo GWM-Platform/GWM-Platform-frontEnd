@@ -549,7 +549,7 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                         <View style={styles.tableRow}>
                             <View style={{ ...styles.tableColWidthLeft, /*borderColor: "rgb(120, 120, 120)"*/ }}>
                                 <Text style={styles.tableHeader}>
-                                    Tenencia en plazos fijos de años anteriores
+                                    Plazos fijos constituidos en años anteriores
                                 </Text>
                             </View>
                             <View style={{ ...styles.tableColWidthLeft, /*borderColor: "rgb(120, 120, 120)"*/ }}>
@@ -569,7 +569,7 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                         <View style={styles.tableRow}>
                             <View style={{ ...styles.tableColWidthLeftFirstThirds, /*borderColor: "rgb(120, 120, 120)"*/ }}>
                                 <Text style={styles.tableHeader}>
-                                    Inversiones en {year}
+                                    Plazos fijos constituidos en {year}
                                 </Text>
                             </View>
                             <View style={{ ...styles.tableColWidthLeftElseThirds, /*borderColor: "rgb(120, 120, 120)"*/ }}>
@@ -596,7 +596,7 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                         <View style={styles.tableRow}>
                             <View style={{ ...styles.tableColWidthLeftFirstThirds, /*borderColor: "rgb(120, 120, 120)"*/ }}>
                                 <Text style={styles.tableHeader}>
-                                    Interés devengado
+                                    Interés devengado durante {year}
                                 </Text>
                             </View>
                             <View style={{ ...styles.tableColWidthLeftElseThirds, /*borderColor: "rgb(120, 120, 120)"*/ }}>
@@ -621,8 +621,8 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                             </View>
                         </View>
                         <View style={styles.tableRow}>
-                            <View style={{ ...styles.tableColWidthLeftFirstThirds, /*borderColor: "rgb(120, 120, 120)"*/ }}>
-                                <Text style={styles.tableHeader}>
+                            <View style={{ ...styles.tableColWidthLeftFirstThirds, /*borderColor: "rgb(120, 120, 120)"*/ }}> 
+                                <Text style={styles.tableHeader}> {/*representa la suma de todos los depósitos a plazo fijo (initialAmount de cada operación). más lo que cada uno de esos depósitos generó de intereses/ganancias (profit de cada operación).*/}
                                     Saldo final (En curso al final del {year})
                                 </Text>
                             </View>
@@ -653,7 +653,7 @@ export const Cover = ({ AccountSelected, holdings, year, headerInfo }) => {
                         <View style={styles.tableRow}>
                             <View style={{ ...styles.tableColWidthLeftFirstThirds, /*borderColor: "rgb(120, 120, 120)"*/ }}>
                                 <Text style={styles.tableHeader}>
-                                    Balance total final ({moment().set("year", year).endOf("year").format("L")})
+                                    Balance total al {moment().set("year", year).endOf("year").format("L")}
                                 </Text>
                             </View>
                             <View style={{ ...styles.tableColWidthLeftElseThirds, width: "43.34%" /*borderColor: "rgb(120, 120, 120)"*/ }}>
