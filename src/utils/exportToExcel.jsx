@@ -55,6 +55,18 @@ export const exportToExcel = async ({ filename = "Archivo", sheetName = "Hoja 1"
             checkIsMerged()
 
             let value = cell.innerText
+            
+            // Cleans *
+            value = value.replace(/\*/g, '')
+            
+            // Cleans blank spaces
+            value = value.replace(/\s+/g, ' ').trim()
+            
+            // Cleans repited value with U$D format
+            value = value.replace(/(-?\+?U\$D\s*[\d,.]+)\s+\1/g, '$1')
+            
+            // Cleans repited value with numeric format
+            value = value.replace(/(\d+[,.]?\d*)\s+\1/g, '$1')
 
             if (moment(value, ['DD-MMM-YY'], true).isValid()) {
                 value = moment(value, ['DD-MMM-YY'], true).toDate()
@@ -72,11 +84,17 @@ export const exportToExcel = async ({ filename = "Archivo", sheetName = "Hoja 1"
             if (regex.test(value) && value !== "" && value !== "-") {
                 const isPlainNumber = cell.getAttribute("plain-text") === "true" || plainNumberColumns.includes(cell.getAttribute("data-column-name"))
                 const isStrictPlainNumber = strictPlainNumberColumns.includes(cell.getAttribute("data-column-name"))
-                const originalValue = value
-                if (!isStrictPlainNumber && (!isPlainNumber || !strictPlainNumber)) {
+                
+                const hasSign = value.startsWith('+') || value.startsWith('-')
+                const hasUSD = value.includes('U$D')
+                
+                if (!isStrictPlainNumber && (!isPlainNumber || !strictPlainNumber) && !hasSign && !hasUSD) {
                     value = parseFloat(value.replace("(", "-").replace(")", "").replace("U$D ", "").replaceAll(groupSeparator, "").replaceAll(decimalSeparator, "."))
+                    excelCell.numFmt = '#,##0.00';
+                } else {
+                    // Keeps as a text to preserve 'U$D'
+                    excelCell.numFmt = "@";
                 }
-                excelCell.numFmt = isPlainNumber ? "@" : originalValue?.includes("U$D") ? '"U$D" #,##0.00' : '#,##0.00';
             }
 
             const isNotExcel = cell.getAttribute("not-excel") === "true"
