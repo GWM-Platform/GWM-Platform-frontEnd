@@ -62,11 +62,21 @@ export const exportToExcel = async ({ filename = "Archivo", sheetName = "Hoja 1"
             // Cleans blank spaces
             value = value.replace(/\s+/g, ' ').trim()
             
-            // Cleans repited value with U$D format
+            // Cleans repited value with U$D format - Chrome
             value = value.replace(/(-?\+?U\$D\s*[\d,.]+)\s+\1/g, '$1')
-            
-            // Cleans repited value with numeric format
+
+            // Cleans repited value with numeric format - Chrome
             value = value.replace(/(\d+[,.]?\d*)\s+\1/g, '$1')
+
+            // Clean concatenated duplicate currency values - Safari
+            value = value.replace(/([+-]?U\$D\s*[\d.,]+)([+-]?U\$D\s*[\d.,]+)/g, (match, p1, p2) => {
+                return p1 === p2 ? p1 : match;
+            })
+            
+            // Clean concatenated duplicate numbers - Safari
+            value = value.replace(/(\d+,\d+)(\d+,\d+)(\s+shares)/g, (match, p1, p2, p3) => {
+                return p1 === p2 ? p1 + p3 : match;
+            })
 
             if (moment(value, ['DD-MMM-YY'], true).isValid()) {
                 value = moment(value, ['DD-MMM-YY'], true).toDate()
