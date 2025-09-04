@@ -14,7 +14,7 @@ const ShareTransferReceipt = ({ Transfer }) => {
 
   const decimalSharesAbs = new Decimal(Transfer.shares).abs()
   const decimalPrice = new Decimal(Transfer.sharePrice)
-  const amount = new Decimal(Decimal(decimalSharesAbs.toFixed(2)).times(decimalPrice))
+  const amount = new Decimal(Decimal(decimalSharesAbs.toString()).times(decimalPrice))
 
   return (
     <Document>
