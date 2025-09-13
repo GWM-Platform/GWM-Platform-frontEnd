@@ -14,7 +14,7 @@ const TableLastMovements = ({ content, movements, reloadData, linkToOtherHistory
     const { hasPermission } = useContext(DashBoardContext)
 
     const anyWithActions = () => Object.values(content).some(
-        (movement) => (
+        (movement) => movement && (
             (movement.stateId === 5 && movement.motive !== "TRANSFER_RECEIVE")
             ||
             (movement.stateId === 1
