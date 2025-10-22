@@ -24,6 +24,8 @@ const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, ti
         filterStates: (TransactionStates?.values || [])?.map(state => state.id).filter(v => v !== 3)
     })
 
+    const { SearchText, cancelSearch } = ticketSearchProps || {};
+
     const handleChange = (event, number = true) => {
         setFilterOptions((prevState) => ({
             ...prevState, ...{
@@ -55,7 +57,6 @@ const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, ti
             }))
         }
     }
-    console.log(TransactionStates)
     useEffect(() => {
         setFilterOptions((prevState) => ({
             ...prevState, ...{
@@ -65,6 +66,12 @@ const FilterOptions = ({ keyword, Fund, movsPerPage, setPagination, disabled, ti
             }
         }))
     }, [Fund, TransactionStates.values, defaultMoves])
+    
+    useEffect(() => {
+        if (ticketSearch && disabled && SearchText === '') {
+            cancelSearch?.();
+        }
+    }, [ticketSearch, disabled, SearchText, cancelSearch]);
 
     return (
         <Accordion flush>

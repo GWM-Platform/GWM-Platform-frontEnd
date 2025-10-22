@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Table } from 'react-bootstrap';
 import Movement from './Movement';
@@ -30,8 +30,10 @@ const TableLastMovements = ({ content, movements, reloadData, linkToOtherHistory
 
     const filteredContent = content?.filter(u => u?.createdAt)
 
+    const minHeight = `max(calc((0.5rem * 2 + 25.5px) * ${(movements ?? 0) + 1}), 300px)`;
+
     return (
-        <div style={{ minHeight: `calc( ( 0.5rem * 2 + 25.5px ) * ${movements + 1} )` }} className={`tableMovements overflow-auto`}>
+        <div className='tableMovements overflow-auto' style={{ minHeight }}>
             <Table striped bordered hover className="mb-auto m-0  mt-2" data-table-name="cta-cte-movements">
                 <thead >
                     <tr>

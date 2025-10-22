@@ -12,7 +12,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../MovementsTab/index.css'
 import { customFetch } from 'utils/customFetch';
 
-const TransfersTab = ({ Fund, SearchById, setSearchById, resetSearchById, handleTransferSearchChange }) => {
+const TransfersTab = ({ Fund, SearchById, setSearchById, resetSearchById, handleMovementSearchChange }) => {
     const { token, ClientSelected } = useContext(DashBoardContext);
     const history = useHistory();
 
@@ -121,7 +121,7 @@ const TransfersTab = ({ Fund, SearchById, setSearchById, resetSearchById, handle
         fetching: FetchingTransfers,
         keyWord: "transfer",
         SearchText: SearchById.value,
-        handleSearchChange: handleTransferSearchChange,
+        handleSearchChange: handleMovementSearchChange,
         cancelSearch: resetSearchById,
         Search: () => getTransferById(SearchById.value)
     }
