@@ -29,12 +29,7 @@
 .TicketsAdministration .TicketsTable {
   position: relative;
 }
-.TicketsAdministration .TicketsTable .tableHeader {
-   {
-    /*position:sticky;
-	top:0*/
-  }
-}
+
 .TicketsAdministration .TicketsTable .id,
 .TicketsAdministration .TicketsTable .Name,
 .TicketsAdministration .TicketsTable .Type,
@@ -100,9 +95,9 @@
 .Actions .iconContainer.red:not(.not-allowed):hover .icon {
   color: red;
 }
-.Actions .iconContainer.green:not(.not-allowed):hover .icon {
-  color: green;
-}
+.Actions .iconContainer.blue:not(.not-allowed):hover .icon {
+  color: rgb(15, 68, 216);
+}   
 .Actions .verticalCenter {
   vertical-align: middle;
 }

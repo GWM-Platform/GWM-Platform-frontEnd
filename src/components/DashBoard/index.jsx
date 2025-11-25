@@ -71,6 +71,7 @@ const Broadcast = lazy(() => import('./Admin/Broadcast'));
 const UserActionLogs = lazy(() => import('./Admin/UserActionLogs'));
 const NotificationsCenter = lazy(() => import('./GeneralUse/NotificationsCenter'));
 const Operations = lazy(() => import('./Admin/Operations'));
+const LiquidationNotesAdministration = lazy(() => import('./Admin/LiquidationNotesAdministration'));
 
 const UserDashBoard = () => {
     axios.defaults.headers.common['Authorization'] = `Bearer ${sessionStorage.getItem("access_token")}`
@@ -201,6 +202,9 @@ const UserDashBoard = () => {
                                                                 </Route>
                                                                 <Route path={`${path}/ticketsAdministration`}>
                                                                     <TicketsAdministration />
+                                                                </Route>
+                                                                <Route path={`${path}/liquidationNotesAdministration`}>
+                                                                    <LiquidationNotesAdministration />
                                                                 </Route>
                                                                 <Route path={`${path}/depositCash`}>
                                                                     <DepositCashToClient />
