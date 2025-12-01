@@ -148,9 +148,14 @@ const MovementRow = ({ AccountInfo, UsersInfo, Movement, state, reloadData, coul
                         !!((Movement.stateId === 1) || couldLiquidate(Movement)) &&
                         <div className={`h-100 d-flex align-items-center justify-content-around Actions ${fund?.disabled ? "disabled" : ""}`}>
                             {couldLiquidate(Movement) ?
-                                <div className="iconContainer green me-1">
-                                    <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => { launchModalConfirmation("liquidate") }} />
-                                </div>
+                                <>
+                                    <div className="iconContainer green me-1">
+                                        <FontAwesomeIcon className="icon" icon={faCheckCircle} onClick={() => { launchModalConfirmation("liquidate") }} />
+                                    </div>
+                                    <div className="iconContainer red me-1">
+                                        <FontAwesomeIcon className="icon" icon={faTimesCircle} onClick={() => { launchModalConfirmation("deny") }} />
+                                    </div>
+                                </>
                                 :
 
                                 !!(!isTransferMovement()) &&
