@@ -1,9 +1,8 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt, faEdit } from '@fortawesome/free-regular-svg-icons'
-import { DashBoardContext } from 'context/DashBoardContext';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 
