@@ -5,12 +5,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt, faEdit } from '@fortawesome/free-regular-svg-icons'
 import { DashBoardContext } from 'context/DashBoardContext';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
-import { customFetch } from 'utils/customFetch';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 
 export const NoteRow = ({ note, chargeNotes }) => {
     const { t } = useTranslation();
-    const { token, toLogin, DashboardToastDispatch } = useContext(DashBoardContext)
     const [ShowModal, setShowModal] = useState(false)
     const history = useHistory()
 

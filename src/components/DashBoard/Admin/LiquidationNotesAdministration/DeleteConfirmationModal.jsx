@@ -10,7 +10,7 @@ import { DashBoardContext } from 'context/DashBoardContext';
 
 const DeleteConfirmationModal = ({ show, setShowModal, Note, chargeNotes }) => {
     const { t } = useTranslation();
-    const { token, toLogin, DashboardToastDispatch } = useContext(DashBoardContext)
+    const { token, toLogin } = useContext(DashBoardContext)
     const [DeleteRequest, setDeleteRequest] = useState({ fetched: false, fetching: false, valid: false })
 
     const handleClose = () => {
