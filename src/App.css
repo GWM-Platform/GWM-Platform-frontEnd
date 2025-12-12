@@ -272,12 +272,12 @@ body {
   transition: 0.5s all !important;
 }
 
-.btn.btn-danger {
+.btn.btn-danger:not(.loginButton) {
   background-color: #1153e0 !important;
   border-color: #0b89f2 !important;
   transition: 0.5s all !important;
 }
-.btn.btn-danger:hover {
+.btn.btn-danger:not(.loginButton):hover {
   border-color: #1379e7 !important;
   background-color: #1379e7 !important;
 }

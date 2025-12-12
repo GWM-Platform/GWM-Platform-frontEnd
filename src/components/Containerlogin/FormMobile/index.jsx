@@ -52,7 +52,7 @@ const FormMobile = ({ handleChange, handleSubmit, buttonDisabled, setButtonDisab
                     <Button variant="link" size="sm" className="forgot" href="/forgotPassword">{t('Forgot Password?')}</Button>
                 </Col>
             </Row>
-            <Button type="submit" disabled={buttonDisabled} variant="danger" className="button block px-4 py-2">
+            <Button type="submit" disabled={buttonDisabled} variant="danger" className="button block px-4 py-2 loginButton">
                 <Spinner
                     as="span"
                     animation="border"
@@ -61,7 +61,10 @@ const FormMobile = ({ handleChange, handleSubmit, buttonDisabled, setButtonDisab
                     aria-hidden="true"
                     style={{ display: loading ? "inline-block" : "none" }}
                 />{' '}
-                {t(buttonContent)}
+                {
+                    buttonContent !== "Loading" && 
+                    t(buttonContent)
+                }
             </Button>
         </Form>
     )

@@ -8,13 +8,13 @@ import moment from 'moment';
 
 const Footer = () => {
     const { t } = useTranslation()
-
+    const date = moment(process.env.REACT_APP_VERSION_DATE);
     return (
         <Navbar sticky="bottom" variant="dark" className="d-none d-sm-block navBarFooter">
             <Container>
                 <Row className=" w-100 d-flex justify-content-end align-items-center">
                     <Col>
-                        <span className="text">Versión {process.env.REACT_APP_VERSION}, {moment(process.env.REACT_APP_VERSION_DATE).format('L')}</span>
+                        <span className="text">Versión {process.env.REACT_APP_VERSION}{date.isValid() ? `, ${date.format('L')}` : ''}</span>
                     </Col>
                     <Col className="d-flex justify-content-end align-items-center">
                         <span className="text">Copyright © {moment().format("YYYY")}, GWM. {t("All rights reserved")}</span>
