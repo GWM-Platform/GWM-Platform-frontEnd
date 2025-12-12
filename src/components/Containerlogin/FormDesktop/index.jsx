@@ -56,7 +56,7 @@ const FormDesktop = ({ handleChange, handleSubmit, buttonDisabled, error, button
                     </Row>
                 </Card.Body>
                 <Card.Footer>
-                    <Button type="submit" disabled={buttonDisabled} variant="danger" className="button block px-4 py-2">
+                    <Button type="submit" disabled={buttonDisabled} variant="danger" className="button block px-4 py-2 loginButton">
                         <Spinner
                             as="span"
                             animation="border"
@@ -65,7 +65,10 @@ const FormDesktop = ({ handleChange, handleSubmit, buttonDisabled, error, button
                             aria-hidden="true"
                             style={{ display: loading ? "inline-block" : "none" }}
                         />{' '}
-                        {t(buttonContent)}
+                        {
+                    buttonContent !== "Loading" && 
+                    t(buttonContent)
+                }
                     </Button>
                 </Card.Footer>
             </Form>

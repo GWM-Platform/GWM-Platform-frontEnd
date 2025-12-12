@@ -98,3 +98,13 @@
 	}
 	
 }
+
+.login .loginButton {
+	background-color: var(--main-color) !important;
+	border-color: var(--main-color) !important;
+	transition: 0.5s all !important;
+}
+.login .loginButton:hover {
+	background-color: #090844ff !important;
+	border-color: #090844ff !important;
+}

@@ -134,6 +134,7 @@ const GeneralInfo = ({ fullSettlement, setFullSettlement, clients }) => {
             const client = (clients || [])?.find(client => client.id === account.clientId)
             return ({ ...account, client, clientCompleteName: `${client?.firstName} ${client?.lastName}` })
         }).sort((a, b) => {
+            console.log(a,b)
             if (sortField && a[sortField] && b[sortField]) {
                 if (typeof a[sortField] === 'string') {
                     return sortDirection === 'asc' ? a[sortField].localeCompare(b[sortField]) : b[sortField].localeCompare(a[sortField]);
