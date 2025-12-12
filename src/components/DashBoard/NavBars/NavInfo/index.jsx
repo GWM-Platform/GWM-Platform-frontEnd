@@ -35,7 +35,15 @@ const NavBarInfo = ({ NavInfoToggled }) => {
                             <img
                                 alt=""
                                 src={process.env.PUBLIC_URL + '/images/logo/logo.svg'}
-                                className="d-inline-block align-top my-2"
+                                className="d-inline-block d-sm-inline-block d-md-none align-top my-2"
+                            />
+                            <img
+                                alt=""
+                                src={process.env.PUBLIC_URL + '/images/logo/wordpress.svg'}
+                                style={{
+                                    height: "2.5rem"
+                                }}
+                                className="d-none d-sm-none d-md-inline-block align-top my-2"
                             />
                         </Navbar.Brand>
                     </Col>

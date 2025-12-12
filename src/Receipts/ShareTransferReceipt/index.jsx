@@ -156,7 +156,8 @@ const styles = {
     height: '100%',
     width: '100%',
     backgroundColor: 'transparent',
-    padding: '50px 50px 50px 50px'
+    padding: '50px 50px 50px 50px',
+    borderRadius: "5%"
   },
   header: {
     display: 'flex',
@@ -171,7 +172,7 @@ const styles = {
       height: '35px',
       width: '35px',
       backgroundColor: 'white',
-      borderRadius: '50%',
+      borderRadius: '15%',
       padding: '5px'
     },
     textContainer: {

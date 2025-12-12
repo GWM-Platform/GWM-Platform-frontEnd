@@ -105,7 +105,8 @@ export const FundsStatementDetail = ({ fundsStatement, year, headerInfo, Account
                     height: '100%',
                     width: '100%',
                     backgroundColor: 'transparent',
-                    padding: '25px 25px 25px 25px'
+                    padding: '25px 25px 25px 25px',
+                    borderRadius: "5%"
                 },
                 header: {
                     display: 'flex',
@@ -120,7 +121,7 @@ export const FundsStatementDetail = ({ fundsStatement, year, headerInfo, Account
                         height: '35px',
                         width: '35px',
                         backgroundColor: 'white',
-                        borderRadius: '50%',
+                        borderRadius: '15%',
                         padding: '5px',
                         marginLeft: "auto",
                         marginRight: '10px',
