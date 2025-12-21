@@ -98,6 +98,12 @@
 .Actions .iconContainer.blue:not(.not-allowed):hover .icon {
   color: rgb(15, 68, 216);
 }   
+.Actions .iconContainer.green:not(.not-allowed):hover .icon {
+  color: green;
+}
+.Actions .iconContainer.gray:not(.not-allowed):hover .icon {
+  color: gray;
+}
 .Actions .verticalCenter {
   vertical-align: middle;
 }

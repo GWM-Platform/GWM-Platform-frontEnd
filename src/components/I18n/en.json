@@ -838,6 +838,7 @@
     "FIXED_DEPOSIT_INITIAL_INTERESTS": "Fixed deposit initial interests #{{fixedDeposit}}",
     "FIXED_DEPOSIT_PARTIAL_INTERESTS": "Periodic crediting of fixed deposit interests",
     "Liquidation options administration": "Liquidation options administration",
+    "Liquidation options": "Liquidation options",
     "No liquidation options found": "No liquidation options found",
     "There are no liquidation options registered": "There are no liquidation options registered",
     "No results match your search": "No results match your search",

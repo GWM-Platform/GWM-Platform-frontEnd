@@ -65,12 +65,6 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                             onClick={() => { goTo("ticketsAdministration") }}>
                                             {t("Tickets administration")}
                                         </Nav.Link>
-                                        <Nav.Link
-                                            className="px-2"
-                                            active={itemSelectedLC === "liquidationnotesadministration"}
-                                            onClick={() => { goTo("liquidationNotesAdministration") }}>
-                                            {t("Liquidation options administration")}
-                                        </Nav.Link>
                                         <NavDropdown
                                             active={itemSelectedLC === "useractionlogs" || itemSelectedLC === "withdrawcash" || itemSelectedLC === "depositcash" || itemSelectedLC === "broadcast" || itemSelectedLC === "users" || itemSelectedLC === "clientssupervision" || itemSelectedLC === "connectusertoclient"}
                                             className="px-0 transactionDropdown" title={t("Clients administration")} id="collasible-nav-dropdown">
@@ -111,6 +105,7 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                                     "timedeposit",
                                                     "apl",
                                                     "fundsadministration",
+                                                    "liquidationnotesadministration",
                                                     "assetsadministration",
                                                     "operations"].includes(itemSelectedLC)
                                             }
@@ -119,6 +114,11 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                                 active={itemSelectedLC === "fundsadministration"}
                                                 onClick={() => { goTo("FundsAdministration") }}>
                                                 {t("Funds")}
+                                            </NavDropdown.Item>
+                                            <NavDropdown.Item
+                                                active={itemSelectedLC === "liquidationnotesadministration"}
+                                                onClick={() => { goTo("liquidationNotesAdministration") }}>
+                                                {t("Liquidation options")}
                                             </NavDropdown.Item>
                                             <NavDropdown.Item
                                                 active={itemSelectedLC === "timedeposit"}
@@ -255,21 +255,54 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
             <Nav className={`w-100 d-block d-sm-none`}  >
                 <Container fluid className="px-0">
                     {/*----------------------------------------------------------Admin----------------------------------------------------------*/}
-                    <Row className={`w-100 justify-content-between align-items-center mx-0 px-0 ${itemSelectedLC === "fundsadministration" || itemSelectedLC === "assetsadministration" ? "d-flex" : "d-none"}`}>
-                        <Col xs="6" className="px-0">
-                            <Nav.Link
-                                className="ps-4 text-center"
-                                active={itemSelectedLC === "fundsadministration" || itemSelectedLC === "Fundsadministration"}
-                                onClick={() => { goTo("fundsAdministration") }}>
-                                {t("Funds")}
-                            </Nav.Link> </Col>
-                        <Col xs="6" className="px-0">
-                            <Nav.Link
-                                className="pe-4 text-center"
-                                active={itemSelectedLC === "assetsadministration"}
-                                onClick={() => { goTo("assetsAdministration") }}>
-                                {t("Assets")}
-                            </Nav.Link>
+                    <Row className={`w-100 justify-content-between align-items-center mx-0 px-0 ${["fundsadministration", "assetsadministration", "liquidationnotesadministration", "timedeposit", "apl", "operations"].includes(itemSelectedLC) ? "d-flex" : "d-none"}`}>
+                        <Col xs="12" className="px-0">
+                            <OverlayTrigger placement="bottom" overlay={
+                                <Popover id="popover-funds-admin" className="OverlayNavMobile" >
+                                    <Popover.Body>
+                                        <NavDropdown.Item
+                                            className="p-2"
+                                            active={itemSelectedLC === "fundsadministration"}
+                                            onClick={() => { goTo("FundsAdministration") }}>
+                                            {t("Funds")}
+                                        </NavDropdown.Item>
+                                        <NavDropdown.Item
+                                            className="p-2"
+                                            active={itemSelectedLC === "liquidationnotesadministration"}
+                                            onClick={() => { goTo("liquidationNotesAdministration") }}>
+                                            {t("Liquidation options")}
+                                        </NavDropdown.Item>
+                                        <NavDropdown.Item
+                                            className="p-2"
+                                            active={itemSelectedLC === "timedeposit"}
+                                            onClick={() => { goTo("TimeDeposit") }}>
+                                            {t("Time deposit")}
+                                        </NavDropdown.Item>
+                                        <NavDropdown.Item
+                                            className="p-2"
+                                            active={itemSelectedLC === "assetsadministration"}
+                                            onClick={() => { goTo("assetsAdministration") }}>
+                                            {t("Assets")}
+                                        </NavDropdown.Item>
+                                        <NavDropdown.Item
+                                            className="p-2"
+                                            active={itemSelectedLC === "apl"}
+                                            onClick={() => { goTo("APL") }}>
+                                            APL
+                                        </NavDropdown.Item>
+                                        <NavDropdown.Item
+                                            className="p-2"
+                                            active={itemSelectedLC === "operations"}
+                                            onClick={() => { goTo("operations") }}>
+                                            {t("Operations")}
+                                        </NavDropdown.Item>
+                                    </Popover.Body>
+                                </Popover>
+                            } popperConfig={1}>
+                                <button type="button" className={`dropdownButton nav-link ${["fundsadministration", "assetsadministration", "liquidationnotesadministration", "timedeposit", "apl", "operations"].includes(itemSelectedLC) ? "active" : ""}`}>
+                                    <p className="mobile-dropdown mb-0" >{t("Funds administration")}</p>
+                                </button>
+                            </OverlayTrigger>
                         </Col>
                     </Row>
 

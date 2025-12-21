@@ -89,14 +89,12 @@ const EditLiquidationNotes = ({ Notes, chargeNotes, Action, setAction }) => {
                     />
                     :
                     <EditForm
-                        data={data} 
-                        setData={setData} 
-                        handleChange={handleChange} 
-                        handleSubmit={handleSubmit} 
+                        data={data}
+                        handleChange={handleChange}
+                        handleSubmit={handleSubmit}
                         EditRequest={EditRequest}
-                        Notes={Notes} 
-                        Action={Action} 
-                        setAction={setAction} 
+                        Action={Action}
+                        setAction={setAction}
                         validated={validated}
                     />
             }
