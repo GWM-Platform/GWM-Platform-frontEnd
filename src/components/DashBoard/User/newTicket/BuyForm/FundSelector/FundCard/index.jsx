@@ -20,11 +20,11 @@ const FundCard = ({ Fund, ownKey, data, setData, openAccordion, Account, account
     const { hasBuyPermission } = useContext(DashBoardContext)
     return (
         <Col ref={accountCardRef} xs="10" sm="6" md="4" lg="3"
-            className={`py-1 pe-1 growAnimation FundCardContainer ${Fund.freeShares === 0 || Fund.sharePrice > Account.balance || Fund.sharePrice === 0 || Fund.disabled || !hasBuyPermission(Fund.id) ? " FundDisabled" : ""}`}>
+            className={`py-1 pe-1 growAnimation FundCardContainer ${Fund.freeShares === 0 || Fund.sharePrice > Account.balance || Fund.sharePrice === 0 || Fund.disabled || Fund.disabledBuy || !hasBuyPermission(Fund.id) ? " FundDisabled" : ""}`}>
             <Card
                 ref={ref}
                 className={`fund-item p-0 ${data.FundSelectedId === Fund.id ? "selected" : ""}`}
-                onClick={() => { if (Fund.freeShares > 0) setFundSelected(setData, Fund.id, ownKey, openAccordion) }}>
+                onClick={() => { if (Fund.freeShares > 0 && !Fund.disabled && !Fund.disabledBuy) setFundSelected(setData, Fund.id, ownKey, openAccordion) }}>
                 <Card.Header className='content-container d-flex'>
                     <strong className="title d-inline">{Fund.name}</strong>
                     <div className="fund-icon ms-auto">

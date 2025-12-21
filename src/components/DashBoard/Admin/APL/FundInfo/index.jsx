@@ -253,6 +253,8 @@ const FundInfo = ({ Fund, clients }) => {
                 <div className="d-flex align-items-start">
                     <h1 className="m-0 title pe-2">
                         {t("Fund")} "{t(Fund.name)}" {Fund.disabled && <Badge style={{ fontSize: "0.5em" }} bg="danger" className='ms-auto'>{t("Disabled")}</Badge>}
+                        {!Fund.disabled && Fund.disabledBuy && <Badge style={{ fontSize: "0.5em" }} bg="warning" text="dark" className='ms-2'>{t("Fund disabled for buy operations")}</Badge>}
+                        {!Fund.disabled && Fund.disabledSell && <Badge style={{ fontSize: "0.5em" }} bg="warning" text="dark" className='ms-2'>{t("Fund disabled for sell operations")}</Badge>}
                     </h1>
                     <FontAwesomeIcon className="me-auto ms-2" style={{ cursor: "pointer", marginTop: ".4em" }} icon={faEdit} onClick={() =>
                         setAction({ ...Action, ...{ action: 0, fund: ownKey } })

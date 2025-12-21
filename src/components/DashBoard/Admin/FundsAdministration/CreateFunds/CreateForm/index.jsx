@@ -301,10 +301,26 @@ const CreateFunds = ({ data, setData, CreateRequest, handleChange, Action, setAc
                     <Form.Control.Feedback type="valid">
                         {t("Looks good")}!
                     </Form.Control.Feedback>
-                    <Form.Control.Feedback type="invalid">
-                        {t("It seems that the url entered is not valid, please check if I copied it correctly")}
-                    </Form.Control.Feedback>
-                </FloatingLabel>
+                <Form.Control.Feedback type="invalid">
+                    {t("It seems that the url entered is not valid, please check if I copied it correctly")}
+                </Form.Control.Feedback>
+            </FloatingLabel>
+
+                <Form.Check
+                    checked={data.disabledBuy}
+                    label={t("Fund disabled for buy operations")}
+                    onChange={handleChange}
+                    id="disabledBuy"
+                    className="mb-2"
+                />
+
+                <Form.Check
+                    checked={data.disabledSell}
+                    label={t("Fund disabled for sell operations")}
+                    onChange={handleChange}
+                    id="disabledSell"
+                    className="mb-3"
+                />
 
                 <Form.Check
                     checked={data.disabled}

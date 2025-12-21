@@ -12,7 +12,9 @@ const EditFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction, withoutH
         name: Funds[Action.fund].name,
         spreadsheetId: `https://docs.google.com/spreadsheets/d/${Funds[Action.fund].spreadsheetId}/edit?usp=sharing`,
         imageUrl: Funds[Action.fund].imageUrl ? Funds[Action.fund].imageUrl : "",
-        disabled: Funds[Action.fund].disabled
+        disabled: Funds[Action.fund].disabled,
+        disabledBuy: Funds[Action.fund].disabledBuy ?? false,
+        disabledSell: Funds[Action.fund].disabledSell ?? false
     })
 
     const [EditRequest, setEditRequest] = useState({

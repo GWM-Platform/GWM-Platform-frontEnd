@@ -14,7 +14,7 @@ const TableLastMovements = ({ content, movements, reloadData, linkToOtherHistory
     const { hasPermission } = useContext(DashBoardContext)
 
     const anyWithActions = () => Object.values(content).some(
-        (movement) => (
+        (movement) => movement && (
             (movement.stateId === 5 && movement.motive !== "TRANSFER_RECEIVE")
             ||
             (movement.stateId === 1
@@ -28,8 +28,12 @@ const TableLastMovements = ({ content, movements, reloadData, linkToOtherHistory
         )
     )
 
+    const filteredContent = content?.filter(u => u?.createdAt)
+
+    const minHeight = `max(calc((0.5rem * 2 + 25.5px) * ${(movements ?? 0) + 1}), 300px)`;
+
     return (
-        <div style={{ minHeight: `calc( ( 0.5rem * 2 + 25.5px ) * ${movements + 1} )` }} className={`tableMovements overflow-auto`}>
+        <div className='tableMovements overflow-auto' style={{ minHeight }}>
             <Table striped bordered hover className="mb-auto m-0  mt-2" data-table-name="cta-cte-movements">
                 <thead >
                     <tr>
@@ -48,7 +52,7 @@ const TableLastMovements = ({ content, movements, reloadData, linkToOtherHistory
                 </thead>
                 <tbody>
                     {
-                        content.map((u, i) =>
+                        filteredContent.map((u, i) =>
                             <Movement linkToOtherHistory={linkToOtherHistory} key={i} content={u} actions={anyWithActions()} reloadData={reloadData} />
                         )
                     }

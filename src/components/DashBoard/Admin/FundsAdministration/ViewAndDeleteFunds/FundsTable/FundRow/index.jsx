@@ -43,6 +43,8 @@ const FundRow = ({ Fund, AssetTypes, chargeFunds, setAction, Action, ownKey }) =
             <tr className="fundRow">
                 <td className="Name">
                     {Fund.disabled && <Badge bg="danger" className='ms-2'>{t("Disabled")}</Badge>}
+                    {!Fund.disabled && Fund.disabledBuy && <Badge bg="warning" text="dark" className='ms-2'>{t("Fund disabled for buy operations")}</Badge>}
+                    {!Fund.disabled && Fund.disabledSell && <Badge bg="warning" text="dark" className='ms-2'>{t("Fund disabled for sell operations")}</Badge>}
                     {Fund.name}
                     </td>
                 <td className="Type">{AssetTypes[getAssetTypeById(AssetTypes, Fund.typeId)].name}</td>
@@ -61,11 +63,11 @@ const FundRow = ({ Fund, AssetTypes, chargeFunds, setAction, Action, ownKey }) =
                         <button className="noStyle iconContainer red" onClick={() => { launchDeleteConfirmation() }}>
                             <FontAwesomeIcon className="icon" icon={faTrashAlt} />
                         </button>
-                        <button className="noStyle iconContainer  green" onClick={() => setAction({ ...Action, ...{ action: 0, fund: ownKey } })}>
+                        <button className="noStyle iconContainer blue" onClick={() => setAction({ ...Action, ...{ action: 0, fund: ownKey } })}>
                             <FontAwesomeIcon className="icon" icon={faEdit} />
                         </button>
                         <OverlayTrigger delay={{ show: "200", hide: 0 }} placement="left" overlay={popover}>
-                            <button className="noStyle iconContainer  green">
+                            <button className="noStyle iconContainer gray">
                                 <FontAwesomeIcon className="icon" icon={faEye} />
                             </button>
                         </OverlayTrigger>

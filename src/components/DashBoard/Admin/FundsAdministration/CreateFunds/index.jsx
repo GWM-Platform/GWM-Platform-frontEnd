@@ -24,7 +24,9 @@ const CreateFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction }) => {
         initialSharePrice: "",
         spreadsheetId: "",
         imageUrl: "",
-        disabled: false
+        disabled: false,
+        disabledBuy: false,
+        disabledSell: false
     })
 
     const [ImageUrl, setImageUrl] = useState({
