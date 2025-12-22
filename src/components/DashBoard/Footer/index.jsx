@@ -17,7 +17,7 @@ const Footer = () => {
                         <span className="text">Versión {process.env.REACT_APP_VERSION}{date.isValid() ? `, ${date.format('L')}` : ''}</span>
                     </Col>
                     <Col className="d-flex justify-content-end align-items-center">
-                        <span className="text">Copyright © {moment().format("YYYY")}, GWM. {t("All rights reserved")}</span>
+                        <span className="text">Copyright © {moment().format("YYYY")}, GWMG. {t("All rights reserved")}</span>
                     </Col>
                 </Row>
             </Container>

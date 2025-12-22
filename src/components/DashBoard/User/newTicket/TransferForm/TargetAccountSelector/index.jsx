@@ -287,7 +287,7 @@ const TargetAccountSelector = ({ data, setData, TargetAccount, setTargetAccount,
                                             data.clientEnabled === false ?
                                                 t("The client you are trying to transfer money to is not enabled")
                                                 :
-                                                t("The alias entered does not correspond to any GWM account")
+                                                t("The alias entered does not correspond to any GWMG account")
                                         )
                                         :
                                         TargetAccount.fetching && t("Verifying alias")

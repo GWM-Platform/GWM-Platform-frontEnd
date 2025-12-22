@@ -32,7 +32,7 @@ export const ModalPreview = ({ show, setShow, formData, emailBodyWihtImagesStyle
                                                                     <tbody>
                                                                         <tr>
                                                                             <td valign="top" style="color:#f2f2f2;font-family:Helvetica;font-size:14px;font-weight:normal;line-height:150%;padding:18px;text-align:center;word-break:break-word">
-                                                                                <div style="text-align:left"><strong><span style="font-size:1.25rem">GWM</span></strong><br>
+                                                                                <div style="text-align:left"><strong><span style="font-size:1.25rem">GWMG</span></strong><br>
                                                                                     <span style="font-size:19px">Global Wealth Management</span></div>
                                                                             </td>
                                                                         </tr>
@@ -118,7 +118,7 @@ export const ModalPreview = ({ show, setShow, formData, emailBodyWihtImagesStyle
                                                                     </span>
                                                                 </div><br>
                                                                 Gracias,<br>
-                                                                Equipo GWM Studio.
+                                                                Equipo GWMG Studio.
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -139,7 +139,7 @@ export const ModalPreview = ({ show, setShow, formData, emailBodyWihtImagesStyle
                                                     <tbody>
                                                         <tr>
                                                             <td valign="top" style="color:#202020;font-family:Helvetica;font-size:12px;line-height:150%;padding-bottom:9px;padding-left:18px;padding-right:18px;padding-top:0;text-align:left;word-break:break-word">
-                                                                <em>Copyright © 2022 GWM Studio, All rights reserved.</em><br>
+                                                                <em>Copyright © 2022 GWMG Studio, All rights reserved.</em><br>
                                                                 <a href="https://gwmstudio.com" style="color:#202020;font-weight:normal;text-decoration:underline" target="_blank" data-saferedirecturl="https://www.google.com/url?q=https://gwmstudio.com&amp;source=gmail&amp;ust=1714844637636000&amp;usg=AOvVaw1qDYZVZp-0CcMEAhXzNCTW">www.gwmstudio.com</a><br> &nbsp;
                                                             </td>
                                                         </tr>
