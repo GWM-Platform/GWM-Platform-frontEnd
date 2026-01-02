@@ -125,14 +125,14 @@ const FundCard = ({ Hide, setHide, Fund, PendingTransactions, cardsAmount, inScr
                     <Row className="d-flex justify-content-center m-0">
                         <Col xs="6" className="d-flex justify-content-center p-0 m-0">
                             <Button
-                                disabled={!hasBuyPermission(Fund?.fund?.id) || !hasPermission('VIEW_ACCOUNT') || Fund.fund?.disabled}
+                                disabled={!hasBuyPermission(Fund?.fund?.id) || !hasPermission('VIEW_ACCOUNT') || Fund.fund?.disabled || Fund.fund?.disabledBuy}
                                 onClick={() => toTickets("buy")} className="me-1 button left">
                                 <span className="label">{t("Buy")}</span>
                             </Button>
                         </Col>
                         <Col xs="6" className="d-flex justify-content-center p-0 m-0">
                             <Button
-                                disabled={!hasSellPermission(Fund?.fund?.id) || Fund.fund?.disabled}
+                                disabled={!hasSellPermission(Fund?.fund?.id) || Fund.fund?.disabled || Fund.fund?.disabledSell}
                                 onClick={() => toTickets("sell")} className="ms-1 button right">
                                 <span className="label">{t("Sell")}</span>
                             </Button>

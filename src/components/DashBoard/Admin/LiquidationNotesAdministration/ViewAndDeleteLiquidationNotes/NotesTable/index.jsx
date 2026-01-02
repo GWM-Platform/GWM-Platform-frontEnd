@@ -1,25 +1,16 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Table, Button } from 'react-bootstrap'
+import { Table } from 'react-bootstrap'
 import NoteRow from './NoteRow'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import { useTranslation } from 'react-i18next';
 
 const NotesTable = ({ Notes, chargeNotes, setAction, Action }) => {
     const { t } = useTranslation()
 
     return (
-        <div>
-            <div className="d-flex justify-content-end mb-3">
-                <Button 
-                    variant="success" 
-                    onClick={() => setAction({ ...Action, ...{ action: 1, note: -1 } })}
-                >
-                    <FontAwesomeIcon className="me-2" icon={faPlus} />
-                    {t("Add liquidation option")}
-                </Button>
-            </div>
+        <div className="notes-table">
             <Table striped bordered hover responsive>
                 <thead>
                     <tr>
@@ -40,6 +31,24 @@ const NotesTable = ({ Notes, chargeNotes, setAction, Action }) => {
                         />
                     ))}
                 </tbody>
+                <tfoot>
+                    <tr className="noteRow add">
+                        <td className="border-0 p-0" colSpan="2" />
+                        <td className="Actions text-center">
+                            <div className="d-flex align-items-center justify-content-center gap-2">
+                                <div className="iconContainer green">
+                                    <button
+                                        className="noStyle"
+                                        onClick={() => setAction({ ...Action, ...{ action: 1, note: -1 } })}
+                                        title={t("Add liquidation option")}
+                                    >
+                                        <FontAwesomeIcon className="icon" icon={faPlusCircle} />
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
             </Table>
         </div>
     )

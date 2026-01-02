@@ -87,14 +87,12 @@ const CreateLiquidationNotes = ({ Notes, chargeNotes, Action, setAction }) => {
                     />
                     :
                     <CreateForm
-                        data={data} 
-                        setData={setData} 
-                        handleChange={handleChange} 
-                        handleSubmit={handleSubmit} 
+                        data={data}
+                        handleChange={handleChange}
+                        handleSubmit={handleSubmit}
                         CreateRequest={CreateRequest}
-                        Notes={Notes} 
-                        Action={Action} 
-                        setAction={setAction} 
+                        Action={Action}
+                        setAction={setAction}
                         validated={validated}
                     />
             }

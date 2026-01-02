@@ -15,7 +15,7 @@ const AddRuleRow = ({  ActionDispatch}) => {
                 </td>
                 <td className="verticalCenter Actions solid-bg" >
                     <div className="h-100 d-flex align-items-center justify-content-around">
-                        <div className="iconContainer blue">
+                        <div className="iconContainer green">
                             <button onClick={()=>  ActionDispatch({ type: "create"})} className="noStyle">
                                 <FontAwesomeIcon className="icon" icon={faPlusCircle} />
                             </button>

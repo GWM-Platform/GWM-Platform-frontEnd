@@ -1,62 +1,54 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Form, Button, Container, Row, Col } from 'react-bootstrap'
+import { Form, Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowLeft, faCheck } from '@fortawesome/free-solid-svg-icons'
+import { faChevronCircleLeft } from '@fortawesome/free-solid-svg-icons'
 import { useTranslation } from 'react-i18next';
 
-const CreateForm = ({ data, setData, handleChange, handleSubmit, CreateRequest, Notes, Action, setAction, validated }) => {
+const CreateForm = ({ data, handleChange, handleSubmit, CreateRequest, Action, setAction, validated }) => {
     const { t } = useTranslation()
 
     return (
-        <Container>
-            <Row>
-                <Col sm="12">
-                    <div className="header-with-border mb-4">
-                        <h1 className="title">{t("Create liquidation option")}</h1>
-                    </div>
-                    <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                        <Form.Group className="mb-3">
-                            <Form.Label>{t("Name")} *</Form.Label>
-                            <Form.Control
-                                required
-                                type="text"
-                                id="nombre"
-                                value={data.nombre}
-                                onChange={handleChange}
-                                maxLength={255}
-                                placeholder={t("Enter liquidation option name")}
-                            />
-                            <Form.Control.Feedback type="invalid">
-                                {t("Please provide a name")}
-                            </Form.Control.Feedback>
-                        </Form.Group>
+        <div className="editForm">
+            <div className="header">
+                <h1 className="title fw-normal">
+                    {t("Create liquidation option")}
+                </h1>
+                <FontAwesomeIcon
+                    className="button icon"
+                    onClick={() => setAction({ ...Action, ...{ action: -1, note: -1 } })}
+                    icon={faChevronCircleLeft}
+                />
+            </div>
+            <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                <Form.Group className="mb-3">
+                    <Form.Label>{t("Name")} *</Form.Label>
+                    <Form.Control
+                        required
+                        type="text"
+                        id="nombre"
+                        value={data.nombre}
+                        onChange={handleChange}
+                        maxLength={255}
+                        placeholder={t("Enter liquidation option name")}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                        {t("Please provide a name")}
+                    </Form.Control.Feedback>
+                </Form.Group>
 
-                        <div className="d-flex justify-content-between mt-4">
-                            <Button
-                                variant="outline-secondary"
-                                onClick={() => setAction({ ...Action, ...{ action: -1, note: -1 } })}
-                            >
-                                <FontAwesomeIcon className="me-2" icon={faArrowLeft} />
-                                {t("Back")}
-                            </Button>
-                            <Button
-                                type="submit"
-                                variant="success"
-                                disabled={CreateRequest.fetching}
-                            >
-                                {CreateRequest.fetching ? t("Creating...") : (
-                                    <>
-                                        <FontAwesomeIcon className="me-2" icon={faCheck} />
-                                        {t("Create")}
-                                    </>
-                                )}
-                            </Button>
-                        </div>
-                    </Form>
-                </Col>
-            </Row>
-        </Container>
+                <div className="d-flex justify-content-end mt-4">
+                    <Button
+                        type="submit"
+                        variant="danger"
+                        className="mb-3"
+                        disabled={CreateRequest.fetching}
+                    >
+                        {CreateRequest.fetching ? t("Creating...") : "Enviar"}
+                    </Button>
+                </div>
+            </Form>
+        </div>
     )
 }
 

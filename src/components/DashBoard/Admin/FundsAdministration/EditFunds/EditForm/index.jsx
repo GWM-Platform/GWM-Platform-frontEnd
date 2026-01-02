@@ -269,6 +269,22 @@ const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, se
                 </FloatingLabel>
 
                 <Form.Check
+                    checked={data.disabledBuy}
+                    label={t("Fund disabled for buy operations")}
+                    onChange={handleChange}
+                    id="disabledBuy"
+                    className="mb-2"
+                />
+
+                <Form.Check
+                    checked={data.disabledSell}
+                    label={t("Fund disabled for sell operations")}
+                    onChange={handleChange}
+                    id="disabledSell"
+                    className="mb-3"
+                />
+
+                <Form.Check
                     checked={data.disabled}
                     label={t("Fund disabled for operations")}
                     onChange={handleChange}

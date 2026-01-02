@@ -29,7 +29,7 @@ const NoteRow = ({ Note, chargeNotes, setAction, Action, ownKey }) => {
                             <FontAwesomeIcon className="icon" icon={faTrashAlt} />
                         </button>
                         <button 
-                            className="noStyle iconContainer green" 
+                            className="noStyle iconContainer blue" 
                             onClick={() => setAction({ ...Action, ...{ action: 0, note: ownKey } })}
                             title={t("Edit")}
                         >
