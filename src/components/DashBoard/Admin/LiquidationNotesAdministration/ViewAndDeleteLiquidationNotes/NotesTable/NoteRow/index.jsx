@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt, faEdit } from '@fortawesome/free-regular-svg-icons'
 import DeleteConfirmationModal from './DeleteConfirmationModal'
-import { customFetch } from 'utils/customFetch';
 
 const NoteRow = ({ Note, chargeNotes, setAction, Action, ownKey }) => {
     const { t } = useTranslation();
@@ -48,4 +47,3 @@ const NoteRow = ({ Note, chargeNotes, setAction, Action, ownKey }) => {
     )
 }
 export default NoteRow
-
