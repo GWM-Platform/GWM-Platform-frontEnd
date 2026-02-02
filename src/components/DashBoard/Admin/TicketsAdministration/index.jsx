@@ -18,6 +18,7 @@ import { exportToExcel } from 'utils/exportToExcel';
 import { faCompress, faExpand } from '@fortawesome/free-solid-svg-icons';
 import { MotiveMultiSelect } from 'components/DashBoard/GeneralUse/FilterOptions';
 import { customFetch } from 'utils/customFetch';
+import DoubleSignatureTable from './Tables/DoubleSignatureTable';
 
 export const motives = [
     { value: 'DEPOSIT', labelKey: 'DEPOSIT', group: "cta_cte" },
@@ -392,7 +393,15 @@ const TicketsAdministration = () => {
                                     </Row>
                                     {
                                         tableView ?
-                                            <TableView state={TransactionStates.selected} client={client.value} FilterOptions={FilterOptions} />
+                                            <>
+                                                <Row className="pb-2 px-0 mx-0">
+                                                    <Col xs="12">
+                                                        <h1 className="title fw-normal">{t("Tickets pending admin double check")}:</h1>
+                                                    </Col>
+                                                    <DoubleSignatureTable />
+                                                </Row>
+                                                <TableView state={TransactionStates.selected} client={client.value} FilterOptions={FilterOptions} />
+                                            </>
                                             :
                                             <Tables state={TransactionStates.selected} messageVariants={messageVariants} client={client} />
                                     }
