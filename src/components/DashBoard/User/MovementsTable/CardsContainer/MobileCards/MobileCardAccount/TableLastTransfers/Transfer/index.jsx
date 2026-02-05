@@ -43,7 +43,7 @@ const Transfer = ({ content, getTransfers }) => {
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
-    link.setAttribute('download', `${AccountSelected.alias} - ${t("Transfer")} #${content.id}.pdf`)
+    link.setAttribute('download', `${AccountSelected.alias} - ${t("Transfer")} #${ticketId}.pdf`)
     // 3. Append to html page
     document.body.appendChild(link)
     // 4. Force download
@@ -58,6 +58,7 @@ const Transfer = ({ content, getTransfers }) => {
 
   const state = (getMoveStateById(content.stateId).name === "Denegado" && !incomingTransfer()) ? "Cancelled" : getMoveStateById(content.stateId).name
   const transferNote = content?.notes?.find(note => note.noteType === "TRANSFER_MOTIVE")
+  const ticketId = content?.ticketId || content?.id
 
   return (
     <div className='mobileMovement'>

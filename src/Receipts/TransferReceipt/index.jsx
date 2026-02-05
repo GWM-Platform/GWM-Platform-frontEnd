@@ -89,7 +89,7 @@ const TransferReceipt = ({ Transfer }) => {
                   {t("Ticket N°")}
                 </Text>
                 <Text style={styles.body.smallerCol.data} >
-                  {t("Transfer")} #{Transfer?.id}
+                  {t("Transfer")} #{Transfer?.ticketId || Transfer?.id}
                 </Text>
               </View >
               <View style={styles.body.smallerCol.section}>
