@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 import FixedDepositTable from './FixedDepositsTable';
 import { Button, Col } from 'react-bootstrap';
 import { customFetch } from 'utils/customFetch';
+import DoubleSignatureTable from './DoubleSignatureTable';
 
 const Tables = ({ state, messageVariants, client }) => {
 
@@ -930,6 +931,7 @@ const Tables = ({ state, messageVariants, client }) => {
 
 
     const PurchaseAndSale = useRef(null)
+    const DoubleSignatureRef = useRef(null)
     const AccountMovementsRef = useRef(null)
     const PendingSettlementRef = useRef(null)
     const TransferRef = useRef(null)
@@ -945,6 +947,7 @@ const Tables = ({ state, messageVariants, client }) => {
                 {
                     !stateOnlyReverted &&
                     <div className='d-flex justify-content-between overflow-auto'>
+                        <Button variant="link" onClick={() => executeScroll(DoubleSignatureRef)}>{t("Tickets pending admin double check")}</Button>
                         <Button variant="link" onClick={() => executeScroll(PurchaseAndSale)}>{t("Purchases, sales and share transfers")}</Button>
                         <Button variant="link" onClick={() => executeScroll(AccountMovementsRef)}>{t("Account movements")}</Button>
                         <Button variant="link" onClick={() => executeScroll(PendingSettlementRef)}>{t("Approved pending settlement")}</Button>
@@ -958,6 +961,14 @@ const Tables = ({ state, messageVariants, client }) => {
                 {/*-------------------------------Purchase sale-and transfers------------------------- */}
                 {
                     <>
+                        {
+                            !stateOnlyReverted &&
+                            <>
+                                <h1 ref={DoubleSignatureRef} className="title fw-normal">{t("Tickets pending admin double check")}:</h1>
+                                <DoubleSignatureTable />
+                                <div className='mt-3 w-100 d-flex' style={{ borderBottom: "1px solid gray" }} />
+                            </>
+                        }
                         <h1 ref={PurchaseAndSale} className="title fw-normal">{t("Purchases, sales and share transfers")}:</h1>
                         <TicketSearch
                             props={ticketSearchPropsTransfers}
