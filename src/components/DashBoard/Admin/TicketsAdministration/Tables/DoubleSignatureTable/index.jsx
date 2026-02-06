@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Col, Table } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next';
@@ -86,13 +86,13 @@ const DoubleSignatureTable = () => {
         // eslint-disable-next-line
     }, [pagination.skip, pagination.take])
 
-    const getMotiveLabel = (ticket) => {
-        if (!ticket?.motive) return "-"
-        return t(ticket.motive, {
-            fund: ticket.fundName,
-            fixedDeposit: ticket.fixedDepositId
-        })
-    }
+    const getMotiveLabel = useCallback((ticket) => {
+         if (!ticket?.motive) return "-"
+         return t(ticket.motive, {
+             fund: ticket.fundName,
+             fixedDeposit: ticket.fixedDepositId
+         })   
+}, [t])
 
     const rows = useMemo(() => {
         return (tickets.values || []).map((ticket) => {
@@ -113,7 +113,7 @@ const DoubleSignatureTable = () => {
                 createdAt
             }
         })
-    }, [tickets.values, t])
+}, [tickets.values, getMotiveLabel])
 
     return (
         <Col xs="12" className="mt-2">
