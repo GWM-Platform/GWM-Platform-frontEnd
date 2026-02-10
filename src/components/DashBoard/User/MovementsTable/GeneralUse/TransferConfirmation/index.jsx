@@ -21,6 +21,7 @@ const TransferConfirmation = ({ isMovement = false, movement, setShowModal, acti
     const { ClientSelected } = useContext(DashBoardContext)
     const [ActionFetch, setActionFetch] = useState({ fetched: false, fetching: false, valid: false })
     const [Transfer, setTransfer] = useState(isMovement ? {} : movement)
+    const ticketId = Transfer?.ticketId || Transfer?.id
 
     const incomingTransfer = () => movement.receiverId === AccountSelected?.id
 
@@ -123,7 +124,7 @@ const TransferConfirmation = ({ isMovement = false, movement, setShowModal, acti
                         </h1>
                     </div>
                     <h1 className="title"> {t("Are you sure?")}</h1>
-                    <h2 className="subTitle">{t("You are about to")} {t(action === "deny" ? (isMovement ? (movement.motive === "TRANSFER_RECEIVE") : incomingTransfer()) ? action : "cancel" : action)} {t("transfer #")}{Transfer?.id}</h2>
+                    <h2 className="subTitle">{t("You are about to")} {t(action === "deny" ? (isMovement ? (movement.motive === "TRANSFER_RECEIVE") : incomingTransfer()) ? action : "cancel" : action)} {t("transfer #")}{ticketId}</h2>
                     <ul>
                         <li className="listedInfo">
                             {t("Operation")}:&nbsp;
@@ -265,7 +266,7 @@ const TransferConfirmation = ({ isMovement = false, movement, setShowModal, acti
                         </h1>
                     </div>
                     <h1 className="title"> {t("Are you sure?")}</h1>
-                    <h2 className="subTitle">{t("You are about to")} {t(action)} {t("transfer #")} {Transfer?.id}</h2>
+                    <h2 className="subTitle">{t("You are about to")} {t(action)} {t("transfer #")} {ticketId}</h2>
                     <ul>
                         <li className="listedInfo">
                             {t("Operation")}:&nbsp;

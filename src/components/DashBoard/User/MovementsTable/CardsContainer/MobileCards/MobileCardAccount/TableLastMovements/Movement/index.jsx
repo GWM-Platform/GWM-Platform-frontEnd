@@ -326,7 +326,7 @@ const Movement = ({ content, reloadData }) => {
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
-    link.setAttribute('download', `${AccountSelected.alias} - ${t("Transfer")} #${transfer.id}.pdf`)
+    link.setAttribute('download', `${AccountSelected.alias} - ${t("Transfer")} #${transfer?.ticketId || transfer?.id}.pdf`)
     // 3. Append to html page
     document.body.appendChild(link)
     // 4. Force download
