@@ -58,7 +58,7 @@ const Movement = ({ content, actions, reloadData, linkToOtherHistory }) => {
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
-    link.setAttribute('download', `${AccountSelected.alias} - ${t("Movement")} #${content.id}.pdf`)
+    link.setAttribute('download', `${AccountSelected.alias} - ${t("Movement")} #${ticketId}.pdf`)
     // 3. Append to html page
     document.body.appendChild(link)
     // 4. Force download
@@ -404,6 +404,7 @@ const Movement = ({ content, actions, reloadData, linkToOtherHistory }) => {
   const denialMotive = content?.notes?.find(note => note.noteType === "DENIAL_MOTIVE")
   const fundLiquidate = content?.notes?.find(note => note.noteType === "FUND_LIQUIDATE")
   const liquidateMotive = content?.notes?.find(note => note.noteType === "MOVEMENT_LIQUIDATE_MOTIVE")
+  const ticketId = content?.ticketId ?? content?.id
 
 
   const fund = useSelector(state => selectFundById(state, content.fundId))
@@ -411,7 +412,7 @@ const Movement = ({ content, actions, reloadData, linkToOtherHistory }) => {
   return (
     <tr>
       <td className="tableId text-nowrap" data-column-name="ticket">
-        {content.id}
+        {ticketId}
         {
           !!(content?.userEmail || content?.userName || !!(transferNote) || !!(clientNote) || !!(denialMotive) || !!(fundLiquidate) || !!(partialLiquidate) || !!(liquidateMotive)) &&
           <OverlayTrigger

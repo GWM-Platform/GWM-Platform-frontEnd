@@ -15,7 +15,7 @@ import CurrencyInput from '@osdiab/react-currency-input-field';
 import { faFileExcel } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { exportToExcel } from 'utils/exportToExcel';
-import { faCompress, faExpand } from '@fortawesome/free-solid-svg-icons';
+import { faCompress, faExpand, faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { MotiveMultiSelect } from 'components/DashBoard/GeneralUse/FilterOptions';
 import { customFetch } from 'utils/customFetch';
 import DoubleSignatureTable from './Tables/DoubleSignatureTable';
@@ -142,6 +142,7 @@ const TicketsAdministration = () => {
     const [client, setClient] = useState("")
     const [tableView, setTableView] = useState(false)
     const [collapse, setCollapse] = useState(true)
+    const [doubleSignatureOpen, setDoubleSignatureOpen] = useState(false)
 
     const { getPageMargins, componentRef, title, aditionalStyles } = usePrintDefaults(
         {
@@ -394,13 +395,21 @@ const TicketsAdministration = () => {
                                     {
                                         tableView ?
                                             <>
-                                                <Row className="pb-2 px-0 mx-0">
-                                                    <Col xs="12">
-                                                        <h1 className="title fw-normal">{t("Tickets pending admin double check")}:</h1>
-                                                    </Col>
-                                                    <DoubleSignatureTable />
-                                                </Row>
                                                 <TableView state={TransactionStates.selected} client={client.value} FilterOptions={FilterOptions} />
+                                                <Row className="pb-2 px-0 mx-0 mt-3">
+                                                    <Col xs="12" className="d-flex align-items-center">
+                                                        <h1 className="title fw-normal me-auto">{t("Tickets pending admin double check")}:</h1>
+                                                        <Button
+                                                            variant="link"
+                                                            className="p-0"
+                                                            onClick={() => setDoubleSignatureOpen((prevState) => !prevState)}
+                                                            aria-label={doubleSignatureOpen ? t("Collapse") : t("Expand")}
+                                                        >
+                                                            <FontAwesomeIcon size="2x" color="#000000" icon={doubleSignatureOpen ? faChevronUp : faChevronDown} />
+                                                        </Button>
+                                                    </Col>
+                                                    {doubleSignatureOpen && <DoubleSignatureTable />}
+                                                </Row>
                                             </>
                                             :
                                             <Tables state={TransactionStates.selected} messageVariants={messageVariants} client={client} />
