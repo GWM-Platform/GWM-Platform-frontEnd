@@ -40,6 +40,7 @@ const Movement = ({ content, reloadData }) => {
   const { getMoveStateById, AccountSelected, couldSign, toLogin, hasSellPermission, hasBuyPermission, hasPermission } = useContext(DashBoardContext)
 
   const { t } = useTranslation()
+  const ticketId = content?.ticketId ?? content?.id
 
   const [GeneratingPDF, setGeneratingPDF] = useState(false)
 
@@ -62,7 +63,7 @@ const Movement = ({ content, reloadData }) => {
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
-    link.setAttribute('download', `${AccountSelected.alias} - ${t("Movement")} #${content.id}.pdf`)
+    link.setAttribute('download', `${AccountSelected.alias} - ${t("Movement")} #${ticketId}.pdf`)
     // 3. Append to html page
     document.body.appendChild(link)
     // 4. Force download

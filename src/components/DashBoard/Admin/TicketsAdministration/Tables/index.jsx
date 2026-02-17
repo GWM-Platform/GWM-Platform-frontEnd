@@ -13,12 +13,15 @@ import TicketSearch from 'components/DashBoard/GeneralUse/TicketSearch'
 import { useTranslation } from 'react-i18next';
 import FixedDepositTable from './FixedDepositsTable';
 import { Button, Col } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { customFetch } from 'utils/customFetch';
 import DoubleSignatureTable from './DoubleSignatureTable';
 
 const Tables = ({ state, messageVariants, client }) => {
 
     const token = sessionStorage.getItem('access_token')
+    const [doubleSignatureOpen, setDoubleSignatureOpen] = useState(false)
 
     function useQuery() {
         const { search } = useLocation();
@@ -947,12 +950,12 @@ const Tables = ({ state, messageVariants, client }) => {
                 {
                     !stateOnlyReverted &&
                     <div className='d-flex justify-content-between overflow-auto'>
-                        <Button variant="link" onClick={() => executeScroll(DoubleSignatureRef)}>{t("Tickets pending admin double check")}</Button>
                         <Button variant="link" onClick={() => executeScroll(PurchaseAndSale)}>{t("Purchases, sales and share transfers")}</Button>
                         <Button variant="link" onClick={() => executeScroll(AccountMovementsRef)}>{t("Account movements")}</Button>
                         <Button variant="link" onClick={() => executeScroll(PendingSettlementRef)}>{t("Approved pending settlement")}</Button>
                         <Button variant="link" onClick={() => executeScroll(TransferRef)}>{t("Transfers")}</Button>
                         <Button variant="link" onClick={() => executeScroll(FixedDepositsRef)}>{t("Time deposits")}</Button>
+                        <Button variant="link" onClick={() => executeScroll(DoubleSignatureRef)}>{t("Tickets pending admin double check")}</Button>
                     </div>
                 }
                 <Col xs="12" >
@@ -961,14 +964,6 @@ const Tables = ({ state, messageVariants, client }) => {
                 {/*-------------------------------Purchase sale-and transfers------------------------- */}
                 {
                     <>
-                        {
-                            !stateOnlyReverted &&
-                            <>
-                                <h1 ref={DoubleSignatureRef} className="title fw-normal">{t("Tickets pending admin double check")}:</h1>
-                                <DoubleSignatureTable />
-                                <div className='mt-3 w-100 d-flex' style={{ borderBottom: "1px solid gray" }} />
-                            </>
-                        }
                         <h1 ref={PurchaseAndSale} className="title fw-normal">{t("Purchases, sales and share transfers")}:</h1>
                         <TicketSearch
                             props={ticketSearchPropsTransfers}
@@ -1118,6 +1113,19 @@ const Tables = ({ state, messageVariants, client }) => {
                                 :
                                 null
                         }
+                        <div className='mt-3 w-100 d-flex' style={{ borderBottom: "1px solid gray" }} />
+                        <div ref={DoubleSignatureRef} className="d-flex align-items-center">
+                            <h1 className="title fw-normal me-auto">{t("Tickets pending admin double check")}:</h1>
+                            <Button
+                                variant="link"
+                                className="p-0"
+                                onClick={() => setDoubleSignatureOpen((prevState) => !prevState)}
+                                aria-label={doubleSignatureOpen ? t("Collapse") : t("Expand")}
+                            >
+                                <FontAwesomeIcon size="2x" color="#000000" icon={doubleSignatureOpen ? faChevronUp : faChevronDown} />
+                            </Button>
+                        </div>
+                        {doubleSignatureOpen && <DoubleSignatureTable />}
                     </>
                 }
             </>

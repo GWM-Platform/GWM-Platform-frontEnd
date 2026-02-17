@@ -11,6 +11,7 @@ const MovementReceipt = ({ Movement }) => {
   Decimal.set({ precision: 100 })
 
   const { t } = useTranslation();
+  const ticketId = Movement?.ticketId ?? Movement?.id;
 
   return (
     <Document>
@@ -82,7 +83,7 @@ const MovementReceipt = ({ Movement }) => {
                   {t("Ticket N°")}
                 </Text>
                 <Text style={styles.body.smallerCol.data} >
-                  {t("Movement")} #{Movement?.id}
+                  {t("Movement")} #{ticketId}
                 </Text>
               </View >
               <View style={styles.body.smallerCol.section}>
