@@ -15,7 +15,7 @@ import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
 
-const Operation = ({ Operation, User, fetchOperationsParams = {} }) => {
+const Operation = ({ Operation, User, fetchOperationsParams = {}, Clients = [] }) => {
     const { t } = useTranslation();
     const Fund = useSelector(state => selectFundById(state, Operation?.operationMetadata?.fundId))
 
@@ -45,6 +45,7 @@ const Operation = ({ Operation, User, fetchOperationsParams = {} }) => {
     }
     const currentUserId = userId()
     const user = useSelector(state => selectuserById(state, Operation?.operationMetadata?.userId))
+    const client = Clients?.find(c => c.id === Operation?.operationMetadata?.clientId)
     const approvedOrDeniedByUser = useSelector(state => selectuserById(state, Operation?.approvedOrDeniedById))
     const state = {
         1: "Pending",
@@ -74,6 +75,18 @@ const Operation = ({ Operation, User, fetchOperationsParams = {} }) => {
                     (Operation.operationType === "CREATE_ADMIN" || Operation.operationType === "ASSIGN_ADMIN" || Operation.operationType === "REMOVE_ADMIN") &&
                     <>
                         &nbsp;({Operation.operationMetadata.email || user?.email || "Mail no encontrado"})
+                    </>
+                }
+                {
+                    (Operation.operationType === "CONNECT_USER_TO_CLIENT" || Operation.operationType === "DISCONNECT_USER_FROM_CLIENT") &&
+                    <>
+                        &nbsp;({user?.firstName || user?.lastName ? `${user.firstName || ""} ${user.lastName || ""}`.trim() : user?.email || t("User")} — {client?.alias || t("Client")})
+                    </>
+                }
+                {
+                    Operation.operationType === "SIGNUP" &&
+                    <>
+                        &nbsp;({Operation.operationMetadata?.firstName || Operation.operationMetadata?.lastName ? `${Operation.operationMetadata?.firstName || ""} ${Operation.operationMetadata?.lastName || ""}`.trim() : Operation.operationMetadata?.email || t("User")}{Operation.operationMetadata?.clientId ? ` — ${client?.alias || t("Client")}` : ""})
                     </>
                 }
             </td>

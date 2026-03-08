@@ -95,7 +95,7 @@ const ActionConfirmationModal = ({ Operation, setShowModal, action, show, reload
                                         <FontAwesomeIcon className="placeHolder" icon={faCircle} style={{ transform: "scale(1.5)" }} />
                                     </h1>
                                 </div>
-                                <h2 className="subTitle mt-4">{t("The operation has been")} {t(action === "approve" ? "approved" : action === "liquidate" ? "liquidated" : "denied")} {t("succesfully")}</h2>
+                                <h2 className="subTitle mt-4">{t(action === "approve" ? "The operation has been approved successfully" : action === "liquidate" ? "The operation has been liquidated successfully" : "The operation has been denied successfully")}</h2>
                             </>
                             :
                             <>
@@ -157,7 +157,7 @@ const ActionConfirmationModal = ({ Operation, setShowModal, action, show, reload
                         </h1>
                     </div>
                     <h1 className="title"> {t("Are you sure?")}</h1>
-                    <h2 className="subTitle">{t("You are about to")} {t(action)} {t("the opearation with the id")} {Operation.id}</h2>
+                    <h2 className="subTitle">{t("You are about to")} {t(action)} {t("the operation with the id")} {Operation.id}</h2>
                     <h3 className="heading">{t("This action cannot be undone")}</h3>
                 </div>
 
