@@ -12,7 +12,7 @@ import TicketSearch from 'components/DashBoard/GeneralUse/TicketSearch'
 
 import { useTranslation } from 'react-i18next';
 import FixedDepositTable from './FixedDepositsTable';
-import { Button, Col } from 'react-bootstrap';
+import { Button, Col, Collapse } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { customFetch } from 'utils/customFetch';
@@ -1125,7 +1125,11 @@ const Tables = ({ state, messageVariants, client }) => {
                                 <FontAwesomeIcon size="2x" color="#000000" icon={doubleSignatureOpen ? faChevronUp : faChevronDown} />
                             </Button>
                         </div>
-                        {doubleSignatureOpen && <DoubleSignatureTable />}
+                        <Collapse in={doubleSignatureOpen}>
+                            <div>
+                                <DoubleSignatureTable />
+                            </div>
+                        </Collapse>
                     </>
                 }
             </>

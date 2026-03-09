@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 import Decimal from 'decimal.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimesCircle, faCheckCircle } from '@fortawesome/free-regular-svg-icons';
+import { faTimesCircle } from '@fortawesome/free-regular-svg-icons';
 import Loading from 'components/DashBoard/GeneralUse/Loading';
 import NoMovements from 'components/DashBoard/GeneralUse/NoMovements';
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
@@ -126,8 +126,8 @@ const DoubleSignatureTable = () => {
                     <NoMovements movements={pagination.take} />
                 ) : (
                     <>
-                        <div style={{ overflowX: "auto" }}>
-                            <Table striped bordered hover className="TicketsTable">
+                        <div className="doubleSignatureTableWrapper">
+                            <Table striped bordered hover className="TicketsTable doubleSignatureTicketsTable">
                                 <thead>
                                     <tr>
                                         <th className="Type">{t("Type")}</th>
@@ -135,7 +135,7 @@ const DoubleSignatureTable = () => {
                                         <th className="Name">{t("Client")}</th>
                                         <th className="Shares">{t("Amount")}</th>
                                         <th>{t("Date")}</th>
-                                        <th className="Actions">{t("Actions")}</th>
+                                        <th className="Actions text-center">{t("Actions")}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -157,7 +157,6 @@ const DoubleSignatureTable = () => {
 
 const DoubleSignatureRow = ({ row, reloadData }) => {
     const { t } = useTranslation()
-    const [showApproveModal, setShowApproveModal] = useState(false)
     const [showDenyModal, setShowDenyModal] = useState(false)
 
     return (
@@ -175,28 +174,16 @@ const DoubleSignatureRow = ({ row, reloadData }) => {
                     }
                 </td>
                 <td>{row.createdAt}</td>
-                <td className="Actions">
-                    <div className="d-flex">
-                        <div className="iconContainer green">
-                            <button className="noStyle" type="button" onClick={() => setShowApproveModal(true)} title={t("Approve")} aria-label={t("Approve")}>
-                                <FontAwesomeIcon className="icon" icon={faCheckCircle} />
-                            </button>
-                        </div>
-                        <div className="iconContainer red ms-2">
-                            <button className="noStyle" type="button" onClick={() => setShowDenyModal(true)} title={t("Deny")} aria-label={t("Deny")}>
+                <td className="Actions p-0 text-center align-middle">
+                    <div className="h-100 w-100 d-flex align-items-center justify-content-center">
+                        <div className="iconContainer red">
+                            <button className="noStyle doubleSignatureDenyBtn" type="button" onClick={() => setShowDenyModal(true)} title={t("Deny")} aria-label={t("Deny")}>
                                 <FontAwesomeIcon className="icon" icon={faTimesCircle} />
                             </button>
                         </div>
                     </div>
                 </td>
             </tr>
-            <ActionConfirmationModal
-                movement={{ id: row.id, amount: row.amount }}
-                setShowModal={setShowApproveModal}
-                action="approve"
-                show={showApproveModal}
-                reloadData={reloadData}
-            />
             <ActionConfirmationModal
                 movement={{ id: row.id, amount: row.amount }}
                 setShowModal={setShowDenyModal}

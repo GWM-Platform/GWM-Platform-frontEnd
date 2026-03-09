@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, ButtonGroup, Col, Form, Row, ToggleButton } from 'react-bootstrap'
+import { Button, ButtonGroup, Col, Collapse, Form, Row, ToggleButton } from 'react-bootstrap'
 import StateSelector, { StatesSelector } from './StateSelector'
 import Message from './Message'
 import Tables from './Tables'
@@ -408,7 +408,11 @@ const TicketsAdministration = () => {
                                                             <FontAwesomeIcon size="2x" color="#000000" icon={doubleSignatureOpen ? faChevronUp : faChevronDown} />
                                                         </Button>
                                                     </Col>
-                                                    {doubleSignatureOpen && <DoubleSignatureTable />}
+                                                    <Collapse in={doubleSignatureOpen}>
+                                                        <div>
+                                                            <DoubleSignatureTable />
+                                                        </div>
+                                                    </Collapse>
                                                 </Row>
                                             </>
                                             :

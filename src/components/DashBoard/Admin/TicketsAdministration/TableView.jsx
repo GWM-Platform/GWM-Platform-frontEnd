@@ -104,16 +104,17 @@ export const TableView = ({ state, client, FilterOptions }) => {
     return (
         <Row id="table-container" className={`flex-grow-1 px-0 mx-0 w-100 ${(movementsStatus === "loading" || sortedMovements.length === 0) ? "overflow-hidden" : ""}`} style={{ flexShrink: 1 }}>
             <Col xs="12" className="h-100">
-                <div className={(movementsStatus === "loading" || sortedMovements.length === 0) ? "h-100" : ""} style={{ overflow: "auto" }}>
+                <div className={(movementsStatus === "loading" || sortedMovements.length === 0) ? "h-100" : ""}>
                     {
                         movementsStatus === "loading" ? <Loading className="h-100" /> :
                             (
                                 (sortedMovements.length === 0) ?
                                     <NoMovements className="h-100" />
                                     :
-                                    <Table data-table-name="unified-tickets-table" id="unified-table" striped bordered hover className="mb-auto m-0 p-0" style={{ borderCollapse: "separate", borderSpacing: 0 }}>
-                                        <thead style={{ position: "sticky", top: 0, background: "white" }}>
-                                            <tr>
+                                    <div style={{ overflowX: "auto", overflowY: "hidden" }}>
+                                        <Table data-table-name="unified-tickets-table" id="unified-table" striped bordered hover className="mb-auto m-0 p-0" style={{ borderCollapse: "separate", borderSpacing: 0 }}>
+                                            <thead style={{ position: "sticky", top: 0, background: "white" }}>
+                                                <tr>
                                                 <th className="tableHeader" onClick={() => sortData('createdAt')} style={{ cursor: "pointer" }}>
                                                     <span className='d-flex'>
                                                         <span>
@@ -178,14 +179,15 @@ export const TableView = ({ state, client, FilterOptions }) => {
                                                         <FontAwesomeIcon className="ms-auto" icon={sortField === "amount" ? (sortDirection === "asc" ? faSortUp : faSortDown) : faSort} />
                                                     </span>
                                                 </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {
-                                                sortedMovements?.map(movement => <Movement movement={movement} key={movement.id} />)
-                                            }
-                                        </tbody>
-                                    </Table>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {
+                                                    sortedMovements?.map(movement => <Movement movement={movement} key={movement.id} />)
+                                                }
+                                            </tbody>
+                                        </Table>
+                                    </div>
                             )
                     }
                 </div>
