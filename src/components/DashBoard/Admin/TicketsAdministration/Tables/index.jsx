@@ -693,6 +693,7 @@ const Tables = ({ state, messageVariants, client }) => {
     }
 
     const stateOnlyReverted = state === "99"
+    const isApprovedState = String(state) === "2"
 
     const transfersInState = async () => {
         var url = `${process.env.REACT_APP_APIURL}/transfers/?` + new URLSearchParams({
@@ -875,16 +876,46 @@ const Tables = ({ state, messageVariants, client }) => {
     }, [PaginationFixedDeposits, state, client, searchFixedDepositById.search])
 
     useEffect(() => {
-        if (!searchPendingSettlementById.search && !stateOnlyReverted) movementsPendingSettlement()
+        if (!searchPendingSettlementById.search && !stateOnlyReverted && isApprovedState) {
+            movementsPendingSettlement()
+            return
+        }
+
+        // Keep the section visible in all states, but empty when state is not Approved.
+        if (!isApprovedState || stateOnlyReverted) {
+            setPendingSettlements((prevState) => ({
+                ...prevState,
+                fetching: false,
+                fetched: true,
+                valid: true,
+                values: {
+                    movements: [],
+                    total: 0
+                }
+            }))
+        }
         // eslint-disable-next-line
-    }, [PaginationPendingSettlements, client, searchPendingSettlementById.search])
+    }, [PaginationPendingSettlements, client, searchPendingSettlementById.search, stateOnlyReverted, isApprovedState])
 
     const reloadData = () => {
         transactionsInState()
         movementsInState()
         transfersInState()
         fixedDepositsInState()
-        movementsPendingSettlement()
+        if (isApprovedState && !stateOnlyReverted) {
+            movementsPendingSettlement()
+        } else {
+            setPendingSettlements((prevState) => ({
+                ...prevState,
+                fetching: false,
+                fetched: true,
+                valid: true,
+                values: {
+                    movements: [],
+                    total: 0
+                }
+            }))
+        }
     }
 
     const ticketSearchPropsTransfers = {
