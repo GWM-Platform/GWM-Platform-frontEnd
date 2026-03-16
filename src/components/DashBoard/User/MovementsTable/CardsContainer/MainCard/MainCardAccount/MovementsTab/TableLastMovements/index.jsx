@@ -28,7 +28,11 @@ const TableLastMovements = ({ content, movements, reloadData, linkToOtherHistory
         )
     )
 
-    const filteredContent = content?.filter(u => u?.createdAt)
+    const filteredContent = content?.filter(
+        (movement) =>
+            movement?.createdAt &&
+            !(movement?.motive === "TRANSFER_RECEIVE" && movement?.stateId === 5)
+    )
 
     const minHeight = `max(calc((0.5rem * 2 + 25.5px) * ${(movements ?? 0) + 1}), 300px)`;
 

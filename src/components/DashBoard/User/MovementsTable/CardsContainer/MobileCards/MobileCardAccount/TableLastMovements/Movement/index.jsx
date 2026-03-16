@@ -37,7 +37,7 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
 
 const Movement = ({ content, reloadData }) => {
   var momentDate = moment(content.createdAt);
-  const { getMoveStateById, AccountSelected, couldSign, toLogin, hasSellPermission, hasBuyPermission, hasPermission } = useContext(DashBoardContext)
+  const { getMoveStateById, AccountSelected, couldSign, toLogin, hasSellPermission, hasBuyPermission, hasPermission, ClientSelected } = useContext(DashBoardContext)
 
   const { t } = useTranslation()
   const ticketId = content?.ticketId ?? content?.id
@@ -340,7 +340,7 @@ const Movement = ({ content, reloadData }) => {
   const getTransferPDF = () => {
     setAltGeneratingPDF(true)
 
-    axios.get(`/transfers/${content.transferId}`)
+    axios.get(`/transfers/${content.transferId}`, { params: { client: ClientSelected.id } })
       .then((response) => {
         renderAndDownloadTransferPDF(response.data)
       }
