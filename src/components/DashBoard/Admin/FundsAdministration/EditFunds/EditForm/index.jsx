@@ -89,8 +89,6 @@ const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, se
 
     const decimalSeparator = process.env.REACT_APP_DECIMALSEPARATOR ?? '.'
     const groupSeparator = process.env.REACT_APP_GROUPSEPARATOR ?? ','
-    const inputRef = useRef()
-
     const handleAmountChange = (value, name) => {
         const decimalSeparator = process.env.REACT_APP_DECIMALSEPARATOR ?? '.'
 
