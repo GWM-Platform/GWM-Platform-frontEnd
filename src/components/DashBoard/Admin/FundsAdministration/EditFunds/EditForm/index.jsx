@@ -85,7 +85,7 @@ const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, se
 
     const imageOptions = () => [...new Set([`${process.env.PUBLIC_URL}/images/FundsLogos/default.svg`, ...Funds.map(Fund => Fund.imageUrl)])].filter(e => e)
 
-    const [inputValid, setInputValid] = useState(false)
+    const [inputValid, setInputValid] = useState(true)
 
     const decimalSeparator = process.env.REACT_APP_DECIMALSEPARATOR ?? '.'
     const groupSeparator = process.env.REACT_APP_GROUPSEPARATOR ?? ','
@@ -108,8 +108,8 @@ const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, se
         })
     }
     useEffect(() => {
-        setInputValid(inputRef?.current?.checkValidity())
-    }, [inputRef, data.shares])
+        setInputValid(true)
+    }, [])
 
     return (
         <div className="editForm">
@@ -140,7 +140,6 @@ const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, se
                     className="mb-3"
                 >
                     <Form.Control
-                        pattern="https:\/\/docs\.google\.com\/spreadsheets\/d\/[a-zA-Z0-9_-]{1,}\/.*"
                         required onChange={handleChange} id="spreadsheetId"
                         value={data.spreadsheetId} type="text"
                         placeholder={t("Google SpreadSheet Id")}
@@ -255,6 +254,7 @@ const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, se
                         groupSeparator={groupSeparator}
                         onValueChange={(value, name) => handleAmountChange(value)}
                         placeholder={t("Shares")}
+                        readOnly
                         className={`form-control ${validated ? inputValid ? 'hardcoded-valid' : 'hardcoded-invalid' : ""} `}
                     />
                 </FloatingLabel>

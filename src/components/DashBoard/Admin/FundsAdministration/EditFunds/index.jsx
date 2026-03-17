@@ -8,10 +8,11 @@ import EditResult from './EditResult'
 import { extractGoogleStyleSpreadSheetID } from '../CreateFunds';
 const EditFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction, withoutHeader = false }) => {
     const [validated, setValidated] = useState(false);
+    const initialImageUrl = Funds[Action.fund].imageUrl ? Funds[Action.fund].imageUrl : "";
     const [data, setData] = useState({
         name: Funds[Action.fund].name,
         spreadsheetId: `https://docs.google.com/spreadsheets/d/${Funds[Action.fund].spreadsheetId}/edit?usp=sharing`,
-        imageUrl: Funds[Action.fund].imageUrl ? Funds[Action.fund].imageUrl : "",
+        imageUrl: initialImageUrl,
         disabled: Funds[Action.fund].disabled,
         disabledBuy: Funds[Action.fund].disabledBuy ?? false,
         disabledSell: Funds[Action.fund].disabledSell ?? false
@@ -34,20 +35,25 @@ const EditFunds = ({ Funds, AssetTypes, chargeFunds, Action, setAction, withoutH
     }, [Funds, Action.fund])
 
     const handleSubmit = (event) => {
-        const form = event.currentTarget;
         event.preventDefault();
         event.stopPropagation();
 
-        if (form.checkValidity() && !EditRequest.fetching && ImageUrl.fetched && ImageUrl.valid) {
+        const imageChanged = data.imageUrl !== initialImageUrl;
+        const imageReady = !imageChanged || (ImageUrl.fetched && ImageUrl.valid);
+        const hasRequiredFields = data.name?.trim() && data.spreadsheetId?.trim();
+
+        if (hasRequiredFields && !EditRequest.fetching && imageReady) {
             editFund()
         }
         setValidated(true);
     };
 
     const handleChange = (event) => {
-        let aux = data
-        aux[event.target.id] = event.target.type === "checkbox" ? event.target.checked : event.target.value
-        setData({ ...data, ...aux })
+        const { id, type, checked, value } = event.target
+        setData(prevState => ({
+            ...prevState,
+            [id]: type === "checkbox" ? checked : value
+        }))
     }
 
     const editFund = async () => {
