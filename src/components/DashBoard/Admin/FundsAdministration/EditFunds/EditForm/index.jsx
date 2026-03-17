@@ -24,7 +24,7 @@ const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, se
     const isNull = () => !popover.current
 
     const handleClick = (event) => {
-        if (ImageUrl.fetched) {
+        if (ImageUrl.fetched && data.imageUrl) {
             setShow(!show);
             setTarget(event.target);
         }
@@ -191,16 +191,16 @@ const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, se
                                     if (data.imageUrl !== "" && !ImageUrl.fetched) checkImage(data.imageUrl)
                                     handleBlur()
                                 }}
-                                placeholder={t("Image url to use as fund logo")} value={data.imageUrl} type="text" id="imageUrl" required
-                                className={`${ImageUrl.fetched || validated ? ImageUrl.valid ? "hardcoded-valid" : "hardcoded-invalid" : "hardcoded-novalidate"}`}
+                                placeholder={t("Image url to use as fund logo")} value={data.imageUrl} type="text" id="imageUrl"
+                                className={`${data.imageUrl === "" ? "hardcoded-valid" : (ImageUrl.fetched || validated ? ImageUrl.valid ? "hardcoded-valid" : "hardcoded-invalid" : "hardcoded-novalidate")}`}
                                 onChange={(e) => {
                                     setShow(false);
                                     handleChange(e);
-                                    setImageUrl(prevState => ({ ...prevState, ...{ fetching: false, fetched: false, valid: false } }))
+                                    setImageUrl(prevState => ({ ...prevState, ...{ fetching: false, fetched: e.target.value === "", valid: e.target.value === "" } }))
                                 }}
                             />
                         </FloatingLabel>
-                        <Button className="p-relative" onBlur={() => setShow(false)} onClick={handleClick} variant="danger" disabled={ImageUrl.fetching || (ImageUrl.fetched && !ImageUrl.valid)}>
+                        <Button className="p-relative" onBlur={() => setShow(false)} onClick={handleClick} variant="danger" disabled={data.imageUrl === "" || ImageUrl.fetching || (ImageUrl.fetched && !ImageUrl.valid)}>
                             <FontAwesomeIcon className={`inputSearchLogo ${!ImageUrl.fetched ? "active" : "hidden"}`} icon={faSearch} />
                             <FontAwesomeIcon className={`inputSearchLogo ${ImageUrl.fetched ? "active" : "hidden"}`} icon={ImageUrl.valid ? faEye : faEyeSlash} />
                             <FontAwesomeIcon className={`inputSearchLogo placeholder`} icon={faEye} />
