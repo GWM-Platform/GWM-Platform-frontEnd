@@ -192,7 +192,7 @@ const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, se
                                     handleBlur()
                                 }}
                                 placeholder={t("Image url to use as fund logo")} value={data.imageUrl} type="text" id="imageUrl"
-                                className={`${data.imageUrl === "" ? "hardcoded-valid" : (ImageUrl.fetched || validated ? ImageUrl.valid ? "hardcoded-valid" : "hardcoded-invalid" : "hardcoded-novalidate")}`}
+                                className={`${data.imageUrl === "" ? (validated ? "hardcoded-valid" : "hardcoded-novalidate") : (ImageUrl.fetched || validated ? ImageUrl.valid ? "hardcoded-valid" : "hardcoded-invalid" : "hardcoded-novalidate")}`}
                                 onChange={(e) => {
                                     setShow(false);
                                     handleChange(e);
