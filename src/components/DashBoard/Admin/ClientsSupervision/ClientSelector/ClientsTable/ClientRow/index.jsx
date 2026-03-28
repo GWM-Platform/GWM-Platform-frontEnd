@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Badge, Spinner } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
+import { faChevronRight, faEdit } from '@fortawesome/free-solid-svg-icons'
 import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -45,6 +45,15 @@ const ClientRow = ({ Client, show }) => {
                         :
                         <FormattedNumber value={balanceTotal.value} prefix="U$D " fixedDecimals={2} />
                 }
+            </td>
+            <td className="toEdit text-center text-nowrap">
+                <Link
+                    to={`/DashBoard/clientsSupervision/edit/${Client.id}`}
+                    title={t("Edit client")}
+                    aria-label={t("Edit client")}
+                >
+                    <FontAwesomeIcon icon={faEdit} />
+                </Link>
             </td>
             <td className="toDetails text-nowrap">
                 <Link to={`/DashBoard/clientsSupervision/${Client.id}`}>
