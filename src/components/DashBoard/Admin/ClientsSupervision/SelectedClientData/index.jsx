@@ -6,6 +6,7 @@ import { Accordion, Badge } from 'react-bootstrap'
 
 import AccountGeneralData from './AccountGeneralData'
 import AccountMovements from './AccountMovements'
+import AllMovements from './AllMovements'
 import TransactionsByFund from './TransactionsByFund'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -118,6 +119,7 @@ const SelectedAccountData = ({ Account, Client, users, setAccounts, toggleClient
                         <AccountGeneralData setAccounts={setAccounts} Account={Account} Client={Client} toggleClient={toggleClient} />
                         <ClientUsersAccordion client={Client} users={clientUsers} getUsers={getUsers} ownersAmount={ownersAmount} />
                         <DocumentsAccordion client={Client} documents={documents} setDocuments={setDocuments} />
+                        <AllMovements Client={Client} />
                         <AccountMovements ClientId={Client.id} Client={Client} AccountId={Account.id} Account={Account} />
                         <TransactionsByFund ClientId={Client.id} AccountId={Account.id} clientFunds={clientFunds} Account={Account} Client={Client} />
                         <TimeDeposits ClientId={Client.id} AccountId={Account.id} />
