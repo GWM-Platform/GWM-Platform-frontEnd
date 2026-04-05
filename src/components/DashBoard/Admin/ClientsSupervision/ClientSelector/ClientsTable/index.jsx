@@ -32,7 +32,6 @@ const ClientsTable = ({ FilteredClients }) => {
                             <th className="Alias">{t("Alias")}</th>
                             <th >{t("Status")}</th>
                             <th className="Balance">{t("Total balance")}</th>
-                            <th className="toEdit text-center" aria-label={t("Edit client")}></th>
                             <th ></th>
                         </tr>
                     </thead>
