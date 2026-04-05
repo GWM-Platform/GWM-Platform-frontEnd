@@ -46,15 +46,6 @@ const ClientRow = ({ Client, show }) => {
                         <FormattedNumber value={balanceTotal.value} prefix="U$D " fixedDecimals={2} />
                 }
             </td>
-            <td className="toEdit text-center text-nowrap">
-                <Link
-                    to={`/DashBoard/clientsSupervision/edit/${Client.id}`}
-                    title={t("Edit client")}
-                    aria-label={t("Edit client")}
-                >
-                    <FontAwesomeIcon icon={faEdit} />
-                </Link>
-            </td>
             <td className="toDetails text-nowrap">
                 <Link to={`/DashBoard/clientsSupervision/${Client.id}`}>
                     <span className="d-inline d-md-none">{t("Details")}</span>

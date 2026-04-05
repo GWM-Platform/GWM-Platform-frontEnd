@@ -6,6 +6,7 @@ import FormattedNumber from 'components/DashBoard/GeneralUse/FormattedNumber';
 import axios from "axios";
 import { DashBoardContext } from 'context/DashBoardContext';
 import { faCheckCircle, faEdit, faTimesCircle } from '@fortawesome/free-regular-svg-icons';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import OverdraftPopover from '../OverdraftPopover';
 import PerformanceComponent from 'components/DashBoard/GeneralUse/PerformanceComponent';
@@ -123,6 +124,11 @@ const AccountGeneralData = ({ Account, Client, setAccounts, toggleClient }) => {
                             <h1 className="Info">{t("Owner alias")}: <span className='emphasis'>{Client.alias}</span></h1>
                             <h1 className="Info">{t("Owner first name")}: <span className='emphasis'>{Client.firstName}</span></h1>
                             <h1 className="Info">{t("Owner last name")}: <span className='emphasis'>{Client.lastName}</span></h1>
+                            <Link to={`/DashBoard/clientsSupervision/edit/${Client.id}`} title={t("Edit client")} aria-label={t("Edit client")}>
+                                <Button size="sm" className="mt-2">
+                                    <FontAwesomeIcon icon={faEdit} /> {t("Edit client")}
+                                </Button>
+                            </Link>
                         </Col>
                         <Col className="pe-0">
                             <h1 className="totalBalance">{t("Total balance")}:&nbsp;{
