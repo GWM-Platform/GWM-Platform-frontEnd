@@ -5,7 +5,7 @@ const enrichAccount = (account) => ({
   ownFunds: account?.balance < 0 ? 0 : account?.balance,
   totalAvailable: calculateTotalAvailable(account),
   totalOverdraft: account?.overdraft ?? 0,
-  hasOverdraft: !!(account?.overdraft !== 0),
+  hasOverdraft: Number(account?.overdraft ?? 0) > 0,
   owed: account?.balance < 0 ? Math.abs(account?.balance) : 0,
   overdraftAvailable: account?.balance < 0
     ? (account?.overdraft + account?.balance)
