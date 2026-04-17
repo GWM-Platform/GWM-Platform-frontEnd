@@ -18,6 +18,8 @@ import { PrintButton } from 'utils/usePrint';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileExcel } from '@fortawesome/free-regular-svg-icons';
 import { exportToExcel } from 'utils/exportToExcel';
+import moment from 'moment';
+import { unMaskNumber } from 'components/DashBoard/Admin/TicketsAdministration';
 
 const AccountMovements = ({ AccountId, ClientId, Account, Client }) => {
 
@@ -30,7 +32,12 @@ const AccountMovements = ({ AccountId, ClientId, Account, Client }) => {
     const [Pagination, setPagination] = useState({
         skip: 0,//Offset (in quantity of movements)
         take: 100,//Movements per page
-        state: null
+        filterStates: [],
+        filterMotives: [],
+        fromDate: "",
+        toDate: "",
+        fromAmount: "",
+        toAmount: "",
     })
 
     const getMovements = useCallback(
@@ -42,8 +49,12 @@ const AccountMovements = ({ AccountId, ClientId, Account, Client }) => {
                     accountId: AccountId,
                     take: Pagination.take,
                     skip: Pagination.skip,
-                    filterState: Pagination.state === 10 ? null : Pagination.state,
-                    showDenied: Pagination.state === 10 ? true : null
+                    filterStates: Pagination.filterStates?.length > 0 ? Pagination.filterStates.join(",") : null,
+                    filterMotives: Pagination.filterMotives?.length > 0 ? Pagination.filterMotives.join(",") : null,
+                    fromDate: Pagination.fromDate || null,
+                    toDate: Pagination.toDate ? moment(Pagination.toDate).add(1, "day").format(moment.HTML5_FMT.DATE) : null,
+                    fromAmount: Pagination.fromAmount ? unMaskNumber({ value: Pagination.fromAmount }) : null,
+                    toAmount: Pagination.toAmount ? unMaskNumber({ value: Pagination.toAmount }) : null,
                 },
                 signal: signal,
             }).then(function (response) {
@@ -169,7 +180,14 @@ const AccountMovements = ({ AccountId, ClientId, Account, Client }) => {
                                     </Col>
                                 </Row>
                             }
-                            <FilterOptions total={Movements.content.total} keyword={"transactions"} disabled={false} Fund={AccountId} setPagination={setPagination} movsPerPage={Pagination.take} />
+                            <FilterOptions
+                                total={Movements.content.total}
+                                keyword={"transactions"}
+                                disabled={false}
+                                Fund={AccountId}
+                                setPagination={setPagination}
+                                movsPerPage={Pagination.take}
+                            />
                             {
                                 Movements.fetching ?
                                     <Loading movements={Decimal(Pagination.take).toNumber()} />
