@@ -19,6 +19,12 @@ const AccountGeneralData = ({ Account, Client, setAccounts, toggleClient }) => {
     const [balanceTotal, setBalanceTotal] = useState({ fetching: true, fetched: true, value: 0 })
     const [Request, setRequest] = useState({ fetching: false, fetched: false, valid: false })
     const [overdraft, setOverdraft] = useState({ amount: Account.overdraft ?? "" })
+    const overdraftValue = useMemo(() => Number(Account.overdraft ?? 0), [Account.overdraft])
+    const hasOverdraft = useMemo(() => overdraftValue > 0, [overdraftValue])
+
+    useEffect(() => {
+        setOverdraft({ amount: Account.overdraft ?? "" })
+    }, [Account.overdraft])
 
     useEffect(() => {
         const token = sessionStorage.getItem('access_token')
@@ -57,13 +63,14 @@ const AccountGeneralData = ({ Account, Client, setAccounts, toggleClient }) => {
         axios.patch(`/accounts/${Account.id}/overdraft`, { overdraftAmount: overdraft.amount },
         ).then(function (response) {
             DashboardToastDispatch({ type: "create", toastContent: { Icon: faCheckCircle, Title: "Overdraft successfully set" } })
+            const overdraftAmount = Number(overdraft.amount)
             setRequest((prevState) => (
                 {
                     fetching: false,
                     fetched: true,
                     valid: true,
                 }))
-            setAccounts(prevState => ({ ...prevState, content: prevState.content.map(account => account.id === Account.id ? { ...account, overdraft: overdraft.amount } : { ...account }) }))
+            setAccounts(prevState => ({ ...prevState, content: prevState.content.map(account => account.id === Account.id ? { ...account, overdraft: overdraftAmount } : { ...account }) }))
         }).catch((err) => {
             if (err.message !== "canceled") {
                 if (err.response.status === "401") {
@@ -141,9 +148,9 @@ const AccountGeneralData = ({ Account, Client, setAccounts, toggleClient }) => {
                             <PerformanceComponent textAlign="text-end" numberFw={"fw-bold"} text={"Total performance"} clientId={Client.id} />
                             <h1 className="Info text-end">{t("Cash balance")}: <FormattedNumber className="emphasis" value={Account.balance} prefix="U$D " fixedDecimals={2} /></h1>
                             {
-                                !!(Account.overdraft) &&
+                                hasOverdraft &&
                                 <h1 className="Info text-end">
-                                    {t("Overdraft")}: <FormattedNumber className="emphasis" value={Account.overdraft} prefix="U$D " fixedDecimals={2} />
+                                    {t("Overdraft")}: <FormattedNumber className="emphasis" value={overdraftValue} prefix="U$D " fixedDecimals={2} />
                                     <OverdraftPopover handleSubmit={handleSubmit} setOverdraft={setOverdraft} overdraft={overdraft}>
                                         <Button size="sm" style={{ outline: "unset", border: "unset" }} variant="Link" className='mb-1'>
                                             {
@@ -168,7 +175,7 @@ const AccountGeneralData = ({ Account, Client, setAccounts, toggleClient }) => {
                             <div className='d-flex mt-3 justify-content-end'>
 
                                 {
-                                    !(Account.overdraft) &&
+                                    !hasOverdraft &&
                                     <OverdraftPopover handleSubmit={handleSubmit} setOverdraft={setOverdraft} overdraft={overdraft}>
                                         <Button size="sm" disabled={Request.fetching} >
                                             <Spinner

@@ -22,7 +22,7 @@ const OverdraftPopover = ({ children, handleSubmit, setOverdraft, overdraft }) =
                                     size='sm'
                                     onChange={e => setOverdraft(prevState => ({ ...prevState, amount: e.target.value }))}
                                     type="number"
-                                    min="0.01"
+                                    min="0"
                                     step="0.01"
                                     placeholder={t("Overdraft amount")}
                                     required
