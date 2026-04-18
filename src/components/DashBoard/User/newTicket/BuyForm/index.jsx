@@ -103,7 +103,7 @@ const BuyForm = ({ balanceChanged }) => {
                     const fundSelected = dataFetched.findIndex(fund => fund.id === fundId && fund.freeShares > 0)
                     if (fundSelected >= 0) {
                         openAccordion()
-                        setData({ ...data, ...{ FundSelected: fundSelected } })
+                        setData({ ...data, ...{ FundSelected: fundSelected, FundSelectedId: fundId } })
                     }
                 }
                 setFunds(dataFetched)
