@@ -34,6 +34,9 @@ const TableLastMovements = ({ account }) => {
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    const filterVisibleMovements = (items = []) => items.filter(
+        (movement) => !(movement?.motive === "TRANSFER_RECEIVE" && movement?.stateId === 5)
+    );
 
     const getMovements = async () => {
         var url = `${process.env.REACT_APP_APIURL}/movements/?` + new URLSearchParams(
@@ -67,8 +70,9 @@ const TableLastMovements = ({ account }) => {
 
         if (response.status === 200) {
             const data = await response.json()
-            setMovements(data ? { ...data } : { ...{ movements: [], total: 0 } })
-            if (data && data.movements.length > 0 && !open) {
+            const visibleMovements = filterVisibleMovements(data?.movements || [])
+            setMovements(data ? { ...data, movements: visibleMovements, total: visibleMovements.length } : { ...{ movements: [], total: 0 } })
+            if (visibleMovements.length > 0 && !open) {
                 setOpen(true)
             }
             setFetchingMovements(false)

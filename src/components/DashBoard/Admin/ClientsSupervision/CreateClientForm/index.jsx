@@ -2,17 +2,16 @@ import { faChevronCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { DashBoardContext } from "context/DashBoardContext";
-import React from "react";
-import { useContext } from "react";
-import { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button, Col, Container, Form, Row, Spinner } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { Link, useHistory } from "react-router-dom";
 import './index.scss'
 import { faCheckCircle } from '@fortawesome/free-regular-svg-icons'
 
-const CreateClientForm = ({ getClients }) => {
+const CreateClientForm = ({ getClients, clientToEdit }) => {
     const { t } = useTranslation()
+    const isEditMode = Boolean(clientToEdit)
 
     const { toLogin, DashboardToastDispatch } = useContext(DashBoardContext)
     const history = useHistory()
@@ -26,9 +25,24 @@ const CreateClientForm = ({ getClients }) => {
         }
     )
 
-    const createClient = () => {
+    useEffect(() => {
+        if (clientToEdit) {
+            setData({
+                firstName: clientToEdit.firstName ?? "",
+                lastName: clientToEdit.lastName ?? "",
+            })
+            setValidated(false)
+            setRequest({ fetching: false, fetched: false, valid: false })
+        }
+    }, [clientToEdit])
+
+    const persistClient = () => {
         setRequest((prevState) => ({ ...prevState, fetching: true, fetched: false }))
-        axios.post(`/clients`, data)
+        const request = isEditMode
+            ? axios.put(`/clients/${clientToEdit.id}`, data)
+            : axios.post(`/clients`, data)
+
+        request
             .then(function () {
                 setRequest(() => (
                     {
@@ -36,12 +50,18 @@ const CreateClientForm = ({ getClients }) => {
                         fetched: true,
                         valid: true,
                     }))
-                DashboardToastDispatch({ type: "create", toastContent: { Icon: faCheckCircle, Title: "Client created succesfully" } });
+                DashboardToastDispatch({
+                    type: "create",
+                    toastContent: {
+                        Icon: faCheckCircle,
+                        Title: isEditMode ? t("Client updated successfully") : t("Client created succesfully"),
+                    },
+                });
                 getClients()
                 history.push(`/DashBoard/clientsSupervision/`)
             }).catch((err) => {
                 if (err.message !== "canceled") {
-                    if (err.response.status === "401") toLogin()
+                    if (err.response?.status === 401) toLogin()
                     setRequest((prevState) => ({ ...prevState, ...{ fetching: false, valid: false, fetched: true } }))
                 }
             });
@@ -52,7 +72,7 @@ const CreateClientForm = ({ getClients }) => {
         event.stopPropagation();
         const form = event.currentTarget;
         if (form.checkValidity() && !Request.fetching) {
-            createClient()
+            persistClient()
         }
         setValidated(true);
     }
@@ -68,7 +88,7 @@ const CreateClientForm = ({ getClients }) => {
                     <div className="growOpacity section">
                         <div className="header">
                             <h1 className="title fw-normal">
-                                {t("Create client")}
+                                {isEditMode ? t("Edit client") : t("Create client")}
                             </h1>
                             <Link className="button icon" to={`/DashBoard/clientsSupervision`}>
                                 <FontAwesomeIcon className="button icon" icon={faChevronCircleLeft} />
@@ -96,15 +116,12 @@ const CreateClientForm = ({ getClients }) => {
                             />
 
                             {
-                                Request.fetched &&
+                                Request.fetched && !Request.valid &&
                                 <div className="w-100 mb-2">
-                                    <Form.Text className={!Request.valid ? "text-danger" : "text-success"}>
-                                        {
-                                            Request.valid ?
-                                                t("User connected to the client selected successfully")
-                                                :
-                                                t("The user could not be connected to the client")
-                                        }
+                                    <Form.Text className="text-danger">
+                                        {isEditMode
+                                            ? t("The client could not be updated")
+                                            : t("The client could not be created")}
                                     </Form.Text>
                                 </div>
                             }

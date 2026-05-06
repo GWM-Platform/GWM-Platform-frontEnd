@@ -1,9 +1,11 @@
-.ClientsTable .toDetails{
+.ClientsTable .toDetails,
+.ClientsTable .toEdit {
     text-align:center;
     cursor:pointer;
 }
 
-.ClientsTable .toDetails a{
+.ClientsTable .toDetails a,
+.ClientsTable .toEdit a {
     color: var(--bs-table-hover-color);
     text-decoration: none;
 }

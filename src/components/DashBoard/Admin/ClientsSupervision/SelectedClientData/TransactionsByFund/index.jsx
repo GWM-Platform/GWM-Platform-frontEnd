@@ -79,6 +79,10 @@ const TransactionsByFund = ({ AccountId, Account, ClientId, Client, clientFunds 
 
 
     useEffect(() => {
+        if (!stake?.fund?.id) {
+            setPerformance(0)
+            return
+        }
         axios.get(`/clients/${ClientId}/fundPerformance?fund=${stake?.fund?.id}`)
             .then(response => {
                 setPerformance(response.data)

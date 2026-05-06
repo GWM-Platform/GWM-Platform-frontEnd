@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Col, Button } from 'react-bootstrap'
 import ClientsSearch from './ClientsSearch'
@@ -9,8 +9,16 @@ import { useHistory } from 'react-router-dom';
 const ClientSelector = ({ Clients }) => {
     const { t } = useTranslation();
 
-    const [FilteredClients, setFilteredClients] = useState(Clients.sort((a, b) => a.alias.localeCompare(b.alias)))
+    const sortedClients = useMemo(
+        () => [...(Clients || [])].sort((a, b) => (a?.alias || '').localeCompare(b?.alias || '')),
+        [Clients]
+    )
+    const [FilteredClients, setFilteredClients] = useState(sortedClients)
     const [SearchText, setSearchText] = useState("")
+
+    useEffect(() => {
+        setFilteredClients(sortedClients)
+    }, [sortedClients])
 
     const handleSearch = (event) => {
         setSearchText(event.target.value)
@@ -18,12 +26,13 @@ const ClientSelector = ({ Clients }) => {
 
     const cancelSearch = () => {
         setSearchText("")
-        setFilteredClients(Clients)
+        setFilteredClients(sortedClients)
     }
 
     const search = () => {
-        const regex = new RegExp(`${SearchText}`, 'i')
-        const suggestions = Clients.sort().filter(Clients => Clients.id.toString().match(regex) || Clients.alias.match(regex))
+        const escapedSearch = SearchText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+        const regex = new RegExp(`${escapedSearch}`, 'i')
+        const suggestions = sortedClients.filter(client => client.id.toString().match(regex) || (client.alias || '').match(regex))
         setFilteredClients(suggestions)
     }
     const history = useHistory()

@@ -12,12 +12,16 @@ import TicketSearch from 'components/DashBoard/GeneralUse/TicketSearch'
 
 import { useTranslation } from 'react-i18next';
 import FixedDepositTable from './FixedDepositsTable';
-import { Button, Col } from 'react-bootstrap';
+import { Button, Col, Collapse } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { customFetch } from 'utils/customFetch';
+import DoubleSignatureTable from './DoubleSignatureTable';
 
 const Tables = ({ state, messageVariants, client }) => {
 
     const token = sessionStorage.getItem('access_token')
+    const [doubleSignatureOpen, setDoubleSignatureOpen] = useState(false)
 
     function useQuery() {
         const { search } = useLocation();
@@ -689,6 +693,7 @@ const Tables = ({ state, messageVariants, client }) => {
     }
 
     const stateOnlyReverted = state === "99"
+    const isApprovedState = String(state) === "2"
 
     const transfersInState = async () => {
         var url = `${process.env.REACT_APP_APIURL}/transfers/?` + new URLSearchParams({
@@ -871,16 +876,46 @@ const Tables = ({ state, messageVariants, client }) => {
     }, [PaginationFixedDeposits, state, client, searchFixedDepositById.search])
 
     useEffect(() => {
-        if (!searchPendingSettlementById.search && !stateOnlyReverted) movementsPendingSettlement()
+        if (!searchPendingSettlementById.search && !stateOnlyReverted && isApprovedState) {
+            movementsPendingSettlement()
+            return
+        }
+
+        // Keep the section visible in all states, but empty when state is not Approved.
+        if (!isApprovedState || stateOnlyReverted) {
+            setPendingSettlements((prevState) => ({
+                ...prevState,
+                fetching: false,
+                fetched: true,
+                valid: true,
+                values: {
+                    movements: [],
+                    total: 0
+                }
+            }))
+        }
         // eslint-disable-next-line
-    }, [PaginationPendingSettlements, client, searchPendingSettlementById.search])
+    }, [PaginationPendingSettlements, client, searchPendingSettlementById.search, stateOnlyReverted, isApprovedState])
 
     const reloadData = () => {
         transactionsInState()
         movementsInState()
         transfersInState()
         fixedDepositsInState()
-        movementsPendingSettlement()
+        if (isApprovedState && !stateOnlyReverted) {
+            movementsPendingSettlement()
+        } else {
+            setPendingSettlements((prevState) => ({
+                ...prevState,
+                fetching: false,
+                fetched: true,
+                valid: true,
+                values: {
+                    movements: [],
+                    total: 0
+                }
+            }))
+        }
     }
 
     const ticketSearchPropsTransfers = {
@@ -930,6 +965,7 @@ const Tables = ({ state, messageVariants, client }) => {
 
 
     const PurchaseAndSale = useRef(null)
+    const DoubleSignatureRef = useRef(null)
     const AccountMovementsRef = useRef(null)
     const PendingSettlementRef = useRef(null)
     const TransferRef = useRef(null)
@@ -950,6 +986,7 @@ const Tables = ({ state, messageVariants, client }) => {
                         <Button variant="link" onClick={() => executeScroll(PendingSettlementRef)}>{t("Approved pending settlement")}</Button>
                         <Button variant="link" onClick={() => executeScroll(TransferRef)}>{t("Transfers")}</Button>
                         <Button variant="link" onClick={() => executeScroll(FixedDepositsRef)}>{t("Time deposits")}</Button>
+                        <Button variant="link" onClick={() => executeScroll(DoubleSignatureRef)}>{t("Tickets pending admin double check")}</Button>
                     </div>
                 }
                 <Col xs="12" >
@@ -1107,6 +1144,23 @@ const Tables = ({ state, messageVariants, client }) => {
                                 :
                                 null
                         }
+                        <div className='mt-3 w-100 d-flex' style={{ borderBottom: "1px solid gray" }} />
+                        <div ref={DoubleSignatureRef} className="d-flex align-items-center">
+                            <h1 className="title fw-normal me-auto">{t("Tickets pending admin double check")}:</h1>
+                            <Button
+                                variant="link"
+                                className="p-0"
+                                onClick={() => setDoubleSignatureOpen((prevState) => !prevState)}
+                                aria-label={doubleSignatureOpen ? t("Collapse") : t("Expand")}
+                            >
+                                <FontAwesomeIcon size="2x" color="#000000" icon={doubleSignatureOpen ? faChevronUp : faChevronDown} />
+                            </Button>
+                        </div>
+                        <Collapse in={doubleSignatureOpen}>
+                            <div>
+                                <DoubleSignatureTable />
+                            </div>
+                        </Collapse>
                     </>
                 }
             </>

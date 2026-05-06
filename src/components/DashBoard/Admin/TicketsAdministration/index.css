@@ -9,6 +9,10 @@
   margin: 0.25em 0 0.25em 0;
   border-bottom: 1px solid lightgray;
 }
+
+.TicketsAdministration.printContainer {
+  overflow: visible !important;
+}
 .TicketsAdministration .header .title {
   font-size: 1.8rem;
 }
@@ -29,12 +33,7 @@
 .TicketsAdministration .TicketsTable {
   position: relative;
 }
-.TicketsAdministration .TicketsTable .tableHeader {
-   {
-    /*position:sticky;
-	top:0*/
-  }
-}
+
 .TicketsAdministration .TicketsTable .id,
 .TicketsAdministration .TicketsTable .Name,
 .TicketsAdministration .TicketsTable .Type,
@@ -64,6 +63,40 @@
 }
 .TicketsAdministration .TicketsTable td.Actions {
   max-width: 1%;
+}
+
+.TicketsAdministration .doubleSignatureTableWrapper {
+  overflow-x: visible;
+}
+
+.TicketsAdministration .doubleSignatureTicketsTable th.Actions,
+.TicketsAdministration .doubleSignatureTicketsTable td.Actions {
+  width: 1%;
+  max-width: 1%;
+  white-space: nowrap;
+  word-break: normal;
+  vertical-align: middle;
+}
+
+.TicketsAdministration .doubleSignatureDenyBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.TicketsAdministration .doubleSignatureDenyBtn:focus,
+.TicketsAdministration .doubleSignatureDenyBtn:focus-visible,
+.TicketsAdministration .doubleSignatureDenyBtn:active {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
 }
 
 .Actions .iconContainer {
@@ -100,8 +133,14 @@
 .Actions .iconContainer.red:not(.not-allowed):hover .icon {
   color: red;
 }
+.Actions .iconContainer.blue:not(.not-allowed):hover .icon {
+  color: rgb(15, 68, 216);
+}   
 .Actions .iconContainer.green:not(.not-allowed):hover .icon {
   color: green;
+}
+.Actions .iconContainer.gray:not(.not-allowed):hover .icon {
+  color: gray;
 }
 .Actions .verticalCenter {
   vertical-align: middle;

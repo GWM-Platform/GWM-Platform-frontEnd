@@ -21,21 +21,50 @@ const ActionConfirmationModal = ({ movement, setShowModal, action, show, reloadD
     const [data, setData] = useState({ note: "", amount: "" })
     const defaultValue = useMemo(() => Decimal(movement?.amount || 0).abs().toFixed(2), [movement?.amount])
 
-    // Liquidation method options in English
-    const liquidationOptions = [
-        "Cash dollars center",
-        "Cash pesos center",
-        "Cash pesos vicente lopez",
-        "Cash dollars vicente lopez",
-        "Transfer pesos argentina",
-        "Transfer dollars argentina",
-        "Transfer USA chase",
-        "Transfer USA BAC"
-    ];
+    const [liquidationOptions, setLiquidationOptions] = useState([])
+    const [fetchingLiquidationOptions, setFetchingLiquidationOptions] = useState(false)
 
     useEffect(() => {
         setData(prevState => ({ ...prevState, amount: defaultValue }))
     }, [defaultValue])
+
+    useEffect(() => {
+        if (action === "liquidate" && show) {
+            const fetchLiquidationOptions = async () => {
+                setFetchingLiquidationOptions(true)
+                const token = sessionStorage.getItem("access_token")
+                const url = `${process.env.REACT_APP_APIURL}/liquidation-notes`;
+
+                try {
+                    const response = await customFetch(url, {
+                        method: 'GET',
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            Accept: "*/*",
+                            'Content-Type': 'application/json'
+                        }
+                    })
+
+                    if (response.status === 200) {
+                        const data = await response.json()
+                        // Extract nombres from the response
+                        const nombres = data.map(note => note.nombre)
+                        setLiquidationOptions(nombres)
+                    } else {
+                        console.error('Failed to fetch liquidation options:', response.status)
+                        setLiquidationOptions([])
+                    }
+                } catch (error) {
+                    console.error('Error fetching liquidation options:', error)
+                    setLiquidationOptions([])
+                } finally {
+                    setFetchingLiquidationOptions(false)
+                }
+            }
+
+            fetchLiquidationOptions()
+        }
+    }, [action, show])
     const shouldPartialLiquidate = useMemo(() => action === "liquidate" && !(Decimal(defaultValue).eq(data.amount || 0)), [action, data.amount, defaultValue])
 
     const handleChange = (event) => {
@@ -257,8 +286,9 @@ const ActionConfirmationModal = ({ movement, setShowModal, action, show, reloadD
                                         {action === "liquidate" ? (
                                             <Autocomplete
                                                 options={liquidationOptions}
-                                                noOptionsText={t("No options")}
-                                                getOptionLabel={(option) => t(option)}
+                                                loading={fetchingLiquidationOptions}
+                                                noOptionsText={fetchingLiquidationOptions ? t("Loading") : t("No options")}
+                                                getOptionLabel={(option) => option || ""}
                                                 value={data.note}
                                                 onChange={(event, newValue) => {
                                                     handleChange({ target: { id: "note", value: newValue || "" } });
@@ -271,7 +301,7 @@ const ActionConfirmationModal = ({ movement, setShowModal, action, show, reloadD
                                                 renderInput={(params) => (
                                                     <TextField
                                                         {...params}
-                                                        placeholder={t("Note")}
+                                                        placeholder={fetchingLiquidationOptions ? t("Loading options...") : t("Note")}
                                                         variant="outlined"
                                                         size="small"
                                                         sx={{

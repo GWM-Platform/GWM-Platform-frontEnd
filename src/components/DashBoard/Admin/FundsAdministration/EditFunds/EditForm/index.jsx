@@ -24,7 +24,7 @@ const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, se
     const isNull = () => !popover.current
 
     const handleClick = (event) => {
-        if (ImageUrl.fetched) {
+        if (ImageUrl.fetched && data.imageUrl) {
             setShow(!show);
             setTarget(event.target);
         }
@@ -85,12 +85,10 @@ const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, se
 
     const imageOptions = () => [...new Set([`${process.env.PUBLIC_URL}/images/FundsLogos/default.svg`, ...Funds.map(Fund => Fund.imageUrl)])].filter(e => e)
 
-    const [inputValid, setInputValid] = useState(false)
+    const [inputValid, setInputValid] = useState(true)
 
     const decimalSeparator = process.env.REACT_APP_DECIMALSEPARATOR ?? '.'
     const groupSeparator = process.env.REACT_APP_GROUPSEPARATOR ?? ','
-    const inputRef = useRef()
-
     const handleAmountChange = (value, name) => {
         const decimalSeparator = process.env.REACT_APP_DECIMALSEPARATOR ?? '.'
 
@@ -108,8 +106,8 @@ const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, se
         })
     }
     useEffect(() => {
-        setInputValid(inputRef?.current?.checkValidity())
-    }, [inputRef, data.shares])
+        setInputValid(true)
+    }, [])
 
     return (
         <div className="editForm">
@@ -140,7 +138,6 @@ const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, se
                     className="mb-3"
                 >
                     <Form.Control
-                        pattern="https:\/\/docs\.google\.com\/spreadsheets\/d\/[a-zA-Z0-9_-]{1,}\/.*"
                         required onChange={handleChange} id="spreadsheetId"
                         value={data.spreadsheetId} type="text"
                         placeholder={t("Google SpreadSheet Id")}
@@ -194,16 +191,16 @@ const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, se
                                     if (data.imageUrl !== "" && !ImageUrl.fetched) checkImage(data.imageUrl)
                                     handleBlur()
                                 }}
-                                placeholder={t("Image url to use as fund logo")} value={data.imageUrl} type="text" id="imageUrl" required
-                                className={`${ImageUrl.fetched || validated ? ImageUrl.valid ? "hardcoded-valid" : "hardcoded-invalid" : "hardcoded-novalidate"}`}
+                                placeholder={t("Image url to use as fund logo")} value={data.imageUrl} type="text" id="imageUrl"
+                                className={`${data.imageUrl === "" ? (validated ? "hardcoded-valid" : "hardcoded-novalidate") : (ImageUrl.fetched || validated ? ImageUrl.valid ? "hardcoded-valid" : "hardcoded-invalid" : "hardcoded-novalidate")}`}
                                 onChange={(e) => {
                                     setShow(false);
                                     handleChange(e);
-                                    setImageUrl(prevState => ({ ...prevState, ...{ fetching: false, fetched: false, valid: false } }))
+                                    setImageUrl(prevState => ({ ...prevState, ...{ fetching: false, fetched: e.target.value === "", valid: e.target.value === "" } }))
                                 }}
                             />
                         </FloatingLabel>
-                        <Button className="p-relative" onBlur={() => setShow(false)} onClick={handleClick} variant="danger" disabled={ImageUrl.fetching || (ImageUrl.fetched && !ImageUrl.valid)}>
+                        <Button className="p-relative" onBlur={() => setShow(false)} onClick={handleClick} variant="danger" disabled={data.imageUrl === "" || ImageUrl.fetching || (ImageUrl.fetched && !ImageUrl.valid)}>
                             <FontAwesomeIcon className={`inputSearchLogo ${!ImageUrl.fetched ? "active" : "hidden"}`} icon={faSearch} />
                             <FontAwesomeIcon className={`inputSearchLogo ${ImageUrl.fetched ? "active" : "hidden"}`} icon={ImageUrl.valid ? faEye : faEyeSlash} />
                             <FontAwesomeIcon className={`inputSearchLogo placeholder`} icon={faEye} />
@@ -255,6 +252,7 @@ const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, se
                         groupSeparator={groupSeparator}
                         onValueChange={(value, name) => handleAmountChange(value)}
                         placeholder={t("Shares")}
+                        readOnly
                         className={`form-control ${validated ? inputValid ? 'hardcoded-valid' : 'hardcoded-invalid' : ""} `}
                     />
                 </FloatingLabel>
@@ -267,6 +265,22 @@ const EditFunds = ({ data, setData, EditRequest, handleChange, Funds, Action, se
                         {t("The shares must be more than 0")}
                     </Form.Control.Feedback>
                 </FloatingLabel>
+
+                <Form.Check
+                    checked={data.disabledBuy}
+                    label={t("Fund disabled for buy operations")}
+                    onChange={handleChange}
+                    id="disabledBuy"
+                    className="mb-2"
+                />
+
+                <Form.Check
+                    checked={data.disabledSell}
+                    label={t("Fund disabled for sell operations")}
+                    onChange={handleChange}
+                    id="disabledSell"
+                    className="mb-3"
+                />
 
                 <Form.Check
                     checked={data.disabled}

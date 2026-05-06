@@ -4,7 +4,7 @@ import { Container, Row } from 'react-bootstrap'
 import Loading from 'components/DashBoard/User/MovementsTable/CardsContainer/MainCard/MainCardFund/MovementsTab/Loading';
 import ClientSelector from './ClientSelector';
 import SelectedClientData from './SelectedClientData';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useCallback } from 'react';
 import axios from 'axios';
@@ -121,6 +121,17 @@ const ClientsSupervision = () => {
                         <Route exact path="/DashBoard/clientsSupervision/create-client">
                             <CreateClientForm getClients={getClients} />
                         </Route>
+                        <Route
+                            path="/DashBoard/clientsSupervision/edit/:clientId"
+                            render={({ match }) => {
+                                const clientId = Number.parseInt(match.params.clientId, 10)
+                                const clientToEdit = Clients.content.find((c) => c.id === clientId)
+                                if (!clientToEdit || Number.isNaN(clientId)) {
+                                    return <Redirect to="/DashBoard/clientsSupervision/" />
+                                }
+                                return <CreateClientForm getClients={getClients} clientToEdit={clientToEdit} />
+                            }}
+                        />
                         {
                             Clients.content.map((client) =>
                                 <Route key={`client-data-${client.id}`} path={`/DashBoard/clientsSupervision/${client.id}`}>
