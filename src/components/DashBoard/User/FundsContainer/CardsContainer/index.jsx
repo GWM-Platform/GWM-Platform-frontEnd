@@ -113,7 +113,7 @@ const CardsContainer = ({ setItemSelected, Funds, Accounts, PendingTransactions,
             const pendingCashFromTransfers = PendingSentAndReceivedTransfers.map((transfer) => {
                 const amount = new Decimal(transfer.amount)
                 return (
-                    transfer.senderId === clientId && amount.isPositive() ? amount.negated() : amount
+                    transfer.senderClientId === clientId && amount.isPositive() ? amount.negated() : amount
                 )
             }).reduce((previousValue, currentValue) => new Decimal(previousValue).plus(new Decimal(currentValue)), 0)
 
