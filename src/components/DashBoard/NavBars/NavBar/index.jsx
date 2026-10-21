@@ -133,7 +133,7 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                             <NavDropdown.Item
                                                 active={itemSelectedLC === "apl"}
                                                 onClick={() => { goTo("APL") }}>
-                                                APL
+                                                GEMFA HQ
                                             </NavDropdown.Item>
                                             <NavDropdown.Item
                                                 active={itemSelectedLC === "operations"}
@@ -288,7 +288,7 @@ const NavBarDashBoard = ({ NavInfoToggled, setNavInfoToggled }) => {
                                             className="p-2"
                                             active={itemSelectedLC === "apl"}
                                             onClick={() => { goTo("APL") }}>
-                                            APL
+                                            GEMFA HQ
                                         </NavDropdown.Item>
                                         <NavDropdown.Item
                                             className="p-2"

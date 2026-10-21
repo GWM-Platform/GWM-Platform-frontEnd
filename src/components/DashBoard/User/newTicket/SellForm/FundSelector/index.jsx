@@ -87,14 +87,16 @@ const FundSelector = ({ data, setData, some, setSome, Funds, openAccordion }) =>
                         <Row className="mx-0 d-flex justify-content-center">
                             <div className="p-relative px-0">
                                 <div ref={accountsSlider} className='fund-selector' onScroll={handleScroll} >
-                                    {Funds.map((Fund, key) => {
-                                        return (
-                                            <FundCard
-                                                accountCardRef={key === 0 ? accountCard : null}
-                                                openAccordion={openAccordion} key={key} ownKey={key}
-                                                Fund={Fund} data={data} setData={setData} some={some} setSome={setSome} />
-                                        )
-                                    })}
+                                    {Funds.map((Fund, key) => ({ Fund, key }))
+                                        .filter(({ Fund }) => !Fund.fund?.disabled && !Fund.fund?.disabledSell)
+                                        .map(({ Fund, key }, index) => {
+                                            return (
+                                                <FundCard
+                                                    accountCardRef={index === 0 ? accountCard : null}
+                                                    openAccordion={openAccordion} key={key} ownKey={key}
+                                                    Fund={Fund} data={data} setData={setData} some={some} setSome={setSome} />
+                                            )
+                                        })}
                                     {
                                         // !!(HasScrollBar) &&
                                         <ScrollControl scroll={scroll} ScrollBarSides={ScrollBarSides} />

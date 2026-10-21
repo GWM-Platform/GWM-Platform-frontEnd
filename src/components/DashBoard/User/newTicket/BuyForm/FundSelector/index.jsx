@@ -85,12 +85,14 @@ const FundSelector = ({ data, setData, Funds, openAccordion, Account }) => {
                             <div className='p-relative px-0'>
 
                                 <div ref={accountsSlider} className='fund-selector' onScroll={handleScroll} >
-                                    {Funds.map((Fund, key) => {
-                                        return <FundCard
-                                            accountCardRef={key === 0 ? accountCard : null}
-                                            Account={Account} openAccordion={openAccordion} key={key} ownKey={key}
-                                            Fund={Fund} data={data} setData={setData} />
-                                    })}
+                                    {Funds.map((Fund, key) => ({ Fund, key }))
+                                        .filter(({ Fund }) => !Fund.disabled && !Fund.disabledBuy)
+                                        .map(({ Fund, key }, index) => {
+                                            return <FundCard
+                                                accountCardRef={index === 0 ? accountCard : null}
+                                                Account={Account} openAccordion={openAccordion} key={key} ownKey={key}
+                                                Fund={Fund} data={data} setData={setData} />
+                                        })}
                                     {
                                         // !!(HasScrollBar) &&
                                         <ScrollControl scroll={scroll} ScrollBarSides={ScrollBarSides} />

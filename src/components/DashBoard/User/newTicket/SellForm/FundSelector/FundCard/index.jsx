@@ -22,12 +22,12 @@ const FundCard = ({ Fund, ownKey, data, setData, setSome, some, openAccordion, a
     return (
 
         <Col xs="10" sm="6" md="4" lg="3" ref={accountCardRef}
-            className={`py-1 growAnimation  FundCardContainer 
-        ${Fund.freeShares === 0 || !hasSellPermission(Fund.fund.id) || Fund.fund?.disabled || Fund.fund?.disabledSell ? " FundDisabled" : ""}`}>
+            className={`py-1 growAnimation  FundCardContainer
+        ${Fund.freeShares === 0 || !hasSellPermission(Fund.fund.id) ? " FundDisabled" : ""}`}>
             <Card
                 ref={ref}
                 className={`fund-item p-0 ${data.FundSelected === ownKey ? "selected" : ""}`}
-                onClick={() => { if (!Fund.fund?.disabled && !Fund.fund?.disabledSell) { setFundSelected(data, setData, ownKey, setSome, some, openAccordion) } }}>
+                onClick={() => { setFundSelected(data, setData, ownKey, setSome, some, openAccordion) }}>
                 <Card.Header className='content-container d-flex'>
                     <strong className="title d-inline">{Fund.fund.name}</strong>
                     <div className="fund-icon ms-auto">
